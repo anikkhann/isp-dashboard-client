@@ -23,7 +23,6 @@ const MenuLayout = ({ style, closeDrawer }: MenuLayoutProps) => {
     }
   });
 
-
   return (
     <StyledVerticalNav
       theme="light"

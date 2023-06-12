@@ -5,7 +5,6 @@ import AppRowContainer from "@/lib/AppRowContainer";
 import { Col } from "antd";
 import React from "react";
 
-
 const MainDashboard = () => {
   return (
     <>
@@ -43,7 +42,7 @@ const MainDashboard = () => {
               bgColor="#005082"
               color="#fff"
               icon="/assets/icons/icon_visits.svg"
-              title="Total Users"
+              title=""
               value="200"
             />
           </Col>

@@ -62,15 +62,15 @@ const LoginComponent = () => {
           setErrorMessage(err.response.data.message);
 
           if (err.response.status === 400) {
-            setErrorMessage(err.response.data.message)
+            setErrorMessage(err.response.data.message);
           } else {
-            setErrorMessage(["Something went wrong, please try again later"])
+            setErrorMessage(["Something went wrong, please try again later"]);
           }
         });
     } catch (err) {
       console.log(err);
-      setShowError(true)
-      setErrorMessage(err)
+      setShowError(true);
+      setErrorMessage(err);
     }
 
     console.log("Success:");
