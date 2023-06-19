@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useEffect, useState } from "react";
 import { Layout } from "antd";
 import LogoTitle from "./components/LogoTitle";
@@ -15,13 +16,13 @@ import {
   SubjectRawRule,
   createMongoAbility
 } from "@casl/ability";
-import AppAxios from "@/services/AppAxios";
 import { AbilityContext } from "@/services/guard/Can";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 
 import AppImageLoader from "@/components/loader/AppImageLoader";
 import { useAppSelector } from "@/store/hooks";
+import axios from "axios";
 
 interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -71,21 +72,24 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
 
     const updateAbilityWithPermissions = async () => {
       try {
-        const { data } = await AppAxios.get("/api/auth/profile", {
+        const { data } = await axios.get("/api/v1/auth/get-permissions", {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`
           }
         });
-        const permissions = data.data.permissions;
+
+        const permissions = data.body;
 
         updateAbility(ability, permissions);
         setLoading(false);
       } catch (error: any) {
         console.log(error);
         setLoading(false);
-        if (error.response.status === 401) {
-          Cookies.remove("token");
-          router.replace("/login");
+        if (error.response) {
+          if (error.response.status === 401) {
+            Cookies.remove("token");
+            router.replace("/login");
+          }
         }
       }
     };

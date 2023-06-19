@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Alert, Form, Input } from "antd";
 
@@ -8,10 +9,10 @@ import {
   StyledSignForm
 } from "./index.styled";
 import { useRouter } from "next/router";
-import AppAxios from "@/services/AppAxios";
 import Cookies from "js-cookie";
 import LoginAppLoader from "@/components/loader/LoginAppLoader";
 import { useAppDispatch } from "@/store/hooks";
+import axios from "axios";
 
 const LoginComponent = () => {
   const router = useRouter();
@@ -31,20 +32,22 @@ const LoginComponent = () => {
     setLoading(true);
 
     try {
-      AppAxios.post("/api/auth/login", {
-        username: email,
-        password: password
-      })
+      axios
+        .post("/api/v1/auth/authenticate", {
+          email: email,
+          password: password
+        })
         .then(async response => {
           const { data } = response;
 
+          console.log(data);
           if (data.success === false) {
             setShowError(true);
             setErrorMessage(data.message);
             return;
           }
 
-          Cookies.set("token", data.data.access_token);
+          Cookies.set("token", data.token);
 
           dispatch({ type: "auth/setIsLoggedIn", payload: true });
 
@@ -73,9 +76,9 @@ const LoginComponent = () => {
       setErrorMessage(err);
     }
 
-    console.log("Success:");
+    // console.log("Success:");
 
-    return false;
+    // return false;
   };
 
   const onFinishFailed = () => {
@@ -106,8 +109,8 @@ const LoginComponent = () => {
           layout="vertical"
           initialValues={{
             remember: true,
-            email: "admin@admin.com",
-            password: "password"
+            email: "duronto",
+            password: "hotspot@1234"
           }}
           onFinish={signInUser}
           onFinishFailed={onFinishFailed}

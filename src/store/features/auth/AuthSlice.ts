@@ -29,10 +29,12 @@ const authSlice = createSlice({
     setInitialized: (state, action: PayloadAction<boolean>) => {
       state.isInitialized = action.payload;
     },
+    setUser(state, action: PayloadAction<object | null>) {
+      state.user = action.payload;
+    },
 
     logout: state => {
       state.isLoggedIn = false;
-
       state.user = null;
       Cookies.remove("token");
     }

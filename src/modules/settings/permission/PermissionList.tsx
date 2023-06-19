@@ -6,11 +6,10 @@ import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
-
-import AppAxios from "@/services/AppAxios";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
+import axios from "axios";
 interface DataType {
   id: number;
   name: string;
@@ -79,9 +78,9 @@ const PermissionList: React.FC = () => {
   ) => {
     const token = Cookies.get("token");
     // console.log('token', token)
-    AppAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const { data } = await AppAxios.get(
+    const { data } = await axios.get(
       `/api/v1/permissions?page=${page}&limit=${limit}&order=${order}&sort=${sort}`
     );
     return data;

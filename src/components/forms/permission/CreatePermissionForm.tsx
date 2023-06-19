@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useState } from "react";
 
@@ -12,7 +13,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 import { Alert, Button, Form, Input } from "antd";
-import AppAxios from "@/services/AppAxios";
+import axios from "axios";
 
 interface PermissionFormData {
   name: string;
@@ -58,11 +59,12 @@ const CreatePermissionForm = () => {
     console.log(data);
     const { name, group, slug } = data;
     try {
-      AppAxios.post("/api/v1/permissions", {
-        name: name,
-        group: group,
-        slug: slug
-      })
+      axios
+        .post("/api/v1/permissions", {
+          name: name,
+          group: group,
+          slug: slug
+        })
         .then(res => {
           console.log(res);
           const { data } = res;

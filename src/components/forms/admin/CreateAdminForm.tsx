@@ -22,8 +22,8 @@ import {
   Space,
   Upload
 } from "antd";
-import AppAxios from "@/services/AppAxios";
 import { UploadOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 interface AdminFormData {
   first_name: string;
@@ -91,7 +91,7 @@ const CreateAdminForm = () => {
   };
 
   const getRoles = async () => {
-    const res = await AppAxios.get("/api/v1/common/all-roles");
+    const res = await axios.get("/api/v1/common/all-roles");
     if (res.data.success) {
       console.log(res.data.data.roles);
 
@@ -143,11 +143,12 @@ const CreateAdminForm = () => {
     }
 
     try {
-      AppAxios.post("/api/v1/admins", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      })
+      axios
+        .post("/api/v1/admins", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
         .then(res => {
           console.log(res);
           const { data } = res;

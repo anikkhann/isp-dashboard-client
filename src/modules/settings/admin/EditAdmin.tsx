@@ -4,9 +4,9 @@ import EditAdminForm from "@/components/forms/admin/EditAdminForm";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AppAxios from "@/services/AppAxios";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Card } from "antd";
+import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -35,9 +35,9 @@ const EditAdmin = ({ id }: any) => {
   const fetchData = async () => {
     const token = Cookies.get("token");
     // console.log('token', token)
-    AppAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const { data } = await AppAxios.get(`/api/v1/admins/${id}`);
+    const { data } = await axios.get(`/api/v1/admins/${id}`);
     return data;
   };
 

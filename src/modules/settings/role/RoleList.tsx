@@ -6,8 +6,6 @@ import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
-
-import AppAxios from "@/services/AppAxios";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
@@ -17,6 +15,7 @@ import ability from "@/services/guard/ability";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
+import axios from "axios";
 interface DataType {
   id: number;
   name: string;
@@ -66,7 +65,7 @@ const RoleList: React.FC = () => {
       });
 
       if (result.isConfirmed) {
-        const { data } = await AppAxios.delete(`/api/v1/roles/${id}`);
+        const { data } = await axios.delete(`/api/v1/roles/${id}`);
         if (data.success) {
           MySwal.fire("Deleted!", data.data.message, "success").then(() => {
             router.reload();
@@ -100,7 +99,7 @@ const RoleList: React.FC = () => {
       });
 
       if (result.isConfirmed) {
-        const { data } = await AppAxios.post(`/api/v1/roles/${id}/status`);
+        const { data } = await axios.post(`/api/v1/roles/${id}/status`);
 
         console.log(data);
         if (data.success) {
@@ -237,9 +236,9 @@ const RoleList: React.FC = () => {
   ) => {
     const token = Cookies.get("token");
     // console.log('token', token)
-    AppAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const { data } = await AppAxios.get(
+    const { data } = await axios.get(
       `/api/v1/roles?page=${page}&limit=${limit}&order=${order}&sort=${sort}`
     );
     return data;

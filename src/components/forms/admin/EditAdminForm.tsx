@@ -22,9 +22,9 @@ import {
   Space,
   Upload
 } from "antd";
-import AppAxios from "@/services/AppAxios";
 import { UploadOutlined } from "@ant-design/icons";
 import { basename } from "path";
+import axios from "axios";
 
 interface PropData {
   item: DataType;
@@ -34,7 +34,6 @@ interface AdminFormData {
   first_name: string;
   last_name: string;
   email: string;
-  password: string;
   username: string;
   phone: string;
 }
@@ -111,7 +110,7 @@ const EditAdminForm = ({ item }: PropData) => {
   };
 
   const getRoles = async () => {
-    const res = await AppAxios.get("/api/v1/common/all-roles");
+    const res = await axios.get("/api/v1/common/all-roles");
     if (res.data.success) {
       console.log(res.data.data.roles);
 
@@ -167,13 +166,12 @@ const EditAdminForm = ({ item }: PropData) => {
 
   const onSubmit = (data: AdminFormData) => {
     // console.log(data);
-    const { first_name, last_name, email, password, username } = data;
+    const { first_name, last_name, email, username } = data;
 
     const formData = new FormData();
     formData.append("first_name", first_name);
     formData.append("last_name", last_name);
     formData.append("email", email);
-    formData.append("password", password);
     formData.append("username", username);
     formData.append("phone", data.phone);
     formData.append("is_active", JSON.stringify(isActive));
@@ -184,11 +182,12 @@ const EditAdminForm = ({ item }: PropData) => {
     }
 
     try {
-      AppAxios.post(`/api/v1/admins/${item.id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      })
+      axios
+        .post(`/api/v1/admins/${item.id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
         .then(res => {
           console.log(res);
           const { data } = res;
@@ -201,7 +200,7 @@ const EditAdminForm = ({ item }: PropData) => {
             router.replace("/admin/settings/admin");
           });
         })
-        .catch(err => {
+        .catch((err: any) => {
           console.log(err);
           setShowError(true);
           setErrorMessages(err.response.data.message);
@@ -365,66 +364,6 @@ const EditAdminForm = ({ item }: PropData) => {
             />
             {errors.email && (
               <div className="text-danger">{errors.email.message}</div>
-            )}
-          </Form.Item>
-
-          <Form.Item
-            label="Password"
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Controller
-              name="password"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  className={`form-control ${
-                    errors.password ? "is-invalid" : ""
-                  }`}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  name="password"
-                />
-              )}
-            />
-            {errors.password && (
-              <div className="text-danger">{errors.password.message}</div>
-            )}
-          </Form.Item>
-
-          <Form.Item
-            label="Confirm Password"
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Controller
-              name="confirm_password"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <Input
-                  type="password"
-                  placeholder="Confirm Password"
-                  className={`form-control ${
-                    errors.confirm_password ? "is-invalid" : ""
-                  }`}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  name="confirm_password"
-                />
-              )}
-            />
-            {errors.confirm_password && (
-              <div className="text-danger">
-                {errors.confirm_password.message}
-              </div>
             )}
           </Form.Item>
 

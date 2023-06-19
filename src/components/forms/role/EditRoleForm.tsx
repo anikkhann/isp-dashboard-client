@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useEffect, useState } from "react";
 
@@ -12,8 +13,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 import { Alert, Button, Checkbox, Col, Form, Input, Row } from "antd";
-import AppAxios from "@/services/AppAxios";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
+import axios from "axios";
 
 interface RoleFormData {
   name: string;
@@ -68,7 +69,7 @@ const EditRoleForm = ({ item }: PropData) => {
   };
 
   const getPermissions = async () => {
-    const res = await AppAxios.get("/api/v1/common/all-permissions");
+    const res = await axios.get("/api/v1/common/all-permissions");
     if (res.data.success) {
       const items = res.data.data.permissions.map((item: any) => {
         return {
@@ -115,11 +116,12 @@ const EditRoleForm = ({ item }: PropData) => {
   const onSubmit = (data: RoleFormData) => {
     const { name } = data;
     try {
-      AppAxios.put(`/api/v1/roles/${item.id}`, {
-        name: name,
-        is_active: isActive,
-        permissions: checkedList
-      })
+      axios
+        .put(`/api/v1/roles/${item.id}`, {
+          name: name,
+          is_active: isActive,
+          permissions: checkedList
+        })
         .then(res => {
           console.log(res);
           const { data } = res;

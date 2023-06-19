@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 // import { useAuth } from './useAuth'
 import Cookies from "js-cookie";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import AppAxios from "@/services/AppAxios";
-// import AppLoader from "@/lib/AppLoader";
+import axios from "axios";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -34,17 +33,20 @@ const AuthGuard = (props: AuthGuardProps) => {
         dispatch({ type: "auth/setIsLoading", payload: false });
       }
       if (token) {
-        await AppAxios.get("/api/auth/verify", {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+        await axios
+          .get("/api/v1/auth/get", {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
           .then(response => {
-            if (response.data.success === false) {
+            // console.log(response);
+            if (response.data.status == "401") {
               Cookies.remove("token");
               router.replace("/login");
             }
             dispatch({ type: "auth/setIsLoggedIn", payload: true });
+            dispatch({ type: "auth/setUser", payload: response.data });
           })
           .catch(error => {
             // console.log(error);

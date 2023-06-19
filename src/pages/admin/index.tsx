@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("dashboard", "") ? <MainDashboard /> : <Forbidden />}
+      {ability.can("dashboard.view", "") ? <MainDashboard /> : <Forbidden />}
     </>
   );
 };

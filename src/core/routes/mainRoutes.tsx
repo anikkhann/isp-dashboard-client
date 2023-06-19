@@ -1,21 +1,12 @@
 import {
   DashboardOutlined,
-  DeploymentUnitOutlined,
+  SettingOutlined,
   ShopOutlined,
-  ShoppingCartOutlined
+  ShoppingCartOutlined,
+  SlidersOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 import { BiCartAdd } from "react-icons/bi";
-import { FiSettings } from "react-icons/fi";
-import {
-  MdOutlineAddShoppingCart,
-  MdCategory,
-  MdOutlineCurrencyExchange
-} from "react-icons/md";
-import { TbCategory, TbReportAnalytics, TbTruckReturn } from "react-icons/tb";
-import { AiOutlineBgColors, AiOutlineAreaChart } from "react-icons/ai";
-import { SiBrandfolder, SiOrigin } from "react-icons/si";
-import { GiReturnArrow } from "react-icons/gi";
-import { HiOutlineDocumentReport } from "react-icons/hi";
 
 const mainRoutes = [
   {
@@ -23,173 +14,155 @@ const mainRoutes = [
     label: "Main Dashboard",
     path: "/admin",
     icon: <DashboardOutlined />,
-    permission: "dashboard"
+    permission: "dashboard.view"
   },
 
   {
-    key: "/admin/purchase",
-    label: "Purchase Dashboard",
-    path: "/admin/purchase",
+    key: "/admin/client",
+    label: "Client",
+    path: "/admin/client",
     icon: <ShopOutlined />,
-    permission: "dashboard"
+    permission: "dashboard.view"
   },
   {
-    key: "purchase",
-    label: "Purchase",
-    path: "purchase",
+    key: "/admin/subscription",
+    label: "Subscription",
+    path: "/admin/subscription",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "/admin/zone-manager",
+    label: "Zone Manager",
+    path: "/admin/zone-manager",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "/admin/sub-zone-manager",
+    label: "Sub Zone Manager",
+    path: "/admin/sub-zone-manager",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "customer",
+    label: "Customer",
+    path: "customer",
     icon: <ShoppingCartOutlined />,
-    permission: "dashboard",
+    permission: "dashboard.view",
     children: [
       {
-        key: "/admin/purchase/purchase/create",
-        label: "New Purchase",
-        path: "/admin/purchase/purchase/create",
+        key: "/admin/customer/customer-type",
+        label: "Customer Type",
+        path: "/admin/customer/customer-type",
         icon: <BiCartAdd />,
-        permission: "purchase.view"
+        permission: "dashboard.view"
       },
       {
-        key: "/admin/purchase/purchase",
-        label: "Purchase List",
-        path: "/admin/purchase/purchase",
+        key: "/admin/customer/customer",
+        label: "customer List",
+        path: "/admin/customer/customer",
         icon: <ShoppingCartOutlined />,
-        permission: "purchase.view"
+        permission: "dashboard.view"
       }
     ]
   },
   {
-    key: "purchase-setup",
-    label: "Purchase Setup",
-    path: "purchase-setup",
-    icon: <FiSettings />,
-    permission: "purchase.setup",
+    key: "/admin/top-up",
+    label: "Top Up",
+    path: "/admin/top-up",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+
+  {
+    key: "/admin/packages",
+    label: "Packages",
+    path: "/admin/packages",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "/admin/distribution-zone",
+    label: "Distribution Zone",
+    path: "/admin/distribution-zone",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "/admin/distribution-pop",
+    label: "Distribution pop",
+    path: "/admin/distribution-pop",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "/admin/devices",
+    label: "Devices",
+    path: "/admin/devices",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view"
+  },
+
+  {
+    key: "ticket",
+    label: "Ticket",
+    path: "ticket",
+    icon: <ShoppingCartOutlined />,
+    permission: "dashboard.view",
     children: [
       {
-        key: "/admin/purchase/item",
-        label: "Item",
-        path: "/admin/purchase/item",
-        icon: <MdOutlineAddShoppingCart />,
-        permission: "item.view"
-      },
-
-      {
-        key: "/admin/purchase/category",
-        label: "Category",
-        path: "/admin/purchase/category",
-        icon: <TbCategory />,
-        permission: "category.view"
+        key: "/admin/ticket/ticket",
+        label: "Ticket List",
+        path: "/admin/ticket/ticket",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
       },
       {
-        key: "/admin/purchase/sub-category",
-        label: "sub-category",
-        path: "/admin/purchase/sub-category",
-        icon: <TbCategory />,
-        permission: "category.view"
+        key: "/admin/ticket/complain-type",
+        label: "Complain Type List",
+        path: "/admin/ticket/complain-type",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
       },
       {
-        key: "/admin/purchase/material",
-        label: "Material",
-        path: "/admin/purchase/material",
-        icon: <MdCategory />,
-        permission: "material.view"
-      },
-      {
-        key: "/admin/purchase/color",
-        label: "Color",
-        path: "/admin/purchase/color",
-        icon: <AiOutlineBgColors />,
-        permission: "color.view"
-      },
-      {
-        key: "/admin/purchase/brand",
-        label: "Brand",
-        path: "/admin/purchase/brand",
-        icon: <SiBrandfolder />,
-        permission: "brand.view"
-      },
-      {
-        key: "/admin/purchase/product-origin",
-        label: "Product Origin",
-        path: "/admin/purchase/product-origin",
-        icon: <SiOrigin />,
-        permission: "productOrigin.view"
-      },
-      {
-        key: "/admin/purchase/currency",
-        label: "Currency",
-        path: "/admin/purchase/currency",
-        icon: <MdOutlineCurrencyExchange />,
-        permission: "currency.view"
-      },
-      {
-        key: "/admin/purchase/margin",
-        label: "Default Margin",
-        path: "/admin/purchase/margin",
-        icon: <AiOutlineAreaChart />,
-        permission: "margin.view"
-      },
-
-      {
-        key: "/admin/purchase/unit",
-        label: "Unit",
-        path: "/admin/purchase/unit",
-        icon: <DeploymentUnitOutlined />,
-        permission: "unit.view"
+        key: "/admin/ticket/root-cause",
+        label: "Root Cause List",
+        path: "/admin/ticket/root-cause",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
       }
     ]
   },
   {
-    key: "purchase-return",
-    label: "Purchase Return",
-    path: "/admin/purchase",
-    icon: <GiReturnArrow />,
-    permission: "purchaseReturn.view",
+    key: "settings",
+    label: "Settings",
+    path: "/admin/settings/admin",
+    icon: <SettingOutlined />,
+    permission: "admin_module",
     children: [
       {
-        key: "/admin/purchase/purchase-return/create",
-        label: "New Return",
-        path: "/admin/purchase/purchase-return/create",
-        icon: <TbTruckReturn />,
-        permission: "purchaseReturn.view"
+        key: "/admin/settings/admin",
+        label: "Admins",
+        path: "/admin/settings/admin",
+        icon: <UserOutlined />,
+        permission: "admin.view"
+      },
+      {
+        key: "/admin/settings/role",
+        label: "Roles",
+        path: "/admin/settings/role",
+        icon: <SlidersOutlined />,
+        permission: "role.view"
       },
 
       {
-        key: "/admin/purchase/purchase-return",
-        label: "Return List",
-        path: "/admin/purchase/purchase-return",
-        icon: <GiReturnArrow />,
-        permission: "purchaseReturn.view"
-      }
-    ]
-  },
-  {
-    key: "purchase-report",
-    label: "Purchase Report",
-    path: "/admin/purchase",
-    icon: <TbReportAnalytics />,
-    permission: "purchaseReport.view",
-    children: [
-      {
-        key: "/admin/purchase/report/summary-report",
-        label: "Summary Report",
-        path: "/admin/purchase/report/summary-report",
-        icon: <TbReportAnalytics />,
-        permission: "purchaseReport.view"
-      },
-
-      {
-        key: "/admin/purchase/report/details-report",
-        label: "Details Report",
-        path: "/admin/purchase/report/details-report",
-        icon: <HiOutlineDocumentReport />,
-        permission: "purchaseReport.view"
-      },
-
-      {
-        key: "/admin/purchase/report/purchase-return-report",
-        label: "Return Report",
-        path: "/admin/purchase/report/purchase-return-report",
-        icon: <GiReturnArrow />,
-        permission: "purchaseReport.view"
+        key: "/admin/settings/permission",
+        label: "Permissions",
+        path: "/admin/settings/permission",
+        icon: <SlidersOutlined />,
+        permission: "permission.view"
       }
     ]
   }
