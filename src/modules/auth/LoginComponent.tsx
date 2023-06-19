@@ -13,7 +13,8 @@ import Cookies from "js-cookie";
 import LoginAppLoader from "@/components/loader/LoginAppLoader";
 import { useAppDispatch } from "@/store/hooks";
 // import axios from "axios";
-import AppAxios from "@/services/AppAxios";
+
+import axios from "axios";
 
 const LoginComponent = () => {
   const router = useRouter();
@@ -33,10 +34,11 @@ const LoginComponent = () => {
     setLoading(true);
 
     try {
-      AppAxios.post("/api/v1/auth/authenticate", {
-        email: email,
-        password: password
-      })
+      axios
+        .post("/api/v1/auth/authenticate", {
+          email: email,
+          password: password
+        })
         .then(async response => {
           const { data } = response;
 
