@@ -18,91 +18,112 @@ const mainRoutes = [
   },
 
   {
-    key: "/admin/client",
-    label: "Client",
-    path: "/admin/client",
+    key: "client",
+    label: "Client Management",
+    path: "client",
     icon: <ShopOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/subscription",
-    label: "Subscription",
-    path: "/admin/subscription",
-    icon: <ShopOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/zone-manager",
-    label: "Zone Manager",
-    path: "/admin/zone-manager",
-    icon: <ShopOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/sub-zone-manager",
-    label: "Sub Zone Manager",
-    path: "/admin/sub-zone-manager",
-    icon: <ShopOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "customer",
-    label: "Customer",
-    path: "customer",
-    icon: <ShoppingCartOutlined />,
     permission: "dashboard.view",
     children: [
       {
-        key: "/admin/customer/customer-type",
-        label: "Customer Type",
-        path: "/admin/customer/customer-type",
+        key: "/admin/client",
+        label: "Dashboard",
+        path: "/admin/client",
         icon: <BiCartAdd />,
         permission: "dashboard.view"
       },
       {
-        key: "/admin/customer/customer",
-        label: "customer List",
-        path: "/admin/customer/customer",
+        key: "/admin/client/client",
+        label: "Client",
+        path: "/admin/client/client",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
+      },
+      {
+        key: "/admin/client/subscription",
+        label: "Subscription",
+        path: "/admin/client/subscription",
         icon: <ShoppingCartOutlined />,
         permission: "dashboard.view"
       }
     ]
   },
+
   {
-    key: "/admin/top-up",
-    label: "Top Up",
-    path: "/admin/top-up",
+    key: "zone-in-charge",
+    label: "Zone In Charge",
+    path: "zone-in-charge",
     icon: <ShopOutlined />,
-    permission: "dashboard.view"
+    permission: "dashboard.view",
+    children: [
+      {
+        key: "/admin/zone-in-charge",
+        label: "Dashboard",
+        path: "/admin/zone-in-charge",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
+      },
+      {
+        key: "/admin/zone-in-charge/zone-in-charge",
+        label: "Zone In Charge",
+        path: "/admin/zone-in-charge/zone-in-charge",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
+      }
+    ]
+  },
+  {
+    key: "sub-zone-in-charge",
+    label: "Sub Zone In Charge",
+    path: "sub-zone-in-charge",
+    icon: <ShopOutlined />,
+    permission: "dashboard.view",
+    children: [
+      {
+        key: "/admin/sub-zone-in-charge",
+        label: "Dashboard",
+        path: "/admin/sub-zone-in-charge",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
+      },
+      {
+        key: "/admin/sub-zone-in-charge/sub-zone-in-charge",
+        label: "Zone In Charge",
+        path: "/admin/sub-zone-in-charge/sub-zone-in-charge",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
+      }
+    ]
   },
 
   {
-    key: "/admin/packages",
-    label: "Packages",
-    path: "/admin/packages",
-    icon: <ShopOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/distribution-zone",
-    label: "Distribution Zone",
-    path: "/admin/distribution-zone",
-    icon: <ShopOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/distribution-pop",
-    label: "Distribution pop",
-    path: "/admin/distribution-pop",
-    icon: <ShopOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/devices",
-    label: "Devices",
-    path: "/admin/devices",
-    icon: <ShopOutlined />,
-    permission: "dashboard.view"
+    key: "device-management",
+    label: "Device Management",
+    path: "device-management",
+    icon: <ShoppingCartOutlined />,
+    permission: "dashboard.view",
+    children: [
+      {
+        key: "/admin/device-management/device",
+        label: "Device",
+        path: "/admin/device-management/device",
+        icon: <BiCartAdd />,
+        permission: "dashboard.view"
+      },
+      {
+        key: "/admin/device-management/network",
+        label: "Network",
+        path: "/admin/device-management/network",
+        icon: <ShoppingCartOutlined />,
+        permission: "dashboard.view"
+      },
+      {
+        key: "/admin/device-management/ip-management",
+        label: "IP Management",
+        path: "/admin/device-management/ip-management",
+        icon: <ShoppingCartOutlined />,
+        permission: "dashboard.view"
+      }
+    ]
   },
 
   {
@@ -136,11 +157,11 @@ const mainRoutes = [
     ]
   },
   {
-    key: "settings",
-    label: "Settings",
+    key: "admins",
+    label: "Users & Roles Management",
     path: "/admin/settings/admin",
     icon: <SettingOutlined />,
-    permission: "admin_module",
+    permission: "setting.view",
     children: [
       {
         key: "/admin/settings/admin",
@@ -154,7 +175,7 @@ const mainRoutes = [
         label: "Roles",
         path: "/admin/settings/role",
         icon: <SlidersOutlined />,
-        permission: "role.view"
+        permission: "user.view"
       },
 
       {
@@ -162,7 +183,30 @@ const mainRoutes = [
         label: "Permissions",
         path: "/admin/settings/permission",
         icon: <SlidersOutlined />,
-        permission: "permission.view"
+        permission: "user.view"
+      }
+    ]
+  },
+  {
+    key: "accounts",
+    label: "Accounting & Billing",
+    path: "/admin/accounts",
+    icon: <SettingOutlined />,
+    permission: "setting.view",
+    children: [
+      {
+        key: "/admin/accounts/invoice",
+        label: "Invoice",
+        path: "/admin/settings/invoice",
+        icon: <UserOutlined />,
+        permission: "setting.view"
+      },
+      {
+        key: "/admin/accounts/transaction",
+        label: "Gateway Transaction",
+        path: "/admin/settings/transaction",
+        icon: <SlidersOutlined />,
+        permission: "setting.view"
       }
     ]
   }

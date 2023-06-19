@@ -28,13 +28,13 @@ const MenuLayout = ({ style, closeDrawer }: MenuLayoutProps) => {
       theme="light"
       mode="inline"
       selectedKeys={[currentPath]}
-      defaultSelectedKeys={["1"]}
+      defaultOpenKeys={[currentPath]}
       style={{
         ...style
       }}
       onClick={({ key }) => {
         closeDrawer();
-        router.push(key);
+        router.replace(key);
       }}
       items={routes}
     />

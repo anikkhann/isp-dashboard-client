@@ -12,7 +12,8 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import LoginAppLoader from "@/components/loader/LoginAppLoader";
 import { useAppDispatch } from "@/store/hooks";
-import axios from "axios";
+// import axios from "axios";
+import AppAxios from "@/services/AppAxios";
 
 const LoginComponent = () => {
   const router = useRouter();
@@ -32,11 +33,10 @@ const LoginComponent = () => {
     setLoading(true);
 
     try {
-      axios
-        .post("/api/v1/auth/authenticate", {
-          email: email,
-          password: password
-        })
+      AppAxios.post("/api/v1/auth/authenticate", {
+        email: email,
+        password: password
+      })
         .then(async response => {
           const { data } = response;
 
