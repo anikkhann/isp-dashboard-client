@@ -2,7 +2,7 @@ import UserLayout from "@/core/layouts/UserLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
-import RoleList from "@/modules/settings/role/RoleList";
+import RoleList from "@/modules/user/role/RoleList";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";

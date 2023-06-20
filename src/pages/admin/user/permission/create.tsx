@@ -1,7 +1,7 @@
 import UserLayout from "@/core/layouts/UserLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewPermission from "@/modules/settings/permission/NewPermission";
+import NewPermission from "@/modules/user/permission/NewPermission";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 

@@ -1,7 +1,7 @@
 import UserLayout from "@/core/layouts/UserLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditRole from "@/modules/settings/role/EditRole";
+import EditRole from "@/modules/user/role/EditRole";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";

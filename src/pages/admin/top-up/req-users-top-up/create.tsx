@@ -1,7 +1,7 @@
 import TopUpLayout from "@/core/layouts/TopUpLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/settings/admin/NewAdmin";
+import NewAdmin from "@/modules/user/user/NewUser";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";

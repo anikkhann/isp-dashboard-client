@@ -69,7 +69,7 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-const EditAdminForm = ({ item }: PropData) => {
+const EditUserForm = ({ item }: PropData) => {
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -435,4 +435,4 @@ const EditAdminForm = ({ item }: PropData) => {
   );
 };
 
-export default EditAdminForm;
+export default EditUserForm;

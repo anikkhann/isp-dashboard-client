@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditAdminForm from "@/components/forms/admin/EditAdminForm";
+import EditUserForm from "@/components/forms/user/EditUserForm";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import Forbidden from "@/modules/errorPage/Forbidden";
@@ -28,7 +28,7 @@ interface DataType {
   };
 }
 
-const EditAdmin = ({ id }: any) => {
+const EditUser = ({ id }: any) => {
   const [unauthorized, setUnauthorized] = useState(false);
 
   const [item, SetItem] = useState<DataType | null>(null);
@@ -117,7 +117,7 @@ const EditAdmin = ({ id }: any) => {
             {isError && <div>{error.message}</div>}
 
             {!isLoading && !unauthorized && item && (
-              <EditAdminForm item={item} />
+              <EditUserForm item={item} />
             )}
           </Card>
         </AppRowContainer>
@@ -126,4 +126,4 @@ const EditAdmin = ({ id }: any) => {
   );
 };
 
-export default EditAdmin;
+export default EditUser;

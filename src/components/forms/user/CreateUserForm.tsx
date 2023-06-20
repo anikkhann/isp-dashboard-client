@@ -60,7 +60,7 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-const CreateAdminForm = () => {
+const CreateUserForm = () => {
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -456,4 +456,4 @@ const CreateAdminForm = () => {
   );
 };
 
-export default CreateAdminForm;
+export default CreateUserForm;
