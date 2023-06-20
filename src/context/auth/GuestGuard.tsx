@@ -24,8 +24,8 @@ const GuestGuard = (props: GuestGuardProps) => {
 
     dispatch({ type: "auth/setIsLoading", payload: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.route]);
-  // console.log(auth.isLoading, auth.isInitialized)
+  }, [router]);
+  console.log(auth.isLoading, auth.isInitialized);
 
   if (auth.isLoading || !auth.isInitialized) {
     return fallback;

@@ -34,7 +34,7 @@ const AuthGuard = (props: AuthGuardProps) => {
       }
       if (token) {
         await axios
-          .get("/api/v1/auth/get", {
+          .get("/api/api/v1/auth/get", {
             headers: {
               Authorization: `Bearer ${token}`
             }

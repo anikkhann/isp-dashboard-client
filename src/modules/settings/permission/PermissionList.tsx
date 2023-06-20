@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space } from "antd";
+import { Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -33,23 +33,27 @@ const columns: ColumnsType<DataType> = [
     align: "center" as AlignType
   },
   {
-    title: "Name",
-    dataIndex: "name",
+    title: "Tag",
+    dataIndex: "tag",
     sorter: true,
     width: "20%",
     align: "center" as AlignType
   },
   {
-    title: "Slug",
-    dataIndex: "slug",
+    title: "actionTags",
+    dataIndex: "actionTags",
     sorter: true,
-    width: "20%",
-    align: "center" as AlignType
-  },
-  {
-    title: "Group",
-    dataIndex: "group",
-    sorter: true,
+    render: (actionTags: any) => {
+      return (
+        <>
+          {actionTags.map((tag: any) => (
+            <Tag color="blue" key={tag}>
+              {tag}
+            </Tag>
+          ))}
+        </>
+      );
+    },
     width: "20%",
     align: "center" as AlignType
   }
@@ -58,9 +62,9 @@ const columns: ColumnsType<DataType> = [
 const PermissionList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
-  const [page, SetPage] = useState(1);
+  const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("ASC");
+  const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
   const [tableParams, setTableParams] = useState<TableParams>({
@@ -80,31 +84,58 @@ const PermissionList: React.FC = () => {
     // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const { data } = await axios.get(
-      `/api/v1/permissions?page=${page}&limit=${limit}&order=${order}&sort=${sort}`
-    );
+    const body = {
+      meta: {
+        limit: limit,
+        page: page === 0 ? 0 : page - 1,
+        sort: [
+          {
+            order: order,
+            field: sort
+          }
+        ]
+      }
+    };
+
+    const { data } = await axios.post("/api/permission/get-list", body, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: ["permissions-list", page, limit, order, sort],
     queryFn: async () => {
-      const { data } = await fetchData(page, limit, order, sort);
-      return data;
+      const response = await fetchData(page, limit, order, sort);
+      return response;
     },
     onSuccess(data: any) {
-      if (data.data) {
-        console.log("data.data", data.data);
+      if (data) {
+        console.log("data.data", data);
 
-        setData(data.data);
-        setTableParams({
-          pagination: {
-            total: data.meta.total,
-            pageSize: data.meta.limit,
-            current: data.meta.page,
-            pageSizeOptions: ["10", "20", "30", "40", "50"]
-          }
-        });
+        if (data.body) {
+          setData(data.body);
+          setTableParams({
+            pagination: {
+              total: data.meta.total as number,
+              pageSize: data.meta.limit,
+              current: (data.meta.page as number) + 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
+        } else {
+          setData([]);
+          setTableParams({
+            pagination: {
+              total: 0,
+              pageSize: 10,
+              current: 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
+        }
       }
     },
     onError(error: any) {
@@ -134,7 +165,7 @@ const PermissionList: React.FC = () => {
       // console.log((sorter as SorterResult<DataType>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "ASC" : "DESC"
+        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<DataType>).field) {

@@ -35,7 +35,7 @@ const LoginComponent = () => {
 
     try {
       axios
-        .post("/api/v1/auth/authenticate", {
+        .post("/api/api/v1/auth/authenticate", {
           email: email,
           password: password
         })

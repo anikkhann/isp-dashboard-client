@@ -1,10 +1,10 @@
-import DefaultLayout from "@/core/layouts/DefaultLayout";
+import UserLayout from "@/core/layouts/UserLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import PermissionList from "@/modules/settings/permission/PermissionList";
+import AdminList from "@/modules/settings/admin/AdminList";
+
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
-
 import { ReactNode } from "react";
 
 const Home = () => {
@@ -13,11 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("permission.view", "") ? <PermissionList /> : <Forbidden />}
+      {ability.can("admin.view", "") ? <AdminList /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <DefaultLayout>{page}</DefaultLayout>;
+Home.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>;
 
 export default Home;

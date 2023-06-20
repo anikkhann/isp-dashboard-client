@@ -1,4 +1,4 @@
-import DefaultLayout from "@/core/layouts/DefaultLayout";
+import UserLayout from "@/core/layouts/UserLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
@@ -18,6 +18,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => <DefaultLayout>{page}</DefaultLayout>;
+Home.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>;
 
 export default Home;
