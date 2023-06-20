@@ -24,7 +24,7 @@ import AppImageLoader from "@/components/loader/AppImageLoader";
 import { useAppSelector } from "@/store/hooks";
 import axios from "axios";
 
-interface DefaultLayoutProps {
+interface UserLayoutProps {
   children: React.ReactNode;
 }
 
@@ -47,7 +47,7 @@ function updateAbility(
   ability.update(rules);
 }
 
-const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+const UserLayout = ({ children }: UserLayoutProps) => {
   const { Content, Footer } = Layout;
 
   const auth = useAppSelector(state => state.auth);
@@ -150,4 +150,4 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   );
 };
 
-export default DefaultLayout;
+export default UserLayout;

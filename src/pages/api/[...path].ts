@@ -13,6 +13,8 @@ export const config = {
   }
 };
 
+console.log("API_URL", API_URL);
+
 export default (req: any, res: any) => {
   return new Promise<void>((resolve, reject) => {
     proxy.web(req, res, { target: API_URL, changeOrigin: true }, err => {

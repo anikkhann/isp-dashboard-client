@@ -1,8 +1,8 @@
-import DefaultLayout from "@/core/layouts/DefaultLayout";
+import UserLayout from "@/core/layouts/UserLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/settings/admin/NewAdmin";
 
+import NewRole from "@/modules/settings/role/NewRole";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
@@ -13,11 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("role.create", "") ? <NewRole /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <DefaultLayout>{page}</DefaultLayout>;
+Home.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>;
 
 export default Home;

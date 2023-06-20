@@ -1,7 +1,7 @@
-import DefaultLayout from "@/core/layouts/DefaultLayout";
+import UserLayout from "@/core/layouts/UserLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/settings/admin/EditAdmin";
+import EditRole from "@/modules/settings/role/EditRole";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -17,11 +17,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.update", "") ? <EditAdmin id={id} /> : <Forbidden />}
+      {ability.can("role.edit", "") ? <EditRole id={id} /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <DefaultLayout>{page}</DefaultLayout>;
+Home.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>;
 
 export default Home;
