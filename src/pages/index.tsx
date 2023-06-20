@@ -1,24 +1,17 @@
-import Cookies from "js-cookie";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import AppLoader from "@/lib/AppLoader";
+import MainDashboard from "@/modules/dashboard/MainDashboard";
+import Forbidden from "@/modules/errorPage/Forbidden";
 
-// Note: Home Page
+import ability from "@/services/guard/ability";
+import { useAppSelector } from "@/store/hooks";
+
 const Home = () => {
-  const router = useRouter();
-
-  const token = Cookies.get("token");
-
-  useEffect(() => {
-    if (!token) {
-      router.replace("/login");
-    } else {
-      router.replace("/admin");
-    }
-  }, [router, token]);
+  const auth = useAppSelector(state => state.auth);
 
   return (
     <>
-      <div className="min-h-screen min-w-screen">Dashboard</div>
+      {auth.isLoading && <AppLoader />}
+      {ability.can("dashboard.view", "") ? <MainDashboard /> : <Forbidden />}
     </>
   );
 };

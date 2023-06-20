@@ -1,4 +1,4 @@
-import DefaultLayout from "@/core/layouts/DefaultLayout";
+import ClientLayout from "@/core/layouts/ClientLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
 import AdminList from "@/modules/settings/admin/AdminList";
@@ -18,6 +18,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => <DefaultLayout>{page}</DefaultLayout>;
+Home.getLayout = (page: ReactNode) => <ClientLayout>{page}</ClientLayout>;
 
 export default Home;
