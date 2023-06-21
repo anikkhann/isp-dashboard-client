@@ -24,7 +24,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const PermissionList: React.FC = () => {
+const ClientList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -62,7 +62,7 @@ const PermissionList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/permission/get-list", body, {
+    const { data } = await axios.post("/api/partner/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -71,7 +71,7 @@ const PermissionList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["permissions-list", page, limit, order, sort],
+    queryKey: ["clients-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -134,24 +134,59 @@ const PermissionList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Tag",
-      dataIndex: "tag",
+      title: "name",
+      dataIndex: "name",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "actionTags",
-      dataIndex: "actionTags",
+      title: "username",
+      dataIndex: "username",
       sorter: true,
-      render: (actionTags: any) => {
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "contactPerson",
+      dataIndex: "contactPerson",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "contactNumber",
+      dataIndex: "contactNumber",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "email",
+      dataIndex: "email",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "address",
+      dataIndex: "address",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "isActive",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
         return (
           <>
-            {actionTags.map((tag: any) => (
-              <Tag color="blue" key={tag}>
-                {tag}
-              </Tag>
-            ))}
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
           </>
         );
       },
@@ -220,10 +255,10 @@ const PermissionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Permissions List"
+            title="Clients List"
             hasLink={true}
-            addLink="/admin/settings/permission/create"
-            permission="permission.create"
+            addLink="/admin/settings/client/create"
+            permission="user.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -253,4 +288,4 @@ const PermissionList: React.FC = () => {
   );
 };
 
-export default PermissionList;
+export default ClientList;

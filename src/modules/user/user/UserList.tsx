@@ -24,41 +24,6 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    sorter: true,
-    width: "10%",
-    align: "center" as AlignType
-  },
-  {
-    title: "Tag",
-    dataIndex: "tag",
-    sorter: true,
-    width: "20%",
-    align: "center" as AlignType
-  },
-  {
-    title: "actionTags",
-    dataIndex: "actionTags",
-    sorter: true,
-    render: (actionTags: any) => {
-      return (
-        <>
-          {actionTags.map((tag: any) => (
-            <Tag color="blue" key={tag}>
-              {tag}
-            </Tag>
-          ))}
-        </>
-      );
-    },
-    width: "20%",
-    align: "center" as AlignType
-  }
-];
-
 const UserList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
@@ -97,7 +62,7 @@ const UserList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/permission/get-list", body, {
+    const { data } = await axios.post("/api/users/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -106,7 +71,7 @@ const UserList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["permissions-list", page, limit, order, sort],
+    queryKey: ["users-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -153,6 +118,97 @@ const UserList: React.FC = () => {
 
   // console.log(error, isLoading, isError)
 
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Serial",
+      dataIndex: "id",
+      render: (tableParams, row, index) => {
+        return (
+          <>
+            <Space>{index + 1 * page + 1}</Space>
+          </>
+        );
+      },
+      sorter: true,
+      width: "10%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "name",
+      dataIndex: "name",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "username",
+      dataIndex: "username",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "phone",
+      dataIndex: "phone",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "email",
+      dataIndex: "email",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "isActive",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
+        return (
+          <>
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "userType",
+      dataIndex: "userType",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "userRoles",
+      dataIndex: "userRoles",
+      sorter: true,
+      render: (userRoles: any) => {
+        return (
+          <>
+            {userRoles.map((item: any, index: number) => (
+              <Tag color="blue" key={index}>
+                {item && item.role && item.role.name}
+              </Tag>
+            ))}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    }
+  ];
+
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
@@ -186,7 +242,9 @@ const UserList: React.FC = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  margin: " 10px 5px"
+                  margin: " 10px 5px",
+                  backgroundColor: "#ffffff",
+                  width: "100%"
                 }}
               >
                 <Card
@@ -213,14 +271,16 @@ const UserList: React.FC = () => {
           )}
 
           <TableCard
-            title="Permissions List"
+            title="Users List"
             hasLink={true}
-            addLink="/admin/settings/permission/create"
-            permission="permission.create"
+            addLink="/admin/settings/user/create"
+            permission="user.create"
             style={{
-              backgroundColor: "#FFFFFF",
+              // backgroundColor: "#FFFFFF",
               borderRadius: "10px",
-              padding: "10px"
+              padding: "10px",
+              width: "100%",
+              overflowX: "auto"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>

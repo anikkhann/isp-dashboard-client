@@ -1,8 +1,8 @@
 import ClientLayout from "@/core/layouts/ClientLayout";
 
 import AppLoader from "@/lib/AppLoader";
+import EditSubscription from "@/modules/client/subscription/EditSubscription";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/user/user/EditUser";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,7 +18,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.update", "") ? <EditAdmin id={id} /> : <Forbidden />}
+      {ability.can("user.update", "") ? (
+        <EditSubscription id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

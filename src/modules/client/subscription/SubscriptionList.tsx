@@ -24,7 +24,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const PermissionList: React.FC = () => {
+const SubscriptionList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -62,7 +62,7 @@ const PermissionList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/permission/get-list", body, {
+    const { data } = await axios.post("/api/subscription-plan/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -71,7 +71,7 @@ const PermissionList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["permissions-list", page, limit, order, sort],
+    queryKey: ["subscriptions-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -133,25 +133,55 @@ const PermissionList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+
     {
-      title: "Tag",
-      dataIndex: "tag",
+      title: "name",
+      dataIndex: "name",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "actionTags",
-      dataIndex: "actionTags",
+      title: "packageType",
+      dataIndex: "packageType",
       sorter: true,
-      render: (actionTags: any) => {
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "slabStart",
+      dataIndex: "slabStart",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "slabEnd",
+      dataIndex: "slabEnd",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "chargeAmount",
+      dataIndex: "chargeAmount",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "isActive",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
         return (
           <>
-            {actionTags.map((tag: any) => (
-              <Tag color="blue" key={tag}>
-                {tag}
-              </Tag>
-            ))}
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
           </>
         );
       },
@@ -193,7 +223,9 @@ const PermissionList: React.FC = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  margin: " 10px 5px"
+                  margin: " 10px 5px",
+                  backgroundColor: "#ffffff",
+                  width: "100%"
                 }}
               >
                 <Card
@@ -220,10 +252,10 @@ const PermissionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Permissions List"
+            title="Subscriptions List"
             hasLink={true}
-            addLink="/admin/settings/permission/create"
-            permission="permission.create"
+            addLink="/admin/settings/subscription/create"
+            permission="subscription.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -253,4 +285,4 @@ const PermissionList: React.FC = () => {
   );
 };
 
-export default PermissionList;
+export default SubscriptionList;

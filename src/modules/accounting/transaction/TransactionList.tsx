@@ -213,14 +213,15 @@ const PermissionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Permissions List"
+            title="Transactions List"
             hasLink={true}
             addLink="/admin/settings/permission/create"
             permission="permission.create"
             style={{
-              backgroundColor: "#FFFFFF",
               borderRadius: "10px",
-              padding: "10px"
+              padding: "10px",
+              width: "100%",
+              overflowX: "auto"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
