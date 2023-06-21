@@ -53,7 +53,7 @@ const CreateRoleForm = () => {
   const getPermissions = async () => {
     const res = await axios.get("/api/v1/common/all-permissions");
     if (res.data.success) {
-      console.log(res.data.data.permissions);
+      // console.log(res.data.data.permissions);
 
       const items = res.data.data.permissions.map((item: any) => {
         return {
@@ -70,7 +70,7 @@ const CreateRoleForm = () => {
   }, []);
 
   const onChange = (checkedValues: CheckboxValueType[]) => {
-    console.log("checked = ", checkedValues);
+    // console.log("checked = ", checkedValues);
     setCheckedList(checkedValues as any[]);
   };
 
@@ -85,7 +85,7 @@ const CreateRoleForm = () => {
   });
 
   const onSubmit = (data: RoleFormData) => {
-    console.log(data);
+    // console.log(data);
     const { name } = data;
     try {
       axios
@@ -95,7 +95,7 @@ const CreateRoleForm = () => {
           permissions: checkedList
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           const { data } = res;
 
           MySwal.fire({
@@ -107,12 +107,12 @@ const CreateRoleForm = () => {
           });
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // console.log(err)
+      // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }

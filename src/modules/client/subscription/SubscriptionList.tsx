@@ -24,42 +24,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    sorter: true,
-    width: "10%",
-    align: "center" as AlignType
-  },
-  {
-    title: "Tag",
-    dataIndex: "tag",
-    sorter: true,
-    width: "20%",
-    align: "center" as AlignType
-  },
-  {
-    title: "actionTags",
-    dataIndex: "actionTags",
-    sorter: true,
-    render: (actionTags: any) => {
-      return (
-        <>
-          {actionTags.map((tag: any) => (
-            <Tag color="blue" key={tag}>
-              {tag}
-            </Tag>
-          ))}
-        </>
-      );
-    },
-    width: "20%",
-    align: "center" as AlignType
-  }
-];
-
-const PermissionList: React.FC = () => {
+const SubscriptionList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -81,7 +46,7 @@ const PermissionList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // console.log('token', token)
+    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -97,7 +62,7 @@ const PermissionList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/permission/get-list", body, {
+    const { data } = await axios.post("/api/subscription-plan/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -106,14 +71,14 @@ const PermissionList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["permissions-list", page, limit, order, sort],
+    queryKey: ["subscriptions-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
       if (data) {
-        console.log("data.data", data);
+        // console.log("data.data", data);
 
         if (data.body) {
           setData(data.body);
@@ -144,14 +109,86 @@ const PermissionList: React.FC = () => {
   });
 
   useEffect(() => {
-    // console.log('data -b', data)
+    // // console.log('data -b', data)
     if (data) {
-      // console.log('data', data)
+      // // console.log('data', data)
       setData(data);
     }
   }, [data]);
 
-  // console.log(error, isLoading, isError)
+  // // console.log(error, isLoading, isError)
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Serial",
+      dataIndex: "id",
+      render: (tableParams, row, index) => {
+        return (
+          <>
+            <Space>{index + 1 * page + 1}</Space>
+          </>
+        );
+      },
+      sorter: true,
+      width: "10%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "name",
+      dataIndex: "name",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "packageType",
+      dataIndex: "packageType",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "slabStart",
+      dataIndex: "slabStart",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "slabEnd",
+      dataIndex: "slabEnd",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "chargeAmount",
+      dataIndex: "chargeAmount",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "isActive",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
+        return (
+          <>
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    }
+  ];
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
@@ -162,14 +199,14 @@ const PermissionList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<DataType>).order) {
-      // console.log((sorter as SorterResult<DataType>).order)
+      // // console.log((sorter as SorterResult<DataType>).order)
 
       SetOrder(
         (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<DataType>).field) {
-      // console.log((sorter as SorterResult<DataType>).field)
+      // // console.log((sorter as SorterResult<DataType>).field)
 
       SetSort((sorter as SorterResult<DataType>).field as string);
     }
@@ -186,7 +223,9 @@ const PermissionList: React.FC = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  margin: " 10px 5px"
+                  margin: " 10px 5px",
+                  backgroundColor: "#ffffff",
+                  width: "100%"
                 }}
               >
                 <Card
@@ -213,14 +252,15 @@ const PermissionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Permissions List"
+            title="Subscriptions List"
             hasLink={true}
-            addLink="/admin/settings/permission/create"
-            permission="permission.create"
+            addLink="/admin/settings/subscription/create"
+            permission="subscription.create"
             style={{
-              backgroundColor: "#FFFFFF",
               borderRadius: "10px",
-              padding: "10px"
+              padding: "10px",
+              width: "100%",
+              overflowX: "auto"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
@@ -245,4 +285,4 @@ const PermissionList: React.FC = () => {
   );
 };
 
-export default PermissionList;
+export default SubscriptionList;

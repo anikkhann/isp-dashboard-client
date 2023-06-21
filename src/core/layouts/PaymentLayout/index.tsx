@@ -83,7 +83,7 @@ const PaymentLayout = ({ children }: PaymentLayoutProps) => {
         updateAbility(ability, permissions);
         setLoading(false);
       } catch (error: any) {
-        console.log(error);
+        // console.log(error);
         setLoading(false);
         if (error.response) {
           if (error.response.status === 401) {

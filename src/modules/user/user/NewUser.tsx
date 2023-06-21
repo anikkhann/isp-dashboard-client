@@ -1,11 +1,11 @@
-import CreateAdminForm from "@/components/forms/admin/CreateAdminForm";
+import CreateUserForm from "@/components/forms/user/CreateUserForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewAdmin = () => {
+const NewUser = () => {
   return (
     <>
       <AppRowContainer>
@@ -40,11 +40,11 @@ const NewAdmin = () => {
             textAlign: "center"
           }}
         >
-          <CreateAdminForm />
+          <CreateUserForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewAdmin;
+export default NewUser;

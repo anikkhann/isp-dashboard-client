@@ -1,11 +1,11 @@
-import CreatePermissionForm from "@/components/forms/permission/CreatePermissionForm";
+import CreateUserForm from "@/components/forms/user/CreateUserForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewPermission = () => {
+const NewSubscription = () => {
   return (
     <>
       <AppRowContainer>
@@ -22,16 +22,16 @@ const NewPermission = () => {
               title: <Link href="/admin/settings">Settings</Link>
             },
             {
-              title: <Link href="/admin/settings/permission">Permissions</Link>
+              title: <Link href="/admin/settings/admin">Admins</Link>
             },
             {
-              title: "New Permission"
+              title: "New Admin"
             }
           ]}
         />
 
         <Card
-          title="New Permission"
+          title="New Admin"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,11 +40,11 @@ const NewPermission = () => {
             textAlign: "center"
           }}
         >
-          <CreatePermissionForm />
+          <CreateUserForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewPermission;
+export default NewSubscription;

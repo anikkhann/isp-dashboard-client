@@ -17,7 +17,7 @@ const AuthGuard = (props: AuthGuardProps) => {
 
   const dispatch = useAppDispatch();
 
-  // console.log("auth", auth);
+  // // console.log("auth", auth);
   const router = useRouter();
   const token = Cookies.get("token");
 
@@ -40,7 +40,7 @@ const AuthGuard = (props: AuthGuardProps) => {
             }
           })
           .then(response => {
-            // console.log(response);
+            // // console.log(response);
             if (response.data.status == "401") {
               Cookies.remove("token");
               router.replace("/login");
@@ -49,7 +49,7 @@ const AuthGuard = (props: AuthGuardProps) => {
             dispatch({ type: "auth/setUser", payload: response.data });
           })
           .catch(error => {
-            // console.log(error);
+            // // console.log(error);
             if (error.response) {
               if (error.response.status === 401) {
                 Cookies.remove("token");
@@ -71,7 +71,7 @@ const AuthGuard = (props: AuthGuardProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  // console.log(auth.isLoading, auth.isInitialized);
+  // // console.log(auth.isLoading, auth.isInitialized);
 
   if (auth.isLoading || !auth.isInitialized) {
     return fallback;

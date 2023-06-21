@@ -1,7 +1,7 @@
 import ClientLayout from "@/core/layouts/ClientLayout";
 import AppLoader from "@/lib/AppLoader";
+import NewSubscription from "@/modules/client/subscription/NewSubscription";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/settings/admin/AdminList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("user.view", "") ? <NewSubscription /> : <Forbidden />}
     </>
   );
 };

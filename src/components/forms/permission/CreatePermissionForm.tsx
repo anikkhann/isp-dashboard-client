@@ -12,24 +12,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input } from "antd";
+import { Alert, Button, Form, Input, Select, Space } from "antd";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface PermissionFormData {
-  name: string;
-  slug: string;
-  group: string;
+  displayName: string;
+  tag: string;
 }
 
 const schema = yup.object().shape({
-  name: yup.string().max(200).required("Name is required"),
-  slug: yup.string().max(200).required("Slug is required"),
-  group: yup.string().max(200).required("Group is required")
+  displayName: yup.string().max(200).required("Display Name is required"),
+  tag: yup.string().max(200).required("Tag is required")
 });
 const defaultValues = {
-  name: "",
-  slug: "",
-  group: ""
+  displayName: "",
+  tag: ""
 };
 
 const layout = {
@@ -37,13 +35,39 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
+const tagsList = [
+  {
+    label: "Create",
+    value: "create"
+  },
+  {
+    label: "View",
+    value: "view"
+  },
+  {
+    label: "Update",
+    value: "update"
+  },
+  {
+    label: "List",
+    value: "list"
+  }
+];
+
 const CreatePermissionForm = () => {
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
+  const [actionTags, setActionTags] = useState<any[]>([]);
+
   const router = useRouter();
   const MySwal = withReactContent(Swal);
+
+  const handleChange = (value: any[]) => {
+    // console.log("checked = ", value);
+    setActionTags(value as any[]);
+  };
 
   const {
     control,
@@ -56,14 +80,17 @@ const CreatePermissionForm = () => {
   });
 
   const onSubmit = (data: PermissionFormData) => {
-    console.log(data);
-    const { name, group, slug } = data;
+    // console.log(data, actionTags);
+
+    const { displayName, tag } = data;
     try {
+      const token = Cookies.get("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios
-        .post("/api/v1/permissions", {
-          name: name,
-          group: group,
-          slug: slug
+        .post("/api/permission/create", {
+          displayName: displayName,
+          tag: tag,
+          actionTags: actionTags
         })
         .then(res => {
           console.log(res);
@@ -71,19 +98,19 @@ const CreatePermissionForm = () => {
 
           MySwal.fire({
             title: "Success",
-            text: data.data.message || "Permission created successfully",
+            text: data.message || "Permission created successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/settings/permission");
+            router.replace("/admin/user/permission");
           });
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // console.log(err)
+      // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }
@@ -102,7 +129,9 @@ const CreatePermissionForm = () => {
           // {...layout}
           autoComplete="off"
           onFinish={handleSubmit(onSubmit)}
-          style={{ maxWidth: 800 }}
+          style={{
+            width: "100%"
+          }}
           name="wrap"
           labelCol={{ flex: "110px" }}
           labelAlign="left"
@@ -111,82 +140,80 @@ const CreatePermissionForm = () => {
           colon={false}
         >
           <Form.Item
-            label="Name"
+            label="Display Name"
             style={{
               marginBottom: 0
             }}
+            name="displayName"
           >
             <Controller
-              name="name"
+              name="displayName"
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange, onBlur } }) => (
                 <Input
                   type="text"
-                  placeholder="Name"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                  placeholder="Display Name"
+                  className={`form-control ${
+                    errors.displayName ? "is-invalid" : ""
+                  }`}
                   value={value}
                   onBlur={onBlur}
                   onChange={onChange}
-                  name="name"
+                  name="displayName"
                 />
               )}
             />
-            {errors.name && (
-              <div className="text-danger">{errors.name.message}</div>
+            {errors.displayName && (
+              <div className="text-danger">{errors.displayName.message}</div>
             )}
           </Form.Item>
+
           <Form.Item
-            label="Slug"
+            label="Tag"
             style={{
               marginBottom: 0
             }}
+            name="tag"
           >
             <Controller
-              name="slug"
+              name="tag"
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange, onBlur } }) => (
                 <Input
                   type="text"
-                  placeholder="Slug"
-                  className={`form-control ${errors.slug ? "is-invalid" : ""}`}
+                  placeholder="Tag"
+                  className={`form-control ${errors.tag ? "is-invalid" : ""}`}
                   value={value}
                   onBlur={onBlur}
                   onChange={onChange}
-                  name="slug"
+                  name="tag"
                 />
               )}
             />
-            {errors.slug && (
-              <div className="text-danger">{errors.slug.message}</div>
+            {errors.tag && (
+              <div className="text-danger">{errors.tag.message}</div>
             )}
           </Form.Item>
+
           <Form.Item
-            label="Group"
+            label="Action Tags"
             style={{
               marginBottom: 0
             }}
+            name="actionTags"
           >
-            <Controller
-              name="group"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <Input
-                  type="text"
-                  placeholder="Group"
-                  className={`form-control ${errors.group ? "is-invalid" : ""}`}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  name="group"
-                />
-              )}
-            />
-            {errors.group && (
-              <div className="text-danger">{errors.group.message}</div>
-            )}
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleChange}
+                options={tagsList}
+              />
+            </Space>
           </Form.Item>
 
           <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>

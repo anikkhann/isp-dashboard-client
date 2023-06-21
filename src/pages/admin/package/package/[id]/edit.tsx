@@ -1,7 +1,7 @@
 import PackageLayout from "@/core/layouts/PackageLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/settings/admin/EditAdmin";
+import EditAdmin from "@/modules/user/user/EditUser";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
