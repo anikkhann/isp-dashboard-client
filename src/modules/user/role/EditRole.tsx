@@ -27,7 +27,7 @@ const EditRole = ({ id }: any) => {
   const [item, SetItem] = useState<ItemType | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // console.log('token', token)
+    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(`/api/v1/roles/${id}`);
@@ -42,7 +42,7 @@ const EditRole = ({ id }: any) => {
     },
     onSuccess(data: any) {
       if (data) {
-        console.log("data", data);
+        // console.log("data", data);
 
         SetItem(data);
       }

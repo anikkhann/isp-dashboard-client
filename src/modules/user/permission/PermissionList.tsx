@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,11 +10,21 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
+import ability from "@/services/guard/ability";
+import Link from "next/link";
+import { EditOutlined } from "@ant-design/icons";
+// import { useRouter } from "next/router";
+
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
+
 interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
+  createdOn: number;
+  updatedOn: number;
+  id: string;
+  displayName: string;
+  tag: string;
+  actionTags: string[];
 }
 
 interface TableParams {
@@ -25,7 +35,7 @@ interface TableParams {
 }
 
 const PermissionList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [tableData, setTableData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -39,6 +49,9 @@ const PermissionList: React.FC = () => {
     }
   });
 
+  // const MySwal = withReactContent(Swal);
+  // const router = useRouter();
+
   const fetchData = async (
     page: number,
     limit: number,
@@ -46,7 +59,6 @@ const PermissionList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -78,10 +90,10 @@ const PermissionList: React.FC = () => {
     },
     onSuccess(data: any) {
       if (data) {
-        console.log("data.data", data);
+        // console.log("data.data", data);
 
         if (data.body) {
-          setData(data.body);
+          setTableData(data.body);
           setTableParams({
             pagination: {
               total: data.meta.total as number,
@@ -91,7 +103,7 @@ const PermissionList: React.FC = () => {
             }
           });
         } else {
-          setData([]);
+          setTableData([]);
           setTableParams({
             pagination: {
               total: 0,
@@ -109,14 +121,50 @@ const PermissionList: React.FC = () => {
   });
 
   useEffect(() => {
-    // console.log('data -b', data)
-    if (data) {
-      // console.log('data', data)
-      setData(data);
+    // // console.log('data -b', data)
+    if (tableData) {
+      // // console.log('data', data)
+      setTableData(tableData);
     }
-  }, [data]);
+  }, [tableData]);
 
-  // console.log(error, isLoading, isError)
+  // actions
+
+  /* async function handleDelete(id: number) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, delete it!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.delete(`/api/v1/admins/${id}`);
+        if (data.success) {
+          MySwal.fire("Deleted!", data.data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  } */
+
+  // // console.log(error, isLoading, isError)
 
   const columns: ColumnsType<DataType> = [
     {
@@ -131,6 +179,13 @@ const PermissionList: React.FC = () => {
       },
       sorter: true,
       width: "10%",
+      align: "center" as AlignType
+    },
+    {
+      title: "displayName",
+      dataIndex: "displayName",
+      sorter: true,
+      width: "20%",
       align: "center" as AlignType
     },
     {
@@ -157,6 +212,27 @@ const PermissionList: React.FC = () => {
       },
       width: "20%",
       align: "center" as AlignType
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <>
+            <Space size="middle" align="center">
+              {ability.can("user.update", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/user/permission/${record.id}/edit`}>
+                    <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+          </>
+        );
+      },
+      align: "center" as AlignType
     }
   ];
 
@@ -169,14 +245,14 @@ const PermissionList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<DataType>).order) {
-      // console.log((sorter as SorterResult<DataType>).order)
+      // // console.log((sorter as SorterResult<DataType>).order)
 
       SetOrder(
         (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<DataType>).field) {
-      // console.log((sorter as SorterResult<DataType>).field)
+      // // console.log((sorter as SorterResult<DataType>).field)
 
       SetSort((sorter as SorterResult<DataType>).field as string);
     }
@@ -222,8 +298,8 @@ const PermissionList: React.FC = () => {
           <TableCard
             title="Permissions List"
             hasLink={true}
-            addLink="/admin/settings/permission/create"
-            permission="permission.create"
+            addLink="/admin/user/permission/create"
+            permission="user.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -240,7 +316,7 @@ const PermissionList: React.FC = () => {
               <Table
                 columns={columns}
                 rowKey={record => record.id}
-                dataSource={data}
+                dataSource={tableData}
                 pagination={tableParams.pagination}
                 loading={isLoading || isFetching}
                 onChange={handleTableChange}

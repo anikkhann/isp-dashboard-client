@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,6 +10,9 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
+import Link from "next/link";
+import { EditOutlined } from "@ant-design/icons";
+import ability from "@/services/guard/ability";
 interface DataType {
   id: number;
   name: string;
@@ -46,7 +49,7 @@ const UserList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // console.log('token', token)
+    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -78,7 +81,7 @@ const UserList: React.FC = () => {
     },
     onSuccess(data: any) {
       if (data) {
-        console.log("data.data", data);
+        // console.log("data.data", data);
 
         if (data.body) {
           setData(data.body);
@@ -109,9 +112,7 @@ const UserList: React.FC = () => {
   });
 
   useEffect(() => {
-    // console.log('data -b', data)
     if (data) {
-      // console.log('data', data)
       setData(data);
     }
   }, [data]);
@@ -206,6 +207,27 @@ const UserList: React.FC = () => {
       },
       width: "20%",
       align: "center" as AlignType
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <>
+            <Space size="middle" align="center">
+              {ability.can("user.update", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/user/user/${record.id}/edit`}>
+                    <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+          </>
+        );
+      },
+      align: "center" as AlignType
     }
   ];
 
@@ -218,14 +240,14 @@ const UserList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<DataType>).order) {
-      // console.log((sorter as SorterResult<DataType>).order)
+      // // console.log((sorter as SorterResult<DataType>).order)
 
       SetOrder(
         (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<DataType>).field) {
-      // console.log((sorter as SorterResult<DataType>).field)
+      // // console.log((sorter as SorterResult<DataType>).field)
 
       SetSort((sorter as SorterResult<DataType>).field as string);
     }

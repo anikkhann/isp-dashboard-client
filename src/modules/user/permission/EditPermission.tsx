@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import EditRoleForm from "@/components/forms/role/EditRoleForm";
+import EditPermissionForm from "@/components/forms/permission/EditPermissionForm";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -10,41 +9,35 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-interface ItemType {
-  id: number;
-  name: string;
-  slug: string;
-  base: {
-    is_active: boolean;
-    created_at: string | null;
-    updated_at: string | null;
-    deleted_at: string | null;
-  };
-  permissions: object[];
+interface DataType {
+  createdOn: number;
+  updatedOn: number;
+  id: string;
+  displayName: string;
+  tag: string;
+  actionTags: string[];
 }
 
-const EditClient = ({ id }: any) => {
-  const [item, SetItem] = useState<ItemType | null>(null);
+const EditPermission = ({ id }: any) => {
+  const [item, SetItem] = useState<DataType | null>(null);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-    const { data } = await axios.get(`/api/v1/roles/${id}`);
-    return data;
+    const response = await axios.get(`/api/permission/get-by-id/${id}`);
+    return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["role-list", id],
+    queryKey: ["permissions-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
     },
+    enabled: !!id,
     onSuccess(data: any) {
       if (data) {
-        // console.log("data", data);
-
-        SetItem(data);
+        SetItem(data.body);
       }
     },
     onError(error: any) {
@@ -71,19 +64,19 @@ const EditClient = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/user">User</Link>
             },
             {
-              title: <Link href="/admin/settings/role">Roles</Link>
+              title: <Link href="/admin/user/permission">Permission</Link>
             },
             {
-              title: "Edit Role"
+              title: "Edit Permission"
             }
           ]}
         />
 
         <Card
-          title="Edit Role"
+          title="Edit Permission"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -96,11 +89,11 @@ const EditClient = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditRoleForm item={item} />}
+          {!isLoading && item && <EditPermissionForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditClient;
+export default EditPermission;

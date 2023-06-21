@@ -34,7 +34,7 @@ const EditSubscription = ({ id }: any) => {
   const [item, SetItem] = useState<DataType | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // console.log('token', token)
+    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(`/api/v1/admins/${id}`);
@@ -49,7 +49,7 @@ const EditSubscription = ({ id }: any) => {
     },
     onSuccess(data: any) {
       if (data) {
-        console.log("data", data.user);
+        // console.log("data", data.user);
 
         SetItem(data.user);
       }
@@ -60,9 +60,9 @@ const EditSubscription = ({ id }: any) => {
   });
 
   useEffect(() => {
-    // console.log('data -b', data)
+    // // console.log('data -b', data)
     if (item) {
-      // console.log('data', data)
+      // // console.log('data', data)
       SetItem(item);
     }
   }, [item]);

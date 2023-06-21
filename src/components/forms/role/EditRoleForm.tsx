@@ -87,7 +87,7 @@ const EditRoleForm = ({ item }: PropData) => {
   }, []);
 
   const onChange = (checkedValues: CheckboxValueType[]) => {
-    console.log("checked = ", checkedValues);
+    // console.log("checked = ", checkedValues);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setCheckedList(checkedValues as any[]);
   };
@@ -123,7 +123,7 @@ const EditRoleForm = ({ item }: PropData) => {
           permissions: checkedList
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           const { data } = res;
 
           MySwal.fire({
@@ -135,12 +135,12 @@ const EditRoleForm = ({ item }: PropData) => {
           });
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // console.log(err)
+      // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }

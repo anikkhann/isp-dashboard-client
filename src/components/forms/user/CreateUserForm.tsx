@@ -79,7 +79,7 @@ const CreateUserForm = () => {
   const MySwal = withReactContent(Swal);
 
   const handleChangeImage = (info: any) => {
-    console.log(info);
+    // console.log(info);
     const fileList = [...info.fileList];
     setFileList(fileList);
     setSelectImage(info.file.originFileObj);
@@ -93,7 +93,7 @@ const CreateUserForm = () => {
   const getRoles = async () => {
     const res = await axios.get("/api/v1/common/all-roles");
     if (res.data.success) {
-      console.log(res.data.data.roles);
+      // console.log(res.data.data.roles);
 
       const items = res.data.data.roles.map((item: any) => {
         return {
@@ -110,7 +110,7 @@ const CreateUserForm = () => {
   }, []);
 
   const handleChange = (value: any[]) => {
-    console.log("checked = ", value);
+    // console.log("checked = ", value);
     setCheckedList(value as any[]);
   };
 
@@ -125,7 +125,7 @@ const CreateUserForm = () => {
   });
 
   const onSubmit = (data: AdminFormData) => {
-    // console.log(data);
+    // // console.log(data);
     const { first_name, last_name, email, password, username } = data;
 
     const formData = new FormData();
@@ -150,7 +150,7 @@ const CreateUserForm = () => {
           }
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           const { data } = res;
 
           MySwal.fire({
@@ -162,12 +162,12 @@ const CreateUserForm = () => {
           });
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // console.log(err)
+      // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }

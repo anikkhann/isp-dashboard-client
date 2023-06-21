@@ -3,7 +3,6 @@
 import EditUserForm from "@/components/forms/user/EditUserForm";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
-import Forbidden from "@/modules/errorPage/Forbidden";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Card } from "antd";
 import axios from "axios";
@@ -29,12 +28,10 @@ interface DataType {
 }
 
 const EditUser = ({ id }: any) => {
-  const [unauthorized, setUnauthorized] = useState(false);
-
   const [item, SetItem] = useState<DataType | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // console.log('token', token)
+    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(`/api/v1/admins/${id}`);
@@ -49,8 +46,7 @@ const EditUser = ({ id }: any) => {
     },
     onSuccess(data: any) {
       if (data) {
-        console.log("data", data.user);
-
+        // console.log("data", data.user);
         SetItem(data.user);
       }
     },
@@ -60,68 +56,54 @@ const EditUser = ({ id }: any) => {
   });
 
   useEffect(() => {
-    // console.log('data -b', data)
+    // // console.log('data -b', data)
     if (item) {
-      // console.log('data', data)
+      // // console.log('data', data)
       SetItem(item);
     }
   }, [item]);
 
-  useEffect(() => {
-    if (id == 1) {
-      setUnauthorized(true);
-    }
-  }, [id]);
-
   return (
     <>
-      {unauthorized ? (
-        <>
-          <Forbidden />
-        </>
-      ) : (
-        <AppRowContainer>
-          <Breadcrumb
-            style={{
-              margin: "10px 30px",
-              textAlign: "left"
-            }}
-            items={[
-              {
-                title: <Link href="/admin">Home</Link>
-              },
-              {
-                title: <Link href="/admin/settings">Settings</Link>
-              },
-              {
-                title: <Link href="/admin/settings/admin">Admins</Link>
-              },
-              {
-                title: "Edit Admin"
-              }
-            ]}
-          />
+      <AppRowContainer>
+        <Breadcrumb
+          style={{
+            margin: "10px 30px",
+            textAlign: "left"
+          }}
+          items={[
+            {
+              title: <Link href="/admin">Home</Link>
+            },
+            {
+              title: <Link href="/admin/settings">Settings</Link>
+            },
+            {
+              title: <Link href="/admin/settings/admin">Admins</Link>
+            },
+            {
+              title: "Edit Admin"
+            }
+          ]}
+        />
 
-          <Card
-            title="Edit Admin"
-            style={{
-              width: "80%",
-              backgroundColor: "#ffffff",
-              borderRadius: "10px",
-              margin: "0 auto",
-              textAlign: "center"
-            }}
-          >
-            {isLoading && isFetching && <AppLoader />}
+        <Card
+          title="Edit Admin"
+          style={{
+            width: "80%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            textAlign: "center"
+          }}
+        >
+          {isLoading && isFetching && <AppLoader />}
 
-            {isError && <div>{error.message}</div>}
+          {isError && <div>{error.message}</div>}
 
-            {!isLoading && !unauthorized && item && (
-              <EditUserForm item={item} />
-            )}
-          </Card>
-        </AppRowContainer>
-      )}
+          {!isLoading && item && <EditUserForm item={item} />}
+        </Card>
+      </AppRowContainer>
     </>
   );
 };

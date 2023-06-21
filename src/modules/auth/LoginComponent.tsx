@@ -42,7 +42,7 @@ const LoginComponent = () => {
         .then(async response => {
           const { data } = response;
 
-          console.log(data);
+          // console.log(data);
           if (data.success === false) {
             setShowError(true);
             setErrorMessage(data.message);
@@ -61,7 +61,7 @@ const LoginComponent = () => {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           setShowError(true);
           setErrorMessage(err.response.data.message);
@@ -73,17 +73,17 @@ const LoginComponent = () => {
           }
         });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setShowError(true);
       setErrorMessage(err);
     }
 
-    // console.log("Success:");
+    // // console.log("Success:");
     // return false;
   };
 
   const onFinishFailed = () => {
-    console.log("Failed:");
+    // console.log("Failed:");
   };
 
   return loading ? (

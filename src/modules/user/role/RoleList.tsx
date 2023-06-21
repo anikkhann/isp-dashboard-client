@@ -46,7 +46,7 @@ const RoleList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // console.log('token', token)
+    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -78,7 +78,7 @@ const RoleList: React.FC = () => {
     },
     onSuccess(data: any) {
       if (data) {
-        console.log("data.data", data);
+        // console.log("data.data", data);
 
         if (data.body) {
           setData(data.body);
@@ -109,14 +109,14 @@ const RoleList: React.FC = () => {
   });
 
   useEffect(() => {
-    // console.log('data -b', data)
+    // // console.log('data -b', data)
     if (data) {
-      // console.log('data', data)
+      // // console.log('data', data)
       setData(data);
     }
   }, [data]);
 
-  // console.log(error, isLoading, isError)
+  // // console.log(error, isLoading, isError)
 
   const columns: ColumnsType<DataType> = [
     {
@@ -176,14 +176,14 @@ const RoleList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<DataType>).order) {
-      // console.log((sorter as SorterResult<DataType>).order)
+      // // console.log((sorter as SorterResult<DataType>).order)
 
       SetOrder(
         (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<DataType>).field) {
-      // console.log((sorter as SorterResult<DataType>).field)
+      // // console.log((sorter as SorterResult<DataType>).field)
 
       SetSort((sorter as SorterResult<DataType>).field as string);
     }

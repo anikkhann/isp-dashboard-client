@@ -19,10 +19,10 @@ const NewPermission = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/user">User</Link>
             },
             {
-              title: <Link href="/admin/settings/permission">Permissions</Link>
+              title: <Link href="/admin/user/permission">Permissions</Link>
             },
             {
               title: "New Permission"

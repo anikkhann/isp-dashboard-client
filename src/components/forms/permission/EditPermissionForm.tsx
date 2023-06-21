@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -16,6 +16,18 @@ import { Alert, Button, Form, Input, Select, Space } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+interface PermissionData {
+  createdOn: number;
+  updatedOn: number;
+  id: string;
+  displayName: string;
+  tag: string;
+  actionTags: string[];
+}
+interface PropData {
+  item: PermissionData;
+}
+
 interface PermissionFormData {
   displayName: string;
   tag: string;
@@ -25,10 +37,6 @@ const schema = yup.object().shape({
   displayName: yup.string().max(200).required("Display Name is required"),
   tag: yup.string().max(200).required("Tag is required")
 });
-const defaultValues = {
-  displayName: "",
-  tag: ""
-};
 
 const layout = {
   labelCol: { span: 6 },
@@ -54,7 +62,7 @@ const tagsList = [
   }
 ];
 
-const CreatePermissionForm = () => {
+const EditPermissionForm = ({ item }: PropData) => {
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -67,6 +75,18 @@ const CreatePermissionForm = () => {
   const handleChange = (value: any[]) => {
     // console.log("checked = ", value);
     setActionTags(value as any[]);
+  };
+
+  useEffect(() => {
+    if (item) {
+      const checked = item.actionTags;
+      setActionTags(checked);
+    }
+  }, [item]);
+
+  const defaultValues = {
+    displayName: item.displayName || "",
+    tag: item.tag || ""
   };
 
   const {
@@ -87,7 +107,8 @@ const CreatePermissionForm = () => {
       const token = Cookies.get("token");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios
-        .post("/api/permission/create", {
+        .put("/api/permission/update", {
+          id: item.id,
           displayName: displayName,
           tag: tag,
           actionTags: actionTags
@@ -212,6 +233,7 @@ const CreatePermissionForm = () => {
                 placeholder="Please select"
                 onChange={handleChange}
                 options={tagsList}
+                value={actionTags}
               />
             </Space>
           </Form.Item>
@@ -227,4 +249,4 @@ const CreatePermissionForm = () => {
   );
 };
 
-export default CreatePermissionForm;
+export default EditPermissionForm;

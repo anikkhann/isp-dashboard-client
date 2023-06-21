@@ -14,7 +14,7 @@ interface MenuLayoutProps {
 const MenuLayout = ({ style, closeDrawer }: MenuLayoutProps) => {
   const router = useRouter();
   const currentPath = router.route;
-  // console.log('', ability.can('read', 'Post'))
+  // // console.log('', ability.can('read', 'Post'))
 
   // filter routes that user can't access
   const routes = zoneRoutes.filter(route => {
