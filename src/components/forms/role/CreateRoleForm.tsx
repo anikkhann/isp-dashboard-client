@@ -15,6 +15,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Col, Form, Input, Row } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface RoleFormData {
   name: string;
@@ -37,7 +38,7 @@ const CreateRoleForm = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const [permissions, setPermissions] = useState([]);
+  const [permissions, setPermissions] = useState<any[]>([]);
 
   const [checkedList, setCheckedList] = useState<any[]>([]);
 
@@ -50,29 +51,39 @@ const CreateRoleForm = () => {
     setIsActive(e.target.checked ? true : false);
   };
 
+  const onChange = (checkedValues: CheckboxValueType[]) => {
+    console.log("checked = ", checkedValues);
+    setCheckedList(checkedValues as any[]);
+  };
+
+  // console.log('checkedList', checkedList)
+
   const getPermissions = async () => {
-    const res = await axios.get("/api/v1/common/all-permissions");
-    if (res.data.success) {
-      // console.log(res.data.data.permissions);
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      const items = res.data.data.permissions.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
+    const res = await axios.get(
+      "/api/permission/get-loggedin-user-permissions"
+    );
 
-      setPermissions(items);
-    }
+    const items = res.data.body.map((item: any) => {
+      return {
+        id: item.id,
+        displayName: item.displayName,
+        children: item.actionTags.map((child: any) => {
+          return {
+            value: item.id + "__" + child,
+            label: child
+          };
+        })
+      };
+    });
+
+    setPermissions(items);
   };
   useEffect(() => {
     getPermissions();
   }, []);
-
-  const onChange = (checkedValues: CheckboxValueType[]) => {
-    // console.log("checked = ", checkedValues);
-    setCheckedList(checkedValues as any[]);
-  };
 
   const {
     control,
@@ -85,14 +96,32 @@ const CreateRoleForm = () => {
   });
 
   const onSubmit = (data: RoleFormData) => {
-    // console.log(data);
+    const rolePermissions: { permissionId: any; actionTags: any[] }[] = [];
+
+    checkedList.forEach(permission => {
+      const [permissionId, actionTag] = permission.split("__");
+      const existingPermission = rolePermissions.find(
+        perm => perm.permissionId === permissionId
+      );
+
+      if (existingPermission) {
+        existingPermission.actionTags.push(actionTag);
+      } else {
+        rolePermissions.push({
+          permissionId,
+          actionTags: [actionTag]
+        });
+      }
+    });
+
+    // console.log(rolePermissions);
     const { name } = data;
     try {
       axios
-        .post("/api/v1/roles", {
+        .post("/api/role/create", {
           name: name,
           is_active: isActive,
-          permissions: checkedList
+          rolePermissions: rolePermissions
         })
         .then(res => {
           // console.log(res);
@@ -100,10 +129,10 @@ const CreateRoleForm = () => {
 
           MySwal.fire({
             title: "Success",
-            text: data.data.message || "Role created successfully",
+            text: data.message || "Role created successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/settings/role");
+            router.replace("/admin/user/role");
           });
         })
         .catch(err => {
@@ -180,25 +209,38 @@ const CreateRoleForm = () => {
           <Form.Item
             label="Permissions"
             name="permissions"
-            valuePropName="checked"
+            valuePropName="permissions"
           >
             <Checkbox.Group onChange={onChange}>
               <Row>
-                {permissions.map((item: any) => {
-                  return (
-                    <Col span={8} key={item.value}>
-                      <Checkbox
-                        value={item.value}
-                        style={{
-                          display: "flex",
-                          justifyContent: "left"
-                        }}
-                      >
-                        {item.label}
-                      </Checkbox>
-                    </Col>
-                  );
-                })}
+                {permissions &&
+                  permissions.length > 0 &&
+                  permissions.map((permission: any) => {
+                    return (
+                      <Col span={24} key={permission.id}>
+                        {permission.displayName}
+                        <Row>
+                          {permission.children &&
+                            permission.children.length > 0 &&
+                            permission.children.map((item: any) => {
+                              return (
+                                <Col span={8} key={item.value}>
+                                  <Checkbox
+                                    value={item.value}
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "left"
+                                    }}
+                                  >
+                                    {item.label}
+                                  </Checkbox>
+                                </Col>
+                              );
+                            })}
+                        </Row>
+                      </Col>
+                    );
+                  })}
               </Row>
             </Checkbox.Group>
           </Form.Item>

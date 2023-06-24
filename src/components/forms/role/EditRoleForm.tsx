@@ -15,26 +15,15 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Col, Form, Input, Row } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
+import { RoleData } from "@/interfaces/RoleData";
+import Cookies from "js-cookie";
 
 interface RoleFormData {
   name: string;
 }
 
 interface PropData {
-  item: ItemType;
-}
-
-interface ItemType {
-  id: number;
-  name: string;
-  slug: string;
-  base: {
-    is_active: boolean;
-    created_at: string | null;
-    updated_at: string | null;
-    deleted_at: string | null;
-  };
-  permissions: object[];
+  item: RoleData;
 }
 
 const schema = yup.object().shape({
@@ -69,17 +58,27 @@ const EditRoleForm = ({ item }: PropData) => {
   };
 
   const getPermissions = async () => {
-    const res = await axios.get("/api/v1/common/all-permissions");
-    if (res.data.success) {
-      const items = res.data.data.permissions.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id,
-          checked: false
-        };
-      });
-      setPermissions(items);
-    }
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const res = await axios.get(
+      "/api/permission/get-loggedin-user-permissions"
+    );
+
+    const items = res.data.body.map((item: any) => {
+      return {
+        id: item.id,
+        displayName: item.displayName,
+        children: item.actionTags.map((child: any) => {
+          return {
+            value: item.id + "__" + child,
+            label: child
+          };
+        })
+      };
+    });
+
+    setPermissions(items);
   };
 
   useEffect(() => {
@@ -92,14 +91,21 @@ const EditRoleForm = ({ item }: PropData) => {
     setCheckedList(checkedValues as any[]);
   };
 
+  console.log("c", checkedList);
+
   useEffect(() => {
     if (item) {
-      const checked = item.permissions.map((item: any) => {
-        return item.id;
+      const checked: any = [];
+      item.rolePermissions.map((item: any) => {
+        if (item.permission === null) return;
+        item.permission.actionTags.map((actionTag: any) => {
+          const value = item.permissionId + "__" + actionTag;
+          checked.push(value);
+        });
       });
-      setCheckedList(checked);
 
-      setIsActive(item.base.is_active);
+      setCheckedList(checked);
+      setIsActive(item.isActive);
     }
   }, [item]);
 
@@ -114,13 +120,31 @@ const EditRoleForm = ({ item }: PropData) => {
   });
 
   const onSubmit = (data: RoleFormData) => {
+    const rolePermissions: { permissionId: any; actionTags: any[] }[] = [];
+
+    checkedList.forEach(permission => {
+      const [permissionId, actionTag] = permission.split("__");
+      const existingPermission = rolePermissions.find(
+        perm => perm.permissionId === permissionId
+      );
+
+      if (existingPermission) {
+        existingPermission.actionTags.push(actionTag);
+      } else {
+        rolePermissions.push({
+          permissionId,
+          actionTags: [actionTag]
+        });
+      }
+    });
     const { name } = data;
     try {
       axios
-        .put(`/api/v1/roles/${item.id}`, {
+        .put(`/api/role/update`, {
+          id: item.id,
           name: name,
           is_active: isActive,
-          permissions: checkedList
+          rolePermissions: rolePermissions
         })
         .then(res => {
           // console.log(res);
@@ -128,10 +152,10 @@ const EditRoleForm = ({ item }: PropData) => {
 
           MySwal.fire({
             title: "Success",
-            text: data.data.message || "Role created successfully",
+            text: data.message || "Role Updated successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/settings/role");
+            router.replace("/admin/user/role");
           });
         })
         .catch(err => {
@@ -208,25 +232,38 @@ const EditRoleForm = ({ item }: PropData) => {
           <Form.Item
             label="Permissions"
             name="permissions"
-            valuePropName="checked"
+            valuePropName="permissions"
           >
             <Checkbox.Group onChange={onChange} value={checkedList}>
               <Row>
-                {permissions.map((item: any) => {
-                  return (
-                    <Col span={8} key={item.value}>
-                      <Checkbox
-                        value={item.value}
-                        style={{
-                          display: "flex",
-                          justifyContent: "left"
-                        }}
-                      >
-                        {item.label}
-                      </Checkbox>
-                    </Col>
-                  );
-                })}
+                {permissions &&
+                  permissions.length > 0 &&
+                  permissions.map((permission: any) => {
+                    return (
+                      <Col span={24} key={permission.id}>
+                        {permission.displayName}
+                        <Row>
+                          {permission.children &&
+                            permission.children.length > 0 &&
+                            permission.children.map((item: any) => {
+                              return (
+                                <Col span={8} key={item.value}>
+                                  <Checkbox
+                                    value={item.value}
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "left"
+                                    }}
+                                  >
+                                    {item.label}
+                                  </Checkbox>
+                                </Col>
+                              );
+                            })}
+                        </Row>
+                      </Col>
+                    );
+                  })}
               </Row>
             </Checkbox.Group>
           </Form.Item>
