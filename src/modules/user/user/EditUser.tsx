@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import EditUserForm from "@/components/forms/user/EditUserForm";
+import { UserData } from "@/interfaces/UserData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -10,44 +11,26 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-interface DataType {
-  id: number;
-  first_name: string;
-  last_name: string;
-  username: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  roles: object[];
-  base: {
-    is_active: boolean;
-    created_at: string | null;
-    updated_at: string | null;
-    deleted_at: string | null;
-  };
-}
-
 const EditUser = ({ id }: any) => {
-  const [item, SetItem] = useState<DataType | null>(null);
+  const [item, SetItem] = useState<UserData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const { data } = await axios.get(`/api/v1/admins/${id}`);
-    return data;
+    const response = await axios.get(`/api/users/get-by-id/${id}`);
+    return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["admin-list", id],
+    queryKey: ["users-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data", data.user);
-        SetItem(data.user);
+        SetItem(data.body);
       }
     },
     onError(error: any) {
@@ -76,19 +59,19 @@ const EditUser = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/user">User</Link>
             },
             {
-              title: <Link href="/admin/settings/admin">Admins</Link>
+              title: <Link href="/admin/user/user">Users</Link>
             },
             {
-              title: "Edit Admin"
+              title: "Edit User"
             }
           ]}
         />
 
         <Card
-          title="Edit Admin"
+          title="Edit User"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

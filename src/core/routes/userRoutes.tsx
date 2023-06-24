@@ -29,13 +29,6 @@ const userRoutes = [
     permission: "user.view"
   },
   {
-    key: "/admin/user/role-assignment",
-    label: "Role Assignment",
-    path: "/admin/user/role-assignment",
-    icon: <UserOutlined />,
-    permission: "user.view"
-  },
-  {
     key: "/admin/user/role",
     label: "Roles",
     path: "/admin/user/role",

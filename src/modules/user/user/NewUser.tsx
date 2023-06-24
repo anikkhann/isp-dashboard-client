@@ -19,19 +19,19 @@ const NewUser = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/user">User</Link>
             },
             {
-              title: <Link href="/admin/settings/admin">Admins</Link>
+              title: <Link href="/admin/user/user">User</Link>
             },
             {
-              title: "New Admin"
+              title: "New User"
             }
           ]}
         />
 
         <Card
-          title="New Admin"
+          title="New User"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

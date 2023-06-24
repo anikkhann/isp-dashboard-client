@@ -165,25 +165,6 @@ const UserList: React.FC = () => {
     },
 
     {
-      title: "isActive",
-      dataIndex: "isActive",
-      sorter: true,
-      render: (isActive: any) => {
-        return (
-          <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
-          </>
-        );
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-
-    {
       title: "userType",
       dataIndex: "userType",
       sorter: true,
@@ -202,6 +183,24 @@ const UserList: React.FC = () => {
                 {item && item.role && item.role.name}
               </Tag>
             ))}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "isActive",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
+        return (
+          <>
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
           </>
         );
       },
@@ -295,7 +294,7 @@ const UserList: React.FC = () => {
           <TableCard
             title="Users List"
             hasLink={true}
-            addLink="/admin/settings/user/create"
+            addLink="/admin/user/user/create"
             permission="user.create"
             style={{
               // backgroundColor: "#FFFFFF",

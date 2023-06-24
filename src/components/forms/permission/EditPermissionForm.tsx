@@ -114,7 +114,7 @@ const EditPermissionForm = ({ item }: PropData) => {
           actionTags: actionTags
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           const { data } = res;
 
           MySwal.fire({

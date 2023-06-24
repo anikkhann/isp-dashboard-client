@@ -19,10 +19,10 @@ const NewRole = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/user">User</Link>
             },
             {
-              title: <Link href="/admin/settings/role">Roles</Link>
+              title: <Link href="/admin/user/role">Roles</Link>
             },
             {
               title: "New Role"

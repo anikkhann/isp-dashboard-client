@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import EditRoleForm from "@/components/forms/role/EditRoleForm";
+import { RoleData } from "@/interfaces/RoleData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -10,41 +11,27 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-interface ItemType {
-  id: number;
-  name: string;
-  slug: string;
-  base: {
-    is_active: boolean;
-    created_at: string | null;
-    updated_at: string | null;
-    deleted_at: string | null;
-  };
-  permissions: object[];
-}
-
 const EditRole = ({ id }: any) => {
-  const [item, SetItem] = useState<ItemType | null>(null);
+  const [item, SetItem] = useState<RoleData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const { data } = await axios.get(`/api/v1/roles/${id}`);
-    return data;
+    const response = await axios.get(`/api/role/get-by-id/${id}`);
+    return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["role-list", id],
+    queryKey: ["roles-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data", data);
-
-        SetItem(data);
+        console.log("data", data);
+        SetItem(data.body);
       }
     },
     onError(error: any) {
@@ -71,10 +58,10 @@ const EditRole = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/user">User</Link>
             },
             {
-              title: <Link href="/admin/settings/role">Roles</Link>
+              title: <Link href="/admin/user/role">Roles</Link>
             },
             {
               title: "Edit Role"
