@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Tag } from "antd";
+import { Card, Col, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -31,35 +31,10 @@ const columns: ColumnsType<DataType> = [
     sorter: true,
     width: "10%",
     align: "center" as AlignType
-  },
-  {
-    title: "Tag",
-    dataIndex: "tag",
-    sorter: true,
-    width: "20%",
-    align: "center" as AlignType
-  },
-  {
-    title: "actionTags",
-    dataIndex: "actionTags",
-    sorter: true,
-    render: (actionTags: any) => {
-      return (
-        <>
-          {actionTags.map((tag: any) => (
-            <Tag color="blue" key={tag}>
-              {tag}
-            </Tag>
-          ))}
-        </>
-      );
-    },
-    width: "20%",
-    align: "center" as AlignType
   }
 ];
 
-const PermissionList: React.FC = () => {
+const InvoiceList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -106,15 +81,13 @@ const PermissionList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["permissions-list", page, limit, order, sort],
+    queryKey: ["invoices-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data.data", data);
-
         if (data.body) {
           setData(data.body);
           setTableParams({
@@ -144,14 +117,10 @@ const PermissionList: React.FC = () => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (data) {
-      // // console.log('data', data)
       setData(data);
     }
   }, [data]);
-
-  // // console.log(error, isLoading, isError)
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
@@ -162,15 +131,11 @@ const PermissionList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
-
       SetOrder(
         (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
-
       SetSort((sorter as SorterResult<DataType>).field as string);
     }
   };
@@ -246,4 +211,4 @@ const PermissionList: React.FC = () => {
   );
 };
 
-export default PermissionList;
+export default InvoiceList;

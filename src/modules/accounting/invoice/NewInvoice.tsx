@@ -19,19 +19,19 @@ const NewPermission = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/accounting">Accounting</Link>
             },
             {
-              title: <Link href="/admin/settings/permission">Permissions</Link>
+              title: <Link href="/admin/accounting/invoice">Invoices</Link>
             },
             {
-              title: "New Permission"
+              title: "New Invoice"
             }
           ]}
         />
 
         <Card
-          title="New Permission"
+          title="New Invoice"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

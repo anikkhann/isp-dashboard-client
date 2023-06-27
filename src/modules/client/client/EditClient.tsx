@@ -18,12 +18,12 @@ const EditClient = ({ id }: any) => {
     // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/users/get-by-id/${id}`);
+    const response = await axios.get(`/api/partner/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["users-list", id],
+    queryKey: ["clients-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -39,9 +39,7 @@ const EditClient = ({ id }: any) => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (item) {
-      // // console.log('data', data)
       SetItem(item);
     }
   }, [item]);
@@ -59,19 +57,19 @@ const EditClient = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/client">Client Dashboard</Link>
             },
             {
-              title: <Link href="/admin/user/user">Users</Link>
+              title: <Link href="/admin/client/client">Client</Link>
             },
             {
-              title: "Edit User"
+              title: "Edit Client"
             }
           ]}
         />
 
         <Card
-          title="Edit User"
+          title="Edit Client"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

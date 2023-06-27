@@ -142,6 +142,11 @@ const CreateUserForm = () => {
               {
                 required: true,
                 message: "Please input your Username!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
               }
             ]}
           >
@@ -167,6 +172,11 @@ const CreateUserForm = () => {
               {
                 required: true,
                 message: "Please input your E-mail!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
               }
             ]}
           >
@@ -214,6 +224,11 @@ const CreateUserForm = () => {
               {
                 min: 6,
                 message: "Password must be minimum 6 characters."
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
               }
             ]}
             hasFeedback
@@ -230,6 +245,11 @@ const CreateUserForm = () => {
               {
                 required: true,
                 message: "Please confirm your password!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -255,7 +275,7 @@ const CreateUserForm = () => {
             }}
           >
             <Checkbox onChange={handleActive} checked={isActive}>
-              isActive
+              Status
             </Checkbox>
           </Form.Item>
 

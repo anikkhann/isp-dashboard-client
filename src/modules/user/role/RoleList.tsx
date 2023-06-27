@@ -143,14 +143,7 @@ const RoleList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "userType",
-      dataIndex: "userType",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "isActive",
+      title: "Status",
       dataIndex: "isActive",
       sorter: true,
       render: (isActive: any) => {

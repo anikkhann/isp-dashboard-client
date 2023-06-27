@@ -1,27 +1,24 @@
-import AccountLayout from "@/core/layouts/AccountLayout";
+import CustomerLayout from "@/core/layouts/CustomerLayout";
+
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/user/user/EditUser";
+import NewAdmin from "@/modules/user/user/NewUser";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
-import { useRouter } from "next/router";
 import { ReactNode } from "react";
 
 const Home = () => {
   const auth = useAppSelector(state => state.auth);
 
-  const router = useRouter();
-  const { id } = router.query;
-
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.update", "") ? <EditAdmin id={id} /> : <Forbidden />}
+      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <AccountLayout>{page}</AccountLayout>;
+Home.getLayout = (page: ReactNode) => <CustomerLayout>{page}</CustomerLayout>;
 
 export default Home;

@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("user.view", "") ? <AdminList /> : <Forbidden />}
     </>
   );
 };

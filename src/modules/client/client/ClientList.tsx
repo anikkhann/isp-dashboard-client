@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,6 +10,9 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
+import ability from "@/services/guard/ability";
+import Link from "next/link";
+import { EditOutlined } from "@ant-design/icons";
 interface DataType {
   id: number;
   name: string;
@@ -59,6 +62,10 @@ const ClientList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client"
       }
     };
 
@@ -109,14 +116,10 @@ const ClientList: React.FC = () => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (data) {
-      // // console.log('data', data)
       setData(data);
     }
   }, [data]);
-
-  // // console.log(error, isLoading, isError)
 
   const columns: ColumnsType<DataType> = [
     {
@@ -134,49 +137,49 @@ const ClientList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "username",
+      title: "Username",
       dataIndex: "username",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "contactPerson",
+      title: "Contact Person",
       dataIndex: "contactPerson",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "contactNumber",
+      title: "Contact Number",
       dataIndex: "contactNumber",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "email",
+      title: "Email",
       dataIndex: "email",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "address",
+      title: "Address",
       dataIndex: "address",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "isActive",
+      title: "Status",
       dataIndex: "isActive",
       sorter: true,
       render: (isActive: any) => {
@@ -191,6 +194,27 @@ const ClientList: React.FC = () => {
         );
       },
       width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <>
+            <Space size="middle" align="center">
+              {ability.can("user.update", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                    <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+          </>
+        );
+      },
       align: "center" as AlignType
     }
   ];
@@ -257,7 +281,7 @@ const ClientList: React.FC = () => {
           <TableCard
             title="Clients List"
             hasLink={true}
-            addLink="/admin/settings/client/create"
+            addLink="/admin/client/client/create"
             permission="user.create"
             style={{
               borderRadius: "10px",

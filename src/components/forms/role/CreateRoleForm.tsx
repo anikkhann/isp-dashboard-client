@@ -202,15 +202,11 @@ const CreateRoleForm = () => {
             }}
           >
             <Checkbox onChange={handleActive} checked={isActive}>
-              isActive
+              Status
             </Checkbox>
           </Form.Item>
 
-          <Form.Item
-            label="Permissions"
-            name="permissions"
-            valuePropName="permissions"
-          >
+          <Form.Item label="" name="permissions" valuePropName="permissions">
             <Checkbox.Group onChange={onChange}>
               <Row>
                 {permissions &&
@@ -218,13 +214,25 @@ const CreateRoleForm = () => {
                   permissions.map((permission: any) => {
                     return (
                       <Col span={24} key={permission.id}>
-                        {permission.displayName}
+                        <h5
+                          style={{
+                            fontWeight: "bold",
+                            marginBottom: 10,
+                            marginLeft: 10,
+                            fontSize: 14,
+                            textTransform: "uppercase",
+                            textAlign: "left"
+                          }}
+                        >
+                          {permission.displayName}
+                        </h5>
+
                         <Row>
                           {permission.children &&
                             permission.children.length > 0 &&
                             permission.children.map((item: any) => {
                               return (
-                                <Col span={8} key={item.value}>
+                                <Col lg={4} md={12} sm={12} key={item.value}>
                                   <Checkbox
                                     value={item.value}
                                     style={{
