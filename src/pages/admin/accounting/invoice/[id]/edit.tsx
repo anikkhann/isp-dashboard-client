@@ -17,7 +17,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.update", "") ? <EditAdmin id={id} /> : <Forbidden />}
+      {ability.can("invoice.update", "") ? (
+        <EditAdmin id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

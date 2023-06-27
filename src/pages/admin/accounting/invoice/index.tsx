@@ -1,7 +1,7 @@
 import AccountLayout from "@/core/layouts/AccountLayout";
 import AppLoader from "@/lib/AppLoader";
+import InvoiceList from "@/modules/accounting/invoice/InvoiceList";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("invoice.view", "") ? <InvoiceList /> : <Forbidden />}
     </>
   );
 };

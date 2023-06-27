@@ -91,8 +91,6 @@ const EditRoleForm = ({ item }: PropData) => {
     setCheckedList(checkedValues as any[]);
   };
 
-  console.log("c", checkedList);
-
   useEffect(() => {
     if (item) {
       const checked: any = [];
@@ -225,7 +223,7 @@ const EditRoleForm = ({ item }: PropData) => {
             }}
           >
             <Checkbox onChange={handleActive} checked={isActive}>
-              isActive
+              Status
             </Checkbox>
           </Form.Item>
 

@@ -124,6 +124,11 @@ const LoginComponent = () => {
               {
                 required: true,
                 message: "Please input your Email!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed."
               }
             ]}
           >
@@ -138,6 +143,11 @@ const LoginComponent = () => {
               {
                 required: true,
                 message: "Please input your Password!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
               }
             ]}
           >

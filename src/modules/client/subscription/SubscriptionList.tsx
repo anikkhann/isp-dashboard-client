@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,12 +10,10 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import ability from "@/services/guard/ability";
+import Link from "next/link";
+import { EditOutlined } from "@ant-design/icons";
+import { SubscriptionData } from "@/interfaces/SubscriptionData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -25,7 +23,7 @@ interface TableParams {
 }
 
 const SubscriptionList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<SubscriptionData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -109,16 +107,13 @@ const SubscriptionList: React.FC = () => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (data) {
-      // // console.log('data', data)
       setData(data);
     }
   }, [data]);
 
   // // console.log(error, isLoading, isError)
-
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<SubscriptionData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -135,43 +130,51 @@ const SubscriptionList: React.FC = () => {
     },
 
     {
-      title: "name",
+      title: "Package Name",
       dataIndex: "name",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "packageType",
+      title: "Package Type",
       dataIndex: "packageType",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "slabStart",
+      title: "Slab Start",
       dataIndex: "slabStart",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "slabEnd",
+      title: "Slab End",
       dataIndex: "slabEnd",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "chargeAmount",
+      title: "Charge Amount",
       dataIndex: "chargeAmount",
       sorter: true,
+      render: (chargeAmount: number) => {
+        return (
+          <>
+            <Space>{chargeAmount} Tk/User/Month</Space>
+          </>
+        );
+      },
+
       width: "20%",
       align: "center" as AlignType
     },
 
     {
-      title: "isActive",
+      title: "Status",
       dataIndex: "isActive",
       sorter: true,
       render: (isActive: any) => {
@@ -187,28 +190,52 @@ const SubscriptionList: React.FC = () => {
       },
       width: "20%",
       align: "center" as AlignType
+    },
+
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <>
+            <Space size="middle" align="center">
+              {ability.can("user.update", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/client/subscription/${record.id}/edit`}>
+                    <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+          </>
+        );
+      },
+      align: "center" as AlignType
     }
   ];
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<SubscriptionData> | SorterResult<SubscriptionData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<SubscriptionData>).order) {
+      // // console.log((sorter as SorterResult<SubscriptionData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<SubscriptionData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<SubscriptionData>).field) {
+      // // console.log((sorter as SorterResult<SubscriptionData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<SubscriptionData>).field as string);
     }
   };
 
@@ -254,8 +281,8 @@ const SubscriptionList: React.FC = () => {
           <TableCard
             title="Subscriptions List"
             hasLink={true}
-            addLink="/admin/settings/subscription/create"
-            permission="subscription.create"
+            addLink="/admin/client/subscription/create"
+            permission="user.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

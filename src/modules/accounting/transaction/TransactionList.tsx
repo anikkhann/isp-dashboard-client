@@ -59,7 +59,7 @@ const columns: ColumnsType<DataType> = [
   }
 ];
 
-const PermissionList: React.FC = () => {
+const TransactionList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -245,4 +245,4 @@ const PermissionList: React.FC = () => {
   );
 };
 
-export default PermissionList;
+export default TransactionList;

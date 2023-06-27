@@ -1,4 +1,4 @@
-import CreateUserForm from "@/components/forms/user/CreateUserForm";
+import CreateSubscriptionForm from "@/components/forms/subscription/CreateSubscriptionForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,19 +19,19 @@ const NewSubscription = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/settings">Settings</Link>
+              title: <Link href="/admin/client">CLient</Link>
             },
             {
-              title: <Link href="/admin/settings/admin">Admins</Link>
+              title: <Link href="/admin/client/subscription">Subscription</Link>
             },
             {
-              title: "New Admin"
+              title: "New Subscription"
             }
           ]}
         />
 
         <Card
-          title="New Admin"
+          title="New Subscription"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,7 +40,7 @@ const NewSubscription = () => {
             textAlign: "center"
           }}
         >
-          <CreateUserForm />
+          <CreateSubscriptionForm />
         </Card>
       </AppRowContainer>
     </>

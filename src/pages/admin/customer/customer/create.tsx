@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
     </>
   );
 };

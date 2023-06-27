@@ -14,7 +14,6 @@ import { UserData } from "@/interfaces/UserData";
 interface AdminFormData {
   name: string;
   email: string;
-  password: string;
   username: string;
   phone: string;
 }
@@ -48,13 +47,12 @@ const EditUserForm = ({ item }: PropData) => {
 
   const onSubmit = (data: AdminFormData) => {
     // console.log(data)
-    const { name, email, password, username, phone } = data;
+    const { name, email, username, phone } = data;
 
     const formData = {
       id: item.id,
       name: name,
       email: email,
-      password: password,
       username: username,
       phone: phone,
       isActive: isActive
@@ -100,7 +98,6 @@ const EditUserForm = ({ item }: PropData) => {
           initialValues={{
             name: item.name || "",
             email: item.email || "",
-            password: "",
             username: item.username || "",
             phone: item.phone || ""
           }}
@@ -140,6 +137,17 @@ const EditUserForm = ({ item }: PropData) => {
             style={{
               marginBottom: 0
             }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your Username!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
+              }
+            ]}
           >
             <Input
               type="text"
@@ -165,6 +173,11 @@ const EditUserForm = ({ item }: PropData) => {
               {
                 required: true,
                 message: "Please input your E-mail!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
               }
             ]}
           >
@@ -186,6 +199,10 @@ const EditUserForm = ({ item }: PropData) => {
               {
                 required: true,
                 message: "Please input your Phone!"
+              },
+              {
+                pattern: new RegExp(/^(01)[0-9]{9}$/),
+                message: "Please enter correct BD Phone number."
               }
             ]}
           >
@@ -204,7 +221,7 @@ const EditUserForm = ({ item }: PropData) => {
             }}
           >
             <Checkbox onChange={handleActive} checked={isActive}>
-              isActive
+              Status
             </Checkbox>
           </Form.Item>
 

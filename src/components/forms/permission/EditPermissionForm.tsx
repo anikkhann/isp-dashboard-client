@@ -57,8 +57,24 @@ const tagsList = [
     value: "update"
   },
   {
+    label: "Delete",
+    value: "delete"
+  },
+  {
     label: "List",
     value: "list"
+  },
+  {
+    label: "Approve",
+    value: "approve"
+  },
+  {
+    label: "Reject",
+    value: "reject"
+  },
+  {
+    label: "Cancel",
+    value: "cancel"
   }
 ];
 

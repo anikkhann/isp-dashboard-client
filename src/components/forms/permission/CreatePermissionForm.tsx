@@ -49,8 +49,24 @@ const tagsList = [
     value: "update"
   },
   {
+    label: "Delete",
+    value: "delete"
+  },
+  {
     label: "List",
     value: "list"
+  },
+  {
+    label: "Approve",
+    value: "approve"
+  },
+  {
+    label: "Reject",
+    value: "reject"
+  },
+  {
+    label: "Cancel",
+    value: "cancel"
   }
 ];
 
@@ -203,6 +219,12 @@ const CreatePermissionForm = () => {
               marginBottom: 0
             }}
             name="actionTags"
+            rules={[
+              {
+                required: true,
+                message: "Please select actions"
+              }
+            ]}
           >
             <Space style={{ width: "100%" }} direction="vertical">
               <Select

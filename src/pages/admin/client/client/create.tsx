@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <NewClient /> : <Forbidden />}
+      {ability.can("client.create", "") ? <NewClient /> : <Forbidden />}
     </>
   );
 };

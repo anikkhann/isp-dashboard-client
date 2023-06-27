@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import EditSubscriptionForm from "@/components/forms/subscription/EditSubscriptionForm";
+import { SubscriptionData } from "@/interfaces/SubscriptionData";
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,18 +12,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditSubscription = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<SubscriptionData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/users/get-by-id/${id}`);
+    const response = await axios.get(`/api/subscription-plan/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["users-list", id],
+    queryKey: ["subscriptions-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -39,9 +38,7 @@ const EditSubscription = ({ id }: any) => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (item) {
-      // // console.log('data', data)
       SetItem(item);
     }
   }, [item]);
@@ -59,19 +56,21 @@ const EditSubscription = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/client">Client</Link>
             },
             {
-              title: <Link href="/admin/user/user">Users</Link>
+              title: (
+                <Link href="/admin/client/subscription">Subscriptions</Link>
+              )
             },
             {
-              title: "Edit User"
+              title: "Edit Subscription"
             }
           ]}
         />
 
         <Card
-          title="Edit User"
+          title="Edit Subscription"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -84,7 +83,7 @@ const EditSubscription = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditSubscriptionForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
