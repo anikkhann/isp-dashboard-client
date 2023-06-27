@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditClientForm from "@/components/forms/client/EditClientForm";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +11,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditZoneInCharge = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<any | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     // // console.log('token', token)
@@ -57,19 +56,21 @@ const EditZoneInCharge = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/zone">Zone Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/zone/zone-in-charge">Zone in Charge</Link>
+              )
             },
             {
-              title: "Edit Client"
+              title: "Edit Zone in Charge"
             }
           ]}
         />
 
         <Card
-          title="Edit Client"
+          title="Edit Zone in Charge"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -82,7 +83,7 @@ const EditZoneInCharge = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditClientForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

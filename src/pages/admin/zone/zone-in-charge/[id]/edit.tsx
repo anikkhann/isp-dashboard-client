@@ -1,7 +1,7 @@
 import ZoneLayout from "@/core/layouts/ZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/user/user/EditUser";
+import EditZoneInCharge from "@/modules/zone/zone-in-charge/EditZoneInCharge";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -17,7 +17,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.update", "") ? <EditAdmin id={id} /> : <Forbidden />}
+      {ability.can("user.update", "") ? (
+        <EditZoneInCharge id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

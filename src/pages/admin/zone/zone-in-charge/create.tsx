@@ -1,7 +1,7 @@
 import ZoneLayout from "@/core/layouts/ZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
+import NewZoneInCharge from "@/modules/zone/zone-in-charge/NewZoneInCharge";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("user.create", "") ? <NewZoneInCharge /> : <Forbidden />}
     </>
   );
 };

@@ -1,7 +1,7 @@
-import SubZoneLayout from "@/core/layouts/SubZoneLayout";
+import ZoneLayout from "@/core/layouts/ZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
+import SubZoneInChargeList from "@/modules/sub-zone/sub-zone-in-charge/SubZoneInChargeList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,11 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("user.view", "") ? <SubZoneInChargeList /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <SubZoneLayout>{page}</SubZoneLayout>;
+Home.getLayout = (page: ReactNode) => <ZoneLayout>{page}</ZoneLayout>;
 
 export default Home;

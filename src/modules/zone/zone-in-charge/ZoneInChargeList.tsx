@@ -65,7 +65,7 @@ const ZoneInChargeList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        partnerType: "zone"
       }
     };
 
@@ -206,7 +206,7 @@ const ZoneInChargeList: React.FC = () => {
             <Space size="middle" align="center">
               {ability.can("user.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link href={`/admin/zone/zone-in-charge/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -279,9 +279,9 @@ const ZoneInChargeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Zone in charges List"
             hasLink={true}
-            addLink="/admin/client/client/create"
+            addLink="/admin/zone/zone-in-charge/create"
             permission="user.create"
             style={{
               borderRadius: "10px",

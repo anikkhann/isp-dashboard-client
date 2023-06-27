@@ -1,7 +1,7 @@
 import ZoneLayout from "@/core/layouts/ZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
+import ZoneInChargeList from "@/modules/zone/zone-in-charge/ZoneInChargeList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("user.view", "") ? <ZoneInChargeList /> : <Forbidden />}
     </>
   );
 };
