@@ -57,7 +57,8 @@ const tagsList = [
   }
 ];
 
-const EditClientForm = () => {
+const EditClientForm = ({ item }: any) => {
+  console.log("item", item);
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
