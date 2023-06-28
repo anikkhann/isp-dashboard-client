@@ -374,13 +374,21 @@ const CreateClientForm = () => {
           // console.log(res);
           const { data } = res;
 
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Client Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/client/client");
-          });
+          if (data.status === 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Client Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/client/client");
+            });
+          } else {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Client Added Failed",
+              icon: "error"
+            });
+          }
         })
         .catch(err => {
           // console.log(err);
@@ -388,7 +396,7 @@ const CreateClientForm = () => {
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // // console.log(err)
+      // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }
@@ -494,7 +502,7 @@ const CreateClientForm = () => {
                 message: "Please input your Username!"
               },
               {
-                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
                 message:
                   "Only letters, numbers, underscores and hyphens allowed"
               }

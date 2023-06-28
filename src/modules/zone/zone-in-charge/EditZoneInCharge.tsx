@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import EditClientForm from "@/components/forms/client/EditClientForm";
+import EditZoneForm from "@/components/forms/zone/EditZoneForm";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -22,7 +21,7 @@ const EditZoneInCharge = ({ id }: any) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["zones-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -83,7 +82,7 @@ const EditZoneInCharge = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditClientForm item={item} />}
+          {!isLoading && item && <EditZoneForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

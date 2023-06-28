@@ -18,6 +18,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+
 interface FormData {
   clientLevel: string;
   name: string;
@@ -32,10 +33,8 @@ interface FormData {
   districtId: string;
   upazillaId: any;
   unionId: any;
-  licenseTypeId: any;
-  btrcLicenseNo: any;
-  licenseExpireDate: any;
-  radiusIpId: string;
+  nidNo: string;
+  salesDistributionCommission: string;
 }
 
 const layout = {
@@ -43,18 +42,7 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-const tagsList = [
-  {
-    label: "Tri Cycle",
-    value: "tri_cycle"
-  },
-  {
-    label: "Quad Cycle",
-    value: "quad_cycle"
-  }
-];
-
-const EditClientForm = ({ item }: any) => {
+const CreateSubZoneForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -65,17 +53,15 @@ const EditClientForm = ({ item }: any) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [clientLevel, setClientLevel] = useState(null);
-
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
-
-  const [radiusIps, setRadiusIps] = useState([]);
+  const [upazillas, setUpazillas] = useState([]);
+  const [unions, setUnions] = useState([]);
 
   const [selectedDivision, setSelectedDivision] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-
-  const [selectedRadiusIp, setSelectedRadiusIp] = useState(null);
+  const [selectedUpazilla, setSelectedUpazilla] = useState(null);
+  const [selectedUnion, setSelectedUnion] = useState(null);
 
   const { useBreakpoint } = Grid;
 
@@ -88,28 +74,34 @@ const EditClientForm = ({ item }: any) => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const handleChange = (value: any) => {
-    console.log("checked = ", value);
-    form.setFieldsValue({ clientLevel: value });
-    setClientLevel(value as any);
-  };
-
   const handleDivisionChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ divisionId: value });
     setSelectedDivision(value as any);
+    setSelectedDistrict(null);
+    setSelectedUpazilla(null);
+    setSelectedUnion(null);
   };
 
   const handleDistrictChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ districtId: value });
     setSelectedDistrict(value as any);
+    setSelectedUpazilla(null);
+    setSelectedUnion(null);
   };
 
-  const handleRadiusIpChange = (value: any) => {
+  const handleUpazillaChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ radiusIpId: value });
-    setSelectedRadiusIp(value as any);
+    form.setFieldsValue({ upazillaId: value });
+    setSelectedUpazilla(value as any);
+    setSelectedUnion(null);
+  };
+
+  const handleUnionChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ unionId: value });
+    setSelectedUnion(value as any);
   };
 
   function getDivisions() {
@@ -169,48 +161,70 @@ const EditClientForm = ({ item }: any) => {
     });
   }
 
-  function getRadiusIps() {
-    axios.get("/api/lookup-details/get-by-master-key/radius_ip").then(res => {
+  function getUpazillas(selectedDistrict: string) {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        district: { id: selectedDistrict }
+      }
+    };
+
+    axios.post("/api/upazilla/get-list", body).then(res => {
+      // console.log(res);
       const { data } = res;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
           value: item.id
         };
       });
-      setRadiusIps(list);
+      setUpazillas(list);
+    });
+  }
+
+  function getUnions(selectedUpazilla: string) {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        upazilla: { id: selectedUpazilla }
+      }
+    };
+
+    axios.post("/api/union/get-list", body).then(res => {
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setUnions(list);
     });
   }
 
   useEffect(() => {
     getDivisions();
-    getRadiusIps();
   }, []);
-
-  useEffect(() => {
-    if (item) {
-      setClientLevel(item.clientLevel);
-      form.setFieldsValue({
-        name: item.name,
-        username: item.username,
-        password: item.password,
-        email: item.email,
-        address: item.address,
-        altContactNumber: item.altContactNumber,
-        contactNumber: item.contactNumber,
-        districtId: item.districtId,
-        divisionId: item.divisionId,
-        contactPerson: item.contactPerson,
-        radiusIpId: item.radiusIpId,
-        clientLevel: item.clientLevel
-      });
-      setSelectedDivision(item.divisionId);
-      setSelectedDistrict(item.districtId);
-      setSelectedRadiusIp(item.radiusIpId);
-      setIsActive(item.isActive);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
 
   useEffect(() => {
     if (selectedDivision) {
@@ -218,35 +232,43 @@ const EditClientForm = ({ item }: any) => {
     }
   }, [selectedDivision]);
 
+  useEffect(() => {
+    if (selectedDistrict) {
+      getUpazillas(selectedDistrict);
+    }
+  }, [selectedDistrict]);
+
+  useEffect(() => {
+    if (selectedUpazilla) {
+      getUnions(selectedUpazilla);
+    }
+  }, [selectedUpazilla]);
+
   const onSubmit = (data: FormData) => {
+    console.log(data);
+
     const {
-      clientLevel,
       name,
       username,
+      password,
       email,
       address,
       altContactNumber,
       contactNumber,
       districtId,
       divisionId,
+      upazillaId,
+      unionId,
       contactPerson,
-      radiusIpId
+      nidNo,
+      salesDistributionCommission
     } = data;
 
-    if (!item && !item.id) {
-      MySwal.fire({
-        title: "Error",
-        text: "Please select a client",
-        icon: "error"
-      });
-    }
-
     const formData = {
-      id: item ? item.id : null,
-      partnerType: "client",
-      clientLevel: clientLevel,
+      partnerType: "sub_zone",
       name: name,
       username: username,
+      password: password,
       contactPerson: contactPerson,
       contactNumber: contactNumber,
       altContactNumber: altContactNumber,
@@ -254,13 +276,16 @@ const EditClientForm = ({ item }: any) => {
       address: address,
       divisionId: divisionId,
       districtId: districtId,
-      radiusIpId: radiusIpId,
+      upazillaId: upazillaId,
+      unionId: unionId,
+      nidNo: nidNo,
+      salesDistributionCommission: salesDistributionCommission,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/partner/update", formData)
+        .post("/api/partner/create", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
@@ -268,15 +293,15 @@ const EditClientForm = ({ item }: any) => {
           if (data.status === 200) {
             MySwal.fire({
               title: "Success",
-              text: data.message || "Client Update successfully",
+              text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/client/client");
+              router.replace("/admin/sub-zone/sub-zone-in-charge");
             });
           } else {
             MySwal.fire({
               title: "Error",
-              text: data.message || "Client Added Failed",
+              text: data.message || "Added Failed",
               icon: "error"
             });
           }
@@ -308,7 +333,6 @@ const EditClientForm = ({ item }: any) => {
             email: "",
             password: "",
             username: "",
-            clientLevel: "",
             contactPerson: "",
             contactNumber: "",
             altContactNumber: "",
@@ -316,11 +340,9 @@ const EditClientForm = ({ item }: any) => {
             districtId: "",
             upazillaId: "",
             unionId: "",
-            licenseTypeId: "",
-            btrcLicenseNo: "",
-            licenseExpireDate: "",
-            radiusIpId: "",
-            address: ""
+            address: "",
+            nidNo: "",
+            salesDistributionCommission: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -331,33 +353,6 @@ const EditClientForm = ({ item }: any) => {
           colon={false}
           scrollToFirstError
         >
-          {/* client level */}
-
-          <Form.Item
-            label="Client Level"
-            style={{
-              marginBottom: 0
-            }}
-            name="clientLevel"
-            rules={[
-              {
-                required: true,
-                message: "Please select actions"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleChange}
-                options={tagsList}
-                value={clientLevel}
-              />
-            </Space>
-          </Form.Item>
-
           {/* name */}
           <Form.Item
             label="Name"
@@ -438,6 +433,63 @@ const EditClientForm = ({ item }: any) => {
             />
           </Form.Item>
 
+          {/* password */}
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!"
+              },
+              {
+                min: 6,
+                message: "Password must be minimum 6 characters."
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
+              }
+            ]}
+            hasFeedback
+          >
+            <Input.Password />
+          </Form.Item>
+
+          {/* confirm password */}
+          <Form.Item
+            name="confirm"
+            label="Confirm Password"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "confirm password that you entered do not match with password!"
+                    )
+                  );
+                }
+              })
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
           {/* address */}
           <Form.Item
             name="address"
@@ -494,6 +546,10 @@ const EditClientForm = ({ item }: any) => {
               {
                 required: true,
                 message: "Please input your Contact Number!"
+              },
+              {
+                pattern: new RegExp(/^(01)[0-9]{9}$/),
+                message: "Please enter correct BD Phone number."
               }
             ]}
           >
@@ -512,12 +568,51 @@ const EditClientForm = ({ item }: any) => {
             style={{
               marginBottom: 0
             }}
+            rules={[
+              {
+                pattern: new RegExp(/^(01)[0-9]{9}$/),
+                message: "Please enter correct BD Phone number."
+              }
+            ]}
           >
             <Input
               type="text"
               placeholder="Alt Contact Number"
               className={`form-control`}
               name="altContactNumber"
+            />
+          </Form.Item>
+
+          {/* nidNo */}
+
+          <Form.Item
+            name="nidNo"
+            label="NID No"
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Input
+              type="text"
+              placeholder="NID No"
+              className={`form-control`}
+              name="nidNo"
+            />
+          </Form.Item>
+          {/* salesDistributionCommission */}
+
+          <Form.Item
+            name="salesDistributionCommission"
+            label="Revenue Share(%)"
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Input
+              type="text"
+              placeholder="Revenue Share(%)"
+              className={`form-control`}
+              name="salesDistributionCommission"
             />
           </Form.Item>
 
@@ -574,28 +669,42 @@ const EditClientForm = ({ item }: any) => {
             </Space>
           </Form.Item>
 
-          {/* radiusIpId */}
+          {/* upazillaId */}
           <Form.Item
-            label="Radius Ip"
+            label="Upazilla"
             style={{
               marginBottom: 0
             }}
-            name="radiusIpId"
-            rules={[
-              {
-                required: true,
-                message: "Please select Radius Ip"
-              }
-            ]}
+            name="upazillaId"
           >
             <Space style={{ width: "100%" }} direction="vertical">
               <Select
                 allowClear
                 style={{ width: "100%" }}
                 placeholder="Please select"
-                onChange={handleRadiusIpChange}
-                options={radiusIps}
-                value={selectedRadiusIp}
+                onChange={handleUpazillaChange}
+                options={upazillas}
+                value={selectedUpazilla}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* unionId */}
+          <Form.Item
+            label="union"
+            style={{
+              marginBottom: 0
+            }}
+            name="unionId"
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleUnionChange}
+                options={unions}
+                value={selectedUnion}
               />
             </Space>
           </Form.Item>
@@ -624,4 +733,4 @@ const EditClientForm = ({ item }: any) => {
   );
 };
 
-export default EditClientForm;
+export default CreateSubZoneForm;

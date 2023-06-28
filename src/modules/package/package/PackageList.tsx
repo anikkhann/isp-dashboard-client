@@ -13,12 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { PackageData } from "@/interfaces/PackageData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +23,7 @@ interface TableParams {
 }
 
 const PackageList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<PackageData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -64,11 +59,10 @@ const PackageList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/customer-package/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -120,7 +114,7 @@ const PackageList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<PackageData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -136,47 +130,74 @@ const PackageList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Partner",
+      dataIndex: "partner",
+      sorter: false,
+      render: (text, record) => {
+        return (
+          <>
+            <Space>{record.partner.name}</Space>
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Package Name",
+      dataIndex: "displayName",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
+      title: "Upload/Download Limit",
+      dataIndex: "uploadLimit",
+      sorter: false,
+      render: (text, record) => {
+        return (
+          <>
+            <Space>
+              {record.uploadLimit}
+              {record.uploadLimitUnit}/{record.downloadLimit}
+              {record.downloadLimitUnit}
+            </Space>
+          </>
+        );
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
+      title: "Validity",
+      dataIndex: "validity",
+      render: (text, record) => {
+        return (
+          <>
+            <Space>{record.validity} Days</Space>
+          </>
+        );
+      },
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
+
     {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
+      title: "Price",
+      dataIndex: "totalPrice",
+      render: (text, record) => {
+        return (
+          <>
+            <Space>{record.totalPrice} BDT</Space>
+          </>
+        );
+      },
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -203,9 +224,9 @@ const PackageList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("package.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link href={`/admin/package/package/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -221,22 +242,24 @@ const PackageList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<PackageData> | SorterResult<PackageData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<PackageData>).order) {
+      // // console.log((sorter as SorterResult<PackageData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<PackageData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<PackageData>).field) {
+      // // console.log((sorter as SorterResult<PackageData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<PackageData>).field as string);
     }
   };
 
@@ -278,10 +301,10 @@ const PackageList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Packages List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/package/package/create"
+            permission="package.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

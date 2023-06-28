@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
+import EditClientForm from "@/components/forms/client/EditClientForm";
 import { UserData } from "@/interfaces/UserData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -15,7 +15,6 @@ const EditClient = ({ id }: any) => {
   const [item, SetItem] = useState<UserData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const response = await axios.get(`/api/partner/get-by-id/${id}`);
@@ -82,7 +81,7 @@ const EditClient = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditClientForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

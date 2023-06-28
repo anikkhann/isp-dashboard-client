@@ -27,7 +27,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const RetailList: React.FC = () => {
+const PaymentList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -279,7 +279,7 @@ const RetailList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Retails List"
             hasLink={true}
             addLink="/admin/client/client/create"
             permission="user.create"
@@ -312,4 +312,4 @@ const RetailList: React.FC = () => {
   );
 };
 
-export default RetailList;
+export default PaymentList;

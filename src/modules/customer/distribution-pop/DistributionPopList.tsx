@@ -16,8 +16,6 @@ import ability from "@/services/guard/ability";
 interface DataType {
   id: number;
   name: string;
-  slug: string;
-  group: string;
 }
 
 interface TableParams {
@@ -65,7 +63,7 @@ const DistributionPopList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/distribution-zone/get-list", body, {
+    const { data } = await axios.post("/api/distribution-pop/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -74,7 +72,7 @@ const DistributionPopList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["users-list", page, limit, order, sort],
+    queryKey: ["distribution-pop-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -137,47 +135,20 @@ const DistributionPopList: React.FC = () => {
 
     {
       title: "Zone",
-      dataIndex: "name",
-      sorter: true,
+      dataIndex: "zone",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <>{record.zone && record.zone.name ? record.zone.name : "N/A"}</>
+        );
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Pop",
-      dataIndex: "username",
+      dataIndex: "name",
       sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "phone",
-      dataIndex: "phone",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "userRoles",
-      dataIndex: "userRoles",
-      sorter: true,
-      render: (userRoles: any) => {
-        return (
-          <>
-            {userRoles.map((item: any, index: number) => (
-              <Tag color="blue" key={index}>
-                {item && item.role && item.role.name}
-              </Tag>
-            ))}
-          </>
-        );
-      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -207,9 +178,11 @@ const DistributionPopList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("distribution_pop.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/user/user/${record.id}/edit`}>
+                  <Link
+                    href={`/admin/customer/distribution-pop/${record.id}/edit`}
+                  >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -284,10 +257,10 @@ const DistributionPopList: React.FC = () => {
           )}
 
           <TableCard
-            title="Users List"
+            title="Distribution pops List"
             hasLink={true}
             addLink="/admin/user/user/create"
-            permission="user.create"
+            permission="distribution_pop.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",

@@ -9,7 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Form, Input } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { CustomerTypeData } from "@/interfaces/CustomerTypeData";
+import { DistributionZoneData } from "@/interfaces/DistributionZoneData";
 
 interface FormData {
   name: string;
@@ -20,7 +20,7 @@ interface FormData {
 }
 
 interface PropData {
-  item: CustomerTypeData;
+  item: DistributionZoneData;
 }
 
 const layout = {
@@ -28,7 +28,7 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-const EditCustomerTypeForm = ({ item }: PropData) => {
+const EditDistributionZoneForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -49,7 +49,7 @@ const EditCustomerTypeForm = ({ item }: PropData) => {
   useEffect(() => {
     if (item) {
       form.setFieldsValue({
-        name: item.title
+        name: item.name
       });
       setIsActive(item.isActive);
     }
@@ -63,23 +63,23 @@ const EditCustomerTypeForm = ({ item }: PropData) => {
 
     const formData = {
       id: item.id,
-      title: name,
+      name: name,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/customer-type/update", formData)
+        .put("/api/distribution-zone/update", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
 
           MySwal.fire({
             title: "Success",
-            text: data.message || "Customer Type Updated successfully",
+            text: data.message || "Updated successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/customer/customer-type");
+            router.replace("/admin/customer/distribution-zone");
           });
         })
         .catch(err => {
@@ -162,4 +162,4 @@ const EditCustomerTypeForm = ({ item }: PropData) => {
   );
 };
 
-export default EditCustomerTypeForm;
+export default EditDistributionZoneForm;

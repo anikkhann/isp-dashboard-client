@@ -1,7 +1,7 @@
-import ZoneLayout from "@/core/layouts/ZoneLayout";
+import SubZoneLayout from "@/core/layouts/SubZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewZoneInCharge from "@/modules/zone/zone-in-charge/NewZoneInCharge";
+import NewSubZoneInCharge from "@/modules/sub-zone/sub-zone-in-charge/NewSubZoneInCharge";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,11 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewZoneInCharge /> : <Forbidden />}
+      {ability.can("user.create", "") ? <NewSubZoneInCharge /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <ZoneLayout>{page}</ZoneLayout>;
+Home.getLayout = (page: ReactNode) => <SubZoneLayout>{page}</SubZoneLayout>;
 
 export default Home;

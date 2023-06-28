@@ -49,7 +49,6 @@ const RetailList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -65,7 +64,7 @@ const RetailList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        partnerType: "retailer"
       }
     };
 
@@ -78,7 +77,7 @@ const RetailList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["retailer-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -206,7 +205,7 @@ const RetailList: React.FC = () => {
             <Space size="middle" align="center">
               {ability.can("user.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link href={`/admin/retail/retail/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -279,9 +278,9 @@ const RetailList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Retails List"
             hasLink={true}
-            addLink="/admin/client/client/create"
+            addLink="/admin/retail/retail/create"
             permission="user.create"
             style={{
               borderRadius: "10px",

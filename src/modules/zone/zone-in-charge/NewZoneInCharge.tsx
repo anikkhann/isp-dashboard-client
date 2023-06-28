@@ -1,4 +1,4 @@
-import CreateClientForm from "@/components/forms/client/CreateClientForm";
+import CreateZoneForm from "@/components/forms/zone/CreateZoneForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -42,7 +42,7 @@ const NewZoneInCharge = () => {
             textAlign: "center"
           }}
         >
-          <CreateClientForm />
+          <CreateZoneForm />
         </Card>
       </AppRowContainer>
     </>

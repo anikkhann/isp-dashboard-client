@@ -1,7 +1,7 @@
-import ZoneLayout from "@/core/layouts/ZoneLayout";
+import SubZoneLayout from "@/core/layouts/SubZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditZoneInCharge from "@/modules/zone/zone-in-charge/EditZoneInCharge";
+import EditSubZoneInCharge from "@/modules/sub-zone/sub-zone-in-charge/EditSubZoneInCharge";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,7 +18,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("user.update", "") ? (
-        <EditZoneInCharge id={id} />
+        <EditSubZoneInCharge id={id} />
       ) : (
         <Forbidden />
       )}
@@ -26,6 +26,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => <ZoneLayout>{page}</ZoneLayout>;
+Home.getLayout = (page: ReactNode) => <SubZoneLayout>{page}</SubZoneLayout>;
 
 export default Home;

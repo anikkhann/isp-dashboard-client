@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
+import EditRetailForm from "@/components/forms/retail/EditRetailForm";
 import { UserData } from "@/interfaces/UserData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -15,7 +15,6 @@ const EditRetail = ({ id }: any) => {
   const [item, SetItem] = useState<UserData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const response = await axios.get(`/api/partner/get-by-id/${id}`);
@@ -23,7 +22,7 @@ const EditRetail = ({ id }: any) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["retailer-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -57,19 +56,19 @@ const EditRetail = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/retail">Retail Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/retail/retail">Retail</Link>
             },
             {
-              title: "Edit Client"
+              title: "Edit Retail"
             }
           ]}
         />
 
         <Card
-          title="Edit Client"
+          title="Edit Retail"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -82,7 +81,7 @@ const EditRetail = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditRetailForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
