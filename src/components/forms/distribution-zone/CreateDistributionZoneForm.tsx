@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
@@ -9,18 +9,8 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Form, Input } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { CustomerTypeData } from "@/interfaces/CustomerTypeData";
-
 interface FormData {
   name: string;
-  packageType: string;
-  slabStart: string;
-  slabEnd: string;
-  chargeAmount: string;
-}
-
-interface PropData {
-  item: CustomerTypeData;
 }
 
 const layout = {
@@ -28,7 +18,7 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-const EditCustomerTypeForm = ({ item }: PropData) => {
+const CreateDistributionZoneForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -46,40 +36,29 @@ const EditCustomerTypeForm = ({ item }: PropData) => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  useEffect(() => {
-    if (item) {
-      form.setFieldsValue({
-        name: item.title
-      });
-      setIsActive(item.isActive);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
-
   const onSubmit = (data: FormData) => {
     console.log(data);
 
     const { name } = data;
 
     const formData = {
-      id: item.id,
-      title: name,
+      name: name,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/customer-type/update", formData)
+        .post("/api/distribution-zone/create", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
 
           MySwal.fire({
             title: "Success",
-            text: data.message || "Customer Type Updated successfully",
+            text: data.message || "Added successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/customer/customer-type");
+            router.replace("/admin/customer/distribution-zone");
           });
         })
         .catch(err => {
@@ -162,4 +141,4 @@ const EditCustomerTypeForm = ({ item }: PropData) => {
   );
 };
 
-export default EditCustomerTypeForm;
+export default CreateDistributionZoneForm;

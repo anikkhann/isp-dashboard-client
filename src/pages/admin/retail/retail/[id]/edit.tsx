@@ -1,7 +1,7 @@
-import ZoneLayout from "@/core/layouts/ZoneLayout";
+import RetailLayout from "@/core/layouts/RetailLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditZoneInCharge from "@/modules/zone/zone-in-charge/EditZoneInCharge";
+import EditRetail from "@/modules/retail/retail/EditRetail";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -17,15 +17,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.update", "") ? (
-        <EditZoneInCharge id={id} />
-      ) : (
-        <Forbidden />
-      )}
+      {ability.can("user.update", "") ? <EditRetail id={id} /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <ZoneLayout>{page}</ZoneLayout>;
+Home.getLayout = (page: ReactNode) => <RetailLayout>{page}</RetailLayout>;
 
 export default Home;

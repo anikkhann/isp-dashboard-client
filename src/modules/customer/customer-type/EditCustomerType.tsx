@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import EditCustomerTypeForm from "@/components/forms/customer-type/EditCustomerTypeForm";
-import { CustomerTypeData } from "@/interfaces/CustomerData";
+import { CustomerTypeData } from "@/interfaces/CustomerTypeData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";

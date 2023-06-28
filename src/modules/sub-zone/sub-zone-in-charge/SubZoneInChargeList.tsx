@@ -49,7 +49,6 @@ const SubZoneInChargeList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -65,7 +64,7 @@ const SubZoneInChargeList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        partnerType: "sub_zone"
       }
     };
 
@@ -78,7 +77,7 @@ const SubZoneInChargeList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["sub-zone-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -206,7 +205,9 @@ const SubZoneInChargeList: React.FC = () => {
             <Space size="middle" align="center">
               {ability.can("user.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link
+                    href={`/admin/sub-zone/sub-zone-in-charge/${record.id}/edit`}
+                  >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -279,9 +280,9 @@ const SubZoneInChargeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Sub Zones List"
             hasLink={true}
-            addLink="/admin/client/client/create"
+            addLink="/admin/sub-zone/sub-zone-in-charge/create"
             permission="user.create"
             style={{
               borderRadius: "10px",

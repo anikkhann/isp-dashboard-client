@@ -1,4 +1,4 @@
-import ZoneLayout from "@/core/layouts/ZoneLayout";
+import SubZoneLayout from "@/core/layouts/SubZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
 import SubZoneInChargeList from "@/modules/sub-zone/sub-zone-in-charge/SubZoneInChargeList";
@@ -18,6 +18,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => <ZoneLayout>{page}</ZoneLayout>;
+Home.getLayout = (page: ReactNode) => <SubZoneLayout>{page}</SubZoneLayout>;
 
 export default Home;

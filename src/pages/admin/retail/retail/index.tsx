@@ -1,7 +1,7 @@
-import ZoneLayout from "@/core/layouts/ZoneLayout";
+import RetailLayout from "@/core/layouts/RetailLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import ZoneInChargeList from "@/modules/zone/zone-in-charge/ZoneInChargeList";
+import RetailList from "@/modules/retail/retail/RetailList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,11 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <ZoneInChargeList /> : <Forbidden />}
+      {ability.can("user.view", "") ? <RetailList /> : <Forbidden />}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <ZoneLayout>{page}</ZoneLayout>;
+Home.getLayout = (page: ReactNode) => <RetailLayout>{page}</RetailLayout>;
 
 export default Home;

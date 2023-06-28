@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import React from "react";
 
-const NewRetail = () => {
+const NewPayment = () => {
   return (
     <>
       <AppRowContainer>
@@ -47,4 +47,4 @@ const NewRetail = () => {
   );
 };
 
-export default NewRetail;
+export default NewPayment;

@@ -1,4 +1,4 @@
-import CreateUserForm from "@/components/forms/user/CreateUserForm";
+import CreateDistributionZoneForm from "@/components/forms/distribution-zone/CreateDistributionZoneForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,10 +19,14 @@ const NewDistributionZone = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">Customer</Link>
+              title: <Link href="/admin/customer">Customer</Link>
             },
             {
-              title: <Link href="/admin/user/user">Distribution Zone</Link>
+              title: (
+                <Link href="/admin/customer/distribution-zone">
+                  Distribution Zone
+                </Link>
+              )
             },
             {
               title: "New Distribution Zone"
@@ -40,7 +44,7 @@ const NewDistributionZone = () => {
             textAlign: "center"
           }}
         >
-          <CreateUserForm />
+          <CreateDistributionZoneForm />
         </Card>
       </AppRowContainer>
     </>

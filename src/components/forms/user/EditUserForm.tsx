@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { Alert, Button, Checkbox, Form, Input, Select, Space } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { UserData } from "@/interfaces/UserData";
@@ -41,9 +41,60 @@ const EditUserForm = ({ item }: PropData) => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  const [roles, setRoles] = useState<any[]>([]);
+  const [checkedList, setCheckedList] = useState<any[]>([]);
+
+  const handleRoleChange = (value: any[]) => {
+    // console.log("checked = ", value);
+    setCheckedList(value as any[]);
+  };
+
+  const getRoles = async () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+
+    const res = await axios.post("/api/role/get-list", body);
+    if (res.data.status == 200) {
+      // console.log(res.data.data.roles);
+
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRoles(items);
+    }
+  };
+  useEffect(() => {
+    getRoles();
+  }, []);
+
+  useEffect(() => {
+    if (item) {
+      const checked = item.userRoles.map((item: any) => {
+        return item.roleId;
+      });
+      setCheckedList(checked);
+
+      setIsActive(item.isActive);
+    }
+  }, [item]);
+
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
+
+  // userRoles
 
   const onSubmit = (data: AdminFormData) => {
     // console.log(data)
@@ -55,7 +106,8 @@ const EditUserForm = ({ item }: PropData) => {
       email: email,
       username: username,
       phone: phone,
-      isActive: isActive
+      isActive: isActive,
+      roleIds: checkedList
     };
 
     try {
@@ -215,13 +267,32 @@ const EditUserForm = ({ item }: PropData) => {
           </Form.Item>
 
           <Form.Item
+            label="Roles"
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleRoleChange}
+                options={roles}
+                value={checkedList}
+              />
+            </Space>
+          </Form.Item>
+
+          <Form.Item
             label=""
             style={{
               marginBottom: 0
             }}
           >
             <Checkbox onChange={handleActive} checked={isActive}>
-              Status
+              Active
             </Checkbox>
           </Form.Item>
 
