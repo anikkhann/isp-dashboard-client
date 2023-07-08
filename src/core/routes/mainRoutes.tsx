@@ -39,7 +39,7 @@ const mainRoutes = [
 
   {
     key: "/admin/retail",
-    label: "Retail in Charge",
+    label: "Retail In Charge",
     path: "/admin/retail",
     icon: <SettingOutlined />,
     permission: "dashboard.view"

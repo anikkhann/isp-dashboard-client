@@ -6,7 +6,7 @@ import AppImage from "@/lib/AppImage";
 const AppLogo = () => {
   return (
     <StyledAppLogo>
-      <AppImage src="/assets/logo.jpeg" alt="logo" />
+      <AppImage src="/assets/logo.png" alt="logo" />
     </StyledAppLogo>
   );
 };
