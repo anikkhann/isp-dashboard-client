@@ -13,6 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
+import { format } from "date-fns";
 // import { useRouter } from "next/router";
 
 // import Swal from "sweetalert2";
@@ -48,9 +49,6 @@ const PermissionList: React.FC = () => {
       pageSize: 10
     }
   });
-
-  // const MySwal = withReactContent(Swal);
-  // const router = useRouter();
 
   const fetchData = async (
     page: number,
@@ -128,44 +126,6 @@ const PermissionList: React.FC = () => {
     }
   }, [tableData]);
 
-  // actions
-
-  /* async function handleDelete(id: number) {
-    try {
-      const result = await MySwal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#570DF8",
-        cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, delete it!"
-      });
-
-      if (result.isConfirmed) {
-        const { data } = await axios.delete(`/api/v1/admins/${id}`);
-        if (data.success) {
-          MySwal.fire("Deleted!", data.data.message, "success").then(() => {
-            router.reload();
-          });
-        } else {
-          MySwal.fire("Error!", data.message, "error");
-        }
-      } else if (result.isDismissed) {
-        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
-      }
-    } catch (error: any) {
-      // // console.log(error);
-      if (error.response) {
-        MySwal.fire("Error!", error.response.data.message, "error");
-      } else {
-        MySwal.fire("Error!", "Something went wrong", "error");
-      }
-    }
-  } */
-
-  // // console.log(error, isLoading, isError)
-
   const columns: ColumnsType<DataType> = [
     {
       title: "Serial",
@@ -210,6 +170,60 @@ const PermissionList: React.FC = () => {
           </>
         );
       },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "d-M-Y h:i p")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "d-M-Y h:i p")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    // insertedBy
+
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
       width: "20%",
       align: "center" as AlignType
     },

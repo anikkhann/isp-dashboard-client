@@ -473,14 +473,14 @@ const EditRetailForm = ({ item }: any) => {
 
           <Form.Item
             name="salesDistributionCommission"
-            label="Revenue Share(%)"
+            label="S&D Commission"
             style={{
               marginBottom: 0
             }}
           >
             <Input
               type="text"
-              placeholder="Revenue Share(%)"
+              placeholder="S&D Commission"
               className={`form-control`}
               name="salesDistributionCommission"
             />
