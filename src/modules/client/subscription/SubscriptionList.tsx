@@ -192,35 +192,7 @@ const SubscriptionList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    // createdOn
-    {
-      title: "Created At",
-      dataIndex: "createdOn",
-      sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "d-M-Y h:i p")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    // updatedOn
-    {
-      title: "Updated At",
-      dataIndex: "updatedOn",
-      sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "d-M-Y h:i p")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-
     // insertedBy
-
     {
       title: "Created By",
       dataIndex: "insertedBy",
@@ -229,10 +201,22 @@ const SubscriptionList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
-
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     // editedBy
     {
       title: "Updated By",
@@ -243,10 +227,22 @@ const SubscriptionList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
-
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",

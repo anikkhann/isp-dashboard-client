@@ -34,9 +34,9 @@ const complaintRoutes = [
   },
 
   {
-    key: "/admin/complaint/check-list",
+    key: "/admin/complaint/checklist",
     label: "Check List",
-    path: "/admin/complaint/check-list",
+    path: "/admin/complaint/checklist",
     icon: <SettingOutlined />,
     permission: "dashboard.view"
   },

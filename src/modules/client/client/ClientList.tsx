@@ -126,49 +126,49 @@ const ClientList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      // width: "10%",
       align: "center" as AlignType
     },
     {
       title: "Name",
       dataIndex: "name",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Username",
       dataIndex: "username",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Contact Person",
       dataIndex: "contactPerson",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Contact Number",
       dataIndex: "contactNumber",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Email",
       dataIndex: "email",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Address",
       dataIndex: "address",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
@@ -186,7 +186,20 @@ const ClientList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
       align: "center" as AlignType
     },
     // createdOn
@@ -197,39 +210,11 @@ const ClientList: React.FC = () => {
       render: (createdOn: any) => {
         if (!createdOn) return "-";
         const date = new Date(createdOn);
-        return <>{format(date, "d-M-Y h:i p")}</>;
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
-    // updatedOn
-    {
-      title: "Updated At",
-      dataIndex: "updatedOn",
-      sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "d-M-Y h:i p")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-
-    // insertedBy
-
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-
     // editedBy
     {
       title: "Updated By",
@@ -240,7 +225,20 @@ const ClientList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      width: "20%",
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
       align: "center" as AlignType
     },
 

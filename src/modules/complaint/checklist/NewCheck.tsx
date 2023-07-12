@@ -1,11 +1,11 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateChecklistForm from "@/components/forms/checklist/CreateChecklistForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewNetwork = () => {
+const NewCheck = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,19 +19,19 @@ const NewNetwork = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/complain">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/complain/checklist">Checklist</Link>
             },
             {
-              title: "New Client"
+              title: "New Checklist"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New Checklist"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,11 +40,11 @@ const NewNetwork = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateChecklistForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewNetwork;
+export default NewCheck;

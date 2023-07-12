@@ -14,7 +14,7 @@ const accountRoutes = [
     label: "Client Dashboard",
     path: "/admin/client",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "client.dashboard"
   },
 
   {
@@ -22,7 +22,7 @@ const accountRoutes = [
     label: "Client",
     path: "/admin/client/client",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "client.list"
   },
 
   {

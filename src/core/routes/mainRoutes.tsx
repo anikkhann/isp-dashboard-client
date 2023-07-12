@@ -18,7 +18,7 @@ const mainRoutes = [
     label: "Client Management",
     path: "/admin/client",
     icon: <UserOutlined />,
-    permission: "dashboard.view"
+    permission: "client.dashboard"
   },
 
   {

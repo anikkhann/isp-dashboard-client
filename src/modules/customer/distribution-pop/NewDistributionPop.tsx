@@ -1,4 +1,4 @@
-import CreateUserForm from "@/components/forms/user/CreateUserForm";
+import CreateDistributionPopForm from "@/components/forms/distribution-pop/CreateDistributionPopForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,19 +19,23 @@ const NewDistributionPop = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/customer">Customer Dashboard</Link>
             },
             {
-              title: <Link href="/admin/user/user">User</Link>
+              title: (
+                <Link href="/admin/customer/distribution-pop">
+                  Distribution Pop
+                </Link>
+              )
             },
             {
-              title: "New User"
+              title: "New Distribution Pop"
             }
           ]}
         />
 
         <Card
-          title="New User"
+          title="New Distribution Pop"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,7 +44,7 @@ const NewDistributionPop = () => {
             textAlign: "center"
           }}
         >
-          <CreateUserForm />
+          <CreateDistributionPopForm />
         </Card>
       </AppRowContainer>
     </>
