@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditComplainTypeForm from "@/components/forms/complain-type/EditComplainTypeForm";
+import { ComplainTypeData } from "@/interfaces/ComplainTypeData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,19 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditNetwork = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+const EditComplainType = ({ id }: any) => {
+  const [item, SetItem] = useState<ComplainTypeData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/partner/get-by-id/${id}`);
+    const response = await axios.get(`/api/complain-type/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["complain-type-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -57,19 +56,21 @@ const EditNetwork = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/complaint/complain-type">Complain Type</Link>
+              )
             },
             {
-              title: "Edit Client"
+              title: "Edit Complain Type"
             }
           ]}
         />
 
         <Card
-          title="Edit Client"
+          title="Edit Complain Type"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -82,11 +83,11 @@ const EditNetwork = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditComplainTypeForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditNetwork;
+export default EditComplainType;

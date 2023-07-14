@@ -1,9 +1,8 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
+import NewRootCause from "@/modules/complaint/root-cause/NewRootCause";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
-
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
@@ -14,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("user.create", "") ? <NewRootCause /> : <Forbidden />}
     </>
   );
 };

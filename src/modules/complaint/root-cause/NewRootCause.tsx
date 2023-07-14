@@ -1,11 +1,11 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateRootCauseForm from "@/components/forms/root-cause/CreateRootCauseForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewIpManagement = () => {
+const NewRootCause = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,19 +19,19 @@ const NewIpManagement = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/complain">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/complain/root-cause">Root Cause</Link>
             },
             {
-              title: "New Client"
+              title: "New Root Cause"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New Root Cause"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,11 +40,11 @@ const NewIpManagement = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateRootCauseForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewIpManagement;
+export default NewRootCause;

@@ -13,12 +13,8 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { format } from "date-fns";
+import { RootCauseData } from "@/interfaces/RootCauseData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -27,8 +23,8 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const NetworkList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+const RootCauseList: React.FC = () => {
+  const [data, setData] = useState<RootCauseData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -49,7 +45,6 @@ const NetworkList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -69,7 +64,7 @@ const NetworkList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/root-cause/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,7 +73,7 @@ const NetworkList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["complain-type-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -121,7 +116,7 @@ const NetworkList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<RootCauseData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -137,47 +132,20 @@ const NetworkList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Title",
+      dataIndex: "title",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
+      title: "Root Cause Category",
+      dataIndex: "rootCauseCategory",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -196,6 +164,57 @@ const NetworkList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -206,7 +225,7 @@ const NetworkList: React.FC = () => {
             <Space size="middle" align="center">
               {ability.can("user.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link href={`/admin/complaint/root-cause/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -222,22 +241,20 @@ const NetworkList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<RootCauseData> | SorterResult<RootCauseData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
-
+    if (sorter && (sorter as SorterResult<RootCauseData>).order) {
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<RootCauseData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
-
-      SetSort((sorter as SorterResult<DataType>).field as string);
+    if (sorter && (sorter as SorterResult<RootCauseData>).field) {
+      SetSort((sorter as SorterResult<RootCauseData>).field as string);
     }
   };
 
@@ -279,9 +296,9 @@ const NetworkList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Root Cause List"
             hasLink={true}
-            addLink="/admin/client/client/create"
+            addLink="/admin/complaint/root-cause/create"
             permission="user.create"
             style={{
               borderRadius: "10px",
@@ -312,4 +329,4 @@ const NetworkList: React.FC = () => {
   );
 };
 
-export default NetworkList;
+export default RootCauseList;

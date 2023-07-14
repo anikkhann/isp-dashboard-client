@@ -1,8 +1,8 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
+import EditDistributionPop from "@/modules/customer/distribution-pop/EditDistributionPop";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/user/user/EditUser";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,7 +18,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.update", "") ? <EditAdmin id={id} /> : <Forbidden />}
+      {ability.can("client.update", "") ? (
+        <EditDistributionPop id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

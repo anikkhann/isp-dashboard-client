@@ -13,6 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
+import { format } from "date-fns";
 interface DataType {
   id: number;
   name: string;
@@ -27,7 +28,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const IpManagementList: React.FC = () => {
+const ComplainTypeList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -69,7 +70,7 @@ const IpManagementList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/complain-type/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,7 +79,7 @@ const IpManagementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["complain-type-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -144,40 +145,13 @@ const IpManagementList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
+      title: "Complain Category",
+      dataIndex: "complainCategory",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -196,6 +170,57 @@ const IpManagementList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -206,7 +231,9 @@ const IpManagementList: React.FC = () => {
             <Space size="middle" align="center">
               {ability.can("user.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link
+                    href={`/admin/complaint/complain-type/${record.id}/edit`}
+                  >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -228,15 +255,11 @@ const IpManagementList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
-
       SetOrder(
         (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
-
       SetSort((sorter as SorterResult<DataType>).field as string);
     }
   };
@@ -279,9 +302,9 @@ const IpManagementList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Complain Types List"
             hasLink={true}
-            addLink="/admin/client/client/create"
+            addLink="/admin/complaint/complain-type/create"
             permission="user.create"
             style={{
               borderRadius: "10px",
@@ -312,4 +335,4 @@ const IpManagementList: React.FC = () => {
   );
 };
 
-export default IpManagementList;
+export default ComplainTypeList;

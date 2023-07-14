@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/router";
-
-// ** Third Party Imports
-import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -33,17 +27,16 @@ interface PermissionFormData {
   tag: string;
 }
 
-const schema = yup.object().shape({
-  displayName: yup.string().max(200).required("Display Name is required"),
-  tag: yup.string().max(200).required("Tag is required")
-});
-
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 18 }
 };
 
 const tagsList = [
+  {
+    label: "Dashboard",
+    value: "dashboard"
+  },
   {
     label: "Create",
     value: "create"
@@ -79,6 +72,8 @@ const tagsList = [
 ];
 
 const EditPermissionForm = ({ item }: PropData) => {
+  const [form] = Form.useForm();
+
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -96,28 +91,15 @@ const EditPermissionForm = ({ item }: PropData) => {
   useEffect(() => {
     if (item) {
       const checked = item.actionTags;
+      form.setFieldsValue({
+        actionTags: checked
+      });
       setActionTags(checked);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
-  const defaultValues = {
-    displayName: item.displayName || "",
-    tag: item.tag || ""
-  };
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    defaultValues,
-    mode: "onBlur",
-    resolver: yupResolver(schema)
-  });
-
   const onSubmit = (data: PermissionFormData) => {
-    // console.log(data, actionTags);
-
     const { displayName, tag } = data;
     try {
       const token = Cookies.get("token");
@@ -165,7 +147,8 @@ const EditPermissionForm = ({ item }: PropData) => {
         <Form
           // {...layout}
           autoComplete="off"
-          onFinish={handleSubmit(onSubmit)}
+          onFinish={onSubmit}
+          form={form}
           style={{
             width: "100%"
           }}
@@ -175,6 +158,11 @@ const EditPermissionForm = ({ item }: PropData) => {
           labelWrap
           wrapperCol={{ flex: 1 }}
           colon={false}
+          initialValues={{
+            displayName: item.displayName || "",
+            tag: item.tag || "",
+            actionTags: item.actionTags || []
+          }}
         >
           <Form.Item
             label="Display Name"
@@ -182,28 +170,19 @@ const EditPermissionForm = ({ item }: PropData) => {
               marginBottom: 0
             }}
             name="displayName"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Display Name!"
+              }
+            ]}
           >
-            <Controller
+            <Input
+              type="text"
+              placeholder="displayName"
+              className={`form-control`}
               name="displayName"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <Input
-                  type="text"
-                  placeholder="Display Name"
-                  className={`form-control ${
-                    errors.displayName ? "is-invalid" : ""
-                  }`}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  name="displayName"
-                />
-              )}
             />
-            {errors.displayName && (
-              <div className="text-danger">{errors.displayName.message}</div>
-            )}
           </Form.Item>
 
           <Form.Item
@@ -212,26 +191,19 @@ const EditPermissionForm = ({ item }: PropData) => {
               marginBottom: 0
             }}
             name="tag"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Tag!"
+              }
+            ]}
           >
-            <Controller
+            <Input
+              type="text"
+              placeholder="Tag"
+              className={`form-control`}
               name="tag"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <Input
-                  type="text"
-                  placeholder="Tag"
-                  className={`form-control ${errors.tag ? "is-invalid" : ""}`}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                  name="tag"
-                />
-              )}
             />
-            {errors.tag && (
-              <div className="text-danger">{errors.tag.message}</div>
-            )}
           </Form.Item>
 
           <Form.Item
@@ -240,6 +212,12 @@ const EditPermissionForm = ({ item }: PropData) => {
               marginBottom: 0
             }}
             name="actionTags"
+            rules={[
+              {
+                required: true,
+                message: "Please select actions"
+              }
+            ]}
           >
             <Space style={{ width: "100%" }} direction="vertical">
               <Select

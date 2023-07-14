@@ -1,11 +1,11 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateComplainTypeForm from "@/components/forms/complain-type/CreateComplainTypeForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewNetwork = () => {
+const NewComplainType = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,19 +19,19 @@ const NewNetwork = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/complaint/complain-type">Complain</Link>
             },
             {
-              title: "New Client"
+              title: "New Complain Type"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New Complain Type"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,11 +40,11 @@ const NewNetwork = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateComplainTypeForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewNetwork;
+export default NewComplainType;

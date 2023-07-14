@@ -1,8 +1,8 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
+import NewComplainType from "@/modules/complaint/complain-type/NewComplainType";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("user.create", "") ? <NewComplainType /> : <Forbidden />}
     </>
   );
 };

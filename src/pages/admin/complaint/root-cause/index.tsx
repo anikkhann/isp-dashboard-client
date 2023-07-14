@@ -1,8 +1,8 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
+import RootCauseList from "@/modules/complaint/root-cause/RootCauseList";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("user.view", "") ? <RootCauseList /> : <Forbidden />}
     </>
   );
 };

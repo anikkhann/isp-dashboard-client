@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditDistributionPopForm from "@/components/forms/distribution-pop/EditDistributionPopForm";
+import { DistributionPopData } from "@/interfaces/DistributionPopData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,18 +12,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditDistributionPop = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<DistributionPopData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/users/get-by-id/${id}`);
+    const response = await axios.get(`/api/distribution-pop/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["users-list", id],
+    queryKey: ["distribution-pop-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -39,9 +38,7 @@ const EditDistributionPop = ({ id }: any) => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (item) {
-      // // console.log('data', data)
       SetItem(item);
     }
   }, [item]);
@@ -59,19 +56,23 @@ const EditDistributionPop = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/customer">Customer Dashboard</Link>
             },
             {
-              title: <Link href="/admin/user/user">Users</Link>
+              title: (
+                <Link href="/admin/customer/distribution-pop">
+                  Distribution Pop
+                </Link>
+              )
             },
             {
-              title: "Edit User"
+              title: "Edit Distribution Pop"
             }
           ]}
         />
 
         <Card
-          title="Edit User"
+          title="Edit Distribution Pop"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -84,7 +85,7 @@ const EditDistributionPop = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditDistributionPopForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
