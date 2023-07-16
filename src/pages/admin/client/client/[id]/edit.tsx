@@ -18,7 +18,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.update", "") ? <EditClient id={id} /> : <Forbidden />}
+      {ability.can("client.update", "") ? (
+        <EditClient id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

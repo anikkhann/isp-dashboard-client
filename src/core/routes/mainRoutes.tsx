@@ -26,7 +26,7 @@ const mainRoutes = [
     label: "Zone In Charge",
     path: "/admin/zone",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "zone.dashboard"
   },
 
   {
@@ -34,7 +34,7 @@ const mainRoutes = [
     label: "Sub Zone In Charge",
     path: "/admin/sub-zone",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "subZone.dashboard"
   },
 
   {
@@ -42,7 +42,7 @@ const mainRoutes = [
     label: "Retail In Charge",
     path: "/admin/retail",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "retailInCharge.dashboard"
   },
 
   {
@@ -50,7 +50,7 @@ const mainRoutes = [
     label: "Device Management",
     path: "/admin/device",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "device.dashboard"
   },
 
   {
@@ -58,7 +58,7 @@ const mainRoutes = [
     label: "Package Management",
     path: "/admin/package",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "package.dashboard"
   },
 
   {
@@ -66,7 +66,7 @@ const mainRoutes = [
     label: "Customer Management",
     path: "/admin/customer",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "customer.dashboard"
   },
 
   {
@@ -74,7 +74,7 @@ const mainRoutes = [
     label: "Complaint Management",
     path: "/admin/complaint",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "complaint.dashboard"
   },
 
   {
@@ -82,7 +82,7 @@ const mainRoutes = [
     label: "Users Management",
     path: "/admin/user",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "user.dashboard"
   },
 
   {
@@ -90,7 +90,7 @@ const mainRoutes = [
     label: "Top-Up Management",
     path: "/admin/top-up",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "topUp.dashboard"
   },
 
   {
@@ -98,7 +98,7 @@ const mainRoutes = [
     label: "Customer Care",
     path: "/admin/customer-care",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "customerCare.dashboard"
   },
 
   {
@@ -106,7 +106,7 @@ const mainRoutes = [
     label: "Notification Management",
     path: "/admin/notification",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "notification.dashboard"
   },
 
   {
@@ -114,7 +114,7 @@ const mainRoutes = [
     label: "Payment Gateway",
     path: "/admin/payment",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "payment.dashboard"
   },
 
   {
@@ -122,7 +122,7 @@ const mainRoutes = [
     label: "Accounting & Billing",
     path: "/admin/accounting",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "accounting.dashboard"
   }
 ];
 

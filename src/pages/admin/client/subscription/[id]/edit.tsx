@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.update", "") ? (
+      {ability.can("subscription.update", "") ? (
         <EditSubscription id={id} />
       ) : (
         <Forbidden />

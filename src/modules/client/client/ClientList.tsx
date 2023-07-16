@@ -250,7 +250,7 @@ const ClientList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("client.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/client/client/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
@@ -328,7 +328,7 @@ const ClientList: React.FC = () => {
             title="Clients List"
             hasLink={true}
             addLink="/admin/client/client/create"
-            permission="user.create"
+            permission="client.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

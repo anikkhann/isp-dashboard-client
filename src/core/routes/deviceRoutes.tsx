@@ -14,7 +14,7 @@ const deviceRoutes = [
     label: "Device Dashboard",
     path: "/admin/device",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "device.dashboard"
   },
 
   {
@@ -22,7 +22,7 @@ const deviceRoutes = [
     label: "Device",
     path: "/admin/device/device",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "device.list"
   },
 
   {
@@ -30,7 +30,7 @@ const deviceRoutes = [
     label: "Network",
     path: "/admin/device/network",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "ipSubnet.list"
   },
 
   {
@@ -38,7 +38,7 @@ const deviceRoutes = [
     label: "IP Management",
     path: "/admin/device/ip-management",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "ip.list"
   }
 ];
 

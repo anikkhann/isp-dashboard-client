@@ -251,7 +251,7 @@ const SubscriptionList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("subscription.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/client/subscription/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
@@ -333,7 +333,7 @@ const SubscriptionList: React.FC = () => {
             title="Subscriptions List"
             hasLink={true}
             addLink="/admin/client/subscription/create"
-            permission="user.create"
+            permission="subscription.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

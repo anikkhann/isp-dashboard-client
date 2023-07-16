@@ -30,7 +30,7 @@ const accountRoutes = [
     label: "Subscription",
     path: "/admin/client/subscription",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "subscription.list"
   }
 ];
 

@@ -18,14 +18,6 @@ const complaintRoutes = [
   },
 
   {
-    key: "/admin/complaint/ticket-category",
-    label: "Ticket Category",
-    path: "/admin/complaint/ticket-category",
-    icon: <SettingOutlined />,
-    permission: "dashboard.view"
-  },
-
-  {
     key: "/admin/complaint/complain-type",
     label: "Complain Type",
     path: "/admin/complaint/complain-type",
