@@ -14,7 +14,7 @@ const zoneRoutes = [
     label: "Zone Dashboard",
     path: "/admin/zone",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "zone.dashboard"
   },
 
   {
@@ -22,7 +22,7 @@ const zoneRoutes = [
     label: "Zone In Charge",
     path: "/admin/zone/zone-in-charge",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "zone.list"
   }
 ];
 
