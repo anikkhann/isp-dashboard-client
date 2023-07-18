@@ -72,6 +72,7 @@ const EditUser = ({ id }: any) => {
 
         <Card
           title="Edit User"
+          hoverable
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

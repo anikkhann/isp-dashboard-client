@@ -315,6 +315,7 @@ const UserList: React.FC = () => {
               >
                 <Card
                   title="Error"
+                  hoverable
                   style={{
                     width: 300,
                     color: "#FF5630",

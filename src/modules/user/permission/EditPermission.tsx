@@ -77,6 +77,7 @@ const EditPermission = ({ id }: any) => {
 
         <Card
           title="Edit Permission"
+          hoverable
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

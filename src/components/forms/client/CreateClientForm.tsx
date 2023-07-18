@@ -406,7 +406,7 @@ const CreateClientForm = () => {
     <>
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="mt-3">
+      <div className="my-6">
         <Form
           // {...layout}
           autoComplete="off"

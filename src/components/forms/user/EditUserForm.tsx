@@ -6,7 +6,17 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input, Select, Space } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { UserData } from "@/interfaces/UserData";
@@ -22,10 +32,10 @@ interface PropData {
   item: UserData;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const EditUserForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
@@ -162,7 +172,79 @@ const EditUserForm = ({ item }: PropData) => {
           colon={false}
           scrollToFirstError
         >
-          <Form.Item
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
+          >
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="username"
+                label="Username"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Username"
+                  className={`form-control`}
+                  name="username"
+                  readOnly
+                  disabled
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          {/* <Form.Item
             label="Name"
             style={{
               marginBottom: 0
@@ -181,9 +263,9 @@ const EditUserForm = ({ item }: PropData) => {
               className={`form-control`}
               name="name"
             />
-          </Form.Item>
+          </Form.Item> */}
 
-          <Form.Item
+          {/* <Form.Item
             name="username"
             label="Username"
             style={{
@@ -209,9 +291,86 @@ const EditUserForm = ({ item }: PropData) => {
               readOnly
               disabled
             />
-          </Form.Item>
-
-          <Form.Item
+          </Form.Item> */}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
+          >
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Email"
+                style={{
+                  marginBottom: 0
+                }}
+                name="email"
+                rules={[
+                  {
+                    type: "email",
+                    message: "The input is not valid E-mail!"
+                  },
+                  {
+                    required: true,
+                    message: "Please input your E-mail!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  className={`form-control`}
+                  name="email"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Phone"
+                style={{
+                  marginBottom: 0
+                }}
+                name="phone"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Phone!"
+                  },
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message: "Please enter correct BD Phone number."
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Phone"
+                  className={`form-control`}
+                  name="phone"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          {/* <Form.Item
             label="Email"
             style={{
               marginBottom: 0
@@ -239,9 +398,9 @@ const EditUserForm = ({ item }: PropData) => {
               className={`form-control`}
               name="email"
             />
-          </Form.Item>
+          </Form.Item> */}
 
-          <Form.Item
+          {/* <Form.Item
             label="Phone"
             style={{
               marginBottom: 0
@@ -264,9 +423,41 @@ const EditUserForm = ({ item }: PropData) => {
               className={`form-control`}
               name="phone"
             />
-          </Form.Item>
-
-          <Form.Item
+          </Form.Item> */}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
+          >
+            <Col
+              xs={24}
+              sm={24}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Roles"
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select"
+                    onChange={handleRoleChange}
+                    options={roles}
+                    value={checkedList}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
+          {/* <Form.Item
             label="Roles"
             style={{
               marginBottom: 0
@@ -283,7 +474,7 @@ const EditUserForm = ({ item }: PropData) => {
                 value={checkedList}
               />
             </Space>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label=""
@@ -295,12 +486,21 @@ const EditUserForm = ({ item }: PropData) => {
               Active
             </Checkbox>
           </Form.Item>
-
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button type="primary" htmlType="submit" shape="round">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+          {/* <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </div>
     </>

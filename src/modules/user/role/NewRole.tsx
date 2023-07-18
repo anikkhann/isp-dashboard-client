@@ -32,6 +32,7 @@ const NewRole = () => {
 
         <Card
           title="New Role"
+          hoverable
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

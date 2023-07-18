@@ -32,6 +32,7 @@ const NewPermission = () => {
 
         <Card
           title="New Permission"
+          hoverable
           style={{
             width: "80%",
             backgroundColor: "#ffffff",

@@ -32,12 +32,15 @@ const NewUser = () => {
 
         <Card
           title="New User"
+          hoverable
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: "5.5rem",
+            marginBottom: "5.5rem"
           }}
         >
           <CreateUserForm />
