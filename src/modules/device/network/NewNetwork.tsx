@@ -1,4 +1,4 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateNetworkForm from "@/components/forms/network/CreateNetworkForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,19 +19,19 @@ const NewNetwork = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/device">Device Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/device/network">Network</Link>
             },
             {
-              title: "New Client"
+              title: "New Network"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New Network"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,7 +40,7 @@ const NewNetwork = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateNetworkForm />
         </Card>
       </AppRowContainer>
     </>
