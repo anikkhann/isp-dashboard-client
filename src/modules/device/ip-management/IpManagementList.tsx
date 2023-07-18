@@ -13,12 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { IpData } from "@/interfaces/IpData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +23,7 @@ interface TableParams {
 }
 
 const IpManagementList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<IpData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -65,11 +60,10 @@ const IpManagementList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/ip-list/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,7 +72,7 @@ const IpManagementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["ip-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -91,7 +85,6 @@ const IpManagementList: React.FC = () => {
           setData(data.body);
           setTableParams({
             pagination: {
-              total: data.meta.total as number,
               pageSize: data.meta.limit,
               current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]
@@ -121,14 +114,14 @@ const IpManagementList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<IpData> = [
     {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{index + 1 * page + 1}</Space>
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },
@@ -137,43 +130,8 @@ const IpManagementList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
+      title: "ip",
+      dataIndex: "ip",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
@@ -222,22 +180,22 @@ const IpManagementList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<IpData> | SorterResult<IpData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<IpData>).order) {
+      // // console.log((sorter as SorterResult<IpData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<IpData>).order === "ascend" ? "asc" : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<IpData>).field) {
+      // // console.log((sorter as SorterResult<IpData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<IpData>).field as string);
     }
   };
 

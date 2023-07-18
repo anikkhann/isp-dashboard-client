@@ -119,7 +119,6 @@ const TransactionList: React.FC = () => {
           setData(data.body);
           setTableParams({
             pagination: {
-              total: data.meta.total as number,
               pageSize: data.meta.limit,
               current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]

@@ -72,7 +72,7 @@ const EditRole = ({ id }: any) => {
         <Card
           title="Edit Role"
           style={{
-            width: "80%",
+            width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",

@@ -1,4 +1,4 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateIPForm from "@/components/forms/ip/CreateIPForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,19 +19,21 @@ const NewIpManagement = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/device">Device Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/device/ip-management">IP Management</Link>
+              )
             },
             {
-              title: "New Client"
+              title: "New IP Management"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New IP Management"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -40,7 +42,7 @@ const NewIpManagement = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateIPForm />
         </Card>
       </AppRowContainer>
     </>

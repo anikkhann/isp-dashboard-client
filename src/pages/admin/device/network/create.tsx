@@ -1,8 +1,7 @@
 import DeviceLayout from "@/core/layouts/DeviceLayout";
 import AppLoader from "@/lib/AppLoader";
+import NewNetwork from "@/modules/device/network/NewNetwork";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
-
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
@@ -13,7 +12,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("network.create", "") ? <NewNetwork /> : <Forbidden />}
     </>
   );
 };

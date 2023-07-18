@@ -49,7 +49,6 @@ const DeviceList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -69,7 +68,7 @@ const DeviceList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/device/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,7 +77,7 @@ const DeviceList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["device-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -91,7 +90,6 @@ const DeviceList: React.FC = () => {
           setData(data.body);
           setTableParams({
             pagination: {
-              total: data.meta.total as number,
               pageSize: data.meta.limit,
               current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]
@@ -128,7 +126,7 @@ const DeviceList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{index + 1 * page + 1}</Space>
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },
