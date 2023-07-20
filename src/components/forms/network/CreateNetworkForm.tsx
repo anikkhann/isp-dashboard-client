@@ -81,6 +81,7 @@ const CreateNetworkForm = () => {
       <div className="mt-3">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -91,10 +92,10 @@ const CreateNetworkForm = () => {
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
+          /* labelCol={{ flex: "110px" }}
           labelAlign="left"
           labelWrap
-          wrapperCol={{ flex: 1 }}
+          wrapperCol={{ flex: 1 }} */
           colon={false}
           scrollToFirstError
         >

@@ -30,7 +30,7 @@ const deviceRoutes = [
     label: "Network",
     path: "/admin/device/network",
     icon: <SettingOutlined />,
-    permission: "ipSubnet.list"
+    permission: "network.list"
   },
 
   {

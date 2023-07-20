@@ -6,15 +6,13 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { Alert, Button, Form, Input, Select, Space } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { IpData } from "@/interfaces/IpData";
 
 interface FormData {
-  networkName: string;
-  networkAddress: string;
-  subnetMask: string;
+  assignedType: string;
 }
 
 const layout = {
@@ -32,47 +30,80 @@ const EditIPForm = ({ item }: PropData) => {
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const [isActive, setIsActive] = useState(true);
-
   const router = useRouter();
   const MySwal = withReactContent(Swal);
+
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleActive = (e: any) => {
-    setIsActive(e.target.checked ? true : false);
+  const handleCustomerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ customerId: value });
+    setSelectedCustomer(value as any);
   };
+
+  function getCustomers() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client"
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setCustomers(list);
+    });
+  }
+
+  useEffect(() => {
+    getCustomers();
+  }, []);
 
   useEffect(() => {
     if (item) {
-      /*  form.setFieldsValue({
-         networkName: item.networkName,
-         networkAddress: item.networkAddress,
-         subnetMask: item.subnetMask
- 
-       });
-       setIsActive(item.isActive); */
+      form.setFieldsValue({
+        ip: item.ip,
+        customerId: item.ipSubnet.partner.id
+      });
+      setSelectedCustomer(item.ipSubnet.partner.id as any);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (data: FormData) => {
     // console.log(data);
-    const { networkName, networkAddress, subnetMask } = data;
+    // const { assignedType, } = data;
 
     const formData = {
       id: item.id,
-      networkName: networkName,
-      networkAddress: networkAddress,
-      subnetMask: subnetMask,
-
-      isActive: isActive
+      assignedType: "customer",
+      customerId: selectedCustomer
     };
 
     try {
       axios
-        .put("/api/ip-subnet/update", formData)
+        .put("/api/ip-list/update", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -80,7 +111,7 @@ const EditIPForm = ({ item }: PropData) => {
             text: data.message || "Added successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/device/network");
+            router.replace("/admin/device/ip-management");
           });
         })
         .catch(err => {
@@ -106,9 +137,9 @@ const EditIPForm = ({ item }: PropData) => {
           onFinish={onSubmit}
           form={form}
           initialValues={{
-            networkName: "",
-            networkAddress: "",
-            subnetMask: ""
+            ip: item.ip,
+            assignedType: "",
+            customerId: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -119,83 +150,47 @@ const EditIPForm = ({ item }: PropData) => {
           colon={false}
           scrollToFirstError
         >
-          {/* networkName */}
+          {/* ip */}
           <Form.Item
-            label="Network Name"
+            label="IP Address"
             style={{
               marginBottom: 0
             }}
-            name="networkName"
-            rules={[
-              {
-                required: true,
-                message: "Please input your networkName!"
-              }
-            ]}
+            name="ip"
           >
             <Input
               type="text"
-              placeholder="networkName"
+              placeholder="ip"
               className={`form-control`}
-              name="networkName"
+              name="ip"
+              disabled
             />
           </Form.Item>
 
-          {/* networkAddress */}
+          {/* divisionId */}
           <Form.Item
-            label="Network Address"
+            label="Customers"
             style={{
               marginBottom: 0
             }}
-            name="networkAddress"
+            name="customerId"
             rules={[
               {
                 required: true,
-                message: "Please input your networkAddress!"
+                message: "Please select"
               }
             ]}
           >
-            <Input
-              type="text"
-              placeholder="networkAddress"
-              className={`form-control`}
-              name="networkAddress"
-            />
-          </Form.Item>
-
-          {/* subnetMask */}
-
-          <Form.Item
-            label="Subnet Mask"
-            style={{
-              marginBottom: 0
-            }}
-            name="subnetMask"
-            rules={[
-              {
-                required: true,
-                message: "Please input your subnetMask!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="subnetMask"
-              className={`form-control`}
-              name="subnetMask"
-            />
-          </Form.Item>
-
-          {/* status */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleActive} checked={isActive}>
-              Active
-            </Checkbox>
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleCustomerChange}
+                options={customers}
+                value={selectedCustomer}
+              />
+            </Space>
           </Form.Item>
 
           {/* submit */}

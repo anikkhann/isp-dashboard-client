@@ -13,12 +13,8 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { DeviceData } from "@/interfaces/DeviceData";
+import { format } from "date-fns";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +24,7 @@ interface TableParams {
 }
 
 const DeviceList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<DeviceData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -119,7 +115,7 @@ const DeviceList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<DeviceData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -135,47 +131,73 @@ const DeviceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
+      title: "Partner",
+      dataIndex: "partner",
+      sorter: false,
+      render: (partner: any) => {
+        return <>{partner ? partner.name : "N/A"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Device Name",
       dataIndex: "name",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
+      title: "Zone",
+      dataIndex: "distributionZone",
+      sorter: false,
+      render: (distributionZone: any) => {
+        return <>{distributionZone ? distributionZone.name : "N/A"}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
+      title: "Pop",
+      dataIndex: "distributionPop",
+      sorter: false,
+      render: (distributionPop: any) => {
+        return <>{distributionPop ? distributionPop.name : "N/A"}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
+      title: "Type",
+      dataIndex: "deviceType",
+      sorter: false,
+      render: (deviceType: any) => {
+        return <>{deviceType ? deviceType : "N/A"}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
+      title: "Monitoring Type",
+      dataIndex: "monitoringType",
+      sorter: false,
+      render: (monitoringType: any) => {
+        return <>{monitoringType ? monitoringType : "N/A"}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
+      title: "Ip",
+      dataIndex: "ip",
+      sorter: false,
+      render: (ip: any) => {
+        return <>{ip ? ip : "N/A"}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -194,6 +216,57 @@ const DeviceList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -202,9 +275,9 @@ const DeviceList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("device.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link href={`/admin/device/device/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -220,22 +293,22 @@ const DeviceList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<DeviceData> | SorterResult<DeviceData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<DeviceData>).order) {
+      // // console.log((sorter as SorterResult<DeviceData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<DeviceData>).order === "ascend" ? "asc" : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<DeviceData>).field) {
+      // // console.log((sorter as SorterResult<DeviceData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<DeviceData>).field as string);
     }
   };
 
@@ -277,10 +350,10 @@ const DeviceList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Devices List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/device/device/create"
+            permission="device.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
