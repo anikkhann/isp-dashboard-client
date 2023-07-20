@@ -39,8 +39,8 @@ const NewUser = () => {
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "5.5rem",
-            marginBottom: "5.5rem"
+            marginTop: "3rem",
+            marginBottom: "3rem"
           }}
         >
           <CreateUserForm />

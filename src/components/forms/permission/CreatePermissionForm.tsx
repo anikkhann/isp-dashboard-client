@@ -124,6 +124,7 @@ const CreatePermissionForm = () => {
       <div className="my-6">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -131,10 +132,10 @@ const CreatePermissionForm = () => {
             width: "100%"
           }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
           initialValues={{
@@ -149,10 +150,10 @@ const CreatePermissionForm = () => {
           >
             <Col
               xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
               xxl={8}
               className="gutter-row"
             >
@@ -179,10 +180,10 @@ const CreatePermissionForm = () => {
             </Col>
             <Col
               xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
               xxl={8}
               className="gutter-row"
             >
@@ -209,10 +210,10 @@ const CreatePermissionForm = () => {
             </Col>
             <Col
               xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
               xxl={8}
               className="gutter-row"
             >

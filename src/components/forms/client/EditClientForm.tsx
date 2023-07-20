@@ -301,6 +301,7 @@ const EditClientForm = ({ item }: any) => {
       <div className="mt-3">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -325,16 +326,27 @@ const EditClientForm = ({ item }: any) => {
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
         >
-          {/* client level */}
-          <Row justify="start">
-            <Col span={24}>
+          {/* name, username, email */}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
+          >
+            <Col
+              xs={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
               <Form.Item
                 label="Client Level"
                 style={{
@@ -360,20 +372,13 @@ const EditClientForm = ({ item }: any) => {
                 </Space>
               </Form.Item>
             </Col>
-          </Row>
-
-          {/* name, username, email */}
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
-          >
             <Col
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               <Form.Item
@@ -400,10 +405,10 @@ const EditClientForm = ({ item }: any) => {
             <Col
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               <Form.Item
@@ -435,10 +440,10 @@ const EditClientForm = ({ item }: any) => {
             <Col
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               <Form.Item
@@ -475,10 +480,10 @@ const EditClientForm = ({ item }: any) => {
             <Col
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               <Form.Item
@@ -693,24 +698,15 @@ const EditClientForm = ({ item }: any) => {
                 </Space>
               </Form.Item>
             </Col>
-            {/* <Col
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
-            ></Col>
             <Col
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
-            ></Col> */}
+            ></Col>
           </Row>
 
           {/* status */}
