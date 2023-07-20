@@ -22,7 +22,7 @@ const EditIpManagement = ({ id }: any) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["ip-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;

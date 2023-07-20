@@ -14,6 +14,7 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
 import { IpData } from "@/interfaces/IpData";
+import { format } from "date-fns";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -44,7 +45,6 @@ const IpManagementList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -137,21 +137,82 @@ const IpManagementList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Customer",
+      dataIndex: "ipSubnet",
+      render: (ipSubnet: any) => {
+        return <>{ipSubnet.partner ? ipSubnet.partner.name : "N/A"}</>;
+      },
+      sorter: false,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Status",
-      dataIndex: "isActive",
+      dataIndex: "isUsed",
       sorter: true,
-      render: (isActive: any) => {
+      render: (isUsed: any) => {
         return (
           <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
+            {isUsed ? (
+              <Tag color="red">Used</Tag>
             ) : (
-              <Tag color="red">Inactive</Tag>
+              <Tag color="green">Free</Tag>
             )}
           </>
         );
       },
       width: "20%",
+      align: "center" as AlignType
+    },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
@@ -162,9 +223,9 @@ const IpManagementList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("ip.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link href={`/admin/device/ip-management/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -237,10 +298,10 @@ const IpManagementList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
-            hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            title="ip List"
+            hasLink={false}
+            addLink="/admin/device/ip-management/create"
+            permission="ip.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

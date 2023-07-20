@@ -6,15 +6,36 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Grid,
+  Input,
+  Select,
+  Space
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { IpSubnetData } from "@/interfaces/IpSubnetData";
-
 interface FormData {
-  networkName: string;
-  networkAddress: string;
-  subnetMask: string;
+  clientLevel: string;
+  name: string;
+  username: string;
+  password: string;
+  contactPerson: string;
+  contactNumber: string;
+  altContactNumber: any;
+  email: string;
+  address: string;
+  divisionId: string;
+  districtId: string;
+  upazillaId: any;
+  unionId: any;
+  licenseTypeId: any;
+  btrcLicenseNo: any;
+  licenseExpireDate: any;
+  radiusIpId: string;
 }
 
 const layout = {
@@ -22,11 +43,18 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-interface PropData {
-  item: IpSubnetData;
-}
+const tagsList = [
+  {
+    label: "Tri Cycle",
+    value: "tri_cycle"
+  },
+  {
+    label: "Quad Cycle",
+    value: "quad_cycle"
+  }
+];
 
-const EditDeviceForm = ({ item }: PropData) => {
+const EditDeviceForm = ({ item }: any) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -37,6 +65,22 @@ const EditDeviceForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
+  const [clientLevel, setClientLevel] = useState(null);
+
+  const [divisions, setDivisions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+
+  const [radiusIps, setRadiusIps] = useState([]);
+
+  const [selectedDivision, setSelectedDivision] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+  const [selectedRadiusIp, setSelectedRadiusIp] = useState(null);
+
+  const { useBreakpoint } = Grid;
+
+  const { lg } = useBreakpoint();
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -44,43 +88,198 @@ const EditDeviceForm = ({ item }: PropData) => {
     setIsActive(e.target.checked ? true : false);
   };
 
+  const handleChange = (value: any) => {
+    console.log("checked = ", value);
+    form.setFieldsValue({ clientLevel: value });
+    setClientLevel(value as any);
+  };
+
+  const handleDivisionChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ divisionId: value });
+    setSelectedDivision(value as any);
+  };
+
+  const handleDistrictChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ districtId: value });
+    setSelectedDistrict(value as any);
+  };
+
+  const handleRadiusIpChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ radiusIpId: value });
+    setSelectedRadiusIp(value as any);
+  };
+
+  function getDivisions() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    axios.post("/api/division/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setDivisions(list);
+    });
+  }
+
+  function getDistricts(selectedDivision: string) {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        division: { id: selectedDivision }
+      }
+    };
+
+    axios.post("/api/district/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setDistricts(list);
+    });
+  }
+
+  function getRadiusIps() {
+    axios.get("/api/lookup-details/get-by-master-key/radius_ip").then(res => {
+      const { data } = res;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setRadiusIps(list);
+    });
+  }
+
+  useEffect(() => {
+    getDivisions();
+    getRadiusIps();
+  }, []);
+
   useEffect(() => {
     if (item) {
+      setClientLevel(item.clientLevel);
       form.setFieldsValue({
-        networkName: item.networkName,
-        networkAddress: item.networkAddress,
-        subnetMask: item.subnetMask
+        name: item.name,
+        username: item.username,
+        password: item.password,
+        email: item.email,
+        address: item.address,
+        altContactNumber: item.altContactNumber,
+        contactNumber: item.contactNumber,
+        districtId: item.districtId,
+        divisionId: item.divisionId,
+        contactPerson: item.contactPerson,
+        radiusIpId: item.radiusIpId,
+        clientLevel: item.clientLevel
       });
+      setSelectedDivision(item.divisionId);
+      setSelectedDistrict(item.districtId);
+      setSelectedRadiusIp(item.radiusIpId);
       setIsActive(item.isActive);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
+  useEffect(() => {
+    if (selectedDivision) {
+      getDistricts(selectedDivision);
+    }
+  }, [selectedDivision]);
+
   const onSubmit = (data: FormData) => {
-    // console.log(data);
-    const { networkName, networkAddress, subnetMask } = data;
+    const {
+      clientLevel,
+      name,
+      username,
+      email,
+      address,
+      altContactNumber,
+      contactNumber,
+      districtId,
+      divisionId,
+      contactPerson,
+      radiusIpId
+    } = data;
+
+    if (!item && !item.id) {
+      MySwal.fire({
+        title: "Error",
+        text: "Please select a client",
+        icon: "error"
+      });
+    }
 
     const formData = {
-      id: item.id,
-      networkName: networkName,
-      networkAddress: networkAddress,
-      subnetMask: subnetMask,
-
+      id: item ? item.id : null,
+      partnerType: "client",
+      clientLevel: clientLevel,
+      name: name,
+      username: username,
+      contactPerson: contactPerson,
+      contactNumber: contactNumber,
+      altContactNumber: altContactNumber,
+      email: email,
+      address: address,
+      divisionId: divisionId,
+      districtId: districtId,
+      radiusIpId: radiusIpId,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/ip-subnet/update", formData)
+        .put("/api/partner/update", formData)
         .then(res => {
+          // console.log(res);
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/device/network");
-          });
+
+          if (data.status === 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Client Update successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/client/client");
+            });
+          } else {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Client Added Failed",
+              icon: "error"
+            });
+          }
         })
         .catch(err => {
           // console.log(err);
@@ -88,7 +287,7 @@ const EditDeviceForm = ({ item }: PropData) => {
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // console.log(err)
+      // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }
@@ -105,9 +304,23 @@ const EditDeviceForm = ({ item }: PropData) => {
           onFinish={onSubmit}
           form={form}
           initialValues={{
-            networkName: "",
-            networkAddress: "",
-            subnetMask: ""
+            name: "",
+            email: "",
+            password: "",
+            username: "",
+            clientLevel: "",
+            contactPerson: "",
+            contactNumber: "",
+            altContactNumber: "",
+            divisionId: "",
+            districtId: "",
+            upazillaId: "",
+            unionId: "",
+            licenseTypeId: "",
+            btrcLicenseNo: "",
+            licenseExpireDate: "",
+            radiusIpId: "",
+            address: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -118,71 +331,273 @@ const EditDeviceForm = ({ item }: PropData) => {
           colon={false}
           scrollToFirstError
         >
-          {/* networkName */}
+          {/* client level */}
+
           <Form.Item
-            label="Network Name"
+            label="Client Level"
             style={{
               marginBottom: 0
             }}
-            name="networkName"
+            name="clientLevel"
             rules={[
               {
                 required: true,
-                message: "Please input your networkName!"
+                message: "Please select actions"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleChange}
+                options={tagsList}
+                value={clientLevel}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* name */}
+          <Form.Item
+            label="Name"
+            style={{
+              marginBottom: 0
+            }}
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Name!"
               }
             ]}
           >
             <Input
               type="text"
-              placeholder="networkName"
+              placeholder="Name"
               className={`form-control`}
-              name="networkName"
+              name="name"
             />
           </Form.Item>
 
-          {/* networkAddress */}
+          {/* username */}
           <Form.Item
-            label="Network Address"
+            name="username"
+            label="Username"
             style={{
               marginBottom: 0
             }}
-            name="networkAddress"
             rules={[
               {
                 required: true,
-                message: "Please input your networkAddress!"
+                message: "Please input your Username!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
               }
             ]}
           >
             <Input
               type="text"
-              placeholder="networkAddress"
+              placeholder="Username"
               className={`form-control`}
-              name="networkAddress"
+              name="username"
             />
           </Form.Item>
 
-          {/* subnetMask */}
-
+          {/* email */}
           <Form.Item
-            label="Subnet Mask"
+            label="Email"
             style={{
               marginBottom: 0
             }}
-            name="subnetMask"
+            name="email"
+            rules={[
+              {
+                type: "email",
+                message: "The input is not valid E-mail!"
+              },
+              {
+                required: true,
+                message: "Please input your E-mail!"
+              },
+              {
+                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                message:
+                  "Only letters, numbers, underscores and hyphens allowed"
+              }
+            ]}
+          >
+            <Input
+              type="email"
+              placeholder="Email"
+              className={`form-control`}
+              name="email"
+            />
+          </Form.Item>
+
+          {/* address */}
+          <Form.Item
+            name="address"
+            label="Address"
+            style={{
+              marginBottom: 0
+            }}
             rules={[
               {
                 required: true,
-                message: "Please input your subnetMask!"
+                message: "Please input your Address!"
               }
             ]}
           >
             <Input
               type="text"
-              placeholder="subnetMask"
+              placeholder="Address"
               className={`form-control`}
-              name="subnetMask"
+              name="address"
             />
+          </Form.Item>
+
+          {/* contact Person */}
+          <Form.Item
+            name="contactPerson"
+            label="Contact Person"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your Contact Person!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="Contact Person"
+              className={`form-control`}
+              name="contactPerson"
+            />
+          </Form.Item>
+
+          {/* contactNumber */}
+
+          <Form.Item
+            name="contactNumber"
+            label="Contact Number"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your Contact Number!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="Contact Number"
+              className={`form-control`}
+              name="contactNumber"
+            />
+          </Form.Item>
+
+          {/* altContactNumber */}
+          <Form.Item
+            name="altContactNumber"
+            label="Alt Contact Number"
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Input
+              type="text"
+              placeholder="Alt Contact Number"
+              className={`form-control`}
+              name="altContactNumber"
+            />
+          </Form.Item>
+
+          {/* divisionId */}
+          <Form.Item
+            label="Division"
+            style={{
+              marginBottom: 0,
+              marginRight: lg ? "10px" : "0px"
+            }}
+            name="divisionId"
+            rules={[
+              {
+                required: true,
+                message: "Please select Division"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleDivisionChange}
+                options={divisions}
+                value={selectedDivision}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* districtId */}
+          <Form.Item
+            label="District"
+            style={{
+              marginBottom: 0
+            }}
+            name="districtId"
+            rules={[
+              {
+                required: true,
+                message: "Please select District"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleDistrictChange}
+                options={districts}
+                value={selectedDistrict}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* radiusIpId */}
+          <Form.Item
+            label="Radius Ip"
+            style={{
+              marginBottom: 0
+            }}
+            name="radiusIpId"
+            rules={[
+              {
+                required: true,
+                message: "Please select Radius Ip"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleRadiusIpChange}
+                options={radiusIps}
+                value={selectedRadiusIp}
+              />
+            </Space>
           </Form.Item>
 
           {/* status */}
