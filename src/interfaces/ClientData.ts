@@ -1,6 +1,5 @@
 export interface ClientData {
   createdOn: number;
-  updatedOn: number | null;
   id: string;
   partnerType: string;
   clientLevel: string;
@@ -8,12 +7,19 @@ export interface ClientData {
   username: string;
   contactPerson: string;
   contactNumber: string;
+  altContactNumber: string;
   email: string;
   address: string;
   divisionId: string;
   division: Division;
   districtId: string;
   district: District;
+  upazillaId: string;
+  upazilla: Upazilla;
+  unionId: string;
+  union: Union;
+  licenseTypeId: string;
+  licenseType: LicenseType;
   licenseExpireDate: number;
   salesDistributionCommission: number;
   credits: number;
@@ -21,7 +27,6 @@ export interface ClientData {
   radiusIpId: string;
   isActive: boolean;
   insertedBy: InsertedBy;
-  editedBy: EditedBy | null;
 }
 
 export interface Division {
@@ -51,12 +56,79 @@ export interface Division2 {
   url: string;
 }
 
-export interface RadiusIp {
+export interface Upazilla {
   createdOn: number;
+  id: string;
+  district: District2;
+  name: string;
+  bnName: string;
+  url: string;
+}
+
+export interface District2 {
+  createdOn: number;
+  id: string;
+  division: Division3;
+  name: string;
+  bnName: string;
+  lat: string;
+  lon: string;
+  url: string;
+}
+
+export interface Division3 {
+  createdOn: number;
+  id: string;
+  name: string;
+  bnName: string;
+  url: string;
+}
+
+export interface Union {
+  createdOn: number;
+  id: string;
+  upazilla: Upazilla2;
+  name: string;
+  bnName: string;
+  url: string;
+}
+
+export interface Upazilla2 {
+  createdOn: number;
+  id: string;
+  district: District3;
+  name: string;
+  bnName: string;
+  url: string;
+}
+
+export interface District3 {
+  createdOn: number;
+  id: string;
+  division: Division4;
+  name: string;
+  bnName: string;
+  lat: string;
+  lon: string;
+  url: string;
+}
+
+export interface Division4 {
+  createdOn: number;
+  id: string;
+  name: string;
+  bnName: string;
+  url: string;
+}
+
+export interface LicenseType {
+  createdOn: number;
+  updatedOn: number;
   id: string;
   name: string;
   master: Master;
   isActive: boolean;
+  isSystem: boolean;
 }
 
 export interface Master {
@@ -68,20 +140,24 @@ export interface Master {
   isActive: boolean;
 }
 
-export interface InsertedBy {
+export interface RadiusIp {
+  createdOn: number;
+  id: string;
+  name: string;
+  master: Master2;
+  isActive: boolean;
+}
+
+export interface Master2 {
   createdOn: number;
   updatedOn: number;
   id: string;
   name: string;
-  username: string;
-  phone: string;
-  email: string;
+  key: string;
   isActive: boolean;
-  userType: string;
-  credits: number;
 }
 
-export interface EditedBy {
+export interface InsertedBy {
   createdOn: number;
   updatedOn: number;
   id: string;

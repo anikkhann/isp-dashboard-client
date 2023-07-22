@@ -13,12 +13,8 @@ import axios from "axios";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { CustomerData } from "@/interfaces/CustomerData";
+import { format } from "date-fns";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +24,7 @@ interface TableParams {
 }
 
 const CustomerList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<CustomerData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -65,7 +61,7 @@ const CustomerList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/distribution-zone/get-list", body, {
+    const { data } = await axios.post("/api/customer/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -74,7 +70,7 @@ const CustomerList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["users-list", page, limit, order, sort],
+    queryKey: ["customer-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -118,7 +114,7 @@ const CustomerList: React.FC = () => {
 
   // console.log(error, isLoading, isError)
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<CustomerData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -142,45 +138,6 @@ const CustomerList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "username",
-      dataIndex: "username",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "phone",
-      dataIndex: "phone",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "userRoles",
-      dataIndex: "userRoles",
-      sorter: true,
-      render: (userRoles: any) => {
-        return (
-          <>
-            {userRoles.map((item: any, index: number) => (
-              <Tag color="blue" key={index}>
-                {item && item.role && item.role.name}
-              </Tag>
-            ))}
-          </>
-        );
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
       title: "Status",
       dataIndex: "isActive",
       sorter: true,
@@ -198,6 +155,57 @@ const CustomerList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -206,9 +214,9 @@ const CustomerList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("customer.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/user/user/${record.id}/edit`}>
+                  <Link href={`/admin/customer/customer/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -224,22 +232,24 @@ const CustomerList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<CustomerData> | SorterResult<CustomerData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<CustomerData>).order) {
+      // // console.log((sorter as SorterResult<CustomerData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<CustomerData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<CustomerData>).field) {
+      // // console.log((sorter as SorterResult<CustomerData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<CustomerData>).field as string);
     }
   };
 
@@ -283,10 +293,10 @@ const CustomerList: React.FC = () => {
           )}
 
           <TableCard
-            title="Users List"
+            title="Customers List"
             hasLink={true}
-            addLink="/admin/user/user/create"
-            permission="user.create"
+            addLink="/admin/customer/customer/create"
+            permission="customer.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",

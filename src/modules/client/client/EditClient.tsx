@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import EditClientForm from "@/components/forms/client/EditClientForm";
-import { UserData } from "@/interfaces/UserData";
+import { ClientData } from "@/interfaces/ClientData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditClient = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<ClientData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -70,7 +70,7 @@ const EditClient = ({ id }: any) => {
         <Card
           title="Edit Client"
           style={{
-            width: "80%",
+            width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",

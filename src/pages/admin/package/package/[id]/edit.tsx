@@ -1,7 +1,7 @@
 import PackageLayout from "@/core/layouts/PackageLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/user/user/EditUser";
+import EditPackage from "@/modules/package/package/EditPackage";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -17,7 +17,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("admin.update", "") ? <EditAdmin id={id} /> : <Forbidden />}
+      {ability.can("package.update", "") ? (
+        <EditPackage id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

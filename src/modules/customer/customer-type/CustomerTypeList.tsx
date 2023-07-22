@@ -13,12 +13,8 @@ import axios from "axios";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { format } from "date-fns";
+import { CustomerTypeData } from "@/interfaces/CustomerTypeData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +24,7 @@ interface TableParams {
 }
 
 const CustomerTypeList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<CustomerTypeData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -117,7 +113,7 @@ const CustomerTypeList: React.FC = () => {
 
   // console.log(error, isLoading, isError)
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<CustomerTypeData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -158,6 +154,57 @@ const CustomerTypeList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -186,22 +233,24 @@ const CustomerTypeList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<CustomerTypeData> | SorterResult<CustomerTypeData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<CustomerTypeData>).order) {
+      // // console.log((sorter as SorterResult<CustomerTypeData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<CustomerTypeData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<CustomerTypeData>).field) {
+      // // console.log((sorter as SorterResult<CustomerTypeData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<CustomerTypeData>).field as string);
     }
   };
 

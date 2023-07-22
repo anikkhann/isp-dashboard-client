@@ -72,7 +72,7 @@ const PackageList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["packages-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;

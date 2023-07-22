@@ -33,7 +33,7 @@ const NewComplainType = () => {
         <Card
           title="New Complain Type"
           style={{
-            width: "80%",
+            width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
