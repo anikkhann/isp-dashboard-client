@@ -6,36 +6,34 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Form,
-  Grid,
-  Input,
-  Select,
-  Space
-} from "antd";
+import { Alert, Button, Checkbox, Form, Input, Select, Space } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+
 interface FormData {
-  clientLevel: string;
   name: string;
-  username: string;
-  password: string;
-  contactPerson: string;
-  contactNumber: string;
-  altContactNumber: any;
-  email: string;
-  address: string;
-  divisionId: string;
-  districtId: string;
-  upazillaId: any;
-  unionId: any;
-  licenseTypeId: any;
-  btrcLicenseNo: any;
-  licenseExpireDate: any;
-  radiusIpId: string;
+  deviceType: string;
+  monitoringType: string;
+  location: string;
+  secret: string;
+  incomingPort: string;
+  ip: string;
+  totalPort: string;
+  mac: string;
+  brandName: string;
+  oltType: any;
+  totalEitherPort: string;
+  totalPonPort: string;
+  apiPort: string;
+  apiUsername: string;
+  apiPassword: any;
+  snmpPortNo: any;
+  snmpVersion: any;
+  snmpCommunity: any;
+  telnetLoginName: any;
+  telnetLoginPassword: string;
+  telnetPrivilegedPassword: string;
+  telnetPonPortNumber: string;
 }
 
 const layout = {
@@ -43,14 +41,56 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-const tagsList = [
+const deviceTypeList = [
   {
-    label: "Tri Cycle",
-    value: "tri_cycle"
+    label: "NAS",
+    value: "NAS"
   },
   {
-    label: "Quad Cycle",
-    value: "quad_cycle"
+    label: "Switch",
+    value: "Switch"
+  },
+  {
+    label: "Router",
+    value: "Router"
+  },
+  {
+    label: "ONU",
+    value: "ONU"
+  },
+  {
+    label: "OLT",
+    value: "OLT"
+  }
+];
+
+const monitoringTypesList = [
+  {
+    label: "API",
+    value: "API"
+  },
+  {
+    label: "Telnet",
+    value: "Telnet"
+  },
+  {
+    label: "SNMP",
+    value: "SNMP"
+  }
+];
+
+const oltTypesList = [
+  {
+    label: "EPON",
+    value: "EPON"
+  },
+  {
+    label: "GPON",
+    value: "GPON"
+  },
+  {
+    label: "XPON",
+    value: "XPON"
   }
 ];
 
@@ -65,21 +105,19 @@ const EditDeviceForm = ({ item }: any) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [clientLevel, setClientLevel] = useState(null);
+  const [selectedDeviceType, setSelectedDeviceType] = useState(null);
+  const [selectedMonitoringType, setSelectedMonitoringType] = useState(null);
+  const [selectedOltType, setSelectedOltType] = useState(null);
 
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
+  const [distributionZones, setDistributionZones] = useState<any[]>([]);
+  const [selectedDistributionZone, setSelectedDistributionZone] = useState<
+    any[]
+  >([]);
 
-  const [radiusIps, setRadiusIps] = useState([]);
-
-  const [selectedDivision, setSelectedDivision] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
-
-  const [selectedRadiusIp, setSelectedRadiusIp] = useState(null);
-
-  const { useBreakpoint } = Grid;
-
-  const { lg } = useBreakpoint();
+  const [distributionPops, setDistributionPops] = useState<any[]>([]);
+  const [selectedDistributionPop, setSelectedDistributionPop] = useState<any[]>(
+    []
+  );
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -88,31 +126,37 @@ const EditDeviceForm = ({ item }: any) => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const handleChange = (value: any) => {
-    console.log("checked = ", value);
-    form.setFieldsValue({ clientLevel: value });
-    setClientLevel(value as any);
-  };
-
-  const handleDivisionChange = (value: any) => {
+  const handleDeviceTypeChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ divisionId: value });
-    setSelectedDivision(value as any);
+    form.setFieldsValue({ deviceType: value });
+    setSelectedDeviceType(value as any);
   };
 
-  const handleDistrictChange = (value: any) => {
+  const handleMonuitoringTypeChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ districtId: value });
-    setSelectedDistrict(value as any);
+    form.setFieldsValue({ monitoringType: value });
+    setSelectedMonitoringType(value as any);
   };
 
-  const handleRadiusIpChange = (value: any) => {
+  const handleOltTypeChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ radiusIpId: value });
-    setSelectedRadiusIp(value as any);
+    form.setFieldsValue({ oltType: value });
+    setSelectedOltType(value as any);
   };
 
-  function getDivisions() {
+  const handleDistributionZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ distributionZoneId: value });
+    setSelectedDistributionZone(value as any);
+  };
+
+  const handleDistributionPopChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ distributionPopId: value });
+    setSelectedDistributionPop(value as any);
+  };
+
+  function getDistributionZones() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -124,7 +168,7 @@ const EditDeviceForm = ({ item }: any) => {
         ]
       }
     };
-    axios.post("/api/division/get-list", body).then(res => {
+    axios.post("/api/distribution-zone/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -135,12 +179,13 @@ const EditDeviceForm = ({ item }: any) => {
         };
       });
 
-      setDivisions(list);
+      setDistributionZones(list);
     });
   }
 
-  function getDistricts(selectedDivision: string) {
+  function getDistributionPops() {
     const body = {
+      // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
@@ -148,119 +193,128 @@ const EditDeviceForm = ({ item }: any) => {
             field: "name"
           }
         ]
-      },
-      // FOR SEARCHING DATA - OPTIONAL
-      body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        division: { id: selectedDivision }
       }
     };
-
-    axios.post("/api/district/get-list", body).then(res => {
+    axios.post("/api/distribution-pop/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setDistricts(list);
-    });
-  }
 
-  function getRadiusIps() {
-    axios.get("/api/lookup-details/get-by-master-key/radius_ip").then(res => {
-      const { data } = res;
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
           value: item.id
         };
       });
-      setRadiusIps(list);
+
+      setDistributionPops(list);
     });
   }
 
   useEffect(() => {
-    getDivisions();
-    getRadiusIps();
+    getDistributionPops();
+    getDistributionZones();
   }, []);
 
   useEffect(() => {
     if (item) {
-      setClientLevel(item.clientLevel);
       form.setFieldsValue({
         name: item.name,
-        username: item.username,
-        password: item.password,
-        email: item.email,
-        address: item.address,
-        altContactNumber: item.altContactNumber,
-        contactNumber: item.contactNumber,
-        districtId: item.districtId,
-        divisionId: item.divisionId,
-        contactPerson: item.contactPerson,
-        radiusIpId: item.radiusIpId,
-        clientLevel: item.clientLevel
+        deviceType: item.deviceType,
+        monitoringType: item.monitoringType,
+        location: item.location,
+        secret: item.secret,
+        incomingPort: item.incomingPort,
+        ip: item.ip,
+        totalPort: item.totalPort,
+        mac: item.mac,
+        brandName: item.brandName,
+        oltType: item.oltType,
+        totalEitherPort: item.totalEitherPort,
+        totalPonPort: item.totalPonPort,
+        apiPort: item.apiPort,
+        apiUsername: item.apiUsername,
+        apiPassword: item.apiPassword,
+        snmpPortNo: item.snmpPortNo,
+        snmpVersion: item.snmpVersion,
+        snmpCommunity: item.snmpCommunity,
+        telnetLoginName: item.telnetLoginName,
+        telnetLoginPassword: item.telnetLoginPassword,
+        telnetPrivilegedPassword: item.telnetPrivilegedPassword,
+        telnetPonPortNumber: item.telnetPonPortNumber
       });
-      setSelectedDivision(item.divisionId);
-      setSelectedDistrict(item.districtId);
-      setSelectedRadiusIp(item.radiusIpId);
+
       setIsActive(item.isActive);
+      setSelectedDeviceType(item.deviceType);
+      setSelectedMonitoringType(item.monitoringType);
+      setSelectedOltType(item.oltType);
+      setSelectedDistributionZone(item.distributionZoneId);
+      setSelectedDistributionPop(item.distributionPopId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
-  useEffect(() => {
-    if (selectedDivision) {
-      getDistricts(selectedDivision);
-    }
-  }, [selectedDivision]);
-
   const onSubmit = (data: FormData) => {
+    console.log(data);
+
     const {
-      clientLevel,
       name,
-      username,
-      email,
-      address,
-      altContactNumber,
-      contactNumber,
-      districtId,
-      divisionId,
-      contactPerson,
-      radiusIpId
+      deviceType,
+      monitoringType,
+      location,
+      secret,
+      incomingPort,
+      ip,
+      totalPort,
+      mac,
+      brandName,
+      oltType,
+      totalEitherPort,
+      totalPonPort,
+      apiPort,
+      apiUsername,
+      apiPassword,
+      snmpPortNo,
+      snmpVersion,
+      snmpCommunity,
+      telnetLoginName,
+      telnetLoginPassword,
+      telnetPrivilegedPassword,
+      telnetPonPortNumber
     } = data;
 
-    if (!item && !item.id) {
-      MySwal.fire({
-        title: "Error",
-        text: "Please select a client",
-        icon: "error"
-      });
-    }
-
     const formData = {
-      id: item ? item.id : null,
-      partnerType: "client",
-      clientLevel: clientLevel,
+      id: item.id,
       name: name,
-      username: username,
-      contactPerson: contactPerson,
-      contactNumber: contactNumber,
-      altContactNumber: altContactNumber,
-      email: email,
-      address: address,
-      divisionId: divisionId,
-      districtId: districtId,
-      radiusIpId: radiusIpId,
+      distributionZoneId: selectedDistributionZone,
+      distributionPopId: selectedDistributionPop,
+      deviceType: deviceType,
+      monitoringType: monitoringType,
+      location: location,
+      secret: secret,
+      incomingPort: incomingPort,
+      ip: ip,
+      totalPort: totalPort,
+      mac: mac,
+      brandName: brandName,
+      oltType: oltType,
+      totalEitherPort: totalEitherPort,
+      totalPonPort: totalPonPort,
+      apiPort: apiPort,
+      apiUsername: apiUsername,
+      apiPassword: apiPassword,
+      snmpPortNo: snmpPortNo,
+      snmpVersion: snmpVersion,
+      snmpCommunity: snmpCommunity,
+      telnetLoginName: telnetLoginName,
+      telnetLoginPassword: telnetLoginPassword,
+      telnetPrivilegedPassword: telnetPrivilegedPassword,
+      telnetPonPortNumber: telnetPonPortNumber,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/partner/update", formData)
+        .put("/api/device/update", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
@@ -268,15 +322,15 @@ const EditDeviceForm = ({ item }: any) => {
           if (data.status === 200) {
             MySwal.fire({
               title: "Success",
-              text: data.message || "Client Update successfully",
+              text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/client/client");
+              router.replace("/admin/device/device");
             });
           } else {
             MySwal.fire({
               title: "Error",
-              text: data.message || "Client Added Failed",
+              text: data.message || "Added Failed",
               icon: "error"
             });
           }
@@ -287,7 +341,7 @@ const EditDeviceForm = ({ item }: any) => {
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // // console.log(err)
+      // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }
@@ -305,22 +359,28 @@ const EditDeviceForm = ({ item }: any) => {
           form={form}
           initialValues={{
             name: "",
-            email: "",
-            password: "",
-            username: "",
-            clientLevel: "",
-            contactPerson: "",
-            contactNumber: "",
-            altContactNumber: "",
-            divisionId: "",
-            districtId: "",
-            upazillaId: "",
-            unionId: "",
-            licenseTypeId: "",
-            btrcLicenseNo: "",
-            licenseExpireDate: "",
-            radiusIpId: "",
-            address: ""
+            deviceType: "",
+            monitoringType: "",
+            location: "",
+            secret: "",
+            incomingPort: "",
+            ip: "",
+            totalPort: "",
+            mac: "",
+            brandName: "",
+            oltType: "",
+            totalEitherPort: "",
+            totalPonPort: "",
+            apiPort: "",
+            apiUsername: "",
+            apiPassword: "",
+            snmpPortNo: "",
+            snmpVersion: "",
+            snmpCommunity: "",
+            telnetLoginName: "",
+            telnetLoginPassword: "",
+            telnetPrivilegedPassword: "",
+            telnetPonPortNumber: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -331,33 +391,6 @@ const EditDeviceForm = ({ item }: any) => {
           colon={false}
           scrollToFirstError
         >
-          {/* client level */}
-
-          <Form.Item
-            label="Client Level"
-            style={{
-              marginBottom: 0
-            }}
-            name="clientLevel"
-            rules={[
-              {
-                required: true,
-                message: "Please select actions"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleChange}
-                options={tagsList}
-                value={clientLevel}
-              />
-            </Space>
-          </Form.Item>
-
           {/* name */}
           <Form.Item
             label="Name"
@@ -380,159 +413,17 @@ const EditDeviceForm = ({ item }: any) => {
             />
           </Form.Item>
 
-          {/* username */}
+          {/* distributionZoneId */}
           <Form.Item
-            name="username"
-            label="Username"
+            label="Distribution Zone"
             style={{
               marginBottom: 0
             }}
+            name="distributionZoneId"
             rules={[
               {
                 required: true,
-                message: "Please input your Username!"
-              },
-              {
-                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                message:
-                  "Only letters, numbers, underscores and hyphens allowed"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Username"
-              className={`form-control`}
-              name="username"
-            />
-          </Form.Item>
-
-          {/* email */}
-          <Form.Item
-            label="Email"
-            style={{
-              marginBottom: 0
-            }}
-            name="email"
-            rules={[
-              {
-                type: "email",
-                message: "The input is not valid E-mail!"
-              },
-              {
-                required: true,
-                message: "Please input your E-mail!"
-              },
-              {
-                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                message:
-                  "Only letters, numbers, underscores and hyphens allowed"
-              }
-            ]}
-          >
-            <Input
-              type="email"
-              placeholder="Email"
-              className={`form-control`}
-              name="email"
-            />
-          </Form.Item>
-
-          {/* address */}
-          <Form.Item
-            name="address"
-            label="Address"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your Address!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Address"
-              className={`form-control`}
-              name="address"
-            />
-          </Form.Item>
-
-          {/* contact Person */}
-          <Form.Item
-            name="contactPerson"
-            label="Contact Person"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your Contact Person!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Contact Person"
-              className={`form-control`}
-              name="contactPerson"
-            />
-          </Form.Item>
-
-          {/* contactNumber */}
-
-          <Form.Item
-            name="contactNumber"
-            label="Contact Number"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your Contact Number!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Contact Number"
-              className={`form-control`}
-              name="contactNumber"
-            />
-          </Form.Item>
-
-          {/* altContactNumber */}
-          <Form.Item
-            name="altContactNumber"
-            label="Alt Contact Number"
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Input
-              type="text"
-              placeholder="Alt Contact Number"
-              className={`form-control`}
-              name="altContactNumber"
-            />
-          </Form.Item>
-
-          {/* divisionId */}
-          <Form.Item
-            label="Division"
-            style={{
-              marginBottom: 0,
-              marginRight: lg ? "10px" : "0px"
-            }}
-            name="divisionId"
-            rules={[
-              {
-                required: true,
-                message: "Please select Division"
+                message: "Please select"
               }
             ]}
           >
@@ -541,24 +432,24 @@ const EditDeviceForm = ({ item }: any) => {
                 allowClear
                 style={{ width: "100%" }}
                 placeholder="Please select"
-                onChange={handleDivisionChange}
-                options={divisions}
-                value={selectedDivision}
+                onChange={handleDistributionZoneChange}
+                options={distributionZones}
+                value={selectedDistributionZone}
               />
             </Space>
           </Form.Item>
 
-          {/* districtId */}
+          {/* distributionPopId */}
           <Form.Item
-            label="District"
+            label="Distribution Pop"
             style={{
               marginBottom: 0
             }}
-            name="districtId"
+            name="distributionPopId"
             rules={[
               {
                 required: true,
-                message: "Please select District"
+                message: "Please select"
               }
             ]}
           >
@@ -567,24 +458,24 @@ const EditDeviceForm = ({ item }: any) => {
                 allowClear
                 style={{ width: "100%" }}
                 placeholder="Please select"
-                onChange={handleDistrictChange}
-                options={districts}
-                value={selectedDistrict}
+                onChange={handleDistributionPopChange}
+                options={distributionPops}
+                value={selectedDistributionPop}
               />
             </Space>
           </Form.Item>
 
-          {/* radiusIpId */}
+          {/* deviceTypeList */}
           <Form.Item
-            label="Radius Ip"
+            label="Device Type"
             style={{
               marginBottom: 0
             }}
-            name="radiusIpId"
+            name="deviceType"
             rules={[
               {
                 required: true,
-                message: "Please select Radius Ip"
+                message: "Please select device Type"
               }
             ]}
           >
@@ -593,11 +484,415 @@ const EditDeviceForm = ({ item }: any) => {
                 allowClear
                 style={{ width: "100%" }}
                 placeholder="Please select"
-                onChange={handleRadiusIpChange}
-                options={radiusIps}
-                value={selectedRadiusIp}
+                onChange={handleDeviceTypeChange}
+                options={deviceTypeList}
+                value={selectedDeviceType}
               />
             </Space>
+          </Form.Item>
+
+          {/* monitoringTypesList */}
+          <Form.Item
+            label="Monitoring Type"
+            style={{
+              marginBottom: 0
+            }}
+            name="monitoringType"
+            rules={[
+              {
+                required: true,
+                message: "Please select"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleMonuitoringTypeChange}
+                options={monitoringTypesList}
+                value={selectedMonitoringType}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* oltTypesList */}
+          <Form.Item
+            label="OLT Type"
+            style={{
+              marginBottom: 0
+            }}
+            name="oltType"
+            rules={[
+              {
+                required: true,
+                message: "Please select"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleOltTypeChange}
+                options={oltTypesList}
+                value={selectedOltType}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* location */}
+          <Form.Item
+            name="location"
+            label="location"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your location!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="location"
+              className={`form-control`}
+              name="location"
+            />
+          </Form.Item>
+
+          {/* secret */}
+          <Form.Item
+            name="secret"
+            label="secret"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your secret!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="secret"
+              className={`form-control`}
+              name="secret"
+            />
+          </Form.Item>
+
+          {/* incomingPort */}
+          <Form.Item
+            name="incomingPort"
+            label="incomingPort"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your incomingPort!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="incomingPort"
+              className={`form-control`}
+              name="incomingPort"
+            />
+          </Form.Item>
+
+          {/* ip */}
+          <Form.Item
+            name="ip"
+            label="ip"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your ip!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="ip"
+              className={`form-control`}
+              name="ip"
+            />
+          </Form.Item>
+
+          {/* totalEitherPort */}
+          <Form.Item
+            name="totalEitherPort"
+            label="totalEitherPort"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your totalEitherPort!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="totalEitherPort"
+              className={`form-control`}
+              name="totalEitherPort"
+            />
+          </Form.Item>
+
+          {/* totalPonPort */}
+          <Form.Item
+            name="totalPonPort"
+            label="totalPonPort"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your totalPonPort!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="totalPonPort"
+              className={`form-control`}
+              name="totalPonPort"
+            />
+          </Form.Item>
+
+          {/* apiPort */}
+          <Form.Item
+            name="apiPort"
+            label="apiPort"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your apiPort!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="apiPort"
+              className={`form-control`}
+              name="apiPort"
+            />
+          </Form.Item>
+
+          {/* apiUsername */}
+          <Form.Item
+            name="apiUsername"
+            label="apiUsername"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your apiUsername!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="apiUsername"
+              className={`form-control`}
+              name="apiUsername"
+            />
+          </Form.Item>
+
+          {/* apiPassword */}
+          <Form.Item
+            name="apiPassword"
+            label="apiPassword"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your apiPassword!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="apiPassword"
+              className={`form-control`}
+              name="apiPassword"
+            />
+          </Form.Item>
+
+          {/* snmpPortNo */}
+          <Form.Item
+            name="snmpPortNo"
+            label="snmpPortNo"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your snmpPortNo!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="snmpPortNo"
+              className={`form-control`}
+              name="snmpPortNo"
+            />
+          </Form.Item>
+
+          {/* snmpVersion */}
+          <Form.Item
+            name="snmpVersion"
+            label="snmpVersion"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your snmpVersion!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="snmpVersion"
+              className={`form-control`}
+              name="snmpVersion"
+            />
+          </Form.Item>
+
+          {/* snmpCommunity */}
+          <Form.Item
+            name="snmpCommunity"
+            label="snmpCommunity"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your snmpCommunity!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="snmpCommunity"
+              className={`form-control`}
+              name="snmpCommunity"
+            />
+          </Form.Item>
+
+          {/* telnetLoginName */}
+          <Form.Item
+            name="telnetLoginName"
+            label="telnetLoginName"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your telnetLoginName!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="telnetLoginName"
+              className={`form-control`}
+              name="telnetLoginName"
+            />
+          </Form.Item>
+
+          {/* telnetLoginPassword */}
+          <Form.Item
+            name="telnetLoginPassword"
+            label="telnetLoginPassword"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your telnetLoginPassword!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="telnetLoginPassword"
+              className={`form-control`}
+              name="telnetLoginPassword"
+            />
+          </Form.Item>
+
+          {/* telnetPrivilegedPassword */}
+          <Form.Item
+            name="telnetPrivilegedPassword"
+            label="telnetPrivilegedPassword"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your telnetPrivilegedPassword!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="telnetPrivilegedPassword"
+              className={`form-control`}
+              name="telnetPrivilegedPassword"
+            />
+          </Form.Item>
+
+          {/* telnetPonPortNumber */}
+          <Form.Item
+            name="telnetPonPortNumber"
+            label="telnetPonPortNumber"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your telnetPonPortNumber!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="telnetPonPortNumber"
+              className={`form-control`}
+              name="telnetPonPortNumber"
+            />
           </Form.Item>
 
           {/* status */}

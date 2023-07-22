@@ -1,4 +1,4 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreatePackageForm from "@/components/forms/package/CreatePackageForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,28 +19,28 @@ const NewPackage = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/package">Package Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/package/package">Package</Link>
             },
             {
-              title: "New Client"
+              title: "New package"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New package"
           style={{
-            width: "80%",
+            width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreatePackageForm />
         </Card>
       </AppRowContainer>
     </>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditPackageForm from "@/components/forms/package/EditPackageForm";
+import { PackageData } from "@/interfaces/PackageData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,18 +12,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditPackage = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<PackageData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/partner/get-by-id/${id}`);
+    const response = await axios.get(`/api/customer-package/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["packages-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -71,7 +70,7 @@ const EditPackage = ({ id }: any) => {
         <Card
           title="Edit Client"
           style={{
-            width: "80%",
+            width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
@@ -82,7 +81,7 @@ const EditPackage = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditPackageForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

@@ -1,4 +1,4 @@
-import CreateUserForm from "@/components/forms/user/CreateUserForm";
+import CreateCustomerForm from "@/components/forms/customer/CreateCustomerForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,28 +19,28 @@ const NewCustomer = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/customer">Customer Dashboard</Link>
             },
             {
-              title: <Link href="/admin/user/user">User</Link>
+              title: <Link href="/admin/customer/customer">customer</Link>
             },
             {
-              title: "New User"
+              title: "New Customer"
             }
           ]}
         />
 
         <Card
-          title="New User"
+          title="New Customer"
           style={{
-            width: "80%",
+            width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center"
           }}
         >
-          <CreateUserForm />
+          <CreateCustomerForm />
         </Card>
       </AppRowContainer>
     </>

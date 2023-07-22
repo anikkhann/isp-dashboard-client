@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Row, Col } from "antd";
+import { ClientData } from "@/interfaces/ClientData";
 interface FormData {
   clientLevel: string;
   name: string;
@@ -54,8 +55,11 @@ const tagsList = [
     value: "quad_cycle"
   }
 ];
+interface PropData {
+  item: ClientData;
+}
 
-const EditClientForm = ({ item }: any) => {
+const EditClientForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -66,17 +70,17 @@ const EditClientForm = ({ item }: any) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [clientLevel, setClientLevel] = useState(null);
+  const [clientLevel, setClientLevel] = useState<any>(null);
 
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
 
   const [radiusIps, setRadiusIps] = useState([]);
 
-  const [selectedDivision, setSelectedDivision] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedDivision, setSelectedDivision] = useState<any>(null);
+  const [selectedDistrict, setSelectedDistrict] = useState<any>(null);
 
-  const [selectedRadiusIp, setSelectedRadiusIp] = useState(null);
+  const [selectedRadiusIp, setSelectedRadiusIp] = useState<any>(null);
 
   const { useBreakpoint } = Grid;
 
@@ -194,7 +198,7 @@ const EditClientForm = ({ item }: any) => {
       form.setFieldsValue({
         name: item.name,
         username: item.username,
-        password: item.password,
+        /*  password: item.password, */
         email: item.email,
         address: item.address,
         altContactNumber: item.altContactNumber,
@@ -234,7 +238,7 @@ const EditClientForm = ({ item }: any) => {
       radiusIpId
     } = data;
 
-    if (!item && !item.id) {
+    if (!item) {
       MySwal.fire({
         title: "Error",
         text: "Please select a client",
