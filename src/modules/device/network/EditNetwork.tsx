@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditNetworkForm from "@/components/forms/network/EditNetworkForm";
+import { IpSubnetData } from "@/interfaces/IpSubnetData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,18 +12,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditNetwork = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<IpSubnetData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/partner/get-by-id/${id}`);
+    const response = await axios.get(`/api/ip-subnet/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["ip-subnet-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -57,19 +56,19 @@ const EditNetwork = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/device">Device Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/device/network">Network</Link>
             },
             {
-              title: "Edit Client"
+              title: "Edit Network"
             }
           ]}
         />
 
         <Card
-          title="Edit Client"
+          title="Edit Network"
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
@@ -82,7 +81,7 @@ const EditNetwork = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditNetworkForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

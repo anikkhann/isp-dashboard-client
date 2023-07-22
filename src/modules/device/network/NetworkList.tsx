@@ -13,12 +13,8 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { format } from "date-fns";
+import { IpSubnetData } from "@/interfaces/IpSubnetData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +24,7 @@ interface TableParams {
 }
 
 const NetworkList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<IpSubnetData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -49,7 +45,6 @@ const NetworkList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -65,11 +60,10 @@ const NetworkList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/ip-subnet/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,20 +72,17 @@ const NetworkList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["ip-subnet-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data.data", data);
-
         if (data.body) {
           setData(data.body);
           setTableParams({
             pagination: {
-              total: data.meta.total as number,
               pageSize: data.meta.limit,
               current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]
@@ -121,61 +112,40 @@ const NetworkList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<IpSubnetData> = [
     {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{index + 1 * page + 1}</Space>
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },
       sorter: true,
-      width: "10%",
+      // width: "10%",
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Network Name",
+      dataIndex: "networkName",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
+      title: "Network Address",
+      dataIndex: "networkAddress",
       sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
+      title: "Subnet Mask",
+      dataIndex: "subnetMask",
       sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
@@ -193,9 +163,62 @@ const NetworkList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
+
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+
     {
       title: "Action",
       dataIndex: "action",
@@ -204,9 +227,9 @@ const NetworkList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("network.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link href={`/admin/device/network/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -222,22 +245,24 @@ const NetworkList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<IpSubnetData> | SorterResult<IpSubnetData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<IpSubnetData>).order) {
+      // // console.log((sorter as SorterResult<IpSubnetData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<IpSubnetData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<IpSubnetData>).field) {
+      // // console.log((sorter as SorterResult<IpSubnetData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<IpSubnetData>).field as string);
     }
   };
 
@@ -279,10 +304,10 @@ const NetworkList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Networks List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/device/network/create"
+            permission="network.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

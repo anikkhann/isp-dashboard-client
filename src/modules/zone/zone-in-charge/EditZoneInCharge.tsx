@@ -69,13 +69,16 @@ const EditZoneInCharge = ({ id }: any) => {
         />
 
         <Card
-          title="Edit Zone in Charge"
+          title="Edit Zone In Charge"
+          hoverable
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

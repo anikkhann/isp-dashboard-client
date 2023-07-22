@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space } from "antd";
+import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -16,10 +16,10 @@ interface PermissionFormData {
   tag: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const tagsList = [
   {
@@ -121,9 +121,10 @@ const CreatePermissionForm = () => {
           <Alert message={error} type="error" showIcon key={index} />
         ))}
 
-      <div className="mt-3">
+      <div className="my-6">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -131,10 +132,10 @@ const CreatePermissionForm = () => {
             width: "100%"
           }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
           initialValues={{
@@ -143,79 +144,120 @@ const CreatePermissionForm = () => {
             actionTags: []
           }}
         >
-          <Form.Item
-            label="Display Name"
-            style={{
-              marginBottom: 0
-            }}
-            name="displayName"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Display Name!"
-              }
-            ]}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Input
-              type="text"
-              placeholder="displayName"
-              className={`form-control`}
-              name="displayName"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Display Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="displayName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Display Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="displayName"
+                  className={`form-control`}
+                  name="displayName"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Tag"
+                style={{
+                  marginBottom: 0
+                }}
+                name="tag"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Tag!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Tag"
+                  className={`form-control`}
+                  name="tag"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Action Tags"
+                style={{
+                  marginBottom: 0
+                }}
+                name="actionTags"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select actions"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select"
+                    onChange={handleChange}
+                    options={tagsList}
+                    value={actionTags}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
+          {/* <Row>
+            <Col></Col>
+          </Row> */}
 
-          <Form.Item
-            label="Tag"
-            style={{
-              marginBottom: 0
-            }}
-            name="tag"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Tag!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Tag"
-              className={`form-control`}
-              name="tag"
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Action Tags"
-            style={{
-              marginBottom: 0
-            }}
-            name="actionTags"
-            rules={[
-              {
-                required: true,
-                message: "Please select actions"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleChange}
-                options={tagsList}
-                value={actionTags}
-              />
-            </Space>
-          </Form.Item>
-
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button type="primary" htmlType="submit" shape="round">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

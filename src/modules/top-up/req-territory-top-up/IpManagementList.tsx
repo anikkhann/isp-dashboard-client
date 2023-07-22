@@ -91,7 +91,6 @@ const IpManagementList: React.FC = () => {
           setData(data.body);
           setTableParams({
             pagination: {
-              total: data.meta.total as number,
               pageSize: data.meta.limit,
               current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]
@@ -128,7 +127,7 @@ const IpManagementList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{index + 1 * page + 1}</Space>
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },

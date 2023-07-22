@@ -33,13 +33,16 @@ const NewZoneInCharge = () => {
         />
 
         <Card
-          title="New Zone in Charge"
+          title="New Zone In Charge"
+          hoverable
           style={{
             width: "80%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem"
           }}
         >
           <CreateZoneForm />

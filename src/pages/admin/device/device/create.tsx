@@ -1,7 +1,7 @@
 import DeviceLayout from "@/core/layouts/DeviceLayout";
 import AppLoader from "@/lib/AppLoader";
+import NewDevice from "@/modules/device/device/NewDevice";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("device.create", "") ? <NewDevice /> : <Forbidden />}
     </>
   );
 };
