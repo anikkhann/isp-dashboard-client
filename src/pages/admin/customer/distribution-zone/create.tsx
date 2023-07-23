@@ -14,7 +14,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewDistributionZone /> : <Forbidden />}
+      {ability.can("distributionZone.create", "") ? (
+        <NewDistributionZone />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

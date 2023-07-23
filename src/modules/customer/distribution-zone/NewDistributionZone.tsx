@@ -2,7 +2,6 @@ import CreateDistributionZoneForm from "@/components/forms/distribution-zone/Cre
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
-
 import React from "react";
 
 const NewDistributionZone = () => {

@@ -12,14 +12,17 @@ import Cookies from "js-cookie";
 import { PackageData } from "@/interfaces/PackageData";
 interface FormData {
   name: string;
-  packageType: string;
-  slabStart: string;
-  slabEnd: string;
-  chargeAmount: string;
-}
-
-interface PropData {
-  item: PackageData;
+  displayName: string;
+  uploadLimit: string;
+  uploadLimitUnit: string;
+  downloadLimit: string;
+  downloadLimitUnit: string;
+  ipPoolName: string;
+  nextExpiredPackageId: string;
+  validity: string;
+  vat: string;
+  totalPrice: string;
+  unitPrice: string;
 }
 
 const layout = {
@@ -27,16 +30,20 @@ const layout = {
   wrapperCol: { span: 18 }
 };
 
-const types = [
+const uploadUnits = [
   {
-    label: "Monthly",
-    value: "Monthly"
+    label: "Mbps",
+    value: "Mbps"
   },
   {
-    label: "Per Customer",
-    value: "Per Customer"
+    label: "Kbps",
+    value: "Kbps"
   }
 ];
+
+interface PropData {
+  item: PackageData;
+}
 
 const EditPackageForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
@@ -46,10 +53,24 @@ const EditPackageForm = ({ item }: PropData) => {
 
   const [isActive, setIsActive] = useState(true);
 
+  const [autoRenew, setAutoRenew] = useState(true);
+  const [isAssignedToZone, setIsAssignedToZone] = useState(true);
+  const [isAssignedToSubZone, setIsAssignedToSubZone] = useState(true);
+
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [packageType, setPackageType] = useState<any>(null);
+  const [zones, setZones] = useState([]);
+
+  const [selectedZone, setSelectedZone] = useState<any[]>([]);
+
+  const [units, setUnits] = useState([]);
+
+  const [selectedUnit, setSelectedUnit] = useState<any>(null);
+
+  const [selectedUploadUnit, setSelectedUploadUnit] = useState<any>(null);
+
+  const [selectedDownloadUnit, setSelectedDownloadUnit] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -58,53 +79,172 @@ const EditPackageForm = ({ item }: PropData) => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const handleChange = (value: any) => {
-    console.log("checked = ", value);
-    form.setFieldsValue({ packageType: value });
-    setPackageType(value as any);
+  const handleAutoRenew = (e: any) => {
+    setAutoRenew(e.target.checked ? true : false);
+  };
+
+  const handleIsAssignedToZone = (e: any) => {
+    setIsAssignedToZone(e.target.checked ? true : false);
+  };
+
+  const handleIsAssignedToSubZone = (e: any) => {
+    setIsAssignedToSubZone(e.target.checked ? true : false);
+  };
+
+  const handleZoneChange = (value: any[]) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ zoneIds: value });
+    setSelectedZone(value as any[]);
+  };
+
+  const handleUnitChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ validityUnitId: value });
+    setSelectedUnit(value as any);
+  };
+
+  const handleUploadUnitChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ uploadLimitUnit: value });
+    setSelectedUploadUnit(value as any);
+  };
+
+  const handleDownloadUnitChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ downloadLimitUnit: value });
+    setSelectedDownloadUnit(value as any);
+  };
+
+  const getZones = async () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+
+    const res = await axios.post("/api/distribution-zone/get-list", body);
+    if (res.data.status == 200) {
+      // console.log(res.data.data.roles);
+
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(items);
+    }
+  };
+
+  const getUnits = async () => {
+    const res = await axios.get(
+      "/api/lookup-details/get-by-master-key/data_validity_unit"
+    );
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setUnits(items);
+    }
   };
 
   useEffect(() => {
+    getZones();
+    getUnits();
+  }, []);
+
+  useEffect(() => {
     if (item) {
+      const checked = item.distributionZones.map((itemData: any) => {
+        return itemData.zoneId;
+      });
+      setSelectedZone(checked);
+
       form.setFieldsValue({
-        name: item.name
+        name: item.name,
+        displayName: item.displayName,
+        uploadLimit: item.uploadLimit,
+        uploadLimitUnit: item.uploadLimitUnit,
+        downloadLimit: item.downloadLimit,
+        downloadLimitUnit: item.downloadLimitUnit,
+        ipPoolName: item.ipPoolName,
+        validity: item.validity,
+        vat: item.vat,
+        totalPrice: item.totalPrice,
+        unitPrice: item.unitPrice
       });
 
-      // setPackageType(item.packageType);
-
+      setSelectedUnit(item.validityUnitId);
+      setSelectedUploadUnit(item.uploadLimitUnit);
+      setSelectedDownloadUnit(item.downloadLimitUnit);
+      setAutoRenew(item.autoRenew);
+      setIsAssignedToZone(item.isAssignedToZone);
+      setIsAssignedToSubZone(item.isAssignedToSubZone);
       setIsActive(item.isActive);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-
-    const { name, chargeAmount, slabStart, slabEnd, packageType } = data;
+    const {
+      name,
+      displayName,
+      uploadLimit,
+      uploadLimitUnit,
+      downloadLimit,
+      downloadLimitUnit,
+      ipPoolName,
+      nextExpiredPackageId,
+      validity,
+      vat,
+      totalPrice,
+      unitPrice
+    } = data;
 
     const formData = {
       id: item.id,
+      zoneIds: selectedZone,
       name: name,
-      packageType: packageType,
-      chargeAmount: chargeAmount,
-      slabStart: slabStart,
-      slabEnd: slabEnd,
+      displayName: displayName,
+      uploadLimit: uploadLimit,
+      uploadLimitUnit: uploadLimitUnit,
+      downloadLimit: downloadLimit,
+      downloadLimitUnit: downloadLimitUnit,
+      ipPoolName: ipPoolName,
+      nextExpiredPackageId: nextExpiredPackageId,
+      validityUnitId: selectedUnit,
+      validity: validity,
+      vat: vat,
+      totalPrice: totalPrice,
+      unitPrice: unitPrice,
+      autoRenew: autoRenew,
+      isAssignedToZone: isAssignedToZone,
+      isAssignedToSubZone: isAssignedToSubZone,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/subscription-plan/update", formData)
+        .put("/api/customer-package/update", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
 
           MySwal.fire({
             title: "Success",
-            text: data.message || "subscription Updated successfully",
+            text: data.message || "Update successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/client/subscription");
+            router.replace("/admin/package/package");
           });
         })
         .catch(err => {
@@ -113,7 +253,6 @@ const EditPackageForm = ({ item }: PropData) => {
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }
@@ -131,10 +270,18 @@ const EditPackageForm = ({ item }: PropData) => {
           form={form}
           initialValues={{
             name: "",
-            packageType: "",
-            chargeAmount: "",
-            slabStart: "",
-            slabEnd: ""
+            displayName: "",
+            uploadLimit: "",
+            uploadLimitUnit: "",
+            downloadLimit: "",
+            downloadLimitUnit: "",
+            ipPoolName: "",
+            nextExpiredPackageId: "",
+            validityUnitId: "",
+            validity: "",
+            vat: "",
+            totalPrice: "",
+            unitPrice: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -145,29 +292,29 @@ const EditPackageForm = ({ item }: PropData) => {
           colon={false}
           scrollToFirstError
         >
-          {/* packageType*/}
-
+          {/* zoneIds */}
           <Form.Item
-            label="Package Type"
+            label="zoneIds"
             style={{
               marginBottom: 0
             }}
-            name="packageType"
+            name="zoneIds"
             rules={[
               {
                 required: true,
-                message: "Please select package type!"
+                message: "Please select"
               }
             ]}
           >
             <Space style={{ width: "100%" }} direction="vertical">
               <Select
                 allowClear
+                mode="multiple"
                 style={{ width: "100%" }}
                 placeholder="Please select"
-                onChange={handleChange}
-                options={types}
-                value={packageType}
+                onChange={handleZoneChange}
+                options={zones}
+                value={selectedZone}
               />
             </Space>
           </Form.Item>
@@ -194,71 +341,322 @@ const EditPackageForm = ({ item }: PropData) => {
             />
           </Form.Item>
 
-          {/* chargeAmount */}
-
+          {/* displayName */}
           <Form.Item
-            label="Charge Amount"
+            label="displayName"
             style={{
               marginBottom: 0
             }}
-            name="chargeAmount"
+            name="displayName"
             rules={[
               {
                 required: true,
-                message: "Please input your Charge Amount!"
+                message: "Please input your displayName!"
               }
             ]}
           >
             <Input
               type="text"
-              placeholder="Charge Amount"
+              placeholder="displayName"
               className={`form-control`}
-              name="chargeAmount"
+              name="displayName"
             />
           </Form.Item>
 
-          {/* slabStart */}
+          {/* uploadLimit */}
           <Form.Item
-            label="Slab Start"
+            label="uploadLimit"
             style={{
               marginBottom: 0
             }}
-            name="slabStart"
+            name="uploadLimit"
             rules={[
               {
                 required: true,
-                message: "Please input your Slab Start!"
+                message: "Please input your uploadLimit!"
               }
             ]}
           >
             <Input
               type="text"
-              placeholder="Slab Start"
+              placeholder="uploadLimit"
               className={`form-control`}
-              name="slabStart"
+              name="uploadLimit"
             />
           </Form.Item>
 
-          {/* slabEnd */}
+          {/* uploadLimitUnit */}
           <Form.Item
-            label="Slab End"
+            label="uploadLimitUnit"
             style={{
               marginBottom: 0
             }}
-            name="slabEnd"
+            name="uploadLimitUnit"
             rules={[
               {
                 required: true,
-                message: "Please input your Slab End!"
+                message: "Please input your uploadLimitUnit!"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleUploadUnitChange}
+                options={uploadUnits}
+                value={selectedUploadUnit}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* downloadLimit */}
+          <Form.Item
+            label="downloadLimit"
+            style={{
+              marginBottom: 0
+            }}
+            name="downloadLimit"
+            rules={[
+              {
+                required: true,
+                message: "Please input your downloadLimit!"
               }
             ]}
           >
             <Input
               type="text"
-              placeholder="Slab End"
+              placeholder="downloadLimit"
               className={`form-control`}
-              name="slabEnd"
+              name="downloadLimit"
             />
+          </Form.Item>
+
+          {/* downloadLimitUnit */}
+          <Form.Item
+            label="downloadLimitUnit"
+            style={{
+              marginBottom: 0
+            }}
+            name="downloadLimitUnit"
+            rules={[
+              {
+                required: true,
+                message: "Please input your downloadLimitUnit!"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleDownloadUnitChange}
+                options={uploadUnits}
+                value={selectedDownloadUnit}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* ipPoolName */}
+          <Form.Item
+            label="ipPoolName"
+            style={{
+              marginBottom: 0
+            }}
+            name="ipPoolName"
+            rules={[
+              {
+                required: true,
+                message: "Please input your ipPoolName!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="ipPoolName"
+              className={`form-control`}
+              name="ipPoolName"
+            />
+          </Form.Item>
+
+          {/* nextExpiredPackageId */}
+          <Form.Item
+            label="nextExpiredPackageId"
+            style={{
+              marginBottom: 0
+            }}
+            name="nextExpiredPackageId"
+            rules={[
+              {
+                required: true,
+                message: "Please input your nextExpiredPackageId!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="nextExpiredPackageId"
+              className={`form-control`}
+              name="nextExpiredPackageId"
+            />
+          </Form.Item>
+
+          {/* validityUnitId */}
+          <Form.Item
+            label="validityUnitId"
+            style={{
+              marginBottom: 0
+            }}
+            name="validityUnitId"
+            rules={[
+              {
+                required: true,
+                message: "Please select"
+              }
+            ]}
+          >
+            <Space style={{ width: "100%" }} direction="vertical">
+              <Select
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                onChange={handleUnitChange}
+                options={units}
+                value={selectedUnit}
+              />
+            </Space>
+          </Form.Item>
+
+          {/* validity */}
+          <Form.Item
+            label="validity"
+            style={{
+              marginBottom: 0
+            }}
+            name="validity"
+            rules={[
+              {
+                required: true,
+                message: "Please input your validity!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="validity"
+              className={`form-control`}
+              name="validity"
+            />
+          </Form.Item>
+
+          {/* vat */}
+          <Form.Item
+            label="vat"
+            style={{
+              marginBottom: 0
+            }}
+            name="vat"
+            rules={[
+              {
+                required: true,
+                message: "Please input your vat!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="vat"
+              className={`form-control`}
+              name="vat"
+            />
+          </Form.Item>
+
+          {/* totalPrice */}
+          <Form.Item
+            label="totalPrice"
+            style={{
+              marginBottom: 0
+            }}
+            name="totalPrice"
+            rules={[
+              {
+                required: true,
+                message: "Please input your totalPrice!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="totalPrice"
+              className={`form-control`}
+              name="totalPrice"
+            />
+          </Form.Item>
+
+          {/* unitPrice */}
+          <Form.Item
+            label="unitPrice"
+            style={{
+              marginBottom: 0
+            }}
+            name="unitPrice"
+            rules={[
+              {
+                required: true,
+                message: "Please input your unitPrice!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="unitPrice"
+              className={`form-control`}
+              name="unitPrice"
+            />
+          </Form.Item>
+
+          {/* autoRenew */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleAutoRenew} checked={autoRenew}>
+              Auto Renew
+            </Checkbox>
+          </Form.Item>
+
+          {/* isAssignedToZone */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox
+              onChange={handleIsAssignedToZone}
+              checked={isAssignedToZone}
+            >
+              isAssignedToZone
+            </Checkbox>
+          </Form.Item>
+
+          {/* isAssignedToSubZone */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox
+              onChange={handleIsAssignedToSubZone}
+              checked={isAssignedToSubZone}
+            >
+              isAssignedToSubZone
+            </Checkbox>
           </Form.Item>
 
           {/* status */}

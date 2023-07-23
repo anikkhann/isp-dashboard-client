@@ -15,7 +15,6 @@ const EditDistributionZone = ({ id }: any) => {
   const [item, SetItem] = useState<DistributionZoneData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const response = await axios.get(`/api/distribution-zone/get-by-id/${id}`);
