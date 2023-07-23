@@ -297,7 +297,7 @@ const DistributionZoneList: React.FC = () => {
           )}
 
           <TableCard
-            title="Distribution zones List"
+            title="Distribution Zones List"
             hasLink={true}
             addLink="/admin/customer/distribution-zone/create"
             permission="user.create"

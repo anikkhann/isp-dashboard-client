@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 interface FormData {
@@ -15,10 +15,10 @@ interface FormData {
   subnetMask: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const CreateNetworkForm = () => {
   const [form] = Form.useForm();
@@ -99,72 +99,104 @@ const CreateNetworkForm = () => {
           colon={false}
           scrollToFirstError
         >
-          {/* networkName */}
-          <Form.Item
-            label="Network Name"
-            style={{
-              marginBottom: 0
-            }}
-            name="networkName"
-            rules={[
-              {
-                required: true,
-                message: "Please input your networkName!"
-              }
-            ]}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Input
-              type="text"
-              placeholder="networkName"
-              className={`form-control`}
-              name="networkName"
-            />
-          </Form.Item>
-
-          {/* networkAddress */}
-          <Form.Item
-            label="Network Address"
-            style={{
-              marginBottom: 0
-            }}
-            name="networkAddress"
-            rules={[
-              {
-                required: true,
-                message: "Please input your networkAddress!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="networkAddress"
-              className={`form-control`}
-              name="networkAddress"
-            />
-          </Form.Item>
-
-          {/* subnetMask */}
-
-          <Form.Item
-            label="Subnet Mask"
-            style={{
-              marginBottom: 0
-            }}
-            name="subnetMask"
-            rules={[
-              {
-                required: true,
-                message: "Please input your subnetMask!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="subnetMask"
-              className={`form-control`}
-              name="subnetMask"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* networkName */}
+              <Form.Item
+                label="Network Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="networkName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Network Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Network Name"
+                  className={`form-control`}
+                  name="networkName"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* networkAddress */}
+              <Form.Item
+                label="Network Address"
+                style={{
+                  marginBottom: 0
+                }}
+                name="networkAddress"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Network Address!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Network Address"
+                  className={`form-control`}
+                  name="networkAddress"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* subnetMask */}
+              <Form.Item
+                label="Subnet Mask"
+                style={{
+                  marginBottom: 0
+                }}
+                name="subnetMask"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Subnet Mask!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Subnet Mask"
+                  className={`form-control`}
+                  name="subnetMask"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
           {/* status */}
           <Form.Item
@@ -179,11 +211,16 @@ const CreateNetworkForm = () => {
           </Form.Item>
 
           {/* submit */}
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button type="primary" htmlType="submit" shape="round">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

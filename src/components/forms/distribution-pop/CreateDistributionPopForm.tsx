@@ -6,7 +6,17 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input, Select, Space } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 interface FormData {
@@ -16,10 +26,10 @@ interface FormData {
   longitude: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const CreateDistributionPopForm = () => {
   const [form] = Form.useForm();
@@ -124,6 +134,7 @@ const CreateDistributionPopForm = () => {
       <div className="mt-3">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -135,89 +146,152 @@ const CreateDistributionPopForm = () => {
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
         >
-          {/* zoneId */}
-          <Form.Item
-            label="Zone"
-            name="zoneId"
-            rules={[
-              {
-                required: true,
-                message: "Please select Zone!"
-              }
-            ]}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleZoneChange}
-                options={zoneList}
-                value={zoneId}
-              />
-            </Space>
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* zoneId */}
+              <Form.Item
+                label="Zone"
+                name="zoneId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Zone!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select Zone"
+                    onChange={handleZoneChange}
+                    options={zoneList}
+                    value={zoneId}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* latitude */}
+              <Form.Item
+                label="Latitude"
+                style={{
+                  marginBottom: 0
+                }}
+                name="latitude"
+              >
+                <Input
+                  type="text"
+                  placeholder="Latitude"
+                  className={`form-control`}
+                  name="latitude"
+                />
+              </Form.Item>
+            </Col>
 
-          {/* name */}
-          <Form.Item
-            label="Name"
-            style={{
-              marginBottom: 0
-            }}
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Name!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Name"
-              className={`form-control`}
-              name="name"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* longitude */}
+              <Form.Item
+                label="Longitude"
+                style={{
+                  marginBottom: 0
+                }}
+                name="longitude"
+              >
+                <Input
+                  type="text"
+                  placeholder="Longitude"
+                  className={`form-control`}
+                  name="longitude"
+                />
+              </Form.Item>
+            </Col>
 
-          {/* latitude */}
-          <Form.Item
-            label="latitude"
-            style={{
-              marginBottom: 0
-            }}
-            name="latitude"
-          >
-            <Input
-              type="text"
-              placeholder="latitude"
-              className={`form-control`}
-              name="latitude"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
 
-          {/* longitude */}
-          <Form.Item
-            label="longitude"
-            style={{
-              marginBottom: 0
-            }}
-            name="longitude"
-          >
-            <Input
-              type="text"
-              placeholder="longitude"
-              className={`form-control`}
-              name="longitude"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
 
           {/* status */}
           <Form.Item
@@ -232,11 +306,14 @@ const CreateDistributionPopForm = () => {
           </Form.Item>
 
           {/* submit */}
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Form.Item>
+              {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+              <Button type="primary" htmlType="submit" shape="round">
+                Submit
+              </Button>
+            </Form.Item>
+          </Row>
         </Form>
       </div>
     </>
