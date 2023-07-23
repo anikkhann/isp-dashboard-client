@@ -15,6 +15,8 @@ interface FormData {
   deviceType: string;
   monitoringType: string;
   location: string;
+  latitude: string;
+  longitude: string;
   secret: string;
   incomingPort: string;
   ip: string;
@@ -223,6 +225,8 @@ const CreateDeviceForm = () => {
       deviceType,
       monitoringType,
       location,
+      latitude,
+      longitude,
       secret,
       incomingPort,
       ip,
@@ -251,6 +255,8 @@ const CreateDeviceForm = () => {
       deviceType: deviceType,
       monitoringType: monitoringType,
       location: location,
+      latitude: latitude,
+      longitude: longitude,
       secret: secret,
       incomingPort: incomingPort,
       ip: ip,
@@ -323,6 +329,8 @@ const CreateDeviceForm = () => {
             deviceType: "",
             monitoringType: "",
             location: "",
+            latitude: "",
+            longitude: "",
             secret: "",
             incomingPort: "",
             ip: "",
@@ -526,6 +534,50 @@ const CreateDeviceForm = () => {
             />
           </Form.Item>
 
+          {/* latitude */}
+          <Form.Item
+            name="latitude"
+            label="latitude"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your latitude!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="latitude"
+              className={`form-control`}
+              name="latitude"
+            />
+          </Form.Item>
+
+          {/* longitude */}
+          <Form.Item
+            name="longitude"
+            label="longitude"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your longitude!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="longitude"
+              className={`form-control`}
+              name="longitude"
+            />
+          </Form.Item>
+
           {/* ip */}
           <Form.Item
             name="ip"
@@ -545,6 +597,50 @@ const CreateDeviceForm = () => {
               placeholder="ip"
               className={`form-control`}
               name="ip"
+            />
+          </Form.Item>
+
+          {/* secret */}
+          <Form.Item
+            name="secret"
+            label="secret"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your secret!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="secret"
+              className={`form-control`}
+              name="secret"
+            />
+          </Form.Item>
+
+          {/* incomingPort */}
+          <Form.Item
+            name="incomingPort"
+            label="incomingPort"
+            style={{
+              marginBottom: 0
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your incomingPort!"
+              }
+            ]}
+          >
+            <Input
+              type="text"
+              placeholder="incomingPort"
+              className={`form-control`}
+              name="incomingPort"
             />
           </Form.Item>
 
