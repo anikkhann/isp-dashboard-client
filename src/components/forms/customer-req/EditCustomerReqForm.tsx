@@ -6,16 +6,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Form,
-  Grid,
-  Input,
-  Select,
-  Space
-} from "antd";
+import { Alert, Button, Form, Grid, Input, Select, Space } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
@@ -23,7 +14,6 @@ interface FormData {
   name: string;
   username: string;
   password: string;
-  // customerTypeId: string
   mobileNo: string;
   altMobileNo: string;
   email: string;
@@ -34,41 +24,10 @@ interface FormData {
   houseNo: string;
   roadNo: string;
   area: string;
-  identityType: string;
   identityNo: string;
-  /*  divisionId: any
-   districtId: any
-   upazillaId: any
-   unionId: any
-   customerPackageId: string */
-  remarks: any;
-  // distributionZoneId: string
-  // distributionPopId: string
-  isMacBound: boolean;
-  mac: string;
-  simultaneousUser: string;
-  ipMode: string;
-  staticIp: any;
-  referenceType: any;
-  referrerCustomer: any;
-  referrerUser: any;
-  referrerName: any;
-  connectionType: any;
-  fiberOpticDeviceType: string;
-  oltDeviceId: any;
-  serialNo: any;
-  cableLength: any;
-  vlanBoxName: any;
-  swPortNo: any;
-  cableId: any;
-  colorCode: any;
-  splitter: any;
-  onuDeviceId: any;
-  accountStatus: string;
-  autoRenew: boolean;
-  discount: any;
-  smsAlert: boolean;
-  emailAlert: boolean;
+  remarks: string;
+  referenceType: string;
+  referrerName: string;
 }
 
 const layout = {
@@ -102,27 +61,6 @@ const identityTypes = [
   }
 ];
 
-const connectionTypes = [
-  {
-    label: "fiber_optic",
-    value: "fiber_optic"
-  },
-  {
-    label: "utp",
-    value: "utp"
-  }
-];
-
-const fiberOpticDeviceTypes = [
-  {
-    label: "fiber_optic",
-    value: "fiber_optic"
-  },
-  {
-    label: "utp",
-    value: "utp"
-  }
-];
 interface PropData {
   item: CustomerData;
 }
@@ -133,15 +71,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const [isActive, setIsActive] = useState(true);
-
-  const [autoRenew, setAutoRenew] = useState(true);
-
-  const [isMacBound, setIsMacBound] = useState(true);
-
-  const [smsAlert, setSmsAlert] = useState(true);
-  const [emailAlert, setEmailAlert] = useState(true);
-
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
@@ -150,37 +79,26 @@ const EditCustomerReqForm = ({ item }: PropData) => {
   const [upazillas, setUpazillas] = useState([]);
   const [unions, setUnions] = useState([]);
 
-  const [selectedDivision, setSelectedDivision] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [selectedUpazilla, setSelectedUpazilla] = useState(null);
-  const [selectedUnion, setSelectedUnion] = useState(null);
+  const [selectedDivision, setSelectedDivision] = useState<any>(null);
+  const [selectedDistrict, setSelectedDistrict] = useState<any>(null);
+  const [selectedUpazilla, setSelectedUpazilla] = useState<any>(null);
+  const [selectedUnion, setSelectedUnion] = useState<any>(null);
 
-  const [selectedIdentityType, setSelectedIdentityType] = useState(null);
-
-  const [distributionZones, setDistributionZones] = useState([]);
-  const [distributionPops, setDistributionPops] = useState([]);
-
-  const [selectedDistributionZone, setSelectedDistributionZone] =
-    useState(null);
-  const [selectedDistributionPop, setSelectedDistributionPop] = useState(null);
-
+  const [selectedIdentityType, setSelectedIdentityType] = useState<any>(null);
   const [customerTypes, setCustomerTypes] = useState([]);
-  const [selectedCustomerType, setSelectedCustomerType] = useState(null);
+  const [selectedCustomerType, setSelectedCustomerType] = useState<any>(null);
 
   const [customerPackages, setCustomerPackages] = useState([]);
-  const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
+  const [selectedCustomerPackage, setSelectedCustomerPackage] =
+    useState<any>(null);
 
-  const [selectedReferenceType, setSelectedReferenceType] = useState(null);
-  const [selectedConnectionType, setSelectedConnectionType] = useState(null);
-
-  const [selectedFiberOpticDeviceType, setSelectedFiberOpticDeviceType] =
-    useState(null);
+  const [selectedReferenceType, setSelectedReferenceType] = useState<any>(null);
 
   const [customers, setCustomers] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const { useBreakpoint } = Grid;
 
@@ -188,26 +106,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-  const handleActive = (e: any) => {
-    setIsActive(e.target.checked ? true : false);
-  };
-
-  const handleSmsAlert = (e: any) => {
-    setSmsAlert(e.target.checked ? true : false);
-  };
-
-  const handleEmailAlert = (e: any) => {
-    setEmailAlert(e.target.checked ? true : false);
-  };
-
-  const handleAutoRenew = (e: any) => {
-    setAutoRenew(e.target.checked ? true : false);
-  };
-
-  const handleMacBound = (e: any) => {
-    setIsMacBound(e.target.checked ? true : false);
-  };
 
   const handleIdentityTypeChange = (value: any) => {
     console.log("checked = ", value);
@@ -251,18 +149,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
     setSelectedCustomerType(value as any);
   };
 
-  const handleDistributionZoneChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ distributionZoneId: value });
-    setSelectedDistributionZone(value as any);
-  };
-
-  const handleDistributionPopChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ distributionPopId: value });
-    setSelectedDistributionPop(value as any);
-  };
-
   const handleReferenceTypeChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ referenceType: value });
@@ -281,38 +167,34 @@ const EditCustomerReqForm = ({ item }: PropData) => {
     setSelectedUser(value as any);
   };
 
-  const handleConnectionTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ connectionType: value });
-    setSelectedConnectionType(value as any);
-  };
-
-  const handleFiberOpticDeviceTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ fiberOpticDeviceType: value });
-    setSelectedFiberOpticDeviceType(value as any);
-  };
-
   useEffect(() => {
     if (item) {
       form.setFieldsValue({
         name: item.name,
         username: item.username,
         password: item.password,
-        email: item.email
-        /*   address: item.address,
-          altContactNumber: item.altContactNumber,
-          contactNumber: item.contactNumber,
-          districtId: item.districtId,
-          divisionId: item.divisionId,
-          contactPerson: item.contactPerson,
-          radiusIpId: item.radiusIpId,
-          clientLevel: item.clientLevel */
+        email: item.email,
+        mobileNo: item.mobileNo,
+        // altMobileNo: item.altMobileNo,
+        contactPerson: item.contactPerson,
+        contactNumber: item.contactNumber,
+        connectionAddress: item.connectionAddress,
+        // flatNo: item.flatNo,
+        houseNo: item.houseNo,
+        roadNo: item.roadNo,
+        area: item.area,
+        identityType: item.identityType,
+        identityNo: item.identityNo
+        // remarks: item.remarks,
+        // referenceType: item.referenceType,
+        // referrerName: item.referrerName,
       });
-      /* setSelectedDivision(item.divisionId);
-      setSelectedDistrict(item.districtId);
-      setSelectedUpazilla(item.upazillaId); */
-      setIsActive(item.isActive);
+      setSelectedCustomerType(item.customerTypeId);
+      setSelectedIdentityType(item.identityType);
+
+      /*  setSelectedDivision(item.divisionId);
+       setSelectedDistrict(item.districtId);
+       setSelectedUpazilla(item.upazillaId); */
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
@@ -516,55 +398,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
     });
   }
 
-  function getDistributionZones() {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      }
-    };
-
-    axios.post("/api/distribution-zone/get-list", body).then(res => {
-      const { data } = res;
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setDistributionZones(list);
-    });
-  }
-
-  function getDistributionPops() {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      }
-    };
-
-    axios.post("/api/distribution-pop/get-list", body).then(res => {
-      const { data } = res;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setDistributionPops(list);
-    });
-  }
-
   const getCustomerPackages = () => {
     const body = {
       meta: {
@@ -592,8 +425,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
   useEffect(() => {
     getDivisions();
     getCustomerPackages();
-    getDistributionZones();
-    getDistributionPops();
     getCustomerTypes();
     getCustomers();
     getUsers();
@@ -624,7 +455,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       name,
       username,
       password,
-      // customerTypeId: string
       mobileNo,
       altMobileNo,
       email,
@@ -635,41 +465,18 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       houseNo,
       roadNo,
       area,
-      identityType,
       identityNo,
       remarks,
-      isMacBound,
-      mac,
-      simultaneousUser,
-      ipMode,
-      staticIp,
       referenceType,
-      referrerCustomer,
-      referrerUser,
-      referrerName,
-      connectionType,
-      fiberOpticDeviceType,
-      oltDeviceId,
-      serialNo,
-      cableLength,
-      vlanBoxName,
-      swPortNo,
-      cableId,
-      colorCode,
-      splitter,
-      onuDeviceId,
-      accountStatus,
-      autoRenew,
-      discount,
-      smsAlert,
-      emailAlert
+      referrerName
     } = data;
 
     const formData = {
+      id: item.id,
       name: name,
       username: username,
       password: password,
-      // customerTypeId: string
+      customerTypeId: selectedCustomerType,
       mobileNo: mobileNo,
       altMobileNo: altMobileNo,
       email: email,
@@ -680,40 +487,18 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       houseNo: houseNo,
       roadNo: roadNo,
       area: area,
-      identityType: identityType,
+      identityType: selectedIdentityType,
       identityNo: identityNo,
       remarks: remarks,
-      isMacBound: isMacBound,
-      mac: mac,
-      simultaneousUser: simultaneousUser,
-      ipMode: ipMode,
-      staticIp: staticIp,
       referenceType: referenceType,
-      referrerCustomer: referrerCustomer,
-      referrerUser: referrerUser,
-      referrerName: referrerName,
-      connectionType: connectionType,
-      fiberOpticDeviceType: fiberOpticDeviceType,
-      oltDeviceId: oltDeviceId,
-      serialNo: serialNo,
-      cableLength: cableLength,
-      vlanBoxName: vlanBoxName,
-      swPortNo: swPortNo,
-      cableId: cableId,
-      colorCode: colorCode,
-      splitter: splitter,
-      onuDeviceId: onuDeviceId,
-      accountStatus: accountStatus,
-      autoRenew: autoRenew,
-      discount: discount,
-      smsAlert: smsAlert,
-      emailAlert: emailAlert,
-      isActive: isActive
+      referrerCustomer: selectedCustomer,
+      referrerUser: selectedUser,
+      referrerName: referrerName
     };
 
     try {
       axios
-        .post("/api/customer/update", formData)
+        .post("/api/customer-request/update", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
@@ -724,7 +509,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               text: data.message || " Updated successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/customer/customer");
+              router.replace("/admin/customer/customer-onboarding-req");
             });
           } else {
             MySwal.fire({
@@ -760,7 +545,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
             name: "",
             username: "",
             password: "",
-            // customerTypeId: string
+            customerTypeId: "",
             mobileNo: "",
             altMobileNo: "",
             email: "",
@@ -773,39 +558,11 @@ const EditCustomerReqForm = ({ item }: PropData) => {
             area: "",
             identityType: "",
             identityNo: "",
-            /*  divisionId: any
-              districtId: any
-              upazillaId: any
-              unionId: any
-              customerPackageId: string */
             remarks: "",
-            // distributionZoneId: string
-            // distributionPopId: string
-            isMacBound: false,
-            mac: "",
-            simultaneousUser: "",
-            ipMode: "",
-            staticIp: "",
             referenceType: "",
             referrerCustomer: "",
             referrerUser: "",
-            referrerName: "",
-            connectionType: "",
-            fiberOpticDeviceType: "",
-            oltDeviceId: "",
-            serialNo: "",
-            cableLength: "",
-            vlanBoxName: "",
-            swPortNo: "",
-            cableId: "",
-            colorCode: "",
-            splitter: "",
-            onuDeviceId: "",
-            accountStatus: "",
-            autoRenew: false,
-            discount: "",
-            smsAlert: false,
-            emailAlert: false
+            referrerName: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -1325,146 +1082,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
             />
           </Form.Item>
 
-          {/* distributionZoneId */}
-          <Form.Item
-            label="Distribution Zone"
-            style={{
-              marginBottom: 0
-            }}
-            name="distributionZoneId"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleDistributionZoneChange}
-                options={distributionZones}
-                value={selectedDistributionZone}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* distributionPopId */}
-          <Form.Item
-            label="Distribution Pop"
-            style={{
-              marginBottom: 0
-            }}
-            name="distributionPopId"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleDistributionPopChange}
-                options={distributionPops}
-                value={selectedDistributionPop}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* isMacBound */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleMacBound} checked={isMacBound}>
-              isMacBound
-            </Checkbox>
-          </Form.Item>
-
-          {/* mac */}
-          <Form.Item
-            name="mac"
-            label="mac"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your mac!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="mac"
-              className={`form-control`}
-              name="mac"
-            />
-          </Form.Item>
-
-          {/* simultaneousUser */}
-          <Form.Item
-            name="simultaneousUser"
-            label="simultaneousUser"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your simultaneousUser!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="simultaneousUser"
-              className={`form-control`}
-              name="simultaneousUser"
-            />
-          </Form.Item>
-
-          {/* ipMode */}
-          <Form.Item
-            name="ipMode"
-            label="ipMode"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your ipMode!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="ipMode"
-              className={`form-control`}
-              name="ipMode"
-            />
-          </Form.Item>
-
-          {/* staticIp */}
-          <Form.Item
-            name="staticIp"
-            label="staticIp"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your staticIp!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="staticIp"
-              className={`form-control`}
-              name="staticIp"
-            />
-          </Form.Item>
-
           {/* referenceType */}
           <Form.Item
             label="Reference Type"
@@ -1545,328 +1162,6 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               className={`form-control`}
               name="referrerName"
             />
-          </Form.Item>
-
-          {/* connectionType */}
-          <Form.Item
-            label="Connection Type"
-            style={{
-              marginBottom: 0
-            }}
-            name="connectionType"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleConnectionTypeChange}
-                options={connectionTypes}
-                value={selectedConnectionType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* fiberOpticDeviceType */}
-          <Form.Item
-            label="Fiber Optic Device Type"
-            style={{
-              marginBottom: 0
-            }}
-            name="fiberOpticDeviceType"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleFiberOpticDeviceTypeChange}
-                options={fiberOpticDeviceTypes}
-                value={selectedFiberOpticDeviceType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* oltDeviceId */}
-          <Form.Item
-            name="oltDeviceId"
-            label="oltDeviceId"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your oltDeviceId!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="oltDeviceId"
-              className={`form-control`}
-              name="oltDeviceId"
-            />
-          </Form.Item>
-
-          {/* serialNo */}
-          <Form.Item
-            name="serialNo"
-            label="serialNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your serialNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="serialNo"
-              className={`form-control`}
-              name="serialNo"
-            />
-          </Form.Item>
-          {/* cableLength */}
-          <Form.Item
-            name="cableLength"
-            label="cableLength"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your cableLength!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="cableLength"
-              className={`form-control`}
-              name="cableLength"
-            />
-          </Form.Item>
-          {/* vlanBoxName */}
-          <Form.Item
-            name="vlanBoxName"
-            label="vlanBoxName"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your vlanBoxName!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="vlanBoxName"
-              className={`form-control`}
-              name="vlanBoxName"
-            />
-          </Form.Item>
-          {/* swPortNo */}
-          <Form.Item
-            name="swPortNo"
-            label="swPortNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your swPortNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="swPortNo"
-              className={`form-control`}
-              name="swPortNo"
-            />
-          </Form.Item>
-          {/* cableId */}
-          <Form.Item
-            name="cableId"
-            label="cableId"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your cableId!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="cableId"
-              className={`form-control`}
-              name="cableId"
-            />
-          </Form.Item>
-          {/* colorCode */}
-          <Form.Item
-            name="colorCode"
-            label="colorCode"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your colorCode!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="colorCode"
-              className={`form-control`}
-              name="colorCode"
-            />
-          </Form.Item>
-          {/* splitter */}
-          <Form.Item
-            name="splitter"
-            label="splitter"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your splitter!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="splitter"
-              className={`form-control`}
-              name="splitter"
-            />
-          </Form.Item>
-          {/* onuDeviceId */}
-          <Form.Item
-            name="onuDeviceId"
-            label="onuDeviceId"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your onuDeviceId!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="onuDeviceId"
-              className={`form-control`}
-              name="onuDeviceId"
-            />
-          </Form.Item>
-          {/* accountStatus */}
-          <Form.Item
-            name="accountStatus"
-            label="accountStatus"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your accountStatus!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="accountStatus"
-              className={`form-control`}
-              name="accountStatus"
-            />
-          </Form.Item>
-
-          {/* autoRenew */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleAutoRenew} checked={autoRenew}>
-              autoRenew
-            </Checkbox>
-          </Form.Item>
-
-          {/* discount */}
-          <Form.Item
-            name="discount"
-            label="discount"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your discount!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="discount"
-              className={`form-control`}
-              name="discount"
-            />
-          </Form.Item>
-
-          {/* status */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleActive} checked={isActive}>
-              Active
-            </Checkbox>
-          </Form.Item>
-
-          {/* emailAlert */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleEmailAlert} checked={emailAlert}>
-              Email Alert
-            </Checkbox>
-          </Form.Item>
-
-          {/* smsAlert */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleSmsAlert} checked={smsAlert}>
-              Sms Alert
-            </Checkbox>
           </Form.Item>
 
           {/* submit */}
