@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditCustomerReqForm from "@/components/forms/customer-req/EditCustomerReqForm";
+import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,18 +12,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditCustomerOnboardingReq = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<CustomerData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/users/get-by-id/${id}`);
+    const response = await axios.get(`/api/customer-request/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["users-list", id],
+    queryKey: ["customer-req-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -59,19 +58,23 @@ const EditCustomerOnboardingReq = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/customer">customer</Link>
             },
             {
-              title: <Link href="/admin/user/user">Users</Link>
+              title: (
+                <Link href="/admin/customer/customer-onboarding-req">
+                  Customer Request{" "}
+                </Link>
+              )
             },
             {
-              title: "Edit User"
+              title: "Edit Customer Request"
             }
           ]}
         />
 
         <Card
-          title="Edit User"
+          title="Edit Customer Request"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -84,7 +87,7 @@ const EditCustomerOnboardingReq = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditCustomerReqForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

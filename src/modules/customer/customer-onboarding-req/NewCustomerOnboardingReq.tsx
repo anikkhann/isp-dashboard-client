@@ -1,4 +1,4 @@
-import CreateUserForm from "@/components/forms/user/CreateUserForm";
+import CreateCustomerReqForm from "@/components/forms/customer-req/CreateCustomerReqForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -19,19 +19,23 @@ const NewCustomerOnboardingReq = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/customer">Customer Dashboard</Link>
             },
             {
-              title: <Link href="/admin/user/user">User</Link>
+              title: (
+                <Link href="/admin/customer/customer-onboarding-req">
+                  customer Request
+                </Link>
+              )
             },
             {
-              title: "New User"
+              title: "New Customer Request"
             }
           ]}
         />
 
         <Card
-          title="New User"
+          title="New Customer Request"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -40,7 +44,7 @@ const NewCustomerOnboardingReq = () => {
             textAlign: "center"
           }}
         >
-          <CreateUserForm />
+          <CreateCustomerReqForm />
         </Card>
       </AppRowContainer>
     </>
