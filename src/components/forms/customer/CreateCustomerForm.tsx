@@ -136,7 +136,7 @@ const CreateCustomerForm = () => {
   const [selectedUpazilla, setSelectedUpazilla] = useState(null);
   const [selectedUnion, setSelectedUnion] = useState(null);
 
-  const [selectedIdentityType, setSelectedIdentityType] = useState(null);
+  const [selectedIdentityType, setSelectedIdentityType] = useState("nid");
 
   const [distributionZones, setDistributionZones] = useState([]);
   const [distributionPops, setDistributionPops] = useState([]);

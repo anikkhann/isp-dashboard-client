@@ -329,7 +329,7 @@ const ZoneInChargeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Zone in charges List"
+            title="Zone In Charges List"
             hasLink={true}
             addLink="/admin/zone/zone-in-charge/create"
             permission="user.create"
