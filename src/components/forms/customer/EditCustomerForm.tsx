@@ -996,7 +996,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer Type"
                       onChange={handleCustomerTypeChange}
                       options={customerTypes}
@@ -1315,7 +1315,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Identity Type"
                       onChange={handleIdentityTypeChange}
                       options={identityTypes}
@@ -1382,7 +1382,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Division"
                       onChange={handleDivisionChange}
                       options={divisions}
@@ -1417,7 +1417,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select District"
                       onChange={handleDistrictChange}
                       options={districts}
@@ -1446,7 +1446,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Upazilla"
                       onChange={handleUpazillaChange}
                       options={upazillas}
@@ -1475,7 +1475,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Union"
                       onChange={handleUnionChange}
                       options={unions}
@@ -1504,7 +1504,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer Package"
                       onChange={handleCustomerPackageChange}
                       options={customerPackages}
@@ -1564,7 +1564,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Distribution Zone"
                       onChange={handleDistributionZoneChange}
                       options={distributionZones}
@@ -1593,7 +1593,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Distribution Pop"
                       onChange={handleDistributionPopChange}
                       options={distributionPops}
@@ -1776,7 +1776,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Reference Type"
                       onChange={handleReferenceTypeChange}
                       options={referenceTypes}
@@ -1805,7 +1805,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Referrer Customer"
                       onChange={handleCustomerChange}
                       options={customers}
@@ -1834,7 +1834,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Referrer User"
                       onChange={handleUserChange}
                       options={users}
@@ -1894,104 +1894,13 @@ const EditCustomerForm = ({ item }: PropData) => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Connection Type"
                       onChange={handleConnectionTypeChange}
                       options={connectionTypes}
                       value={selectedConnectionType}
                     />
                   </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* fiberOpticDeviceType */}
-                <Form.Item
-                  label="Fiber Optic Device Type"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  name="fiberOpticDeviceType"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%" }}
-                      placeholder="Please select Fiber Optic Device Type"
-                      onChange={handleFiberOpticDeviceTypeChange}
-                      options={fiberOpticDeviceTypes}
-                      value={selectedFiberOpticDeviceType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* oltDeviceId */}
-                <Form.Item
-                  name="oltDeviceId"
-                  label="Olt Device Id"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Olt Device Id!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Olt Device Id"
-                    className={`form-control`}
-                    name="oltDeviceId"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* serialNo */}
-                <Form.Item
-                  name="serialNo"
-                  label="Serial No"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Serial No!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Serial No"
-                    className={`form-control`}
-                    name="serialNo"
-                  />
                 </Form.Item>
               </Col>
               <Col
@@ -2096,6 +2005,160 @@ const EditCustomerForm = ({ item }: PropData) => {
                 xxl={8}
                 className="gutter-row"
               >
+                {/* fiberOpticDeviceType */}
+                <Form.Item
+                  label="Fiber Optic Device Type"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  name="fiberOpticDeviceType"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Fiber Optic Device Type"
+                      onChange={handleFiberOpticDeviceTypeChange}
+                      options={fiberOpticDeviceTypes}
+                      value={selectedFiberOpticDeviceType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* oltDeviceId */}
+                <Form.Item
+                  name="oltDeviceId"
+                  label="Olt Device Id"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Olt Device Id!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Olt Device Id"
+                    className={`form-control`}
+                    name="oltDeviceId"
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* onuDeviceId */}
+                <Form.Item
+                  name="onuDeviceId"
+                  label="Onu Device Id"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Onu Device Id!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Onu Device Id"
+                    className={`form-control`}
+                    name="onuDeviceId"
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* splitter */}
+                <Form.Item
+                  name="splitter"
+                  label="Splitter"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Splitter!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Splitter"
+                    className={`form-control`}
+                    name="splitter"
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* serialNo */}
+                <Form.Item
+                  name="serialNo"
+                  label="Serial No"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Serial No!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Serial No"
+                    className={`form-control`}
+                    name="serialNo"
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
                 {/* cableId */}
                 <Form.Item
                   name="cableId"
@@ -2149,7 +2212,8 @@ const EditCustomerForm = ({ item }: PropData) => {
                   />
                 </Form.Item>
               </Col>
-              <Col
+              {/* accountStatus */}
+              {/* <Col
                 xs={24}
                 sm={12}
                 md={8}
@@ -2158,69 +2222,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                 xxl={8}
                 className="gutter-row"
               >
-                {/* splitter */}
-                <Form.Item
-                  name="splitter"
-                  label="Splitter"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Splitter!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Splitter"
-                    className={`form-control`}
-                    name="splitter"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* onuDeviceId */}
-                <Form.Item
-                  name="onuDeviceId"
-                  label="Onu Device Id"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Onu Device Id!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Onu Device Id"
-                    className={`form-control`}
-                    name="onuDeviceId"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* accountStatus */}
                 <Form.Item
                   name="accountStatus"
                   label="Account Status"
@@ -2241,7 +2242,16 @@ const EditCustomerForm = ({ item }: PropData) => {
                     name="accountStatus"
                   />
                 </Form.Item>
-              </Col>
+              </Col> */}
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              ></Col>
               <Col
                 xs={24}
                 sm={12}

@@ -463,7 +463,7 @@ const EditDeviceForm = ({ item }: any) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Distribution Zone"
                     onChange={handleDistributionZoneChange}
                     options={distributionZones}
@@ -498,7 +498,7 @@ const EditDeviceForm = ({ item }: any) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Distribution Pop"
                     onChange={handleDistributionPopChange}
                     options={distributionPops}
@@ -534,115 +534,13 @@ const EditDeviceForm = ({ item }: any) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Device Type"
                     onChange={handleDeviceTypeChange}
                     options={deviceTypeList}
                     value={selectedDeviceType}
                   />
                 </Space>
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* monitoringTypesList */}
-              <Form.Item
-                label="Monitoring Type"
-                style={{
-                  marginBottom: 0
-                }}
-                name="monitoringType"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Monitoring Type!"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select Monitoring Type"
-                    onChange={handleMonuitoringTypeChange}
-                    options={monitoringTypesList}
-                    value={selectedMonitoringType}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* oltTypesList */}
-              <Form.Item
-                label="OLT Type"
-                style={{
-                  marginBottom: 0
-                }}
-                name="oltType"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select OLT Type!"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select OLT Type"
-                    onChange={handleOltTypeChange}
-                    options={oltTypesList}
-                    value={selectedOltType}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* location */}
-              <Form.Item
-                name="location"
-                label="Location"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Location!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Location"
-                  className={`form-control`}
-                  name="location"
-                />
               </Form.Item>
             </Col>
             <Col
@@ -704,38 +602,6 @@ const EditDeviceForm = ({ item }: any) => {
                   placeholder="Incoming Port"
                   className={`form-control`}
                   name="incomingPort"
-                />
-              </Form.Item>
-            </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* ip */}
-              <Form.Item
-                name="ip"
-                label="IP"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your IP!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="IP"
-                  className={`form-control`}
-                  name="ip"
                 />
               </Form.Item>
             </Col>
@@ -801,7 +667,41 @@ const EditDeviceForm = ({ item }: any) => {
                 />
               </Form.Item>
             </Col>
-
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* monitoringTypesList */}
+              <Form.Item
+                label="Monitoring Type"
+                style={{
+                  marginBottom: 0
+                }}
+                name="monitoringType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Monitoring Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Monitoring Type"
+                    onChange={handleMonuitoringTypeChange}
+                    options={monitoringTypesList}
+                    value={selectedMonitoringType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
             <Col
               xs={24}
               sm={12}
@@ -895,7 +795,6 @@ const EditDeviceForm = ({ item }: any) => {
                 />
               </Form.Item>
             </Col>
-
             <Col
               xs={24}
               sm={12}
@@ -989,7 +888,6 @@ const EditDeviceForm = ({ item }: any) => {
                 />
               </Form.Item>
             </Col>
-
             <Col
               xs={24}
               sm={12}
@@ -1083,7 +981,6 @@ const EditDeviceForm = ({ item }: any) => {
                 />
               </Form.Item>
             </Col>
-
             <Col
               xs={24}
               sm={12}
@@ -1096,20 +993,20 @@ const EditDeviceForm = ({ item }: any) => {
               {/* telnetPonPortNumber */}
               <Form.Item
                 name="telnetPonPortNumber"
-                label="Telnet Pon Port Number"
+                label="Telnet Port Number"
                 style={{
                   marginBottom: 0
                 }}
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Telnet Pon Port Number!"
+                    message: "Please input your Telnet Port Number!"
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Telnet Pon Port Number"
+                  placeholder="Telnet Port Number"
                   className={`form-control`}
                   name="telnetPonPortNumber"
                 />
@@ -1123,7 +1020,34 @@ const EditDeviceForm = ({ item }: any) => {
               xl={8}
               xxl={8}
               className="gutter-row"
-            ></Col>
+            >
+              {/* oltTypesList */}
+              <Form.Item
+                label="OLT Type"
+                style={{
+                  marginBottom: 0
+                }}
+                name="oltType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select OLT Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select OLT Type"
+                    onChange={handleOltTypeChange}
+                    options={oltTypesList}
+                    value={selectedOltType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
             <Col
               xs={24}
               sm={12}
@@ -1132,7 +1056,124 @@ const EditDeviceForm = ({ item }: any) => {
               xl={8}
               xxl={8}
               className="gutter-row"
-            ></Col>
+            >
+              {/* location */}
+              <Form.Item
+                name="location"
+                label="Location"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Location!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Location"
+                  className={`form-control`}
+                  name="location"
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* ip */}
+              <Form.Item
+                name="ip"
+                label="IP"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your IP!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="IP"
+                  className={`form-control`}
+                  name="ip"
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* latitude */}
+              <Form.Item
+                name="latitude"
+                label="Latitude"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Latitude!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Latitude"
+                  className={`form-control`}
+                  name="latitude"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* longitude */}
+              <Form.Item
+                name="longitude"
+                label="Longitude"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Longitude!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Longitude"
+                  className={`form-control`}
+                  name="longitude"
+                />
+              </Form.Item>
+            </Col>
           </Row>
 
           {/* status */}

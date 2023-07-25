@@ -117,7 +117,7 @@ const CreateDeviceForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [selectedDeviceType, setSelectedDeviceType] = useState(null);
+  const [selectedDeviceType, setSelectedDeviceType] = useState("NAS");
   const [selectedMonitoringType, setSelectedMonitoringType] = useState(null);
   const [selectedOltType, setSelectedOltType] = useState(null);
 
@@ -429,7 +429,10 @@ const CreateDeviceForm = () => {
                   }
                 ]}
               >
-                <Space style={{ width: "100%" }} direction="vertical">
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
                   <Select
                     allowClear
                     style={{ width: "100%" }}
@@ -464,7 +467,10 @@ const CreateDeviceForm = () => {
                   }
                 ]}
               >
-                <Space style={{ width: "100%" }} direction="vertical">
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
                   <Select
                     allowClear
                     style={{ width: "100%" }}
@@ -502,7 +508,7 @@ const CreateDeviceForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Device Type"
                     onChange={handleDeviceTypeChange}
                     options={deviceTypeList}
@@ -658,7 +664,10 @@ const CreateDeviceForm = () => {
                   }
                 ]}
               >
-                <Space style={{ width: "100%" }} direction="vertical">
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
                   <Select
                     allowClear
                     style={{ width: "100%" }}
@@ -962,20 +971,20 @@ const CreateDeviceForm = () => {
               {/* telnetPonPortNumber */}
               <Form.Item
                 name="telnetPonPortNumber"
-                label="Telnet Pon Port Number"
+                label="Telnet Port Number"
                 style={{
                   marginBottom: 0
                 }}
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Telnet Pon Port Number!"
+                    message: "Please input your Telnet Port Number!"
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Telnet Pon Port Number"
+                  placeholder="Telnet Port Number"
                   className={`form-control`}
                   name="telnetPonPortNumber"
                 />
@@ -1005,7 +1014,10 @@ const CreateDeviceForm = () => {
                   }
                 ]}
               >
-                <Space style={{ width: "100%" }} direction="vertical">
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
                   <Select
                     allowClear
                     style={{ width: "100%" }}
@@ -1091,20 +1103,20 @@ const CreateDeviceForm = () => {
               {/* latitude */}
               <Form.Item
                 name="latitude"
-                label="latitude"
+                label="Latitude"
                 style={{
                   marginBottom: 0
                 }}
                 rules={[
                   {
                     required: true,
-                    message: "Please input your latitude!"
+                    message: "Please input your Latitude!"
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="latitude"
+                  placeholder="Latitude"
                   className={`form-control`}
                   name="latitude"
                 />
@@ -1122,20 +1134,20 @@ const CreateDeviceForm = () => {
               {/* longitude */}
               <Form.Item
                 name="longitude"
-                label="longitude"
+                label="Longitude"
                 style={{
                   marginBottom: 0
                 }}
                 rules={[
                   {
                     required: true,
-                    message: "Please input your longitude!"
+                    message: "Please input your Longitude!"
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="longitude"
+                  placeholder="Longitude"
                   className={`form-control`}
                   name="longitude"
                 />

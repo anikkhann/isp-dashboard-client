@@ -175,10 +175,10 @@ const EditPackageForm = ({ item }: PropData) => {
 
   useEffect(() => {
     if (item) {
-      const checked = item.distributionZones.map((itemData: any) => {
-        return itemData.zoneId;
-      });
-      setSelectedZone(checked);
+      // const checked = item.distributionZones.map((itemData: any) => {
+      //   return itemData.zoneId;
+      // });
+      // setSelectedZone(checked);
 
       form.setFieldsValue({
         name: item.name,
@@ -307,42 +307,6 @@ const EditPackageForm = ({ item }: PropData) => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* zoneIds */}
-              <Form.Item
-                label="Zone Ids"
-                style={{
-                  marginBottom: 0
-                }}
-                name="zoneIds"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Zone Ids"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    mode="multiple"
-                    style={{ width: "100%" }}
-                    placeholder="Please select Zone Ids"
-                    onChange={handleZoneChange}
-                    options={zones}
-                    value={selectedZone}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
             <Col
               xs={24}
               sm={12}
@@ -546,103 +510,6 @@ const EditPackageForm = ({ item }: PropData) => {
               xxl={8}
               className="gutter-row"
             >
-              {/* ipPoolName */}
-              <Form.Item
-                label="IP Pool Name"
-                style={{
-                  marginBottom: 0
-                }}
-                name="ipPoolName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your IP Pool Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="IP Pool Name"
-                  className={`form-control`}
-                  name="ipPoolName"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* nextExpiredPackageId */}
-              <Form.Item
-                label="Next Expired Package Id"
-                style={{
-                  marginBottom: 0
-                }}
-                name="nextExpiredPackageId"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Next Expired Package Id!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Next Expired Package Id"
-                  className={`form-control`}
-                  name="nextExpiredPackageId"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* validityUnitId */}
-              <Form.Item
-                label="Validity Unit Id"
-                style={{
-                  marginBottom: 0
-                }}
-                name="validityUnitId"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Validity Unit Id!"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select Validity Unit Id"
-                    onChange={handleUnitChange}
-                    options={units}
-                    value={selectedUnit}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
               {/* validity */}
               <Form.Item
                 label="Validity"
@@ -674,9 +541,45 @@ const EditPackageForm = ({ item }: PropData) => {
               xxl={8}
               className="gutter-row"
             >
+              {/* validityUnitId */}
+              <Form.Item
+                label="Validity Unit"
+                style={{
+                  marginBottom: 0
+                }}
+                name="validityUnitId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Validity Unit!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select Validity Unit"
+                    onChange={handleUnitChange}
+                    options={units}
+                    value={selectedUnit}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
               {/* vat */}
               <Form.Item
-                label="Vat"
+                label="Vat (%)"
                 style={{
                   marginBottom: 0
                 }}
@@ -684,13 +587,13 @@ const EditPackageForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Vat!"
+                    message: "Please input your Vat (%)!"
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Vat"
+                  placeholder="Vat (%)"
                   className={`form-control`}
                   name="vat"
                 />
@@ -736,7 +639,107 @@ const EditPackageForm = ({ item }: PropData) => {
               xxl={8}
               className="gutter-row"
             >
-              {/* unitPrice */}
+              {/* nextExpiredPackageId */}
+              <Form.Item
+                label="Next Expired Package"
+                style={{
+                  marginBottom: 0
+                }}
+                name="nextExpiredPackageId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Next Expired Package!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Next Expired Package"
+                  className={`form-control`}
+                  name="nextExpiredPackageId"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* ipPoolName */}
+              <Form.Item
+                label="IP Pool Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="ipPoolName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your IP Pool Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="IP Pool Name"
+                  className={`form-control`}
+                  name="ipPoolName"
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* zoneIds */}
+              <Form.Item
+                label="Zone Ids"
+                style={{
+                  marginBottom: 0
+                }}
+                name="zoneIds"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Zone Ids"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    mode="multiple"
+                    style={{ width: "100%" }}
+                    placeholder="Please select Zone Ids"
+                    onChange={handleZoneChange}
+                    options={zones}
+                    value={selectedZone}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* unitPrice */}
+            {/* <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+             
               <Form.Item
                 label="Unit Price"
                 style={{
@@ -757,7 +760,16 @@ const EditPackageForm = ({ item }: PropData) => {
                   name="unitPrice"
                 />
               </Form.Item>
-            </Col>
+            </Col> */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
             <Col
               xs={24}
               sm={12}

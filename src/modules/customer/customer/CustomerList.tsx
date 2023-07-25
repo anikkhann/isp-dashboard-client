@@ -126,12 +126,12 @@ const CustomerList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      width: "20%",
       align: "center" as AlignType
     },
 
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
       sorter: true,
       width: "20%",
@@ -164,7 +164,7 @@ const CustomerList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // createdOn
@@ -177,7 +177,7 @@ const CustomerList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // editedBy
@@ -190,7 +190,7 @@ const CustomerList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // updatedOn
@@ -203,7 +203,7 @@ const CustomerList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {

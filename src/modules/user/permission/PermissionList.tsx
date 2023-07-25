@@ -177,7 +177,7 @@ const PermissionList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "displayName",
+      title: "Display Name",
       dataIndex: "displayName",
       sorter: true,
       width: "20%",
@@ -191,7 +191,7 @@ const PermissionList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "actionTags",
+      title: "Tags",
       dataIndex: "actionTags",
       sorter: true,
       render: (actionTags: any) => {
@@ -217,7 +217,7 @@ const PermissionList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // createdOn
@@ -230,7 +230,7 @@ const PermissionList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // editedBy
@@ -243,7 +243,7 @@ const PermissionList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // updatedOn
@@ -256,7 +256,7 @@ const PermissionList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
 
