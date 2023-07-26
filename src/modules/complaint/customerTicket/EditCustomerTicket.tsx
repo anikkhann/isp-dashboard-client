@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditTicketForm from "@/components/forms/ticket/EditTicketForm";
+import { TicketData } from "@/interfaces/TicketData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,19 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditIpManagement = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+const EditCustomerTicket = ({ id }: any) => {
+  const [item, SetItem] = useState<TicketData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/partner/get-by-id/${id}`);
+    const response = await axios.get(`/api/ticket/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["customer-ticket-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -57,36 +56,43 @@ const EditIpManagement = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/complaint/customer-ticket">
+                  Customer Ticket
+                </Link>
+              )
             },
             {
-              title: "Edit Client"
+              title: "Edit Customer Ticket"
             }
           ]}
         />
 
         <Card
-          title="Edit Client"
+          title="Edit Customer Ticket"
+          hoverable
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem"
           }}
         >
           {isLoading && isFetching && <AppLoader />}
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditTicketForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditIpManagement;
+export default EditCustomerTicket;

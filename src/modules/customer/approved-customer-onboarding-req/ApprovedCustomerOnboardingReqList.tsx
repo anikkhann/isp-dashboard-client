@@ -51,7 +51,6 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -64,10 +63,13 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        clientStatus: "Approved"
       }
     };
 
-    const { data } = await axios.post("/api/customer/get-list", body, {
+    const { data } = await axios.post("/api/customer-request/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -76,7 +78,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-list", page, limit, order, sort],
+    queryKey: ["customer-req-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -212,27 +214,6 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
       /* width: "20%", */
       align: "center" as AlignType
     }
-    /*  {
-       title: "Action",
-       dataIndex: "action",
-       sorter: false,
-       render: (text: any, record: any) => {
-         return (
-           <>
-             <Space size="middle" align="center">
-               {ability.can("customer.update", "") ? (
-                 <Space size="middle" align="center" wrap>
-                   <Link href={`/admin/customer/customer/${record.id}/edit`}>
-                     <Button type="primary" icon={<EditOutlined />} />
-                   </Link>
-                 </Space>
-               ) : null}
-             </Space>
-           </>
-         );
-       },
-       align: "center" as AlignType
-     } */
   ];
 
   const handleTableChange = (

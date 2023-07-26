@@ -14,7 +14,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewComplainType /> : <Forbidden />}
+      {ability.can("complainType.create", "") ? (
+        <NewComplainType />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

@@ -1,11 +1,11 @@
-import CreateChecklistForm from "@/components/forms/checklist/CreateChecklistForm";
+import CreateTicketForm from "@/components/forms/ticket/CreateTicketForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewCheck = () => {
+const NewCustomerTicket = () => {
   return (
     <>
       <AppRowContainer>
@@ -22,16 +22,20 @@ const NewCheck = () => {
               title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/complaint/checklist">Checklist</Link>
+              title: (
+                <Link href="/admin/complaint/customer-ticket">
+                  Customer Ticket
+                </Link>
+              )
             },
             {
-              title: "New Checklist"
+              title: "New Customer Ticket"
             }
           ]}
         />
 
         <Card
-          title="New Checklist"
+          title="New Customer Ticket"
           hoverable
           style={{
             width: "90%",
@@ -43,11 +47,11 @@ const NewCheck = () => {
             marginBottom: "3rem"
           }}
         >
-          <CreateChecklistForm />
+          <CreateTicketForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewCheck;
+export default NewCustomerTicket;

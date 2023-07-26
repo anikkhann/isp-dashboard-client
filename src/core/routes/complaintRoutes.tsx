@@ -40,9 +40,16 @@ const complaintRoutes = [
     permission: "dashboard.view"
   },
   {
-    key: "/admin/complaint/ticket",
-    label: "Ticket",
-    path: "/admin/complaint/ticket",
+    key: "/admin/complaint/customer-ticket",
+    label: "Customer Ticket",
+    path: "/admin/complaint/customer-ticket",
+    icon: <SettingOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "/admin/complaint/admin-ticket",
+    label: "Admin Ticket",
+    path: "/admin/complaint/admin-ticket",
     icon: <SettingOutlined />,
     permission: "dashboard.view"
   }

@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <ChecklistList /> : <Forbidden />}
+      {ability.can("checklist.list", "") ? <ChecklistList /> : <Forbidden />}
     </>
   );
 };

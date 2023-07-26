@@ -60,7 +60,6 @@ const ChecklistList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
       }
     };
 
@@ -225,7 +224,7 @@ const ChecklistList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("checklist.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/complaint/checklist/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
@@ -301,7 +300,7 @@ const ChecklistList: React.FC = () => {
             title="Checklist List"
             hasLink={true}
             addLink="/admin/complaint/checklist/create"
-            permission="user.create"
+            permission="checklist.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

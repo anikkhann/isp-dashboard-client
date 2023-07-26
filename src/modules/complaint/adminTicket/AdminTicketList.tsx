@@ -13,12 +13,8 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { format } from "date-fns";
+import { TicketData } from "@/interfaces/TicketData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -27,8 +23,8 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const IpManagementList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+const AdminTicketList: React.FC = () => {
+  const [data, setData] = useState<TicketData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -49,7 +45,6 @@ const IpManagementList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -65,11 +60,11 @@ const IpManagementList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        ticketCategory: "parent"
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/ticket/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,7 +73,7 @@ const IpManagementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["admin-ticket-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -120,7 +115,7 @@ const IpManagementList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<TicketData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -136,47 +131,23 @@ const IpManagementList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Title",
+      dataIndex: "title",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
+      title: "complainType",
+      dataIndex: "complainType",
+      render: (complainType, row) => {
+        return <>{row.complainType.name}</>;
+      },
+      sorter: false,
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -195,6 +166,57 @@ const IpManagementList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",
@@ -203,9 +225,11 @@ const IpManagementList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("adminTicket.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link
+                    href={`/admin/complaint/admin-ticket/${record.id}/edit`}
+                  >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -221,22 +245,18 @@ const IpManagementList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<TicketData> | SorterResult<TicketData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
-
+    if (sorter && (sorter as SorterResult<TicketData>).order) {
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<TicketData>).order === "ascend" ? "asc" : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
-
-      SetSort((sorter as SorterResult<DataType>).field as string);
+    if (sorter && (sorter as SorterResult<TicketData>).field) {
+      SetSort((sorter as SorterResult<TicketData>).field as string);
     }
   };
 
@@ -278,10 +298,10 @@ const IpManagementList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Admin Tickets List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/complaint/admin-ticket/create"
+            permission="adminTicket.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -311,4 +331,4 @@ const IpManagementList: React.FC = () => {
   );
 };
 
-export default IpManagementList;
+export default AdminTicketList;

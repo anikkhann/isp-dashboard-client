@@ -60,7 +60,7 @@ const RootCauseList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        // "field": "search_text"
       }
     };
 

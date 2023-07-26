@@ -14,12 +14,7 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { TicketData } from "@/interfaces/TicketData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,8 +23,8 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const ComplainTypeList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+const CustomerTicketList: React.FC = () => {
+  const [data, setData] = useState<TicketData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -50,7 +45,6 @@ const ComplainTypeList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -66,10 +60,11 @@ const ComplainTypeList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        ticketCategory: "customer"
       }
     };
 
-    const { data } = await axios.post("/api/complain-type/get-list", body, {
+    const { data } = await axios.post("/api/ticket/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,7 +73,7 @@ const ComplainTypeList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["complain-type-list", page, limit, order, sort],
+    queryKey: ["customer-ticket-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -120,7 +115,7 @@ const ComplainTypeList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<TicketData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -136,16 +131,19 @@ const ComplainTypeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Title",
+      dataIndex: "title",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Complain Category",
-      dataIndex: "complainCategory",
-      sorter: true,
+      title: "complainType",
+      dataIndex: "complainType",
+      render: (complainType, row) => {
+        return <>{row.complainType.name}</>;
+      },
+      sorter: false,
       width: "20%",
       align: "center" as AlignType
     },
@@ -227,10 +225,10 @@ const ComplainTypeList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("complainType.update", "") ? (
+              {ability.can("customerTicket.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link
-                    href={`/admin/complaint/complain-type/${record.id}/edit`}
+                    href={`/admin/complaint/customer-ticket/${record.id}/edit`}
                   >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
@@ -247,18 +245,18 @@ const ComplainTypeList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<TicketData> | SorterResult<TicketData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
+    if (sorter && (sorter as SorterResult<TicketData>).order) {
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<TicketData>).order === "ascend" ? "asc" : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      SetSort((sorter as SorterResult<DataType>).field as string);
+    if (sorter && (sorter as SorterResult<TicketData>).field) {
+      SetSort((sorter as SorterResult<TicketData>).field as string);
     }
   };
 
@@ -300,10 +298,10 @@ const ComplainTypeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Complain Types List"
+            title="Customer Tickets List"
             hasLink={true}
-            addLink="/admin/complaint/complain-type/create"
-            permission="complainType.create"
+            addLink="/admin/complaint/customer-ticket/create"
+            permission="customerTicket.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -333,4 +331,4 @@ const ComplainTypeList: React.FC = () => {
   );
 };
 
-export default ComplainTypeList;
+export default CustomerTicketList;

@@ -1,11 +1,11 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateTicketForm from "@/components/forms/ticket/CreateTicketForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewIpManagement = () => {
+const NewAdminTicket = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,32 +19,37 @@ const NewIpManagement = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>
+              )
             },
             {
-              title: "New Client"
+              title: "New Admin Ticket"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New Checklist"
+          hoverable
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem"
           }}
         >
-          <CreateRoleForm />
+          <CreateTicketForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewIpManagement;
+export default NewAdminTicket;

@@ -56,10 +56,10 @@ const EditRootCause = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complain">Complain Dashboard</Link>
+              title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/complain/root-cause">Root Cause</Link>
+              title: <Link href="/admin/complaint/root-cause">Root Cause</Link>
             },
             {
               title: "Edit Root Cause"

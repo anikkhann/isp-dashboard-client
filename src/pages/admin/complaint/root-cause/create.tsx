@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewRootCause /> : <Forbidden />}
+      {ability.can("rootCause.create", "") ? <NewRootCause /> : <Forbidden />}
     </>
   );
 };

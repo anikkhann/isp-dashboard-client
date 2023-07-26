@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <RootCauseList /> : <Forbidden />}
+      {ability.can("rootCause.list", "") ? <RootCauseList /> : <Forbidden />}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import NewCheck from "@/modules/complaint/checklist/NewCheck";
+import NewAdminTicket from "@/modules/complaint/adminTicket/NewAdminTicket";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -14,7 +14,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("checklist.create", "") ? <NewCheck /> : <Forbidden />}
+      {ability.can("adminTicket.create", "") ? (
+        <NewAdminTicket />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditChecklistForm from "@/components/forms/checklist/EditChecklistForm";
-import { ChecklistData } from "@/interfaces/ChecklistData";
+import EditTicketForm from "@/components/forms/ticket/EditTicketForm";
+import { TicketData } from "@/interfaces/TicketData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,18 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditCheck = ({ id }: any) => {
-  const [item, SetItem] = useState<ChecklistData | null>(null);
+const EditAdminTicket = ({ id }: any) => {
+  const [item, SetItem] = useState<TicketData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/checklist/get-by-id/${id}`);
+    const response = await axios.get(`/api/ticket/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["checklist-list", id],
+    queryKey: ["admin-ticket-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -59,16 +59,18 @@ const EditCheck = ({ id }: any) => {
               title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: <Link href="/admin/complaint/checklist">Checklist</Link>
+              title: (
+                <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>
+              )
             },
             {
-              title: "Edit Checklist"
+              title: "Edit Admin Ticket"
             }
           ]}
         />
 
         <Card
-          title="Edit Checklist"
+          title="Edit Admin Ticket"
           hoverable
           style={{
             width: "90%",
@@ -84,11 +86,11 @@ const EditCheck = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditChecklistForm item={item} />}
+          {!isLoading && item && <EditTicketForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditCheck;
+export default EditAdminTicket;

@@ -18,7 +18,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.update", "") ? <EditCheck id={id} /> : <Forbidden />}
+      {ability.can("checklist.update", "") ? (
+        <EditCheck id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };
