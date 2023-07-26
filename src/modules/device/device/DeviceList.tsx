@@ -127,7 +127,7 @@ const DeviceList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      width: "20%",
       align: "center" as AlignType
     },
     {
@@ -188,7 +188,7 @@ const DeviceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Ip",
+      title: "IP",
       dataIndex: "ip",
       sorter: false,
       render: (ip: any) => {
@@ -225,7 +225,7 @@ const DeviceList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // createdOn
@@ -238,7 +238,7 @@ const DeviceList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // editedBy
@@ -251,7 +251,7 @@ const DeviceList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // updatedOn
@@ -264,7 +264,7 @@ const DeviceList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {

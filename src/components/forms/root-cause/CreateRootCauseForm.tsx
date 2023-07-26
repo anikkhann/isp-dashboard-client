@@ -6,17 +6,27 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input, Select, Space } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 interface FormData {
   title: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const categories = [
   {
@@ -101,6 +111,7 @@ const CreateRootCauseForm = () => {
       <div className="mt-3">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -110,57 +121,81 @@ const CreateRootCauseForm = () => {
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
         >
-          {/* rootCauseCategory */}
-          <Form.Item
-            label="Category"
-            name="rootCauseCategory"
-            rules={[
-              {
-                required: true,
-                message: "Please select Category!"
-              }
-            ]}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleChange}
-                options={categories}
-                value={selectCategory}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* title */}
-          <Form.Item
-            label="Title"
-            style={{
-              marginBottom: 0
-            }}
-            name="title"
-            rules={[
-              {
-                required: true,
-                message: "Please input your title!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="title"
-              className={`form-control`}
-              name="title"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* rootCauseCategory */}
+              <Form.Item
+                label="Category"
+                name="rootCauseCategory"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Category!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select Category"
+                    onChange={handleChange}
+                    options={categories}
+                    value={selectCategory}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* title */}
+              <Form.Item
+                label="Title"
+                style={{
+                  marginBottom: 0
+                }}
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Title!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Title"
+                  className={`form-control`}
+                  name="title"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
           {/* status */}
           <Form.Item
@@ -175,11 +210,16 @@ const CreateRootCauseForm = () => {
           </Form.Item>
 
           {/* submit */}
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button type="primary" htmlType="submit" shape="round">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

@@ -76,7 +76,9 @@ const EditCustomer = ({ id }: any) => {
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

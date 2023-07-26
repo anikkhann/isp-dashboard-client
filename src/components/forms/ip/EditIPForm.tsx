@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space } from "antd";
+import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { IpData } from "@/interfaces/IpData";
@@ -15,10 +15,10 @@ interface FormData {
   assignedType: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 interface PropData {
   item: IpData;
@@ -133,6 +133,7 @@ const EditIPForm = ({ item }: PropData) => {
       <div className="mt-3">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -143,62 +144,91 @@ const EditIPForm = ({ item }: PropData) => {
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
         >
-          {/* ip */}
-          <Form.Item
-            label="IP Address"
-            style={{
-              marginBottom: 0
-            }}
-            name="ip"
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Input
-              type="text"
-              placeholder="ip"
-              className={`form-control`}
-              name="ip"
-              disabled
-            />
-          </Form.Item>
-
-          {/* divisionId */}
-          <Form.Item
-            label="Customers"
-            style={{
-              marginBottom: 0
-            }}
-            name="customerId"
-            rules={[
-              {
-                required: true,
-                message: "Please select"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleCustomerChange}
-                options={customers}
-                value={selectedCustomer}
-              />
-            </Space>
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* ip */}
+              <Form.Item
+                label="IP Address"
+                style={{
+                  marginBottom: 0
+                }}
+                name="ip"
+              >
+                <Input
+                  type="text"
+                  placeholder="IP Address"
+                  className={`form-control`}
+                  name="ip"
+                  disabled
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* divisionId */}
+              <Form.Item
+                label="Customers"
+                style={{
+                  marginBottom: 0
+                }}
+                name="customerId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Customers!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select Customers"
+                    onChange={handleCustomerChange}
+                    options={customers}
+                    value={selectedCustomer}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
 
           {/* submit */}
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button type="primary" htmlType="submit" shape="round">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

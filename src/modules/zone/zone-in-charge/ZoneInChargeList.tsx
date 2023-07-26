@@ -132,7 +132,7 @@ const ZoneInChargeList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      width: "20%",
       align: "center" as AlignType
     },
     {
@@ -204,7 +204,7 @@ const ZoneInChargeList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // createdOn
@@ -217,7 +217,7 @@ const ZoneInChargeList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // editedBy
@@ -230,7 +230,7 @@ const ZoneInChargeList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // updatedOn
@@ -243,7 +243,7 @@ const ZoneInChargeList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {
@@ -329,7 +329,7 @@ const ZoneInChargeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Zone in charges List"
+            title="Zone In Charges List"
             hasLink={true}
             addLink="/admin/zone/zone-in-charge/create"
             permission="user.create"

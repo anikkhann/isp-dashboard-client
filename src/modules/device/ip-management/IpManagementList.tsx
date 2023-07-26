@@ -298,7 +298,7 @@ const IpManagementList: React.FC = () => {
           )}
 
           <TableCard
-            title="ip List"
+            title="IP List"
             hasLink={false}
             addLink="/admin/device/ip-management/create"
             permission="ip.create"

@@ -6,7 +6,17 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input, Select, Space } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -38,10 +48,10 @@ interface FormData {
   telnetPonPortNumber: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const deviceTypeList = [
   {
@@ -107,7 +117,7 @@ const CreateDeviceForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [selectedDeviceType, setSelectedDeviceType] = useState(null);
+  const [selectedDeviceType, setSelectedDeviceType] = useState("NAS");
   const [selectedMonitoringType, setSelectedMonitoringType] = useState(null);
   const [selectedOltType, setSelectedOltType] = useState(null);
 
@@ -321,6 +331,7 @@ const CreateDeviceForm = () => {
       <div className="mt-3">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -353,560 +364,796 @@ const CreateDeviceForm = () => {
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
         >
-          {/* name */}
-          <Form.Item
-            label="Name"
-            style={{
-              marginBottom: 0
-            }}
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Name!"
-              }
-            ]}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Input
-              type="text"
-              placeholder="Name"
-              className={`form-control`}
-              name="name"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* distributionZoneId */}
+              <Form.Item
+                label="Distribution Zone"
+                style={{
+                  marginBottom: 0
+                }}
+                name="distributionZoneId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Distribution Zone!"
+                  }
+                ]}
+              >
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select Distribution Zone"
+                    onChange={handleDistributionZoneChange}
+                    options={distributionZones}
+                    value={selectedDistributionZone}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* distributionPopId */}
+              <Form.Item
+                label="Distribution Pop"
+                style={{
+                  marginBottom: 0
+                }}
+                name="distributionPopId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Distribution Pop!"
+                  }
+                ]}
+              >
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select Distribution Pop"
+                    onChange={handleDistributionPopChange}
+                    options={distributionPops}
+                    value={selectedDistributionPop}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* deviceTypeList */}
+              <Form.Item
+                label="Device Type"
+                style={{
+                  marginBottom: 0
+                }}
+                name="deviceType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Device Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Device Type"
+                    onChange={handleDeviceTypeChange}
+                    options={deviceTypeList}
+                    value={selectedDeviceType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* secret */}
+              <Form.Item
+                name="secret"
+                label="Secret"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Secret!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Secret"
+                  className={`form-control`}
+                  name="secret"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* incomingPort */}
+              <Form.Item
+                name="incomingPort"
+                label="Incoming Port"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your IncomingPort!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="IncomingPort"
+                  className={`form-control`}
+                  name="incomingPort"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* totalEitherPort */}
+              <Form.Item
+                name="totalEitherPort"
+                label="Total Either Port"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Total Either Port!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Total Either Port"
+                  className={`form-control`}
+                  name="totalEitherPort"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* totalPonPort */}
+              <Form.Item
+                name="totalPonPort"
+                label="Total Pon Port"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Total Pon Port!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Total Pon Port"
+                  className={`form-control`}
+                  name="totalPonPort"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* monitoringTypesList */}
+              <Form.Item
+                label="Monitoring Type"
+                style={{
+                  marginBottom: 0
+                }}
+                name="monitoringType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Monitoring Type!"
+                  }
+                ]}
+              >
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select Monitoring Type"
+                    onChange={handleMonuitoringTypeChange}
+                    options={monitoringTypesList}
+                    value={selectedMonitoringType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
 
-          {/* distributionZoneId */}
-          <Form.Item
-            label="Distribution Zone"
-            style={{
-              marginBottom: 0
-            }}
-            name="distributionZoneId"
-            rules={[
-              {
-                required: true,
-                message: "Please select"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleDistributionZoneChange}
-                options={distributionZones}
-                value={selectedDistributionZone}
-              />
-            </Space>
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* apiPort */}
+              <Form.Item
+                name="apiPort"
+                label="Api Port"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Api Port!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Api Port"
+                  className={`form-control`}
+                  name="apiPort"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* apiUsername */}
+              <Form.Item
+                name="apiUsername"
+                label="Api Username"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Api Username!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Api Username"
+                  className={`form-control`}
+                  name="apiUsername"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* apiPassword */}
+              <Form.Item
+                name="apiPassword"
+                label="Api Password"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Api Password!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Api Password"
+                  className={`form-control`}
+                  name="apiPassword"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* snmpPortNo */}
+              <Form.Item
+                name="snmpPortNo"
+                label="Snmp Port No"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Snmp Port No!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Snmp Port No"
+                  className={`form-control`}
+                  name="snmpPortNo"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* snmpVersion */}
+              <Form.Item
+                name="snmpVersion"
+                label="Snmp Version"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Snmp Version!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Snmp Version"
+                  className={`form-control`}
+                  name="snmpVersion"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* snmpCommunity */}
+              <Form.Item
+                name="snmpCommunity"
+                label="Snmp Community"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Snmp Community!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Snmp Community"
+                  className={`form-control`}
+                  name="snmpCommunity"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* telnetLoginName */}
+              <Form.Item
+                name="telnetLoginName"
+                label="Telnet Login Name"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Telnet Login Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Telnet Login Name"
+                  className={`form-control`}
+                  name="telnetLoginName"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* telnetLoginPassword */}
+              <Form.Item
+                name="telnetLoginPassword"
+                label="Telnet Login Password"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Telnet Login Password!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Telnet Login Password"
+                  className={`form-control`}
+                  name="telnetLoginPassword"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* telnetPrivilegedPassword */}
+              <Form.Item
+                name="telnetPrivilegedPassword"
+                label="Telnet Privileged Password"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Telnet Privileged Password!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Telnet Privileged Password"
+                  className={`form-control`}
+                  name="telnetPrivilegedPassword"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* telnetPonPortNumber */}
+              <Form.Item
+                name="telnetPonPortNumber"
+                label="Telnet Port Number"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Telnet Port Number!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Telnet Port Number"
+                  className={`form-control`}
+                  name="telnetPonPortNumber"
+                />
+              </Form.Item>
+            </Col>
 
-          {/* distributionPopId */}
-          <Form.Item
-            label="Distribution Pop"
-            style={{
-              marginBottom: 0
-            }}
-            name="distributionPopId"
-            rules={[
-              {
-                required: true,
-                message: "Please select"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleDistributionPopChange}
-                options={distributionPops}
-                value={selectedDistributionPop}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* deviceTypeList */}
-          <Form.Item
-            label="Device Type"
-            style={{
-              marginBottom: 0
-            }}
-            name="deviceType"
-            rules={[
-              {
-                required: true,
-                message: "Please select device Type"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleDeviceTypeChange}
-                options={deviceTypeList}
-                value={selectedDeviceType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* monitoringTypesList */}
-          <Form.Item
-            label="Monitoring Type"
-            style={{
-              marginBottom: 0
-            }}
-            name="monitoringType"
-            rules={[
-              {
-                required: true,
-                message: "Please select"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleMonuitoringTypeChange}
-                options={monitoringTypesList}
-                value={selectedMonitoringType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* oltTypesList */}
-          <Form.Item
-            label="OLT Type"
-            style={{
-              marginBottom: 0
-            }}
-            name="oltType"
-            rules={[
-              {
-                required: true,
-                message: "Please select"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleOltTypeChange}
-                options={oltTypesList}
-                value={selectedOltType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* location */}
-          <Form.Item
-            name="location"
-            label="location"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your location!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="location"
-              className={`form-control`}
-              name="location"
-            />
-          </Form.Item>
-
-          {/* latitude */}
-          <Form.Item
-            name="latitude"
-            label="latitude"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your latitude!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="latitude"
-              className={`form-control`}
-              name="latitude"
-            />
-          </Form.Item>
-
-          {/* longitude */}
-          <Form.Item
-            name="longitude"
-            label="longitude"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your longitude!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="longitude"
-              className={`form-control`}
-              name="longitude"
-            />
-          </Form.Item>
-
-          {/* ip */}
-          <Form.Item
-            name="ip"
-            label="ip"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your ip!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="ip"
-              className={`form-control`}
-              name="ip"
-            />
-          </Form.Item>
-
-          {/* secret */}
-          <Form.Item
-            name="secret"
-            label="secret"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your secret!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="secret"
-              className={`form-control`}
-              name="secret"
-            />
-          </Form.Item>
-
-          {/* incomingPort */}
-          <Form.Item
-            name="incomingPort"
-            label="incomingPort"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your incomingPort!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="incomingPort"
-              className={`form-control`}
-              name="incomingPort"
-            />
-          </Form.Item>
-
-          {/* totalEitherPort */}
-          <Form.Item
-            name="totalEitherPort"
-            label="totalEitherPort"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your totalEitherPort!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="totalEitherPort"
-              className={`form-control`}
-              name="totalEitherPort"
-            />
-          </Form.Item>
-
-          {/* totalPonPort */}
-          <Form.Item
-            name="totalPonPort"
-            label="totalPonPort"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your totalPonPort!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="totalPonPort"
-              className={`form-control`}
-              name="totalPonPort"
-            />
-          </Form.Item>
-
-          {/* apiPort */}
-          <Form.Item
-            name="apiPort"
-            label="apiPort"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your apiPort!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="apiPort"
-              className={`form-control`}
-              name="apiPort"
-            />
-          </Form.Item>
-
-          {/* apiUsername */}
-          <Form.Item
-            name="apiUsername"
-            label="apiUsername"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your apiUsername!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="apiUsername"
-              className={`form-control`}
-              name="apiUsername"
-            />
-          </Form.Item>
-
-          {/* apiPassword */}
-          <Form.Item
-            name="apiPassword"
-            label="apiPassword"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your apiPassword!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="apiPassword"
-              className={`form-control`}
-              name="apiPassword"
-            />
-          </Form.Item>
-
-          {/* snmpPortNo */}
-          <Form.Item
-            name="snmpPortNo"
-            label="snmpPortNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your snmpPortNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="snmpPortNo"
-              className={`form-control`}
-              name="snmpPortNo"
-            />
-          </Form.Item>
-
-          {/* snmpVersion */}
-          <Form.Item
-            name="snmpVersion"
-            label="snmpVersion"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your snmpVersion!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="snmpVersion"
-              className={`form-control`}
-              name="snmpVersion"
-            />
-          </Form.Item>
-
-          {/* snmpCommunity */}
-          <Form.Item
-            name="snmpCommunity"
-            label="snmpCommunity"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your snmpCommunity!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="snmpCommunity"
-              className={`form-control`}
-              name="snmpCommunity"
-            />
-          </Form.Item>
-
-          {/* telnetLoginName */}
-          <Form.Item
-            name="telnetLoginName"
-            label="telnetLoginName"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your telnetLoginName!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="telnetLoginName"
-              className={`form-control`}
-              name="telnetLoginName"
-            />
-          </Form.Item>
-
-          {/* telnetLoginPassword */}
-          <Form.Item
-            name="telnetLoginPassword"
-            label="telnetLoginPassword"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your telnetLoginPassword!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="telnetLoginPassword"
-              className={`form-control`}
-              name="telnetLoginPassword"
-            />
-          </Form.Item>
-
-          {/* telnetPrivilegedPassword */}
-          <Form.Item
-            name="telnetPrivilegedPassword"
-            label="telnetPrivilegedPassword"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your telnetPrivilegedPassword!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="telnetPrivilegedPassword"
-              className={`form-control`}
-              name="telnetPrivilegedPassword"
-            />
-          </Form.Item>
-
-          {/* telnetPonPortNumber */}
-          <Form.Item
-            name="telnetPonPortNumber"
-            label="telnetPonPortNumber"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your telnetPonPortNumber!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="telnetPonPortNumber"
-              className={`form-control`}
-              name="telnetPonPortNumber"
-            />
-          </Form.Item>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* oltTypesList */}
+              <Form.Item
+                label="OLT Type"
+                style={{
+                  marginBottom: 0
+                }}
+                name="oltType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select OLT Type!"
+                  }
+                ]}
+              >
+                <Space
+                  style={{ width: "100%", textAlign: "start" }}
+                  direction="vertical"
+                >
+                  <Select
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select OLT Type"
+                    onChange={handleOltTypeChange}
+                    options={oltTypesList}
+                    value={selectedOltType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* location */}
+              <Form.Item
+                name="location"
+                label="Location"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Location!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Location"
+                  className={`form-control`}
+                  name="location"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* ip */}
+              <Form.Item
+                name="ip"
+                label="IP"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your IP!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="IP"
+                  className={`form-control`}
+                  name="ip"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* latitude */}
+              <Form.Item
+                name="latitude"
+                label="Latitude"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Latitude!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Latitude"
+                  className={`form-control`}
+                  name="latitude"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* longitude */}
+              <Form.Item
+                name="longitude"
+                label="Longitude"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Longitude!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Longitude"
+                  className={`form-control`}
+                  name="longitude"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
           {/* status */}
           <Form.Item
@@ -921,11 +1168,16 @@ const CreateDeviceForm = () => {
           </Form.Item>
 
           {/* submit */}
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button type="primary" htmlType="submit" shape="round">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

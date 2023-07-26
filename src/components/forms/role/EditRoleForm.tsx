@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Col, Form, Input, Row } from "antd";
+import { Alert, Button, Checkbox, Col, Form, Input, Row, Divider } from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
 import { RoleData } from "@/interfaces/RoleData";
@@ -30,10 +30,10 @@ const schema = yup.object().shape({
   name: yup.string().max(200).required("Name is required")
 });
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const EditRoleForm = ({ item }: PropData) => {
   // ** States
@@ -176,45 +176,60 @@ const EditRoleForm = ({ item }: PropData) => {
           <Alert message={error} type="error" showIcon key={index} />
         ))}
 
-      <div className="mt-3">
+      <div className="mt-3 flex justify-center items-center">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={handleSubmit(onSubmit)}
           style={{ maxWidth: 800 }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
         >
-          <Form.Item
-            label="Name"
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Controller
-              name="name"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Controller
                   name="name"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      className={`form-control ${
+                        errors.name ? "is-invalid" : ""
+                      }`}
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      name="name"
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors.name && (
-              <div className="text-danger">{errors.name.message}</div>
-            )}
-          </Form.Item>
+                {errors.name && (
+                  <div className="text-danger">{errors.name.message}</div>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item
             label=""
@@ -228,7 +243,7 @@ const EditRoleForm = ({ item }: PropData) => {
           </Form.Item>
 
           <Form.Item
-            label="Permissions"
+            // label="Permissions"
             name="permissions"
             valuePropName="permissions"
           >
@@ -239,18 +254,20 @@ const EditRoleForm = ({ item }: PropData) => {
                   permissions.map((permission: any) => {
                     return (
                       <Col span={24} key={permission.id}>
-                        <h5
-                          style={{
-                            fontWeight: "bold",
-                            marginBottom: 10,
-                            marginLeft: 10,
-                            fontSize: 14,
-                            textTransform: "uppercase",
-                            textAlign: "left"
-                          }}
-                        >
-                          {permission.displayName}
-                        </h5>
+                        <Divider orientation="left">
+                          <h5
+                            style={{
+                              fontWeight: "bold",
+                              marginBottom: 10,
+                              marginLeft: 10,
+                              fontSize: 14,
+                              textTransform: "uppercase",
+                              textAlign: "left"
+                            }}
+                          >
+                            {permission.displayName}
+                          </h5>
+                        </Divider>
 
                         <Row>
                           {permission.children &&
@@ -278,11 +295,16 @@ const EditRoleForm = ({ item }: PropData) => {
             </Checkbox.Group>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button type="primary" htmlType="submit" shape="round">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

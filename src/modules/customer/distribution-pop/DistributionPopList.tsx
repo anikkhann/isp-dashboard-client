@@ -302,7 +302,7 @@ const DistributionPopList: React.FC = () => {
           )}
 
           <TableCard
-            title="Distribution pops List"
+            title="Distribution Pops List"
             hasLink={true}
             addLink="/admin/customer/distribution-pop/create"
             permission="client.create"

@@ -32,12 +32,15 @@ const NewDevice = () => {
 
         <Card
           title="New Device"
+          hoverable
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: "3rem",
+            marginBottom: "3rem"
           }}
         >
           <CreateDeviceForm />

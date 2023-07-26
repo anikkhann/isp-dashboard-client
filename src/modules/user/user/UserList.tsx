@@ -136,35 +136,35 @@ const UserList: React.FC = () => {
     },
 
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "username",
+      title: "Username",
       dataIndex: "username",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "phone",
+      title: "Phone",
       dataIndex: "phone",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "email",
+      title: "Email",
       dataIndex: "email",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "userRoles",
+      title: "Role",
       dataIndex: "userRoles",
       sorter: true,
       render: (userRoles: any) => {
@@ -190,7 +190,7 @@ const UserList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // createdOn
@@ -203,7 +203,7 @@ const UserList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // editedBy
@@ -216,7 +216,7 @@ const UserList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // updatedOn
@@ -229,7 +229,7 @@ const UserList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
 
@@ -314,6 +314,7 @@ const UserList: React.FC = () => {
               >
                 <Card
                   title="Error"
+                  hoverable
                   style={{
                     width: 300,
                     color: "#FF5630",

@@ -125,49 +125,49 @@ const ClientList: React.FC = () => {
         );
       },
       sorter: true,
-      // width: "10%",
+      width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Name",
       dataIndex: "name",
       sorter: true,
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Username",
       dataIndex: "username",
       sorter: true,
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Contact Person",
       dataIndex: "contactPerson",
       sorter: true,
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Contact Number",
       dataIndex: "contactNumber",
       sorter: true,
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Email",
       dataIndex: "email",
       sorter: true,
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Address",
       dataIndex: "address",
       sorter: true,
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     {
@@ -185,7 +185,7 @@ const ClientList: React.FC = () => {
           </>
         );
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
 
@@ -198,7 +198,7 @@ const ClientList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // createdOn
@@ -211,7 +211,7 @@ const ClientList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // editedBy
@@ -224,7 +224,7 @@ const ClientList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
     // updatedOn
@@ -237,7 +237,7 @@ const ClientList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
 
