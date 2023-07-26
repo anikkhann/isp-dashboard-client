@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { TicketData } from "@/interfaces/TicketData";
 
@@ -127,16 +127,17 @@ const AdminTicketList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      width: 140,
       align: "center" as AlignType
     },
     {
-      title: "Title",
-      dataIndex: "title",
+      title: "Ticket Number",
+      dataIndex: "ticketNo",
       sorter: true,
-      width: "20%",
+      width: 200,
       align: "center" as AlignType
     },
+
     {
       title: "complainType",
       dataIndex: "complainType",
@@ -144,7 +145,18 @@ const AdminTicketList: React.FC = () => {
         return <>{row.complainType.name}</>;
       },
       sorter: false,
-      width: "20%",
+      width: 400,
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Customer",
+      dataIndex: "customer",
+      sorter: false,
+      render: (customer, row) => {
+        return <>{row.customer.name}</>;
+      },
+      width: 200,
       align: "center" as AlignType
     },
 
@@ -163,7 +175,7 @@ const AdminTicketList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      width: 150,
       align: "center" as AlignType
     },
     // insertedBy
@@ -175,7 +187,7 @@ const AdminTicketList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
     // createdOn
@@ -188,7 +200,7 @@ const AdminTicketList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
     // editedBy
@@ -201,7 +213,7 @@ const AdminTicketList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
     // updatedOn
@@ -214,7 +226,7 @@ const AdminTicketList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: 150,
       align: "center" as AlignType
     },
     {
@@ -235,10 +247,26 @@ const AdminTicketList: React.FC = () => {
                 </Space>
               ) : null}
             </Space>
+            <Space
+              size="middle"
+              align="center"
+              style={{
+                marginLeft: "10px"
+              }}
+            >
+              {ability.can("adminTicket.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/complaint/admin-ticket/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
           </>
         );
       },
-      align: "center" as AlignType
+      align: "center" as AlignType,
+      width: 200
     }
   ];
 
@@ -316,6 +344,8 @@ const AdminTicketList: React.FC = () => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                tableLayout="fixed"
+                scroll={{ x: 1000 }}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}
