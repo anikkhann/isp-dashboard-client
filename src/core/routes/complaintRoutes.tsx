@@ -14,7 +14,7 @@ const complaintRoutes = [
     label: "Complaint Dashboard",
     path: "/admin/complaint",
     icon: <SettingOutlined />,
-    permission: "complain.dashboard"
+    permission: "complaint.dashboard"
   },
 
   {
