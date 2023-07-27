@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("distributionZone.view", "") ? (
+      {ability.can("distributionZone.list", "") ? (
         <DistributionZoneList />
       ) : (
         <Forbidden />

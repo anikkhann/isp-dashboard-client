@@ -14,7 +14,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <DistributionPopList /> : <Forbidden />}
+      {ability.can("distributionPop.list", "") ? (
+        <DistributionPopList />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

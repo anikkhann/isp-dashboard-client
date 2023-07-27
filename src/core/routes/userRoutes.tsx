@@ -19,21 +19,21 @@ const userRoutes = [
     label: "User Dashboard",
     path: "/admin/user",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "user.dashboard"
   },
   {
     key: "/admin/user/user",
     label: "Users",
     path: "/admin/user/user",
     icon: <UserOutlined />,
-    permission: "user.view"
+    permission: "user.list"
   },
   {
     key: "/admin/user/role",
     label: "Roles",
     path: "/admin/user/role",
     icon: <SlidersOutlined />,
-    permission: "user.view"
+    permission: "role.list"
   },
 
   {
@@ -41,7 +41,7 @@ const userRoutes = [
     label: "Permissions",
     path: "/admin/user/permission",
     icon: <SlidersOutlined />,
-    permission: "user.view"
+    permission: "permission.list"
   }
 ];
 

@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewZoneInCharge /> : <Forbidden />}
+      {ability.can("zone.create", "") ? <NewZoneInCharge /> : <Forbidden />}
     </>
   );
 };

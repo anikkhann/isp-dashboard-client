@@ -283,7 +283,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
             title="Approved Customers List"
             hasLink={false}
             addLink="/admin/customer/customer/create"
-            permission="customer.create"
+            permission="approvedCustomerOnboardingReq.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",

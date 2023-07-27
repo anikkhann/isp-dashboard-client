@@ -14,7 +14,7 @@ const complaintRoutes = [
     label: "Complaint Dashboard",
     path: "/admin/complaint",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "complain.dashboard"
   },
 
   {
@@ -22,7 +22,7 @@ const complaintRoutes = [
     label: "Complain Type",
     path: "/admin/complaint/complain-type",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "complainType.list"
   },
 
   {
@@ -30,28 +30,28 @@ const complaintRoutes = [
     label: "Check List",
     path: "/admin/complaint/checklist",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "checklist.list"
   },
   {
     key: "/admin/complaint/root-cause",
     label: "Root Cause",
     path: "/admin/complaint/root-cause",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "rootCause.list"
   },
   {
     key: "/admin/complaint/customer-ticket",
     label: "Customer Ticket",
     path: "/admin/complaint/customer-ticket",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "customerTicket.list"
   },
   {
     key: "/admin/complaint/admin-ticket",
     label: "Admin Ticket",
     path: "/admin/complaint/admin-ticket",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "adminTicket.list"
   }
 ];
 

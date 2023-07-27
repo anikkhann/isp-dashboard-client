@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customer.create", "") ? (
+      {ability.can("customerOnboardingReq.create", "") ? (
         <NewCustomerOnboardingReq />
       ) : (
         <Forbidden />

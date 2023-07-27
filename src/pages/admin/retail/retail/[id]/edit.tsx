@@ -17,7 +17,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.update", "") ? <EditRetail id={id} /> : <Forbidden />}
+      {ability.can("retail.update", "") ? (
+        <EditRetail id={id} />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customer.update", "") ? (
+      {ability.can("customerOnboardingReq.update", "") ? (
         <EditCustomerOnboardingReq id={id} />
       ) : (
         <Forbidden />
