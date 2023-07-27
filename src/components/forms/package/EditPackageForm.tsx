@@ -64,8 +64,8 @@ const EditPackageForm = ({ item }: PropData) => {
   const [isActive, setIsActive] = useState(true);
 
   const [autoRenew, setAutoRenew] = useState(true);
-  const [isAssignedToZone, setIsAssignedToZone] = useState(true);
-  const [isAssignedToSubZone, setIsAssignedToSubZone] = useState(true);
+  const [isAssignedToZone, setIsAssignedToZone] = useState(false);
+  const [isAssignedToSubZone, setIsAssignedToSubZone] = useState(false);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -692,43 +692,45 @@ const EditPackageForm = ({ item }: PropData) => {
                 />
               </Form.Item>
             </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* zoneIds */}
-              <Form.Item
-                label="Zone Ids"
-                style={{
-                  marginBottom: 0
-                }}
-                name="zoneIds"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Zone Ids"
-                  }
-                ]}
+            {isAssignedToZone && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    mode="multiple"
-                    style={{ width: "100%" }}
-                    placeholder="Please select Zone Ids"
-                    onChange={handleZoneChange}
-                    options={zones}
-                    value={selectedZone}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+                {/* zoneIds */}
+                <Form.Item
+                  label="Zone"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  name="zoneIds"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Zone!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      mode="multiple"
+                      style={{ width: "100%" }}
+                      placeholder="Please select Zone"
+                      onChange={handleZoneChange}
+                      options={zones}
+                      value={selectedZone}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            )}
+
             {/* unitPrice */}
             {/* <Col
               xs={24}

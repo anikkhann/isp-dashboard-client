@@ -316,32 +316,6 @@ const CreateTicketForm = () => {
           colon={false}
           scrollToFirstError
         >
-          <Row justify="start">
-            <Col>
-              {/* ticketCategory */}
-              <Form.Item
-                label="Attachment"
-                style={{
-                  marginBottom: 0,
-                  width: "100%",
-                  textAlign: "center"
-                }}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Upload
-                    customRequest={dummyAction}
-                    onChange={handleFileChange}
-                    maxCount={1}
-                    listType="picture"
-                    fileList={fileList}
-                  >
-                    {fileList.length >= 1 ? null : uploadButton}
-                  </Upload>
-                </Space>
-              </Form.Item>
-            </Col>
-          </Row>
-
           <Row
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
@@ -349,10 +323,10 @@ const CreateTicketForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* ticketCategory */}
@@ -378,14 +352,13 @@ const CreateTicketForm = () => {
                 </Space>
               </Form.Item>
             </Col>
-
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* customerId */}
@@ -411,14 +384,13 @@ const CreateTicketForm = () => {
                 </Space>
               </Form.Item>
             </Col>
-
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* complainTypeId */}
@@ -444,15 +416,14 @@ const CreateTicketForm = () => {
                 </Space>
               </Form.Item>
             </Col>
-
             {selectCategory == "customer" && selectedCustomer != null && (
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* assignedTo */}
@@ -483,10 +454,10 @@ const CreateTicketForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* complainDetails */}
@@ -511,21 +482,63 @@ const CreateTicketForm = () => {
                 />
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
-
           <Row
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            <Col
-              xs={24}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
-            >
+            <Col>
+              <Form.Item
+                label="Attachment"
+                style={{
+                  marginBottom: 0,
+                  width: "100%",
+                  textAlign: "center"
+                }}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Upload
+                    customRequest={dummyAction}
+                    onChange={handleFileChange}
+                    maxCount={1}
+                    listType="picture"
+                    fileList={fileList}
+                  >
+                    {fileList.length >= 1 ? null : uploadButton}
+                  </Upload>
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            <Col>
               {/* checklist */}
               {checkListItems.map((itemData: any, index: any) => (
                 <Form.Item
