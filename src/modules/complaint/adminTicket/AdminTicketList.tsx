@@ -162,15 +162,17 @@ const AdminTicketList: React.FC = () => {
 
     {
       title: "Status",
-      dataIndex: "isActive",
+      dataIndex: "status",
       sorter: true,
-      render: (isActive: any) => {
+      render: (status: any) => {
         return (
           <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
+            {status === "open" ? (
+              <Tag color="green">{status}</Tag>
+            ) : status === "closed" ? (
+              <Tag color="red">{status}</Tag>
             ) : (
-              <Tag color="red">Inactive</Tag>
+              <Tag color="blue">{status}</Tag>
             )}
           </>
         );
