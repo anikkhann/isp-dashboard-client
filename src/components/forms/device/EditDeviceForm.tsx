@@ -543,130 +543,270 @@ const EditDeviceForm = ({ item }: any) => {
                 </Space>
               </Form.Item>
             </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* secret */}
-              <Form.Item
-                name="secret"
-                label="Secret"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Secret!"
-                  }
-                ]}
+            {selectedDeviceType == "NAS" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Secret"
-                  className={`form-control`}
+                {/* secret */}
+                <Form.Item
                   name="secret"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* incomingPort */}
-              <Form.Item
-                name="incomingPort"
-                label="Incoming Port"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Incoming Port!"
-                  }
-                ]}
+                  label="Secret"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Secret!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Secret"
+                    className={`form-control`}
+                    name="secret"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedDeviceType == "NAS" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Incoming Port"
-                  className={`form-control`}
+                {/* incomingPort */}
+                <Form.Item
                   name="incomingPort"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* totalEitherPort */}
-              <Form.Item
-                name="totalEitherPort"
-                label="Total Either Port"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Total Either Port!"
-                  }
-                ]}
+                  label="Incoming Port"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Incoming Port!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Incoming Port"
+                    className={`form-control`}
+                    name="incomingPort"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedDeviceType == "OLT" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Total Either Port"
-                  className={`form-control`}
+                {/* totalEitherPort */}
+                <Form.Item
                   name="totalEitherPort"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* totalPonPort */}
-              <Form.Item
-                name="totalPonPort"
-                label="Total Pon Port"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Total Pon Port!"
-                  }
-                ]}
+                  label="Total Either Port"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Total Either Port!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Total Either Port"
+                    className={`form-control`}
+                    name="totalEitherPort"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedDeviceType == "OLT" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Total Pon Port"
-                  className={`form-control`}
+                {/* totalPonPort */}
+                <Form.Item
                   name="totalPonPort"
-                />
-              </Form.Item>
-            </Col>
+                  label="Total Pon Port"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Total Pon Port!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Total Pon Port"
+                    className={`form-control`}
+                    name="totalPonPort"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {/* mac */}
+            {selectedDeviceType == "ONU" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Mac"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  name="mac"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Mac!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Mac"
+                    className={`form-control`}
+                    name="mac"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {/* brandName */}
+            {selectedDeviceType == "ONU" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* name */}
+                <Form.Item
+                  label="Brand Name"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  name="brandName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Brand Name!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Brand Name"
+                    className={`form-control`}
+                    name="brandName"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {/* totalPort */}
+            {selectedDeviceType == "Router" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Total Port"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  name="totalPort"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Total Port!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Total Port"
+                    className={`form-control`}
+                    name="totalPort"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedDeviceType == "Switch" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Total Port"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  name="totalPort"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Total Port!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Total Port"
+                    className={`form-control`}
+                    name="totalPort"
+                  />
+                </Form.Item>
+              </Col>
+            )}
             <Col
               xs={24}
               sm={12}
@@ -702,316 +842,338 @@ const EditDeviceForm = ({ item }: any) => {
                 </Space>
               </Form.Item>
             </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* apiPort */}
-              <Form.Item
-                name="apiPort"
-                label="Api Port"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Api Port!"
-                  }
-                ]}
+            {selectedMonitoringType == "API" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Api Port"
-                  className={`form-control`}
+                {/* apiPort */}
+                <Form.Item
                   name="apiPort"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* apiUsername */}
-              <Form.Item
-                name="apiUsername"
-                label="Api Username"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Api Username!"
-                  }
-                ]}
+                  label="Api Port"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Api Port!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Api Port"
+                    className={`form-control`}
+                    name="apiPort"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "API" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Api Username"
-                  className={`form-control`}
+                {/* apiUsername */}
+                <Form.Item
                   name="apiUsername"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* apiPassword */}
-              <Form.Item
-                name="apiPassword"
-                label="Api Password"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Api Password!"
-                  }
-                ]}
+                  label="Api Username"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Api Username!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Api Username"
+                    className={`form-control`}
+                    name="apiUsername"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "API" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Api Password"
-                  className={`form-control`}
+                {/* apiPassword */}
+                <Form.Item
                   name="apiPassword"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* snmpPortNo */}
-              <Form.Item
-                name="snmpPortNo"
-                label="Snmp Port No"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Snmp Port No!"
-                  }
-                ]}
+                  label="Api Password"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Api Password!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Api Password"
+                    className={`form-control`}
+                    name="apiPassword"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+
+            {selectedMonitoringType == "Telnet" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Snmp Port No"
-                  className={`form-control`}
-                  name="snmpPortNo"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* snmpVersion */}
-              <Form.Item
-                name="snmpVersion"
-                label="Snmp Version"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Snmp Version!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Snmp Version"
-                  className={`form-control`}
-                  name="snmpVersion"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* snmpCommunity */}
-              <Form.Item
-                name="snmpCommunity"
-                label="Snmp Community"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Snmp Community!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Snmp Community"
-                  className={`form-control`}
-                  name="snmpCommunity"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* telnetLoginName */}
-              <Form.Item
-                name="telnetLoginName"
-                label="Telnet Login Name"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Telnet Login Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Telnet Login Name"
-                  className={`form-control`}
+                {/* telnetLoginName */}
+                <Form.Item
                   name="telnetLoginName"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* telnetLoginPassword */}
-              <Form.Item
-                name="telnetLoginPassword"
-                label="Telnet Login Password"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Telnet Login Password!"
-                  }
-                ]}
+                  label="Telnet Login Name"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Telnet Login Name!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Telnet Login Name"
+                    className={`form-control`}
+                    name="telnetLoginName"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "Telnet" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Telnet Login Password"
-                  className={`form-control`}
+                {/* telnetLoginPassword */}
+                <Form.Item
                   name="telnetLoginPassword"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* telnetPrivilegedPassword */}
-              <Form.Item
-                name="telnetPrivilegedPassword"
-                label="Telnet Privileged Password"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Telnet Privileged Password!"
-                  }
-                ]}
+                  label="Telnet Login Password"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Telnet Login Password!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Telnet Login Password"
+                    className={`form-control`}
+                    name="telnetLoginPassword"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "Telnet" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Telnet Privileged Password"
-                  className={`form-control`}
+                {/* telnetPrivilegedPassword */}
+                <Form.Item
                   name="telnetPrivilegedPassword"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* telnetPonPortNumber */}
-              <Form.Item
-                name="telnetPonPortNumber"
-                label="Telnet Port Number"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Telnet Port Number!"
-                  }
-                ]}
+                  label="Telnet Privileged Password"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Telnet Privileged Password!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Telnet Privileged Password"
+                    className={`form-control`}
+                    name="telnetPrivilegedPassword"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "Telnet" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="Telnet Port Number"
-                  className={`form-control`}
+                {/* telnetPonPortNumber */}
+                <Form.Item
                   name="telnetPonPortNumber"
-                />
-              </Form.Item>
-            </Col>
+                  label="Telnet Port Number"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Telnet Port Number!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Telnet Port Number"
+                    className={`form-control`}
+                    name="telnetPonPortNumber"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "SNMP" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* snmpPortNo */}
+                <Form.Item
+                  name="snmpPortNo"
+                  label="Snmp Port No"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Snmp Port No!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Snmp Port No"
+                    className={`form-control`}
+                    name="snmpPortNo"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "SNMP" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* snmpVersion */}
+                <Form.Item
+                  name="snmpVersion"
+                  label="Snmp Version"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Snmp Version!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Snmp Version"
+                    className={`form-control`}
+                    name="snmpVersion"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+            {selectedMonitoringType == "SNMP" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* snmpCommunity */}
+                <Form.Item
+                  name="snmpCommunity"
+                  label="Snmp Community"
+                  style={{
+                    marginBottom: 0
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Snmp Community!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Snmp Community"
+                    className={`form-control`}
+                    name="snmpCommunity"
+                  />
+                </Form.Item>
+              </Col>
+            )}
+
             <Col
               xs={24}
               sm={12}

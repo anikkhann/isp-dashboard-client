@@ -118,7 +118,7 @@ const CreateCustomerForm = () => {
 
   const [autoRenew, setAutoRenew] = useState(true);
 
-  const [isMacBound, setIsMacBound] = useState(true);
+  const [isMacBound, setIsMacBound] = useState(false);
 
   const [smsAlert, setSmsAlert] = useState(true);
   const [emailAlert, setEmailAlert] = useState(true);
@@ -1594,37 +1594,40 @@ const CreateCustomerForm = () => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* mac */}
-                <Form.Item
-                  name="mac"
-                  label="Mac"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Mac!"
-                    }
-                  ]}
+              {isMacBound && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Mac"
-                    className={`form-control`}
+                  {/* mac */}
+                  <Form.Item
                     name="mac"
-                  />
-                </Form.Item>
-              </Col>
+                    label="Mac"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Mac!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Mac"
+                      className={`form-control`}
+                      name="mac"
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+
               <Col
                 xs={24}
                 sm={12}
@@ -1865,315 +1868,480 @@ const CreateCustomerForm = () => {
                   </Space>
                 </Form.Item>
               </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* cableLength */}
-                <Form.Item
-                  name="cableLength"
-                  label="Cable Length"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Cable Length!"
-                    }
-                  ]}
+              {selectedConnectionType == "utp" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Cable Length"
-                    className={`form-control`}
+                  {/* cableLength */}
+                  <Form.Item
                     name="cableLength"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* vlanBoxName */}
-                <Form.Item
-                  name="vlanBoxName"
-                  label="Vlan Box Name"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Vlan Box Name!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Vlan Box Name"
-                    className={`form-control`}
-                    name="vlanBoxName"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* swPortNo */}
-                <Form.Item
-                  name="swPortNo"
-                  label="Sw Port No"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Sw Port No!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Sw Port No"
-                    className={`form-control`}
-                    name="swPortNo"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* fiberOpticDeviceType */}
-                <Form.Item
-                  label="Fiber Optic Device Type"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  name="fiberOpticDeviceType"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Fiber Optic Device Type"
-                      onChange={handleFiberOpticDeviceTypeChange}
-                      options={fiberOpticDeviceTypes}
-                      value={selectedFiberOpticDeviceType}
+                    label="Cable Length"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Cable Length!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Cable Length"
+                      className={`form-control`}
+                      name="cableLength"
                     />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* oltDeviceId */}
-                <Form.Item
-                  name="oltDeviceId"
-                  label="Olt Device Id"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Olt Device Id!"
-                    }
-                  ]}
+                  </Form.Item>
+                </Col>
+              )}
+              {selectedConnectionType == "utp" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Olt Device Id"
-                    className={`form-control`}
-                    name="oltDeviceId"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* onuDeviceId */}
-                <Form.Item
-                  name="onuDeviceId"
-                  label="Onu Device Id"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Onu Device Id!"
-                    }
-                  ]}
+                  {/* vlanBoxName */}
+                  <Form.Item
+                    name="vlanBoxName"
+                    label="Vlan Box Name"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Vlan Box Name!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Vlan Box Name"
+                      className={`form-control`}
+                      name="vlanBoxName"
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+              {selectedConnectionType == "utp" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Onu Device Id"
-                    className={`form-control`}
-                    name="onuDeviceId"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* splitter */}
-                <Form.Item
-                  name="splitter"
-                  label="Splitter"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Splitter!"
-                    }
-                  ]}
+                  {/* swPortNo */}
+                  <Form.Item
+                    name="swPortNo"
+                    label="Sw Port No"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Sw Port No!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Sw Port No"
+                      className={`form-control`}
+                      name="swPortNo"
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+              {selectedConnectionType == "fiber_optic" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Splitter"
-                    className={`form-control`}
-                    name="splitter"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* serialNo */}
-                <Form.Item
-                  name="serialNo"
-                  label="Serial No"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Serial No!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Serial No"
-                    className={`form-control`}
-                    name="serialNo"
-                  />
-                </Form.Item>
-              </Col>
+                  {/* fiberOpticDeviceType */}
+                  <Form.Item
+                    label="Fiber Optic Device Type"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    name="fiberOpticDeviceType"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Fiber Optic Device Type"
+                        onChange={handleFiberOpticDeviceTypeChange}
+                        options={fiberOpticDeviceTypes}
+                        value={selectedFiberOpticDeviceType}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* cableId */}
-                <Form.Item
-                  name="cableId"
-                  label="Cable Id"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Cable Id!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Cable Id"
-                    className={`form-control`}
-                    name="cableId"
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* colorCode */}
-                <Form.Item
-                  name="colorCode"
-                  label="Color Code"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Color Code!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Color Code"
-                    className={`form-control`}
-                    name="colorCode"
-                  />
-                </Form.Item>
-              </Col>
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "OLT" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* oltDeviceId */}
+                    <Form.Item
+                      name="oltDeviceId"
+                      label="Olt Device Id"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Olt Device Id!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Olt Device Id"
+                        className={`form-control`}
+                        name="oltDeviceId"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "OLT" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* onuDeviceId */}
+                    <Form.Item
+                      name="onuDeviceId"
+                      label="Onu Device Id"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Onu Device Id!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Onu Device Id"
+                        className={`form-control`}
+                        name="onuDeviceId"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "OLT" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* splitter */}
+                    <Form.Item
+                      name="splitter"
+                      label="Splitter"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Splitter!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Splitter"
+                        className={`form-control`}
+                        name="splitter"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "MC" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* serialNo */}
+                    <Form.Item
+                      name="serialNo"
+                      label="Serial No"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Serial No!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Serial No"
+                        className={`form-control`}
+                        name="serialNo"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "MC" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* cableLength */}
+                    <Form.Item
+                      name="cableLength"
+                      label="Cable Length"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Cable Length!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Cable Length"
+                        className={`form-control`}
+                        name="cableLength"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "MC" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* vlanBoxName */}
+                    <Form.Item
+                      name="vlanBoxName"
+                      label="Vlan Box Name"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Vlan Box Name!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Vlan Box Name"
+                        className={`form-control`}
+                        name="vlanBoxName"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "MC" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* swPortNo */}
+                    <Form.Item
+                      name="swPortNo"
+                      label="Sw Port No"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Sw Port No!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Sw Port No"
+                        className={`form-control`}
+                        name="swPortNo"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "MC" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* cableId */}
+                    <Form.Item
+                      name="cableId"
+                      label="Cable Id"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Cable Id!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Cable Id"
+                        className={`form-control`}
+                        name="cableId"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "MC" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* colorCode */}
+                    <Form.Item
+                      name="colorCode"
+                      label="Color Code"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Color Code!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Color Code"
+                        className={`form-control`}
+                        name="colorCode"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+              {selectedConnectionType == "fiber_optic" &&
+                selectedFiberOpticDeviceType == "MC" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* splitter */}
+                    <Form.Item
+                      name="splitter"
+                      label="Splitter"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Splitter!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Splitter"
+                        className={`form-control`}
+                        name="splitter"
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
+
               {/* accountStatus */}
               {/* <Col
                 xs={24}
