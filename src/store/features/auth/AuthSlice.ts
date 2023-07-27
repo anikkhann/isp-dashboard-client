@@ -6,7 +6,29 @@ interface AuthState {
   isLoading: boolean;
   isInitialized: boolean;
   isLoggedIn: boolean;
-  user: object | null;
+  user: UserLoggedInData | null;
+}
+
+interface UserLoggedInData {
+  userId: string;
+  name: string;
+  firstName: string;
+  userName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  profileImg: string;
+  roleId: string;
+  roleName: string;
+  roleCode: string;
+  designation: string;
+  userType: string;
+  partnerId: string;
+  parentPartnerId: string;
+  partnerUsername: string;
+  partnerIp: string;
+  credit: string;
+  token: string;
 }
 
 const initialState: AuthState = {
@@ -29,7 +51,7 @@ const authSlice = createSlice({
     setInitialized: (state, action: PayloadAction<boolean>) => {
       state.isInitialized = action.payload;
     },
-    setUser(state, action: PayloadAction<object | null>) {
+    setUser(state, action: PayloadAction<UserLoggedInData>) {
       state.user = action.payload;
     },
 
