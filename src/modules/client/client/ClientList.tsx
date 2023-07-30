@@ -125,14 +125,14 @@ const ClientList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      width: 140,
       align: "center" as AlignType
     },
     {
       title: "Name",
       dataIndex: "name",
       sorter: true,
-      width: "20%",
+      width: 500,
       align: "center" as AlignType
     },
     {
