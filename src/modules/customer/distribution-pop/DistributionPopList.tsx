@@ -223,7 +223,7 @@ const DistributionPopList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("client.update", "") ? (
+              {ability.can("distributionPop.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link
                     href={`/admin/customer/distribution-pop/${record.id}/edit`}
@@ -305,7 +305,7 @@ const DistributionPopList: React.FC = () => {
             title="Distribution Pops List"
             hasLink={true}
             addLink="/admin/customer/distribution-pop/create"
-            permission="client.create"
+            permission="distributionPop.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",

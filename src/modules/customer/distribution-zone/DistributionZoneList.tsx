@@ -214,7 +214,7 @@ const DistributionZoneList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("distributionZone.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link
                     href={`/admin/customer/distribution-zone/${record.id}/edit`}
@@ -300,7 +300,7 @@ const DistributionZoneList: React.FC = () => {
             title="Distribution Zones List"
             hasLink={true}
             addLink="/admin/customer/distribution-zone/create"
-            permission="user.create"
+            permission="distributionZone.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",

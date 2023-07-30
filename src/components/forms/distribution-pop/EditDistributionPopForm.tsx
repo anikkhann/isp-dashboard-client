@@ -20,6 +20,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { DistributionPopData } from "@/interfaces/DistributionPopData";
+import { useAppSelector } from "@/store/hooks";
 interface FormData {
   name: string;
   zoneId: string;
@@ -37,6 +38,7 @@ interface PropData {
 }
 
 const EditDistributionPopForm = ({ item }: PropData) => {
+  const user = useAppSelector(state => state.auth.user);
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -76,10 +78,12 @@ const EditDistributionPopForm = ({ item }: PropData) => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "zone"
+        client: {
+          id: user?.partnerId
+        }
       }
     };
-    axios.post("/api/partner/get-list", body).then(res => {
+    axios.post("/api/distribution-zone/get-list", body).then(res => {
       const { data } = res;
       const list = data.body.map((item: any) => {
         return {
