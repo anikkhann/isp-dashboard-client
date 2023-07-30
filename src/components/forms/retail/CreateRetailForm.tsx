@@ -297,7 +297,7 @@ const CreateRetailForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/sub-zone/sub-zone-in-charge");
+              router.replace("/admin/retail/retail");
             });
           } else {
             MySwal.fire({

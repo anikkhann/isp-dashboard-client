@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.update", "") && id ? (
+      {ability.can("permission.update", "") && id ? (
         <EditPermission id={id} />
       ) : (
         <Forbidden />

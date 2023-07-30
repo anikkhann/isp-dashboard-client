@@ -18,6 +18,7 @@ import {
   Upload,
   Radio
 } from "antd";
+
 import axios from "axios";
 import Cookies from "js-cookie";
 import { UploadOutlined } from "@ant-design/icons";
@@ -25,18 +26,18 @@ import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 // import { useAppSelector } from "@/store/hooks";
 
-const categories = [
-  {
-    label: "customer",
-    value: "customer"
-  },
-  {
-    label: "parent",
-    value: "parent"
-  }
-];
+// const categories = [
+//   {
+//     label: "customer",
+//     value: "customer"
+//   },
+//   {
+//     label: "parent",
+//     value: "parent"
+//   }
+// ];
 
-const CreateTicketForm = () => {
+const CreateCustomerTicketForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -48,7 +49,7 @@ const CreateTicketForm = () => {
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [selectCategory, setSelectCategory] = useState<any>(null);
+  // const [selectCategory, setSelectCategory] = useState<any>(null);
 
   const [customers, setCustomers] = useState<any>([]);
 
@@ -68,11 +69,11 @@ const CreateTicketForm = () => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ ticketCategory: value });
-    setSelectCategory(value as any);
-  };
+  // const handleChange = (value: any) => {
+  //   // console.log("checked = ", value);
+  //   form.setFieldsValue({ ticketCategory: value });
+  //   setSelectCategory(value as any);
+  // };
 
   const handleFileChange: UploadProps["onChange"] = ({
     fileList: newFileList
@@ -257,7 +258,7 @@ const CreateTicketForm = () => {
     if (file) {
       formData.append("attachment", file);
     }
-    formData.append("ticketCategory", selectCategory);
+    formData.append("ticketCategory", "customer");
     formData.append("customerId", selectedCustomer);
     formData.append("complainTypeId", selectedComplainType);
     formData.append("complainDetails", data.complainDetails);
@@ -320,7 +321,7 @@ const CreateTicketForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            <Col
+            {/* <Col
               xs={24}
               sm={12}
               md={8}
@@ -329,7 +330,6 @@ const CreateTicketForm = () => {
               xxl={8}
               className="gutter-row"
             >
-              {/* ticketCategory */}
               <Form.Item
                 label="Category"
                 name="ticketCategory"
@@ -351,7 +351,7 @@ const CreateTicketForm = () => {
                   />
                 </Space>
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col
               xs={24}
               sm={12}
@@ -416,7 +416,7 @@ const CreateTicketForm = () => {
                 </Space>
               </Form.Item>
             </Col>
-            {selectCategory == "customer" && selectedCustomer != null && (
+            {selectedCustomer != null && (
               <Col
                 xs={24}
                 sm={12}
@@ -591,4 +591,4 @@ const CreateTicketForm = () => {
   );
 };
 
-export default CreateTicketForm;
+export default CreateCustomerTicketForm;

@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("client.create", "") ? (
+      {ability.can("distributionPop.create", "") ? (
         <NewDistributionPop />
       ) : (
         <Forbidden />

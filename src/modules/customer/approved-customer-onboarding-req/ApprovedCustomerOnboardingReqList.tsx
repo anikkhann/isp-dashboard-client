@@ -147,15 +147,17 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
     },
     {
       title: "Status",
-      dataIndex: "isActive",
+      dataIndex: "clientStatus",
       sorter: true,
-      render: (isActive: any) => {
+      render: (clientStatus: any) => {
         return (
           <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
+            {clientStatus === "Pending" ? (
+              <Tag color="green">{clientStatus}</Tag>
+            ) : clientStatus === "Rejected" ? (
+              <Tag color="red">{clientStatus}</Tag>
             ) : (
-              <Tag color="red">Inactive</Tag>
+              <Tag color="blue">{clientStatus}</Tag>
             )}
           </>
         );
@@ -283,7 +285,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
             title="Approved Customers List"
             hasLink={false}
             addLink="/admin/customer/customer/create"
-            permission="customer.create"
+            permission="approvedCustomerOnboardingReq.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",

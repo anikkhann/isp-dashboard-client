@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("dashboard.view", "") ? <MainDashboard /> : <Forbidden />}
+      {ability.can("zone.dashboard", "") ? <MainDashboard /> : <Forbidden />}
     </>
   );
 };

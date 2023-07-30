@@ -223,7 +223,7 @@ const EditRetailForm = ({ item }: any) => {
               text: data.message || "Updated successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/zone/zone-in-charge");
+              router.replace("/admin/retail/retail");
             });
           } else {
             MySwal.fire({

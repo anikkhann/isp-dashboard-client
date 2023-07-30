@@ -16,12 +16,14 @@ import {
   StyledUsernameInfo
 } from "./index.styled";
 // import Cookies from "js-cookie";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 const UserInfo = () => {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
+
+  const user = useAppSelector(state => state.auth.user);
 
   const logout = () => {
     dispatch({ type: "auth/logout" });
@@ -69,14 +71,14 @@ const UserInfo = () => {
                     light: "light"
                   })}
                 >
-                  admin user
+                  {user?.userName}
                 </StyledUsername>
                 <StyledUserArrow className="cr-user-arrow">
                   <FaChevronDown />
                 </StyledUserArrow>
               </StyledUsernameInfo>
               <StyledCrUserDesignation className="text-truncate">
-                System Manager
+                {user?.credit}
               </StyledCrUserDesignation>
             </StyledCrUserInfoContent>
           </StyledCrUserInfoInner>

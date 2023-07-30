@@ -76,6 +76,7 @@ export const StyledUsername = styled.h3`
   font-size: ${({ theme }) => theme.font.size.lg};
   font-weight: ${({ theme }) => theme.font.weight.medium};
   color: inherit;
+  text-transform: capitalize;
 
   &.light {
     color: inherit;

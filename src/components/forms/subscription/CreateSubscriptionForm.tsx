@@ -124,7 +124,7 @@ const CreateSubscriptionForm = () => {
           initialValues={{
             name: "",
             packageType: "",
-            chargeAmount: "",
+            chargeAmount: 0,
             slabStart: "",
             slabEnd: ""
           }}

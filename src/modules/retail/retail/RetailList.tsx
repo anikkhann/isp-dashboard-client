@@ -255,7 +255,7 @@ const RetailList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("retail.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/retail/retail/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
@@ -333,7 +333,7 @@ const RetailList: React.FC = () => {
             title="Retails List"
             hasLink={true}
             addLink="/admin/retail/retail/create"
-            permission="user.create"
+            permission="retail.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

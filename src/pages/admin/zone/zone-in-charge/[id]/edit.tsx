@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.update", "") ? (
+      {ability.can("zone.update", "") ? (
         <EditZoneInCharge id={id} />
       ) : (
         <Forbidden />
