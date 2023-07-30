@@ -96,7 +96,7 @@ const EditRoleForm = ({ item }: PropData) => {
       const checked: any = [];
       item.rolePermissions.map((item: any) => {
         if (item.permission === null) return;
-        item.permission.actionTags.map((actionTag: any) => {
+        item.actionTags.map((actionTag: any) => {
           const value = item.permissionId + "__" + actionTag;
           checked.push(value);
         });
