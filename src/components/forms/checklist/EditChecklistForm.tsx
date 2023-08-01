@@ -216,7 +216,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Complain Type"
                     onChange={handleChange}
                     options={categories}
@@ -248,7 +248,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Root Cause Category"
                     onChange={handleChangeRoot}
                     options={rootCategories}

@@ -457,6 +457,41 @@ const CreateClientForm = () => {
               className="gutter-row"
             >
               <Form.Item
+                name="username"
+                label="Username"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Username"
+                  className={`form-control`}
+                  name="username"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
                 label="Client Level"
                 style={{
                   marginBottom: 0
@@ -472,7 +507,7 @@ const CreateClientForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleChange}
                     options={tagsList}
@@ -511,33 +546,7 @@ const CreateClientForm = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
-              <Form.Item
-                name="username"
-                label="Username"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Username!"
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Username"
-                  className={`form-control`}
-                  name="username"
-                />
-              </Form.Item>
-            </Col>
+
             <Col
               xs={12}
               sm={12}
@@ -758,7 +767,7 @@ const CreateClientForm = () => {
             >
               <Form.Item
                 name="altContactNumber"
-                label="Contact Number 2"
+                label="Alt Contact Number"
                 style={{
                   marginBottom: 0
                 }}
@@ -771,7 +780,7 @@ const CreateClientForm = () => {
               >
                 <Input
                   type="text"
-                  placeholder="Contact Number 2"
+                  placeholder="Alt Contact Number"
                   className={`form-control`}
                   name="altContactNumber"
                 />
@@ -805,7 +814,7 @@ const CreateClientForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDivisionChange}
                     options={divisions}
@@ -839,7 +848,7 @@ const CreateClientForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDistrictChange}
                     options={districts}
@@ -867,7 +876,7 @@ const CreateClientForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUpazillaChange}
                     options={upazillas}
@@ -897,7 +906,7 @@ const CreateClientForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUnionChange}
                     options={unions}
@@ -925,7 +934,7 @@ const CreateClientForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleLicenseTypeChange}
                     options={licenseTypes}
@@ -995,7 +1004,7 @@ const CreateClientForm = () => {
               className="gutter-row"
             >
               <Form.Item
-                label="Radius Ip"
+                label="Radius IP"
                 style={{
                   marginBottom: 0
                 }}
@@ -1003,14 +1012,14 @@ const CreateClientForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Radius Ip"
+                    message: "Please select Radius IP!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleRadiusIpChange}
                     options={radiusIps}

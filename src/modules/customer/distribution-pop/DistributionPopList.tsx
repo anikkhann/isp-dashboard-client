@@ -140,7 +140,7 @@ const DistributionPopList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Pop",
+      title: "POP",
       dataIndex: "name",
       sorter: true,
       width: "20%",
@@ -302,7 +302,7 @@ const DistributionPopList: React.FC = () => {
           )}
 
           <TableCard
-            title="Distribution Pops List"
+            title="Distribution POPs List"
             hasLink={true}
             addLink="/admin/customer/distribution-pop/create"
             permission="distributionPop.create"

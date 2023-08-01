@@ -294,38 +294,6 @@ const EditSubZoneForm = ({ item }: any) => {
               xxl={8}
               className="gutter-row"
             >
-              {/* name */}
-              <Form.Item
-                label="Name"
-                style={{
-                  marginBottom: 0
-                }}
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  className={`form-control`}
-                  name="name"
-                />
-              </Form.Item>
-            </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
               {/* username */}
               <Form.Item
                 name="username"
@@ -346,10 +314,42 @@ const EditSubZoneForm = ({ item }: any) => {
                 ]}
               >
                 <Input
+                  disabled
                   type="text"
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
                 />
               </Form.Item>
             </Col>
@@ -606,7 +606,7 @@ const EditSubZoneForm = ({ item }: any) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDivisionChange}
                     options={divisions}
@@ -642,7 +642,7 @@ const EditSubZoneForm = ({ item }: any) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDistrictChange}
                     options={districts}

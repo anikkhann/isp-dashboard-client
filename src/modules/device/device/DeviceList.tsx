@@ -141,6 +141,16 @@ const DeviceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Device Type",
+      dataIndex: "deviceType",
+      sorter: false,
+      render: (deviceType: any) => {
+        return <>{deviceType ? deviceType : "N/A"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Device Name",
       dataIndex: "name",
       sorter: true,
@@ -167,16 +177,7 @@ const DeviceList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Type",
-      dataIndex: "deviceType",
-      sorter: false,
-      render: (deviceType: any) => {
-        return <>{deviceType ? deviceType : "N/A"}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Monitoring Type",
       dataIndex: "monitoringType",

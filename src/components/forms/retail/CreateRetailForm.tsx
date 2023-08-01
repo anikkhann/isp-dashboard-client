@@ -368,38 +368,6 @@ const CreateRetailForm = () => {
               xxl={8}
               className="gutter-row"
             >
-              {/* name */}
-              <Form.Item
-                label="Name"
-                style={{
-                  marginBottom: 0
-                }}
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  className={`form-control`}
-                  name="name"
-                />
-              </Form.Item>
-            </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
               {/* username */}
               <Form.Item
                 name="username"
@@ -424,6 +392,37 @@ const CreateRetailForm = () => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
                 />
               </Form.Item>
             </Col>
@@ -757,7 +756,7 @@ const CreateRetailForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDivisionChange}
                     options={divisions}
@@ -793,7 +792,7 @@ const CreateRetailForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDistrictChange}
                     options={districts}
@@ -823,7 +822,7 @@ const CreateRetailForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUpazillaChange}
                     options={upazillas}
@@ -853,7 +852,7 @@ const CreateRetailForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUnionChange}
                     options={unions}
@@ -862,6 +861,34 @@ const CreateRetailForm = () => {
                 </Space>
               </Form.Item>
             </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
           {/* status */}
           <Form.Item

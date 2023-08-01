@@ -352,6 +352,42 @@ const EditClientForm = ({ item }: PropData) => {
               className="gutter-row"
             >
               <Form.Item
+                name="username"
+                label="Username"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  disabled
+                  type="text"
+                  placeholder="Username"
+                  className={`form-control`}
+                  name="username"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
                 label="Client Level"
                 style={{
                   marginBottom: 0
@@ -360,14 +396,14 @@ const EditClientForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select actions"
+                    message: "Please select Client Level!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleChange}
                     options={tagsList}
@@ -406,41 +442,7 @@ const EditClientForm = ({ item }: PropData) => {
                 />
               </Form.Item>
             </Col>
-            <Col
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="username"
-                label="Username"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Username!"
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Username"
-                  className={`form-control`}
-                  name="username"
-                />
-              </Form.Item>
-            </Col>
+
             <Col
               xs={12}
               sm={12}
@@ -623,7 +625,7 @@ const EditClientForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDivisionChange}
                     options={divisions}
@@ -657,7 +659,7 @@ const EditClientForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDistrictChange}
                     options={districts}
@@ -667,7 +669,6 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
 
-            {/* divisionId, districtId, upazillaId */}
             <Col
               xs={12}
               sm={12}
@@ -678,7 +679,7 @@ const EditClientForm = ({ item }: PropData) => {
               className="gutter-row"
             >
               <Form.Item
-                label="Radius Ip"
+                label="Radius IP"
                 style={{
                   marginBottom: 0
                 }}
@@ -686,14 +687,14 @@ const EditClientForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Radius Ip"
+                    message: "Please select Radius IP!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleRadiusIpChange}
                     options={radiusIps}

@@ -294,6 +294,43 @@ const EditZoneForm = ({ item }: any) => {
               xxl={8}
               className="gutter-row"
             >
+              {/* username */}
+              <Form.Item
+                name="username"
+                label="Username"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  disabled
+                  type="text"
+                  placeholder="Username"
+                  className={`form-control`}
+                  name="username"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
               {/* name */}
               <Form.Item
                 label="Name"
@@ -316,42 +353,7 @@ const EditZoneForm = ({ item }: any) => {
                 />
               </Form.Item>
             </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* username */}
-              <Form.Item
-                name="username"
-                label="Username"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Username!"
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Username"
-                  className={`form-control`}
-                  name="username"
-                />
-              </Form.Item>
-            </Col>
+
             <Col
               xs={24}
               sm={12}
@@ -597,7 +599,7 @@ const EditZoneForm = ({ item }: any) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDivisionChange}
                     options={divisions}
@@ -632,7 +634,7 @@ const EditZoneForm = ({ item }: any) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDistrictChange}
                     options={districts}

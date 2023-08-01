@@ -247,16 +247,16 @@ const CreatePackageForm = () => {
           initialValues={{
             name: "",
             displayName: "",
-            uploadLimit: "",
-            uploadLimitUnit: "",
-            downloadLimit: "",
-            downloadLimitUnit: "",
+            uploadLimit: "0",
+            uploadLimitUnit: "Mbps",
+            downloadLimit: "0",
+            downloadLimitUnit: "Mbps",
             ipPoolName: "",
             nextExpiredPackageId: "",
             validityUnitId: "",
-            validity: "",
-            vat: "",
-            totalPrice: "",
+            validity: "0",
+            vat: "5",
+            totalPrice: "0.00",
             unitPrice: ""
           }}
           style={{ maxWidth: "100%" }}

@@ -207,7 +207,7 @@ const EditIPForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Customers"
                     onChange={handleCustomerChange}
                     options={customers}

@@ -343,8 +343,8 @@ const CreateTicketForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Category"
                     onChange={handleChange}
                     options={categories}
                     value={selectCategory}
@@ -368,15 +368,15 @@ const CreateTicketForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select!"
+                    message: "Please select Customer!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Customer"
                     onChange={handleCustomerChange}
                     options={customers}
                     value={selectedCustomer}
@@ -400,15 +400,15 @@ const CreateTicketForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select!"
+                    message: "Please select Complain Type!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Complain Type"
                     onChange={handleComplainTypeChange}
                     options={complainTypes}
                     value={selectedComplainType}
@@ -433,15 +433,15 @@ const CreateTicketForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please select!"
+                      message: "Please select Assigned To!"
                     }
                   ]}
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      style={{ width: "100%" }}
-                      placeholder="Please select"
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Assigned To"
                       onChange={handleAssignedToChange}
                       options={assignedTo}
                       value={selectedAssignedTo}

@@ -359,38 +359,6 @@ const CreateZoneForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            {/* name */}
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Name"
-                style={{
-                  marginBottom: 0
-                }}
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  className={`form-control`}
-                  name="name"
-                />
-              </Form.Item>
-            </Col>
-
             <Col
               xs={24}
               sm={12}
@@ -424,6 +392,37 @@ const CreateZoneForm = () => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                />
+              </Form.Item>
+            </Col>
+            {/* name */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
                 />
               </Form.Item>
             </Col>
@@ -750,14 +749,14 @@ const CreateZoneForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Division"
+                    message: "Please select Division!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDivisionChange}
                     options={divisions}
@@ -793,7 +792,7 @@ const CreateZoneForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDistrictChange}
                     options={districts}
@@ -823,7 +822,7 @@ const CreateZoneForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUpazillaChange}
                     options={upazillas}
@@ -853,7 +852,7 @@ const CreateZoneForm = () => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUnionChange}
                     options={unions}
@@ -862,6 +861,34 @@ const CreateZoneForm = () => {
                 </Space>
               </Form.Item>
             </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
 
           {/* status */}

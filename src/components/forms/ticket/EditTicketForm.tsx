@@ -167,15 +167,15 @@ const EditTicketForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select!"
+                    message: "Please select Action!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Action"
                     onChange={handleChange}
                     options={actionLists}
                     value={selectedAction}
@@ -200,15 +200,15 @@ const EditTicketForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select!"
+                    message: "Please select Assigned To!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Assigned To"
                     onChange={handleAssignedToChange}
                     options={assignedTo}
                     value={selectedAssignedTo}

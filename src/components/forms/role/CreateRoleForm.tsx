@@ -12,7 +12,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Col, Form, Input, Row, Divider } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  Row,
+  Divider,
+  Card,
+  Space
+} from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -250,15 +261,25 @@ const CreateRoleForm = () => {
                             permission.children.map((item: any) => {
                               return (
                                 <Col lg={4} md={12} sm={12} key={item.value}>
-                                  <Checkbox
-                                    value={item.value}
-                                    style={{
-                                      display: "flex",
-                                      justifyContent: "left"
-                                    }}
-                                  >
-                                    {item.label}
-                                  </Checkbox>
+                                  <Space>
+                                    <Card
+                                      hoverable
+                                      style={{
+                                        backgroundColor: "#FFC857"
+                                      }}
+                                    >
+                                      <Checkbox
+                                        value={item.value}
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "left",
+                                          fontSize: "15px"
+                                        }}
+                                      >
+                                        {item.label}
+                                      </Checkbox>
+                                    </Card>
+                                  </Space>
                                 </Col>
                               );
                             })}
