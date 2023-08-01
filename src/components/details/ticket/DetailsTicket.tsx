@@ -21,6 +21,7 @@ const DetailsTicket = ({ item }: PropData) => {
       >
         <Card
           title={item.ticketNo}
+          hoverable
           bordered={false}
           style={{ textAlign: "start" }}
         >
@@ -46,6 +47,7 @@ const DetailsTicket = ({ item }: PropData) => {
 
         <Card
           // title="Card title"
+          hoverable
           bordered={false}
           style={{
             marginTop: "20px",
@@ -80,6 +82,7 @@ const DetailsTicket = ({ item }: PropData) => {
       >
         <Card
           // title="Card title"
+          hoverable
           bordered={false}
           style={{ textAlign: "start" }}
         >
