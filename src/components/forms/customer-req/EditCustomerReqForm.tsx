@@ -6,7 +6,17 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Grid, Input, Select, Space } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Grid,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
@@ -538,6 +548,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       <div className="mt-3">
         <Form
           // {...layout}
+          layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
@@ -566,603 +577,870 @@ const EditCustomerReqForm = ({ item }: PropData) => {
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
         >
-          {/* name */}
-          <Form.Item
-            label="Name"
-            style={{
-              marginBottom: 0
-            }}
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Name!"
-              }
-            ]}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Input
-              type="text"
-              placeholder="Name"
-              className={`form-control`}
-              name="name"
-            />
-          </Form.Item>
-
-          {/* username */}
-          <Form.Item
-            name="username"
-            label="Username"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your Username!"
-              },
-              {
-                pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
-                message:
-                  "Only letters, numbers, underscores and hyphens allowed"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Username"
-              className={`form-control`}
-              name="username"
-            />
-          </Form.Item>
-
-          {/* email */}
-          <Form.Item
-            label="Email"
-            style={{
-              marginBottom: 0
-            }}
-            name="email"
-            rules={[
-              {
-                type: "email",
-                message: "The input is not valid E-mail!"
-              },
-              {
-                required: true,
-                message: "Please input your E-mail!"
-              },
-              {
-                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                message:
-                  "Only letters, numbers, underscores and hyphens allowed"
-              }
-            ]}
-          >
-            <Input
-              type="email"
-              placeholder="Email"
-              className={`form-control`}
-              name="email"
-            />
-          </Form.Item>
-
-          {/* password */}
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!"
-              },
-              {
-                min: 6,
-                message: "Password must be minimum 6 characters."
-              },
-              {
-                pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                message:
-                  "Only letters, numbers, underscores and hyphens allowed"
-              }
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
-
-          {/* customerTypeId */}
-          <Form.Item
-            label="Customer Type"
-            style={{
-              marginBottom: 0
-            }}
-            name="customerTypeId"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleCustomerTypeChange}
-                options={customerTypes}
-                value={selectedCustomerType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* mobileNo */}
-          <Form.Item
-            name="mobileNo"
-            label="mobileNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your mobileNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="mobileNo"
-              className={`form-control`}
-              name="mobileNo"
-            />
-          </Form.Item>
-
-          {/* altMobileNo */}
-          <Form.Item
-            name="altMobileNo"
-            label="altMobileNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your altMobileNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="altMobileNo"
-              className={`form-control`}
-              name="altMobileNo"
-            />
-          </Form.Item>
-
-          {/* contact Person */}
-          <Form.Item
-            name="contactPerson"
-            label="Contact Person"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your Contact Person!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Contact Person"
-              className={`form-control`}
-              name="contactPerson"
-            />
-          </Form.Item>
-
-          {/* contactNumber */}
-          <Form.Item
-            name="contactNumber"
-            label="Contact Number"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your Contact Number!"
-              },
-              {
-                pattern: new RegExp(/^(01)[0-9]{9}$/),
-                message: "Please enter correct BD Phone number."
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Contact Number"
-              className={`form-control`}
-              name="contactNumber"
-            />
-          </Form.Item>
-
-          {/* connectionAddress */}
-          <Form.Item
-            name="connectionAddress"
-            label="Connection Address"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your Connection Address!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="Connection Address"
-              className={`form-control`}
-              name="connectionAddress"
-            />
-          </Form.Item>
-
-          {/* flatNo */}
-          <Form.Item
-            name="flatNo"
-            label="flat No"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your flat No!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="flat No"
-              className={`form-control`}
-              name="flatNo"
-            />
-          </Form.Item>
-
-          {/* houseNo */}
-          <Form.Item
-            name="houseNo"
-            label="houseNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your houseNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="houseNo"
-              className={`form-control`}
-              name="houseNo"
-            />
-          </Form.Item>
-
-          {/* roadNo */}
-          <Form.Item
-            name="roadNo"
-            label="roadNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your roadNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="roadNo"
-              className={`form-control`}
-              name="roadNo"
-            />
-          </Form.Item>
-
-          {/* area */}
-          <Form.Item
-            name="area"
-            label="area"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your area!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="area"
-              className={`form-control`}
-              name="area"
-            />
-          </Form.Item>
-
-          {/* identityType */}
-          <Form.Item
-            label="identityType"
-            style={{
-              marginBottom: 0,
-              marginRight: lg ? "10px" : "0px"
-            }}
-            name="identityType"
-            rules={[
-              {
-                required: true,
-                message: "Please select identityType"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleIdentityTypeChange}
-                options={identityTypes}
-                value={selectedIdentityType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* identityNo */}
-          <Form.Item
-            name="identityNo"
-            label="identityNo"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your identityNo!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="identityNo"
-              className={`form-control`}
-              name="identityNo"
-            />
-          </Form.Item>
-
-          {/* divisionId */}
-          <Form.Item
-            label="Division"
-            style={{
-              marginBottom: 0,
-              marginRight: lg ? "10px" : "0px"
-            }}
-            name="divisionId"
-            rules={[
-              {
-                required: true,
-                message: "Please select Division"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleDivisionChange}
-                options={divisions}
-                value={selectedDivision}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* districtId */}
-          <Form.Item
-            label="District"
-            style={{
-              marginBottom: 0
-            }}
-            name="districtId"
-            rules={[
-              {
-                required: true,
-                message: "Please select District"
-              }
-            ]}
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleDistrictChange}
-                options={districts}
-                value={selectedDistrict}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* upazillaId */}
-          <Form.Item
-            label="Upazilla"
-            style={{
-              marginBottom: 0
-            }}
-            name="upazillaId"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleUpazillaChange}
-                options={upazillas}
-                value={selectedUpazilla}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* unionId */}
-          <Form.Item
-            label="union"
-            style={{
-              marginBottom: 0
-            }}
-            name="unionId"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleUnionChange}
-                options={unions}
-                value={selectedUnion}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* customerPackageId */}
-          <Form.Item
-            label="Customer Package"
-            style={{
-              marginBottom: 0
-            }}
-            name="customerPackageId"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleCustomerPackageChange}
-                options={customerPackages}
-                value={selectedCustomerPackage}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* remarks */}
-          <Form.Item
-            name="remarks"
-            label="remarks"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your remarks!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="remarks"
-              className={`form-control`}
-              name="remarks"
-            />
-          </Form.Item>
-
-          {/* referenceType */}
-          <Form.Item
-            label="Reference Type"
-            style={{
-              marginBottom: 0
-            }}
-            name="referenceType"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleReferenceTypeChange}
-                options={referenceTypes}
-                value={selectedReferenceType}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* referrerCustomer */}
-          <Form.Item
-            label="Referrer Customer"
-            style={{
-              marginBottom: 0
-            }}
-            name="referrerCustomer"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleCustomerChange}
-                options={customers}
-                value={selectedCustomer}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* referrerUser */}
-          <Form.Item
-            label="Referrer User"
-            style={{
-              marginBottom: 0
-            }}
-            name="referrerUser"
-          >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleUserChange}
-                options={users}
-                value={selectedUser}
-              />
-            </Space>
-          </Form.Item>
-
-          {/* referrerName */}
-          <Form.Item
-            name="referrerName"
-            label="referrerName"
-            style={{
-              marginBottom: 0
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your referrerName!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="referrerName"
-              className={`form-control`}
-              name="referrerName"
-            />
-          </Form.Item>
+            {/* name */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                />
+              </Form.Item>
+            </Col>
+            {/* username */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="username"
+                label="Username"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Username"
+                  className={`form-control`}
+                  name="username"
+                />
+              </Form.Item>
+            </Col>
+            {/* email */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Email"
+                style={{
+                  marginBottom: 0
+                }}
+                name="email"
+                rules={[
+                  {
+                    type: "email",
+                    message: "The input is not valid E-mail!"
+                  },
+                  {
+                    required: true,
+                    message: "Please input your E-mail!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  className={`form-control`}
+                  name="email"
+                />
+              </Form.Item>
+            </Col>
+            {/* password */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="password"
+                label="Password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+            </Col>
+            {/* customerTypeId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Customer Type"
+                style={{
+                  marginBottom: 0
+                }}
+                name="customerTypeId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Customer Type"
+                    onChange={handleCustomerTypeChange}
+                    options={customerTypes}
+                    value={selectedCustomerType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* mobileNo */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="mobileNo"
+                label="Mobile No"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Mobile No!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Mobile No"
+                  className={`form-control`}
+                  name="mobileNo"
+                />
+              </Form.Item>
+            </Col>
+            {/* altMobileNo */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="altMobileNo"
+                label="Alt Mobile No"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Alt Mobile No!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Alt Mobile No"
+                  className={`form-control`}
+                  name="altMobileNo"
+                />
+              </Form.Item>
+            </Col>
+            {/* contact Person */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="contactPerson"
+                label="Contact Person"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Contact Person!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Contact Person"
+                  className={`form-control`}
+                  name="contactPerson"
+                />
+              </Form.Item>
+            </Col>
+            {/* contactNumber */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="contactNumber"
+                label="Contact Number"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Contact Number!"
+                  },
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message: "Please enter correct BD Phone number."
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Contact Number"
+                  className={`form-control`}
+                  name="contactNumber"
+                />
+              </Form.Item>
+            </Col>
+            {/* connectionAddress */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="connectionAddress"
+                label="Connection Address"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Connection Address!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Connection Address"
+                  className={`form-control`}
+                  name="connectionAddress"
+                />
+              </Form.Item>
+            </Col>
+            {/* flatNo */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="flatNo"
+                label="Flat No"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Flat No!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Flat No"
+                  className={`form-control`}
+                  name="flatNo"
+                />
+              </Form.Item>
+            </Col>
+            {/* houseNo */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="houseNo"
+                label="House No"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your House No!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="House No"
+                  className={`form-control`}
+                  name="houseNo"
+                />
+              </Form.Item>
+            </Col>
+            {/* roadNo */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="roadNo"
+                label="Road No"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Road No!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Road No"
+                  className={`form-control`}
+                  name="roadNo"
+                />
+              </Form.Item>
+            </Col>
+            {/* area */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="area"
+                label="Area"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Area!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Area"
+                  className={`form-control`}
+                  name="area"
+                />
+              </Form.Item>
+            </Col>
+            {/* identityType */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Identity Type"
+                style={{
+                  marginBottom: 0,
+                  marginRight: lg ? "10px" : "0px"
+                }}
+                name="identityType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Identity Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Identity Type"
+                    onChange={handleIdentityTypeChange}
+                    options={identityTypes}
+                    value={selectedIdentityType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* identityNo */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="identityNo"
+                label="Identity No"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Identity No!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Identity No"
+                  className={`form-control`}
+                  name="identityNo"
+                />
+              </Form.Item>
+            </Col>
+            {/* divisionId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Division"
+                style={{
+                  marginBottom: 0,
+                  marginRight: lg ? "10px" : "0px"
+                }}
+                name="divisionId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Division!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Division"
+                    onChange={handleDivisionChange}
+                    options={divisions}
+                    value={selectedDivision}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* districtId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="District"
+                style={{
+                  marginBottom: 0
+                }}
+                name="districtId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select District!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select District"
+                    onChange={handleDistrictChange}
+                    options={districts}
+                    value={selectedDistrict}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* upazillaId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Upazilla"
+                style={{
+                  marginBottom: 0
+                }}
+                name="upazillaId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Upazilla"
+                    onChange={handleUpazillaChange}
+                    options={upazillas}
+                    value={selectedUpazilla}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* unionId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Union"
+                style={{
+                  marginBottom: 0
+                }}
+                name="unionId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Union"
+                    onChange={handleUnionChange}
+                    options={unions}
+                    value={selectedUnion}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* customerPackageId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Customer Package"
+                style={{
+                  marginBottom: 0
+                }}
+                name="customerPackageId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Customer Package"
+                    onChange={handleCustomerPackageChange}
+                    options={customerPackages}
+                    value={selectedCustomerPackage}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* remarks */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="remarks"
+                label="Remarks"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Remarks!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Remarks"
+                  className={`form-control`}
+                  name="remarks"
+                />
+              </Form.Item>
+            </Col>
+            {/* referenceType */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Reference Type"
+                style={{
+                  marginBottom: 0
+                }}
+                name="referenceType"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Reference Type"
+                    onChange={handleReferenceTypeChange}
+                    options={referenceTypes}
+                    value={selectedReferenceType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* referrerCustomer */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Referrer Customer"
+                style={{
+                  marginBottom: 0
+                }}
+                name="referrerCustomer"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Referrer Customer"
+                    onChange={handleCustomerChange}
+                    options={customers}
+                    value={selectedCustomer}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* referrerUser */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Referrer User"
+                style={{
+                  marginBottom: 0
+                }}
+                name="referrerUser"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Referrer User"
+                    onChange={handleUserChange}
+                    options={users}
+                    value={selectedUser}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* referrerName */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="referrerName"
+                label="Referrer Name"
+                style={{
+                  marginBottom: 0
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Referrer Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Referrer Name"
+                  className={`form-control`}
+                  name="referrerName"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
 
           {/* submit */}
           <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>

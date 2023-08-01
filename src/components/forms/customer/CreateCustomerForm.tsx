@@ -749,7 +749,7 @@ const CreateCustomerForm = () => {
             splitter: "",
             onuDeviceId: "",
             accountStatus: "",
-            discount: ""
+            discount: "0.00"
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"

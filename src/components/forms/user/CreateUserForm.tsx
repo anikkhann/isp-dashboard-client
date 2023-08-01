@@ -352,6 +352,7 @@ const CreateUserForm = () => {
               <Form.Item
                 name="confirm"
                 label="Confirm Password"
+                // placeholder="Confirm Password"
                 dependencies={["password"]}
                 hasFeedback
                 rules={[
@@ -400,7 +401,7 @@ const CreateUserForm = () => {
                   <Select
                     mode="multiple"
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleRoleChange}
                     options={roles}

@@ -343,7 +343,7 @@ const CreateDeviceForm = () => {
             latitude: "",
             longitude: "",
             secret: "",
-            incomingPort: "",
+            incomingPort: "1700",
             ip: "",
             totalPort: "",
             mac: "",
@@ -354,13 +354,13 @@ const CreateDeviceForm = () => {
             apiPort: "",
             apiUsername: "",
             apiPassword: "",
-            snmpPortNo: "",
-            snmpVersion: "",
-            snmpCommunity: "",
+            snmpPortNo: "161",
+            snmpVersion: "v2c",
+            snmpCommunity: "public",
             telnetLoginName: "",
             telnetLoginPassword: "",
             telnetPrivilegedPassword: "",
-            telnetPonPortNumber: ""
+            telnetPonPortNumber: "23"
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"

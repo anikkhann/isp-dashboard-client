@@ -336,7 +336,7 @@ const EditUserForm = ({ item }: PropData) => {
                   <Select
                     mode="multiple"
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleRoleChange}
                     options={roles}
