@@ -50,6 +50,17 @@ const uploadUnits = [
   }
 ];
 
+const validityUnits = [
+  {
+    label: "Day",
+    value: "Day"
+  },
+  {
+    label: "Month",
+    value: "Month"
+  }
+];
+
 const CreatePackageForm = () => {
   const [form] = Form.useForm();
   // ** States
@@ -68,8 +79,6 @@ const CreatePackageForm = () => {
   const [zones, setZones] = useState([]);
 
   const [selectedZone, setSelectedZone] = useState<any[]>([]);
-
-  const [units, setUnits] = useState([]);
 
   const [selectedUnit, setSelectedUnit] = useState(null);
 
@@ -104,7 +113,7 @@ const CreatePackageForm = () => {
 
   const handleUnitChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ validityUnitId: value });
+    form.setFieldsValue({ validityUnit: value });
     setSelectedUnit(value as any);
   };
 
@@ -147,25 +156,8 @@ const CreatePackageForm = () => {
     }
   };
 
-  const getUnits = async () => {
-    const res = await axios.get(
-      "/api/lookup-details/get-by-master-key/data_validity_unit"
-    );
-    if (res.data.status == 200) {
-      const items = res.data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setUnits(items);
-    }
-  };
-
   useEffect(() => {
     getZones();
-    getUnits();
   }, []);
 
   const onSubmit = (data: FormData) => {
@@ -196,7 +188,7 @@ const CreatePackageForm = () => {
       downloadLimitUnit: downloadLimitUnit,
       ipPoolName: ipPoolName,
       nextExpiredPackageId: nextExpiredPackageId,
-      validityUnitId: selectedUnit,
+      validityUnit: selectedUnit,
       validity: validity,
       vat: vat,
       totalPrice: totalPrice,
@@ -253,7 +245,7 @@ const CreatePackageForm = () => {
             downloadLimitUnit: "Mbps",
             ipPoolName: "",
             nextExpiredPackageId: "",
-            validityUnitId: "",
+            validityUnit: "",
             validity: "0",
             vat: "5",
             totalPrice: "0.00",
@@ -507,13 +499,13 @@ const CreatePackageForm = () => {
               xxl={8}
               className="gutter-row"
             >
-              {/* validityUnitId */}
+              {/* validityUnit */}
               <Form.Item
                 label="Validity Unit"
                 style={{
                   marginBottom: 0
                 }}
-                name="validityUnitId"
+                name="validityUnit"
                 rules={[
                   {
                     required: true,
@@ -527,7 +519,7 @@ const CreatePackageForm = () => {
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Validity Unit"
                     onChange={handleUnitChange}
-                    options={units}
+                    options={validityUnits}
                     value={selectedUnit}
                   />
                 </Space>
