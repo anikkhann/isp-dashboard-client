@@ -1,7 +1,7 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
-import AppLoader from "@/lib/AppLoader";
-import DetailsAdminTicket from "@/modules/complaint/adminTicket/DetailsAdminTicket";
 
+import AppLoader from "@/lib/AppLoader";
+import EditAdminTicket from "@/modules/complaint/adminTicket/EditAdminTicket";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("adminTicket.view", "") ? (
-        <DetailsAdminTicket id={id} />
+      {ability.can("adminTicket.update", "") ? (
+        <EditAdminTicket id={id} />
       ) : (
         <Forbidden />
       )}

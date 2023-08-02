@@ -6,36 +6,21 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
+import { Alert, Button, Form, Space, Row, Col, Upload, Input } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { TicketData } from "@/interfaces/TicketData";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 
-const actionLists = [
-  {
-    label: "Owner Change",
-    value: "owner_change"
-  },
-  {
-    label: "Status Change",
-    value: "status_change"
-  },
-  {
-    label: "Reply",
-    value: "reply"
-  }
-];
+import { UploadOutlined } from "@ant-design/icons";
+import type { UploadProps } from "antd/es/upload";
+import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 
 interface PropData {
   item: TicketData;
 }
 
 const EditCustomerTicketForm = ({ item }: PropData) => {
-  const AuthUser = useAppSelector(state => state.auth.user);
-
-  console.log("AuthUser", AuthUser);
-
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -44,10 +29,8 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [selectedAction, setSelectedAction] = useState<any>(null);
-
-  const [assignedTo, setAssignedTo] = useState<any>(null);
-  const [selectedAssignedTo, setSelectedAssignedTo] = useState<any>(null);
+  const [file, setFile] = useState<any>(null);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   // const user = useAppSelector(state => state.auth.user);
   // console.log("user", user)
@@ -55,53 +38,56 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ action: value });
-    setSelectedAction(value as any);
-  };
-
-  const getAssignedTo = async (selectedCustomer: any) => {
-    console.log("selectedCustomer", selectedCustomer);
-    const res = await axios.get(
-      `/api/ticket/get-assigned-to/${selectedCustomer}`
-    );
-    if (res.data.status == 200) {
-      const items = res.data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setAssignedTo(items);
-    }
-  };
-
-  // assignedTo
-  const handleAssignedToChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ assignedTo: value });
-    setSelectedAssignedTo(value as any);
-  };
-
   useEffect(() => {
     if (item) {
-      // customerId
-      getAssignedTo(item.customerId);
     }
   }, [item]);
 
-  const onSubmit = () => {
-    // console.log(data);
-    const formData = {
-      id: item.id,
-      action: selectedAction,
-      assignedToId: selectedAssignedTo
-    };
+  const handleFileChange: UploadProps["onChange"] = ({
+    fileList: newFileList
+  }) => {
+    // only remove the files that are not uploaded
+    const filteredList = newFileList.filter(
+      file =>
+        file.status !== "removed" &&
+        file.status !== "error" &&
+        file.status !== "uploading"
+    ) as UploadFile[];
+
+    setFileList(filteredList);
+  };
+
+  const dummyAction = (options: any) => {
+    const { file } = options;
+    console.log("Dummy action triggered. File:", file);
+
+    fileList.push({
+      uid: file.uid,
+      name: file.name,
+      status: "done" as UploadFileStatus
+    });
+    setFile(file);
+  };
+
+  const uploadButton = (
+    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+  );
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+
+    const { note } = data;
+
+    const formData = new FormData();
+    formData.append("id", item.id);
+    if (file) {
+      formData.append("attachment", file);
+    }
+    formData.append("note", note);
 
     try {
       axios
-        .put("/api/ticket/update", formData)
+        .put("/api/ticket-details/reply", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -136,11 +122,7 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
           onFinish={onSubmit}
           form={form}
           initialValues={{
-            ticketCategory: "",
-            customerId: "",
-            complainTypeId: "",
-            complainDetails: "",
-            assignedTo: ""
+            notes: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -151,72 +133,53 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
           colon={false}
           scrollToFirstError
         >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
-          >
-            <Col
-              xs={24}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
-            >
-              {/* action */}
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            <Col xs={24} className="gutter-row">
+              {/* note */}
               <Form.Item
-                label="Action"
-                name="action"
+                label="Note"
+                style={{
+                  marginBottom: 0
+                }}
+                name="note"
                 rules={[
                   {
                     required: true,
-                    message: "Please select Action!"
+                    message: "Please input your note!"
                   }
                 ]}
               >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Action"
-                    onChange={handleChange}
-                    options={actionLists}
-                    value={selectedAction}
-                  />
-                </Space>
+                <Input.TextArea
+                  rows={4}
+                  cols={16}
+                  placeholder="note"
+                  className={`form-control`}
+                  name="note"
+                />
               </Form.Item>
             </Col>
+          </Row>
 
-            <Col
-              xs={24}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
-            >
-              {/* assignedToId */}
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            <Col>
               <Form.Item
-                label="Assigned To"
-                name="assignedToId"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Assigned To!"
-                  }
-                ]}
+                label="Attachment"
+                style={{
+                  marginBottom: 0,
+                  width: "100%",
+                  textAlign: "center"
+                }}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Assigned To"
-                    onChange={handleAssignedToChange}
-                    options={assignedTo}
-                    value={selectedAssignedTo}
-                  />
+                  <Upload
+                    customRequest={dummyAction}
+                    onChange={handleFileChange}
+                    maxCount={1}
+                    listType="picture"
+                    fileList={fileList}
+                  >
+                    {fileList.length >= 1 ? null : uploadButton}
+                  </Upload>
                 </Space>
               </Form.Item>
             </Col>

@@ -64,13 +64,13 @@ const EditAdminTicket = ({ id }: any) => {
               )
             },
             {
-              title: "Edit Admin Ticket"
+              title: "Reply Admin Ticket"
             }
           ]}
         />
 
         <Card
-          title="Edit Admin Ticket"
+          title="Reply Admin Ticket"
           hoverable
           style={{
             width: "90%",
