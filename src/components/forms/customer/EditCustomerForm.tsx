@@ -21,13 +21,13 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { CustomerData } from "@/interfaces/CustomerData";
+import { useAppSelector } from "@/store/hooks";
 
 interface FormData {
   name: string;
   username: string;
   password: string;
-  // customerTypeId: string
+  customerTypeId: string;
   mobileNo: string;
   altMobileNo: string;
   email: string;
@@ -40,14 +40,14 @@ interface FormData {
   area: string;
   identityType: string;
   identityNo: string;
-  /*  divisionId: any
-   districtId: any
-   upazillaId: any
-   unionId: any
-   customerPackageId: string */
+  divisionId: any;
+  districtId: any;
+  upazillaId: any;
+  unionId: any;
+  customerPackageId: string;
   remarks: any;
-  // distributionZoneId: string
-  // distributionPopId: string
+  distributionZoneId: string;
+  distributionPopId: string;
   isMacBound: boolean;
   mac: string;
   simultaneousUser: string;
@@ -128,11 +128,14 @@ const fiberOpticDeviceTypes = [
   }
 ];
 interface PropData {
-  item: CustomerData;
+  item: any;
 }
 
 const EditCustomerForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
+
+  const authUser = useAppSelector(state => state.auth.user);
+
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -185,6 +188,15 @@ const EditCustomerForm = ({ item }: PropData) => {
 
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+
+  const [zones, setZones] = useState([]);
+  const [selectedZone, setSelectedZone] = useState(null);
+
+  const [subZones, setSubZones] = useState([]);
+  const [selectedSubZone, setSelectedSubZone] = useState(null);
+
+  const [retailers, setRetailers] = useState([]);
+  const [selectedRetailer, setSelectedRetailer] = useState(null);
 
   const { useBreakpoint } = Grid;
 
@@ -297,25 +309,193 @@ const EditCustomerForm = ({ item }: PropData) => {
     setSelectedFiberOpticDeviceType(value as any);
   };
 
+  const handleZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ zoneManagerId: value });
+    setSelectedZone(value as any);
+  };
+
+  const handleSubZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ subZoneManagerId: value });
+    setSelectedSubZone(value as any);
+  };
+
+  const handleRetailerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ retailerId: value });
+    setSelectedRetailer(value as any);
+  };
+
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        }
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  function getSubZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "sub_zone"
+        // zoneManager: { id: selectedZone }
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setSubZones(list);
+    });
+  }
+
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer"
+        // subZoneManager: { id: selectedSubZone }
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
+
   useEffect(() => {
     if (item) {
       form.setFieldsValue({
         name: item.name,
         username: item.username,
         password: item.password,
-        email: item.email
-        /*   address: item.address,
-          altContactNumber: item.altContactNumber,
-          contactNumber: item.contactNumber,
-          districtId: item.districtId,
-          divisionId: item.divisionId,
-          contactPerson: item.contactPerson,
-          radiusIpId: item.radiusIpId,
-          clientLevel: item.clientLevel */
+        email: item.email,
+        address: item.address,
+        flatNo: item.flatNo,
+        houseNo: item.houseNo,
+        roadNo: item.roadNo,
+        area: item.area,
+        mobileNo: item.mobileNo,
+        altMobileNo: item.altMobileNo,
+        identityType: item.identityType,
+        identityNo: item.identityNo,
+        remarks: item.remarks,
+        connectionAddress: item.connectionAddress,
+        distributionZoneId: item.distributionZoneId,
+        distributionPopId: item.distributionPopId,
+        isMacBound: item.isMacBound,
+        mac: item.mac,
+        simultaneousUser: item.simultaneousUser,
+        ipMode: item.ipMode,
+        staticIp: item.staticIp,
+        referenceType: item.referenceType,
+        referrerName: item.referrerName,
+        connectionType: item.connectionType,
+        fiberOpticDeviceType: item.fiberOpticDeviceType,
+        oltDeviceId: item.oltDeviceId,
+        serialNo: item.serialNo,
+        cableLength: item.cableLength,
+        vlanBoxName: item.vlanBoxName,
+        swPortNo: item.swPortNo,
+        cableId: item.cableId,
+        colorCode: item.colorCode,
+        splitter: item.splitter,
+        onuDeviceId: item.onuDeviceId,
+
+        altContactNumber: item.altContactNumber,
+        contactNumber: item.contactNumber,
+        districtId: item.districtId,
+        divisionId: item.divisionId,
+        upazillaId: item.upazillaId,
+        unionId: item.unionId,
+        contactPerson: item.contactPerson,
+
+        customerTypeId: item.customerTypeId,
+        radiusIpId: item.radiusIpId,
+        discount: item.discount
       });
-      /* setSelectedDivision(item.divisionId);
+      setSelectedDivision(item.divisionId);
       setSelectedDistrict(item.districtId);
-      setSelectedUpazilla(item.upazillaId); */
+      setSelectedUpazilla(item.upazillaId);
+      setSelectedUnion(item.unionId);
+      setSelectedCustomerType(item.customerTypeId);
+      setSelectedCustomerPackage(item.customerPackageId);
+      setSelectedReferenceType(item.referenceType);
+      setSelectedConnectionType(item.connectionType);
+      setSelectedFiberOpticDeviceType(item.fiberOpticDeviceType);
+      setSelectedDistributionZone(item.distributionZoneId);
+      setSelectedDistributionPop(item.distributionPopId);
+      setSelectedIdentityType(item.identityType);
+      setSelectedCustomer(item.referrerCustomer);
+      setSelectedUser(item.referrerUser);
+      setSelectedZone(item.zoneManagerId);
+      setSelectedSubZone(item.subZoneManagerId);
+      setSelectedRetailer(item.retailerId);
+      setAutoRenew(item.autoRenew);
+      setSmsAlert(item.smsAlert);
+      setEmailAlert(item.emailAlert);
+      setIsMacBound(item.isMacBound);
       setIsActive(item.isActive);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -601,6 +781,10 @@ const EditCustomerForm = ({ item }: PropData) => {
     getCustomerTypes();
     getCustomers();
     getUsers();
+
+    getZoneManagers();
+    getSubZoneManagers();
+    getRetailers();
   }, []);
 
   useEffect(() => {
@@ -712,7 +896,11 @@ const EditCustomerForm = ({ item }: PropData) => {
       discount: discount,
       smsAlert: smsAlert,
       emailAlert: emailAlert,
-      isActive: isActive
+      isActive: isActive,
+
+      zoneManagerId: selectedZone,
+      subZoneManagerId: selectedSubZone,
+      retailerId: selectedRetailer
     };
 
     try {
@@ -778,14 +966,14 @@ const EditCustomerForm = ({ item }: PropData) => {
             area: "",
             identityType: "",
             identityNo: "",
-            /*  divisionId: any
-              districtId: any
-              upazillaId: any
-              unionId: any
-              customerPackageId: string */
+            divisionId: "",
+            districtId: "",
+            upazillaId: "",
+            unionId: "",
+            customerPackageId: "",
             remarks: "",
-            // distributionZoneId: string
-            // distributionPopId: string
+            distributionZoneId: "",
+            distributionPopId: "",
             isMacBound: false,
             mac: "",
             simultaneousUser: "",
@@ -806,11 +994,14 @@ const EditCustomerForm = ({ item }: PropData) => {
             colorCode: "",
             splitter: "",
             onuDeviceId: "",
-            accountStatus: "",
+            // accountStatus: "",
             autoRenew: false,
             discount: "",
             smsAlert: false,
-            emailAlert: false
+            emailAlert: false,
+            zoneManagerId: "",
+            subZoneManagerId: "",
+            retailerId: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -837,6 +1028,104 @@ const EditCustomerForm = ({ item }: PropData) => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
+              {authUser && authUser.userType == "client" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* zoneManagerId */}
+                  <Form.Item
+                    label="Zone Manager"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    name="zoneManagerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleZoneChange}
+                        options={zones}
+                        value={selectedZone}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
+              {authUser &&
+                (authUser.userType == "client" ||
+                  authUser.userType == "zone") && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* subZoneManagerId */}
+                    <Form.Item
+                      label="SubZone Manager"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      name="subZoneManagerId"
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleSubZoneChange}
+                          options={subZones}
+                          value={selectedSubZone}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                )}
+
+              {authUser && authUser.userType == "subZone" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* retailerId */}
+                  <Form.Item
+                    label="Retailer"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    name="retailerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleRetailerChange}
+                        options={retailers}
+                        value={selectedRetailer}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
               <Col
                 xs={24}
                 sm={12}
@@ -1052,12 +1341,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                   style={{
                     marginBottom: 0
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Alt Mobile No!"
-                    }
-                  ]}
                 >
                   <Input
                     type="text"
@@ -1180,12 +1463,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                   style={{
                     marginBottom: 0
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Flat No!"
-                    }
-                  ]}
                 >
                   <Input
                     type="text"
@@ -1211,12 +1488,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                   style={{
                     marginBottom: 0
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your House No!"
-                    }
-                  ]}
                 >
                   <Input
                     type="text"
@@ -1242,12 +1513,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                   style={{
                     marginBottom: 0
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Road No!"
-                    }
-                  ]}
                 >
                   <Input
                     type="text"
@@ -1273,12 +1538,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                   style={{
                     marginBottom: 0
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Area!"
-                    }
-                  ]}
                 >
                   <Input
                     type="text"
@@ -1372,12 +1631,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                     marginRight: lg ? "10px" : "0px"
                   }}
                   name="divisionId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Division!"
-                    }
-                  ]}
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
@@ -1407,12 +1660,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                     marginBottom: 0
                   }}
                   name="districtId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select District!"
-                    }
-                  ]}
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
@@ -1529,12 +1776,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                   style={{
                     marginBottom: 0
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Remarks!"
-                    }
-                  ]}
                 >
                   <Input
                     type="text"
@@ -1862,12 +2103,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                   style={{
                     marginBottom: 0
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Referrer Name!"
-                    }
-                  ]}
                 >
                   <Input
                     type="text"

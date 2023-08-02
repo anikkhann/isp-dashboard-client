@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import EditTicketForm from "@/components/forms/ticket/EditTicketForm";
+import EditCustomerTicketForm from "@/components/forms/customer-ticket/EditCustomerTicketForm";
 import { TicketData } from "@/interfaces/TicketData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -88,7 +87,7 @@ const EditCustomerTicket = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditTicketForm item={item} />}
+          {!isLoading && item && <EditCustomerTicketForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

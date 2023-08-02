@@ -10,7 +10,7 @@ import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { TicketData } from "@/interfaces/TicketData";
-// import { useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 
 const actionLists = [
   {
@@ -32,6 +32,10 @@ interface PropData {
 }
 
 const EditCustomerTicketForm = ({ item }: PropData) => {
+  const AuthUser = useAppSelector(state => state.auth.user);
+
+  console.log("AuthUser", AuthUser);
+
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -58,7 +62,7 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
   };
 
   const getAssignedTo = async (selectedCustomer: any) => {
-    // console.log("selectedCustomer", selectedCustomer);
+    console.log("selectedCustomer", selectedCustomer);
     const res = await axios.get(
       `/api/ticket/get-assigned-to/${selectedCustomer}`
     );
@@ -167,15 +171,15 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select!"
+                    message: "Please select Action!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Action"
                     onChange={handleChange}
                     options={actionLists}
                     value={selectedAction}
@@ -200,15 +204,15 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select!"
+                    message: "Please select Assigned To!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Assigned To"
                     onChange={handleAssignedToChange}
                     options={assignedTo}
                     value={selectedAssignedTo}

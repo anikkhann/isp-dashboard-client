@@ -344,7 +344,7 @@ const CreateRetailForm = () => {
             unionId: "",
             address: "",
             nidNo: "",
-            salesDistributionCommission: ""
+            salesDistributionCommission: 0
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"

@@ -31,7 +31,7 @@ interface PropData {
   item: TicketData;
 }
 
-const EditTicketForm = ({ item }: PropData) => {
+const EditAdminTicketForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -235,4 +235,4 @@ const EditTicketForm = ({ item }: PropData) => {
   );
 };
 
-export default EditTicketForm;
+export default EditAdminTicketForm;
