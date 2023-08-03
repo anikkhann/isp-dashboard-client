@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { TicketData } from "@/interfaces/TicketData";
 
@@ -238,17 +238,6 @@ const AdminTicketList: React.FC = () => {
       render: (text: any, record: any) => {
         return (
           <>
-            <Space size="middle" align="center">
-              {ability.can("adminTicket.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link
-                    href={`/admin/complaint/admin-ticket/${record.id}/edit`}
-                  >
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-            </Space>
             <Space
               size="middle"
               align="center"

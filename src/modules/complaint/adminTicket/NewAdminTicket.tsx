@@ -1,4 +1,4 @@
-import CreateTicketForm from "@/components/forms/ticket/CreateTicketForm";
+import CreateAdminTicketForm from "@/components/forms/adminTicket/CreateAdminTicketForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -33,7 +33,7 @@ const NewAdminTicket = () => {
         />
 
         <Card
-          title="New Checklist"
+          title="New Admin Ticket"
           hoverable
           style={{
             width: "90%",
@@ -45,7 +45,7 @@ const NewAdminTicket = () => {
             marginBottom: "3rem"
           }}
         >
-          <CreateTicketForm />
+          <CreateAdminTicketForm />
         </Card>
       </AppRowContainer>
     </>

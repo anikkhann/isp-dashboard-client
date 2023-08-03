@@ -40,6 +40,8 @@ interface FormData {
   btrcLicenseNo: any;
   licenseExpireDate: any;
   radiusIpId: string;
+  latitude: string;
+  longitude: string;
 }
 
 // const layout = {
@@ -72,20 +74,21 @@ const CreateClientForm = () => {
   const [clientLevel, setClientLevel] = useState(null);
 
   const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazillas, setUpazillas] = useState([]);
-  const [unions, setUnions] = useState([]);
-
-  const [licenseTypes, setLicenseTypes] = useState([]);
-
-  const [radiusIps, setRadiusIps] = useState([]);
-
   const [selectedDivision, setSelectedDivision] = useState(null);
+
+  const [districts, setDistricts] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+  const [upazillas, setUpazillas] = useState([]);
   const [selectedUpazilla, setSelectedUpazilla] = useState(null);
+
+  const [unions, setUnions] = useState([]);
   const [selectedUnion, setSelectedUnion] = useState(null);
 
+  const [licenseTypes, setLicenseTypes] = useState([]);
   const [selectedLicenseType, setSelectedLicenseType] = useState(null);
+
+  const [radiusIps, setRadiusIps] = useState([]);
   const [selectedRadiusIp, setSelectedRadiusIp] = useState(null);
 
   const { useBreakpoint } = Grid;
@@ -316,7 +319,7 @@ const CreateClientForm = () => {
   }, [selectedUpazilla]);
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    // console.log(data);
 
     const {
       clientLevel,
@@ -335,7 +338,9 @@ const CreateClientForm = () => {
       licenseExpireDate,
       btrcLicenseNo,
       licenseTypeId,
-      radiusIpId
+      radiusIpId,
+      latitude,
+      longitude
     } = data;
 
     let formatDate = null;
@@ -355,17 +360,17 @@ const CreateClientForm = () => {
       altContactNumber: altContactNumber,
       email: email,
       address: address,
-      latitude: null,
-      longitude: null,
+      latitude: latitude,
+      longitude: longitude,
       divisionId: divisionId,
       districtId: districtId,
       upazillaId: upazillaId,
       unionId: unionId,
-      btrcLicenseNo: btrcLicenseNo,
       licenseTypeId: licenseTypeId,
+      btrcLicenseNo: btrcLicenseNo,
       licenseExpireDate: formatDate,
-      radiusIpId: radiusIpId,
-      isActive: isActive
+      isActive: isActive,
+      radiusIpId: radiusIpId
     };
 
     try {
@@ -431,7 +436,9 @@ const CreateClientForm = () => {
             btrcLicenseNo: "",
             licenseExpireDate: "",
             radiusIpId: "",
-            address: ""
+            address: "",
+            latitude: "",
+            longitude: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -617,6 +624,55 @@ const CreateClientForm = () => {
                 />
               </Form.Item>
             </Col>
+            <Col
+              xs={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="latitude"
+                label="latitude"
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="latitude"
+                  className={`form-control`}
+                  name="latitude"
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={12}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="longitude"
+                label="longitude"
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="longitude"
+                  className={`form-control`}
+                  name="longitude"
+                />
+              </Form.Item>
+            </Col>
+
             <Col
               xs={12}
               sm={12}

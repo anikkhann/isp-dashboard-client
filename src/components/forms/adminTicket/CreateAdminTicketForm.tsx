@@ -16,7 +16,6 @@ import {
   Row,
   Col,
   Upload,
-  Radio,
   Steps
 } from "antd";
 import axios from "axios";
@@ -28,24 +27,16 @@ import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 
 const steps = [
   {
-    title: "customer",
-    content: "customer"
-  },
-  {
     title: "complain",
     content: "complain"
   },
   {
     title: "Attachments",
     content: "attachments"
-  },
-  {
-    title: "assign",
-    content: "assign"
   }
 ];
 
-const CreateCustomerTicketForm = () => {
+const CreateAdminTicketForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -57,17 +48,8 @@ const CreateCustomerTicketForm = () => {
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [customers, setCustomers] = useState<any>([]);
-
   const [complainTypes, setComplainTypes] = useState<any>([]);
-
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const [selectedComplainType, setSelectedComplainType] = useState<any>(null);
-
-  const [checkListItems, setCheckListItems] = useState<any>([]);
-
-  const [assignedTo, setAssignedTo] = useState<any>(null);
-  const [selectedAssignedTo, setSelectedAssignedTo] = useState<any>(null);
 
   // const user = useAppSelector(state => state.auth.user);
   // console.log("user", user)
@@ -90,13 +72,6 @@ const CreateCustomerTicketForm = () => {
   const next = async () => {
     try {
       if (current === 0) {
-        await form.validateFields(["customerId"]);
-
-        setFormValues({
-          ...formValues,
-          customerId: form.getFieldValue("customerId")
-        });
-      } else if (current === 1) {
         await form.validateFields(["complainTypeId"]);
 
         setFormValues({
@@ -109,13 +84,6 @@ const CreateCustomerTicketForm = () => {
         setFormValues({
           ...formValues,
           complainDetails: form.getFieldValue("complainDetails")
-        });
-      } else if (current === 3) {
-        await form.validateFields(["assignedTo"]);
-
-        setFormValues({
-          ...formValues,
-          assignedTo: form.getFieldValue("assignedTo")
         });
       }
 
@@ -159,61 +127,6 @@ const CreateCustomerTicketForm = () => {
     <Button icon={<UploadOutlined />}>Click to Upload</Button>
   );
 
-  const getCustomers = async () => {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      }
-    };
-
-    const res = await axios.post("/api/customer/get-list", body);
-    if (res.data.status == 200) {
-      const items = res.data.body.map((item: any) => {
-        return {
-          label: item.username,
-          value: item.id
-        };
-      });
-
-      setCustomers(items);
-    }
-  };
-
-  // customerId
-  const handleCustomerChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
-  };
-
-  const getAssignedTo = async (selectedCustomer: any) => {
-    // console.log("selectedCustomer", selectedCustomer)
-    const res = await axios.get(
-      `/api/ticket/get-assigned-to/${selectedCustomer}`
-    );
-    if (res.data.status == 200) {
-      const items = res.data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setAssignedTo(items);
-    }
-  };
-
-  // assignedTo
-  const handleAssignedToChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ assignedTo: value });
-    setSelectedAssignedTo(value as any);
-  };
-
   const getComplainTypes = async () => {
     const body = {
       meta: {
@@ -246,78 +159,18 @@ const CreateCustomerTicketForm = () => {
     setSelectedComplainType(value as any);
   };
 
-  const getChecklists = async () => {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      }
-    };
-
-    const res = await axios.post("/api/checklist/get-list", body);
-    if (res.data.status == 200) {
-      const items = res.data.body.map((item: any) => {
-        return {
-          title: item.title,
-          value: "yes"
-        };
-      });
-      setCheckListItems(items);
-    }
-  };
-
   useEffect(() => {
-    getCustomers();
     getComplainTypes();
-    getChecklists();
   }, []);
 
-  useEffect(() => {
-    if (selectedCustomer) {
-      getAssignedTo(selectedCustomer);
-    }
-  }, [selectedCustomer]);
-
   const onSubmit = (data: any) => {
-    console.log(data);
-    // Filter keys to keep only those starting with "checklist-"
-    // Filter keys to keep only those starting with "checklist-"
-    const filteredData = Object.keys(data).reduce((acc: any, key) => {
-      if (key.startsWith("checklist-")) {
-        acc[key] = data[key];
-      }
-      return acc;
-    }, {});
-
-    console.log(filteredData);
-
-    // Remove "checklist-" prefix and set key-value pairs
-    const cleanedChecklistData = Object.keys(filteredData).reduce(
-      (acc: any, key: any) => {
-        const cleanedKey = key.replace("checklist-", ""); // Remove "checklist-" prefix
-        acc[cleanedKey] = data[key];
-        return acc;
-      },
-      {}
-    );
-
-    // Convert to JSON format
-    const checkListJson = JSON.stringify(cleanedChecklistData, null, 2);
-
     const formData = new FormData();
     if (file) {
       formData.append("attachment", file);
     }
-    formData.append("ticketCategory", "customer");
-    formData.append("customerId", selectedCustomer);
+    formData.append("ticketCategory", "parent");
     formData.append("complainTypeId", selectedComplainType);
     formData.append("complainDetails", data.complainDetails);
-    formData.append("checkList", checkListJson);
-    formData.append("assignedTo", selectedAssignedTo);
 
     try {
       axios
@@ -367,11 +220,8 @@ const CreateCustomerTicketForm = () => {
           onFinish={onSubmit}
           form={form}
           initialValues={{
-            ticketCategory: "",
-            customerId: "",
             complainTypeId: "",
-            complainDetails: "",
-            assignedTo: ""
+            complainDetails: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -379,45 +229,6 @@ const CreateCustomerTicketForm = () => {
           scrollToFirstError
         >
           {current === 0 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* customerId */}
-                  <Form.Item
-                    label="Customer"
-                    name="customerId"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Customer!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Customer"
-                        onChange={handleCustomerChange}
-                        options={customers}
-                        value={selectedCustomer}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </>
-          )}
-
-          {current === 1 && (
             <>
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
                 <Col
@@ -453,60 +264,10 @@ const CreateCustomerTicketForm = () => {
                   </Form.Item>
                 </Col>
               </Row>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  {/* checklist */}
-                  {checkListItems.map((itemData: any, index: any) => (
-                    <Form.Item
-                      key={index}
-                      // label={itemData.title}
-                      name={`checklist-${itemData.title}`}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <div
-                        style={{
-                          marginBottom: 0,
-                          display: "flex",
-                          width: "100%",
-                          flexDirection: "row",
-                          border: "2px solid #000000",
-                          padding: "10px",
-                          borderRadius: "4px"
-                        }}
-                      >
-                        <span
-                          style={{
-                            width: "100%",
-                            textAlign: "start",
-                            marginRight: "10px"
-                          }}
-                        >
-                          {itemData.title}
-                        </span>
-                        <Radio.Group
-                          style={{
-                            display: "flex",
-                            justifyContent: "start"
-                          }}
-                          key={index}
-                        >
-                          <Radio value="yes">Yes</Radio>
-                          <Radio value="no">No</Radio>
-                        </Radio.Group>
-                      </div>
-                    </Form.Item>
-                  ))}
-                </Col>
-              </Row>
             </>
           )}
 
-          {current === 2 && (
+          {current === 1 && (
             <>
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
                 <Col xs={24} className="gutter-row">
@@ -562,47 +323,6 @@ const CreateCustomerTicketForm = () => {
             </>
           )}
 
-          {current === 3 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                {selectedCustomer != null && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* assignedTo */}
-                    <Form.Item
-                      label="Assigned To"
-                      name="assignedTo"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select Assigned To!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Assigned To"
-                          onChange={handleAssignedToChange}
-                          options={assignedTo}
-                          value={selectedAssignedTo}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-              </Row>
-            </>
-          )}
-
           {/* submit */}
           <Row justify="center">
             <Col>
@@ -636,4 +356,4 @@ const CreateCustomerTicketForm = () => {
   );
 };
 
-export default CreateCustomerTicketForm;
+export default CreateAdminTicketForm;

@@ -1,4 +1,4 @@
-import CreateTicketForm from "@/components/forms/ticket/CreateTicketForm";
+import CreateCustomerTicketForm from "@/components/forms/customer-ticket/CreateCustomerTicketForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -47,7 +47,7 @@ const NewCustomerTicket = () => {
             marginBottom: "3rem"
           }}
         >
-          <CreateTicketForm />
+          <CreateCustomerTicketForm />
         </Card>
       </AppRowContainer>
     </>

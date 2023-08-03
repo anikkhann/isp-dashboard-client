@@ -1,21 +1,25 @@
-import CustomerCareLayout from "@/core/layouts/CustomerCareLayout";
+import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import DetailsCustomerCare from "@/modules/customer-care/customer-care/DetailsCustomerCare";
+import EditAdminTicket from "@/modules/complaint/adminTicket/EditAdminTicket";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
+import { useRouter } from "next/router";
 import { ReactNode } from "react";
 
 const Home = () => {
   const auth = useAppSelector(state => state.auth);
 
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerCare.list", "") ? (
-        <DetailsCustomerCare />
+      {ability.can("adminTicket.update", "") ? (
+        <EditAdminTicket id={id} />
       ) : (
         <Forbidden />
       )}
@@ -23,8 +27,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => (
-  <CustomerCareLayout>{page}</CustomerCareLayout>
-);
+Home.getLayout = (page: ReactNode) => <ComplaintLayout>{page}</ComplaintLayout>;
 
 export default Home;

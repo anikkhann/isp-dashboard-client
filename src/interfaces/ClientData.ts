@@ -21,6 +21,7 @@ export interface ClientData {
   licenseTypeId: string;
   licenseType: LicenseType;
   licenseExpireDate: number;
+  btrcLicenseNo: string;
   salesDistributionCommission: number;
   credits: number;
   radiusIp: RadiusIp;

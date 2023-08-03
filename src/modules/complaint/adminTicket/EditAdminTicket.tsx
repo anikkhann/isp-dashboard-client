@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditTicketForm from "@/components/forms/ticket/EditTicketForm";
+import EditAdminTicketForm from "@/components/forms/adminTicket/EditAdminTicketForm";
 import { TicketData } from "@/interfaces/TicketData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -64,13 +64,13 @@ const EditAdminTicket = ({ id }: any) => {
               )
             },
             {
-              title: "Edit Admin Ticket"
+              title: "Reply Admin Ticket"
             }
           ]}
         />
 
         <Card
-          title="Edit Admin Ticket"
+          title="Reply Admin Ticket"
           hoverable
           style={{
             width: "90%",
@@ -86,7 +86,7 @@ const EditAdminTicket = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditTicketForm item={item} />}
+          {!isLoading && item && <EditAdminTicketForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

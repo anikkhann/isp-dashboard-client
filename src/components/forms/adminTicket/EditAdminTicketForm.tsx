@@ -20,7 +20,7 @@ interface PropData {
   item: TicketData;
 }
 
-const EditCustomerTicketForm = ({ item }: PropData) => {
+const EditAdminTicketForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -95,7 +95,7 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
             text: data.message || "Updated successfully",
             icon: "success"
           }).then(() => {
-            router.replace("/admin/complaint/customer-ticket");
+            router.replace("/admin/complaint/admin-ticket");
           });
         })
         .catch(err => {
@@ -202,4 +202,4 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
   );
 };
 
-export default EditCustomerTicketForm;
+export default EditAdminTicketForm;

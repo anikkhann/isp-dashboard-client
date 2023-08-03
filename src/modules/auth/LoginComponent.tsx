@@ -23,13 +23,15 @@ const LoginComponent = () => {
 
   const [showError, setShowError] = useState<boolean>(false);
 
-  const [errorMessage, setErrorMessage] = useState<any>([]);
+  const [errorMessage, setErrorMessage] = useState<any>(null);
 
   const { returnUrl } = router.query;
 
   const dispatch = useAppDispatch();
 
   const signInUser = async (values: any) => {
+    setShowError(false);
+    setErrorMessage(null);
     const { email, password } = values;
     setLoading(true);
 
@@ -92,17 +94,14 @@ const LoginComponent = () => {
     <StyledSign>
       <StyledSignContent>
         <div>
-          {showError &&
-            errorMessage.length > 0 &&
-            errorMessage.map((message: any, index: number) => (
-              <Alert
-                key={index}
-                message={message}
-                type="error"
-                showIcon
-                style={{ marginBottom: "10px" }}
-              />
-            ))}
+          {showError && errorMessage && (
+            <Alert
+              message={errorMessage}
+              type="error"
+              showIcon
+              style={{ marginBottom: "10px" }}
+            />
+          )}
         </div>
 
         <StyledSignForm

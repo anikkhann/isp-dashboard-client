@@ -344,7 +344,7 @@ const CreateZoneForm = () => {
             unionId: "",
             address: "",
             nidNo: "",
-            salesDistributionCommission: ""
+            salesDistributionCommission: 0
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"

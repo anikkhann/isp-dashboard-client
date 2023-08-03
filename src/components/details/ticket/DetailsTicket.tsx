@@ -1,26 +1,53 @@
 import { TicketData } from "@/interfaces/TicketData";
+import { FileImageOutlined } from "@ant-design/icons";
 import { Card, Col, Row } from "antd";
-import React from "react";
+import { formatDistanceToNow } from "date-fns";
+import React, { useEffect, useState } from "react";
 
 interface PropData {
   item: TicketData;
+  replys: any;
 }
 
-const DetailsTicket = ({ item }: PropData) => {
-  console.log(item);
+const DetailsTicket = ({ item, replys }: PropData) => {
+  const [createdDate, setCreatedDate] = useState<Date | null>(null);
+  const [timeDiff, setTimeDiff] = useState<string>("");
+
+  function timeDifference(timestamp = Date.now()) {
+    const inputDate = new Date(timestamp);
+    setTimeDiff(formatDistanceToNow(inputDate, { addSuffix: true }));
+  }
+
+  useEffect(() => {
+    if (item.createdOn) {
+      setCreatedDate(new Date(item.createdOn));
+      timeDifference(item.createdOn);
+    }
+  }, [item]);
+
   return (
     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between">
       <Col
         xs={24}
-        sm={12}
-        md={12}
-        lg={12}
+        sm={24}
+        md={24}
+        lg={24}
         xl={12}
         xxl={12}
         className="gutter-row"
       >
         <Card
-          title={item.ticketNo}
+          title={
+            <div className="flex justify-between">
+              <h1 className="font-bold text-lg text-[#4361ee]">
+                {item.ticketNo}
+              </h1>
+              <p className="text-sm">
+                {timeDiff} - {createdDate?.toDateString()}{" "}
+                {createdDate?.toLocaleTimeString()}
+              </p>
+            </div>
+          }
           hoverable
           bordered={false}
           style={{ textAlign: "start" }}
@@ -56,26 +83,16 @@ const DetailsTicket = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <h1 className="font-bold text-lg">Internet Slow</h1>
-            <p className="text-justify">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Praesentium quis, numquam error adipisci molestiae dolorem velit
-              inventore dolores esse soluta ea facere qui nemo veritatis tempora
-              quidem corporis odio perferendis?
-            </p>
+            <h1 className="font-bold text-lg">{item.complainType?.name}</h1>
+            <p className="text-justify">{item.complainDetails}</p>
           </div>
         </Card>
       </Col>
-      {/* <Col span={8}>
-        <Card title="Card title" bordered={false}>
-          Card content
-        </Card>
-      </Col> */}
       <Col
         xs={24}
-        sm={12}
-        md={12}
-        lg={12}
+        sm={24}
+        md={24}
+        lg={24}
         xl={12}
         xxl={12}
         className="gutter-row"
@@ -88,20 +105,32 @@ const DetailsTicket = ({ item }: PropData) => {
         >
           <div style={{ textAlign: "start" }}>
             <h1 className="font-bold text-xl text-[#4361ee]">Reply History</h1>
-            <div>
-              <p>
-                <span className="font-bold text-base">Rayhan Mollik</span>
-                <span className="mx-2">-</span>
-                <span className="mx-2">29 May 2023</span>{" "}
-                <span className="mx-2">10:20 AM</span>
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi
-                magni facere unde officia quasi harum ducimus cupiditate sit in
-                alias quam ab vel cum, excepturi iusto culpa! Praesentium,
-                cupiditate nisi!
-              </p>
-            </div>
+            {replys.map((replyData: any, index: number) => (
+              <div key={index}>
+                <p>
+                  <span className="font-bold text-base capitalize">
+                    {replyData.insertedBy.username}
+                  </span>
+                  <span className="mx-2">-</span>
+                  <span className="mx-2">
+                    {/* createdOn */}
+                    {formatDistanceToNow(new Date(replyData.createdOn), {
+                      addSuffix: true
+                    })}{" "}
+                    - {new Date(replyData.createdOn).toDateString()}
+                  </span>
+                  <span className="mx-2">
+                    {new Date(replyData.createdOn).toLocaleTimeString()}
+                  </span>
+                  {replyData.attachment && (
+                    <a href={replyData.attachment} target="_blank">
+                      <FileImageOutlined /> {replyData.attachment}
+                    </a>
+                  )}
+                </p>
+                <p className="ml-10 font-semibold">{replyData.note}</p>
+              </div>
+            ))}
           </div>
         </Card>
       </Col>

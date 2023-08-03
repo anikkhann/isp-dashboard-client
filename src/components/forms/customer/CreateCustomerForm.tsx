@@ -21,6 +21,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAppSelector } from "@/store/hooks";
 interface FormData {
   name: string;
   username: string;
@@ -109,6 +110,8 @@ const fiberOpticDeviceTypes = [
 ];
 
 const CreateCustomerForm = () => {
+  const authUser = useAppSelector(state => state.auth.user);
+
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -162,6 +165,15 @@ const CreateCustomerForm = () => {
 
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+
+  const [zones, setZones] = useState([]);
+  const [selectedZone, setSelectedZone] = useState(null);
+
+  const [subZones, setSubZones] = useState([]);
+  const [selectedSubZone, setSelectedSubZone] = useState(null);
+
+  const [retailers, setRetailers] = useState([]);
+  const [selectedRetailer, setSelectedRetailer] = useState(null);
 
   const { useBreakpoint } = Grid;
 
@@ -236,6 +248,11 @@ const CreateCustomerForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ distributionZoneId: value });
     setSelectedDistributionZone(value as any);
+
+    if (!value) {
+      setSelectedDistributionPop(null);
+      setDistributionPops([]);
+    }
   };
 
   const handleDistributionPopChange = (value: any) => {
@@ -273,6 +290,121 @@ const CreateCustomerForm = () => {
     form.setFieldsValue({ fiberOpticDeviceType: value });
     setSelectedFiberOpticDeviceType(value as any);
   };
+
+  const handleZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ zoneManagerId: value });
+    setSelectedZone(value as any);
+  };
+
+  const handleSubZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ subZoneManagerId: value });
+    setSelectedSubZone(value as any);
+  };
+
+  const handleRetailerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ retailerId: value });
+    setSelectedRetailer(value as any);
+  };
+
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        }
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  function getSubZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "sub_zone"
+        // zoneManager: { id: selectedZone }
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setSubZones(list);
+    });
+  }
+
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer"
+        // subZoneManager: { id: selectedSubZone }
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
 
   function getCustomerTypes() {
     const body = {
@@ -497,7 +629,7 @@ const CreateCustomerForm = () => {
     });
   }
 
-  function getDistributionPops() {
+  function getDistributionPops(selectedDistributionZone: string) {
     const body = {
       meta: {
         sort: [
@@ -506,6 +638,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        distributionZone: { id: selectedDistributionZone }
       }
     };
 
@@ -550,11 +685,19 @@ const CreateCustomerForm = () => {
     getDivisions();
     getCustomerPackages();
     getDistributionZones();
-    getDistributionPops();
     getCustomerTypes();
     getCustomers();
     getUsers();
+    getZoneManagers();
+    getSubZoneManagers();
+    getRetailers();
   }, []);
+
+  useEffect(() => {
+    if (selectedDistributionZone) {
+      getDistributionPops(selectedDistributionZone);
+    }
+  }, [selectedDistributionZone]);
 
   useEffect(() => {
     if (selectedDivision) {
@@ -575,7 +718,7 @@ const CreateCustomerForm = () => {
   }, [selectedUpazilla]);
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    // console.log(data);
 
     const {
       name,
@@ -607,7 +750,7 @@ const CreateCustomerForm = () => {
       colorCode,
       splitter,
       onuDeviceId,
-      accountStatus,
+      // accountStatus,
       discount
     } = data;
 
@@ -628,7 +771,15 @@ const CreateCustomerForm = () => {
       area: area,
       identityType: selectedIdentityType,
       identityNo: identityNo,
+      divisionId: selectedDivision,
+      districtId: selectedDistrict,
+      upazillaId: selectedUpazilla,
+      unionId: selectedUnion,
+      customerPackageId: selectedCustomerPackage,
       remarks: remarks,
+      distributionZoneId: selectedDistributionZone,
+      distributionPopId: selectedDistributionPop,
+
       isMacBound: isMacBound,
       mac: mac,
       simultaneousUser: simultaneousUser,
@@ -649,12 +800,16 @@ const CreateCustomerForm = () => {
       colorCode: colorCode,
       splitter: splitter,
       onuDeviceId: onuDeviceId,
-      accountStatus: accountStatus,
+      // accountStatus: accountStatus,
       autoRenew: autoRenew,
       discount: discount,
       smsAlert: smsAlert,
       emailAlert: emailAlert,
-      isActive: isActive
+      isActive: isActive,
+
+      zoneManagerId: selectedZone,
+      subZoneManagerId: selectedSubZone,
+      retailerId: selectedRetailer
     };
 
     try {
@@ -720,14 +875,14 @@ const CreateCustomerForm = () => {
             area: "",
             identityType: "",
             identityNo: "",
-            /*  divisionId: any
-              districtId: any
-              upazillaId: any
-              unionId: any
-              customerPackageId: string */
+            divisionId: "",
+            districtId: "",
+            upazillaId: "",
+            unionId: "",
+            customerPackageId: "",
             remarks: "",
-            // distributionZoneId: string
-            // distributionPopId: string
+            distributionZoneId: "",
+            distributionPopId: "",
             isMacBound: false,
             mac: "",
             simultaneousUser: "",
@@ -748,8 +903,10 @@ const CreateCustomerForm = () => {
             colorCode: "",
             splitter: "",
             onuDeviceId: "",
-            accountStatus: "",
-            discount: "0.00"
+            discount: "0.00",
+            zoneManagerId: "",
+            subZoneManagerId: "",
+            retailerId: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -776,6 +933,104 @@ const CreateCustomerForm = () => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
+              {authUser && authUser.userType == "client" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* zoneManagerId */}
+                  <Form.Item
+                    label="Zone Manager"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    name="zoneManagerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleZoneChange}
+                        options={zones}
+                        value={selectedZone}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
+              {authUser &&
+                (authUser.userType == "client" ||
+                  authUser.userType == "zone") && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* subZoneManagerId */}
+                    <Form.Item
+                      label="SubZone Manager"
+                      style={{
+                        marginBottom: 0
+                      }}
+                      name="subZoneManagerId"
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleSubZoneChange}
+                          options={subZones}
+                          value={selectedSubZone}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                )}
+
+              {authUser && authUser.userType == "subZone" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* retailerId */}
+                  <Form.Item
+                    label="Retailer"
+                    style={{
+                      marginBottom: 0
+                    }}
+                    name="retailerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleRetailerChange}
+                        options={retailers}
+                        value={selectedRetailer}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
               <Col
                 xs={24}
                 sm={12}

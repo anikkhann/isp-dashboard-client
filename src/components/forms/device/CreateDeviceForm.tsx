@@ -19,6 +19,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAppSelector } from "@/store/hooks";
 
 interface FormData {
   name: string;
@@ -107,6 +108,8 @@ const oltTypesList = [
 ];
 
 const CreateDeviceForm = () => {
+  const user = useAppSelector(state => state.auth.user);
+
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -178,6 +181,11 @@ const CreateDeviceForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        client: {
+          id: user?.partnerId
+        }
       }
     };
     axios.post("/api/distribution-zone/get-list", body).then(res => {
@@ -195,7 +203,7 @@ const CreateDeviceForm = () => {
     });
   }
 
-  function getDistributionPops() {
+  function getDistributionPops(zoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -205,8 +213,14 @@ const CreateDeviceForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        distributionZone: {
+          id: zoneId
+        }
       }
     };
+
     axios.post("/api/distribution-pop/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
@@ -223,13 +237,16 @@ const CreateDeviceForm = () => {
   }
 
   useEffect(() => {
-    getDistributionPops();
     getDistributionZones();
   }, []);
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  useEffect(() => {
+    if (selectedDistributionZone) {
+      getDistributionPops(selectedDistributionZone);
+    }
+  }, [selectedDistributionZone]);
 
+  const onSubmit = (data: FormData) => {
     const {
       name,
       deviceType,
