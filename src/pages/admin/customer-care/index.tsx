@@ -1,8 +1,8 @@
 import CustomerCareLayout from "@/core/layouts/CustomerCareLayout";
 
 import AppLoader from "@/lib/AppLoader";
+import DetailsCustomerCare from "@/modules/customer-care/customer-care/DetailsCustomerCare";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -14,7 +14,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("customerCare.list", "") ? (
+        <DetailsCustomerCare />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

@@ -161,7 +161,7 @@ const CreatePackageForm = () => {
   }, []);
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    // console.log(data);
 
     const {
       name,
