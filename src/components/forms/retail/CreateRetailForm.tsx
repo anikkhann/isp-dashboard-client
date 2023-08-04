@@ -373,7 +373,8 @@ const CreateRetailForm = () => {
                 name="username"
                 label="Username"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -392,6 +393,7 @@ const CreateRetailForm = () => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -408,7 +410,8 @@ const CreateRetailForm = () => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -423,6 +426,7 @@ const CreateRetailForm = () => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -440,7 +444,8 @@ const CreateRetailForm = () => {
               <Form.Item
                 label="Email"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="email"
                 rules={[
@@ -464,6 +469,7 @@ const CreateRetailForm = () => {
                   placeholder="Email"
                   className={`form-control`}
                   name="email"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -481,6 +487,10 @@ const CreateRetailForm = () => {
               <Form.Item
                 name="password"
                 label="Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -498,7 +508,10 @@ const CreateRetailForm = () => {
                 ]}
                 hasFeedback
               >
-                <Input.Password />
+                <Input.Password
+                  placeholder="Password"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
 
@@ -515,6 +528,10 @@ const CreateRetailForm = () => {
               <Form.Item
                 name="confirm"
                 label="Confirm Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 dependencies={["password"]}
                 hasFeedback
                 rules={[
@@ -541,7 +558,10 @@ const CreateRetailForm = () => {
                   })
                 ]}
               >
-                <Input.Password />
+                <Input.Password
+                  placeholder="Password"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
 
@@ -559,7 +579,8 @@ const CreateRetailForm = () => {
                 name="address"
                 label="Address"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -573,6 +594,7 @@ const CreateRetailForm = () => {
                   placeholder="Address"
                   className={`form-control`}
                   name="address"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -591,7 +613,8 @@ const CreateRetailForm = () => {
                 name="contactPerson"
                 label="Contact Person"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -605,6 +628,7 @@ const CreateRetailForm = () => {
                   placeholder="Contact Person"
                   className={`form-control`}
                   name="contactPerson"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -623,7 +647,8 @@ const CreateRetailForm = () => {
                 name="contactNumber"
                 label="Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -641,6 +666,7 @@ const CreateRetailForm = () => {
                   placeholder="Contact Number"
                   className={`form-control`}
                   name="contactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -659,7 +685,8 @@ const CreateRetailForm = () => {
                 name="altContactNumber"
                 label="Alt Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -673,6 +700,7 @@ const CreateRetailForm = () => {
                   placeholder="Alt Contact Number"
                   className={`form-control`}
                   name="altContactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -691,7 +719,8 @@ const CreateRetailForm = () => {
                 name="nidNo"
                 label="NID No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -699,6 +728,7 @@ const CreateRetailForm = () => {
                   placeholder="NID No"
                   className={`form-control`}
                   name="nidNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -717,7 +747,8 @@ const CreateRetailForm = () => {
                 name="salesDistributionCommission"
                 label="S&D Commission (%)"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -725,6 +756,7 @@ const CreateRetailForm = () => {
                   placeholder="S&D Commission (%)"
                   className={`form-control`}
                   name="salesDistributionCommission"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -743,7 +775,8 @@ const CreateRetailForm = () => {
                 label="Division"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="divisionId"
                 rules={[
@@ -779,7 +812,8 @@ const CreateRetailForm = () => {
               <Form.Item
                 label="District"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="districtId"
                 rules={[
@@ -815,7 +849,8 @@ const CreateRetailForm = () => {
               <Form.Item
                 label="Upazilla"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="upazillaId"
               >
@@ -845,7 +880,8 @@ const CreateRetailForm = () => {
               <Form.Item
                 label="Union"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="unionId"
               >
@@ -907,7 +943,16 @@ const CreateRetailForm = () => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

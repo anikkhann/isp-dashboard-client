@@ -155,7 +155,8 @@ const CreateSubscriptionForm = () => {
               <Form.Item
                 label="Package Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="packageType"
                 rules={[
@@ -190,7 +191,8 @@ const CreateSubscriptionForm = () => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -205,6 +207,7 @@ const CreateSubscriptionForm = () => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -222,7 +225,8 @@ const CreateSubscriptionForm = () => {
               <Form.Item
                 label="Charge Amount"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="chargeAmount"
                 rules={[
@@ -237,6 +241,7 @@ const CreateSubscriptionForm = () => {
                   placeholder="Charge Amount"
                   className={`form-control`}
                   name="chargeAmount"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -253,7 +258,8 @@ const CreateSubscriptionForm = () => {
               <Form.Item
                 label="Slab Start"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="slabStart"
                 rules={[
@@ -268,6 +274,7 @@ const CreateSubscriptionForm = () => {
                   placeholder="Slab Start"
                   className={`form-control`}
                   name="slabStart"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -284,7 +291,8 @@ const CreateSubscriptionForm = () => {
               <Form.Item
                 label="Slab End"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="slabEnd"
                 rules={[
@@ -299,9 +307,28 @@ const CreateSubscriptionForm = () => {
                   placeholder="Slab End"
                   className={`form-control`}
                   name="slabEnd"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
             <Col
               xs={24}
               sm={12}
@@ -330,7 +357,16 @@ const CreateSubscriptionForm = () => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

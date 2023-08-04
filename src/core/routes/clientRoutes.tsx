@@ -1,4 +1,5 @@
 import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import { FaUsersCog } from "react-icons/fa";
 
 const accountRoutes = [
   {
@@ -13,7 +14,7 @@ const accountRoutes = [
     key: "/admin/client",
     label: "Client Dashboard",
     path: "/admin/client",
-    icon: <SettingOutlined />,
+    icon: <FaUsersCog />,
     permission: "client.dashboard"
   },
 

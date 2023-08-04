@@ -43,9 +43,10 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                 {item.ticketNo}
               </h1>
               <p className="text-sm">
-                {timeDiff} - {createdDate?.toDateString()}{" "}
+                {timeDiff} - {createdDate?.toDateString()}
                 {createdDate?.toLocaleTimeString()}
               </p>
+              <p>{item.status}</p>
             </div>
           }
           hoverable

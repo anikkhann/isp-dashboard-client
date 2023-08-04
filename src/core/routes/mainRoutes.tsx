@@ -1,9 +1,6 @@
-import {
-  DashboardOutlined,
-  SettingOutlined
-  // UserOutlined
-} from "@ant-design/icons";
-import { AiFillAppstore } from "react-icons/ai";
+import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+// import { FaUsersGear } from "react-icons/fa";
+
 const mainRoutes = [
   {
     key: "/admin",
@@ -17,8 +14,8 @@ const mainRoutes = [
     key: "/admin/client",
     label: "Client Management",
     path: "/admin/client",
-    // icon: <UserOutlined />,
-    icon: <AiFillAppstore />,
+    icon: <SettingOutlined />,
+
     permission: "client.dashboard"
   },
 

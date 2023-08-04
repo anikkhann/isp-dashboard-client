@@ -536,43 +536,7 @@ const EditClientForm = ({ item }: PropData) => {
             justify="space-between"
           >
             <Col
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="username"
-                label="Username"
-                style={{
-                  marginBottom: 0
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Username!"
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  }
-                ]}
-              >
-                <Input
-                  disabled
-                  type="text"
-                  placeholder="Username"
-                  className={`form-control`}
-                  name="username"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -583,7 +547,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="Client Level"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="clientLevel"
                 rules={[
@@ -606,7 +571,46 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="username"
+                label="Username"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  disabled
+                  type="text"
+                  placeholder="Username"
+                  className={`form-control`}
+                  name="username"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -617,7 +621,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -632,12 +637,13 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
 
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -648,7 +654,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="Email"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="email"
                 rules={[
@@ -672,12 +679,13 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="Email"
                   className={`form-control`}
                   name="email"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
             {/* password, confirm password, address */}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -689,7 +697,8 @@ const EditClientForm = ({ item }: PropData) => {
                 name="address"
                 label="Address"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -703,59 +712,13 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="Address"
                   className={`form-control`}
                   name="address"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
+
             <Col
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="latitude"
-                label="latitude"
-                style={{
-                  marginBottom: 0
-                }}
-              >
-                <Input
-                  type="text"
-                  placeholder="latitude"
-                  className={`form-control`}
-                  name="latitude"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="longitude"
-                label="longitude"
-                style={{
-                  marginBottom: 0
-                }}
-              >
-                <Input
-                  type="text"
-                  placeholder="longitude"
-                  className={`form-control`}
-                  name="longitude"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -767,7 +730,8 @@ const EditClientForm = ({ item }: PropData) => {
                 name="contactPerson"
                 label="Contact Person"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -781,11 +745,12 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="Contact Person"
                   className={`form-control`}
                   name="contactPerson"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -797,7 +762,8 @@ const EditClientForm = ({ item }: PropData) => {
                 name="contactNumber"
                 label="Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -811,13 +777,14 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="Contact Number"
                   className={`form-control`}
                   name="contactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
 
             {/* contact person, contact number, contact number 2 */}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -829,7 +796,8 @@ const EditClientForm = ({ item }: PropData) => {
                 name="altContactNumber"
                 label="Alt Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -837,12 +805,13 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="Alt Contact Number"
                   className={`form-control`}
                   name="altContactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
             {/* divisionId, districtId, upazillaId */}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -854,7 +823,8 @@ const EditClientForm = ({ item }: PropData) => {
                 label="Division"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="divisionId"
                 rules={[
@@ -877,7 +847,7 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -888,7 +858,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="District"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="districtId"
                 rules={[
@@ -911,7 +882,7 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -922,7 +893,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="Upazilla"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="upazillaId"
               >
@@ -941,7 +913,7 @@ const EditClientForm = ({ item }: PropData) => {
 
             {/* unionId, licenseTypeId, btrcLicenseNo*/}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -952,7 +924,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="Union"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="unionId"
               >
@@ -969,7 +942,7 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -980,7 +953,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="License Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="licenseTypeId"
               >
@@ -997,7 +971,7 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1009,7 +983,8 @@ const EditClientForm = ({ item }: PropData) => {
                 name="btrcLicenseNo"
                 label="BTRC License No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -1017,13 +992,14 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="BTRC License No"
                   className={`form-control`}
                   name="btrcLicenseNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
 
             {/* licenseExpireDate, radiusIpId*/}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1035,11 +1011,12 @@ const EditClientForm = ({ item }: PropData) => {
                 name="licenseExpireDate"
                 label="License Expire Date"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <DatePicker
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", padding: "6px" }}
                   className={`form-control`}
                   name="licenseExpireDate"
                   placeholder="License Expire Date"
@@ -1050,7 +1027,7 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1061,7 +1038,8 @@ const EditClientForm = ({ item }: PropData) => {
               <Form.Item
                 label="Radius IP"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="radiusIpId"
                 rules={[
@@ -1084,7 +1062,86 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="latitude"
+                label="Latitude"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="Latitude"
+                  className={`form-control`}
+                  name="latitude"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="longitude"
+                label="Longitude"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="Longitude"
+                  className={`form-control`}
+                  name="longitude"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1111,7 +1168,16 @@ const EditClientForm = ({ item }: PropData) => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

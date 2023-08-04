@@ -177,7 +177,8 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               <Form.Item
                 label="Package Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="packageType"
                 rules={[
@@ -212,7 +213,8 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -227,6 +229,7 @@ const EditSubscriptionForm = ({ item }: PropData) => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -243,7 +246,8 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               <Form.Item
                 label="Charge Amount"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="chargeAmount"
                 rules={[
@@ -258,6 +262,7 @@ const EditSubscriptionForm = ({ item }: PropData) => {
                   placeholder="Charge Amount"
                   className={`form-control`}
                   name="chargeAmount"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -274,7 +279,8 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               <Form.Item
                 label="Slab Start"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="slabStart"
                 rules={[
@@ -289,6 +295,7 @@ const EditSubscriptionForm = ({ item }: PropData) => {
                   placeholder="Slab Start"
                   className={`form-control`}
                   name="slabStart"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -305,7 +312,8 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               <Form.Item
                 label="Slab End"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="slabEnd"
                 rules={[
@@ -320,9 +328,28 @@ const EditSubscriptionForm = ({ item }: PropData) => {
                   placeholder="Slab End"
                   className={`form-control`}
                   name="slabEnd"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
             <Col
               xs={24}
               sm={12}
@@ -351,7 +378,16 @@ const EditSubscriptionForm = ({ item }: PropData) => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

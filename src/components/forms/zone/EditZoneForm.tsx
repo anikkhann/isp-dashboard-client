@@ -398,7 +398,8 @@ const EditZoneForm = ({ item }: any) => {
                 name="username"
                 label="Username"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -418,6 +419,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -434,7 +436,8 @@ const EditZoneForm = ({ item }: any) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -449,6 +452,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -466,7 +470,8 @@ const EditZoneForm = ({ item }: any) => {
               <Form.Item
                 label="Email"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="email"
                 rules={[
@@ -490,6 +495,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="Email"
                   className={`form-control`}
                   name="email"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -507,7 +513,8 @@ const EditZoneForm = ({ item }: any) => {
                 name="address"
                 label="Address"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -521,6 +528,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="Address"
                   className={`form-control`}
                   name="address"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -538,7 +546,8 @@ const EditZoneForm = ({ item }: any) => {
                 name="contactPerson"
                 label="Contact Person"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -552,6 +561,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="Contact Person"
                   className={`form-control`}
                   name="contactPerson"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -569,7 +579,8 @@ const EditZoneForm = ({ item }: any) => {
                 name="contactNumber"
                 label="Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -587,6 +598,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="Contact Number"
                   className={`form-control`}
                   name="contactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -604,7 +616,8 @@ const EditZoneForm = ({ item }: any) => {
                 name="altContactNumber"
                 label="Alt Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -618,6 +631,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="Alt Contact Number"
                   className={`form-control`}
                   name="altContactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -635,7 +649,8 @@ const EditZoneForm = ({ item }: any) => {
                 name="nidNo"
                 label="NID No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -643,6 +658,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="NID No"
                   className={`form-control`}
                   name="nidNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -660,7 +676,8 @@ const EditZoneForm = ({ item }: any) => {
                 name="salesDistributionCommission"
                 label="S&D Commission (%)"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -668,6 +685,7 @@ const EditZoneForm = ({ item }: any) => {
                   placeholder="S&D Commission (%)"
                   className={`form-control`}
                   name="salesDistributionCommission"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -685,7 +703,8 @@ const EditZoneForm = ({ item }: any) => {
                 label="Division"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="divisionId"
                 rules={[
@@ -720,7 +739,8 @@ const EditZoneForm = ({ item }: any) => {
               <Form.Item
                 label="District"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="districtId"
                 rules={[
@@ -756,7 +776,8 @@ const EditZoneForm = ({ item }: any) => {
               <Form.Item
                 label="Upazilla"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="upazillaId"
               >
@@ -786,7 +807,8 @@ const EditZoneForm = ({ item }: any) => {
               <Form.Item
                 label="Union"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="unionId"
               >
@@ -803,6 +825,24 @@ const EditZoneForm = ({ item }: any) => {
               </Form.Item>
             </Col>
 
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
             <Col
               xs={24}
               sm={12}
@@ -830,7 +870,16 @@ const EditZoneForm = ({ item }: any) => {
           <Row justify="center">
             <Col>
               <Form.Item>
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>
