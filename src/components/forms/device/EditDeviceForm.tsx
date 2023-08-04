@@ -419,7 +419,8 @@ const EditDeviceForm = ({ item }: any) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -434,6 +435,7 @@ const EditDeviceForm = ({ item }: any) => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -450,7 +452,8 @@ const EditDeviceForm = ({ item }: any) => {
               <Form.Item
                 label="Distribution Zone"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="distributionZoneId"
                 rules={[
@@ -485,7 +488,8 @@ const EditDeviceForm = ({ item }: any) => {
               <Form.Item
                 label="Distribution Pop"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="distributionPopId"
                 rules={[
@@ -521,7 +525,8 @@ const EditDeviceForm = ({ item }: any) => {
               <Form.Item
                 label="Device Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="deviceType"
                 rules={[
@@ -558,7 +563,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="secret"
                   label="Secret"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -572,6 +578,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Secret"
                     className={`form-control`}
                     name="secret"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -591,7 +598,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="incomingPort"
                   label="Incoming Port"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -605,6 +613,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Incoming Port"
                     className={`form-control`}
                     name="incomingPort"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -624,7 +633,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="totalEitherPort"
                   label="Total Either Port"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -638,6 +648,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Total Either Port"
                     className={`form-control`}
                     name="totalEitherPort"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -657,7 +668,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="totalPonPort"
                   label="Total Pon Port"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -671,6 +683,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Total Pon Port"
                     className={`form-control`}
                     name="totalPonPort"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -689,7 +702,8 @@ const EditDeviceForm = ({ item }: any) => {
                 <Form.Item
                   label="Mac"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="mac"
                   rules={[
@@ -704,6 +718,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Mac"
                     className={`form-control`}
                     name="mac"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -723,7 +738,8 @@ const EditDeviceForm = ({ item }: any) => {
                 <Form.Item
                   label="Brand Name"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="brandName"
                   rules={[
@@ -738,6 +754,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Brand Name"
                     className={`form-control`}
                     name="brandName"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -756,7 +773,8 @@ const EditDeviceForm = ({ item }: any) => {
                 <Form.Item
                   label="Total Port"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="totalPort"
                   rules={[
@@ -771,6 +789,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Total Port"
                     className={`form-control`}
                     name="totalPort"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -788,7 +807,8 @@ const EditDeviceForm = ({ item }: any) => {
                 <Form.Item
                   label="Total Port"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="totalPort"
                   rules={[
@@ -803,6 +823,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Total Port"
                     className={`form-control`}
                     name="totalPort"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -820,7 +841,8 @@ const EditDeviceForm = ({ item }: any) => {
               <Form.Item
                 label="Monitoring Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="monitoringType"
                 rules={[
@@ -857,7 +879,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="apiPort"
                   label="Api Port"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -871,6 +894,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Api Port"
                     className={`form-control`}
                     name="apiPort"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -890,7 +914,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="apiUsername"
                   label="Api Username"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -904,6 +929,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Api Username"
                     className={`form-control`}
                     name="apiUsername"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -923,7 +949,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="apiPassword"
                   label="Api Password"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -937,6 +964,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Api Password"
                     className={`form-control`}
                     name="apiPassword"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -957,7 +985,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="telnetLoginName"
                   label="Telnet Login Name"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -971,6 +1000,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Telnet Login Name"
                     className={`form-control`}
                     name="telnetLoginName"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -990,7 +1020,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="telnetLoginPassword"
                   label="Telnet Login Password"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1004,6 +1035,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Telnet Login Password"
                     className={`form-control`}
                     name="telnetLoginPassword"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1023,7 +1055,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="telnetPrivilegedPassword"
                   label="Telnet Privileged Password"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1037,6 +1070,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Telnet Privileged Password"
                     className={`form-control`}
                     name="telnetPrivilegedPassword"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1056,7 +1090,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="telnetPonPortNumber"
                   label="Telnet Port Number"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1070,6 +1105,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Telnet Port Number"
                     className={`form-control`}
                     name="telnetPonPortNumber"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1089,7 +1125,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="snmpPortNo"
                   label="Snmp Port No"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1103,6 +1140,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Snmp Port No"
                     className={`form-control`}
                     name="snmpPortNo"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1122,7 +1160,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="snmpVersion"
                   label="Snmp Version"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1136,6 +1175,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Snmp Version"
                     className={`form-control`}
                     name="snmpVersion"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1155,7 +1195,8 @@ const EditDeviceForm = ({ item }: any) => {
                   name="snmpCommunity"
                   label="Snmp Community"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1169,6 +1210,7 @@ const EditDeviceForm = ({ item }: any) => {
                     placeholder="Snmp Community"
                     className={`form-control`}
                     name="snmpCommunity"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1187,7 +1229,8 @@ const EditDeviceForm = ({ item }: any) => {
               <Form.Item
                 label="OLT Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="oltType"
                 rules={[
@@ -1224,7 +1267,8 @@ const EditDeviceForm = ({ item }: any) => {
                 name="location"
                 label="Location"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1238,6 +1282,7 @@ const EditDeviceForm = ({ item }: any) => {
                   placeholder="Location"
                   className={`form-control`}
                   name="location"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1256,7 +1301,8 @@ const EditDeviceForm = ({ item }: any) => {
                 name="ip"
                 label="IP"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1270,6 +1316,7 @@ const EditDeviceForm = ({ item }: any) => {
                   placeholder="IP"
                   className={`form-control`}
                   name="ip"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1288,7 +1335,8 @@ const EditDeviceForm = ({ item }: any) => {
                 name="latitude"
                 label="Latitude"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1302,6 +1350,7 @@ const EditDeviceForm = ({ item }: any) => {
                   placeholder="Latitude"
                   className={`form-control`}
                   name="latitude"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1319,7 +1368,8 @@ const EditDeviceForm = ({ item }: any) => {
                 name="longitude"
                 label="Longitude"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1333,6 +1383,7 @@ const EditDeviceForm = ({ item }: any) => {
                   placeholder="Longitude"
                   className={`form-control`}
                   name="longitude"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1355,7 +1406,16 @@ const EditDeviceForm = ({ item }: any) => {
             <Col>
               <Form.Item>
                 {/*  wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

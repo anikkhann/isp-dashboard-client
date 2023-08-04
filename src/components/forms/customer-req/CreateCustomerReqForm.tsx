@@ -561,7 +561,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -576,6 +577,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -593,7 +595,8 @@ const CreateCustomerReqForm = () => {
                 name="username"
                 label="Username"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -612,6 +615,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -628,7 +632,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Email"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="email"
                 rules={[
@@ -652,6 +657,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Email"
                   className={`form-control`}
                   name="email"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -668,6 +674,10 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 name="password"
                 label="Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -684,7 +694,10 @@ const CreateCustomerReqForm = () => {
                   }
                 ]}
               >
-                <Input.Password />
+                <Input.Password
+                  placeholder="Password"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
             {/* customerTypeId */}
@@ -700,7 +713,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Customer Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="customerTypeId"
                 rules={[
@@ -736,7 +750,8 @@ const CreateCustomerReqForm = () => {
                 name="mobileNo"
                 label="Mobile No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -750,6 +765,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Mobile No"
                   className={`form-control`}
                   name="mobileNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -767,7 +783,8 @@ const CreateCustomerReqForm = () => {
                 name="altMobileNo"
                 label="Alt Mobile No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -781,6 +798,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Alt Mobile No"
                   className={`form-control`}
                   name="altMobileNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -798,7 +816,8 @@ const CreateCustomerReqForm = () => {
                 name="contactPerson"
                 label="Contact Person"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -812,6 +831,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Contact Person"
                   className={`form-control`}
                   name="contactPerson"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -829,7 +849,8 @@ const CreateCustomerReqForm = () => {
                 name="contactNumber"
                 label="Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -847,6 +868,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Contact Number"
                   className={`form-control`}
                   name="contactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -864,7 +886,8 @@ const CreateCustomerReqForm = () => {
                 name="connectionAddress"
                 label="Connection Address"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -878,6 +901,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Connection Address"
                   className={`form-control`}
                   name="connectionAddress"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -895,7 +919,8 @@ const CreateCustomerReqForm = () => {
                 name="flatNo"
                 label="Flat No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -903,6 +928,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Flat No"
                   className={`form-control`}
                   name="flatNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -920,7 +946,8 @@ const CreateCustomerReqForm = () => {
                 name="houseNo"
                 label="House No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -928,6 +955,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="House No"
                   className={`form-control`}
                   name="houseNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -945,7 +973,8 @@ const CreateCustomerReqForm = () => {
                 name="roadNo"
                 label="Road No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -953,6 +982,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Road No"
                   className={`form-control`}
                   name="roadNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -970,7 +1000,8 @@ const CreateCustomerReqForm = () => {
                 name="area"
                 label="Area"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -984,6 +1015,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Area"
                   className={`form-control`}
                   name="area"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1001,7 +1033,8 @@ const CreateCustomerReqForm = () => {
                 label="Identity Type"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="identityType"
                 rules={[
@@ -1037,7 +1070,8 @@ const CreateCustomerReqForm = () => {
                 name="identityNo"
                 label="Identity No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1051,6 +1085,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Identity No"
                   className={`form-control`}
                   name="identityNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1068,7 +1103,8 @@ const CreateCustomerReqForm = () => {
                 label="Division"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="divisionId"
                 rules={[
@@ -1103,7 +1139,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="District"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="districtId"
                 rules={[
@@ -1138,7 +1175,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Upazilla"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="upazillaId"
               >
@@ -1167,7 +1205,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Union"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="unionId"
               >
@@ -1196,7 +1235,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Customer Package"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="customerPackageId"
               >
@@ -1226,7 +1266,8 @@ const CreateCustomerReqForm = () => {
                 name="remarks"
                 label="Remarks"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1240,6 +1281,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Remarks"
                   className={`form-control`}
                   name="remarks"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1256,7 +1298,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Reference Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="referenceType"
               >
@@ -1285,7 +1328,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Referrer Customer"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="referrerCustomer"
               >
@@ -1314,7 +1358,8 @@ const CreateCustomerReqForm = () => {
               <Form.Item
                 label="Referrer User"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="referrerUser"
               >
@@ -1344,7 +1389,8 @@ const CreateCustomerReqForm = () => {
                 name="referrerName"
                 label="Referrer Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1358,6 +1404,7 @@ const CreateCustomerReqForm = () => {
                   placeholder="Referrer Name"
                   className={`form-control`}
                   name="referrerName"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -1395,7 +1442,16 @@ const CreateCustomerReqForm = () => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

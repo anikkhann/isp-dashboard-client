@@ -193,7 +193,8 @@ const CreateRoleForm = () => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Controller
@@ -211,6 +212,7 @@ const CreateRoleForm = () => {
                       onBlur={onBlur}
                       onChange={onChange}
                       name="name"
+                      style={{ padding: "6px" }}
                     />
                   )}
                 />
@@ -248,7 +250,8 @@ const CreateRoleForm = () => {
                               marginLeft: 10,
                               fontSize: 14,
                               textTransform: "uppercase",
-                              textAlign: "left"
+                              textAlign: "left",
+                              color: "#0e8fdc"
                             }}
                           >
                             {permission.displayName}
@@ -265,7 +268,10 @@ const CreateRoleForm = () => {
                                     <Card
                                       hoverable
                                       style={{
-                                        backgroundColor: "#FFC857"
+                                        // backgroundColor: "#FFC857",
+                                        // fontWeight: "bold",
+                                        // fontSize: "10px"
+                                        backgroundColor: "#F15F22"
                                       }}
                                     >
                                       <Checkbox
@@ -273,7 +279,9 @@ const CreateRoleForm = () => {
                                         style={{
                                           display: "flex",
                                           justifyContent: "left",
-                                          fontSize: "15px"
+                                          fontSize: "15px",
+                                          color: "#FFFFFF",
+                                          fontWeight: "bold"
                                         }}
                                       >
                                         {item.label}
@@ -295,7 +303,16 @@ const CreateRoleForm = () => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

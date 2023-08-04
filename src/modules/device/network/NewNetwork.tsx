@@ -29,9 +29,29 @@ const NewNetwork = () => {
             }
           ]}
         />
-
+        <div
+          style={{
+            width: "90%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            // border: "1px solid #F15F22",
+            textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            New Network
+          </h1>
+        </div>
         <Card
-          title="New Network"
+          // title="New Network"
           hoverable
           style={{
             width: "90%",
@@ -39,8 +59,9 @@ const NewNetwork = () => {
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "3rem",
-            marginBottom: "3rem"
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            border: "1px solid #F15F22"
           }}
         >
           <CreateNetworkForm />

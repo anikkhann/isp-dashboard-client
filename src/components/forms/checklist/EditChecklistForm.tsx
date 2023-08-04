@@ -206,6 +206,10 @@ const EditChecklistForm = ({ item }: PropData) => {
               <Form.Item
                 label="Complain Type"
                 name="complainTypeId"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -238,6 +242,10 @@ const EditChecklistForm = ({ item }: PropData) => {
               <Form.Item
                 label="Root Cause Category"
                 name="rootCauseCategory"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -270,7 +278,8 @@ const EditChecklistForm = ({ item }: PropData) => {
               <Form.Item
                 label="Title"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="title"
                 rules={[
@@ -285,6 +294,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                   placeholder="Title"
                   className={`form-control`}
                   name="title"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -307,7 +317,16 @@ const EditChecklistForm = ({ item }: PropData) => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

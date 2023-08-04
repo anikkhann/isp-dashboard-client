@@ -20,6 +20,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
+
 interface FormData {
   name: string;
   username: string;
@@ -40,10 +41,10 @@ interface FormData {
   referrerName: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const referenceTypes = [
   {
@@ -601,7 +602,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -616,6 +618,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -633,7 +636,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="username"
                 label="Username"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -652,6 +656,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -668,7 +673,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Email"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="email"
                 rules={[
@@ -692,6 +698,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Email"
                   className={`form-control`}
                   name="email"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -708,6 +715,10 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 name="password"
                 label="Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -724,7 +735,12 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   }
                 ]}
               >
-                <Input.Password />
+                <Input.Password
+                  placeholder="Password"
+                  style={{
+                    padding: "6px"
+                  }}
+                />
               </Form.Item>
             </Col>
             {/* customerTypeId */}
@@ -740,7 +756,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Customer Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="customerTypeId"
               >
@@ -770,7 +787,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="mobileNo"
                 label="Mobile No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -784,6 +802,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Mobile No"
                   className={`form-control`}
                   name="mobileNo"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -801,7 +822,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="altMobileNo"
                 label="Alt Mobile No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -815,6 +837,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Alt Mobile No"
                   className={`form-control`}
                   name="altMobileNo"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -832,7 +857,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="contactPerson"
                 label="Contact Person"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -846,6 +872,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Contact Person"
                   className={`form-control`}
                   name="contactPerson"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -863,7 +892,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="contactNumber"
                 label="Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -881,6 +911,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Contact Number"
                   className={`form-control`}
                   name="contactNumber"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -898,7 +931,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="connectionAddress"
                 label="Connection Address"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -912,6 +946,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Connection Address"
                   className={`form-control`}
                   name="connectionAddress"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -929,7 +966,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="flatNo"
                 label="Flat No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -943,6 +981,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Flat No"
                   className={`form-control`}
                   name="flatNo"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -960,7 +1001,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="houseNo"
                 label="House No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -974,6 +1016,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="House No"
                   className={`form-control`}
                   name="houseNo"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -991,7 +1036,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="roadNo"
                 label="Road No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1005,6 +1051,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Road No"
                   className={`form-control`}
                   name="roadNo"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -1022,7 +1071,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="area"
                 label="Area"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1036,6 +1086,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Area"
                   className={`form-control`}
                   name="area"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -1053,7 +1106,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 label="Identity Type"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="identityType"
                 rules={[
@@ -1089,7 +1143,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="identityNo"
                 label="Identity No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1103,6 +1158,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Identity No"
                   className={`form-control`}
                   name="identityNo"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -1120,7 +1178,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 label="Division"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="divisionId"
                 rules={[
@@ -1155,7 +1214,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="District"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="districtId"
                 rules={[
@@ -1190,7 +1250,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Upazilla"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="upazillaId"
               >
@@ -1219,7 +1280,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Union"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="unionId"
               >
@@ -1248,7 +1310,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Customer Package"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="customerPackageId"
               >
@@ -1278,7 +1341,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="remarks"
                 label="Remarks"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1292,6 +1356,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Remarks"
                   className={`form-control`}
                   name="remarks"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -1308,7 +1375,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Reference Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="referenceType"
               >
@@ -1337,7 +1405,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Referrer Customer"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="referrerCustomer"
               >
@@ -1366,7 +1435,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               <Form.Item
                 label="Referrer User"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="referrerUser"
               >
@@ -1396,7 +1466,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 name="referrerName"
                 label="Referrer Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -1410,6 +1481,9 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   placeholder="Referrer Name"
                   className={`form-control`}
                   name="referrerName"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -1443,11 +1517,25 @@ const EditCustomerReqForm = ({ item }: PropData) => {
           </Row>
 
           {/* submit */}
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

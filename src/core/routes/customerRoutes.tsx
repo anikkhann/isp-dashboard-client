@@ -40,7 +40,7 @@ const customerRoutes = [
   },
   {
     key: "/admin/customer/customer-onboarding-req",
-    label: "Customer onboarding Req",
+    label: "Customer Onboarding Req",
     path: "/admin/customer/customer-onboarding-req",
     icon: <SettingOutlined />,
     permission: "customerOnboardingReq.view"

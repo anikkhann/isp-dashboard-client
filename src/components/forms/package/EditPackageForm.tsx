@@ -320,7 +320,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -335,6 +336,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -351,7 +353,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Display Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="displayName"
                 rules={[
@@ -366,6 +369,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Display Name"
                   className={`form-control`}
                   name="displayName"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -382,7 +386,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Upload Limit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="uploadLimit"
                 rules={[
@@ -397,6 +402,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Upload Limit"
                   className={`form-control`}
                   name="uploadLimit"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -413,7 +419,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Upload Limit Unit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="uploadLimitUnit"
                 rules={[
@@ -448,7 +455,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Download Limit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="downloadLimit"
                 rules={[
@@ -463,6 +471,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Download Limit"
                   className={`form-control`}
                   name="downloadLimit"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -479,7 +488,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Download Limit Unit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="downloadLimitUnit"
                 rules={[
@@ -514,7 +524,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Validity"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="validity"
                 rules={[
@@ -529,6 +540,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Validity"
                   className={`form-control`}
                   name="validity"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -545,7 +557,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Validity Unit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="validityUnitId"
                 rules={[
@@ -581,7 +594,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Vat (%)"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="vat"
                 rules={[
@@ -596,6 +610,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Vat (%)"
                   className={`form-control`}
                   name="vat"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -612,7 +627,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Total Price"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="totalPrice"
                 rules={[
@@ -627,6 +643,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Total Price"
                   className={`form-control`}
                   name="totalPrice"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -643,7 +660,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="Next Expired Package"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="nextExpiredPackageId"
                 rules={[
@@ -658,6 +676,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="Next Expired Package"
                   className={`form-control`}
                   name="nextExpiredPackageId"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -674,7 +693,8 @@ const EditPackageForm = ({ item }: PropData) => {
               <Form.Item
                 label="IP Pool Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="ipPoolName"
                 rules={[
@@ -689,6 +709,7 @@ const EditPackageForm = ({ item }: PropData) => {
                   placeholder="IP Pool Name"
                   className={`form-control`}
                   name="ipPoolName"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -706,7 +727,8 @@ const EditPackageForm = ({ item }: PropData) => {
                 <Form.Item
                   label="Zone"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="zoneIds"
                   rules={[
@@ -763,6 +785,15 @@ const EditPackageForm = ({ item }: PropData) => {
                 />
               </Form.Item>
             </Col> */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
             <Col
               xs={24}
               sm={12}
@@ -850,7 +881,16 @@ const EditPackageForm = ({ item }: PropData) => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

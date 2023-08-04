@@ -145,6 +145,10 @@ const CreateRootCauseForm = () => {
               <Form.Item
                 label="Category"
                 name="rootCauseCategory"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -177,7 +181,8 @@ const CreateRootCauseForm = () => {
               <Form.Item
                 label="Title"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="title"
                 rules={[
@@ -192,6 +197,7 @@ const CreateRootCauseForm = () => {
                   placeholder="Title"
                   className={`form-control`}
                   name="title"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -214,7 +220,16 @@ const CreateRootCauseForm = () => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

@@ -12,11 +12,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Col, Form, Input, Row, Divider } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  Row,
+  Divider,
+  Space
+} from "antd";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
 import { RoleData } from "@/interfaces/RoleData";
 import Cookies from "js-cookie";
+import { Card } from "antd";
 
 interface RoleFormData {
   name: string;
@@ -203,7 +214,8 @@ const EditRoleForm = ({ item }: PropData) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Controller
@@ -221,6 +233,7 @@ const EditRoleForm = ({ item }: PropData) => {
                       onBlur={onBlur}
                       onChange={onChange}
                       name="name"
+                      style={{ padding: "6px" }}
                     />
                   )}
                 />
@@ -262,7 +275,8 @@ const EditRoleForm = ({ item }: PropData) => {
                               marginLeft: 10,
                               fontSize: 14,
                               textTransform: "uppercase",
-                              textAlign: "left"
+                              textAlign: "left",
+                              color: "#0e8fdc"
                             }}
                           >
                             {permission.displayName}
@@ -275,15 +289,30 @@ const EditRoleForm = ({ item }: PropData) => {
                             permission.children.map((item: any) => {
                               return (
                                 <Col lg={4} md={12} sm={12} key={item.value}>
-                                  <Checkbox
-                                    value={item.value}
-                                    style={{
-                                      display: "flex",
-                                      justifyContent: "left"
-                                    }}
-                                  >
-                                    {item.label}
-                                  </Checkbox>
+                                  <Space>
+                                    <Card
+                                      hoverable
+                                      style={{
+                                        // backgroundColor: "#FFC857",
+                                        // fontWeight: "bold",
+                                        // fontSize: "10px"
+                                        backgroundColor: "#F15F22"
+                                      }}
+                                    >
+                                      <Checkbox
+                                        value={item.value}
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "left",
+                                          fontSize: "15px",
+                                          color: "#FFFFFF",
+                                          fontWeight: "bold"
+                                        }}
+                                      >
+                                        {item.label}
+                                      </Checkbox>
+                                    </Card>
+                                  </Space>
                                 </Col>
                               );
                             })}
@@ -299,7 +328,16 @@ const EditRoleForm = ({ item }: PropData) => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

@@ -921,12 +921,13 @@ const CreateCustomerForm = () => {
             hoverable
             style={{
               width: "90%",
-              backgroundColor: "#fffff",
+              backgroundColor: "white",
               borderRadius: "10px",
               margin: "0 auto",
               textAlign: "center",
-              marginTop: "3rem",
-              marginBottom: "3rem"
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              border: "1px solid #F15F22"
             }}
           >
             <Row
@@ -947,7 +948,8 @@ const CreateCustomerForm = () => {
                   <Form.Item
                     label="Zone Manager"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     name="zoneManagerId"
                   >
@@ -981,7 +983,8 @@ const CreateCustomerForm = () => {
                     <Form.Item
                       label="SubZone Manager"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       name="subZoneManagerId"
                     >
@@ -1013,7 +1016,8 @@ const CreateCustomerForm = () => {
                   <Form.Item
                     label="Retailer"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     name="retailerId"
                   >
@@ -1044,7 +1048,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Name"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="name"
                   rules={[
@@ -1059,6 +1064,7 @@ const CreateCustomerForm = () => {
                     placeholder="Name"
                     className={`form-control`}
                     name="name"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1077,7 +1083,8 @@ const CreateCustomerForm = () => {
                   name="username"
                   label="Username"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1096,6 +1103,7 @@ const CreateCustomerForm = () => {
                     placeholder="Username"
                     className={`form-control`}
                     name="username"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1113,7 +1121,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Email"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="email"
                   rules={[
@@ -1137,6 +1146,7 @@ const CreateCustomerForm = () => {
                     placeholder="Email"
                     className={`form-control`}
                     name="email"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1154,6 +1164,10 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   name="password"
                   label="Password"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
                   rules={[
                     {
                       required: true,
@@ -1170,7 +1184,10 @@ const CreateCustomerForm = () => {
                     }
                   ]}
                 >
-                  <Input.Password />
+                  <Input.Password
+                    placeholder="Password"
+                    style={{ padding: "6px" }}
+                  />
                 </Form.Item>
               </Col>
 
@@ -1187,7 +1204,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Customer Type"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="customerTypeId"
                 >
@@ -1218,7 +1236,8 @@ const CreateCustomerForm = () => {
                   name="mobileNo"
                   label="Mobile No"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1232,6 +1251,7 @@ const CreateCustomerForm = () => {
                     placeholder="Mobile No"
                     className={`form-control`}
                     name="mobileNo"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1250,7 +1270,8 @@ const CreateCustomerForm = () => {
                   name="altMobileNo"
                   label="Alt Mobile No"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1264,6 +1285,7 @@ const CreateCustomerForm = () => {
                     placeholder="Alt Mobile No"
                     className={`form-control`}
                     name="altMobileNo"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1282,7 +1304,8 @@ const CreateCustomerForm = () => {
                   name="contactPerson"
                   label="Contact Person"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1296,6 +1319,7 @@ const CreateCustomerForm = () => {
                     placeholder="Contact Person"
                     className={`form-control`}
                     name="contactPerson"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1314,7 +1338,8 @@ const CreateCustomerForm = () => {
                   name="contactNumber"
                   label="Contact Number"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1332,6 +1357,7 @@ const CreateCustomerForm = () => {
                     placeholder="Contact Number"
                     className={`form-control`}
                     name="contactNumber"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1350,7 +1376,8 @@ const CreateCustomerForm = () => {
                   name="connectionAddress"
                   label="Connection Address"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1364,6 +1391,7 @@ const CreateCustomerForm = () => {
                     placeholder="Connection Address"
                     className={`form-control`}
                     name="connectionAddress"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1382,7 +1410,8 @@ const CreateCustomerForm = () => {
                   name="flatNo"
                   label="Flat No"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1396,6 +1425,7 @@ const CreateCustomerForm = () => {
                     placeholder="Flat No"
                     className={`form-control`}
                     name="flatNo"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1414,7 +1444,8 @@ const CreateCustomerForm = () => {
                   name="houseNo"
                   label="House No"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1428,6 +1459,7 @@ const CreateCustomerForm = () => {
                     placeholder="House No"
                     className={`form-control`}
                     name="houseNo"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1446,7 +1478,8 @@ const CreateCustomerForm = () => {
                   name="roadNo"
                   label="Road No"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1460,6 +1493,7 @@ const CreateCustomerForm = () => {
                     placeholder="Road No"
                     className={`form-control`}
                     name="roadNo"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1478,7 +1512,8 @@ const CreateCustomerForm = () => {
                   name="area"
                   label="Area"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1492,6 +1527,7 @@ const CreateCustomerForm = () => {
                     placeholder="Area"
                     className={`form-control`}
                     name="area"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1510,7 +1546,8 @@ const CreateCustomerForm = () => {
                   label="Identity Type"
                   style={{
                     marginBottom: 0,
-                    marginRight: lg ? "10px" : "0px"
+                    marginRight: lg ? "10px" : "0px",
+                    fontWeight: "bold"
                   }}
                   name="identityType"
                   rules={[
@@ -1547,7 +1584,8 @@ const CreateCustomerForm = () => {
                   name="identityNo"
                   label="Identity No"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1561,6 +1599,7 @@ const CreateCustomerForm = () => {
                     placeholder="Identity No"
                     className={`form-control`}
                     name="identityNo"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1579,7 +1618,8 @@ const CreateCustomerForm = () => {
                   label="Division"
                   style={{
                     marginBottom: 0,
-                    marginRight: lg ? "10px" : "0px"
+                    marginRight: lg ? "10px" : "0px",
+                    fontWeight: "bold"
                   }}
                   name="divisionId"
                   rules={[
@@ -1615,7 +1655,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="District"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="districtId"
                   rules={[
@@ -1651,7 +1692,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Upazilla"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="upazillaId"
                 >
@@ -1681,7 +1723,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Union"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="unionId"
                 >
@@ -1711,7 +1754,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Customer Package"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="customerPackageId"
                 >
@@ -1742,7 +1786,8 @@ const CreateCustomerForm = () => {
                   name="remarks"
                   label="Remarks"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1756,6 +1801,7 @@ const CreateCustomerForm = () => {
                     placeholder="Remarks"
                     className={`form-control`}
                     name="remarks"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1773,7 +1819,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Distribution Zone"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="distributionZoneId"
                 >
@@ -1803,7 +1850,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Distribution Pop"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="distributionPopId"
                 >
@@ -1826,19 +1874,21 @@ const CreateCustomerForm = () => {
             hoverable
             style={{
               width: "90%",
-              backgroundColor: "#fffff",
+              backgroundColor: "white",
               borderRadius: "10px",
               margin: "0 auto",
               textAlign: "center",
-              marginTop: "3rem",
-              marginBottom: "3rem"
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              border: "1px solid #F15F22"
             }}
           >
             {/* isMacBound */}
             <Form.Item
               label=""
               style={{
-                marginBottom: 0
+                marginBottom: 0,
+                fontWeight: "bold"
               }}
             >
               <Checkbox onChange={handleMacBound} checked={isMacBound}>
@@ -1864,7 +1914,8 @@ const CreateCustomerForm = () => {
                     name="mac"
                     label="Mac"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
@@ -1878,6 +1929,7 @@ const CreateCustomerForm = () => {
                       placeholder="Mac"
                       className={`form-control`}
                       name="mac"
+                      style={{ padding: "6px" }}
                     />
                   </Form.Item>
                 </Col>
@@ -1897,7 +1949,8 @@ const CreateCustomerForm = () => {
                   name="simultaneousUser"
                   label="Simultaneous User"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1911,6 +1964,7 @@ const CreateCustomerForm = () => {
                     placeholder="Simultaneous User"
                     className={`form-control`}
                     name="simultaneousUser"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1928,7 +1982,8 @@ const CreateCustomerForm = () => {
                   name="ipMode"
                   label="IP Mode"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1942,6 +1997,7 @@ const CreateCustomerForm = () => {
                     placeholder="IP Mode"
                     className={`form-control`}
                     name="ipMode"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1959,7 +2015,8 @@ const CreateCustomerForm = () => {
                   name="staticIp"
                   label="Static IP"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -1973,6 +2030,7 @@ const CreateCustomerForm = () => {
                     placeholder="Static IP"
                     className={`form-control`}
                     name="staticIp"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -1989,7 +2047,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Reference Type"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="referenceType"
                 >
@@ -2018,7 +2077,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Referrer Customer"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="referrerCustomer"
                 >
@@ -2047,7 +2107,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Referrer User"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="referrerUser"
                 >
@@ -2077,7 +2138,8 @@ const CreateCustomerForm = () => {
                   name="referrerName"
                   label="Referrer Name"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -2091,6 +2153,7 @@ const CreateCustomerForm = () => {
                     placeholder="Referrer Name"
                     className={`form-control`}
                     name="referrerName"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -2107,7 +2170,8 @@ const CreateCustomerForm = () => {
                 <Form.Item
                   label="Connection Type"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="connectionType"
                 >
@@ -2138,7 +2202,8 @@ const CreateCustomerForm = () => {
                     name="cableLength"
                     label="Cable Length"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
@@ -2152,6 +2217,7 @@ const CreateCustomerForm = () => {
                       placeholder="Cable Length"
                       className={`form-control`}
                       name="cableLength"
+                      style={{ padding: "6px" }}
                     />
                   </Form.Item>
                 </Col>
@@ -2171,7 +2237,8 @@ const CreateCustomerForm = () => {
                     name="vlanBoxName"
                     label="Vlan Box Name"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
@@ -2185,6 +2252,7 @@ const CreateCustomerForm = () => {
                       placeholder="Vlan Box Name"
                       className={`form-control`}
                       name="vlanBoxName"
+                      style={{ padding: "6px" }}
                     />
                   </Form.Item>
                 </Col>
@@ -2204,7 +2272,8 @@ const CreateCustomerForm = () => {
                     name="swPortNo"
                     label="Sw Port No"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
@@ -2218,6 +2287,7 @@ const CreateCustomerForm = () => {
                       placeholder="Sw Port No"
                       className={`form-control`}
                       name="swPortNo"
+                      style={{ padding: "6px" }}
                     />
                   </Form.Item>
                 </Col>
@@ -2236,7 +2306,8 @@ const CreateCustomerForm = () => {
                   <Form.Item
                     label="Fiber Optic Device Type"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     name="fiberOpticDeviceType"
                   >
@@ -2270,7 +2341,8 @@ const CreateCustomerForm = () => {
                       name="oltDeviceId"
                       label="Olt Device Id"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2284,6 +2356,7 @@ const CreateCustomerForm = () => {
                         placeholder="Olt Device Id"
                         className={`form-control`}
                         name="oltDeviceId"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2304,7 +2377,8 @@ const CreateCustomerForm = () => {
                       name="onuDeviceId"
                       label="Onu Device Id"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2318,6 +2392,7 @@ const CreateCustomerForm = () => {
                         placeholder="Onu Device Id"
                         className={`form-control`}
                         name="onuDeviceId"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2339,7 +2414,8 @@ const CreateCustomerForm = () => {
                       name="splitter"
                       label="Splitter"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2353,6 +2429,7 @@ const CreateCustomerForm = () => {
                         placeholder="Splitter"
                         className={`form-control`}
                         name="splitter"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2374,7 +2451,8 @@ const CreateCustomerForm = () => {
                       name="serialNo"
                       label="Serial No"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2388,6 +2466,7 @@ const CreateCustomerForm = () => {
                         placeholder="Serial No"
                         className={`form-control`}
                         name="serialNo"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2408,7 +2487,8 @@ const CreateCustomerForm = () => {
                       name="cableLength"
                       label="Cable Length"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2422,6 +2502,7 @@ const CreateCustomerForm = () => {
                         placeholder="Cable Length"
                         className={`form-control`}
                         name="cableLength"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2442,7 +2523,8 @@ const CreateCustomerForm = () => {
                       name="vlanBoxName"
                       label="Vlan Box Name"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2456,6 +2538,7 @@ const CreateCustomerForm = () => {
                         placeholder="Vlan Box Name"
                         className={`form-control`}
                         name="vlanBoxName"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2476,7 +2559,8 @@ const CreateCustomerForm = () => {
                       name="swPortNo"
                       label="Sw Port No"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2490,6 +2574,7 @@ const CreateCustomerForm = () => {
                         placeholder="Sw Port No"
                         className={`form-control`}
                         name="swPortNo"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2510,7 +2595,8 @@ const CreateCustomerForm = () => {
                       name="cableId"
                       label="Cable Id"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2524,6 +2610,7 @@ const CreateCustomerForm = () => {
                         placeholder="Cable Id"
                         className={`form-control`}
                         name="cableId"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2544,7 +2631,8 @@ const CreateCustomerForm = () => {
                       name="colorCode"
                       label="Color Code"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2558,6 +2646,7 @@ const CreateCustomerForm = () => {
                         placeholder="Color Code"
                         className={`form-control`}
                         name="colorCode"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2578,7 +2667,8 @@ const CreateCustomerForm = () => {
                       name="splitter"
                       label="Splitter"
                       style={{
-                        marginBottom: 0
+                        marginBottom: 0,
+                        fontWeight: "bold"
                       }}
                       rules={[
                         {
@@ -2592,6 +2682,7 @@ const CreateCustomerForm = () => {
                         placeholder="Splitter"
                         className={`form-control`}
                         name="splitter"
+                        style={{ padding: "6px" }}
                       />
                     </Form.Item>
                   </Col>
@@ -2646,6 +2737,15 @@ const CreateCustomerForm = () => {
                 xxl={8}
                 className="gutter-row"
               ></Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              ></Col>
             </Row>
           </Card>
 
@@ -2653,12 +2753,13 @@ const CreateCustomerForm = () => {
             hoverable
             style={{
               width: "90%",
-              backgroundColor: "#fffff",
+              backgroundColor: "white",
               borderRadius: "10px",
               margin: "0 auto",
               textAlign: "center",
-              marginTop: "3rem",
-              marginBottom: "3rem"
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              border: "1px solid #F15F22"
             }}
           >
             {/* autoRenew */}
@@ -2688,7 +2789,8 @@ const CreateCustomerForm = () => {
                   name="discount"
                   label="Discount"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   rules={[
                     {
@@ -2702,6 +2804,7 @@ const CreateCustomerForm = () => {
                     placeholder="Discount"
                     className={`form-control`}
                     name="discount"
+                    style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
@@ -2755,7 +2858,16 @@ const CreateCustomerForm = () => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

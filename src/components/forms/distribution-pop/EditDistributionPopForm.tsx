@@ -192,6 +192,10 @@ const EditDistributionPopForm = ({ item }: PropData) => {
               <Form.Item
                 label="Zone"
                 name="zoneId"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -224,7 +228,8 @@ const EditDistributionPopForm = ({ item }: PropData) => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -239,6 +244,9 @@ const EditDistributionPopForm = ({ item }: PropData) => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{
+                    padding: "6px"
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -255,7 +263,8 @@ const EditDistributionPopForm = ({ item }: PropData) => {
               <Form.Item
                 label="Latitude"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="latitude"
               >
@@ -264,6 +273,7 @@ const EditDistributionPopForm = ({ item }: PropData) => {
                   placeholder="Latitude"
                   className={`form-control`}
                   name="latitude"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -280,7 +290,8 @@ const EditDistributionPopForm = ({ item }: PropData) => {
               <Form.Item
                 label="Longitude"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="longitude"
               >
@@ -289,6 +300,7 @@ const EditDistributionPopForm = ({ item }: PropData) => {
                   placeholder="Longitude"
                   className={`form-control`}
                   name="longitude"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -329,7 +341,16 @@ const EditDistributionPopForm = ({ item }: PropData) => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>
