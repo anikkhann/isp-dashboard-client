@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 interface DataType {
   id: number;
@@ -143,8 +143,8 @@ const ZoneInChargeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
+      title: "zonename",
+      dataIndex: "zonename",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
@@ -254,10 +254,19 @@ const ZoneInChargeList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("zone.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/zone/zone-in-charge/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+            <Space size="middle" align="center">
+              {ability.can("zone.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/zone/zone-in-charge/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}
@@ -332,7 +341,7 @@ const ZoneInChargeList: React.FC = () => {
             title="Zone In Charges List"
             hasLink={true}
             addLink="/admin/zone/zone-in-charge/create"
-            permission="user.create"
+            permission="zone.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

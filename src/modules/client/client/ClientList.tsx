@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { ClientData } from "@/interfaces/ClientData";
 import { format } from "date-fns";
 
@@ -253,6 +253,15 @@ const ClientList: React.FC = () => {
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/client/client/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+            <Space size="middle" align="center">
+              {ability.can("client.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/client/client/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}
