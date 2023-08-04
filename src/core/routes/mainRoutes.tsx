@@ -1,5 +1,5 @@
 import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
-// import { FaUsersGear } from "react-icons/fa";
+// import { LiaUsersCogSolid } from "react-icons/all";
 
 const mainRoutes = [
   {
