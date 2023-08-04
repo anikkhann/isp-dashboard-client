@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { SubscriptionData } from "@/interfaces/SubscriptionData";
 import { format } from "date-fns";
 
@@ -254,6 +254,15 @@ const SubscriptionList: React.FC = () => {
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/client/subscription/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+            <Space size="middle" align="center">
+              {ability.can("subscription.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/client/subscription/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}
