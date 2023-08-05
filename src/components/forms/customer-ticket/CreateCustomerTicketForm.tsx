@@ -69,6 +69,8 @@ const CreateCustomerTicketForm = () => {
   const [assignedTo, setAssignedTo] = useState<any>(null);
   const [selectedAssignedTo, setSelectedAssignedTo] = useState<any>(null);
 
+  const [checkListDataJson, setCheckListDataJson] = useState<any>(null);
+
   // const user = useAppSelector(state => state.auth.user);
   // console.log("user", user)
 
@@ -99,6 +101,29 @@ const CreateCustomerTicketForm = () => {
       } else if (current === 1) {
         await form.validateFields(["complainTypeId"]);
 
+        const fields = form.getFieldsValue();
+
+        const filteredData = Object.keys(fields).reduce((acc: any, key) => {
+          if (key.startsWith("checklist-")) {
+            // acc[key] = fields[key];
+            // remove "checklist-" prefix
+            const cleanedKey = key.replace("checklist-", "");
+            acc[cleanedKey] = fields[key];
+          }
+          return acc;
+        }, {});
+
+        const formatCheckList = Object.keys(filteredData).map(key => {
+          return {
+            title: key,
+            status: filteredData[key]
+          };
+        });
+
+        setCheckListDataJson(formatCheckList);
+
+        // console.log("filteredData", formatCheckList);
+        // console.log("checkList", checkList);
         setFormValues({
           ...formValues,
           complainTypeId: form.getFieldValue("complainTypeId")
@@ -283,30 +308,11 @@ const CreateCustomerTicketForm = () => {
   }, [selectedCustomer]);
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    // console.log(data);
     // Filter keys to keep only those starting with "checklist-"
-    // Filter keys to keep only those starting with "checklist-"
-    const filteredData = Object.keys(data).reduce((acc: any, key) => {
-      if (key.startsWith("checklist-")) {
-        acc[key] = data[key];
-      }
-      return acc;
-    }, {});
-
-    console.log(filteredData);
-
-    // Remove "checklist-" prefix and set key-value pairs
-    const cleanedChecklistData = Object.keys(filteredData).reduce(
-      (acc: any, key: any) => {
-        const cleanedKey = key.replace("checklist-", ""); // Remove "checklist-" prefix
-        acc[cleanedKey] = data[key];
-        return acc;
-      },
-      {}
-    );
 
     // Convert to JSON format
-    const checkListJson = JSON.stringify(cleanedChecklistData, null, 2);
+    const checkListJson = JSON.stringify(checkListDataJson, null, 2);
 
     const formData = new FormData();
     if (file) {
@@ -579,12 +585,12 @@ const CreateCustomerTicketForm = () => {
                     <Form.Item
                       label="Assigned To"
                       name="assignedTo"
-                      rules={[
+                      /*   rules={[
                         {
                           required: true,
                           message: "Please select Assigned To!"
                         }
-                      ]}
+                      ]} */
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <Select
