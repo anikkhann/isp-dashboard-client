@@ -244,6 +244,10 @@ const CreateAdminTicketForm = () => {
                   <Form.Item
                     label="Complain Type"
                     name="complainTypeId"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
                     rules={[
                       {
                         required: true,
@@ -275,7 +279,8 @@ const CreateAdminTicketForm = () => {
                   <Form.Item
                     label="Note"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     name="complainDetails"
                     rules={[
@@ -291,6 +296,7 @@ const CreateAdminTicketForm = () => {
                       placeholder="Complain Details"
                       className={`form-control`}
                       name="complainDetails"
+                      style={{ padding: "6px" }}
                     />
                   </Form.Item>
                 </Col>
@@ -303,7 +309,8 @@ const CreateAdminTicketForm = () => {
                     style={{
                       marginBottom: 0,
                       width: "100%",
-                      textAlign: "center"
+                      textAlign: "center",
+                      fontWeight: "bold"
                     }}
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
@@ -328,12 +335,30 @@ const CreateAdminTicketForm = () => {
             <Col>
               <div style={{ marginTop: 24 }}>
                 {current > 0 && (
-                  <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
+                  <Button
+                    style={{
+                      margin: "0 8px",
+                      fontWeight: "bold",
+                      color: "#FFFFFF"
+                    }}
+                    onClick={() => prev()}
+                    shape="round"
+                    type="primary"
+                  >
                     Previous
                   </Button>
                 )}
                 {current < steps.length - 1 && (
-                  <Button type="primary" onClick={() => next()}>
+                  <Button
+                    // type="primary"
+                    shape="round"
+                    onClick={() => next()}
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
                     Next
                   </Button>
                 )}
@@ -342,7 +367,16 @@ const CreateAdminTicketForm = () => {
               <Form.Item style={{ margin: "0 8px" }}>
                 <div style={{ marginTop: 24 }}>
                   {current === steps.length - 1 && (
-                    <Button type="primary" htmlType="submit" shape="round">
+                    <Button
+                      // type="primary"
+                      htmlType="submit"
+                      shape="round"
+                      style={{
+                        backgroundColor: "#F15F22",
+                        color: "#FFFFFF",
+                        fontWeight: "bold"
+                      }}
+                    >
                       Submit
                     </Button>
                   )}

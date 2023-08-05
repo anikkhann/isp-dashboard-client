@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 interface FormData {
@@ -15,10 +15,10 @@ interface FormData {
   subnetMask: string;
 }
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
-};
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
 const CreateIPForm = () => {
   const [form] = Form.useForm();
@@ -102,7 +102,8 @@ const CreateIPForm = () => {
           <Form.Item
             label="Network Name"
             style={{
-              marginBottom: 0
+              marginBottom: 0,
+              fontWeight: "bold"
             }}
             name="networkName"
             rules={[
@@ -117,6 +118,7 @@ const CreateIPForm = () => {
               placeholder="networkName"
               className={`form-control`}
               name="networkName"
+              style={{ padding: "6px" }}
             />
           </Form.Item>
 
@@ -124,7 +126,8 @@ const CreateIPForm = () => {
           <Form.Item
             label="Network Address"
             style={{
-              marginBottom: 0
+              marginBottom: 0,
+              fontWeight: "bold"
             }}
             name="networkAddress"
             rules={[
@@ -139,6 +142,7 @@ const CreateIPForm = () => {
               placeholder="networkAddress"
               className={`form-control`}
               name="networkAddress"
+              style={{ padding: "6px" }}
             />
           </Form.Item>
 
@@ -147,7 +151,8 @@ const CreateIPForm = () => {
           <Form.Item
             label="Subnet Mask"
             style={{
-              marginBottom: 0
+              marginBottom: 0,
+              fontWeight: "bold"
             }}
             name="subnetMask"
             rules={[
@@ -162,6 +167,7 @@ const CreateIPForm = () => {
               placeholder="subnetMask"
               className={`form-control`}
               name="subnetMask"
+              style={{ padding: "6px" }}
             />
           </Form.Item>
 
@@ -178,11 +184,25 @@ const CreateIPForm = () => {
           </Form.Item>
 
           {/* submit */}
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </div>
     </>

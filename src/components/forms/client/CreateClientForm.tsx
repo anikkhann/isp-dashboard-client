@@ -455,7 +455,45 @@ const CreateClientForm = () => {
             justify="space-between"
           >
             <Col
-              xs={12}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Client Level"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="clientLevel"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select actions"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleChange}
+                    options={tagsList}
+                    value={clientLevel}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -467,7 +505,8 @@ const CreateClientForm = () => {
                 name="username"
                 label="Username"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -486,45 +525,13 @@ const CreateClientForm = () => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
+
             <Col
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Client Level"
-                style={{
-                  marginBottom: 0
-                }}
-                name="clientLevel"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select actions"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleChange}
-                    options={tagsList}
-                    value={clientLevel}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-            <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -535,7 +542,8 @@ const CreateClientForm = () => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -550,12 +558,13 @@ const CreateClientForm = () => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
 
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -566,7 +575,8 @@ const CreateClientForm = () => {
               <Form.Item
                 label="Email"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="email"
                 rules={[
@@ -590,12 +600,13 @@ const CreateClientForm = () => {
                   placeholder="Email"
                   className={`form-control`}
                   name="email"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
             {/* password, confirm password, address */}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -607,7 +618,8 @@ const CreateClientForm = () => {
                 name="address"
                 label="Address"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -621,60 +633,13 @@ const CreateClientForm = () => {
                   placeholder="Address"
                   className={`form-control`}
                   name="address"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="latitude"
-                label="latitude"
-                style={{
-                  marginBottom: 0
-                }}
-              >
-                <Input
-                  type="text"
-                  placeholder="latitude"
-                  className={`form-control`}
-                  name="latitude"
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={12}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="longitude"
-                label="longitude"
-                style={{
-                  marginBottom: 0
-                }}
-              >
-                <Input
-                  type="text"
-                  placeholder="longitude"
-                  className={`form-control`}
-                  name="longitude"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
 
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -685,6 +650,10 @@ const CreateClientForm = () => {
               <Form.Item
                 name="password"
                 label="Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 rules={[
                   {
                     required: true,
@@ -702,11 +671,14 @@ const CreateClientForm = () => {
                 ]}
                 hasFeedback
               >
-                <Input.Password />
+                <Input.Password
+                  placeholder="Password"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -718,6 +690,10 @@ const CreateClientForm = () => {
                 name="confirm"
                 label="Confirm Password"
                 dependencies={["password"]}
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
                 hasFeedback
                 rules={[
                   {
@@ -743,13 +719,16 @@ const CreateClientForm = () => {
                   })
                 ]}
               >
-                <Input.Password />
+                <Input.Password
+                  placeholder="Confirm Password"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
 
             {/* contact person, contact number, contact number 2 */}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -761,7 +740,8 @@ const CreateClientForm = () => {
                 name="contactPerson"
                 label="Contact Person"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -775,11 +755,12 @@ const CreateClientForm = () => {
                   placeholder="Contact Person"
                   className={`form-control`}
                   name="contactPerson"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -791,7 +772,8 @@ const CreateClientForm = () => {
                 name="contactNumber"
                 label="Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -809,11 +791,12 @@ const CreateClientForm = () => {
                   placeholder="Contact Number"
                   className={`form-control`}
                   name="contactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -825,7 +808,8 @@ const CreateClientForm = () => {
                 name="altContactNumber"
                 label="Alt Contact Number"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 rules={[
                   {
@@ -839,13 +823,14 @@ const CreateClientForm = () => {
                   placeholder="Alt Contact Number"
                   className={`form-control`}
                   name="altContactNumber"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
 
             {/* divisionId, districtId, upazillaId */}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -857,7 +842,8 @@ const CreateClientForm = () => {
                 label="Division"
                 style={{
                   marginBottom: 0,
-                  marginRight: lg ? "10px" : "0px"
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
                 }}
                 name="divisionId"
                 rules={[
@@ -880,7 +866,7 @@ const CreateClientForm = () => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -891,7 +877,8 @@ const CreateClientForm = () => {
               <Form.Item
                 label="District"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="districtId"
                 rules={[
@@ -914,7 +901,7 @@ const CreateClientForm = () => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -925,7 +912,8 @@ const CreateClientForm = () => {
               <Form.Item
                 label="Upazilla"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="upazillaId"
               >
@@ -944,7 +932,7 @@ const CreateClientForm = () => {
 
             {/* unionId, licenseTypeId, btrcLicenseNo*/}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -955,7 +943,8 @@ const CreateClientForm = () => {
               <Form.Item
                 label="Union"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="unionId"
               >
@@ -972,7 +961,7 @@ const CreateClientForm = () => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -983,7 +972,8 @@ const CreateClientForm = () => {
               <Form.Item
                 label="License Type"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="licenseTypeId"
               >
@@ -1000,7 +990,7 @@ const CreateClientForm = () => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1012,7 +1002,8 @@ const CreateClientForm = () => {
                 name="btrcLicenseNo"
                 label="BTRC License No"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <Input
@@ -1020,13 +1011,14 @@ const CreateClientForm = () => {
                   placeholder="BTRC License No"
                   className={`form-control`}
                   name="btrcLicenseNo"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
 
             {/* licenseExpireDate, radiusIpId*/}
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1038,11 +1030,12 @@ const CreateClientForm = () => {
                 name="licenseExpireDate"
                 label="License Expire Date"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
               >
                 <DatePicker
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", padding: "6px" }}
                   className={`form-control`}
                   name="licenseExpireDate"
                   placeholder="License Expire Date"
@@ -1051,7 +1044,7 @@ const CreateClientForm = () => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1062,7 +1055,8 @@ const CreateClientForm = () => {
               <Form.Item
                 label="Radius IP"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="radiusIpId"
                 rules={[
@@ -1085,7 +1079,77 @@ const CreateClientForm = () => {
               </Form.Item>
             </Col>
             <Col
-              xs={12}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="latitude"
+                label="Latitude"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="Latitude"
+                  className={`form-control`}
+                  name="latitude"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="longitude"
+                label="Longitude"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="Longitude"
+                  className={`form-control`}
+                  name="longitude"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
               sm={12}
               md={8}
               lg={8}
@@ -1110,7 +1174,16 @@ const CreateClientForm = () => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

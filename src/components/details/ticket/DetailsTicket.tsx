@@ -1,6 +1,6 @@
 import { TicketData } from "@/interfaces/TicketData";
 import { FileImageOutlined } from "@ant-design/icons";
-import { Card, Col, Row } from "antd";
+import { Card, Col, Row, Button } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import React, { useEffect, useState } from "react";
 
@@ -42,16 +42,31 @@ const DetailsTicket = ({ item, replys }: PropData) => {
               <h1 className="font-bold text-lg text-[#4361ee]">
                 {item.ticketNo}
               </h1>
-              <p className="text-sm">
-                {timeDiff} - {createdDate?.toDateString()}{" "}
-                {createdDate?.toLocaleTimeString()}
-              </p>
+
+              <Button
+                style={{
+                  backgroundColor: "#F15F22",
+                  color: "#FFFFFF",
+                  fontWeight: "bold"
+                }}
+              >
+                {item.status}
+              </Button>
             </div>
           }
           hoverable
           bordered={false}
-          style={{ textAlign: "start" }}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white"
+          }}
         >
+          <div style={{ textAlign: "center" }}>
+            <p className="text-base font-semibold text-[#F15F22]">
+              {timeDiff} - {createdDate?.toDateString()}
+              <span className="mx-2">{createdDate?.toLocaleTimeString()}</span>
+            </p>
+          </div>
           <div style={{ textAlign: "start" }}>
             <p>
               <span className="font-bold">Customer ID:</span>
@@ -79,7 +94,8 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           style={{
             marginTop: "20px",
             marginBottom: "20px",
-            textAlign: "start"
+            textAlign: "start",
+            backgroundColor: "white"
           }}
         >
           <div style={{ textAlign: "start" }}>
@@ -101,7 +117,7 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           // title="Card title"
           hoverable
           bordered={false}
-          style={{ textAlign: "start" }}
+          style={{ textAlign: "start", backgroundColor: "white" }}
         >
           <div style={{ textAlign: "start" }}>
             <h1 className="font-bold text-xl text-[#4361ee]">Reply History</h1>

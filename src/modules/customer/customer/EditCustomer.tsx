@@ -5,7 +5,7 @@ import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Card } from "antd";
+import { Breadcrumb } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -68,8 +68,28 @@ const EditCustomer = ({ id }: any) => {
             }
           ]}
         />
-
-        <Card
+        <div
+          style={{
+            width: "90%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            // border: "1px solid #F15F22",
+            textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            Edit customer
+          </h1>
+        </div>
+        {/* <Card
           title="Edit customer"
           style={{
             width: "90%",
@@ -86,7 +106,13 @@ const EditCustomer = ({ id }: any) => {
           {isError && <div>{error.message}</div>}
 
           {!isLoading && item && <EditCustomerForm item={item} />}
-        </Card>
+
+        </Card> */}
+        {isLoading && isFetching && <AppLoader />}
+
+        {isError && <div>{error.message}</div>}
+
+        {!isLoading && item && <EditCustomerForm item={item} />}
       </AppRowContainer>
     </>
   );

@@ -1,8 +1,5 @@
-import {
-  DashboardOutlined,
-  SettingOutlined,
-  UserOutlined
-} from "@ant-design/icons";
+import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+// import { GrUserSettings } from "react-icons/all";
 
 const mainRoutes = [
   {
@@ -17,7 +14,8 @@ const mainRoutes = [
     key: "/admin/client",
     label: "Client Management",
     path: "/admin/client",
-    icon: <UserOutlined />,
+    icon: <SettingOutlined />,
+
     permission: "client.dashboard"
   },
 

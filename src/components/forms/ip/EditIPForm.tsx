@@ -168,7 +168,8 @@ const EditIPForm = ({ item }: PropData) => {
               <Form.Item
                 label="IP Address"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="ip"
               >
@@ -178,6 +179,7 @@ const EditIPForm = ({ item }: PropData) => {
                   className={`form-control`}
                   name="ip"
                   disabled
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -194,7 +196,8 @@ const EditIPForm = ({ item }: PropData) => {
               <Form.Item
                 label="Customers"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="customerId"
                 rules={[
@@ -223,7 +226,16 @@ const EditIPForm = ({ item }: PropData) => {
             <Col>
               <Form.Item>
                 {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button type="primary" htmlType="submit" shape="round">
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Submit
                 </Button>
               </Form.Item>

@@ -32,18 +32,25 @@ a {
 
 .ant-layout{
   background-color: #F4F7FE;
+  
 }
 
 .ant-menu{
-  font-size: 12px !important;
-  font-weight: 500 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  
 }
 
  .ant-menu-inline .ant-menu-item{
   height: 50px !important;
+  background-color:  #0e8fdc !important;
+  color: #F4F7FE !important;
 }
 
-
+// .ant-layout-sider{
+//   background-color: #FFC857 !important;
+//   color: #F4F7FE;
+// }
 
 .ant-menu-item .ant-menu-submenu-title{
     inset-inline-start: 0;

@@ -277,7 +277,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="name"
                 rules={[
@@ -292,6 +293,7 @@ const CreatePackageForm = () => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -308,7 +310,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Display Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="displayName"
                 rules={[
@@ -323,6 +326,7 @@ const CreatePackageForm = () => {
                   placeholder="Display Name"
                   className={`form-control`}
                   name="displayName"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -339,7 +343,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Upload Limit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="uploadLimit"
                 rules={[
@@ -354,6 +359,7 @@ const CreatePackageForm = () => {
                   placeholder="Upload Limit"
                   className={`form-control`}
                   name="uploadLimit"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -371,7 +377,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Upload Limit Unit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="uploadLimitUnit"
                 rules={[
@@ -406,7 +413,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Download Limit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="downloadLimit"
                 rules={[
@@ -421,6 +429,7 @@ const CreatePackageForm = () => {
                   placeholder="Download Limit"
                   className={`form-control`}
                   name="downloadLimit"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -437,7 +446,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Download Limit Unit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="downloadLimitUnit"
                 rules={[
@@ -472,7 +482,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Validity"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="validity"
                 rules={[
@@ -487,6 +498,7 @@ const CreatePackageForm = () => {
                   placeholder="Validity"
                   className={`form-control`}
                   name="validity"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -503,7 +515,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Validity Unit"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="validityUnit"
                 rules={[
@@ -539,7 +552,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Vat (%)"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="vat"
                 rules={[
@@ -554,6 +568,7 @@ const CreatePackageForm = () => {
                   placeholder="Vat (%)"
                   className={`form-control`}
                   name="vat"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -570,7 +585,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Total Price"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="totalPrice"
                 rules={[
@@ -585,6 +601,7 @@ const CreatePackageForm = () => {
                   placeholder="Total Price"
                   className={`form-control`}
                   name="totalPrice"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -601,7 +618,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="Next Expired Package"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="nextExpiredPackageId"
                 // rules={[
@@ -616,6 +634,7 @@ const CreatePackageForm = () => {
                   placeholder="Next Expired Package"
                   className={`form-control`}
                   name="nextExpiredPackageId"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -632,7 +651,8 @@ const CreatePackageForm = () => {
               <Form.Item
                 label="IP Pool Name"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
                 name="ipPoolName"
                 // rules={[
@@ -647,6 +667,7 @@ const CreatePackageForm = () => {
                   placeholder="IP Pool Name"
                   className={`form-control`}
                   name="ipPoolName"
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
@@ -664,7 +685,8 @@ const CreatePackageForm = () => {
                 <Form.Item
                   label="Zone"
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
                   name="zoneIds"
                   rules={[
@@ -720,6 +742,15 @@ const CreatePackageForm = () => {
                 />
               </Form.Item>
             </Col> */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
             <Col
               xs={24}
               sm={12}
@@ -805,7 +836,16 @@ const CreatePackageForm = () => {
           <Row justify="center">
             <Form.Item>
               {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-              <Button type="primary" htmlType="submit" shape="round">
+              <Button
+                // type="primary"
+                htmlType="submit"
+                shape="round"
+                style={{
+                  backgroundColor: "#F15F22",
+                  color: "#FFFFFF",
+                  fontWeight: "bold"
+                }}
+              >
                 Submit
               </Button>
             </Form.Item>
