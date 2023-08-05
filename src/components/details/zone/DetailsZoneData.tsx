@@ -7,7 +7,15 @@ interface PropData {
 
 const DetailsZoneData = ({ item }: PropData) => {
   console.log("item", item);
-  return <div>DetailsClientData</div>;
+  const data = JSON.stringify(item);
+  return (
+    <>
+      <div className="row">
+        {/*  */}
+        {data}
+      </div>
+    </>
+  );
 };
 
 export default DetailsZoneData;

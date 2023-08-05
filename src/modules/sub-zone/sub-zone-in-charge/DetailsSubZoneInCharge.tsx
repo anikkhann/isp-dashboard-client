@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditSubZoneForm from "@/components/forms/sub-zone/EditSubZoneForm";
+import DetailsSubZoneData from "@/components/details/subZone/DetailsSubZoneData";
 import { ClientData } from "@/interfaces/ClientData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditSubZoneInCharge = ({ id }: any) => {
+const DetailsSubZoneInCharge = ({ id }: any) => {
   const [item, SetItem] = useState<ClientData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -66,7 +66,7 @@ const EditSubZoneInCharge = ({ id }: any) => {
               )
             },
             {
-              title: "Edit Sub Zone In Charge"
+              title: "Details Sub Zone In Charge"
             }
           ]}
         />
@@ -88,7 +88,7 @@ const EditSubZoneInCharge = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Sub Zone In Charge
+            Details Sub Zone In Charge
           </h1>
         </div>
         <Card
@@ -109,11 +109,11 @@ const EditSubZoneInCharge = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditSubZoneForm item={item} />}
+          {!isLoading && item && <DetailsSubZoneData item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditSubZoneInCharge;
+export default DetailsSubZoneInCharge;

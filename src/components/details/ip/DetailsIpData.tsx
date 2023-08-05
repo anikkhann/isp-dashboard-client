@@ -1,11 +1,11 @@
-import { ClientData } from "@/interfaces/ClientData";
+import { IpData } from "@/interfaces/IpData";
 import React from "react";
 
 interface PropData {
-  item: ClientData;
+  item: IpData;
 }
 
-const DetailsRetailData = ({ item }: PropData) => {
+const DetailsIpData = ({ item }: PropData) => {
   console.log("item", item);
   const data = JSON.stringify(item);
   return (
@@ -18,4 +18,4 @@ const DetailsRetailData = ({ item }: PropData) => {
   );
 };
 
-export default DetailsRetailData;
+export default DetailsIpData;

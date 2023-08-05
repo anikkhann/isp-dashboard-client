@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DeviceData } from "@/interfaces/DeviceData";
 import { format } from "date-fns";
 
@@ -23,6 +23,55 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
+const deviceTypeList = [
+  {
+    label: "NAS",
+    value: "NAS"
+  },
+  {
+    label: "Switch",
+    value: "Switch"
+  },
+  {
+    label: "Router",
+    value: "Router"
+  },
+  {
+    label: "ONU",
+    value: "ONU"
+  },
+  {
+    label: "OLT",
+    value: "OLT"
+  }
+];
+
+const monitoringTypesList = [
+  {
+    label: "API",
+    value: "API"
+  },
+  {
+    label: "Telnet",
+    value: "Telnet"
+  },
+  {
+    label: "SNMP",
+    value: "SNMP"
+  }
+];
+
+const statusList = [
+  {
+    label: "Active",
+    value: "true"
+  },
+  {
+    label: "Inactive",
+    value: "false"
+  }
+];
+
 const DeviceList: React.FC = () => {
   const [data, setData] = useState<DeviceData[]>([]);
 
@@ -30,6 +79,15 @@ const DeviceList: React.FC = () => {
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [selectedDeviceType, setSelectedDeviceType] = useState<any>(null);
+
+  const [selectedMonitoringType, setSelectedMonitoringType] =
+    useState<any>(null);
+
+  const [ip, setIp] = useState<any>(null);
+
+  const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -42,7 +100,11 @@ const DeviceList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    deviceTypeParam?: string,
+    monitoringTypeParam?: string,
+    ipParam?: string,
+    statusParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -60,7 +122,11 @@ const DeviceList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        partnerType: "client",
+        deviceType: deviceTypeParam,
+        monitoringType: monitoringTypeParam,
+        ip: ipParam,
+        isActive: statusParam
       }
     };
 
@@ -73,9 +139,28 @@ const DeviceList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["device-list", page, limit, order, sort],
+    queryKey: [
+      "device-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedDeviceType,
+      selectedMonitoringType,
+      ip,
+      selectedStatus
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedDeviceType,
+        selectedMonitoringType,
+        ip,
+        selectedStatus
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -108,6 +193,28 @@ const DeviceList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  const handleDeviceTypeChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedDeviceType(value as any);
+  };
+
+  const handleMonuitoringTypeChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedMonitoringType(value as any);
+  };
+
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedStatus(value as any);
+  };
+
+  const handleClear = () => {
+    setSelectedDeviceType(null);
+    setSelectedMonitoringType(null);
+    setIp(null);
+    setSelectedStatus(null);
+  };
 
   useEffect(() => {
     if (data) {
@@ -283,6 +390,13 @@ const DeviceList: React.FC = () => {
                   </Link>
                 </Space>
               ) : null}
+              {ability.can("device.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/device/device/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
             </Space>
           </>
         );
@@ -363,11 +477,84 @@ const DeviceList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              {/* search */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Device Type</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleDeviceTypeChange}
+                    options={deviceTypeList}
+                    value={selectedDeviceType}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Monitoring Type</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleMonuitoringTypeChange}
+                    options={monitoringTypesList}
+                    value={selectedMonitoringType}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Device Ip</b>
+                  </span>
+                  <Input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Contact Number"
+                    value={ip}
+                    onChange={e => setIp(e.target.value)}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Status</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleChange}
+                    options={statusList}
+                    value={selectedStatus}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
               <Table
                 columns={columns}
                 rowKey={record => record.id}

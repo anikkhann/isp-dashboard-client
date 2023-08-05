@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { IpData } from "@/interfaces/IpData";
 import { format } from "date-fns";
 
@@ -227,6 +227,13 @@ const IpManagementList: React.FC = () => {
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/device/ip-management/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("ip.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/device/ip-management/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}

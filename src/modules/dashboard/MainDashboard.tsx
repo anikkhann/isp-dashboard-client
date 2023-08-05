@@ -15,7 +15,7 @@ const MainDashboard = () => {
             margin: "0 30px"
           }}
         >
-          <Can I="dashboard.view">
+          <Can I="client.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#0A8FDC"
@@ -27,7 +27,7 @@ const MainDashboard = () => {
             </Col>
           </Can>
 
-          <Can I="dashboard.view">
+          <Can I="zone.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#49BD65"
@@ -38,7 +38,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="subZone.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#9E49E6"
@@ -49,7 +49,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="retail.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#2F0F5D"
@@ -60,7 +60,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="device.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#6D67E4"
@@ -71,7 +71,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="package.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#3795BD"
@@ -82,7 +82,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="customer.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#3A1078"
@@ -93,7 +93,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="complaint.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#0EA293"
@@ -104,7 +104,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="user.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#216583"
@@ -115,7 +115,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="topUp.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#216583"
@@ -126,7 +126,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="customerCare.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#216583"
@@ -137,7 +137,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="notification.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#216583"
@@ -148,7 +148,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="payment.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#216583"
@@ -159,7 +159,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="dashboard.view">
+          <Can I="accounting.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#216583"

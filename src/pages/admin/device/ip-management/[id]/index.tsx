@@ -1,6 +1,6 @@
 import DeviceLayout from "@/core/layouts/DeviceLayout";
 import AppLoader from "@/lib/AppLoader";
-import DetailsDevice from "@/modules/device/device/DetailsDevice";
+import DetailsIpManagement from "@/modules/device/ip-management/DetailsIpManagement";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -17,8 +17,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("device.update", "") ? (
-        <DetailsDevice id={id} />
+      {ability.can("ip.view", "") ? (
+        <DetailsIpManagement id={id} />
       ) : (
         <Forbidden />
       )}

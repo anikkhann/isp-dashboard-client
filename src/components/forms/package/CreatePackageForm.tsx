@@ -138,10 +138,13 @@ const CreatePackageForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        partnerType: "zone"
       }
     };
 
-    const res = await axios.post("/api/distribution-zone/get-list", body);
+    const res = await axios.post("/api/partner/get-list", body);
     if (res.data.status == 200) {
       // console.log(res.data.data.roles);
 

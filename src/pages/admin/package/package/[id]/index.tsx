@@ -1,7 +1,7 @@
-import DeviceLayout from "@/core/layouts/DeviceLayout";
+import PackageLayout from "@/core/layouts/PackageLayout";
 import AppLoader from "@/lib/AppLoader";
-import DetailsDevice from "@/modules/device/device/DetailsDevice";
 import Forbidden from "@/modules/errorPage/Forbidden";
+import DetailsPackage from "@/modules/package/package/DetailsPackage";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -17,8 +17,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("device.update", "") ? (
-        <DetailsDevice id={id} />
+      {ability.can("package.view", "") ? (
+        <DetailsPackage id={id} />
       ) : (
         <Forbidden />
       )}
@@ -26,6 +26,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => <DeviceLayout>{page}</DeviceLayout>;
+Home.getLayout = (page: ReactNode) => <PackageLayout>{page}</PackageLayout>;
 
 export default Home;

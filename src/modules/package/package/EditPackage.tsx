@@ -56,13 +56,13 @@ const EditPackage = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/package">Package Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/package/package">Package</Link>
             },
             {
-              title: "Edit Client"
+              title: "Edit Package"
             }
           ]}
         />

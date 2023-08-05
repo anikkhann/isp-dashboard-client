@@ -40,7 +40,7 @@ const mainRoutes = [
     label: "Retail In Charge",
     path: "/admin/retail",
     icon: <SettingOutlined />,
-    permission: "retailInCharge.dashboard"
+    permission: "retail.dashboard"
   },
 
   {

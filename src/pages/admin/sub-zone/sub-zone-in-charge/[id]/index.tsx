@@ -1,8 +1,7 @@
-import DeviceLayout from "@/core/layouts/DeviceLayout";
+import SubZoneLayout from "@/core/layouts/SubZoneLayout";
 import AppLoader from "@/lib/AppLoader";
-import DetailsDevice from "@/modules/device/device/DetailsDevice";
 import Forbidden from "@/modules/errorPage/Forbidden";
-
+import DetailsSubZoneInCharge from "@/modules/sub-zone/sub-zone-in-charge/DetailsSubZoneInCharge";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/router";
@@ -17,8 +16,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("device.update", "") ? (
-        <DetailsDevice id={id} />
+      {ability.can("subZone.view", "") ? (
+        <DetailsSubZoneInCharge id={id} />
       ) : (
         <Forbidden />
       )}
@@ -26,6 +25,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => <DeviceLayout>{page}</DeviceLayout>;
+Home.getLayout = (page: ReactNode) => <SubZoneLayout>{page}</SubZoneLayout>;
 
 export default Home;

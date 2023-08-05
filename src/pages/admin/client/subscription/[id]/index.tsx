@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("subscription.update", "") ? (
+      {ability.can("subscription.view", "") ? (
         <DetailsSubscription id={id} />
       ) : (
         <Forbidden />

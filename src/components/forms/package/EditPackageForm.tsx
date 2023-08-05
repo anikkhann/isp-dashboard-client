@@ -51,6 +51,17 @@ const uploadUnits = [
   }
 ];
 
+const validityUnits = [
+  {
+    label: "Day",
+    value: "Day"
+  },
+  {
+    label: "Month",
+    value: "Month"
+  }
+];
+
 interface PropData {
   item: PackageData;
 }
@@ -73,8 +84,6 @@ const EditPackageForm = ({ item }: PropData) => {
   const [zones, setZones] = useState([]);
 
   const [selectedZone, setSelectedZone] = useState<any[]>([]);
-
-  const [units, setUnits] = useState([]);
 
   const [selectedUnit, setSelectedUnit] = useState<any>(null);
 
@@ -109,7 +118,7 @@ const EditPackageForm = ({ item }: PropData) => {
 
   const handleUnitChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ validityUnitId: value });
+    form.setFieldsValue({ validityUnit: value });
     setSelectedUnit(value as any);
   };
 
@@ -134,10 +143,13 @@ const EditPackageForm = ({ item }: PropData) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        partnerType: "zone"
       }
     };
 
-    const res = await axios.post("/api/distribution-zone/get-list", body);
+    const res = await axios.post("/api/partner/get-list", body);
     if (res.data.status == 200) {
       // console.log(res.data.data.roles);
 
@@ -152,33 +164,16 @@ const EditPackageForm = ({ item }: PropData) => {
     }
   };
 
-  const getUnits = async () => {
-    const res = await axios.get(
-      "/api/lookup-details/get-by-master-key/data_validity_unit"
-    );
-    if (res.data.status == 200) {
-      const items = res.data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setUnits(items);
-    }
-  };
-
   useEffect(() => {
     getZones();
-    getUnits();
   }, []);
 
   useEffect(() => {
     if (item) {
-      // const checked = item.distributionZones.map((itemData: any) => {
-      //   return itemData.zoneId;
-      // });
-      // setSelectedZone(checked);
+      const checked = item.zones.map((itemData: any) => {
+        return itemData.zoneId;
+      });
+      setSelectedZone(checked);
 
       form.setFieldsValue({
         name: item.name,
@@ -194,7 +189,7 @@ const EditPackageForm = ({ item }: PropData) => {
         unitPrice: item.unitPrice
       });
 
-      setSelectedUnit(item.validityUnitId);
+      setSelectedUnit(item.validityUnit);
       setSelectedUploadUnit(item.uploadLimitUnit);
       setSelectedDownloadUnit(item.downloadLimitUnit);
       setAutoRenew(item.autoRenew);
@@ -231,7 +226,7 @@ const EditPackageForm = ({ item }: PropData) => {
       downloadLimitUnit: downloadLimitUnit,
       ipPoolName: ipPoolName,
       nextExpiredPackageId: nextExpiredPackageId,
-      validityUnitId: selectedUnit,
+      validityUnit: selectedUnit,
       validity: validity,
       vat: vat,
       totalPrice: totalPrice,
@@ -288,7 +283,7 @@ const EditPackageForm = ({ item }: PropData) => {
             downloadLimitUnit: "",
             ipPoolName: "",
             nextExpiredPackageId: "",
-            validityUnitId: "",
+            validityUnit: "",
             validity: "",
             vat: "",
             totalPrice: "",
@@ -553,14 +548,14 @@ const EditPackageForm = ({ item }: PropData) => {
               xxl={8}
               className="gutter-row"
             >
-              {/* validityUnitId */}
+              {/* validityUnit */}
               <Form.Item
                 label="Validity Unit"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="validityUnitId"
+                name="validityUnit"
                 rules={[
                   {
                     required: true,
@@ -574,7 +569,7 @@ const EditPackageForm = ({ item }: PropData) => {
                     style={{ width: "100%" }}
                     placeholder="Please select Validity Unit"
                     onChange={handleUnitChange}
-                    options={units}
+                    options={validityUnits}
                     value={selectedUnit}
                   />
                 </Space>

@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { PackageData } from "@/interfaces/PackageData";
 import { format } from "date-fns";
 
@@ -279,6 +279,14 @@ const PackageList: React.FC = () => {
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/package/package/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+
+              {ability.can("package.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/package/package/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}

@@ -1,13 +1,21 @@
-import { ClientData } from "@/interfaces/ClientData";
+import { DeviceData } from "@/interfaces/DeviceData";
 import React from "react";
 
 interface PropData {
-  item: ClientData;
+  item: DeviceData;
 }
 
 const DetailsDeviceData = ({ item }: PropData) => {
   console.log("item", item);
-  return <div>DetailsClientData</div>;
+  const data = JSON.stringify(item);
+  return (
+    <>
+      <div className="row">
+        {/*  */}
+        {data}
+      </div>
+    </>
+  );
 };
 
 export default DetailsDeviceData;

@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Row, Col } from "antd";
+import { ClientData } from "@/interfaces/ClientData";
 
 interface FormData {
   clientLevel: string;
@@ -43,7 +44,11 @@ interface FormData {
 //   wrapperCol: { span: 18 }
 // };
 
-const EditSubZoneForm = ({ item }: any) => {
+interface PropData {
+  item: ClientData;
+}
+
+const EditSubZoneForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -57,8 +62,8 @@ const EditSubZoneForm = ({ item }: any) => {
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
 
-  const [selectedDivision, setSelectedDivision] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedDivision, setSelectedDivision] = useState<any>(null);
+  const [selectedDistrict, setSelectedDistrict] = useState<any>(null);
 
   const [upazillas, setUpazillas] = useState([]);
   const [selectedUpazilla, setSelectedUpazilla] = useState<any>(null);

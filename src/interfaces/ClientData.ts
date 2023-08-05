@@ -16,6 +16,8 @@ export interface ClientData {
   district: District;
   upazillaId: string;
   upazilla: Upazilla;
+  nid: string;
+  password: string;
   unionId: string;
   union: Union;
   licenseTypeId: string;

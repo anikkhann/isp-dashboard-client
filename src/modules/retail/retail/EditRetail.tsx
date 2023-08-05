@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import EditRetailForm from "@/components/forms/retail/EditRetailForm";
-import { UserData } from "@/interfaces/UserData";
+import { ClientData } from "@/interfaces/ClientData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditRetail = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+  const [item, SetItem] = useState<ClientData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

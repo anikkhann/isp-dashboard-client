@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { IpSubnetData } from "@/interfaces/IpSubnetData";
 
@@ -231,6 +231,13 @@ const NetworkList: React.FC = () => {
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/device/network/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("network.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/device/network/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}

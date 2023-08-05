@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditSubZoneForm from "@/components/forms/sub-zone/EditSubZoneForm";
+import DetailsRetailData from "@/components/details/retail/DetailsRetailData";
 import { ClientData } from "@/interfaces/ClientData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditSubZoneInCharge = ({ id }: any) => {
+const DetailsRetail = ({ id }: any) => {
   const [item, SetItem] = useState<ClientData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -22,7 +22,7 @@ const EditSubZoneInCharge = ({ id }: any) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["sub-zone-list", id],
+    queryKey: ["retailer-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -56,17 +56,13 @@ const EditSubZoneInCharge = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/sub-zone">Sub Zone Dashboard</Link>
+              title: <Link href="/admin/retail">Retail Dashboard</Link>
             },
             {
-              title: (
-                <Link href="/admin/sub-zone/sub-zone-in-charge">
-                  Sub Zone In Charge
-                </Link>
-              )
+              title: <Link href="/admin/retail/retail">Retail</Link>
             },
             {
-              title: "Edit Sub Zone In Charge"
+              title: "Details Retail"
             }
           ]}
         />
@@ -88,11 +84,11 @@ const EditSubZoneInCharge = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Sub Zone In Charge
+            Details Retail
           </h1>
         </div>
         <Card
-          // title="Edit Sub Zone In Charge"
+          // title="Edit Retail"
           hoverable
           style={{
             width: "90%",
@@ -109,11 +105,11 @@ const EditSubZoneInCharge = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditSubZoneForm item={item} />}
+          {!isLoading && item && <DetailsRetailData item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditSubZoneInCharge;
+export default DetailsRetail;
