@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -14,13 +14,18 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { ClientData } from "@/interfaces/ClientData";
 
+const statusList = [
+  {
+    label: "Active",
+    value: "true"
+  },
+  {
+    label: "Inactive",
+    value: "false"
+  }
+];
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -29,12 +34,19 @@ interface TableParams {
 }
 
 const ZoneInChargeList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<ClientData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
+  const [contactNumber, setContactNumber] = useState<any>(null);
+
+  const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -47,7 +59,10 @@ const ZoneInChargeList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    statusParam?: string,
+    clientParam?: string,
+    contactNumberParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -65,7 +80,10 @@ const ZoneInChargeList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "zone"
+        partnerType: "zone",
+        id: clientParam,
+        contactNumber: contactNumberParam,
+        isActive: statusParam
       }
     };
 
@@ -78,9 +96,26 @@ const ZoneInChargeList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["zones-list", page, limit, order, sort],
+    queryKey: [
+      "zones-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedStatus,
+      selectedClient,
+      contactNumber
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedStatus,
+        selectedClient,
+        contactNumber
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -114,13 +149,65 @@ const ZoneInChargeList: React.FC = () => {
     }
   });
 
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "zone"
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
+  const handleClientChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedClient(value as any);
+  };
+
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedStatus(value as any);
+  };
+
+  const handleClear = () => {
+    setSelectedClient(null);
+    setContactNumber(null);
+    setSelectedStatus(null);
+  };
+
+  useEffect(() => {
+    getClients();
+  }, []);
+
   useEffect(() => {
     if (data) {
       setData(data);
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<ClientData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -281,22 +368,22 @@ const ZoneInChargeList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<ClientData> | SorterResult<ClientData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<ClientData>).order) {
+      // // console.log((sorter as SorterResult<ClientData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<ClientData>).order === "ascend" ? "asc" : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<ClientData>).field) {
+      // // console.log((sorter as SorterResult<ClientData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<ClientData>).field as string);
     }
   };
 
@@ -350,11 +437,70 @@ const ZoneInChargeList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              {/* search */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Name</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleClientChange}
+                    options={clients}
+                    value={selectedClient}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Contact Number</b>
+                  </span>
+                  <Input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Contact Number"
+                    value={contactNumber}
+                    onChange={e => setContactNumber(e.target.value)}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Status</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleChange}
+                    options={statusList}
+                    value={selectedStatus}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
+
               <Table
                 columns={columns}
                 rowKey={record => record.id}

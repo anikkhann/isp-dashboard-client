@@ -205,6 +205,7 @@ const ClientList: React.FC = () => {
     setSelectedUnion(null);
     setSelectedLicenseType(null);
     setClientLevel(null);
+    setContactNumber(null);
   };
 
   const handleChange = (value: string) => {
