@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { DistributionPopData } from "@/interfaces/DistributionPopData";
 import { format } from "date-fns";
@@ -31,6 +31,9 @@ const DistributionPopList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -42,7 +45,8 @@ const DistributionPopList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    zoneParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -57,6 +61,11 @@ const DistributionPopList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        distributionZone: {
+          id: zoneParam
+        }
       }
     };
 
@@ -69,9 +78,9 @@ const DistributionPopList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["distribution-pop-list", page, limit, order, sort],
+    queryKey: ["distribution-pop-list", page, limit, order, sort, selectedZone],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(page, limit, order, sort, selectedZone);
       return response;
     },
     onSuccess(data: any) {
@@ -102,6 +111,45 @@ const DistributionPopList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  function getZones() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    axios.post("/api/distribution-zone/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  const handleZoneChange = (value: any) => {
+    setSelectedZone(value);
+  };
+
+  const handleClear = () => {
+    setSelectedZone(null);
+  };
+
+  useEffect(() => {
+    getZones();
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -232,6 +280,13 @@ const DistributionPopList: React.FC = () => {
                   </Link>
                 </Space>
               ) : null}
+              {ability.can("distributionPop.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/customer/distribution-pop/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
             </Space>
           </>
         );
@@ -315,11 +370,41 @@ const DistributionPopList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Zone</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleZoneChange}
+                    options={zones}
+                    value={selectedZone}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
+
               <Table
                 columns={columns}
                 rowKey={record => record.id}

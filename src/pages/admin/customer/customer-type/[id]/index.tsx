@@ -1,7 +1,7 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import EditCustomerType from "@/modules/customer/customer-type/EditCustomerType";
+import DetailsCustomerType from "@/modules/customer/customer-type/DetailsCustomerType";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerType.update", "") ? (
-        <EditCustomerType id={id} />
+      {ability.can("customerType.view", "") ? (
+        <DetailsCustomerType id={id} />
       ) : (
         <Forbidden />
       )}

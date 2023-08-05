@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { format } from "date-fns";
 import { CustomerTypeData } from "@/interfaces/CustomerTypeData";
@@ -213,12 +213,19 @@ const CustomerTypeList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("customerType.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link
                     href={`/admin/customer/customer-type/${record.id}/edit`}
                   >
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerType.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/customer/customer-type/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}
@@ -297,7 +304,7 @@ const CustomerTypeList: React.FC = () => {
             title="Customer Types List"
             hasLink={true}
             addLink="/admin/customer/customer-type/create"
-            permission="user.create"
+            permission="customerType.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",

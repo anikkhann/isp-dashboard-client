@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { DistributionZoneData } from "@/interfaces/DistributionZoneData";
 import { format } from "date-fns";
@@ -220,6 +220,13 @@ const DistributionZoneList: React.FC = () => {
                     href={`/admin/customer/distribution-zone/${record.id}/edit`}
                   >
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("distributionZone.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/customer/distribution-zone/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}

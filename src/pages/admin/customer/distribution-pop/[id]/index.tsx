@@ -1,7 +1,7 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import EditDistributionPop from "@/modules/customer/distribution-pop/EditDistributionPop";
+import DetailsDistributionPop from "@/modules/customer/distribution-pop/DetailsDistributionPop";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("distributionPop.update", "") ? (
-        <EditDistributionPop id={id} />
+      {ability.can("distributionPop.view", "") ? (
+        <DetailsDistributionPop id={id} />
       ) : (
         <Forbidden />
       )}

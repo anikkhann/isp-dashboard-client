@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import DetailsDistributionPopData from "@/components/details/distributionPop/DetailsDistributionPopData";
+import { DistributionPopData } from "@/interfaces/DistributionPopData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,19 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditUser = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+const DetailsDistributionPop = ({ id }: any) => {
+  const [item, SetItem] = useState<DistributionPopData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/users/get-by-id/${id}`);
+    const response = await axios.get(`/api/distribution-pop/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["users-list", id],
+    queryKey: ["distribution-pop-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -39,9 +38,7 @@ const EditUser = ({ id }: any) => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (item) {
-      // // console.log('data', data)
       SetItem(item);
     }
   }, [item]);
@@ -59,36 +56,64 @@ const EditUser = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/user">User</Link>
+              title: <Link href="/admin/customer">Customer Dashboard</Link>
             },
             {
-              title: <Link href="/admin/user/user">Users</Link>
+              title: (
+                <Link href="/admin/customer/distribution-pop">
+                  Distribution Pop
+                </Link>
+              )
             },
             {
-              title: "Edit User"
+              title: "Edit Distribution Pop"
             }
           ]}
         />
-
-        <Card
-          title="Edit User"
+        <div
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
+            // border: "1px solid #F15F22",
             textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            Edit Distribution Pop
+          </h1>
+        </div>
+        <Card
+          title="Edit Distribution Pop"
+          hoverable
+          style={{
+            width: "90%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            textAlign: "center",
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <DetailsDistributionPopData item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditUser;
+export default DetailsDistributionPop;

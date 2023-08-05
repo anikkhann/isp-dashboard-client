@@ -1,7 +1,7 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import EditDistributionZone from "@/modules/customer/distribution-zone/EditDistributionZone";
+import DetailsDistributionZone from "@/modules/customer/distribution-zone/DetailsDistributionZone";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("distributionZone.update", "") ? (
-        <EditDistributionZone id={id} />
+      {ability.can("distributionZone.view", "") ? (
+        <DetailsDistributionZone id={id} />
       ) : (
         <Forbidden />
       )}
