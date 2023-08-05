@@ -103,7 +103,7 @@ const CreateClientForm = () => {
   };
 
   const handleChange = (value: any) => {
-    console.log("checked = ", value);
+    // console.log("checked = ", value);
     form.setFieldsValue({ clientLevel: value });
     setClientLevel(value as any);
   };

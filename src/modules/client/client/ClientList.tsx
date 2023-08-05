@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -16,6 +16,17 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { ClientData } from "@/interfaces/ClientData";
 import { format } from "date-fns";
 
+const tagsList = [
+  {
+    label: "Tri Cycle",
+    value: "tri_cycle"
+  },
+  {
+    label: "Quad Cycle",
+    value: "quad_cycle"
+  }
+];
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -25,6 +36,28 @@ interface TableParams {
 
 const ClientList: React.FC = () => {
   const [data, setData] = useState<ClientData[]>([]);
+
+  const [clientLevel, setClientLevel] = useState<any>(null);
+
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
+  const [divisions, setDivisions] = useState<any[]>([]);
+  const [selectedDivision, setSelectedDivision] = useState<any>(null);
+
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [selectedDistrict, setSelectedDistrict] = useState<any>(null);
+
+  const [upazillas, setUpazillas] = useState<any[]>([]);
+  const [selectedUpazilla, setSelectedUpazilla] = useState<any>(null);
+
+  const [unions, setUnions] = useState<any[]>([]);
+  const [selectedUnion, setSelectedUnion] = useState<any>(null);
+
+  const [licenseTypes, setLicenseTypes] = useState<any[]>([]);
+  const [selectedLicenseType, setSelectedLicenseType] = useState<any>(null);
+
+  const [contactNumber, setContactNumber] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -42,7 +75,15 @@ const ClientList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    clientLevelParam?: string,
+    selectedClientParam?: string,
+    selectedDivisionParam?: string,
+    selectedDistrictParam?: string,
+    selectedUpazillaParam?: string,
+    selectedUnionParam?: string,
+    selectedLicenseTypeParam?: string,
+    contactNumberParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -60,7 +101,29 @@ const ClientList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        partnerType: "client",
+        clientLevel: clientLevelParam,
+
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        id: selectedClientParam,
+        contactNumber: contactNumberParam,
+        licenseType: {
+          id: selectedLicenseTypeParam
+        },
+        division: {
+          id: selectedDivisionParam
+        },
+        district: {
+          id: selectedDistrictParam
+        },
+
+        upazilla: {
+          id: selectedUpazillaParam
+        },
+
+        union: {
+          id: selectedUnionParam
+        }
       }
     };
 
@@ -73,9 +136,36 @@ const ClientList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: [
+      "clients-list",
+      page,
+      limit,
+      order,
+      sort,
+      clientLevel,
+      selectedClient,
+      selectedDivision,
+      selectedDistrict,
+      selectedUpazilla,
+      selectedUnion,
+      selectedLicenseType,
+      contactNumber
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        clientLevel,
+        selectedClient,
+        selectedDivision,
+        selectedDistrict,
+        selectedUpazilla,
+        selectedUnion,
+        selectedLicenseType,
+        contactNumber
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -107,11 +197,233 @@ const ClientList: React.FC = () => {
     }
   });
 
+  const handleClear = () => {
+    setSelectedClient(null);
+    setSelectedDivision(null);
+    setSelectedDistrict(null);
+    setSelectedUpazilla(null);
+    setSelectedUnion(null);
+    setSelectedLicenseType(null);
+    setClientLevel(null);
+  };
+
+  const handleChange = (value: string) => {
+    console.log("checked = ", value);
+    setClientLevel(value);
+  };
+
+  const handleDivisionChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedDivision(value as any);
+  };
+
+  const handleDistrictChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedDistrict(value as any);
+  };
+
+  const handleClientChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedClient(value as any);
+  };
+
+  const handleUpazillaChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedUpazilla(value as any);
+  };
+
+  const handleUnionChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedUnion(value as any);
+  };
+
+  const handleLicenseTypeChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedLicenseType(value as any);
+  };
+
   useEffect(() => {
     if (data) {
       setData(data);
     }
   }, [data]);
+
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client"
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
+  function getDivisions() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    axios.post("/api/division/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setDivisions(list);
+    });
+  }
+
+  // function getDistricts(selectedDivision: string) {
+  function getDistricts() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        // division: { id: selectedDivision }
+      }
+    };
+
+    axios.post("/api/district/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setDistricts(list);
+    });
+  }
+
+  // function getUpazillas(selectedDistrict: string) {
+  function getUpazillas() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        // district: { id: selectedDistrict }
+      }
+    };
+
+    axios.post("/api/upazilla/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setUpazillas(list);
+    });
+  }
+
+  // function getUnions(selectedUpazilla: string) {
+  function getUnions() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        // upazilla: { id: selectedUpazilla }
+      }
+    };
+
+    axios.post("/api/union/get-list", body).then(res => {
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setUnions(list);
+    });
+  }
+
+  function getLicenseTypes() {
+    axios
+      .get("/api/lookup-details/get-by-master-key/license_type")
+      .then(res => {
+        const { data } = res;
+        const list = data.body.map((item: any) => {
+          return {
+            label: item.name,
+            value: item.id
+          };
+        });
+        setLicenseTypes(list);
+      });
+  }
+
+  useEffect(() => {
+    getClients();
+    getDivisions();
+    getDistricts();
+    getUpazillas();
+    getUnions();
+    getLicenseTypes();
+  }, []);
 
   const columns: ColumnsType<ClientData> = [
     {
@@ -345,11 +657,144 @@ const ClientList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Client Level</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleChange}
+                    options={tagsList}
+                    value={clientLevel}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Client Name</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleClientChange}
+                    options={clients}
+                    value={selectedClient}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>License Type</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleLicenseTypeChange}
+                    options={licenseTypes}
+                    value={selectedLicenseType}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Division</b>
+                  </span>
+
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleDivisionChange}
+                    options={divisions}
+                    value={selectedDivision}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>District</b>
+                  </span>
+
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleDistrictChange}
+                    options={districts}
+                    value={selectedDistrict}
+                  />
+                </Space>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Upazilla</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleUpazillaChange}
+                    options={upazillas}
+                    value={selectedUpazilla}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Union</b>
+                  </span>
+                  <Select
+                    allowClear
+                    showSearch
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleUnionChange}
+                    options={unions}
+                    value={selectedUnion}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Contact Number</b>
+                  </span>
+                  <Input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Contact Number"
+                    value={contactNumber}
+                    onChange={e => setContactNumber(e.target.value)}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
               <Table
                 columns={columns}
                 rowKey={record => record.id}
