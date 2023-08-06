@@ -254,15 +254,11 @@ const IpManagementList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<IpData>).order) {
-      // // console.log((sorter as SorterResult<IpData>).order)
-
       SetOrder(
         (sorter as SorterResult<IpData>).order === "ascend" ? "asc" : "desc"
       );
     }
     if (sorter && (sorter as SorterResult<IpData>).field) {
-      // // console.log((sorter as SorterResult<IpData>).field)
-
       SetSort((sorter as SorterResult<IpData>).field as string);
     }
   };
