@@ -77,8 +77,8 @@ const UserInfo = () => {
                   <FaChevronDown />
                 </StyledUserArrow>
               </StyledUsernameInfo>
-              <StyledCrUserDesignation className="text-truncate">
-                Remaining balance : {user?.credit}
+              <StyledCrUserDesignation className="text-truncate overflow-auto">
+                Rem. bal. : {user?.credit}.00
               </StyledCrUserDesignation>
             </StyledCrUserInfoContent>
           </StyledCrUserInfoInner>

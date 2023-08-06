@@ -78,7 +78,7 @@ const UserInfo = () => {
                 </StyledUserArrow>
               </StyledUsernameInfo>
               <StyledCrUserDesignation className="text-truncate">
-                {user?.credit}
+                Rem. bal. : {user?.credit}.00
               </StyledCrUserDesignation>
             </StyledCrUserInfoContent>
           </StyledCrUserInfoInner>

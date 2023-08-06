@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { ChecklistData } from "@/interfaces/ChecklistData";
 
@@ -31,6 +31,9 @@ const ChecklistList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
+  const [complainTypes, setComplainTypes] = useState<any>([]);
+  const [selectedComplainType, setSelectComplainType] = useState<any>(null);
+
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -42,7 +45,8 @@ const ChecklistList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    complainTypeParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -60,6 +64,9 @@ const ChecklistList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        complainType: {
+          id: complainTypeParam
+        }
       }
     };
 
@@ -72,9 +79,22 @@ const ChecklistList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["checklist-list", page, limit, order, sort],
+    queryKey: [
+      "checklist-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedComplainType
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedComplainType
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -108,6 +128,46 @@ const ChecklistList: React.FC = () => {
     }
   });
 
+  const handleComplainTypeChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectComplainType(value as any);
+  };
+
+  const handleClear = () => {
+    setSelectComplainType(null);
+  };
+
+  function getComplainTypes() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    axios.post("/api/complain-type/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setComplainTypes(list);
+    });
+  }
+
+  useEffect(() => {
+    getComplainTypes();
+  }, []);
+
   useEffect(() => {
     if (data) {
       setData(data);
@@ -130,19 +190,20 @@ const ChecklistList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Title",
-      dataIndex: "title",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "complainType",
+      title: "Complain Type",
       dataIndex: "complainType",
       render: (complainType, row) => {
         return <>{row.complainType.name}</>;
       },
       sorter: false,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Check List",
+      dataIndex: "title",
+      sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
@@ -231,6 +292,13 @@ const ChecklistList: React.FC = () => {
                   </Link>
                 </Space>
               ) : null}
+              {ability.can("checklist.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/complaint/checklist/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
             </Space>
           </>
         );
@@ -309,11 +377,39 @@ const ChecklistList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              {/* search */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Complain Type</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleComplainTypeChange}
+                    options={complainTypes}
+                    value={selectedComplainType}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
               <Table
                 columns={columns}
                 rowKey={record => record.id}

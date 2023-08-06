@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import EditCustomerTicketForm from "@/components/forms/customer-ticket/EditCustomerTicketForm";
-import { TicketData } from "@/interfaces/TicketData";
+
+import DetailsCustomerRequestData from "@/components/details/customerRequest/DetailsCustomerRequestData";
+import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -10,18 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditCustomerTicket = ({ id }: any) => {
-  const [item, SetItem] = useState<TicketData | null>(null);
+const DetailsCustomerOnboardingReq = ({ id }: any) => {
+  const [item, SetItem] = useState<CustomerData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/ticket/get-by-id/${id}`);
+    const response = await axios.get(`/api/customer-request/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-ticket-list", id],
+    queryKey: ["customer-req-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -55,17 +56,17 @@ const EditCustomerTicket = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complain Dashboard</Link>
+              title: <Link href="/admin/customer">Customer</Link>
             },
             {
               title: (
-                <Link href="/admin/complaint/customer-ticket">
-                  Customer Ticket
+                <Link href="/admin/customer/customer-onboarding-req">
+                  Customer Request
                 </Link>
               )
             },
             {
-              title: "Reply Customer Ticket"
+              title: "Details Customer Request"
             }
           ]}
         />
@@ -87,12 +88,11 @@ const EditCustomerTicket = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Reply Customer Ticket
+            Details Customer Request
           </h1>
         </div>
         <Card
-          title="Reply Customer Ticket"
-          hoverable
+          // title="Edit Customer Request"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -108,11 +108,11 @@ const EditCustomerTicket = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditCustomerTicketForm item={item} />}
+          {!isLoading && item && <DetailsCustomerRequestData item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditCustomerTicket;
+export default DetailsCustomerOnboardingReq;

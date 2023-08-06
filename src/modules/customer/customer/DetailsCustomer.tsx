@@ -1,27 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import EditCustomerTicketForm from "@/components/forms/customer-ticket/EditCustomerTicketForm";
-import { TicketData } from "@/interfaces/TicketData";
+
+import DetailsCustomerData from "@/components/details/customer/DetailsCustomerData";
+import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Card } from "antd";
+import { Breadcrumb } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditCustomerTicket = ({ id }: any) => {
-  const [item, SetItem] = useState<TicketData | null>(null);
+const DetailsCustomer = ({ id }: any) => {
+  const [item, SetItem] = useState<CustomerData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/ticket/get-by-id/${id}`);
+    const response = await axios.get(`/api/customer/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-ticket-list", id],
+    queryKey: ["customer-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -55,17 +56,13 @@ const EditCustomerTicket = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complain Dashboard</Link>
+              title: <Link href="/admin/customer">customer</Link>
             },
             {
-              title: (
-                <Link href="/admin/complaint/customer-ticket">
-                  Customer Ticket
-                </Link>
-              )
+              title: <Link href="/admin/customer/customer">customers</Link>
             },
             {
-              title: "Reply Customer Ticket"
+              title: "Details customer"
             }
           ]}
         />
@@ -87,32 +84,17 @@ const EditCustomerTicket = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Reply Customer Ticket
+            Details customer
           </h1>
         </div>
-        <Card
-          title="Reply Customer Ticket"
-          hoverable
-          style={{
-            width: "90%",
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            margin: "0 auto",
-            textAlign: "center",
-            marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
-          }}
-        >
-          {isLoading && isFetching && <AppLoader />}
+        {isLoading && isFetching && <AppLoader />}
 
-          {isError && <div>{error.message}</div>}
+        {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditCustomerTicketForm item={item} />}
-        </Card>
+        {!isLoading && item && <DetailsCustomerData item={item} />}
       </AppRowContainer>
     </>
   );
 };
 
-export default EditCustomerTicket;
+export default DetailsCustomer;

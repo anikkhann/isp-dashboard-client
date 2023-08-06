@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import EditCustomerTicketForm from "@/components/forms/customer-ticket/EditCustomerTicketForm";
-import { TicketData } from "@/interfaces/TicketData";
+
+import DetailsComplainTypeData from "@/components/details/complainType/DetailsComplainTypeData";
+import { ComplainTypeData } from "@/interfaces/ComplainTypeData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -10,18 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditCustomerTicket = ({ id }: any) => {
-  const [item, SetItem] = useState<TicketData | null>(null);
+const DetailsComplainType = ({ id }: any) => {
+  const [item, SetItem] = useState<ComplainTypeData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/ticket/get-by-id/${id}`);
+    const response = await axios.get(`/api/complain-type/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-ticket-list", id],
+    queryKey: ["complain-type-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -59,13 +60,11 @@ const EditCustomerTicket = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/complaint/customer-ticket">
-                  Customer Ticket
-                </Link>
+                <Link href="/admin/complaint/complain-type">Complain Type</Link>
               )
             },
             {
-              title: "Reply Customer Ticket"
+              title: "Details Complain Type"
             }
           ]}
         />
@@ -87,11 +86,11 @@ const EditCustomerTicket = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Reply Customer Ticket
+            Details Complain Type
           </h1>
         </div>
         <Card
-          title="Reply Customer Ticket"
+          // title="Edit Complain Type"
           hoverable
           style={{
             width: "90%",
@@ -108,11 +107,11 @@ const EditCustomerTicket = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditCustomerTicketForm item={item} />}
+          {!isLoading && item && <DetailsComplainTypeData item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditCustomerTicket;
+export default DetailsComplainType;

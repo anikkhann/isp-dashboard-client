@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import EditCustomerTicketForm from "@/components/forms/customer-ticket/EditCustomerTicketForm";
-import { TicketData } from "@/interfaces/TicketData";
+
+import DetailsCheckListData from "@/components/details/checkList/DetailsCheckListData";
+import { ChecklistData } from "@/interfaces/ChecklistData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -10,18 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditCustomerTicket = ({ id }: any) => {
-  const [item, SetItem] = useState<TicketData | null>(null);
+const DetailsCheckList = ({ id }: any) => {
+  const [item, SetItem] = useState<ChecklistData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/ticket/get-by-id/${id}`);
+    const response = await axios.get(`/api/checklist/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-ticket-list", id],
+    queryKey: ["checklist-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -58,14 +59,10 @@ const EditCustomerTicket = ({ id }: any) => {
               title: <Link href="/admin/complaint">Complain Dashboard</Link>
             },
             {
-              title: (
-                <Link href="/admin/complaint/customer-ticket">
-                  Customer Ticket
-                </Link>
-              )
+              title: <Link href="/admin/complaint/checklist">Checklist</Link>
             },
             {
-              title: "Reply Customer Ticket"
+              title: "Details Check List"
             }
           ]}
         />
@@ -87,11 +84,11 @@ const EditCustomerTicket = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Reply Customer Ticket
+            Details Check List
           </h1>
         </div>
         <Card
-          title="Reply Customer Ticket"
+          // title="Edit Checklist"
           hoverable
           style={{
             width: "90%",
@@ -108,11 +105,11 @@ const EditCustomerTicket = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditCustomerTicketForm item={item} />}
+          {!isLoading && item && <DetailsCheckListData item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditCustomerTicket;
+export default DetailsCheckList;

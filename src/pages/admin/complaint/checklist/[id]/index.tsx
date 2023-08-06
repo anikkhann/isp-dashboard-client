@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("checklist.update", "") ? (
+      {ability.can("checklist.view", "") ? (
         <EditCheck id={id} />
       ) : (
         <Forbidden />

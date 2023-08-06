@@ -1,7 +1,7 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import EditComplainType from "@/modules/complaint/complain-type/EditComplainType";
+import DetailsComplainType from "@/modules/complaint/complain-type/DetailsComplainType";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("complainType.update", "") ? (
-        <EditComplainType id={id} />
+      {ability.can("complainType.view", "") ? (
+        <DetailsComplainType id={id} />
       ) : (
         <Forbidden />
       )}

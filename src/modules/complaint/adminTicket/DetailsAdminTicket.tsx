@@ -14,6 +14,7 @@ import {
   Dropdown,
   Form,
   Input,
+  List,
   Modal,
   Row,
   Select,
@@ -24,7 +25,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import type { MenuProps } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -87,7 +88,9 @@ const DetailsAdminTicket = ({ id }: any) => {
 
     const body = {
       body: {
-        // complainTypeId: item?.complainType?.id
+        complainType: {
+          id: item?.complainType?.id
+        }
       }
     };
     const response = await axios.post(`/api/checklist/get-list`, body);
@@ -130,7 +133,7 @@ const DetailsAdminTicket = ({ id }: any) => {
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
@@ -410,13 +413,22 @@ const DetailsAdminTicket = ({ id }: any) => {
           onOk={handleOk}
           onCancel={handleOk}
         >
-          {checkLists.map((checkListData: any, index: number) => (
-            <p key={index}>
-              <span className="font-bold text-base capitalize">
-                {checkListData.name}
-              </span>
-            </p>
-          ))}
+          <List
+            itemLayout="horizontal"
+            dataSource={checkLists}
+            renderItem={(checkListData, index) => (
+              <List.Item key={index}>
+                <List.Item.Meta
+                  avatar={<UnorderedListOutlined />}
+                  title={
+                    <span className=" text-base capitalize">
+                      {checkListData.title} : {checkListData.status}
+                    </span>
+                  }
+                />
+              </List.Item>
+            )}
+          />
         </Modal>
 
         <Modal
@@ -504,11 +516,11 @@ const DetailsAdminTicket = ({ id }: any) => {
                           fontWeight: "bold"
                         }}
                         /* rules={[
-                        {
-                          required: true,
-                          message: "Select root Cause!"
-                        },
-                      ]} */
+                      {
+                        required: true,
+                        message: "Select root Cause!"
+                      },
+                    ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select

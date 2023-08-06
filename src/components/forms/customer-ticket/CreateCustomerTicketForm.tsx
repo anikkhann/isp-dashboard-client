@@ -224,7 +224,7 @@ const CreateCustomerTicketForm = () => {
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
@@ -307,7 +307,7 @@ const CreateCustomerTicketForm = () => {
     }
   }, [selectedCustomer]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     // console.log(data);
     // Filter keys to keep only those starting with "checklist-"
 
@@ -321,7 +321,7 @@ const CreateCustomerTicketForm = () => {
     formData.append("ticketCategory", "customer");
     formData.append("customerId", selectedCustomer);
     formData.append("complainTypeId", selectedComplainType);
-    formData.append("complainDetails", data.complainDetails);
+    formData.append("complainDetails", formValues.complainDetails);
     formData.append("checkList", checkListJson);
     formData.append("assignedTo", selectedAssignedTo);
 
@@ -596,11 +596,11 @@ const CreateCustomerTicketForm = () => {
                       label="Assigned To"
                       name="assignedTo"
                       /*   rules={[
-                      {
-                        required: true,
-                        message: "Please select Assigned To!"
-                      }
-                    ]} */
+                    {
+                      required: true,
+                      message: "Please select Assigned To!"
+                    }
+                  ]} */
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <Select

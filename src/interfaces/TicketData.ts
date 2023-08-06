@@ -1,5 +1,5 @@
 import { ComplainTypeData } from "./ComplainTypeData";
-import { CustomerData } from "./CustomerData";
+import { CustomerData, Client } from "./CustomerData";
 
 export interface TicketData {
   createdOn: number;
@@ -14,8 +14,13 @@ export interface TicketData {
   status: string;
   openedBy: OpenedBy;
   insertedBy: InsertedBy;
+  client: Client;
+  clientId: string;
   partner: Partner10;
   partnerId: string;
+  checkList: string;
+  isForSystemAdmin: boolean;
+  ticketDetails: any[];
 }
 
 export interface OpenedBy {

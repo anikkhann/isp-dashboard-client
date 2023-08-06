@@ -6,20 +6,11 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Space,
-  Row,
-  Col
-} from "antd";
+import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { RootCauseData } from "@/interfaces/RootCauseData";
+import { useAppSelector } from "@/store/hooks";
 
 interface FormData {
   title: string;
@@ -34,21 +25,6 @@ interface PropData {
   item: RootCauseData;
 }
 
-const categories = [
-  {
-    label: "zone",
-    value: "zone"
-  },
-  {
-    label: "client",
-    value: "client"
-  },
-  {
-    label: "customer",
-    value: "customer"
-  }
-];
-
 const EditRootCauseForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
@@ -62,6 +38,8 @@ const EditRootCauseForm = ({ item }: PropData) => {
 
   const [selectCategory, setSelectCategory] = useState<any>(null);
 
+  const authUser = useAppSelector(state => state.auth.user);
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -69,11 +47,21 @@ const EditRootCauseForm = ({ item }: PropData) => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const handleChange = (value: any) => {
+  /* const handleChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ rootCauseCategory: value });
     setSelectCategory(value as any);
-  };
+  }; */
+
+  useEffect(() => {
+    if (authUser) {
+      if (authUser.userType == "durjoy") {
+        setSelectCategory("parent");
+      } else {
+        setSelectCategory("customer");
+      }
+    }
+  }, [authUser]);
 
   useEffect(() => {
     if (item) {
@@ -151,7 +139,7 @@ const EditRootCauseForm = ({ item }: PropData) => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            <Col
+            {/*  <Col
               xs={24}
               sm={12}
               md={12}
@@ -160,7 +148,6 @@ const EditRootCauseForm = ({ item }: PropData) => {
               xxl={12}
               className="gutter-row"
             >
-              {/* rootCauseCategory */}
               <Form.Item
                 label="Category"
                 name="rootCauseCategory"
@@ -186,7 +173,7 @@ const EditRootCauseForm = ({ item }: PropData) => {
                   />
                 </Space>
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col
               xs={24}
               sm={12}

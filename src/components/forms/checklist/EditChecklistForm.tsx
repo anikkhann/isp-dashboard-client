@@ -34,20 +34,20 @@ interface PropData {
   item: ChecklistData;
 }
 
-const rootCategories = [
-  {
-    label: "zone",
-    value: "zone"
-  },
-  {
-    label: "client",
-    value: "client"
-  },
-  {
-    label: "customer",
-    value: "customer"
-  }
-];
+// const rootCategories = [
+//   {
+//     label: "zone",
+//     value: "zone"
+//   },
+//   {
+//     label: "client",
+//     value: "client"
+//   },
+//   {
+//     label: "customer",
+//     value: "customer"
+//   }
+// ];
 
 const EditChecklistForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
@@ -63,7 +63,7 @@ const EditChecklistForm = ({ item }: PropData) => {
   const [categories, setCategories] = useState<any>([]);
   const [selectCategory, setSelectCategory] = useState<any>(null);
 
-  const [selectRootCategory, setSelectRootCategory] = useState<any>(null);
+  // const [selectRootCategory, setSelectRootCategory] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -78,11 +78,11 @@ const EditChecklistForm = ({ item }: PropData) => {
     setSelectCategory(value as any);
   };
 
-  const handleChangeRoot = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ rootCauseCategory: value });
-    setSelectRootCategory(value as any);
-  };
+  /*  const handleChangeRoot = (value: any) => {
+     // console.log("checked = ", value);
+     form.setFieldsValue({ rootCauseCategory: value });
+     setSelectRootCategory(value as any);
+   }; */
 
   function getCategories() {
     const body = {
@@ -134,7 +134,7 @@ const EditChecklistForm = ({ item }: PropData) => {
     const formData = {
       id: item.id,
       complainTypeId: selectCategory,
-      rootCauseCategory: selectRootCategory,
+      // rootCauseCategory: selectRootCategory,
       title: title,
       isActive: isActive
     };
@@ -196,10 +196,10 @@ const EditChecklistForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
               className="gutter-row"
             >
               {/* rootCauseCategory */}
@@ -229,7 +229,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                 </Space>
               </Form.Item>
             </Col>
-            <Col
+            {/*  <Col
               xs={24}
               sm={12}
               md={8}
@@ -238,7 +238,6 @@ const EditChecklistForm = ({ item }: PropData) => {
               xxl={8}
               className="gutter-row"
             >
-              {/* rootCauseCategory */}
               <Form.Item
                 label="Root Cause Category"
                 name="rootCauseCategory"
@@ -264,14 +263,14 @@ const EditChecklistForm = ({ item }: PropData) => {
                   />
                 </Space>
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col
               xs={24}
               sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
               className="gutter-row"
             >
               {/* Title */}

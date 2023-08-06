@@ -73,7 +73,7 @@ const RootCauseList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["complain-type-list", page, limit, order, sort],
+    queryKey: ["root-cause-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -131,19 +131,20 @@ const RootCauseList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Title",
+      title: "Root Cause",
       dataIndex: "title",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
+    /* 
     {
       title: "Root Cause Category",
       dataIndex: "rootCauseCategory",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
-    },
+    }, */
 
     {
       title: "Status",
