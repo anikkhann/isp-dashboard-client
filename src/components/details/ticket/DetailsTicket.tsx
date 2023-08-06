@@ -58,7 +58,9 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           bordered={false}
           style={{
             textAlign: "start",
-            backgroundColor: "white"
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22"
           }}
         >
           <div style={{ textAlign: "center" }}>
@@ -95,7 +97,9 @@ const DetailsTicket = ({ item, replys }: PropData) => {
             marginTop: "20px",
             marginBottom: "20px",
             textAlign: "start",
-            backgroundColor: "white"
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22"
           }}
         >
           <div style={{ textAlign: "start" }}>
@@ -117,7 +121,12 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           // title="Card title"
           hoverable
           bordered={false}
-          style={{ textAlign: "start", backgroundColor: "white" }}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22"
+          }}
         >
           <div style={{ textAlign: "start" }}>
             <h1 className="font-bold text-xl text-[#4361ee]">Reply History</h1>

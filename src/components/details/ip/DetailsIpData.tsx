@@ -1,5 +1,6 @@
 import { IpData } from "@/interfaces/IpData";
 import React from "react";
+import { Row, Col, Card } from "antd";
 
 interface PropData {
   item: IpData;
@@ -7,14 +8,179 @@ interface PropData {
 
 const DetailsIpData = ({ item }: PropData) => {
   console.log("item", item);
-  const data = JSON.stringify(item);
+  // const data = JSON.stringify(item);
   return (
-    <>
-      <div className="row">
-        {/*  */}
-        {data}
-      </div>
-    </>
+    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between">
+      <Col
+        xs={24}
+        sm={24}
+        md={24}
+        lg={24}
+        xl={12}
+        xxl={12}
+        className="gutter-row"
+      >
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22"
+          }}
+        >
+          <div style={{ textAlign: "start" }}>
+            <p>
+              <span className="font-bold">
+                Network Name <span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">{item.ipSubnet?.networkName}</span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Network Address <span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">{item.ipSubnet?.networkAddress}</span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Subnet Mask <span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">{item.ipSubnet?.subnetMask}</span>
+            </p>
+          </div>
+        </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "2rem"
+          }}
+        >
+          <div style={{ textAlign: "start" }}>
+            <p>
+              <span className="font-bold">
+                Radius IP<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.radiusIp?.name}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Radius Name<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.radiusIp?.master?.name}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Radius Key<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.radiusIp?.master?.key}
+              </span>
+            </p>
+          </div>
+        </Card>
+      </Col>
+
+      <Col
+        xs={24}
+        sm={24}
+        md={24}
+        lg={24}
+        xl={12}
+        xxl={12}
+        className="gutter-row"
+      >
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22"
+          }}
+        >
+          <div style={{ textAlign: "start" }}>
+            <p>
+              <span className="font-bold">
+                Partner Name<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">{item.ipSubnet?.partner?.username}</span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Partner Type<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.partnerType}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Contact Person<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.contactPerson}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Contact Number<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.contactNumber}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Alternate Number<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.altContactNumber}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Email<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">{item.ipSubnet?.partner?.email}</span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Address<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">{item.ipSubnet?.partner?.address}</span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Division<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.division?.name}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">
+                Division<span className="mx-2">:</span>
+              </span>
+              <span className="mx-2">
+                {item.ipSubnet?.partner?.district?.name}
+              </span>
+            </p>
+          </div>
+        </Card>
+      </Col>
+    </Row>
   );
 };
 

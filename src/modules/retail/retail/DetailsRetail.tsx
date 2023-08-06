@@ -92,13 +92,14 @@ const DetailsRetail = ({ id }: any) => {
           hoverable
           style={{
             width: "90%",
-            backgroundColor: "#ffffff",
+            // backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginTop: "2rem",
+            marginBottom: "2rem"
+            // border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}
