@@ -98,6 +98,17 @@ const connectionTypes = [
   }
 ];
 
+const ipModes = [
+  {
+    label: "NAS",
+    value: "nas"
+  },
+  {
+    label: "StaticIP",
+    value: "staticip"
+  }
+];
+
 const fiberOpticDeviceTypes = [
   {
     label: "MC",
@@ -125,6 +136,8 @@ const CreateCustomerForm = () => {
 
   const [smsAlert, setSmsAlert] = useState(true);
   const [emailAlert, setEmailAlert] = useState(true);
+
+  const [selectedIpMode, setSelectedIpMode] = useState("nas");
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -307,6 +320,12 @@ const CreateCustomerForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ retailerId: value });
     setSelectedRetailer(value as any);
+  };
+
+  const handleIpModeChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ ipMode: value });
+    setSelectedIpMode(value as any);
   };
 
   function getZoneManagers() {
@@ -1992,48 +2011,53 @@ const CreateCustomerForm = () => {
                     }
                   ]}
                 >
-                  <Input
-                    type="text"
-                    placeholder="IP Mode"
-                    className={`form-control`}
-                    name="ipMode"
-                    style={{ padding: "6px" }}
-                  />
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Union"
+                      onChange={handleIpModeChange}
+                      options={ipModes}
+                      value={selectedIpMode}
+                    />
+                  </Space>
                 </Form.Item>
               </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* staticIp */}
-                <Form.Item
-                  name="staticIp"
-                  label="Static IP"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Static IP!"
-                    }
-                  ]}
+              {selectedIpMode && selectedIpMode == "staticip" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Static IP"
-                    className={`form-control`}
+                  {/* staticIp */}
+                  <Form.Item
                     name="staticIp"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+                    label="Static IP"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Static IP!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Static IP"
+                      className={`form-control`}
+                      name="staticIp"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
               <Col
                 xs={24}
                 sm={12}
