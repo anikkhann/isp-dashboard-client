@@ -68,7 +68,7 @@ const DetailsDistributionZone = ({ id }: any) => {
               )
             },
             {
-              title: "Edit Distribution Zone"
+              title: "Distribution Zone Details"
             }
           ]}
         />
@@ -90,21 +90,20 @@ const DetailsDistributionZone = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Distribution Zone
+            Distribution Zone Details
           </h1>
         </div>
         <Card
-          title="Edit Distribution Zone"
+          // title="Edit Distribution Zone"
           hoverable
           style={{
             width: "90%",
-            backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginTop: "2rem",
+            marginBottom: "2rem"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

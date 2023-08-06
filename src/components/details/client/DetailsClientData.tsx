@@ -32,63 +32,45 @@ const DetailsClientData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            {/* // <Meta
-            //   style={{ display: "flex" }}
-            //   title={
-            //     <span className="font-bold">
-            //       Client Level <span className="mx-2">:</span>
-            //     </span>
-            //   }
-            //   description={<span className="mx-2">{item.clientLevel}</span>}
-            // /> */}
-
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold flex">
-                Client Level <span className="mx-2">:</span>
-              </span>
-              <span>{item.clientLevel}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold flex">Client Level</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.clientLevel}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Partner Type <span className="mx-2">:</span>
-              </span>
-              <span>{item.partnerType}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Type</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.partnerType}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Division <span className="mx-2">:</span>
-              </span>
-              <span>{item.division?.name}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Division</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.division?.name}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                District <span className="mx-2">:</span>
-              </span>
-              <span>{item.district?.name}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">District</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.district?.name}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Inserted By <span className="mx-2">:</span>
-              </span>
-              <span>{item.insertedBy?.username}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Inserted By</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.insertedBy?.username}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                User Type <span className="mx-2">:</span>
-              </span>
-              <span>{item.insertedBy?.userType}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">User Type</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.insertedBy?.userType}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Phone <span className="mx-2">:</span>
-              </span>
-              <span>{item.insertedBy?.phone}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Phone</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.insertedBy?.phone}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold flex">
-                Email <span className="mx-2">:</span>
-              </span>
-              <span>{item.insertedBy?.email}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold flex">Email</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.insertedBy?.email}</span>
             </p>
           </div>
         </Card>
@@ -113,42 +95,36 @@ const DetailsClientData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Username <span className="mx-2">:</span>
-              </span>
-              <span>{item.username}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Username</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.username}</span>
             </p>
 
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Name <span className="mx-2">:</span>
-              </span>
-              <span>{item.name}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Name</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.name}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Email <span className="mx-2">:</span>
-              </span>
-              <span>{item.email}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Email</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.email}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Address <span className="mx-2">:</span>
-              </span>
-              <span>{item.address}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Address</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.address}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Contact Person <span className="mx-2">:</span>
-              </span>
-              <span>{item.contactPerson}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Person</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.contactPerson}</span>
             </p>
-            <p className="sm:flex sm:flex-row grid grid-col overflow-hidden">
-              <span className="font-bold">
-                Contact Number <span className="mx-2">:</span>
-              </span>
-              <span>{item.contactNumber}</span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Number</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.contactNumber}</span>
             </p>
           </div>
         </Card>

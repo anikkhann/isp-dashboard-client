@@ -31,53 +31,45 @@ const DetailsPackageData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p className="flex flex-row">
-              <span className="font-bold">
-                Name <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.name}</span>
             </p>
-            <p className="flex ">
-              <span className="font-bold">
-                Upload Limit <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Upload Limit</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.uploadLimit}</span>
             </p>
 
-            <p>
-              <span className="font-bold">
-                Upload Limit Unit <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Upload Limit Unit</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.uploadLimitUnit}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Download Limit<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Download Limit</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.downloadLimit}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Download Limit Unit <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Download Limit Unit</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.downloadLimitUnit}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Vat <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Vat</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.vat}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Validity <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Validity</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.validity}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Validity Unit <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Validity Unit</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.validityUnit}</span>
             </p>
           </div>
@@ -94,28 +86,24 @@ const DetailsPackageData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Inserted By<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Inserted By</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.insertedBy?.username}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                User Type<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">User Type</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.insertedBy?.userType}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Phone<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Phone</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.insertedBy?.phone}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Email<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Email</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.insertedBy?.email}</span>
             </p>
           </div>
@@ -142,52 +130,44 @@ const DetailsPackageData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Partner Name<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.name}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Contact Person<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Person</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.contactPerson}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Contact Number<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Number</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.contactNumber}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Alternate Number<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Alternate Number</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.altContactNumber}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Email<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Email</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.email}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Address<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Address</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.address}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Division<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Division</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.division?.name}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                District<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">District</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.district?.name}</span>
             </p>
           </div>

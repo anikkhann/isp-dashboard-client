@@ -31,41 +31,35 @@ const DetailsRetailData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Username <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Username</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.username}</span>
             </p>
 
-            <p>
-              <span className="font-bold">
-                Name <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.name}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Email <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Email</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.email}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Address <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Address</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.address}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Contact Person <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Person</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.contactPerson}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Contact Number <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Number</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.contactNumber}</span>
             </p>
           </div>
@@ -92,22 +86,19 @@ const DetailsRetailData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Partner Type <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Type</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.partnerType}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Division <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Division</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.division?.name}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                District <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">District</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.district?.name}</span>
             </p>
           </div>

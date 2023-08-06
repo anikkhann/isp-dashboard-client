@@ -31,52 +31,44 @@ const DetailsDeviceData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Name <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.name}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Device Type <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Device Type</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.deviceType}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Monitoring Type <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Monitoring Type</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.monitoringType}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                OLT Type <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">OLT Type</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.oltType}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Incoming Port <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Incoming Port</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.incomingPort}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                SNMP Community <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">SNMP Community</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.snmpCommunity}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                SNMP Port <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">SNMP Port</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.snmpPortNo}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                SNMP Version <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">SNMP Version</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.snmpVersion}</span>
             </p>
           </div>
@@ -92,28 +84,24 @@ const DetailsDeviceData = ({ item }: PropData) => {
             marginTop: "2rem"
           }}
         >
-          <p>
-            <span className="font-bold">
-              Inserted By<span className="mx-2">:</span>
-            </span>
+          <p className="flex flex-row   overflow-hidden">
+            <span className="font-bold">Inserted By</span>
+            <span className="mx-2">:</span>
             <span className="mx-2">{item.insertedBy?.username}</span>
           </p>
-          <p>
-            <span className="font-bold">
-              User Type<span className="mx-2">:</span>
-            </span>
+          <p className="flex flex-row   overflow-hidden">
+            <span className="font-bold">User Type</span>
+            <span className="mx-2">:</span>
             <span className="mx-2">{item.insertedBy?.userType}</span>
           </p>
-          <p>
-            <span className="font-bold">
-              Phone<span className="mx-2">:</span>
-            </span>
+          <p className="flex flex-row   overflow-hidden">
+            <span className="font-bold">Phone</span>
+            <span className="mx-2">:</span>
             <span className="mx-2">{item.insertedBy?.phone}</span>
           </p>
-          <p>
-            <span className="font-bold">
-              Email<span className="mx-2">:</span>
-            </span>
+          <p className="flex flex-row   overflow-hidden">
+            <span className="font-bold">Email</span>
+            <span className="mx-2">:</span>
             <span className="mx-2">{item.insertedBy?.email}</span>
           </p>
         </Card>
@@ -139,72 +127,63 @@ const DetailsDeviceData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Zone Name<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Zone Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.distributionZone?.name}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Pop Name<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Pop Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.distributionPop?.name}</span>
             </p>
 
-            <p>
-              <span className="font-bold">
-                Partner Name<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.distributionZone?.partner?.name}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Partner Type<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Type</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.distributionZone?.partner?.partnerType}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Contact Person<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Person</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.distributionZone?.partner?.contactPerson}
               </span>
             </p>
 
-            <p>
-              <span className="font-bold">
-                Contact Number<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Number</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.distributionZone?.partner?.contactNumber}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Alternate Number<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Alternate Number</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.distributionZone?.partner?.altContactNumber}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Partner Email<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Email</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.distributionZone?.partner?.email}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Partner Address<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Address</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.distributionZone?.partner?.address}
               </span>

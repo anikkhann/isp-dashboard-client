@@ -31,22 +31,19 @@ const DetailsIpData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Network Name <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Network Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.ipSubnet?.networkName}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Network Address <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Network Address</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.ipSubnet?.networkAddress}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Subnet Mask <span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Subnet Mask</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.ipSubnet?.subnetMask}</span>
             </p>
           </div>

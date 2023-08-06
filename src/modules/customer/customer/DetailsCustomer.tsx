@@ -5,7 +5,7 @@ import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb } from "antd";
+import { Breadcrumb, Card } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -62,7 +62,7 @@ const DetailsCustomer = ({ id }: any) => {
               title: <Link href="/admin/customer/customer">customers</Link>
             },
             {
-              title: "Details customer"
+              title: " customer Details"
             }
           ]}
         />
@@ -84,14 +84,26 @@ const DetailsCustomer = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details customer
+            customer Details
           </h1>
         </div>
-        {isLoading && isFetching && <AppLoader />}
+        <Card
+          style={{
+            width: "90%",
+            backgroundColor: "#ECF0F1",
+            borderRadius: "10px",
+            margin: "0 auto",
+            textAlign: "center",
+            marginTop: "2rem",
+            marginBottom: "2rem"
+          }}
+        >
+          {isLoading && isFetching && <AppLoader />}
 
-        {isError && <div>{error.message}</div>}
+          {isError && <div>{error.message}</div>}
 
-        {!isLoading && item && <DetailsCustomerData item={item} />}
+          {!isLoading && item && <DetailsCustomerData item={item} />}
+        </Card>
       </AppRowContainer>
     </>
   );
