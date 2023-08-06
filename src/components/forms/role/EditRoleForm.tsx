@@ -4,13 +4,10 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-// ** Third Party Imports
-import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 import {
   Alert,
@@ -37,25 +34,24 @@ interface PropData {
   item: RoleData;
 }
 
-const schema = yup.object().shape({
-  name: yup.string().max(200).required("Name is required")
-});
-
 // const layout = {
 //   labelCol: { span: 6 },
 //   wrapperCol: { span: 18 }
 // };
 
 const EditRoleForm = ({ item }: PropData) => {
+  const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const [permissions, setPermissions] = useState([]);
+  const [permissions, setPermissions] = useState<any[]>([]);
 
   const [checkedList, setCheckedList] = useState<any[]>([]);
 
   const [isActive, setIsActive] = useState(true);
+
+  const [totalPermissions, setTotalPermissions] = useState(0);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -64,8 +60,21 @@ const EditRoleForm = ({ item }: PropData) => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const defaultValues = {
-    name: item.name
+  const handleCheckAllChange = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      // Add all permission to the checkedPermissions array
+      const allCheckedPermission = permissions.reduce(
+        (acc, permission) => [
+          ...acc,
+          ...permission.children.map((child: any) => child.value)
+        ],
+        []
+      );
+      setCheckedList(allCheckedPermission);
+    } else {
+      // Clear the checkedPermissions array
+      setCheckedList([]);
+    }
   };
 
   const getPermissions = async () => {
@@ -76,11 +85,13 @@ const EditRoleForm = ({ item }: PropData) => {
       "/api/permission/get-loggedin-user-permissions"
     );
 
+    let totalPermissions = 0;
     const items = res.data.body.map((item: any) => {
       return {
         id: item.id,
         displayName: item.displayName,
         children: item.actionTags.map((child: any) => {
+          totalPermissions++;
           return {
             value: item.id + "__" + child,
             label: child
@@ -89,6 +100,7 @@ const EditRoleForm = ({ item }: PropData) => {
       };
     });
 
+    setTotalPermissions(totalPermissions);
     setPermissions(items);
   };
 
@@ -104,6 +116,9 @@ const EditRoleForm = ({ item }: PropData) => {
 
   useEffect(() => {
     if (item) {
+      form.setFieldsValue({
+        name: item.name
+      });
       const checked: any = [];
       item.rolePermissions.map((item: any) => {
         if (item.permission === null) return;
@@ -117,16 +132,6 @@ const EditRoleForm = ({ item }: PropData) => {
       setIsActive(item.isActive);
     }
   }, [item]);
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    defaultValues,
-    mode: "onBlur",
-    resolver: yupResolver(schema)
-  });
 
   const onSubmit = (data: RoleFormData) => {
     const rolePermissions: { permissionId: any; actionTags: any[] }[] = [];
@@ -189,10 +194,11 @@ const EditRoleForm = ({ item }: PropData) => {
 
       <div className="mt-3 flex justify-center items-center">
         <Form
+          form={form}
           // {...layout}
           layout="vertical"
           autoComplete="off"
-          onFinish={handleSubmit(onSubmit)}
+          onFinish={onSubmit}
           style={{ maxWidth: 800 }}
           name="wrap"
           // labelCol={{ flex: "110px" }}
@@ -217,29 +223,21 @@ const EditRoleForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input name!"
+                  }
+                ]}
               >
-                <Controller
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
                   name="name"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange, onBlur } }) => (
-                    <Input
-                      type="text"
-                      placeholder="Name"
-                      className={`form-control ${
-                        errors.name ? "is-invalid" : ""
-                      }`}
-                      value={value}
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      name="name"
-                      style={{ padding: "6px" }}
-                    />
-                  )}
+                  style={{ padding: "6px" }}
                 />
-                {errors.name && (
-                  <div className="text-danger">{errors.name.message}</div>
-                )}
               </Form.Item>
             </Col>
           </Row>
@@ -254,6 +252,27 @@ const EditRoleForm = ({ item }: PropData) => {
               Status
             </Checkbox>
           </Form.Item>
+
+          <Space
+            direction="vertical"
+            style={{
+              display: "flex",
+              justifyContent: "left",
+              textTransform: "capitalize",
+              marginBottom: 10,
+              textAlign: "left"
+            }}
+          >
+            <Checkbox
+              indeterminate={
+                checkedList.length > 0 && checkedList.length < totalPermissions
+              }
+              checked={checkedList.length === totalPermissions}
+              onChange={handleCheckAllChange}
+            >
+              Check All
+            </Checkbox>
+          </Space>
 
           <Form.Item
             // label="Permissions"

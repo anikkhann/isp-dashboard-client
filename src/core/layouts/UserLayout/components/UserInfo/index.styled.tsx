@@ -99,6 +99,9 @@ export const StyledCrUserDesignation = styled.span`
   margin-top: -2px;
   color: inherit;
   font-size: ${({ theme }) => theme.font.size.base};
+  text-transform: capitalize;
+  white-space: nowrap;
+  word-wrap: break-word;
 
   .ant-layout-sider-dark & {
     color: inherit;
