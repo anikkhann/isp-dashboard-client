@@ -123,7 +123,10 @@ const DetailsCustomerCare = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: "Customer Care"
+              title: <Link href="/admin/customer-care">Customer Care</Link>
+            },
+            {
+              title: "Details Customer Care"
             }
           ]}
         />
