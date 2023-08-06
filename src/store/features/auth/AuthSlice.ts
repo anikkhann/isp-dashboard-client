@@ -12,22 +12,24 @@ interface AuthState {
 interface UserLoggedInData {
   userId: string;
   name: string;
-  firstName: string;
+  firstName: any;
   userName: string;
-  lastName: string;
+  lastName: any;
   email: string;
   phone: string;
-  profileImg: string;
-  roleId: string;
-  roleName: string;
-  roleCode: string;
-  designation: string;
+  profileImg: any;
+  roleId: any;
+  roleName: any;
+  roleCode: any;
+  designation: any;
   userType: string;
-  partnerId: string;
-  parentPartnerId: string;
+  partnerId: any;
+  parentPartnerId: any;
   partnerUsername: string;
   partnerIp: string;
-  credit: string;
+  credit: number;
+  lastLoginTime: number;
+  lastLoginIp: string;
   token: string;
 }
 

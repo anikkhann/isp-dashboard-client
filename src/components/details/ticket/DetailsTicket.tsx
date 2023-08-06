@@ -18,6 +18,8 @@ const DetailsTicket = ({ item, replys }: PropData) => {
     setTimeDiff(formatDistanceToNow(inputDate, { addSuffix: true }));
   }
 
+  const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   useEffect(() => {
     if (item.createdOn) {
       setCreatedDate(new Date(item.createdOn));
@@ -70,19 +72,19 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           <div style={{ textAlign: "start" }}>
             <p>
               <span className="font-bold">Customer ID:</span>
-              <span className="mx-2">1232244</span>
+              <span className="mx-2">{item.customerId}</span>
             </p>
             <p>
               <span className="font-bold">Customer Name:</span>
-              <span className="mx-2">Nazmul Hasan</span>
+              <span className="mx-2">{item.customer.username}</span>
             </p>
             <p>
               <span className="font-bold"> Created By:</span>
-              <span className="mx-2">Sayem Sadat</span>
+              <span className="mx-2">{item.insertedBy.username}</span>
             </p>
             <p>
               <span className="font-bold">Assigned To:</span>
-              <span className="mx-2">Hasan Mahmud</span>
+              <span className="mx-2"></span>
             </p>
           </div>
         </Card>
@@ -139,7 +141,10 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                     {new Date(replyData.createdOn).toLocaleTimeString()}
                   </span>
                   {replyData.attachment && (
-                    <a href={replyData.attachment} target="_blank">
+                    <a
+                      href={`${url}/ticket/public/downloadFile/${replyData.attachment}`}
+                      target="_blank"
+                    >
                       <FileImageOutlined /> {replyData.attachment}
                     </a>
                   )}

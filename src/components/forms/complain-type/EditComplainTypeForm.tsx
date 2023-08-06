@@ -6,17 +6,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Space,
-  Row,
-  Col
-} from "antd";
+import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ComplainTypeData } from "@/interfaces/ComplainTypeData";
@@ -36,20 +26,16 @@ interface PropData {
   item: ComplainTypeData;
 }
 
-const complainCategories = [
-  {
-    label: "zone",
-    value: "zone"
-  },
-  {
-    label: "client",
-    value: "client"
-  },
-  {
-    label: "customer",
-    value: "customer"
-  }
-];
+// const complainCategories = [
+//   {
+//     label: "‘parent’",
+//     value: "parent"
+//   },
+//   {
+//     label: "customer",
+//     value: "customer"
+//   }
+// ];
 
 const EditComplainTypeForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
@@ -72,11 +58,11 @@ const EditComplainTypeForm = ({ item }: PropData) => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ complainCategory: value });
-    setSelectComplainCategory(value as any);
-  };
+  /*  const handleChange = (value: any) => {
+     // console.log("checked = ", value);
+     form.setFieldsValue({ complainCategory: value });
+     setSelectComplainCategory(value as any);
+   }; */
 
   useEffect(() => {
     if (item) {
@@ -150,11 +136,8 @@ const EditComplainTypeForm = ({ item }: PropData) => {
           colon={false}
           scrollToFirstError
         >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
-          >
-            <Col
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            {/*  <Col
               xs={24}
               sm={12}
               md={12}
@@ -163,7 +146,6 @@ const EditComplainTypeForm = ({ item }: PropData) => {
               xxl={12}
               className="gutter-row"
             >
-              {/* complainCategory */}
               <Form.Item
                 label="Complain Category"
                 name="complainCategory"
@@ -189,7 +171,7 @@ const EditComplainTypeForm = ({ item }: PropData) => {
                   />
                 </Space>
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col
               xs={24}
               sm={12}

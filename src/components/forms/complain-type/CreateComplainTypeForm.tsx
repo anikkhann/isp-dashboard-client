@@ -1,24 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Space,
-  Row,
-  Col
-} from "antd";
+import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAppSelector } from "@/store/hooks";
 interface FormData {
   name: string;
   zoneId: string;
@@ -31,20 +22,16 @@ interface FormData {
 //   wrapperCol: { span: 18 }
 // };
 
-const complainCategories = [
-  {
-    label: "zone",
-    value: "zone"
-  },
-  {
-    label: "client",
-    value: "client"
-  },
-  {
-    label: "customer",
-    value: "customer"
-  }
-];
+// const complainCategories = [
+//   {
+//     label: "‘parent’",
+//     value: "parent"
+//   },
+//   {
+//     label: "customer",
+//     value: "customer"
+//   }
+// ];
 
 const CreateComplainTypeForm = () => {
   const [form] = Form.useForm();
@@ -60,6 +47,8 @@ const CreateComplainTypeForm = () => {
   const [selectComplainCategory, setSelectComplainCategory] =
     useState<any>(null);
 
+  const authUser = useAppSelector(state => state.auth.user);
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -67,11 +56,21 @@ const CreateComplainTypeForm = () => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const handleChange = (value: any) => {
+  /* const handleChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ complainCategory: value });
     setSelectComplainCategory(value as any);
-  };
+  }; */
+
+  useEffect(() => {
+    if (authUser) {
+      if (authUser.userType == "durjoy") {
+        setSelectComplainCategory("parent");
+      } else {
+        setSelectComplainCategory("customer");
+      }
+    }
+  }, [authUser]);
 
   const onSubmit = (data: FormData) => {
     // console.log(data);
@@ -132,11 +131,8 @@ const CreateComplainTypeForm = () => {
           colon={false}
           scrollToFirstError
         >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
-          >
-            <Col
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            {/* <Col
               xs={24}
               sm={12}
               md={12}
@@ -145,7 +141,6 @@ const CreateComplainTypeForm = () => {
               xxl={12}
               className="gutter-row"
             >
-              {/* complainCategory */}
               <Form.Item
                 label="Complain Category"
                 name="complainCategory"
@@ -171,7 +166,8 @@ const CreateComplainTypeForm = () => {
                   />
                 </Space>
               </Form.Item>
-            </Col>
+            </Col> */}
+
             <Col
               xs={24}
               sm={12}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
@@ -12,13 +12,14 @@ import {
   Checkbox,
   Form,
   Input,
-  Select,
-  Space,
+  /*  Select,
+   Space, */
   Row,
   Col
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAppSelector } from "@/store/hooks";
 interface FormData {
   title: string;
 }
@@ -27,21 +28,6 @@ interface FormData {
 //   labelCol: { span: 6 },
 //   wrapperCol: { span: 18 }
 // };
-
-const categories = [
-  {
-    label: "zone",
-    value: "zone"
-  },
-  {
-    label: "client",
-    value: "client"
-  },
-  {
-    label: "customer",
-    value: "customer"
-  }
-];
 
 const CreateRootCauseForm = () => {
   const [form] = Form.useForm();
@@ -56,6 +42,8 @@ const CreateRootCauseForm = () => {
 
   const [selectCategory, setSelectCategory] = useState<any>(null);
 
+  const authUser = useAppSelector(state => state.auth.user);
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -63,11 +51,21 @@ const CreateRootCauseForm = () => {
     setIsActive(e.target.checked ? true : false);
   };
 
-  const handleChange = (value: any) => {
+  /* const handleChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ rootCauseCategory: value });
     setSelectCategory(value as any);
-  };
+  }; */
+
+  useEffect(() => {
+    if (authUser) {
+      if (authUser.userType == "durjoy") {
+        setSelectCategory("parent");
+      } else {
+        setSelectCategory("customer");
+      }
+    }
+  }, [authUser]);
 
   const onSubmit = (data: FormData) => {
     // console.log(data);
@@ -128,11 +126,8 @@ const CreateRootCauseForm = () => {
           colon={false}
           scrollToFirstError
         >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
-          >
-            <Col
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            {/*  <Col
               xs={24}
               sm={12}
               md={12}
@@ -141,7 +136,7 @@ const CreateRootCauseForm = () => {
               xxl={12}
               className="gutter-row"
             >
-              {/* rootCauseCategory */}
+
               <Form.Item
                 label="Category"
                 name="rootCauseCategory"
@@ -167,7 +162,7 @@ const CreateRootCauseForm = () => {
                   />
                 </Space>
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col
               xs={24}
               sm={12}

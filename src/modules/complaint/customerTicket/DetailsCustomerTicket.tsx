@@ -14,6 +14,7 @@ import {
   Dropdown,
   Form,
   Input,
+  List,
   Modal,
   Row,
   Select,
@@ -24,7 +25,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import type { MenuProps } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -81,18 +82,18 @@ const DetailsCustomerTicket = ({ id }: any) => {
     setIsModalOpen(false);
   };
 
-  const getCheckList = async () => {
-    const token = Cookies.get("token");
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  // const getCheckList = async () => {
+  //   const token = Cookies.get("token");
+  //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const body = {
-      body: {
-        // complainTypeId: item?.complainType?.id
-      }
-    };
-    const response = await axios.post(`/api/checklist/get-list`, body);
-    setCheckLists(response.data.body);
-  };
+  //   const body = {
+  //     body: {
+  //       // complainTypeId: item?.complainType?.id
+  //     }
+  //   };
+  //   const response = await axios.post(`/api/checklist/get-list`, body);
+  //   setCheckLists(response.data.body);
+  // };
 
   // console.log("checkLists", checkLists)
   const changeStatus = () => {
@@ -106,7 +107,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
   };
 
   const reply = () => {
-    router.push(`/admin/complaint/admin-ticket/${id}/reply`);
+    router.push(`/admin/complaint/customer-ticket/${id}/reply`);
   };
 
   const getRootCauseList = async () => {
@@ -288,7 +289,9 @@ const DetailsCustomerTicket = ({ id }: any) => {
         ]
       },
       body: {
-        // ticketId: id
+        ticket: {
+          id: id
+        }
       }
     };
     const response = await axios.post(`/api/ticket-details/get-list`, body);
@@ -320,11 +323,11 @@ const DetailsCustomerTicket = ({ id }: any) => {
         },
         onSuccess(data: any) {
           if (data) {
-            const filters = data.body.filter(
+            /*  const filters = data.body.filter(
               (item: any) => item.ticketId === id
-            );
-            // setReplys(data.body);
-            setReplys(filters);
+             ); */
+            setReplys(data.body);
+            // setReplys(filters);
           }
         },
         onError(error: any) {
@@ -336,9 +339,30 @@ const DetailsCustomerTicket = ({ id }: any) => {
 
   useEffect(() => {
     if (item) {
-      getCheckList();
+      // getCheckList();
       getAssignedTo();
       getRootCauseList();
+
+      if (item.checkList) {
+        let convertData = item?.checkList;
+        convertData = convertData.replaceAll('"', "&quot;");
+        convertData = convertData.replaceAll("'", '"');
+
+        const checklists = JSON.parse(convertData);
+
+        // convert checkList to array
+        const checkListData = checklists.map(
+          (checklist: any, index: number) => {
+            return {
+              key: index,
+              title: checklist.title,
+              status: checklist.status
+            };
+          }
+        );
+
+        setCheckLists(checkListData);
+      }
     }
   }, [item]);
 
@@ -360,11 +384,13 @@ const DetailsCustomerTicket = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>
+                <Link href="/admin/complaint/customer-ticket">
+                  Customer Ticket
+                </Link>
               )
             },
             {
-              title: "Admin Ticket"
+              title: "Customer Ticket"
             }
           ]}
         />
@@ -410,13 +436,22 @@ const DetailsCustomerTicket = ({ id }: any) => {
           onOk={handleOk}
           onCancel={handleOk}
         >
-          {checkLists.map((checkListData: any, index: number) => (
-            <p key={index}>
-              <span className="font-bold text-base capitalize">
-                {checkListData.name}
-              </span>
-            </p>
-          ))}
+          <List
+            itemLayout="horizontal"
+            dataSource={checkLists}
+            renderItem={(checkListData, index) => (
+              <List.Item key={index}>
+                <List.Item.Meta
+                  avatar={<UnorderedListOutlined />}
+                  title={
+                    <span className=" text-base capitalize">
+                      {checkListData.title} : {checkListData.status}
+                    </span>
+                  }
+                />
+              </List.Item>
+            )}
+          />
         </Modal>
 
         <Modal
@@ -502,11 +537,11 @@ const DetailsCustomerTicket = ({ id }: any) => {
                           marginBottom: 0
                         }}
                         /* rules={[
-                        {
-                          required: true,
-                          message: "Select root Cause!"
-                        },
-                      ]} */
+                      {
+                        required: true,
+                        message: "Select root Cause!"
+                      },
+                    ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
@@ -645,7 +680,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
         </Modal>
 
         <Card
-          title="Admin Ticket"
+          title="Customer Ticket"
           hoverable
           style={{
             width: "90%",

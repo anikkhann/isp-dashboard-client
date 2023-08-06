@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -31,6 +31,132 @@ const CustomerTicketList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
+  const [complainTypeList, setComplainTypes] = useState<any>([]);
+  const [selectedComplainType, setSelectedComplainType] = useState<any>(null);
+
+  const [statusList, setStatusList] = useState<any>([]);
+  const [selectedStatus, setSelectedStatus] = useState<any>(null);
+
+  const [closedByList, setClosedByList] = useState<any>([]);
+  const [selectedClosedBy, setSelectedClosedBy] = useState<any>(null);
+
+  const [createdByList, setCreatedByList] = useState<any>([]);
+  const [selectedCreatedBy, setSelectedCreatedBy] = useState<any>(null);
+
+  const [assignToList, setAssignToList] = useState<any>([]);
+  const [selectedAssignTo, setSelectedAssignTo] = useState<any>(null);
+
+  const [selectedTicketNumber, setSelectedTicketNumber] = useState<any>(null);
+
+  const handleComplainTypeChange = (value: any) => {
+    setSelectedComplainType(value);
+  };
+
+  const handleStateChange = (value: any) => {
+    setSelectedStatus(value);
+  };
+
+  const handleClosedByChange = (value: any) => {
+    setSelectedClosedBy(value);
+  };
+
+  const handleCreatedByChange = (value: any) => {
+    setSelectedCreatedBy(value);
+  };
+
+  const handleAssignToChange = (value: any) => {
+    setSelectedAssignTo(value);
+  };
+
+  const handleClear = () => {
+    setSelectedComplainType(null);
+    setSelectedStatus(null);
+    setSelectedClosedBy(null);
+    setSelectedCreatedBy(null);
+    setSelectedAssignTo(null);
+  };
+
+  function getStatusList() {
+    const list = [
+      {
+        label: "Open",
+        value: "open"
+      },
+      {
+        label: "Closed",
+        value: "closed"
+      },
+      {
+        label: "Pending",
+        value: "pending"
+      },
+      {
+        label: "In Progress",
+        value: "on_progress"
+      }
+    ];
+
+    setStatusList(list);
+  }
+
+  async function getComplainTypes() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    const res = await axios.post("/api/complain-type/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setComplainTypes(items);
+    }
+  }
+
+  async function getUsers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    const res = await axios.post("/api/users/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClosedByList(items);
+      setCreatedByList(items);
+      setAssignToList(items);
+    }
+  }
+
+  useEffect(() => {
+    getComplainTypes();
+    getStatusList();
+    getUsers();
+  }, []);
+
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -42,7 +168,13 @@ const CustomerTicketList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    complainTypeParams?: string,
+    statusParams?: string,
+    closedByParams?: string,
+    createdByParams?: string,
+    assignToParams?: string,
+    ticketNumberParams?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -60,7 +192,21 @@ const CustomerTicketList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        ticketCategory: "customer"
+        ticketCategory: "parent",
+        complainType: {
+          id: complainTypeParams
+        },
+        state: statusParams,
+        ticketNo: ticketNumberParams,
+        closedBy: {
+          id: closedByParams
+        },
+        insertedBy: {
+          id: createdByParams
+        },
+        assignTo: {
+          id: assignToParams
+        }
       }
     };
 
@@ -73,9 +219,32 @@ const CustomerTicketList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-ticket-list", page, limit, order, sort],
+    queryKey: [
+      "customer-ticket-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedComplainType,
+      selectedStatus,
+      selectedClosedBy,
+      selectedCreatedBy,
+      selectedAssignTo,
+      selectedTicketNumber
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedComplainType,
+        selectedStatus,
+        selectedClosedBy,
+        selectedCreatedBy,
+        selectedAssignTo,
+        selectedTicketNumber
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -127,14 +296,35 @@ const CustomerTicketList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      width: 140,
       align: "center" as AlignType
     },
     {
-      title: "Title",
-      dataIndex: "title",
+      title: "Ticket Number",
+      dataIndex: "ticketNo",
       sorter: true,
-      width: "20%",
+      width: 200,
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer ID",
+      dataIndex: "customer.customerId",
+      sorter: false,
+      render: (customer, row) => {
+        return <>{row.customer.customerId}</>;
+      },
+
+      width: 200,
+      align: "center" as AlignType
+    },
+    {
+      title: "Username",
+      dataIndex: "customer.username",
+      sorter: false,
+      render: (customer, row) => {
+        return <>{row.customer.username}</>;
+      },
+      width: 200,
       align: "center" as AlignType
     },
     {
@@ -144,12 +334,12 @@ const CustomerTicketList: React.FC = () => {
         return <>{row.complainType.name}</>;
       },
       sorter: false,
-      width: "20%",
+      width: 400,
       align: "center" as AlignType
     },
 
     {
-      title: "Status",
+      title: "Ticket State",
       dataIndex: "status",
       sorter: true,
       render: (status: any) => {
@@ -177,7 +367,7 @@ const CustomerTicketList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
     // createdOn
@@ -190,7 +380,7 @@ const CustomerTicketList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
     // editedBy
@@ -203,7 +393,7 @@ const CustomerTicketList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
     // updatedOn
@@ -216,7 +406,7 @@ const CustomerTicketList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: 150,
       align: "center" as AlignType
     },
     {
@@ -226,7 +416,13 @@ const CustomerTicketList: React.FC = () => {
       render: (text: any, record: any) => {
         return (
           <>
-            <Space size="middle" align="center">
+            <Space
+              size="middle"
+              align="center"
+              style={{
+                marginLeft: "10px"
+              }}
+            >
               {ability.can("customerTicket.view", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/complaint/customer-ticket/${record.id}`}>
@@ -238,7 +434,8 @@ const CustomerTicketList: React.FC = () => {
           </>
         );
       },
-      align: "center" as AlignType
+      align: "center" as AlignType,
+      width: 200
     }
   ];
 
@@ -310,12 +507,117 @@ const CustomerTicketList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              {/* search */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Complain Type</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleComplainTypeChange}
+                    options={complainTypeList}
+                    value={selectedComplainType}
+                  />
+                </Space>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Ticket Number</b>
+                  </span>
+                  <Input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Ticket Number"
+                    value={selectedTicketNumber}
+                    onChange={e => setSelectedTicketNumber(e.target.value)}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Ticket State</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleStateChange}
+                    options={statusList}
+                    value={selectedStatus}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Closed By</b>
+                  </span>
+                  <Select
+                    allowClear
+                    showSearch
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleClosedByChange}
+                    options={closedByList}
+                    value={selectedClosedBy}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Created By</b>
+                  </span>
+                  <Select
+                    allowClear
+                    showSearch
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleCreatedByChange}
+                    options={createdByList}
+                    value={selectedCreatedBy}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Assign To</b>
+                  </span>
+                  <Select
+                    allowClear
+                    showSearch
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleAssignToChange}
+                    options={assignToList}
+                    value={selectedAssignTo}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
+
               <Table
+                tableLayout="fixed"
+                scroll={{ x: 1000 }}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}
