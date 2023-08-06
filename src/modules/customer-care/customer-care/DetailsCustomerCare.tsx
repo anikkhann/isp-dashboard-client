@@ -7,21 +7,22 @@ import {
   Breadcrumb,
   Button,
   Card,
-  Form,
   Space,
   Tabs
 } from "antd";
 import Link from "next/link";
-import React from "react";
-import { useRouter } from "next/router";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import React, { useEffect, useState } from "react";
 import ability from "@/services/guard/ability";
 import Customer from "@/components/details/customerCare/Customer";
 import SessionHistory from "@/components/details/customerCare/SessionHistory";
 import TransactionHistory from "@/components/details/customerCare/TransactionHistory";
 import TicketHistory from "@/components/details/customerCare/TicketHistory";
 import ActivityLog from "@/components/details/customerCare/ActivityLog";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { CustomerData } from "@/interfaces/CustomerData";
+import AppLoader from "@/lib/AppLoader";
 
 interface TabData {
   key: string;
@@ -30,47 +31,74 @@ interface TabData {
   permission?: string;
 }
 
-const items: TabData[] = [
-  {
-    key: "1",
-    label: `Customer`,
-    children: <Customer />,
-    permission: "customerCare.list"
-  },
-  {
-    key: "2",
-    label: `Session History`,
-    children: <SessionHistory />,
-    permission: "customerCare.list"
-  },
-  {
-    key: "3",
-    label: `Transaction History`,
-    children: <TransactionHistory />,
-    permission: "customerCare.list"
-  },
-  {
-    key: "4",
-    label: `Ticket History`,
-    children: <TicketHistory />,
-    permission: "customerCare.list"
-  },
-  {
-    key: "5",
-    label: `Activity Log`,
-    children: <ActivityLog />,
-    permission: "customerCare.list"
-  }
-];
-
 const DetailsCustomerCare = ({ id }: any) => {
-  const MySwal = withReactContent(Swal);
+  const [item, SetItem] = useState<CustomerData | null>(null);
+  const fetchData = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const [form] = Form.useForm();
+    const response = await axios.get(`/api/customer/get-by-id/${id}`);
+    return response;
+  };
 
-  const router = useRouter();
+  const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
+    queryKey: ["customer-list", id],
+    queryFn: async () => {
+      const { data } = await fetchData();
+      return data;
+    },
+    onSuccess(data: any) {
+      if (data) {
+        SetItem(data.body);
+      }
+    },
+    onError(error: any) {
+      console.log("error", error);
+    }
+  });
 
-  console.log("id", id, MySwal, form, router);
+  useEffect(() => {
+    if (item) {
+      SetItem(item);
+    }
+  }, [item]);
+
+  const onChange = (key: string) => {
+    console.log(key);
+  };
+
+  const items: TabData[] = [
+    {
+      key: "1",
+      label: `Customer`,
+      children: <>{item && <Customer item={item} />}</>,
+      permission: "customerCare.list"
+    },
+    {
+      key: "2",
+      label: `Session History`,
+      children: <>{item && <SessionHistory item={item} />}</>,
+      permission: "customerCare.list"
+    },
+    {
+      key: "3",
+      label: `Transaction History`,
+      children: <>{item && <TransactionHistory item={item} />}</>,
+      permission: "customerCare.list"
+    },
+    {
+      key: "4",
+      label: `Ticket History`,
+      children: <>{item && <TicketHistory item={item} />}</>,
+      permission: "customerCare.list"
+    },
+    {
+      key: "5",
+      label: `Activity Log`,
+      children: <>{item && <ActivityLog item={item} />}</>,
+      permission: "customerCare.list"
+    }
+  ];
 
   const filterItems = items.filter((item: any) => {
     if (item.permission) {
@@ -79,12 +107,10 @@ const DetailsCustomerCare = ({ id }: any) => {
     return true;
   });
 
-  const onChange = (key: string) => {
-    console.log(key);
-  };
-
   return (
     <>
+      {isLoading && isFetching && <AppLoader />}
+      {isError && <div>{error.message}</div>}
       <AppRowContainer>
         <Breadcrumb
           style={{

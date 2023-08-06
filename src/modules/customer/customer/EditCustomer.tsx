@@ -38,9 +38,7 @@ const EditCustomer = ({ id }: any) => {
   });
 
   useEffect(() => {
-    // // console.log('data -b', data)
     if (item) {
-      // // console.log('data', data)
       SetItem(item);
     }
   }, [item]);
