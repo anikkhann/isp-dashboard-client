@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -43,6 +43,9 @@ const PermissionList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
+  const [name, setName] = useState<any>(null);
+  const [tag, setTag] = useState<any>(null);
+
   const MySwal = withReactContent(Swal);
   const router = useRouter();
 
@@ -57,7 +60,9 @@ const PermissionList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    tagParam?: string,
+    nameParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -74,7 +79,8 @@ const PermissionList: React.FC = () => {
         ]
       },
       body: {
-        // tag: "name",
+        tag: tagParam,
+        displayName: nameParam
       }
     };
 
@@ -87,9 +93,9 @@ const PermissionList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["permissions-list", page, limit, order, sort],
+    queryKey: ["permissions-list", page, limit, order, sort, tag, name],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(page, limit, order, sort, tag, name);
       return response;
     },
     onSuccess(data: any) {
@@ -123,6 +129,11 @@ const PermissionList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  const handleClear = () => {
+    setName(null);
+    setTag(null);
+  };
 
   useEffect(() => {
     if (tableData) {
@@ -271,14 +282,14 @@ const PermissionList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("permission.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/user/permission/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
               ) : null}
-              {ability.can("user.update", "") &&
+              {ability.can("permission.delete", "") &&
               record.slug !== "superadmin" ? (
                 <Space size="middle" align="center" wrap>
                   <Button
@@ -361,7 +372,7 @@ const PermissionList: React.FC = () => {
             title="Permissions List"
             hasLink={true}
             addLink="/admin/user/permission/create"
-            permission="user.create"
+            permission="permission.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -370,11 +381,48 @@ const PermissionList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Name</b>
+                  </span>
+                  <Input
+                    value={name}
+                    placeholder="Name"
+                    onChange={e => {
+                      setName(e.target.value);
+                    }}
+                  />
+                </Space>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Tag</b>
+                  </span>
+                  <Input
+                    value={tag}
+                    placeholder="Tag"
+                    onChange={e => {
+                      setTag(e.target.value);
+                    }}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
               <Table
                 columns={columns}
                 rowKey={record => record.id}

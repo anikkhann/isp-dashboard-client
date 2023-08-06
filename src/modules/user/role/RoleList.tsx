@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -36,6 +36,8 @@ const RoleList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
+  const [name, setName] = useState<any>(null);
+
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -47,7 +49,8 @@ const RoleList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    nameParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -62,6 +65,9 @@ const RoleList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        name: nameParam
       }
     };
 
@@ -74,9 +80,9 @@ const RoleList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["roles-list", page, limit, order, sort],
+    queryKey: ["roles-list", page, limit, order, sort, name],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(page, limit, order, sort, name);
       return response;
     },
     onSuccess(data: any) {
@@ -118,7 +124,9 @@ const RoleList: React.FC = () => {
     }
   }, [data]);
 
-  // // console.log(error, isLoading, isError)
+  const handleClear = () => {
+    setName(null);
+  };
 
   const columns: ColumnsType<DataType> = [
     {
@@ -220,7 +228,7 @@ const RoleList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("role.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link href={`/admin/user/role/${record.id}/edit`}>
                     <Button type="primary" icon={<EditOutlined />} />
@@ -298,7 +306,7 @@ const RoleList: React.FC = () => {
             title="Roles List"
             hasLink={true}
             addLink="/admin/user/role/create"
-            permission="user.create"
+            permission="role.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -307,11 +315,37 @@ const RoleList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Name</b>
+                  </span>
+                  <Input
+                    value={name}
+                    placeholder="Name"
+                    onChange={e => {
+                      setName(e.target.value);
+                    }}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
+
               <Table
                 columns={columns}
                 rowKey={record => record.id}
