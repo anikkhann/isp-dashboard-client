@@ -1,7 +1,7 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import EditCheck from "@/modules/complaint/checklist/EditCheck";
+import DetailsCheckList from "@/modules/complaint/checklist/DetailsCheckList";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -19,7 +19,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("checklist.view", "") ? (
-        <EditCheck id={id} />
+        <DetailsCheckList id={id} />
       ) : (
         <Forbidden />
       )}
