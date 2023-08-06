@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
@@ -31,6 +31,35 @@ const CustomerList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
+  const [customerIds, setCustomerIds] = useState<any[]>([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<any>(null);
+
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+
+  const [distributionZones, setDistributionZones] = useState<any[]>([]);
+  const [selectedDistributionZone, setSelectedDistributionZone] =
+    useState<any>(null);
+
+  const [distributionPops, setDistributionPops] = useState<any[]>([]);
+  const [selectedDistributionPop, setSelectedDistributionPop] =
+    useState<any>(null);
+
+  const [selectedEmail, setSelectedEmail] = useState<any>(null);
+  const [selectedMobile, setSelectedMobile] = useState<any>(null);
+
+  const [packages, setPackages] = useState<any[]>([]);
+  const [selectedPackage, setSelectedPackage] = useState<any>(null);
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const [subZones, setSubZones] = useState<any[]>([]);
+  const [selectedSubZone, setSelectedSubZone] = useState<any>(null);
+
+  const [retailers, setRetailers] = useState<any[]>([]);
+  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
+
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -42,10 +71,19 @@ const CustomerList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    customerIdParam?: string,
+    usernameParam?: string,
+    distributionZoneParam?: string,
+    distributionPopParam?: string,
+    packageParam?: string,
+    zoneParam?: string,
+    subZoneParam?: string,
+    retailerParam?: string,
+    emailParam?: string,
+    mobileParam?: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -58,6 +96,30 @@ const CustomerList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        customerId: customerIdParam,
+        username: usernameParam,
+        email: emailParam,
+        mobile: mobileParam,
+        distributionZone: {
+          id: distributionZoneParam
+        },
+        distributionPop: {
+          id: distributionPopParam
+        },
+        customerPackage: {
+          id: packageParam
+        },
+        zoneManager: {
+          id: zoneParam
+        },
+        subZoneManager: {
+          id: subZoneParam
+        },
+        retailer: {
+          id: retailerParam
+        }
       }
     };
 
@@ -70,9 +132,40 @@ const CustomerList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-list", page, limit, order, sort],
+    queryKey: [
+      "customer-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedCustomerId,
+      selectedCustomer,
+      selectedDistributionZone,
+      selectedDistributionPop,
+      selectedPackage,
+      selectedZone,
+      selectedSubZone,
+      selectedRetailer,
+      selectedEmail,
+      selectedMobile
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedCustomerId,
+        selectedCustomer,
+        selectedDistributionZone,
+        selectedDistributionPop,
+        selectedPackage,
+        selectedZone,
+        selectedSubZone,
+        selectedRetailer,
+        selectedEmail,
+        selectedMobile
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -105,6 +198,257 @@ const CustomerList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone"
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  function getSubZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "sub_zone"
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setSubZones(list);
+    });
+  }
+
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer"
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
+
+  function getDistributionZones() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+
+    axios.post("/api/distribution-zone/get-list", body).then(res => {
+      const { data } = res;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setDistributionZones(list);
+    });
+  }
+
+  function getDistributionPops() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {}
+    };
+
+    axios.post("/api/distribution-pop/get-list", body).then(res => {
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setDistributionPops(list);
+    });
+  }
+
+  const getCustomerPackages = () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    axios.post("/api/customer-package/get-list", body).then(res => {
+      const { data } = res;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setPackages(list);
+    });
+  };
+
+  const getCustomers = () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      }
+    };
+    axios.post("/api/customer/get-list", body).then(res => {
+      const { data } = res;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.username
+        };
+      });
+      setCustomers(list);
+
+      const customerIds = data.body.map((item: any) => {
+        return {
+          label: item.customerId,
+          value: item.customerId
+        };
+      });
+      setCustomerIds(customerIds);
+    });
+  };
+
+  const handleCustomerIDChange = (value: any) => {
+    setSelectedCustomerId(value);
+  };
+
+  const handleUsernameChange = (value: any) => {
+    setSelectedCustomer(value);
+  };
+
+  const handleDistributionZoneChange = (value: any) => {
+    setSelectedDistributionZone(value);
+  };
+
+  const handleDistributionPopChange = (value: any) => {
+    setSelectedDistributionPop(value);
+  };
+
+  const handlePackageChange = (value: any) => {
+    setSelectedPackage(value);
+  };
+
+  const handleZoneChange = (value: any) => {
+    setSelectedZone(value);
+  };
+
+  const handleSubZoneChange = (value: any) => {
+    setSelectedSubZone(value);
+  };
+
+  const handleRetailerChange = (value: any) => {
+    setSelectedRetailer(value);
+  };
+
+  const handleClear = () => {
+    setSelectedCustomerId(null);
+    setSelectedCustomer(null);
+    setSelectedDistributionZone(null);
+    setSelectedDistributionPop(null);
+    setSelectedPackage(null);
+    setSelectedZone(null);
+    setSelectedSubZone(null);
+    setSelectedRetailer(null);
+    setSelectedEmail(null);
+    setSelectedMobile(null);
+  };
+
+  useEffect(() => {
+    getZoneManagers();
+    getSubZoneManagers();
+    getRetailers();
+    getDistributionZones();
+    getDistributionPops();
+    getCustomerPackages();
+    getCustomers();
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -221,6 +565,13 @@ const CustomerList: React.FC = () => {
                   </Link>
                 </Space>
               ) : null}
+              {ability.can("customer.view", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link href={`/admin/customer/customer/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
             </Space>
           </>
         );
@@ -306,11 +657,172 @@ const CustomerList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Customer Id</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleCustomerIDChange}
+                    options={customerIds}
+                    value={selectedCustomerId}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Username</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleUsernameChange}
+                    options={customers}
+                    value={selectedCustomer}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Distribution Zone</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleDistributionZoneChange}
+                    options={distributionZones}
+                    value={selectedDistributionZone}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Distribution Pop</b>
+                  </span>
+
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleDistributionPopChange}
+                    options={distributionPops}
+                    value={selectedDistributionPop}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Package</b>
+                  </span>
+
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handlePackageChange}
+                    options={packages}
+                    value={selectedPackage}
+                  />
+                </Space>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Zone Manager</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleZoneChange}
+                    options={zones}
+                    value={selectedZone}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Sub Zone</b>
+                  </span>
+                  <Select
+                    allowClear
+                    showSearch
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleSubZoneChange}
+                    options={subZones}
+                    value={selectedSubZone}
+                  />
+                </Space>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Retailer</b>
+                  </span>
+                  <Select
+                    allowClear
+                    showSearch
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleRetailerChange}
+                    options={retailers}
+                    value={selectedRetailer}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Email</b>
+                  </span>
+                  <Input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Email"
+                    value={selectedEmail}
+                    onChange={e => setSelectedEmail(e.target.value)}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Mobile</b>
+                  </span>
+                  <Input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Mobile"
+                    value={selectedMobile}
+                    onChange={e => setSelectedMobile(e.target.value)}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
+
               <Table
                 columns={columns}
                 rowKey={record => record.id}

@@ -1,7 +1,7 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import EditCustomerOnboardingReq from "@/modules/customer/customer-onboarding-req/EditCustomerOnboardingReq";
+import DetailsCustomerOnboardingReq from "@/modules/customer/customer-onboarding-req/DetailsCustomerOnboardingReq";
 import Forbidden from "@/modules/errorPage/Forbidden";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -17,8 +17,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerOnboardingReq.update", "") ? (
-        <EditCustomerOnboardingReq id={id} />
+      {ability.can("customerOnboardingReq.view", "") ? (
+        <DetailsCustomerOnboardingReq id={id} />
       ) : (
         <Forbidden />
       )}

@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
@@ -45,7 +45,6 @@ const CustomerOnboardingReqList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -217,12 +216,21 @@ const CustomerOnboardingReqList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("customer.update", "") ? (
+              {ability.can("customerOnboardingReq.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link
                     href={`/admin/customer/customer-onboarding-req/${record.id}/edit`}
                   >
                     <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerOnboardingReq.update", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/customer/customer-onboarding-req/${record.id}`}
+                  >
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}
@@ -298,10 +306,10 @@ const CustomerOnboardingReqList: React.FC = () => {
           )}
 
           <TableCard
-            title="Customers List"
+            title="Customers Request List"
             hasLink={true}
             addLink="/admin/customer/customer-onboarding-req/create"
-            permission="customer.create"
+            permission="customerOnboardingReq.create"
             style={{
               // backgroundColor: "#FFFFFF",
               borderRadius: "10px",
