@@ -84,7 +84,7 @@ const DetailsCustomer = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            customer Details
+            Customer Details
           </h1>
         </div>
         <Card

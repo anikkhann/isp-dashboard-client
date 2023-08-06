@@ -60,26 +60,23 @@ const DetailsIpData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Radius IP<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Radius IP</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.radiusIp?.name}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Radius Name<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Radius Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.radiusIp?.master?.name}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Radius Key<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Radius Key</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.radiusIp?.master?.key}
               </span>
@@ -108,68 +105,59 @@ const DetailsIpData = ({ item }: PropData) => {
           }}
         >
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Partner Name<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Name</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.ipSubnet?.partner?.username}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Partner Type<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Partner Type</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.partnerType}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Contact Person<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Person</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.contactPerson}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Contact Number<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Contact Number</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.contactNumber}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Alternate Number<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Alternate Number</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.altContactNumber}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Email<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Email</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.ipSubnet?.partner?.email}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Address<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Address</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">{item.ipSubnet?.partner?.address}</span>
             </p>
-            <p>
-              <span className="font-bold">
-                Division<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Division</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.division?.name}
               </span>
             </p>
-            <p>
-              <span className="font-bold">
-                Division<span className="mx-2">:</span>
-              </span>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Division</span>
+              <span className="mx-2">:</span>
               <span className="mx-2">
                 {item.ipSubnet?.partner?.district?.name}
               </span>
