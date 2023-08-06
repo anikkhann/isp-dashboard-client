@@ -282,7 +282,27 @@ const CreateClientForm = () => {
   }
 
   function getRadiusIps() {
-    axios.get("/api/lookup-details/get-by-master-key/radius_ip").then(res => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        isActive: "true",
+        authProtocol: "PPPoE"
+      }
+    };
+
+    axios.post("/api/radius-ip/get-list", body).then(res => {
       const { data } = res;
       const list = data.body.map((item: any) => {
         return {
