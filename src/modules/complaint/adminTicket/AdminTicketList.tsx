@@ -303,22 +303,30 @@ const AdminTicketList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Ticket Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+    {
+      title: "Ticket User Type",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.userType}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+    {
       title: "Ticket Number",
       dataIndex: "ticketNo",
-      sorter: true,
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
-      title: "Customer ID",
-      dataIndex: "customerId",
-      sorter: true,
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "username",
       sorter: true,
       width: 200,
       align: "center" as AlignType
@@ -354,18 +362,7 @@ const AdminTicketList: React.FC = () => {
       width: 150,
       align: "center" as AlignType
     },
-    // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: 200,
-      align: "center" as AlignType
-    },
+
     // createdOn
     {
       title: "Created At",
