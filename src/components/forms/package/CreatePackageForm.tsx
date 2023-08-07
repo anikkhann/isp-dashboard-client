@@ -395,7 +395,7 @@ const CreatePackageForm = () => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Upload Limit Unit"
+                    // placeholder="Please select Upload Limit Unit"
                     onChange={handleUploadUnitChange}
                     options={uploadUnits}
                     value={selectedUploadUnit}

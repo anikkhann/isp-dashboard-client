@@ -67,7 +67,7 @@ const DetailsCustomerType = ({ id }: any) => {
               )
             },
             {
-              title: "Edit Customer Type"
+              title: "Customer Type Details"
             }
           ]}
         />
@@ -89,7 +89,7 @@ const DetailsCustomerType = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Customer Type
+            Customer Type Details
           </h1>
         </div>
         <Card

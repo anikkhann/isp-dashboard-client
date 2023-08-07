@@ -248,17 +248,17 @@ const SearchCustomer = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
       title: "Created At",
@@ -273,31 +273,31 @@ const SearchCustomer = () => {
       align: "center" as AlignType
     },
     // editedBy
-    {
-      title: "Updated By",
-      dataIndex: "editedBy",
-      sorter: false,
-      render: (editedBy: any) => {
-        if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
-      },
+    // {
+    //   title: "Updated By",
+    //   dataIndex: "editedBy",
+    //   sorter: false,
+    //   render: (editedBy: any) => {
+    //     if (!editedBy) return "-";
+    //     return <>{editedBy.name}</>;
+    //   },
 
-      width: "20%",
-      align: "center" as AlignType
-    },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // updatedOn
-    {
-      title: "Updated At",
-      dataIndex: "updatedOn",
-      sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Updated At",
+    //   dataIndex: "updatedOn",
+    //   sorter: false,
+    //   render: (updatedOn: any) => {
+    //     if (!updatedOn) return "-";
+    //     const date = new Date(updatedOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Action",
       dataIndex: "action",
@@ -370,6 +370,7 @@ const SearchCustomer = () => {
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
+            overflow: "scroll",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
@@ -483,6 +484,7 @@ const SearchCustomer = () => {
 
           {data && data.length > 0 ? (
             <Table
+              style={{ overflow: "scroll" }}
               columns={columns}
               rowKey={record => record.id}
               dataSource={data}

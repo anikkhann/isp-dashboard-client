@@ -619,6 +619,47 @@ const CreateDeviceForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
+                {/* oltTypesList */}
+                <Form.Item
+                  label="OLT Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="oltType"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select OLT Type!"
+                    }
+                  ]}
+                >
+                  <Space
+                    style={{ width: "100%", textAlign: "start" }}
+                    direction="vertical"
+                  >
+                    <Select
+                      allowClear
+                      style={{ width: "100%" }}
+                      placeholder="Please select OLT Type"
+                      onChange={handleOltTypeChange}
+                      options={oltTypesList}
+                      value={selectedOltType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            )}
+            {selectedDeviceType == "OLT" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
                 {/* totalEitherPort */}
                 <Form.Item
                   name="totalEitherPort"
@@ -679,6 +720,7 @@ const CreateDeviceForm = () => {
                 </Form.Item>
               </Col>
             )}
+
             {/* mac */}
             {selectedDeviceType == "ONU" && (
               <Col
@@ -836,12 +878,12 @@ const CreateDeviceForm = () => {
                   fontWeight: "bold"
                 }}
                 name="monitoringType"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Monitoring Type!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please select Monitoring Type!"
+                //   }
+                // ]}
               >
                 <Space
                   style={{ width: "100%", textAlign: "start" }}
@@ -1215,45 +1257,6 @@ const CreateDeviceForm = () => {
               </Col>
             )}
 
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* oltTypesList */}
-              <Form.Item
-                label="OLT Type"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="oltType"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select OLT Type!"
-                  }
-                ]}
-              >
-                <Space
-                  style={{ width: "100%", textAlign: "start" }}
-                  direction="vertical"
-                >
-                  <Select
-                    allowClear
-                    style={{ width: "100%" }}
-                    placeholder="Please select OLT Type"
-                    onChange={handleOltTypeChange}
-                    options={oltTypesList}
-                    value={selectedOltType}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
             <Col
               xs={24}
               sm={12}

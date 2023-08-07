@@ -1,3 +1,5 @@
+import { EditedBy } from "./RoleData";
+
 export interface CustomerData {
   createdOn: number;
   id: string;
@@ -39,6 +41,8 @@ export interface CustomerData {
   isActive: boolean;
   isSafVerified: boolean;
   insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  updatedOn?: string;
 }
 
 export interface CustomerType {
