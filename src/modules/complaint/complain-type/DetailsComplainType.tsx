@@ -64,7 +64,7 @@ const DetailsComplainType = ({ id }: any) => {
               )
             },
             {
-              title: "Details Complain Type"
+              title: " Complain Type Details"
             }
           ]}
         />
@@ -86,7 +86,7 @@ const DetailsComplainType = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details Complain Type
+            Complain Type Details
           </h1>
         </div>
         <Card
@@ -94,13 +94,12 @@ const DetailsComplainType = ({ id }: any) => {
           hoverable
           style={{
             width: "90%",
-            backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
             marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginBottom: "1rem"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

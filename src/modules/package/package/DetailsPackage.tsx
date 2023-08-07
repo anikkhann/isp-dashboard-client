@@ -62,7 +62,7 @@ const DetailsPackage = ({ id }: any) => {
               title: <Link href="/admin/package/package">Package</Link>
             },
             {
-              title: "Details Package"
+              title: "Package Details"
             }
           ]}
         />
@@ -84,7 +84,7 @@ const DetailsPackage = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details Package
+            Package Details
           </h1>
         </div>
         <Card
@@ -92,13 +92,13 @@ const DetailsPackage = ({ id }: any) => {
           hoverable
           style={{
             width: "90%",
-            backgroundColor: "#ffffff",
+            // backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginTop: "2rem",
+            marginBottom: "2rem"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

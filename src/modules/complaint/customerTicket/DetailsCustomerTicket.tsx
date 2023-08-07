@@ -507,7 +507,8 @@ const DetailsCustomerTicket = ({ id }: any) => {
                     name="status"
                     label="Status"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
@@ -520,7 +521,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
                       <Select
                         placeholder="Select Status"
                         allowClear
-                        style={{ width: "100%" }}
+                        style={{ width: "100%", textAlign: "start" }}
                         onChange={handleStatusChange}
                         options={statuses}
                         value={selectedStatus}
@@ -534,7 +535,8 @@ const DetailsCustomerTicket = ({ id }: any) => {
                         name="rootCauseId"
                         label="Root Cause"
                         style={{
-                          marginBottom: 0
+                          marginBottom: 0,
+                          fontWeight: "bold"
                         }}
                         /* rules={[
                       {
@@ -547,7 +549,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
                           <Select
                             placeholder="Select root Cause"
                             allowClear
-                            style={{ width: "100%" }}
+                            style={{ width: "100%", textAlign: "start" }}
                             onChange={handleRootCauseChange}
                             options={rootCauseList}
                             value={selectedRootCause}
@@ -561,7 +563,8 @@ const DetailsCustomerTicket = ({ id }: any) => {
                     name="remarks"
                     label="Remarks"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
@@ -632,14 +635,15 @@ const DetailsCustomerTicket = ({ id }: any) => {
                 <Col xs={24} className="gutter-row">
                   <Form.Item
                     name="assignedToId"
-                    label="assignedTo"
+                    label="Assigned To"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
                         required: true,
-                        message: "Select assignedToId!"
+                        message: "Select Assigned To Id!"
                       }
                     ]}
                   >
@@ -647,7 +651,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
                       <Select
                         placeholder="Select assignedToId"
                         allowClear
-                        style={{ width: "100%" }}
+                        style={{ width: "100%", textAlign: "start" }}
                         onChange={handleAssignToChange}
                         options={assignToList}
                         value={selectedAssignTo}
@@ -659,7 +663,8 @@ const DetailsCustomerTicket = ({ id }: any) => {
                     name="remarks"
                     label="Remarks"
                     style={{
-                      marginBottom: 0
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
                     rules={[
                       {
@@ -678,18 +683,38 @@ const DetailsCustomerTicket = ({ id }: any) => {
             </Form>
           </Card>
         </Modal>
-
-        <Card
-          title="Customer Ticket"
-          hoverable
+        <div
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
+            // border: "1px solid #F15F22",
+            textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            Customer Ticket
+          </h1>
+        </div>
+        <Card
+          // title="Customer Ticket"
+          hoverable
+          style={{
+            width: "90%",
+            backgroundColor: "#ECF0F1",
+            borderRadius: "10px",
+            margin: "0 auto",
             textAlign: "center",
-            marginTop: "3rem",
-            marginBottom: "3rem"
+            marginTop: "2rem",
+            marginBottom: "2rem"
           }}
         >
           {ticketQuery.isLoading &&

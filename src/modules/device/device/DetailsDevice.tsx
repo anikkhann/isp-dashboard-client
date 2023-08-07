@@ -62,7 +62,7 @@ const DetailsDevice = ({ id }: any) => {
               title: <Link href="/admin/device/device">Device</Link>
             },
             {
-              title: "Details Device"
+              title: "Device Details"
             }
           ]}
         />
@@ -84,7 +84,7 @@ const DetailsDevice = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details Device
+            Device Details
           </h1>
         </div>
         <Card
@@ -92,13 +92,14 @@ const DetailsDevice = ({ id }: any) => {
           hoverable
           style={{
             width: "90%",
-            backgroundColor: "#ffffff",
+            // backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginTop: "2rem",
+            marginBottom: "2rem"
+            // border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

@@ -62,22 +62,43 @@ const DetailsClient = ({ id }: any) => {
               title: <Link href="/admin/client/client">Client</Link>
             },
             {
-              title: "Details Client"
+              title: "Client Details "
             }
           ]}
         />
-
-        <Card
-          title="Details Client"
-          hoverable
+        <div
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
+            // border: "1px solid #F15F22",
+            textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            Client Details
+          </h1>
+        </div>
+        <Card
+          // title="Details Client"
+          hoverable
+          style={{
+            width: "90%",
+            // backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
+            borderRadius: "10px",
+            margin: "0 auto",
             textAlign: "center",
-            marginTop: "3rem",
-            marginBottom: "3rem"
+            marginTop: "2rem",
+            marginBottom: "2rem"
           }}
         >
           {isLoading && isFetching && <AppLoader />}
