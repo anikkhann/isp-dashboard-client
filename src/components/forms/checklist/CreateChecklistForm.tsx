@@ -101,13 +101,24 @@ const CreateChecklistForm = () => {
         .post("/api/checklist/create", formData)
         .then(res => {
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/complaint/checklist");
-          });
+
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/complaint/checklist");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

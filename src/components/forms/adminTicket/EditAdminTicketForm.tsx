@@ -93,7 +93,7 @@ const EditAdminTicketForm = ({ item }: PropData) => {
         .then(res => {
           const { data } = res;
 
-          if (data.status == 500) {
+          if (data.status != 200) {
             MySwal.fire({
               title: "Error",
               text: data.message || "Something went wrong",

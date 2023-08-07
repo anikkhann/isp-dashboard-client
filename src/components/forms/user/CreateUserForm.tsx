@@ -115,14 +115,20 @@ const CreateUserForm = () => {
           // console.log(res);
           const { data } = res;
 
-          if (data.status !== 200) {
+          if (data.status != 200) {
             setShowError(true);
             setErrorMessages(data.message);
-            return;
-          } else {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
             MySwal.fire({
               title: "Success",
-              text: data.message || "Admin Added successfully",
+              text: data.message || "User Added successfully",
               icon: "success"
             }).then(() => {
               router.replace("/admin/user/user");

@@ -164,13 +164,23 @@ const EditRoleForm = ({ item }: PropData) => {
           // console.log(res);
           const { data } = res;
 
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Role Updated successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/user/role");
-          });
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Role created successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/user/role");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

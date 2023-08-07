@@ -244,13 +244,23 @@ const EditPackageForm = ({ item }: PropData) => {
           // console.log(res);
           const { data } = res;
 
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Update successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/package/package");
-          });
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/package/package");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

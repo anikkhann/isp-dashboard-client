@@ -93,13 +93,23 @@ const CreatePermissionForm = () => {
         .then(res => {
           const { data } = res;
 
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Permission created successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/user/permission");
-          });
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Permission created successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/user/permission");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

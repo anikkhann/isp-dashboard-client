@@ -269,9 +269,13 @@ const CreateCustomerTicketForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ complainTypeId: value });
     setSelectedComplainType(value as any);
+
+    if (!value) {
+      setCheckListItems([]);
+    }
   };
 
-  const getChecklists = async () => {
+  const getChecklists = async (complainId: string) => {
     const body = {
       meta: {
         sort: [
@@ -280,6 +284,11 @@ const CreateCustomerTicketForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        complainType: {
+          id: complainId
+        }
       }
     };
 
@@ -298,8 +307,13 @@ const CreateCustomerTicketForm = () => {
   useEffect(() => {
     getCustomers();
     getComplainTypes();
-    getChecklists();
   }, []);
+
+  useEffect(() => {
+    if (selectedComplainType) {
+      getChecklists(selectedComplainType);
+    }
+  }, [selectedComplainType]);
 
   useEffect(() => {
     if (selectedCustomer) {
@@ -335,7 +349,7 @@ const CreateCustomerTicketForm = () => {
         .then(res => {
           const { data } = res;
 
-          if (data.status == 500) {
+          if (data.status != 200) {
             MySwal.fire({
               title: "Error",
               text: data.message || "Something went wrong",
@@ -482,56 +496,61 @@ const CreateCustomerTicketForm = () => {
                   </Form.Item>
                 </Col>
               </Row>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  {/* checklist */}
-                  {checkListItems.map((itemData: any, index: any) => (
-                    <Form.Item
-                      key={index}
-                      // label={itemData.title}
-                      name={`checklist-${itemData.title}`}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <div
-                        style={{
-                          marginBottom: 0,
-                          display: "flex",
-                          width: "100%",
-                          flexDirection: "row",
-                          border: "2px solid #000000",
-                          padding: "10px",
-                          borderRadius: "4px"
-                        }}
+              {checkListItems.length > 0 && (
+                <Row
+                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  justify="center"
+                >
+                  <Col>
+                    {/* checklist */}
+                    {checkListItems.map((itemData: any, index: any) => (
+                      <Form.Item
+                        key={index}
+                        // label={itemData.title}
+                        name={`checklist-${itemData.title}`}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select!"
+                          }
+                        ]}
                       >
-                        <span
+                        <div
                           style={{
-                            width: "100%",
-                            textAlign: "start",
-                            marginRight: "10px"
-                          }}
-                        >
-                          {itemData.title}
-                        </span>
-                        <Radio.Group
-                          style={{
+                            marginBottom: 0,
                             display: "flex",
-                            justifyContent: "start"
+                            width: "100%",
+                            flexDirection: "row",
+                            border: "2px solid #000000",
+                            padding: "10px",
+                            borderRadius: "4px"
                           }}
-                          key={index}
                         >
-                          <Radio value="yes">Yes</Radio>
-                          <Radio value="no">No</Radio>
-                        </Radio.Group>
-                      </div>
-                    </Form.Item>
-                  ))}
-                </Col>
-              </Row>
+                          <span
+                            style={{
+                              width: "100%",
+                              textAlign: "start",
+                              marginRight: "10px"
+                            }}
+                          >
+                            {itemData.title}
+                          </span>
+                          <Radio.Group
+                            style={{
+                              display: "flex",
+                              justifyContent: "start"
+                            }}
+                            key={index}
+                          >
+                            <Radio value="yes">Yes</Radio>
+                            <Radio value="no">No</Radio>
+                          </Radio.Group>
+                        </div>
+                      </Form.Item>
+                    ))}
+                  </Col>
+                </Row>
+              )}
             </>
           )}
 
@@ -611,11 +630,11 @@ const CreateCustomerTicketForm = () => {
                       label="Assigned To"
                       name="assignedTo"
                       /*   rules={[
-                {
-                  required: true,
-                  message: "Please select Assigned To!"
-                }
-              ]} */
+              {
+                required: true,
+                message: "Please select Assigned To!"
+              }
+            ]} */
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <Select

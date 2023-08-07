@@ -82,13 +82,24 @@ const CreateRootCauseForm = () => {
         .post("/api/root-cause/create", formData)
         .then(res => {
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/complaint/root-cause");
-          });
+
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/complaint/root-cause");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

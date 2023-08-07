@@ -91,13 +91,24 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
         .put("/api/ticket-details/reply", formData)
         .then(res => {
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Updated successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/complaint/admin-ticket");
-          });
+
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Updated successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/complaint/admin-ticket");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

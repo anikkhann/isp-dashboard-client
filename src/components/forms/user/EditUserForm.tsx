@@ -127,13 +127,25 @@ const EditUserForm = ({ item }: PropData) => {
           // console.log(res);
           const { data } = res;
 
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Admin Updated successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/user/user");
-          });
+          if (data.status != 200) {
+            setShowError(true);
+            setErrorMessages(data.message);
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "User Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/user/user");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);
