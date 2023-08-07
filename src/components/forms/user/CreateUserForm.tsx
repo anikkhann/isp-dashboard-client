@@ -36,7 +36,7 @@ const CreateUserForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const [isActive, setIsActive] = useState(true);
 
@@ -143,11 +143,7 @@ const CreateUserForm = () => {
 
   return (
     <>
-      {showError &&
-        errorMessages.length > 0 &&
-        errorMessages.map((error, index) => (
-          <Alert message={error} type="error" showIcon key={index} />
-        ))}
+      {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3">
         <Form

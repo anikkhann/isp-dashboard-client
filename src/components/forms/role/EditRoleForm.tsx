@@ -43,7 +43,7 @@ const EditRoleForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const [permissions, setPermissions] = useState<any[]>([]);
 
@@ -186,11 +186,7 @@ const EditRoleForm = ({ item }: PropData) => {
 
   return (
     <>
-      {showError &&
-        errorMessages.length > 0 &&
-        errorMessages.map((error, index) => (
-          <Alert message={error} type="error" showIcon key={index} />
-        ))}
+      {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3 flex justify-center items-center">
         <Form

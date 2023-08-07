@@ -24,7 +24,7 @@ const EditAdminTicketForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);

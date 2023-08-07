@@ -49,7 +49,7 @@ const CreateCustomerTicketForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -596,11 +596,11 @@ const CreateCustomerTicketForm = () => {
                       label="Assigned To"
                       name="assignedTo"
                       /*   rules={[
-                    {
-                      required: true,
-                      message: "Please select Assigned To!"
-                    }
-                  ]} */
+                  {
+                    required: true,
+                    message: "Please select Assigned To!"
+                  }
+                ]} */
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <Select
