@@ -30,6 +30,11 @@ export interface ClientData {
   radiusIpId: string;
   isActive: boolean;
   insertedBy: InsertedBy;
+
+  totalCustomer: number;
+  activeCustomer: number;
+  registeredCustomer: number;
+  expiredCustomer: number;
 }
 
 export interface Division {
