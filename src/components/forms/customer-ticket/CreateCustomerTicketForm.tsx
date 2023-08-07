@@ -334,7 +334,7 @@ const CreateCustomerTicketForm = () => {
       complainTypeId: selectedComplainType,
       complainDetails: formValues.complainDetails,
       checkList: checkListJson,
-      assignedTo: selectedAssignedTo
+      assignedToId: selectedAssignedTo
     };
 
     const formData = new FormData();
@@ -630,11 +630,11 @@ const CreateCustomerTicketForm = () => {
                       label="Assigned To"
                       name="assignedTo"
                       /*   rules={[
-              {
-                required: true,
-                message: "Please select Assigned To!"
-              }
-            ]} */
+            {
+              required: true,
+              message: "Please select Assigned To!"
+            }
+          ]} */
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <Select
