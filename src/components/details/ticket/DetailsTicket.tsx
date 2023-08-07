@@ -106,6 +106,14 @@ const DetailsTicket = ({ item, replys }: PropData) => {
         >
           <div style={{ textAlign: "start" }}>
             <h1 className="font-bold text-lg">{item.complainType?.name}</h1>
+            {item.attachment && (
+              <a
+                href={`${url}/ticket/public/downloadFile/${item.attachment}`}
+                target="_blank"
+              >
+                <FileImageOutlined /> {item.attachment}
+              </a>
+            )}
             <p className="text-justify">{item.complainDetails}</p>
           </div>
         </Card>
