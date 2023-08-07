@@ -227,17 +227,17 @@ const ChecklistList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
       title: "Created At",
@@ -252,38 +252,38 @@ const ChecklistList: React.FC = () => {
       align: "center" as AlignType
     },
     // editedBy
-    {
-      title: "Updated By",
-      dataIndex: "editedBy",
-      sorter: false,
-      render: (editedBy: any) => {
-        if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
-      },
+    // {
+    //   title: "Updated By",
+    //   dataIndex: "editedBy",
+    //   sorter: false,
+    //   render: (editedBy: any) => {
+    //     if (!editedBy) return "-";
+    //     return <>{editedBy.name}</>;
+    //   },
 
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // updatedOn
-    {
-      title: "Updated At",
-      dataIndex: "updatedOn",
-      sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Updated At",
+    //   dataIndex: "updatedOn",
+    //   sorter: false,
+    //   render: (updatedOn: any) => {
+    //     if (!updatedOn) return "-";
+    //     const date = new Date(updatedOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Action",
       dataIndex: "action",
       sorter: false,
       render: (text: any, record: any) => {
         return (
-          <>
+          <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("checklist.update", "") ? (
                 <Space size="middle" align="center" wrap>
@@ -293,14 +293,14 @@ const ChecklistList: React.FC = () => {
                 </Space>
               ) : null}
               {ability.can("checklist.view", "") ? (
-                <Space size="middle" align="center" wrap>
+                <Space size="middle" align="center" wrap className="mx-1">
                   <Link href={`/admin/complaint/checklist/${record.id}`}>
                     <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}
             </Space>
-          </>
+          </div>
         );
       },
       align: "center" as AlignType

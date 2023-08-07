@@ -1,6 +1,7 @@
 import { ClientData } from "@/interfaces/ClientData";
 import React from "react";
 import { Row, Col, Card } from "antd";
+import { format } from "date-fns";
 // const { Meta } = Card;
 interface PropData {
   item: ClientData;
@@ -37,11 +38,11 @@ const DetailsClientData = ({ item }: PropData) => {
               <span className="mx-1">:</span>
               <span className="mx-1">{item.clientLevel}</span>
             </p>
-            <p className="flex flex-row   overflow-hidden">
+            {/* <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">Partner Type</span>
               <span className="mx-1">:</span>
               <span className="mx-1">{item.partnerType}</span>
-            </p>
+            </p> */}
             <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">Division</span>
               <span className="mx-1">:</span>
@@ -52,16 +53,12 @@ const DetailsClientData = ({ item }: PropData) => {
               <span className="mx-1">:</span>
               <span className="mx-1">{item.district?.name}</span>
             </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Inserted By</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">{item.insertedBy?.username}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
+
+            {/* <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">User Type</span>
               <span className="mx-1">:</span>
               <span className="mx-1">{item.insertedBy?.userType}</span>
-            </p>
+            </p> */}
             <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">Phone</span>
               <span className="mx-1">:</span>
@@ -71,6 +68,60 @@ const DetailsClientData = ({ item }: PropData) => {
               <span className="font-bold flex">Email</span>
               <span className="mx-1">:</span>
               <span className="mx-1">{item.insertedBy?.email}</span>
+            </p>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold flex">Address</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.address}</span>
+            </p>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Radius IP</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.radiusIp?.name}</span>
+            </p>
+          </div>
+        </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div style={{ textAlign: "start" }}>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Created By</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.insertedBy?.username}</span>
+            </p>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Created At</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">
+                {item.createdOn
+                  ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                  : null}
+              </span>
+            </p>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Updated By</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">
+                {item.editedBy ? item.editedBy.username : null}
+              </span>
+            </p>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Updated At</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">
+                {item.updatedOn
+                  ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                  : null}
+              </span>
             </p>
           </div>
         </Card>
@@ -111,11 +162,11 @@ const DetailsClientData = ({ item }: PropData) => {
               <span className="mx-1">:</span>
               <span className="mx-1">{item.email}</span>
             </p>
-            <p className="flex flex-row   overflow-hidden">
+            {/* <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">Address</span>
               <span className="mx-1">:</span>
               <span className="mx-1">{item.address}</span>
-            </p>
+            </p> */}
             <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">Contact Person</span>
               <span className="mx-1">:</span>

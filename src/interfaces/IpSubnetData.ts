@@ -10,6 +10,7 @@ export interface IpSubnetData {
   isActive: boolean;
   insertedBy: InsertedBy;
   editedBy: EditedBy;
+  // updatedOn?: string;
 }
 
 export interface Partner {

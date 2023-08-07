@@ -182,17 +182,17 @@ const UserList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
       title: "Created At",
@@ -207,31 +207,31 @@ const UserList: React.FC = () => {
       align: "center" as AlignType
     },
     // editedBy
-    {
-      title: "Updated By",
-      dataIndex: "editedBy",
-      sorter: false,
-      render: (editedBy: any) => {
-        if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
-      },
+    // {
+    //   title: "Updated By",
+    //   dataIndex: "editedBy",
+    //   sorter: false,
+    //   render: (editedBy: any) => {
+    //     if (!editedBy) return "-";
+    //     return <>{editedBy.name}</>;
+    //   },
 
-      width: "20%",
-      align: "center" as AlignType
-    },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // updatedOn
-    {
-      title: "Updated At",
-      dataIndex: "updatedOn",
-      sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Updated At",
+    //   dataIndex: "updatedOn",
+    //   sorter: false,
+    //   render: (updatedOn: any) => {
+    //     if (!updatedOn) return "-";
+    //     const date = new Date(updatedOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
 
     {
       title: "Status",

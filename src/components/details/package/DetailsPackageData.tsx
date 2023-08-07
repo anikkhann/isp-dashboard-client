@@ -1,7 +1,7 @@
 import { PackageData } from "@/interfaces/PackageData";
 import React from "react";
 import { Card, Col, Row } from "antd";
-
+import { format } from "date-fns";
 interface PropData {
   item: PackageData;
 }
@@ -82,29 +82,39 @@ const DetailsPackageData = ({ item }: PropData) => {
             backgroundColor: "white",
             borderRadius: "10px",
             border: "1px solid #F15F22",
-            marginTop: "2rem"
+            marginTop: "1rem"
           }}
         >
           <div style={{ textAlign: "start" }}>
             <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Inserted By</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.username}</span>
+              <span className="font-bold">Created By</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.insertedBy?.username}</span>
             </p>
             <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">User Type</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.userType}</span>
+              <span className="font-bold">Created At</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">
+                {item.createdOn
+                  ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                  : null}
+              </span>
             </p>
             <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Phone</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.phone}</span>
+              <span className="font-bold">Updated By</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">
+                {item.editedBy ? item.editedBy.username : null}
+              </span>
             </p>
             <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Email</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.email}</span>
+              <span className="font-bold">Updated At</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">
+                {item.updatedOn
+                  ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                  : null}
+              </span>
             </p>
           </div>
         </Card>
@@ -169,6 +179,41 @@ const DetailsPackageData = ({ item }: PropData) => {
               <span className="font-bold">District</span>
               <span className="mx-2">:</span>
               <span className="mx-2">{item.partner?.district?.name}</span>
+            </p>
+          </div>
+        </Card>
+
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div style={{ textAlign: "start" }}>
+            {/* <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Inserted By</span>
+              <span className="mx-2">:</span>
+              <span className="mx-2">{item.insertedBy?.username}</span>
+            </p> */}
+            {/* <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">User Type</span>
+              <span className="mx-2">:</span>
+              <span className="mx-2">{item.insertedBy?.userType}</span>
+            </p> */}
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Phone</span>
+              <span className="mx-2">:</span>
+              <span className="mx-2">{item.insertedBy?.phone}</span>
+            </p>
+            <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Email</span>
+              <span className="mx-2">:</span>
+              <span className="mx-2">{item.insertedBy?.email}</span>
             </p>
           </div>
         </Card>
