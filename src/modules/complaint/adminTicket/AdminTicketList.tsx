@@ -109,6 +109,9 @@ const AdminTicketList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        complainCategory: "parent"
       }
     };
     const res = await axios.post("/api/complain-type/get-list", body);
@@ -300,22 +303,30 @@ const AdminTicketList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Ticket Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+    {
+      title: "Ticket User Type",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.userType}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+    {
       title: "Ticket Number",
       dataIndex: "ticketNo",
-      sorter: true,
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
-      title: "Customer ID",
-      dataIndex: "customerId",
-      sorter: true,
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "username",
       sorter: true,
       width: 200,
       align: "center" as AlignType
@@ -363,6 +374,7 @@ const AdminTicketList: React.FC = () => {
     //   width: 200,
     //   align: "center" as AlignType
     // },
+
     // createdOn
     {
       title: "Created At",
@@ -492,6 +504,7 @@ const AdminTicketList: React.FC = () => {
             hasLink={true}
             addLink="/admin/complaint/admin-ticket/create"
             permission="adminTicket.create"
+            btnText="Create Ticket"
             style={{
               borderRadius: "10px",
               padding: "10px",

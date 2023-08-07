@@ -41,7 +41,7 @@ const EditComplainTypeForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const [isActive, setIsActive] = useState(true);
 
@@ -92,13 +92,24 @@ const EditComplainTypeForm = ({ item }: PropData) => {
         .put("/api/complain-type/update", formData)
         .then(res => {
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/complaint/complain-type");
-          });
+
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/complaint/complain-type");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

@@ -65,7 +65,7 @@ const CreatePackageForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const [isActive, setIsActive] = useState(true);
 
@@ -209,13 +209,23 @@ const CreatePackageForm = () => {
           // console.log(res);
           const { data } = res;
 
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/package/package");
-          });
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/package/package");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

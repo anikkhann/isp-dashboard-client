@@ -484,6 +484,38 @@ const ClientList: React.FC = () => {
     //   align: "center" as AlignType
     // },
     {
+      title: "Total Customer",
+      dataIndex: "totalCustomer",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Active Customer",
+      dataIndex: "activeCustomer",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Registered Customer",
+      dataIndex: "registeredCustomer",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Expired Customer",
+      dataIndex: "expiredCustomer",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
       title: "Status",
       dataIndex: "isActive",
       sorter: true,

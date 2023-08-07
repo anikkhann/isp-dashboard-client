@@ -109,6 +109,9 @@ const CustomerTicketList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        complainCategory: "customer"
       }
     };
     const res = await axios.post("/api/complain-type/get-list", body);
@@ -192,7 +195,7 @@ const CustomerTicketList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        ticketCategory: "parent",
+        ticketCategory: "customer",
         complainType: {
           id: complainTypeParams
         },
@@ -499,6 +502,7 @@ const CustomerTicketList: React.FC = () => {
             hasLink={true}
             addLink="/admin/complaint/customer-ticket/create"
             permission="customerTicket.create"
+            btnText="Create Ticket"
             style={{
               borderRadius: "10px",
               padding: "10px",

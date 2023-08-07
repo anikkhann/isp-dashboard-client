@@ -32,7 +32,7 @@ const EditCustomerTypeForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const [isActive, setIsActive] = useState(true);
 
@@ -74,13 +74,23 @@ const EditCustomerTypeForm = ({ item }: PropData) => {
           // console.log(res);
           const { data } = res;
 
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Customer Type Updated successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/customer/customer-type");
-          });
+          if (data.status != 200) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Customer Type Added successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/customer/customer-type");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

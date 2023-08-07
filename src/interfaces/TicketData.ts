@@ -21,6 +21,7 @@ export interface TicketData {
   checkList: string;
   isForSystemAdmin: boolean;
   ticketDetails: any[];
+  attachment: string;
 }
 
 export interface OpenedBy {

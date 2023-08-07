@@ -19,6 +19,7 @@ interface CardProps {
   hasLink: boolean;
   addLink: string;
   permission: string;
+  btnText?: string;
 }
 
 const TableCard = ({
@@ -27,7 +28,8 @@ const TableCard = ({
   addLink,
   hasLink,
   permission,
-  children
+  children,
+  btnText = "Add New"
 }: CardProps) => (
   <Card
     title={title}
@@ -42,7 +44,7 @@ const TableCard = ({
               size={"middle"}
               style={{}}
             >
-              Add New
+              {btnText}
             </Button>
           </Link>
         </Can>

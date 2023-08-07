@@ -36,7 +36,7 @@ const CreateUserForm = () => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const [isActive, setIsActive] = useState(true);
 
@@ -115,14 +115,20 @@ const CreateUserForm = () => {
           // console.log(res);
           const { data } = res;
 
-          if (data.status !== 200) {
+          if (data.status != 200) {
             setShowError(true);
             setErrorMessages(data.message);
-            return;
-          } else {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
             MySwal.fire({
               title: "Success",
-              text: data.message || "Admin Added successfully",
+              text: data.message || "User Added successfully",
               icon: "success"
             }).then(() => {
               router.replace("/admin/user/user");
@@ -143,11 +149,7 @@ const CreateUserForm = () => {
 
   return (
     <>
-      {showError &&
-        errorMessages.length > 0 &&
-        errorMessages.map((error, index) => (
-          <Alert message={error} type="error" showIcon key={index} />
-        ))}
+      {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3">
         <Form

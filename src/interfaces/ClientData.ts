@@ -34,6 +34,11 @@ export interface ClientData {
   insertedBy: InsertedBy;
   editedBy: EditedBy;
   updatedOn?: string;
+
+  totalCustomer: number;
+  activeCustomer: number;
+  registeredCustomer: number;
+  expiredCustomer: number;
 }
 
 export interface Division {
