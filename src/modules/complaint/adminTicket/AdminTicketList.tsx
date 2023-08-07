@@ -109,6 +109,9 @@ const AdminTicketList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        complainCategory: "parent"
       }
     };
     const res = await axios.post("/api/complain-type/get-list", body);
@@ -492,6 +495,7 @@ const AdminTicketList: React.FC = () => {
             hasLink={true}
             addLink="/admin/complaint/admin-ticket/create"
             permission="adminTicket.create"
+            btnText="Create Ticket"
             style={{
               borderRadius: "10px",
               padding: "10px",

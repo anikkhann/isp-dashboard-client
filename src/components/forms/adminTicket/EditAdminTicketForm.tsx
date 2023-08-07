@@ -74,29 +74,42 @@ const EditAdminTicketForm = ({ item }: PropData) => {
   );
 
   const onSubmit = (data: any) => {
-    console.log(data);
-
     const { note } = data;
 
+    const bodyData = {
+      id: item.id,
+      note: note
+    };
+
     const formData = new FormData();
-    formData.append("id", item.id);
     if (file) {
       formData.append("attachment", file);
     }
-    formData.append("note", note);
+    formData.append("body", JSON.stringify(bodyData));
 
     try {
       axios
         .put("/api/ticket-details/reply", formData)
         .then(res => {
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Updated successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/complaint/admin-ticket");
-          });
+
+          if (data.status == 500) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Updated successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/complaint/admin-ticket");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

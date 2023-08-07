@@ -74,16 +74,17 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
   );
 
   const onSubmit = (data: any) => {
-    console.log(data);
-
     const { note } = data;
 
+    const bodyData = {
+      id: item.id,
+      note: note
+    };
     const formData = new FormData();
-    formData.append("id", item.id);
     if (file) {
       formData.append("attachment", file);
     }
-    formData.append("note", note);
+    formData.append("body", JSON.stringify(bodyData));
 
     try {
       axios

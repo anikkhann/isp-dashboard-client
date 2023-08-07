@@ -136,6 +136,9 @@ const CreateAdminTicketForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        complainCategory: "parent"
       }
     };
 
@@ -164,26 +167,43 @@ const CreateAdminTicketForm = () => {
   }, []);
 
   const onSubmit = (data: any) => {
+    const bodyData = {
+      body: {
+        ticketCategory: "parent",
+        complainTypeId: selectedComplainType,
+        complainDetails: data.complainDetails
+      }
+    };
+
     const formData = new FormData();
     if (file) {
       formData.append("attachment", file);
     }
-    formData.append("ticketCategory", "parent");
-    formData.append("complainTypeId", selectedComplainType);
-    formData.append("complainDetails", data.complainDetails);
+    formData.append("body", JSON.stringify(bodyData));
 
     try {
       axios
         .post("/api/ticket/create", formData)
         .then(res => {
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/complaint/customer-ticket");
-          });
+
+          if (data.status == 500) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Created successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/complaint/admin-ticket");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);

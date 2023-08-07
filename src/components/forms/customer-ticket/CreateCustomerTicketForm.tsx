@@ -314,29 +314,44 @@ const CreateCustomerTicketForm = () => {
     // Convert to JSON format
     const checkListJson = JSON.stringify(checkListDataJson, null, 2);
 
+    const bodyData = {
+      ticketCategory: "customer",
+      customerId: selectedCustomer,
+      complainTypeId: selectedComplainType,
+      complainDetails: formValues.complainDetails,
+      checkList: checkListJson,
+      assignedTo: selectedAssignedTo
+    };
+
     const formData = new FormData();
     if (file) {
       formData.append("attachment", file);
     }
-    formData.append("ticketCategory", "customer");
-    formData.append("customerId", selectedCustomer);
-    formData.append("complainTypeId", selectedComplainType);
-    formData.append("complainDetails", formValues.complainDetails);
-    formData.append("checkList", checkListJson);
-    formData.append("assignedTo", selectedAssignedTo);
+    formData.append("body", JSON.stringify(bodyData));
 
     try {
       axios
         .post("/api/ticket/create", formData)
         .then(res => {
           const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            router.replace("/admin/complaint/customer-ticket");
-          });
+
+          if (data.status == 500) {
+            MySwal.fire({
+              title: "Error",
+              text: data.message || "Something went wrong",
+              icon: "error"
+            });
+          }
+
+          if (data.status == 200) {
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Created successfully",
+              icon: "success"
+            }).then(() => {
+              router.replace("/admin/complaint/customer-ticket");
+            });
+          }
         })
         .catch(err => {
           // console.log(err);
@@ -596,11 +611,11 @@ const CreateCustomerTicketForm = () => {
                       label="Assigned To"
                       name="assignedTo"
                       /*   rules={[
-                  {
-                    required: true,
-                    message: "Please select Assigned To!"
-                  }
-                ]} */
+                {
+                  required: true,
+                  message: "Please select Assigned To!"
+                }
+              ]} */
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <Select
