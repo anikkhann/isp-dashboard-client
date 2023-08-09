@@ -633,6 +633,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 
@@ -659,7 +662,8 @@ const CreateCustomerForm = () => {
         ]
       },
       body: {
-        distributionZone: { id: selectedDistributionZone }
+        distributionZone: { id: selectedDistributionZone },
+        isActive: true
       }
     };
 

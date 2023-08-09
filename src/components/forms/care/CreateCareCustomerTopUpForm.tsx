@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
@@ -10,111 +9,68 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { CustomerData } from "@/interfaces/CustomerData";
 
-interface PermissionFormData {
-  displayName: string;
-  tag: string;
+interface FormData {
+  amount: string;
+  remarks: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
+interface PropData {
+  item: CustomerData;
+}
 
-const tagsList = [
+const types = [
   {
-    label: "Dashboard",
-    value: "dashboard"
+    label: "debit",
+    value: "debit"
   },
   {
-    label: "Create",
-    value: "create"
-  },
-  {
-    label: "View",
-    value: "view"
-  },
-  {
-    label: "Update",
-    value: "update"
-  },
-  {
-    label: "Delete",
-    value: "delete"
-  },
-  {
-    label: "List",
-    value: "list"
-  },
-  {
-    label: "Approve",
-    value: "approve"
-  },
-  {
-    label: "Reject",
-    value: "reject"
-  },
-  {
-    label: "ReInitiate",
-    value: "reinitiate"
-  },
-  {
-    label: "Basic Search",
-    value: "basicSearch"
-  },
-  {
-    label: "Advanced Search",
-    value: "advancedSearch"
-  },
-  {
-    label: "Top Up",
-    value: "topUp"
-  },
-  {
-    label: "Renew",
-    value: "renew"
-  },
-  {
-    label: "Disconnect",
-    value: "disconnect"
-  },
-
-  {
-    label: "Cancel",
-    value: "cancel"
+    label: "credit",
+    value: "credit"
   }
 ];
 
-const CreatePermissionForm = () => {
+const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
-  const [actionTags, setActionTags] = useState<any[]>([]);
-
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const handleChange = (value: any[]) => {
+  const [selectType, setSelectType] = useState<any>(null);
+
+  const token = Cookies.get("token");
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  const handleChange = (value: any) => {
     // console.log("checked = ", value);
-    setActionTags(value as any[]);
-    form.setFieldsValue({
-      actionTags: value
-    });
+    form.setFieldsValue({ type: value });
+    setSelectType(value as any);
   };
 
-  const onSubmit = (data: PermissionFormData) => {
-    const { displayName, tag } = data;
+  useEffect(() => {
+    if (item) {
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item]);
+
+  const onSubmit = (data: FormData) => {
+    // console.log(data);
+    const { amount, remarks } = data;
+
+    const formData = {
+      customerId: item.id,
+      amount: amount,
+      type: selectType,
+      remarks: remarks
+    };
+
     try {
-      const token = Cookies.get("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios
-        .post("/api/permission/create", {
-          displayName: displayName,
-          tag: tag,
-          actionTags: actionTags
-        })
+        .post("/api/customer-topup/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -129,10 +85,10 @@ const CreatePermissionForm = () => {
           if (data.status == 200) {
             MySwal.fire({
               title: "Success",
-              text: data.message || "Permission created successfully",
+              text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/user/permission");
+              router.replace(`/admin/customer-care/${item.id}`);
             });
           }
         })
@@ -142,7 +98,7 @@ const CreatePermissionForm = () => {
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      //  console.log(err)
+      // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     }
@@ -152,16 +108,19 @@ const CreatePermissionForm = () => {
     <>
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="my-6">
+      <div className="mt-3">
         <Form
           // {...layout}
           layout="vertical"
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
-          style={{
-            width: "100%"
+          initialValues={{
+            type: "",
+            amount: "",
+            remarks: ""
           }}
+          style={{ maxWidth: "100%" }}
           name="wrap"
           // labelCol={{ flex: "110px" }}
           // labelAlign="left"
@@ -169,11 +128,6 @@ const CreatePermissionForm = () => {
           // wrapperCol={{ flex: 1 }}
           colon={false}
           scrollToFirstError
-          initialValues={{
-            displayName: "",
-            tag: "",
-            actionTags: []
-          }}
         >
           <Row
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
@@ -182,108 +136,109 @@ const CreatePermissionForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
               className="gutter-row"
             >
+              {/* type */}
               <Form.Item
-                label="Display Name"
+                label="Type"
+                name="type"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="displayName"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Display Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="displayName"
-                  className={`form-control`}
-                  name="displayName"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Tag"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="tag"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Tag!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Tag"
-                  className={`form-control`}
-                  name="tag"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Action Tags"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="actionTags"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select actions"
+                    message: "Please select Type!"
                   }
                 ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
-                    mode="multiple"
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
+                    placeholder="Please select Type"
                     onChange={handleChange}
-                    options={tagsList}
-                    value={actionTags}
+                    options={types}
+                    value={selectType}
                   />
                 </Space>
               </Form.Item>
             </Col>
-          </Row>
-          {/* <Row>
-            <Col></Col>
-          </Row> */}
 
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* Amount */}
+              <Form.Item
+                label="Amount"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="amount"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Amount!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="amount"
+                  className={`form - control`}
+                  name="amount"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
+            >
+              {/* remarks */}
+              <Form.Item
+                label="remarks"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="remarks"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your remarks!"
+                  }
+                ]}
+              >
+                <Input.TextArea
+                  placeholder="remarks"
+                  className={`form - control`}
+                  name="remarks"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          {/* submit */}
           <Row justify="center">
             <Col>
               <Form.Item>
@@ -309,4 +264,4 @@ const CreatePermissionForm = () => {
   );
 };
 
-export default CreatePermissionForm;
+export default CreateCareCustomerTopUpForm;
