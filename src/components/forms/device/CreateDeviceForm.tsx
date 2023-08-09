@@ -122,7 +122,7 @@ const CreateDeviceForm = () => {
 
   const [selectedDeviceType, setSelectedDeviceType] = useState("NAS");
   const [selectedMonitoringType, setSelectedMonitoringType] = useState(null);
-  const [selectedOltType, setSelectedOltType] = useState(null);
+  const [selectedOltType, setSelectedOltType] = useState("EPON");
 
   const [distributionZones, setDistributionZones] = useState<any[]>([]);
   const [selectedDistributionZone, setSelectedDistributionZone] = useState<
@@ -1340,12 +1340,12 @@ const CreateDeviceForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Latitude!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Latitude!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -1373,12 +1373,12 @@ const CreateDeviceForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Longitude!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Longitude!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"

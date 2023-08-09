@@ -904,7 +904,7 @@ const CreateCustomerForm = () => {
             distributionPopId: "",
             isMacBound: false,
             mac: "",
-            simultaneousUser: "",
+            simultaneousUser: "1",
             ipMode: "",
             staticIp: "",
             referenceType: "",

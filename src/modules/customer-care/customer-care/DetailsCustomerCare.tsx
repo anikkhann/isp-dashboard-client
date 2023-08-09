@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // import AppLoader from "@/lib/AppLoader";
+
 import AppRowContainer from "@/lib/AppRowContainer";
 import {
   // Alert,
@@ -131,87 +132,78 @@ const DetailsCustomerCare = ({ id }: any) => {
           ]}
         />
 
-        <div
-          style={{
-            margin: "10px 40px",
-            textAlign: "left",
-            display: "flex",
-            justifyContent: "right",
-            width: "100%"
-          }}
-        >
-          <Space direction="vertical">
-            <Space wrap>
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#EA1179",
-                  color: "#ffffff"
-                }}
-                className="btn btn-primary hover:bg-accent"
-              >
-                <Link href="/admin/complaint/customer-ticket/create">
-                  Create Ticket
-                </Link>
-              </Button>
+        <Space direction="vertical">
+          <Space wrap>
+            <Button
+              style={{
+                marginLeft: "auto",
+                marginRight: "20px",
+                backgroundColor: "#EA1179",
+                color: "#ffffff"
+              }}
+              className="btn btn-primary hover:bg-accent"
+            >
+              <Link href="/admin/complaint/customer-ticket/create">
+                Create Ticket
+              </Link>
+            </Button>
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#241468",
-                  color: "#ffffff"
-                }}
-              >
-                SAF Verification
-              </Button>
+            <Button
+              style={{
+                marginLeft: "auto",
+                marginRight: "20px",
+                backgroundColor: "#241468",
+                color: "#ffffff"
+              }}
+            >
+              SAF Verification
+            </Button>
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#0B666A",
-                  color: "#ffffff"
-                }}
-              >
-                Live Bandwidth
-              </Button>
+            <Button
+              style={{
+                marginLeft: "auto",
+                marginRight: "20px",
+                backgroundColor: "#0B666A",
+                color: "#ffffff"
+              }}
+            >
+              Live Bandwidth
+            </Button>
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#F94A29",
-                  color: "#ffffff"
-                }}
-              >
-                Disconnect
-              </Button>
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#35A29F",
-                  color: "#ffffff"
-                }}
-              >
-                Top Up
-              </Button>
+            <Button
+              style={{
+                marginLeft: "auto",
+                marginRight: "20px",
+                backgroundColor: "#F94A29",
+                color: "#ffffff"
+              }}
+            >
+              Disconnect
+            </Button>
+            <Button
+              style={{
+                marginLeft: "auto",
+                marginRight: "20px",
+                backgroundColor: "#35A29F",
+                color: "#ffffff"
+              }}
+            >
+              Top Up
+            </Button>
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#D61355",
-                  color: "#ffffff"
-                }}
-              >
-                Renew
-              </Button>
-            </Space>
+            <Button
+              style={{
+                marginLeft: "auto",
+                marginRight: "20px",
+                backgroundColor: "#D61355",
+                color: "#ffffff"
+              }}
+            >
+              Renew
+            </Button>
           </Space>
-        </div>
+        </Space>
+
         <div
           style={{
             width: "90%",

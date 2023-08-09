@@ -31,33 +31,101 @@ const DetailsSubscriptionData = ({ item }: PropData) => {
             border: "1px solid #F15F22"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Package Name</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.name}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Package Type</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.packageType}</span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Package Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.name}</span>
+              </Col>
+            </Row>
 
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Charge Amount</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.chargeAmount}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Slab Start</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.slabStart}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Slab End</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.slabEnd}</span>
-            </p>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Package Type :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.packageType}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Charge Amount :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.chargeAmount}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Slab Start :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.slabStart}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Slab End :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.slabEnd}</span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>
@@ -81,18 +149,44 @@ const DetailsSubscriptionData = ({ item }: PropData) => {
             border: "1px solid #F15F22"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Phone Number</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.phone}</span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Phone Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.insertedBy?.phone}</span>
+              </Col>
+            </Row>
 
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Email</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.email}</span>
-            </p>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Email :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.insertedBy?.email}</span>
+              </Col>
+            </Row>
           </div>
         </Card>
         <Card
@@ -106,37 +200,97 @@ const DetailsSubscriptionData = ({ item }: PropData) => {
             marginTop: "1rem"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Created By</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">{item.insertedBy?.username}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Created At</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">
-                {item.createdOn
-                  ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
-                  : null}
-              </span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Updated By</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">
-                {item.editedBy ? item.editedBy.username : null}
-              </span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Updated At</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">
-                {item.updatedOn
-                  ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
-                  : null}
-              </span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {" "}
+                  {item.createdOn
+                    ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {" "}
+                  {item.editedBy ? item.editedBy.username : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {" "}
+                  {item.updatedOn
+                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>

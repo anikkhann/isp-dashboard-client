@@ -14,8 +14,8 @@ const DetailsPackageData = ({ item }: PropData) => {
       <Col
         xs={24}
         sm={24}
-        md={24}
-        lg={24}
+        md={12}
+        lg={12}
         xl={12}
         xxl={12}
         className="gutter-row"
@@ -30,48 +30,160 @@ const DetailsPackageData = ({ item }: PropData) => {
             border: "1px solid #F15F22"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Name</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.name}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Upload Limit</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.uploadLimit}</span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.name}</span>
+              </Col>
+            </Row>
 
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Upload Limit Unit</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.uploadLimitUnit}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Download Limit</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.downloadLimit}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Download Limit Unit</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.downloadLimitUnit}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Vat</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.vat}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Validity</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.validity}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Validity Unit</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.validityUnit}</span>
-            </p>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Upload Limit :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.uploadLimit}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Upload Limit Unit :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.uploadLimitUnit}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Download Limit :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.downloadLimit}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">
+                  Download Limit Unit :
+                </span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.downloadLimitUnit}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Vat :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.vat}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Validity :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.validity}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Validity Unit :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.validityUnit}</span>
+              </Col>
+            </Row>
           </div>
         </Card>
         <Card
@@ -85,37 +197,94 @@ const DetailsPackageData = ({ item }: PropData) => {
             marginTop: "1rem"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Created By</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">{item.insertedBy?.username}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Created At</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">
-                {item.createdOn
-                  ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
-                  : null}
-              </span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Updated By</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">
-                {item.editedBy ? item.editedBy.username : null}
-              </span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Updated At</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">
-                {item.updatedOn
-                  ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
-                  : null}
-              </span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.createdOn
+                    ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.editedBy ? item.editedBy.username : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.updatedOn
+                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>
@@ -123,8 +292,8 @@ const DetailsPackageData = ({ item }: PropData) => {
       <Col
         xs={24}
         sm={24}
-        md={24}
-        lg={24}
+        md={12}
+        lg={12}
         xl={12}
         xxl={12}
         className="gutter-row"
@@ -139,47 +308,169 @@ const DetailsPackageData = ({ item }: PropData) => {
             border: "1px solid #F15F22"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Partner Name</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.name}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Contact Person</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.contactPerson}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Contact Number</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.contactNumber}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Alternate Number</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.altContactNumber}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Email</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.email}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Address</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.address}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Division</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.division?.name}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">District</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.partner?.district?.name}</span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Partner Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.partner?.name}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Contact Person :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.partner?.contactPerson}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Contact Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.partner?.contactNumber}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Alternate Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.partner?.altContactNumber}
+                </span>
+              </Col>
+            </Row>
+
+            {/* <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end",
+               
+                }}
+              >
+                <span className="font-bold text-base">Email :</span>
+              </Col>
+              <Col >
+                <span className="mx-1 text-base">{item.partner?.email}</span>
+              </Col>
+            </Row> */}
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Address :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.partner?.address}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Division :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.partner?.division?.name}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">District :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.partner?.district?.name}
+                </span>
+              </Col>
+            </Row>
           </div>
         </Card>
 
@@ -194,27 +485,45 @@ const DetailsPackageData = ({ item }: PropData) => {
             marginTop: "1rem"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            {/* <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Inserted By</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.username}</span>
-            </p> */}
-            {/* <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">User Type</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.userType}</span>
-            </p> */}
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Phone</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.phone}</span>
-            </p>
-            <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Email</span>
-              <span className="mx-2">:</span>
-              <span className="mx-2">{item.insertedBy?.email}</span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Phone :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.insertedBy?.phone}</span>
+              </Col>
+            </Row>
+            {/* 
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end",
+               
+                }}
+              >
+                <span className="font-bold text-base">Email :</span>
+              </Col>
+              <Col >
+                <span className="mx-1 text-base">{item.insertedBy?.email}</span>
+              </Col>
+            </Row> */}
           </div>
         </Card>
       </Col>

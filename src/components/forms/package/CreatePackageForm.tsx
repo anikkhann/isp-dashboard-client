@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useEffect, useState } from "react";
+//useEffect
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
@@ -76,15 +77,15 @@ const CreatePackageForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [zones, setZones] = useState([]);
+  // const [zones, setZones] = useState([]);
 
-  const [selectedZone, setSelectedZone] = useState<any[]>([]);
+  // const [selectedZone, setSelectedZone] = useState<any[]>([]);
 
-  const [selectedUnit, setSelectedUnit] = useState(null);
+  const [selectedUnit, setSelectedUnit] = useState("Day");
 
-  const [selectedUploadUnit, setSelectedUploadUnit] = useState(null);
+  const [selectedUploadUnit, setSelectedUploadUnit] = useState("Mbps");
 
-  const [selectedDownloadUnit, setSelectedDownloadUnit] = useState(null);
+  const [selectedDownloadUnit, setSelectedDownloadUnit] = useState("Mbps");
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -105,11 +106,11 @@ const CreatePackageForm = () => {
     setIsAssignedToSubZone(e.target.checked ? true : false);
   };
 
-  const handleZoneChange = (value: any[]) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ zoneIds: value });
-    setSelectedZone(value as any[]);
-  };
+  // const handleZoneChange = (value: any[]) => {
+
+  //   form.setFieldsValue({ zoneIds: value });
+  //   setSelectedZone(value as any[]);
+  // };
 
   const handleUnitChange = (value: any) => {
     // console.log("checked = ", value);
@@ -129,39 +130,37 @@ const CreatePackageForm = () => {
     setSelectedDownloadUnit(value as any);
   };
 
-  const getZones = async () => {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "zone"
-      }
-    };
+  // const getZones = async () => {
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       partnerType: "zone"
+  //     }
+  //   };
 
-    const res = await axios.post("/api/partner/get-list", body);
-    if (res.data.status == 200) {
-      // console.log(res.data.data.roles);
+  //   const res = await axios.post("/api/partner/get-list", body);
+  //   if (res.data.status == 200) {
+  //     const items = res.data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
 
-      const items = res.data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
+  //     setZones(items);
+  //   }
+  // };
 
-      setZones(items);
-    }
-  };
-
-  useEffect(() => {
-    getZones();
-  }, []);
+  // useEffect(() => {
+  //   getZones();
+  // }, []);
 
   const onSubmit = (data: FormData) => {
     // console.log(data);
@@ -182,7 +181,7 @@ const CreatePackageForm = () => {
     } = data;
 
     const formData = {
-      zoneIds: selectedZone,
+      // zoneIds: selectedZone,
       name: name,
       displayName: displayName,
       uploadLimit: uploadLimit,
@@ -694,7 +693,7 @@ const CreatePackageForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
-                {/* zoneIds */}
+                {/*               
                 <Form.Item
                   label="Zone"
                   style={{
@@ -720,7 +719,7 @@ const CreatePackageForm = () => {
                       value={selectedZone}
                     />
                   </Space>
-                </Form.Item>
+                </Form.Item> */}
               </Col>
             )}
 

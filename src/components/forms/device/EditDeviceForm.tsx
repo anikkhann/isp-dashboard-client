@@ -1339,12 +1339,12 @@ const EditDeviceForm = ({ item }: any) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Latitude!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Latitude!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -1372,12 +1372,12 @@ const EditDeviceForm = ({ item }: any) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Longitude!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Longitude!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -1388,6 +1388,15 @@ const EditDeviceForm = ({ item }: any) => {
                 />
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
 
           {/* status */}
