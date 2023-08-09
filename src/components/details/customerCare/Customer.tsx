@@ -25,7 +25,7 @@ const Customer = ({ item }: PropData) => {
           bordered={false}
           style={{
             textAlign: "start",
-            backgroundColor: "white",
+            backgroundColor: "#ffffff",
             borderRadius: "10px",
             border: "1px solid #F15F22"
           }}

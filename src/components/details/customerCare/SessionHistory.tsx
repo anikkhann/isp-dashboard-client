@@ -231,7 +231,8 @@ const SessionHistory = ({ item }: PropData) => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto"
+              overflowX: "auto",
+              backgroundColor: "#ffffff"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
