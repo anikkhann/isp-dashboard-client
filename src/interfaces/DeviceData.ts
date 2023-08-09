@@ -1,3 +1,5 @@
+import { EditedBy } from "./RoleData";
+
 export interface DeviceData {
   createdOn: number;
   id: string;
@@ -19,6 +21,8 @@ export interface DeviceData {
   isActive: boolean;
   oltType: string;
   insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  updatedOn?: string;
 }
 
 export interface Partner {

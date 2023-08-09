@@ -42,7 +42,7 @@ const TableCard = ({
               type="primary"
               icon={<PlusSquareOutlined />}
               size={"middle"}
-              style={{}}
+              style={{ marginLeft: "1rem" }}
             >
               {btnText}
             </Button>

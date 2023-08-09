@@ -66,6 +66,31 @@ const tagsList = [
     value: "reject"
   },
   {
+    label: "ReInitiate",
+    value: "reinitiate"
+  },
+  {
+    label: "Basic Search",
+    value: "basicSearch"
+  },
+  {
+    label: "Advanced Search",
+    value: "advancedSearch"
+  },
+  {
+    label: "Top Up",
+    value: "topUp"
+  },
+  {
+    label: "Renew",
+    value: "renew"
+  },
+  {
+    label: "Disconnect",
+    value: "disconnect"
+  },
+
+  {
     label: "Cancel",
     value: "cancel"
   }

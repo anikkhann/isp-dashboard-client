@@ -81,9 +81,9 @@ const EditPackageForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [zones, setZones] = useState([]);
+  // const [zones, setZones] = useState([]);
 
-  const [selectedZone, setSelectedZone] = useState<any[]>([]);
+  // const [selectedZone, setSelectedZone] = useState<any[]>([]);
 
   const [selectedUnit, setSelectedUnit] = useState<any>(null);
 
@@ -110,11 +110,10 @@ const EditPackageForm = ({ item }: PropData) => {
     setIsAssignedToSubZone(e.target.checked ? true : false);
   };
 
-  const handleZoneChange = (value: any[]) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ zoneIds: value });
-    setSelectedZone(value as any[]);
-  };
+  // const handleZoneChange = (value: any[]) => {
+  //   form.setFieldsValue({ zoneIds: value });
+  //   setSelectedZone(value as any[]);
+  // };
 
   const handleUnitChange = (value: any) => {
     // console.log("checked = ", value);
@@ -134,46 +133,45 @@ const EditPackageForm = ({ item }: PropData) => {
     setSelectedDownloadUnit(value as any);
   };
 
-  const getZones = async () => {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "zone"
-      }
-    };
+  // const getZones = async () => {
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       partnerType: "zone"
+  //     }
+  //   };
 
-    const res = await axios.post("/api/partner/get-list", body);
-    if (res.data.status == 200) {
-      // console.log(res.data.data.roles);
+  //   const res = await axios.post("/api/partner/get-list", body);
+  //   if (res.data.status == 200) {
 
-      const items = res.data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
+  //     const items = res.data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
 
-      setZones(items);
-    }
-  };
+  //     setZones(items);
+  //   }
+  // };
 
-  useEffect(() => {
-    getZones();
-  }, []);
+  // useEffect(() => {
+  //   getZones();
+  // }, []);
 
   useEffect(() => {
     if (item) {
-      const checked = item.zones.map((itemData: any) => {
-        return itemData.zoneId;
-      });
-      setSelectedZone(checked);
+      // const checked = item.zones.map((itemData: any) => {
+      //   return itemData.zoneId;
+      // });
+      // setSelectedZone(checked);
 
       form.setFieldsValue({
         name: item.name,
@@ -217,7 +215,7 @@ const EditPackageForm = ({ item }: PropData) => {
 
     const formData = {
       id: item.id,
-      zoneIds: selectedZone,
+      // zoneIds: selectedZone,
       name: name,
       displayName: displayName,
       uploadLimit: uploadLimit,
@@ -438,7 +436,7 @@ const EditPackageForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Upload Limit Unit"
                     onChange={handleUploadUnitChange}
                     options={uploadUnits}
@@ -507,7 +505,7 @@ const EditPackageForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Download Limit Unit"
                     onChange={handleDownloadUnitChange}
                     options={uploadUnits}
@@ -669,12 +667,12 @@ const EditPackageForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="nextExpiredPackageId"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Next Expired Package!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Next Expired Package!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -702,12 +700,12 @@ const EditPackageForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="ipPoolName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your IP Pool Name!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your IP Pool Name!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -729,7 +727,7 @@ const EditPackageForm = ({ item }: PropData) => {
                 className="gutter-row"
               >
                 {/* zoneIds */}
-                <Form.Item
+                {/* <Form.Item
                   label="Zone"
                   style={{
                     marginBottom: 0,
@@ -754,7 +752,7 @@ const EditPackageForm = ({ item }: PropData) => {
                       value={selectedZone}
                     />
                   </Space>
-                </Form.Item>
+                </Form.Item> */}
               </Col>
             )}
 

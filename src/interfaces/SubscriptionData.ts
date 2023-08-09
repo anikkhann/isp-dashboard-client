@@ -1,3 +1,5 @@
+import { EditedBy } from "./RoleData";
+
 export interface SubscriptionData {
   id: string;
   name: string;
@@ -7,6 +9,9 @@ export interface SubscriptionData {
   chargeAmount: number;
   isActive: boolean;
   insertedBy: InsertedBy;
+  createdOn: string;
+  editedBy: EditedBy;
+  updatedOn?: string;
 }
 
 export interface InsertedBy {

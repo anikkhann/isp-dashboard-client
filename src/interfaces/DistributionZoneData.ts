@@ -1,3 +1,5 @@
+import { EditedBy } from "./RoleData";
+
 export interface DistributionZoneData {
   createdOn: number;
   id: string;
@@ -6,6 +8,8 @@ export interface DistributionZoneData {
   name: string;
   isActive: boolean;
   insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  updatedOn?: string;
 }
 
 export interface Partner {

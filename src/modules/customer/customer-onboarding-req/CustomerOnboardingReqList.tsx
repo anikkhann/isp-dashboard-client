@@ -11,7 +11,13 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  CheckSquareOutlined,
+  CloseSquareOutlined,
+  EditOutlined,
+  EyeOutlined,
+  IssuesCloseOutlined
+} from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
@@ -158,17 +164,17 @@ const CustomerOnboardingReqList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
       title: "Created At",
@@ -183,38 +189,38 @@ const CustomerOnboardingReqList: React.FC = () => {
       align: "center" as AlignType
     },
     // editedBy
-    {
-      title: "Updated By",
-      dataIndex: "editedBy",
-      sorter: false,
-      render: (editedBy: any) => {
-        if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
-      },
+    // {
+    //   title: "Updated By",
+    //   dataIndex: "editedBy",
+    //   sorter: false,
+    //   render: (editedBy: any) => {
+    //     if (!editedBy) return "-";
+    //     return <>{editedBy.name}</>;
+    //   },
 
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // updatedOn
-    {
-      title: "Updated At",
-      dataIndex: "updatedOn",
-      sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Updated At",
+    //   dataIndex: "updatedOn",
+    //   sorter: false,
+    //   render: (updatedOn: any) => {
+    //     if (!updatedOn) return "-";
+    //     const date = new Date(updatedOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Action",
       dataIndex: "action",
       sorter: false,
       render: (text: any, record: any) => {
         return (
-          <>
+          <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("customerOnboardingReq.update", "") ? (
                 <Space size="middle" align="center" wrap>
@@ -225,8 +231,56 @@ const CustomerOnboardingReqList: React.FC = () => {
                   </Link>
                 </Space>
               ) : null}
-              {ability.can("customerOnboardingReq.update", "") ? (
+              {ability.can("customerOnboardingReq.approve", "") ? (
                 <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/customer/customer-onboarding-req/${record.id}/approve`}
+                  >
+                    <Button
+                      type="primary"
+                      icon={<CheckSquareOutlined />}
+                      style={{
+                        backgroundColor: "#0B666A",
+                        color: "#ffffff"
+                      }}
+                    />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerOnboardingReq.reject", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/customer/customer-onboarding-req/${record.id}/reject`}
+                  >
+                    <Button
+                      type="primary"
+                      icon={<CloseSquareOutlined />}
+                      style={{
+                        backgroundColor: "#EA1179",
+                        color: "#ffffff"
+                      }}
+                    />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerOnboardingReq.reinitiate", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/customer/customer-onboarding-req/${record.id}/reinitiate`}
+                  >
+                    <Button
+                      type="primary"
+                      icon={<IssuesCloseOutlined />}
+                      style={{
+                        backgroundColor: "#241468",
+                        color: "#ffffff"
+                      }}
+                    />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerOnboardingReq.view", "") ? (
+                <Space size="middle" align="center" wrap className="mx-1">
                   <Link
                     href={`/admin/customer/customer-onboarding-req/${record.id}`}
                   >
@@ -235,7 +289,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                 </Space>
               ) : null}
             </Space>
-          </>
+          </div>
         );
       },
       align: "center" as AlignType

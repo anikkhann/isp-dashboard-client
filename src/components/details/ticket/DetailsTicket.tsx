@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import { TicketData } from "@/interfaces/TicketData";
 import { FileImageOutlined } from "@ant-design/icons";
-import { Card, Col, Row, Button } from "antd";
+import { Card, Col, Row, Button, Modal } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import React, { useEffect, useState } from "react";
 
@@ -13,6 +14,16 @@ const DetailsTicket = ({ item, replys }: PropData) => {
   const [createdDate, setCreatedDate] = useState<Date | null>(null);
   const [timeDiff, setTimeDiff] = useState<string>("");
 
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const handleCancel = () => setPreviewOpen(false);
+  const [attachmentUrl, setAttachmentUrl] = useState("");
+  const [attachmentName, setAttachmentName] = useState("");
+
+  const [replyPreviewOpen, setReplyPreviewOpen] = useState(false);
+  const handleReplyCancel = () => setReplyPreviewOpen(false);
+  const [replyAttachmentUrl, setReplyAttachmentUrl] = useState("");
+  const [replyAttachmentName, setReplyAttachmentName] = useState("");
+
   function timeDifference(timestamp = Date.now()) {
     const inputDate = new Date(timestamp);
     setTimeDiff(formatDistanceToNow(inputDate, { addSuffix: true }));
@@ -21,6 +32,12 @@ const DetailsTicket = ({ item, replys }: PropData) => {
   const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
+    if (item.attachment) {
+      const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+      setAttachmentUrl(`${url}/ticket/public/downloadFile/${item.attachment}`);
+      setAttachmentName(item.attachment);
+    }
+
     if (item.createdOn) {
       setCreatedDate(new Date(item.createdOn));
       timeDifference(item.createdOn);
@@ -74,19 +91,15 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           <div style={{ textAlign: "start" }}>
             <p>
               <span className="font-bold">Customer ID:</span>
-              <span className="mx-2">{item.customerId}</span>
+              <span className="mx-2">{item.customer?.customerId}</span>
             </p>
             <p>
               <span className="font-bold">Customer Name:</span>
+              <span className="mx-2">{item.customer.name}</span>
+            </p>
+            <p>
+              <span className="font-bold">Customer Username:</span>
               <span className="mx-2">{item.customer.username}</span>
-            </p>
-            <p>
-              <span className="font-bold"> Created By:</span>
-              <span className="mx-2">{item.insertedBy.username}</span>
-            </p>
-            <p>
-              <span className="font-bold">Assigned To:</span>
-              <span className="mx-2"></span>
             </p>
           </div>
         </Card>
@@ -107,13 +120,24 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           <div style={{ textAlign: "start" }}>
             <h1 className="font-bold text-lg">{item.complainType?.name}</h1>
             {item.attachment && (
-              <a
-                href={`${url}/ticket/public/downloadFile/${item.attachment}`}
-                target="_blank"
-              >
+              <Button onClick={() => setPreviewOpen(true)}>
                 <FileImageOutlined /> {item.attachment}
-              </a>
+              </Button>
             )}
+
+            <Modal
+              open={previewOpen}
+              title={attachmentName}
+              footer={null}
+              onCancel={handleCancel}
+            >
+              <img
+                alt={attachmentName}
+                style={{ width: "100%" }}
+                src={attachmentUrl}
+              />
+            </Modal>
+
             <p className="text-justify">{item.complainDetails}</p>
           </div>
         </Card>
@@ -157,14 +181,33 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                   <span className="mx-2">
                     {new Date(replyData.createdOn).toLocaleTimeString()}
                   </span>
+
                   {replyData.attachment && (
-                    <a
-                      href={`${url}/ticket/public/downloadFile/${replyData.attachment}`}
-                      target="_blank"
+                    <Button
+                      onClick={() => {
+                        setReplyAttachmentUrl(
+                          `${url}/ticket/public/downloadFile/${replyData.attachment}`
+                        );
+                        setReplyAttachmentName(replyData.attachment);
+                        setReplyPreviewOpen(true);
+                      }}
                     >
                       <FileImageOutlined /> {replyData.attachment}
-                    </a>
+                    </Button>
                   )}
+
+                  <Modal
+                    open={replyPreviewOpen}
+                    title={replyAttachmentName}
+                    footer={null}
+                    onCancel={handleReplyCancel}
+                  >
+                    <img
+                      alt={replyAttachmentName}
+                      style={{ width: "100%" }}
+                      src={replyAttachmentUrl}
+                    />
+                  </Modal>
                 </p>
                 <p className="ml-10 font-semibold">{replyData.note}</p>
               </div>

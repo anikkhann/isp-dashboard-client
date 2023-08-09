@@ -1,3 +1,5 @@
+import { EditedBy } from "./RoleData";
+
 export interface IpData {
   createdOn: number;
   id: string;
@@ -6,6 +8,8 @@ export interface IpData {
   ip: string;
   isUsed: boolean;
   insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  updatedOn?: string;
 }
 
 export interface IpSubnet {

@@ -633,6 +633,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 
@@ -659,7 +662,8 @@ const CreateCustomerForm = () => {
         ]
       },
       body: {
-        distributionZone: { id: selectedDistributionZone }
+        distributionZone: { id: selectedDistributionZone },
+        isActive: true
       }
     };
 
@@ -904,7 +908,7 @@ const CreateCustomerForm = () => {
             distributionPopId: "",
             isMacBound: false,
             mac: "",
-            simultaneousUser: "",
+            simultaneousUser: "1",
             ipMode: "",
             staticIp: "",
             referenceType: "",

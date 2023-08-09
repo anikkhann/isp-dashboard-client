@@ -1,6 +1,7 @@
 import { SubscriptionData } from "@/interfaces/SubscriptionData";
 import React from "react";
 import { Row, Col, Card } from "antd";
+import { format } from "date-fns";
 
 interface PropData {
   item: SubscriptionData;
@@ -30,38 +31,101 @@ const DetailsSubscriptionData = ({ item }: PropData) => {
             border: "1px solid #F15F22"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Package Name <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.name}</span>
-            </p>
-            <p>
-              <span className="font-bold">
-                Package Type <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.packageType}</span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Package Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.name}</span>
+              </Col>
+            </Row>
 
-            <p>
-              <span className="font-bold">
-                Charge Amount <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.chargeAmount}</span>
-            </p>
-            <p>
-              <span className="font-bold">
-                Slab Start <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.slabStart}</span>
-            </p>
-            <p>
-              <span className="font-bold">
-                Slab End <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.slabEnd}</span>
-            </p>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Package Type :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.packageType}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Charge Amount :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.chargeAmount}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Slab Start :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.slabStart}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Slab End :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.slabEnd}</span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>
@@ -85,32 +149,148 @@ const DetailsSubscriptionData = ({ item }: PropData) => {
             border: "1px solid #F15F22"
           }}
         >
-          <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">
-                Inserted By <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.insertedBy?.username}</span>
-            </p>
-            <p>
-              <span className="font-bold">
-                User Type <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.insertedBy?.userType}</span>
-            </p>
-            <p>
-              <span className="font-bold">
-                Phone Number<span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.insertedBy?.phone}</span>
-            </p>
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Phone Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.insertedBy?.phone}</span>
+              </Col>
+            </Row>
 
-            <p>
-              <span className="font-bold">
-                Email <span className="mx-2">:</span>
-              </span>
-              <span className="mx-2">{item.insertedBy?.email}</span>
-            </p>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Email :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.insertedBy?.email}</span>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {" "}
+                  {item.createdOn
+                    ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {" "}
+                  {item.editedBy ? item.editedBy.username : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {" "}
+                  {item.updatedOn
+                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>

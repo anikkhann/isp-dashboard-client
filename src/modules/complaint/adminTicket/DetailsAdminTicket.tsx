@@ -285,8 +285,8 @@ const DetailsAdminTicket = ({ id }: any) => {
           "limit": 10, */
         sort: [
           {
-            order: "asc",
-            field: "note"
+            order: "desc",
+            field: "createdOn"
           }
         ]
       },
@@ -516,11 +516,11 @@ const DetailsAdminTicket = ({ id }: any) => {
                           fontWeight: "bold"
                         }}
                         /* rules={[
-                      {
-                        required: true,
-                        message: "Select root Cause!"
-                      },
-                    ]} */
+                    {
+                      required: true,
+                      message: "Select root Cause!"
+                    },
+                  ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select

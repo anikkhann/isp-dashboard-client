@@ -1,3 +1,5 @@
+import { EditedBy } from "./RoleData";
+
 export interface ClientData {
   createdOn: number;
   id: string;
@@ -30,6 +32,8 @@ export interface ClientData {
   radiusIpId: string;
   isActive: boolean;
   insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  updatedOn?: string;
 
   totalCustomer: number;
   activeCustomer: number;
