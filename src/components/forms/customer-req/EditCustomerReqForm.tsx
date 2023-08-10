@@ -209,6 +209,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       setSelectedIdentityType(item.identityType);
 
       setSelectedCustomerPackage(item.customerPackageId);
+      setSelectedReferenceType(item.referenceType);
 
       setSelectedDivision(item.divisionId);
       setSelectedDistrict(item.districtId);
