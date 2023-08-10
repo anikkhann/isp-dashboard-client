@@ -89,7 +89,7 @@ const EditAdminTicketForm = ({ item }: PropData) => {
 
     try {
       axios
-        .put("/api/ticket-details/reply", formData)
+        .post("/api/ticket-details/reply", formData)
         .then(res => {
           const { data } = res;
 
