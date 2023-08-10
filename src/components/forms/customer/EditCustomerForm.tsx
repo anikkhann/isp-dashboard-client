@@ -525,7 +525,7 @@ const EditCustomerForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
