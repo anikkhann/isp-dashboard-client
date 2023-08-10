@@ -192,7 +192,7 @@ const CreateCustomerReqForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
