@@ -12,7 +12,7 @@ export interface CustomerData {
   mobileNo: string;
   email: string;
   contactPerson: string;
-  contactNumber: string;
+  contactPersonNumber: string;
   connectionAddress: string;
   houseNo: string;
   roadNo: string;
@@ -43,6 +43,15 @@ export interface CustomerData {
   insertedBy: InsertedBy;
   editedBy: EditedBy;
   updatedOn?: string;
+  altMobileNo?: string;
+  flatNo?: string;
+  remarks?: string;
+  referenceType?: string;
+  referrerName?: string;
+  divisionId?: string;
+  districtId?: string;
+  upazillaId?: string;
+  unionId?: string;
 }
 
 export interface CustomerType {

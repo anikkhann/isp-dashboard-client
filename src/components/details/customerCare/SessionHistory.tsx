@@ -9,15 +9,13 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { IpData } from "@/interfaces/IpData";
-import { format } from "date-fns";
 
 interface PropData {
   item: any | null;
 }
 
 const SessionHistory = ({ item }: PropData) => {
-  const [data, setData] = useState<IpData[]>([]);
+  const [data, setData] = useState<any[]>([]);
 
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -35,7 +33,7 @@ const SessionHistory = ({ item }: PropData) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["activity-log-list", item],
+    queryKey: ["session-list", item],
     queryFn: async () => {
       const response = await fetchData();
       return response;
@@ -62,7 +60,7 @@ const SessionHistory = ({ item }: PropData) => {
     }
   }, [data]);
 
-  const columns: ColumnsType<IpData> = [
+  const columns: ColumnsType<any> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -73,57 +71,114 @@ const SessionHistory = ({ item }: PropData) => {
           </>
         );
       },
-      sorter: true,
+      sorter: false,
       width: "10%",
       align: "center" as AlignType
     },
-    // insertedBy
+    // username
     {
-      title: "Created By",
-      dataIndex: "insertedBy",
+      title: "Username",
+      dataIndex: "username",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (_, row) => {
+        if (!row.username) return "-";
+        return <>{row.username}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
-    // createdOn
+    // start_time
     {
-      title: "Created At",
-      dataIndex: "createdOn",
+      title: "Start time",
+      dataIndex: "start_time",
       sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      render: (_, row) => {
+        if (!row.start_time) return "-";
+        return <>{row.start_time}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
-    // editedBy
+    // end_time
     {
-      title: "Updated By",
-      dataIndex: "editedBy",
+      title: "End time",
+      dataIndex: "end_time",
       sorter: false,
-      render: (editedBy: any) => {
-        if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
+      render: (_, row) => {
+        if (!row.end_time) return "-";
+        return <>{row.end_time}</>;
       },
-
       /* width: "20%", */
       align: "center" as AlignType
     },
-    // updatedOn
+    // onlinetime
     {
-      title: "Updated At",
-      dataIndex: "updatedOn",
+      title: "Online Time",
+      dataIndex: "onlinetime",
       sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      render: (_, row) => {
+        if (!row.onlinetime) return "-";
+        return <>{row.onlinetime}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // upload
+    {
+      title: "Upload",
+      dataIndex: "upload",
+      sorter: false,
+      render: (_, row) => {
+        if (!row.upload) return "-";
+        return <>{row.upload}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // download
+    {
+      title: "download",
+      dataIndex: "download",
+      sorter: false,
+      render: (_, row) => {
+        if (!row.download) return "-";
+        return <>{row.download}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // total
+    {
+      title: "total",
+      dataIndex: "total",
+      sorter: false,
+      render: (_, row) => {
+        if (!row.total) return "-";
+        return <>{row.total}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // IP
+    {
+      title: "IP",
+      dataIndex: "IP",
+      sorter: false,
+      render: (_, row) => {
+        if (!row.IP) return "-";
+        return <>{row.IP}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // device_mac
+    {
+      title: "Device Mac",
+      dataIndex: "device_mac",
+      sorter: false,
+      render: (_, row) => {
+        if (!row.device_mac) return "-";
+        return <>{row.device_mac}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -176,18 +231,14 @@ const SessionHistory = ({ item }: PropData) => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto"
+              overflowX: "auto",
+              backgroundColor: "#ffffff"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
               <Table
                 columns={columns}
-                rowKey={record => record.id}
+                rowKey={record => record.username}
                 dataSource={data}
                 loading={isLoading || isFetching}
               />

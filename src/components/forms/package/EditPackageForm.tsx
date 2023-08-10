@@ -184,7 +184,8 @@ const EditPackageForm = ({ item }: PropData) => {
         validity: item.validity,
         vat: item.vat,
         totalPrice: item.totalPrice,
-        unitPrice: item.unitPrice
+        unitPrice: item.unitPrice,
+        validityUnit: item.validityUnit
       });
 
       setSelectedUnit(item.validityUnit);

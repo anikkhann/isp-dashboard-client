@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 //useEffect
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
@@ -158,9 +158,10 @@ const CreatePackageForm = () => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   getZones();
-  // }, []);
+  useEffect(() => {
+    // getZones();
+    form.setFieldsValue({ validityUnit: selectedUnit });
+  }, []);
 
   const onSubmit = (data: FormData) => {
     // console.log(data);

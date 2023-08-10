@@ -115,6 +115,9 @@ const CreateSubZoneForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/division/get-list", body).then(res => {
@@ -145,7 +148,8 @@ const CreateSubZoneForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        division: { id: selectedDivision }
+        division: { id: selectedDivision },
+        isActive: true
       }
     };
 
@@ -175,7 +179,8 @@ const CreateSubZoneForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        district: { id: selectedDistrict }
+        district: { id: selectedDistrict },
+        isActive: true
       }
     };
 
@@ -206,7 +211,8 @@ const CreateSubZoneForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        upazilla: { id: selectedUpazilla }
+        upazilla: { id: selectedUpazilla },
+        isActive: true
       }
     };
 

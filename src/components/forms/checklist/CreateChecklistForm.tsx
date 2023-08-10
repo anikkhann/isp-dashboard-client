@@ -65,6 +65,9 @@ const CreateChecklistForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/complain-type/get-list", body).then(res => {
@@ -91,7 +94,7 @@ const CreateChecklistForm = () => {
     const { title } = data;
 
     const formData = {
-      rootCauseCategory: selectCategory,
+      complainTypeId: selectCategory,
       title: title,
       isActive: isActive
     };

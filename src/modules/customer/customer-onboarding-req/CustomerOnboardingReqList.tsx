@@ -11,7 +11,13 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  CheckSquareOutlined,
+  CloseSquareOutlined,
+  EditOutlined,
+  EyeOutlined,
+  IssuesCloseOutlined
+} from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
@@ -59,7 +65,7 @@ const CustomerOnboardingReqList: React.FC = () => {
         ]
       },
       body: {
-        clientStatus: "Pending"
+        // clientStatus: "Pending"
       }
     };
 
@@ -225,7 +231,55 @@ const CustomerOnboardingReqList: React.FC = () => {
                   </Link>
                 </Space>
               ) : null}
-              {ability.can("customerOnboardingReq.update", "") ? (
+              {ability.can("customerOnboardingReq.approve", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/customer/customer-onboarding-req/${record.id}/approve`}
+                  >
+                    <Button
+                      type="primary"
+                      icon={<CheckSquareOutlined />}
+                      style={{
+                        backgroundColor: "#0B666A",
+                        color: "#ffffff"
+                      }}
+                    />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerOnboardingReq.reject", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/customer/customer-onboarding-req/${record.id}/reject`}
+                  >
+                    <Button
+                      type="primary"
+                      icon={<CloseSquareOutlined />}
+                      style={{
+                        backgroundColor: "#EA1179",
+                        color: "#ffffff"
+                      }}
+                    />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerOnboardingReq.reinitiate", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/customer/customer-onboarding-req/${record.id}/reinitiate`}
+                  >
+                    <Button
+                      type="primary"
+                      icon={<IssuesCloseOutlined />}
+                      style={{
+                        backgroundColor: "#241468",
+                        color: "#ffffff"
+                      }}
+                    />
+                  </Link>
+                </Space>
+              ) : null}
+              {ability.can("customerOnboardingReq.view", "") ? (
                 <Space size="middle" align="center" wrap className="mx-1">
                   <Link
                     href={`/admin/customer/customer-onboarding-req/${record.id}`}

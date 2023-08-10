@@ -211,7 +211,8 @@ const CustomerList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "zone"
+        partnerType: "zone",
+        isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
@@ -241,7 +242,8 @@ const CustomerList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone"
+        partnerType: "sub_zone",
+        isActive: true
       }
     };
 
@@ -272,7 +274,8 @@ const CustomerList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "retailer"
+        partnerType: "retailer",
+        isActive: true
       }
     };
 
@@ -300,6 +303,9 @@ const CustomerList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 
@@ -325,7 +331,9 @@ const CustomerList: React.FC = () => {
           }
         ]
       },
-      body: {}
+      body: {
+        isActive: true
+      }
     };
 
     axios.post("/api/distribution-pop/get-list", body).then(res => {
@@ -350,6 +358,9 @@ const CustomerList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer-package/get-list", body).then(res => {
@@ -373,6 +384,9 @@ const CustomerList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer/get-list", body).then(res => {

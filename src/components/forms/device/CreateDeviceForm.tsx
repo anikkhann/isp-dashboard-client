@@ -125,14 +125,12 @@ const CreateDeviceForm = () => {
   const [selectedOltType, setSelectedOltType] = useState("EPON");
 
   const [distributionZones, setDistributionZones] = useState<any[]>([]);
-  const [selectedDistributionZone, setSelectedDistributionZone] = useState<
-    any[]
-  >([]);
+  const [selectedDistributionZone, setSelectedDistributionZone] =
+    useState<any>(null);
 
   const [distributionPops, setDistributionPops] = useState<any[]>([]);
-  const [selectedDistributionPop, setSelectedDistributionPop] = useState<any[]>(
-    []
-  );
+  const [selectedDistributionPop, setSelectedDistributionPop] =
+    useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -185,7 +183,8 @@ const CreateDeviceForm = () => {
       body: {
         client: {
           id: user?.partnerId
-        }
+        },
+        isActive: true
       }
     };
     axios.post("/api/distribution-zone/get-list", body).then(res => {
@@ -215,9 +214,10 @@ const CreateDeviceForm = () => {
         ]
       },
       body: {
-        distributionZone: {
+        zone: {
           id: zoneId
-        }
+        },
+        isActive: true
       }
     };
 
@@ -238,6 +238,11 @@ const CreateDeviceForm = () => {
 
   useEffect(() => {
     getDistributionZones();
+
+    form.setFieldsValue({
+      deviceType: selectedDeviceType,
+      monitoringType: selectedMonitoringType
+    });
   }, []);
 
   useEffect(() => {

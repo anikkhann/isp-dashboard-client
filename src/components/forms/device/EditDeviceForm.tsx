@@ -120,14 +120,12 @@ const EditDeviceForm = ({ item }: any) => {
   const [selectedOltType, setSelectedOltType] = useState(null);
 
   const [distributionZones, setDistributionZones] = useState<any[]>([]);
-  const [selectedDistributionZone, setSelectedDistributionZone] = useState<
-    any[]
-  >([]);
+  const [selectedDistributionZone, setSelectedDistributionZone] =
+    useState<any>(null);
 
   const [distributionPops, setDistributionPops] = useState<any[]>([]);
-  const [selectedDistributionPop, setSelectedDistributionPop] = useState<any[]>(
-    []
-  );
+  const [selectedDistributionPop, setSelectedDistributionPop] =
+    useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -176,6 +174,9 @@ const EditDeviceForm = ({ item }: any) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/distribution-zone/get-list", body).then(res => {
@@ -193,7 +194,7 @@ const EditDeviceForm = ({ item }: any) => {
     });
   }
 
-  function getDistributionPops() {
+  function getDistributionPops(zoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -203,6 +204,12 @@ const EditDeviceForm = ({ item }: any) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        zone: {
+          id: zoneId
+        },
+        isActive: true
       }
     };
     axios.post("/api/distribution-pop/get-list", body).then(res => {
@@ -221,9 +228,14 @@ const EditDeviceForm = ({ item }: any) => {
   }
 
   useEffect(() => {
-    getDistributionPops();
     getDistributionZones();
   }, []);
+
+  useEffect(() => {
+    if (selectedDistributionZone) {
+      getDistributionPops(selectedDistributionZone);
+    }
+  }, [selectedDistributionZone]);
 
   useEffect(() => {
     if (item) {
@@ -250,7 +262,9 @@ const EditDeviceForm = ({ item }: any) => {
         telnetLoginName: item.telnetLoginName,
         telnetLoginPassword: item.telnetLoginPassword,
         telnetPrivilegedPassword: item.telnetPrivilegedPassword,
-        telnetPonPortNumber: item.telnetPonPortNumber
+        telnetPonPortNumber: item.telnetPonPortNumber,
+        distributionZoneId: item.distributionZoneId,
+        distributionPopId: item.distributionPopId
       });
 
       setIsActive(item.isActive);

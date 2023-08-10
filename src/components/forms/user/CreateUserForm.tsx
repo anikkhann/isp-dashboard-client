@@ -65,6 +65,9 @@ const CreateUserForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 

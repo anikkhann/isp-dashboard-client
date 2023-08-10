@@ -138,7 +138,8 @@ const CreateAdminTicketForm = () => {
         ]
       },
       body: {
-        complainCategory: "parent"
+        complainCategory: "parent",
+        isActive: true
       }
     };
 

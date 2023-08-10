@@ -68,6 +68,9 @@ const EditUserForm = ({ item }: PropData) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 

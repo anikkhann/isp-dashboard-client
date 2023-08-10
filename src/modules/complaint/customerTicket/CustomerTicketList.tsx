@@ -111,7 +111,8 @@ const CustomerTicketList: React.FC = () => {
         ]
       },
       body: {
-        complainCategory: "customer"
+        complainCategory: "customer",
+        isActive: true
       }
     };
     const res = await axios.post("/api/complain-type/get-list", body);
@@ -137,6 +138,9 @@ const CustomerTicketList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     const res = await axios.post("/api/users/get-list", body);
@@ -199,7 +203,7 @@ const CustomerTicketList: React.FC = () => {
         complainType: {
           id: complainTypeParams
         },
-        state: statusParams,
+        status: statusParams,
         ticketNo: ticketNumberParams,
         closedBy: {
           id: closedByParams

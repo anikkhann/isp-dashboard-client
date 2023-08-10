@@ -90,7 +90,8 @@ const DetailsAdminTicket = ({ id }: any) => {
       body: {
         complainType: {
           id: item?.complainType?.id
-        }
+        },
+        isActive: true
       }
     };
     const response = await axios.post(`/api/checklist/get-list`, body);
@@ -118,11 +119,19 @@ const DetailsAdminTicket = ({ id }: any) => {
 
     const body = {
       body: {
-        ticketCategory: item?.ticketCategory
+        ticketCategory: item?.ticketCategory,
+        isActive: true
       }
     };
     const response = await axios.post(`/api/root-cause/get-list`, body);
-    setRootCauseList(response.data.body);
+
+    const list = response.data.body.map((item: any) => {
+      return {
+        label: item.title,
+        value: item.id
+      };
+    });
+    setRootCauseList(list);
   };
 
   const getAssignedTo = async () => {
@@ -187,7 +196,7 @@ const DetailsAdminTicket = ({ id }: any) => {
 
     try {
       axios
-        .post("/api/ticket/update", formData)
+        .put("/api/ticket/update", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -227,7 +236,7 @@ const DetailsAdminTicket = ({ id }: any) => {
 
     try {
       axios
-        .post("/api/ticket/update", formData)
+        .put("/api/ticket/update", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -285,13 +294,15 @@ const DetailsAdminTicket = ({ id }: any) => {
           "limit": 10, */
         sort: [
           {
-            order: "asc",
-            field: "note"
+            order: "desc",
+            field: "createdOn"
           }
         ]
       },
       body: {
-        // ticketId: id
+        ticket: {
+          id: id
+        }
       }
     };
     const response = await axios.post(`/api/ticket-details/get-list`, body);
@@ -323,11 +334,11 @@ const DetailsAdminTicket = ({ id }: any) => {
         },
         onSuccess(data: any) {
           if (data) {
-            const filters = data.body.filter(
-              (item: any) => item.ticketId === id
-            );
-            // setReplys(data.body);
-            setReplys(filters);
+            // const filters = data.body.filter(
+            //   (item: any) => item.ticketId === id
+            // );
+            setReplys(data.body);
+            // setReplys(filters);
           }
         },
         onError(error: any) {
@@ -516,11 +527,11 @@ const DetailsAdminTicket = ({ id }: any) => {
                           fontWeight: "bold"
                         }}
                         /* rules={[
-                      {
-                        required: true,
-                        message: "Select root Cause!"
-                      },
-                    ]} */
+            {
+              required: true,
+              message: "Select root Cause!"
+            },
+          ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select

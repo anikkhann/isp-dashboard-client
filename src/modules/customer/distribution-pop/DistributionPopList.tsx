@@ -63,7 +63,7 @@ const DistributionPopList: React.FC = () => {
         ]
       },
       body: {
-        distributionZone: {
+        zone: {
           id: zoneParam
         }
       }
@@ -122,6 +122,9 @@ const DistributionPopList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/distribution-zone/get-list", body).then(res => {

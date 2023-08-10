@@ -181,6 +181,9 @@ const CreateCustomerReqForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer-type/get-list", body).then(res => {
@@ -189,7 +192,7 @@ const CreateCustomerReqForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
@@ -208,6 +211,9 @@ const CreateCustomerReqForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer/get-list", body).then(res => {
@@ -235,6 +241,9 @@ const CreateCustomerReqForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/users/get-list", body).then(res => {
@@ -262,6 +271,9 @@ const CreateCustomerReqForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/division/get-list", body).then(res => {
@@ -292,7 +304,8 @@ const CreateCustomerReqForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        division: { id: selectedDivision }
+        division: { id: selectedDivision },
+        isActive: true
       }
     };
 
@@ -322,7 +335,8 @@ const CreateCustomerReqForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        district: { id: selectedDistrict }
+        district: { id: selectedDistrict },
+        isActive: true
       }
     };
 
@@ -353,7 +367,8 @@ const CreateCustomerReqForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        upazilla: { id: selectedUpazilla }
+        upazilla: { id: selectedUpazilla },
+        isActive: true
       }
     };
 
@@ -379,6 +394,9 @@ const CreateCustomerReqForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer-package/get-list", body).then(res => {
@@ -447,11 +465,12 @@ const CreateCustomerReqForm = () => {
       username: username,
       password: password,
       customerTypeId: selectedCustomerType,
+      customerPackageId: selectedCustomerPackage,
       mobileNo: mobileNo,
       altMobileNo: altMobileNo,
       email: email,
       contactPerson: contactPerson,
-      contactNumber: contactNumber,
+      contactPersonNumber: contactNumber,
       connectionAddress: connectionAddress,
       flatNo: flatNo,
       houseNo: houseNo,
@@ -463,7 +482,11 @@ const CreateCustomerReqForm = () => {
       referenceType: selectedReferenceType,
       referrerCustomer: selectedCustomer,
       referrerUser: selectedUser,
-      referrerName: referrerName
+      referrerName: referrerName,
+      divisionId: selectedDivision,
+      districtId: selectedDistrict,
+      upazillaId: selectedUpazilla,
+      unionId: selectedUnion
     };
 
     try {

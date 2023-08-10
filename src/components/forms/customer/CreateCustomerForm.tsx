@@ -343,7 +343,8 @@ const CreateCustomerForm = () => {
         partnerType: "zone",
         client: {
           id: authUser?.partnerId
-        }
+        },
+        isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
@@ -373,8 +374,9 @@ const CreateCustomerForm = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone"
-        // zoneManager: { id: selectedZone }
+        partnerType: "sub_zone",
+        // zoneManager: { id: selectedZone },
+        isActive: true
       }
     };
 
@@ -405,8 +407,9 @@ const CreateCustomerForm = () => {
         ]
       },
       body: {
-        partnerType: "retailer"
-        // subZoneManager: { id: selectedSubZone }
+        partnerType: "retailer",
+        // subZoneManager: { id: selectedSubZone },
+        isActive: true
       }
     };
 
@@ -435,6 +438,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer-type/get-list", body).then(res => {
@@ -443,7 +449,7 @@ const CreateCustomerForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
@@ -462,6 +468,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer/get-list", body).then(res => {
@@ -489,6 +498,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/users/get-list", body).then(res => {
@@ -516,6 +528,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/division/get-list", body).then(res => {
@@ -546,7 +561,8 @@ const CreateCustomerForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        division: { id: selectedDivision }
+        division: { id: selectedDivision },
+        isActive: true
       }
     };
 
@@ -576,7 +592,8 @@ const CreateCustomerForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        district: { id: selectedDistrict }
+        district: { id: selectedDistrict },
+        isActive: true
       }
     };
 
@@ -607,7 +624,8 @@ const CreateCustomerForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        upazilla: { id: selectedUpazilla }
+        upazilla: { id: selectedUpazilla },
+        isActive: true
       }
     };
 
@@ -633,6 +651,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 
@@ -659,7 +680,8 @@ const CreateCustomerForm = () => {
         ]
       },
       body: {
-        distributionZone: { id: selectedDistributionZone }
+        zone: { id: selectedDistributionZone },
+        isActive: true
       }
     };
 
@@ -685,6 +707,9 @@ const CreateCustomerForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/customer-package/get-list", body).then(res => {
@@ -710,6 +735,11 @@ const CreateCustomerForm = () => {
     getZoneManagers();
     getSubZoneManagers();
     getRetailers();
+
+    form.setFieldsValue({
+      identityType: "nid",
+      ipMode: "nas"
+    });
   }, []);
 
   useEffect(() => {

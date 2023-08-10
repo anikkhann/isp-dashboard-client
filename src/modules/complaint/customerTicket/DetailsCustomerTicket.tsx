@@ -116,11 +116,18 @@ const DetailsCustomerTicket = ({ id }: any) => {
 
     const body = {
       body: {
-        ticketCategory: item?.ticketCategory
+        ticketCategory: item?.ticketCategory,
+        isActive: true
       }
     };
     const response = await axios.post(`/api/root-cause/get-list`, body);
-    setRootCauseList(response.data.body);
+    const list = response.data.body.map((item: any) => {
+      return {
+        label: item.title,
+        value: item.id
+      };
+    });
+    setRootCauseList(list);
   };
 
   const getAssignedTo = async () => {
@@ -131,7 +138,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
@@ -185,7 +192,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
 
     try {
       axios
-        .post("/api/ticket/update", formData)
+        .put("/api/ticket/update", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -225,7 +232,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
 
     try {
       axios
-        .post("/api/ticket/update", formData)
+        .put("/api/ticket/update", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -283,8 +290,8 @@ const DetailsCustomerTicket = ({ id }: any) => {
           "limit": 10, */
         sort: [
           {
-            order: "asc",
-            field: "note"
+            order: "desc",
+            field: "createdOn"
           }
         ]
       },
@@ -539,11 +546,11 @@ const DetailsCustomerTicket = ({ id }: any) => {
                           fontWeight: "bold"
                         }}
                         /* rules={[
-                      {
-                        required: true,
-                        message: "Select root Cause!"
-                      },
-                    ]} */
+              {
+                required: true,
+                message: "Select root Cause!"
+              },
+            ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select

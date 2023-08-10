@@ -76,7 +76,7 @@ const TicketHistory = ({ item }: PropData) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["activity-log-list", page, limit, order, sort],
+    queryKey: ["ticket-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;

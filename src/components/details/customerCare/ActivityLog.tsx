@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space } from "antd";
+import { Card, Col, List, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,9 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { IpData } from "@/interfaces/IpData";
 import { format } from "date-fns";
-
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -25,7 +23,7 @@ interface PropData {
 }
 
 const ActivityLog = ({ item }: PropData) => {
-  const [data, setData] = useState<IpData[]>([]);
+  const [data, setData] = useState<any[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -118,7 +116,7 @@ const ActivityLog = ({ item }: PropData) => {
     }
   }, [data]);
 
-  const columns: ColumnsType<IpData> = [
+  const columns: ColumnsType<any> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -133,21 +131,74 @@ const ActivityLog = ({ item }: PropData) => {
       width: "10%",
       align: "center" as AlignType
     },
-    // insertedBy
+    // subject
     {
-      title: "Created By",
-      dataIndex: "insertedBy",
+      title: "Subject",
+      dataIndex: "subject",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (subject: any) => {
+        if (!subject) return "-";
+        return <>{subject}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
-    // createdOn
+    // remarks
     {
-      title: "Created At",
+      title: "Remarks",
+      dataIndex: "remarks",
+      sorter: false,
+      render: (remarks: any) => {
+        if (!remarks) return "-";
+        return <>{remarks}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // changedData
+    {
+      title: "Changed Data",
+      dataIndex: "changedData",
+      sorter: false,
+      render: (changedData: any) => {
+        if (!changedData) return "-";
+
+        if (changedData == "{}") return "-";
+
+        if (changedData) {
+          const jsonObject = JSON.parse(changedData) as Array<any>;
+
+          const array = [];
+
+          for (const object of jsonObject) {
+            array.push(object);
+          }
+
+          return (
+            <>
+              <List>
+                {array.map((checklist: any, index: number) => {
+                  return (
+                    <List.Item key={index}>
+                      {checklist.key} : {checklist.oldValue} {"->"}
+                      {checklist.currentValue},
+                    </List.Item>
+                  );
+                })}
+              </List>
+            </>
+          );
+        }
+
+        return <>{changedData}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Action Date",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
@@ -155,33 +206,7 @@ const ActivityLog = ({ item }: PropData) => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // editedBy
-    {
-      title: "Updated By",
-      dataIndex: "editedBy",
-      sorter: false,
-      render: (editedBy: any) => {
-        if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
-      },
-
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // updatedOn
-    {
-      title: "Updated At",
-      dataIndex: "updatedOn",
-      sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     }
   ];
@@ -189,18 +214,18 @@ const ActivityLog = ({ item }: PropData) => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<IpData> | SorterResult<IpData>[]
+    sorter: SorterResult<any> | SorterResult<any>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<IpData>).order) {
+    if (sorter && (sorter as SorterResult<any>).order) {
       SetOrder(
-        (sorter as SorterResult<IpData>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<any>).order === "ascend" ? "asc" : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<IpData>).field) {
-      SetSort((sorter as SorterResult<IpData>).field as string);
+    if (sorter && (sorter as SorterResult<any>).field) {
+      SetSort((sorter as SorterResult<any>).field as string);
     }
   };
 
@@ -250,7 +275,8 @@ const ActivityLog = ({ item }: PropData) => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto"
+              overflowX: "auto",
+              backgroundColor: "#ffffff"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>

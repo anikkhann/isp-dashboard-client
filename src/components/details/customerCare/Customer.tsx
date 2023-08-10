@@ -7,7 +7,7 @@ interface PropData {
 }
 
 const Customer = ({ item }: PropData) => {
-  console.log("item", item);
+  // console.log("item", item);
   // const data = JSON.stringify(item);
   return (
     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between">
@@ -25,7 +25,7 @@ const Customer = ({ item }: PropData) => {
           bordered={false}
           style={{
             textAlign: "start",
-            backgroundColor: "white",
+            backgroundColor: "#ffffff",
             borderRadius: "10px",
             border: "1px solid #F15F22"
           }}
