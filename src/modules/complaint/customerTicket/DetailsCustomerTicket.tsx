@@ -192,7 +192,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
 
     try {
       axios
-        .post("/api/ticket/update", formData)
+        .put("/api/ticket/update", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -232,7 +232,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
 
     try {
       axios
-        .post("/api/ticket/update", formData)
+        .put("/api/ticket/update", formData)
         .then(res => {
           const { data } = res;
           MySwal.fire({
@@ -546,11 +546,11 @@ const DetailsCustomerTicket = ({ id }: any) => {
                           fontWeight: "bold"
                         }}
                         /* rules={[
-                    {
-                      required: true,
-                      message: "Select root Cause!"
-                    },
-                  ]} */
+                  {
+                    required: true,
+                    message: "Select root Cause!"
+                  },
+                ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
