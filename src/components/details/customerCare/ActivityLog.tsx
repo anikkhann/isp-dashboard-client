@@ -142,14 +142,14 @@ const ActivityLog = ({ item }: PropData) => {
       /* width: "20%", */
       align: "center" as AlignType
     },
-    // action
+    // remarks
     {
-      title: "action",
-      dataIndex: "action",
+      title: "Remarks",
+      dataIndex: "remarks",
       sorter: false,
-      render: (action: any) => {
-        if (!action) return "-";
-        return <>{action}</>;
+      render: (remarks: any) => {
+        if (!remarks) return "-";
+        return <>{remarks}</>;
       },
 
       /* width: "20%", */
@@ -162,6 +162,9 @@ const ActivityLog = ({ item }: PropData) => {
       sorter: false,
       render: (changedData: any) => {
         if (!changedData) return "-";
+
+        if (changedData == "{}") return "-";
+
         if (changedData) {
           const jsonObject = JSON.parse(changedData) as Array<any>;
 
