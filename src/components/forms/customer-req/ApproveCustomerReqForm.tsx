@@ -84,7 +84,7 @@ const ApproveCustomerReqForm = ({ item }: PropData) => {
         ]
       },
       body: {
-        distributionZone: { id: selectedDistributionZone },
+        zone: { id: selectedDistributionZone },
         isActive: true
       }
     };

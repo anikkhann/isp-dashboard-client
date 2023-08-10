@@ -449,7 +449,7 @@ const CreateCustomerForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
@@ -680,7 +680,7 @@ const CreateCustomerForm = () => {
         ]
       },
       body: {
-        distributionZone: { id: selectedDistributionZone },
+        zone: { id: selectedDistributionZone },
         isActive: true
       }
     };
@@ -735,6 +735,11 @@ const CreateCustomerForm = () => {
     getZoneManagers();
     getSubZoneManagers();
     getRetailers();
+
+    form.setFieldsValue({
+      identityType: "nid",
+      ipMode: "nas"
+    });
   }, []);
 
   useEffect(() => {

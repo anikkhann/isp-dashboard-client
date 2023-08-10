@@ -63,7 +63,7 @@ const DistributionPopList: React.FC = () => {
         ]
       },
       body: {
-        distributionZone: {
+        zone: {
           id: zoneParam
         }
       }

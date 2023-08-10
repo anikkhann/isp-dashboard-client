@@ -120,14 +120,12 @@ const EditDeviceForm = ({ item }: any) => {
   const [selectedOltType, setSelectedOltType] = useState(null);
 
   const [distributionZones, setDistributionZones] = useState<any[]>([]);
-  const [selectedDistributionZone, setSelectedDistributionZone] = useState<
-    any[]
-  >([]);
+  const [selectedDistributionZone, setSelectedDistributionZone] =
+    useState<any>(null);
 
   const [distributionPops, setDistributionPops] = useState<any[]>([]);
-  const [selectedDistributionPop, setSelectedDistributionPop] = useState<any[]>(
-    []
-  );
+  const [selectedDistributionPop, setSelectedDistributionPop] =
+    useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -208,7 +206,7 @@ const EditDeviceForm = ({ item }: any) => {
         ]
       },
       body: {
-        distributionZone: {
+        zone: {
           id: zoneId
         },
         isActive: true
@@ -264,7 +262,9 @@ const EditDeviceForm = ({ item }: any) => {
         telnetLoginName: item.telnetLoginName,
         telnetLoginPassword: item.telnetLoginPassword,
         telnetPrivilegedPassword: item.telnetPrivilegedPassword,
-        telnetPonPortNumber: item.telnetPonPortNumber
+        telnetPonPortNumber: item.telnetPonPortNumber,
+        distributionZoneId: item.distributionZoneId,
+        distributionPopId: item.distributionPopId
       });
 
       setIsActive(item.isActive);
