@@ -188,7 +188,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
         mobileNo: item.mobileNo,
         altMobileNo: item.altMobileNo,
         contactPerson: item.contactPerson,
-        contactNumber: item.contactNumber,
+        contactNumber: item.contactPersonNumber,
         connectionAddress: item.connectionAddress,
         flatNo: item.flatNo,
         houseNo: item.houseNo,

@@ -12,7 +12,7 @@ export interface CustomerData {
   mobileNo: string;
   email: string;
   contactPerson: string;
-  contactNumber: string;
+  contactPersonNumber: string;
   connectionAddress: string;
   houseNo: string;
   roadNo: string;
