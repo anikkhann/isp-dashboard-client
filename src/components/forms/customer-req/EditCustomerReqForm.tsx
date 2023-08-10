@@ -524,7 +524,11 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       referenceType: referenceType,
       referrerCustomer: selectedCustomer,
       referrerUser: selectedUser,
-      referrerName: referrerName
+      referrerName: referrerName,
+      divisionId: selectedDivision,
+      districtId: selectedDistrict,
+      upazillaId: selectedUpazilla,
+      unionId: selectedUnion
     };
 
     try {
