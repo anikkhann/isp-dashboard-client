@@ -90,7 +90,8 @@ const DetailsAdminTicket = ({ id }: any) => {
       body: {
         complainType: {
           id: item?.complainType?.id
-        }
+        },
+        isActive: true
       }
     };
     const response = await axios.post(`/api/checklist/get-list`, body);
@@ -118,11 +119,19 @@ const DetailsAdminTicket = ({ id }: any) => {
 
     const body = {
       body: {
-        ticketCategory: item?.ticketCategory
+        ticketCategory: item?.ticketCategory,
+        isActive: true
       }
     };
     const response = await axios.post(`/api/root-cause/get-list`, body);
-    setRootCauseList(response.data.body);
+
+    const list = response.data.body.map((item: any) => {
+      return {
+        label: item.title,
+        value: item.id
+      };
+    });
+    setRootCauseList(list);
   };
 
   const getAssignedTo = async () => {
@@ -516,11 +525,11 @@ const DetailsAdminTicket = ({ id }: any) => {
                           fontWeight: "bold"
                         }}
                         /* rules={[
-                    {
-                      required: true,
-                      message: "Select root Cause!"
-                    },
-                  ]} */
+                  {
+                    required: true,
+                    message: "Select root Cause!"
+                  },
+                ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select

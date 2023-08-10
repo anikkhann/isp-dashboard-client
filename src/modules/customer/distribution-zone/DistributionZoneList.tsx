@@ -57,6 +57,9 @@ const DistributionZoneList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 

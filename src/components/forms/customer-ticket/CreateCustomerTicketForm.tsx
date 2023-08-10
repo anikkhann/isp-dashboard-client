@@ -193,6 +193,9 @@ const CreateCustomerTicketForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 
@@ -248,6 +251,9 @@ const CreateCustomerTicketForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 
@@ -288,7 +294,8 @@ const CreateCustomerTicketForm = () => {
       body: {
         complainType: {
           id: complainId
-        }
+        },
+        isActive: true
       }
     };
 
@@ -630,11 +637,11 @@ const CreateCustomerTicketForm = () => {
                       label="Assigned To"
                       name="assignedTo"
                       /*   rules={[
-            {
-              required: true,
-              message: "Please select Assigned To!"
-            }
-          ]} */
+          {
+            required: true,
+            message: "Please select Assigned To!"
+          }
+        ]} */
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <Select

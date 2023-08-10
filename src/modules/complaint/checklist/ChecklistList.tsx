@@ -147,6 +147,9 @@ const ChecklistList: React.FC = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/complain-type/get-list", body).then(res => {

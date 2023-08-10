@@ -185,7 +185,8 @@ const CreateDeviceForm = () => {
       body: {
         client: {
           id: user?.partnerId
-        }
+        },
+        isActive: true
       }
     };
     axios.post("/api/distribution-zone/get-list", body).then(res => {
@@ -217,7 +218,8 @@ const CreateDeviceForm = () => {
       body: {
         distributionZone: {
           id: zoneId
-        }
+        },
+        isActive: true
       }
     };
 

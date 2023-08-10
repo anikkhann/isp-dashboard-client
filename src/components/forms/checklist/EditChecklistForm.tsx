@@ -94,6 +94,9 @@ const EditChecklistForm = ({ item }: PropData) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/complain-type/get-list", body).then(res => {
@@ -134,7 +137,6 @@ const EditChecklistForm = ({ item }: PropData) => {
     const formData = {
       id: item.id,
       complainTypeId: selectCategory,
-      // rootCauseCategory: selectRootCategory,
       title: title,
       isActive: isActive
     };

@@ -206,6 +206,9 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
 
@@ -246,7 +249,8 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
       body: {
         complainType: {
           id: complainId
-        }
+        },
+        isActive: true
       }
     };
 

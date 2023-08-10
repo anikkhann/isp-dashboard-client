@@ -176,6 +176,9 @@ const EditDeviceForm = ({ item }: any) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/distribution-zone/get-list", body).then(res => {
@@ -193,7 +196,7 @@ const EditDeviceForm = ({ item }: any) => {
     });
   }
 
-  function getDistributionPops() {
+  function getDistributionPops(zoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -203,6 +206,12 @@ const EditDeviceForm = ({ item }: any) => {
             field: "name"
           }
         ]
+      },
+      body: {
+        distributionZone: {
+          id: zoneId
+        },
+        isActive: true
       }
     };
     axios.post("/api/distribution-pop/get-list", body).then(res => {
@@ -221,9 +230,14 @@ const EditDeviceForm = ({ item }: any) => {
   }
 
   useEffect(() => {
-    getDistributionPops();
     getDistributionZones();
   }, []);
+
+  useEffect(() => {
+    if (selectedDistributionZone) {
+      getDistributionPops(selectedDistributionZone);
+    }
+  }, [selectedDistributionZone]);
 
   useEffect(() => {
     if (item) {
