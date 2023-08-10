@@ -527,11 +527,11 @@ const DetailsAdminTicket = ({ id }: any) => {
                           fontWeight: "bold"
                         }}
                         /* rules={[
-              {
-                required: true,
-                message: "Select root Cause!"
-              },
-            ]} */
+            {
+              required: true,
+              message: "Select root Cause!"
+            },
+          ]} */
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
