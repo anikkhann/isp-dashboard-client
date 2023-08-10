@@ -65,7 +65,7 @@ const CustomerOnboardingReqList: React.FC = () => {
         ]
       },
       body: {
-        clientStatus: "Pending"
+        // clientStatus: "Pending"
       }
     };
 
