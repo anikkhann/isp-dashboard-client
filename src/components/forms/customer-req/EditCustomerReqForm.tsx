@@ -506,6 +506,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       username: username,
       password: password,
       customerTypeId: selectedCustomerType,
+      customerPackageId: selectedCustomerPackage,
       mobileNo: mobileNo,
       altMobileNo: altMobileNo,
       email: email,
