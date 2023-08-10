@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
+import { format } from "date-fns";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -157,7 +158,7 @@ const ActivityLog = ({ item }: PropData) => {
     },
     // changedData
     {
-      title: "changedData",
+      title: "Changed Data",
       dataIndex: "changedData",
       sorter: false,
       render: (changedData: any) => {
@@ -180,7 +181,7 @@ const ActivityLog = ({ item }: PropData) => {
                 {array.map((checklist: any, index: number) => {
                   return (
                     <List.Item key={index}>
-                      {checklist.key} : {checklist.oldValue} -{" "}
+                      {checklist.key} : {checklist.oldValue} {"->"}
                       {checklist.currentValue},
                     </List.Item>
                   );
@@ -194,6 +195,18 @@ const ActivityLog = ({ item }: PropData) => {
       },
 
       /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Action Date",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
       align: "center" as AlignType
     }
   ];
