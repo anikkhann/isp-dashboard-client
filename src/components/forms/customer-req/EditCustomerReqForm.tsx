@@ -198,15 +198,22 @@ const EditCustomerReqForm = ({ item }: PropData) => {
         identityNo: item.identityNo,
         remarks: item.remarks,
         referenceType: item.referenceType,
-        referrerName: item.referrerName
+        referrerName: item.referrerName,
+        customerPackageId: item.customerPackageId,
+        divisionId: item.divisionId,
+        districtId: item.districtId,
+        upazillaId: item.upazillaId,
+        unionId: item.unionId
       });
       setSelectedCustomerType(item.customerTypeId);
       setSelectedIdentityType(item.identityType);
 
+      setSelectedCustomerPackage(item.customerPackageId);
+
       setSelectedDivision(item.divisionId);
       setSelectedDistrict(item.districtId);
       setSelectedUpazilla(item.upazillaId);
-      setSelectedUpazilla(item.unionId);
+      setSelectedUnion(item.unionId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
