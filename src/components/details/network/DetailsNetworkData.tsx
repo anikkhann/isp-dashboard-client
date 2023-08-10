@@ -120,7 +120,7 @@ const DetailsNetworkData = ({ item }: PropData) => {
               </Col>
             </Row>
 
-            <Row
+            {/* <Row
               style={{
                 marginTop: "2px"
               }}
@@ -137,108 +137,7 @@ const DetailsNetworkData = ({ item }: PropData) => {
               <Col>
                 <span className="mx-1 text-base">{item.insertedBy?.email}</span>
               </Col>
-            </Row>
-          </div>
-        </Card>
-        <Card
-          hoverable
-          bordered={false}
-          style={{
-            textAlign: "start",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            border: "1px solid #F15F22",
-            marginTop: "1rem"
-          }}
-        >
-          <div>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Created By :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.insertedBy?.username}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Created At :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.createdOn
-                    ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
-                    : null}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Updated By :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.editedBy ? item.editedBy.username : null}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Updated At :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.updatedOn
-                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
-                    : null}
-                </span>
-              </Col>
-            </Row>
+            </Row> */}
           </div>
         </Card>
       </Col>
@@ -345,7 +244,7 @@ const DetailsNetworkData = ({ item }: PropData) => {
               </Col>
             </Row>
 
-            <Row
+            {/* <Row
               style={{
                 marginTop: "2px"
               }}
@@ -362,7 +261,7 @@ const DetailsNetworkData = ({ item }: PropData) => {
               <Col>
                 <span className="mx-1 text-base">{item.partner?.email}</span>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row
               style={{
@@ -402,6 +301,107 @@ const DetailsNetworkData = ({ item }: PropData) => {
               <Col>
                 <span className="mx-1 text-base">
                   {item.partner?.district?.name}
+                </span>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Created At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.createdOn
+                    ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.editedBy ? item.editedBy.username : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.updatedOn
+                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                    : null}
                 </span>
               </Col>
             </Row>

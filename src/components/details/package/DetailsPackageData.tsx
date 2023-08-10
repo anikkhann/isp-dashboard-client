@@ -186,6 +186,7 @@ const DetailsPackageData = ({ item }: PropData) => {
             </Row>
           </div>
         </Card>
+
         <Card
           hoverable
           bordered={false}
@@ -210,15 +211,13 @@ const DetailsPackageData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Created By :</span>
+                <span className="font-bold text-base">Phone :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">
-                  {item.insertedBy?.username}
-                </span>
+                <span className="mx-1 text-base">{item.insertedBy?.phone}</span>
               </Col>
             </Row>
-
+            {/* 
             <Row
               style={{
                 marginTop: "2px"
@@ -228,63 +227,16 @@ const DetailsPackageData = ({ item }: PropData) => {
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  alignItems: "end"
+                  alignItems: "end",
+               
                 }}
               >
-                <span className="font-bold text-base">Created At :</span>
+                <span className="font-bold text-base">Email :</span>
               </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.createdOn
-                    ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
-                    : null}
-                </span>
+              <Col >
+                <span className="mx-1 text-base">{item.insertedBy?.email}</span>
               </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Updated By :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.editedBy ? item.editedBy.username : null}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Updated At :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.updatedOn
-                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
-                    : null}
-                </span>
-              </Col>
-            </Row>
+            </Row> */}
           </div>
         </Card>
       </Col>
@@ -473,7 +425,6 @@ const DetailsPackageData = ({ item }: PropData) => {
             </Row>
           </div>
         </Card>
-
         <Card
           hoverable
           bordered={false}
@@ -498,13 +449,15 @@ const DetailsPackageData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Phone :</span>
+                <span className="font-bold text-base">Created By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.insertedBy?.phone}</span>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
               </Col>
             </Row>
-            {/* 
+
             <Row
               style={{
                 marginTop: "2px"
@@ -514,16 +467,63 @@ const DetailsPackageData = ({ item }: PropData) => {
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  alignItems: "end",
-               
+                  alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Email :</span>
+                <span className="font-bold text-base">Created At :</span>
               </Col>
-              <Col >
-                <span className="mx-1 text-base">{item.insertedBy?.email}</span>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.createdOn
+                    ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
               </Col>
-            </Row> */}
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.editedBy ? item.editedBy.username : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.updatedOn
+                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>
