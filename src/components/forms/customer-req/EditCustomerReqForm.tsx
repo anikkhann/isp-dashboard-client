@@ -186,26 +186,27 @@ const EditCustomerReqForm = ({ item }: PropData) => {
         password: item.password,
         email: item.email,
         mobileNo: item.mobileNo,
-        // altMobileNo: item.altMobileNo,
+        altMobileNo: item.altMobileNo,
         contactPerson: item.contactPerson,
         contactNumber: item.contactNumber,
         connectionAddress: item.connectionAddress,
-        // flatNo: item.flatNo,
+        flatNo: item.flatNo,
         houseNo: item.houseNo,
         roadNo: item.roadNo,
         area: item.area,
         identityType: item.identityType,
-        identityNo: item.identityNo
-        // remarks: item.remarks,
-        // referenceType: item.referenceType,
-        // referrerName: item.referrerName,
+        identityNo: item.identityNo,
+        remarks: item.remarks,
+        referenceType: item.referenceType,
+        referrerName: item.referrerName
       });
       setSelectedCustomerType(item.customerTypeId);
       setSelectedIdentityType(item.identityType);
 
-      /*  setSelectedDivision(item.divisionId);
-       setSelectedDistrict(item.districtId);
-       setSelectedUpazilla(item.upazillaId); */
+      setSelectedDivision(item.divisionId);
+      setSelectedDistrict(item.districtId);
+      setSelectedUpazilla(item.upazillaId);
+      setSelectedUpazilla(item.unionId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
