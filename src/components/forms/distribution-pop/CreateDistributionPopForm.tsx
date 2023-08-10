@@ -75,7 +75,8 @@ const CreateDistributionPopForm = () => {
         // SEND FIELD NAME WITH DATA TO SEARCH
         client: {
           id: user?.partnerId
-        }
+        },
+        isActive: true
       }
     };
     axios.post("/api/distribution-zone/get-list", body).then(res => {

@@ -158,6 +158,9 @@ const CreateClientForm = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     axios.post("/api/division/get-list", body).then(res => {
@@ -188,7 +191,8 @@ const CreateClientForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        division: { id: selectedDivision }
+        division: { id: selectedDivision },
+        isActive: true
       }
     };
 
@@ -218,7 +222,8 @@ const CreateClientForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        district: { id: selectedDistrict }
+        district: { id: selectedDistrict },
+        isActive: true
       }
     };
 
@@ -249,7 +254,8 @@ const CreateClientForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        upazilla: { id: selectedUpazilla }
+        upazilla: { id: selectedUpazilla },
+        isActive: true
       }
     };
 
@@ -297,7 +303,7 @@ const CreateClientForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        isActive: "true",
+        isActive: true,
         authProtocol: "PPPoE"
       }
     };

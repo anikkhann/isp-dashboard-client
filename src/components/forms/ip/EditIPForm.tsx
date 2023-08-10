@@ -58,7 +58,8 @@ const EditIPForm = ({ item }: PropData) => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        partnerType: "client",
+        isActive: true
       }
     };
 

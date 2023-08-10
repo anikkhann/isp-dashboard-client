@@ -67,6 +67,9 @@ const SearchCustomer = () => {
             field: "name"
           }
         ]
+      },
+      body: {
+        isActive: true
       }
     };
     const { data } = await axios.post("/api/customer/get-list", body);
