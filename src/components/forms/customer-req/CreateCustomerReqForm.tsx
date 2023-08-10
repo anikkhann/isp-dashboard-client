@@ -470,7 +470,7 @@ const CreateCustomerReqForm = () => {
       altMobileNo: altMobileNo,
       email: email,
       contactPerson: contactPerson,
-      contactNumber: contactNumber,
+      contactPersonNumber: contactNumber,
       connectionAddress: connectionAddress,
       flatNo: flatNo,
       houseNo: houseNo,
