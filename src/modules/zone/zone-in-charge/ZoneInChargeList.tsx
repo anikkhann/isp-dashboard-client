@@ -230,8 +230,8 @@ const ZoneInChargeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "zonename",
-      dataIndex: "zonename",
+      title: "username",
+      dataIndex: "username",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
