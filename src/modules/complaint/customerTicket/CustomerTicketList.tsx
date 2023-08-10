@@ -203,7 +203,7 @@ const CustomerTicketList: React.FC = () => {
         complainType: {
           id: complainTypeParams
         },
-        state: statusParams,
+        status: statusParams,
         ticketNo: ticketNumberParams,
         closedBy: {
           id: closedByParams
