@@ -221,7 +221,7 @@ const TransactionHistory = ({ item }: PropData) => {
           )}
 
           <TableCard
-            title="Session List"
+            title="Transaction List"
             hasLink={false}
             addLink="/admin/device/ip-management/create"
             permission="ip.create"
