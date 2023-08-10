@@ -106,7 +106,7 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
               text: data.message || "Updated successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/complaint/admin-ticket");
+              router.replace("/admin/complaint/customer-ticket");
             });
           }
         })
