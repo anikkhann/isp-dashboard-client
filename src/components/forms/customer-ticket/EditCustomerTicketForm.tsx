@@ -77,7 +77,7 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
     const { note } = data;
 
     const bodyData = {
-      id: item.id,
+      ticketId: item.id,
       note: note
     };
     const formData = new FormData();

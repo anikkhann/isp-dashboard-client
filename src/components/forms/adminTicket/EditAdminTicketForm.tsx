@@ -77,7 +77,7 @@ const EditAdminTicketForm = ({ item }: PropData) => {
     const { note } = data;
 
     const bodyData = {
-      id: item.id,
+      ticketId: item.id,
       note: note
     };
 
