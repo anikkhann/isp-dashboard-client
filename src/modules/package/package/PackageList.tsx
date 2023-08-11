@@ -184,20 +184,20 @@ const PackageList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
-    {
-      title: "Partner",
-      dataIndex: "partner",
-      sorter: false,
-      render: (text, record) => {
-        return (
-          <>
-            <Space>{record.partner.name}</Space>
-          </>
-        );
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Partner",
+    //   dataIndex: "partner",
+    //   sorter: false,
+    //   render: (text, record) => {
+    //     return (
+    //       <>
+    //         <Space>{record.partner.name}</Space>
+    //       </>
+    //     );
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Package Name",
       dataIndex: "displayName",

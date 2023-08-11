@@ -237,16 +237,16 @@ const DeviceList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Partner",
-      dataIndex: "partner",
-      sorter: false,
-      render: (partner: any) => {
-        return <>{partner ? partner.name : "N/A"}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Partner",
+    //   dataIndex: "partner",
+    //   sorter: false,
+    //   render: (partner: any) => {
+    //     return <>{partner ? partner.name : "N/A"}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Device Type",
       dataIndex: "deviceType",

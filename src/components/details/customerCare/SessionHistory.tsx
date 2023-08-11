@@ -223,7 +223,7 @@ const SessionHistory = ({ item }: PropData) => {
           )}
 
           <TableCard
-            title="Session List"
+            title="Session Lists"
             hasLink={false}
             addLink="/admin/device/ip-management/create"
             permission="ip.create"

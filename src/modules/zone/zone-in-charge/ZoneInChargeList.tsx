@@ -13,7 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 import { ClientData } from "@/interfaces/ClientData";
 
 const statusList = [
@@ -326,18 +326,18 @@ const ZoneInChargeList: React.FC = () => {
     //   align: "center" as AlignType
     // },
     // createdOn
-    {
-      title: "Created At",
-      dataIndex: "createdOn",
-      sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created At",
+    //   dataIndex: "createdOn",
+    //   sorter: false,
+    //   render: (createdOn: any) => {
+    //     if (!createdOn) return "-";
+    //     const date = new Date(createdOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // editedBy
     // {
     //   title: "Updated By",

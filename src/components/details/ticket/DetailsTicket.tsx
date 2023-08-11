@@ -3,6 +3,7 @@ import { TicketData } from "@/interfaces/TicketData";
 import { FileImageOutlined } from "@ant-design/icons";
 import { Card, Col, Row, Button, Modal } from "antd";
 import { formatDistanceToNow } from "date-fns";
+
 import React, { useEffect, useState } from "react";
 
 interface PropData {
@@ -11,6 +12,7 @@ interface PropData {
 }
 
 const DetailsTicket = ({ item, replys }: PropData) => {
+  console.log(item);
   const [createdDate, setCreatedDate] = useState<Date | null>(null);
   const [timeDiff, setTimeDiff] = useState<string>("");
 
@@ -101,6 +103,14 @@ const DetailsTicket = ({ item, replys }: PropData) => {
               <span className="font-bold">Customer Username:</span>
               <span className="mx-2">{item.customer.username}</span>
             </p>
+            {/* <p>
+              <span className="font-bold">Assigned To:</span>
+              <span className="mx-2">{item.}</span>
+            </p>
+            <p>
+              <span className="font-bold">Closed By:</span>
+              <span className="mx-2">{item.cl}</span>
+            </p> */}
           </div>
         </Card>
 
@@ -164,8 +174,10 @@ const DetailsTicket = ({ item, replys }: PropData) => {
         >
           <div style={{ textAlign: "start" }}>
             <h1 className="font-bold text-xl text-[#4361ee]">Reply History</h1>
+
             {replys.map((replyData: any, index: number) => (
               <div key={index}>
+                {/* <Divider type="vertical" orientation="left" plain> */}
                 <p>
                   <span className="font-bold text-base capitalize">
                     {replyData.insertedBy.username}
@@ -175,7 +187,7 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                     {/* createdOn */}
                     {formatDistanceToNow(new Date(replyData.createdOn), {
                       addSuffix: true
-                    })}{" "}
+                    })}
                     - {new Date(replyData.createdOn).toDateString()}
                   </span>
                   <span className="mx-2">
@@ -210,6 +222,7 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                   </Modal>
                 </p>
                 <p className="ml-10 font-semibold">{replyData.note}</p>
+                {/* </Divider> */}
               </div>
             ))}
           </div>

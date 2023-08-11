@@ -43,191 +43,6 @@ const DetailsComplainTypeData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Partner :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.partner?.username}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Person :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.partner?.contactPerson}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.partner?.contactNumber}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Alternate Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.partner?.altContactNumber}
-                </span>
-              </Col>
-            </Row>
-
-            {/* <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end",
-               
-                }}
-              >
-                <span className="font-bold text-base">Email :</span>
-              </Col>
-              <Col >
-                <span className="mx-1 text-base">{item.partner?.email}</span>
-              </Col>
-            </Row> */}
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Address :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.partner?.address}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Division :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.partner?.division?.name}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">District :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.partner?.district?.name}
-                </span>
-              </Col>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-      <Col
-        xs={24}
-        sm={24}
-        md={12}
-        lg={12}
-        xl={12}
-        xxl={12}
-        className="gutter-row"
-      >
-        <Card
-          hoverable
-          bordered={false}
-          style={{
-            textAlign: "start",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            border: "1px solid #F15F22"
-          }}
-        >
-          <div>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
                 <span className="font-bold text-base">Created By :</span>
               </Col>
               <Col>
@@ -305,6 +120,16 @@ const DetailsComplainTypeData = ({ item }: PropData) => {
             </Row>
           </div>
         </Card>
+      </Col>
+      <Col
+        xs={24}
+        sm={24}
+        md={12}
+        lg={12}
+        xl={12}
+        xxl={12}
+        className="gutter-row"
+      >
         <Card
           hoverable
           bordered={false}
@@ -312,8 +137,7 @@ const DetailsComplainTypeData = ({ item }: PropData) => {
             textAlign: "start",
             backgroundColor: "white",
             borderRadius: "10px",
-            border: "1px solid #F15F22",
-            marginTop: "1rem"
+            border: "1px solid #F15F22"
           }}
         >
           <div>
@@ -352,25 +176,6 @@ const DetailsComplainTypeData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.complainCategory}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Phone :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.insertedBy?.phone}</span>
               </Col>
             </Row>
 

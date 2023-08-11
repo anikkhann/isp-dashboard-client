@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import AppLoader from "@/lib/AppLoader";
-
 import dynamic from "next/dynamic";
 
 const Column = dynamic(
