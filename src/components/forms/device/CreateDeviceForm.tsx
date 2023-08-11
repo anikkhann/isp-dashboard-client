@@ -1279,12 +1279,12 @@ const CreateDeviceForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Location!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Location!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"

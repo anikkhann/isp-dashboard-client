@@ -43,6 +43,47 @@ const DetailsDeviceData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
+                <span className="font-bold text-base">Zone Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.distributionZone?.name}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Pop Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.distributionPop?.name}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
                 <span className="font-bold text-base">Name :</span>
               </Col>
               <Col>
@@ -184,58 +225,6 @@ const DetailsDeviceData = ({ item }: PropData) => {
             </Row>
           </div>
         </Card>
-        <Card
-          hoverable
-          bordered={false}
-          style={{
-            textAlign: "start",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            border: "1px solid #F15F22",
-            marginTop: "1rem"
-          }}
-        >
-          <div>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Phone :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.insertedBy?.phone}</span>
-              </Col>
-            </Row>
-
-            {/* <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end",
-               
-                }}
-              >
-                <span className="font-bold text-base">Email :</span>
-              </Col>
-              <Col >
-                <span className="mx-1 text-base">{item.insertedBy?.email}</span>
-              </Col>
-            </Row> */}
-          </div>
-        </Card>
       </Col>
 
       <Col
@@ -255,170 +244,6 @@ const DetailsDeviceData = ({ item }: PropData) => {
             backgroundColor: "white",
             borderRadius: "10px",
             border: "1px solid #F15F22"
-          }}
-        >
-          <div>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Zone Name :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.distributionZone?.name}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Pop Name :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.distributionPop?.name}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Partner Name :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {" "}
-                  {item.distributionZone?.partner?.name}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Person :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {" "}
-                  {item.distributionZone?.partner?.contactPerson}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.distributionZone?.partner?.contactNumber}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Alternate Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {" "}
-                  {item.distributionZone?.partner?.altContactNumber}
-                </span>
-              </Col>
-            </Row>
-
-            {/* <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end",
-               
-                }}
-              >
-                <span className="font-bold text-base">Partner Email :</span>
-              </Col>
-              <Col >
-                <span className="mx-1 text-base">
-                  {item.distributionZone?.partner?.email}
-                </span>
-              </Col>
-            </Row> */}
-          </div>
-        </Card>
-        <Card
-          hoverable
-          bordered={false}
-          style={{
-            textAlign: "start",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            border: "1px solid #F15F22",
-            marginTop: "1rem"
           }}
         >
           <div>

@@ -93,7 +93,6 @@ const DetailsIpData = ({ item }: PropData) => {
                 </span>
               </Col>
             </Row>
-
             <Row
               style={{
                 marginTop: "2px"
@@ -106,16 +105,45 @@ const DetailsIpData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Radius IP :</span>
+                <span className="font-bold text-base">IP :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.ip}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Status :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.radiusIp?.name}
+                  {item.isUsed == false ? "Free" : "Used"}
                 </span>
               </Col>
             </Row>
           </div>
         </Card>
+      </Col>
+
+      <Col
+        xs={24}
+        sm={24}
+        md={12}
+        lg={12}
+        xl={12}
+        xxl={12}
+        className="gutter-row"
+      >
         <Card
           hoverable
           bordered={false}
@@ -123,8 +151,7 @@ const DetailsIpData = ({ item }: PropData) => {
             textAlign: "start",
             backgroundColor: "white",
             borderRadius: "10px",
-            border: "1px solid #F15F22",
-            marginTop: "1rem"
+            border: "1px solid #F15F22"
           }}
         >
           <div>
@@ -212,176 +239,6 @@ const DetailsIpData = ({ item }: PropData) => {
                   {item.updatedOn
                     ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
                     : null}
-                </span>
-              </Col>
-            </Row>
-          </div>
-        </Card>
-      </Col>
-
-      <Col
-        xs={24}
-        sm={24}
-        md={12}
-        lg={12}
-        xl={12}
-        xxl={12}
-        className="gutter-row"
-      >
-        <Card
-          hoverable
-          bordered={false}
-          style={{
-            textAlign: "start",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            border: "1px solid #F15F22"
-          }}
-        >
-          <div>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Partner Name :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.username}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Person :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.contactPerson}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.contactNumber}
-                </span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Alternate Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.altContactNumber}
-                </span>
-              </Col>
-            </Row>
-
-            {/* <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end",
-               
-                }}
-              >
-                <span className="font-bold text-base">Email :</span>
-              </Col>
-              <Col >
-                <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.email}
-                </span>
-              </Col>
-            </Row> */}
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Division :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.division?.name}
-                </span>
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">District :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.ipSubnet?.partner?.district?.name}
                 </span>
               </Col>
             </Row>

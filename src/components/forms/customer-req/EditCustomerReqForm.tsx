@@ -857,12 +857,12 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Alt Mobile No!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Alt Mobile No!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -1001,12 +1001,12 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Flat No!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Flat No!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -1071,12 +1071,12 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Road No!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Road No!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -1376,12 +1376,12 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Remarks!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Remarks!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -1424,101 +1424,110 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                 </Space>
               </Form.Item>
             </Col>
-            {/* referrerCustomer */}
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Referrer Customer"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="referrerCustomer"
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Referrer Customer"
-                    onChange={handleCustomerChange}
-                    options={customers}
-                    value={selectedCustomer}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+
             {/* referrerUser */}
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Referrer User"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="referrerUser"
+            {selectedReferenceType == "Internal" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Referrer User"
-                    onChange={handleUserChange}
-                    options={users}
-                    value={selectedUser}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-            {/* referrerName */}
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="referrerName"
-                label="Referrer Name"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Referrer Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Referrer Name"
-                  className={`form-control`}
-                  name="referrerName"
+                <Form.Item
+                  label="Referrer User"
                   style={{
-                    padding: "6px"
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
-                />
-              </Form.Item>
-            </Col>
+                  name="referrerUser"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Referrer User"
+                      onChange={handleUserChange}
+                      options={users}
+                      value={selectedUser}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            )}
+            {/* referrerName */}
+            {selectedReferenceType == "External" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="referrerName"
+                  label="Referrer Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Referrer Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Referrer Name"
+                    className={`form-control`}
+                    name="referrerName"
+                    style={{
+                      padding: "6px"
+                    }}
+                  />
+                </Form.Item>
+              </Col>
+            )}
+
+            {/* referrerCustomer */}
+            {selectedReferenceType == "Customer" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Referrer Customer"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="referrerCustomer"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Referrer Customer"
+                      onChange={handleCustomerChange}
+                      options={customers}
+                      value={selectedCustomer}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            )}
+
             <Col
               xs={24}
               sm={12}

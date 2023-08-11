@@ -52,6 +52,10 @@ export interface CustomerData {
   districtId?: string;
   upazillaId?: string;
   unionId?: string;
+  clientNote?: string;
+  clientStatus?: string;
+  zoneNote?: string;
+  zoneStatus?: string;
 }
 
 export interface CustomerType {
