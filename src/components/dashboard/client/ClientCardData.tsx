@@ -71,7 +71,7 @@ const ClientCardData = () => {
               style={{ backgroundColor: "#ffffff !important" }}
               title="Active Clients"
               value={item?.active_client}
-              precision={2}
+              // precision={2}
               valueStyle={{ color: "#3f8600" }}
               prefix={<FaUsers className="w-7 h-6 mr-3 " />}
               // suffix="%"
