@@ -176,7 +176,6 @@ const SearchCustomer = () => {
       }
     }
   };
-
   function addOneDay(date = new Date()) {
     date.setDate(date.getDate() + 1);
 
@@ -230,7 +229,6 @@ const SearchCustomer = () => {
       width: "20%",
       align: "center" as AlignType
     },
-
     {
       title: "Customer ID",
       dataIndex: "customerId",
