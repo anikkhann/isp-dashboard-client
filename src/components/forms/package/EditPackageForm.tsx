@@ -575,7 +575,7 @@ const EditPackageForm = ({ item }: PropData) => {
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Validity Unit"
                     onChange={handleUnitChange}
                     options={validityUnits}
