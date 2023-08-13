@@ -1,6 +1,7 @@
 import ZoneLayout from "@/core/layouts/ZoneLayout";
 import AppLoader from "@/lib/AppLoader";
-import ZoneDashboard from "@/modules/dashboard/ZoneDashboard";
+// import ZoneDashboard from "@/modules/dashboard/ZoneDashboard";
+import MainDashboard from "@/modules/dashboard/MainDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -13,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("zone.dashboard", "") ? <ZoneDashboard /> : <Forbidden />}
+      {ability.can("zone.dashboard", "") ? <MainDashboard /> : <Forbidden />}
     </>
   );
 };
