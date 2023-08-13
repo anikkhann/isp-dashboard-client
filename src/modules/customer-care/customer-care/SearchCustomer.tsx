@@ -177,6 +177,12 @@ const SearchCustomer = () => {
     }
   };
 
+  function addOneDay(date = new Date()) {
+    date.setDate(date.getDate() + 1);
+
+    return date;
+  }
+
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
@@ -226,9 +232,90 @@ const SearchCustomer = () => {
     },
 
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Customer ID",
+      dataIndex: "customerId",
       sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Username",
+      dataIndex: "username",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Zone",
+      dataIndex: "distributionZone",
+      sorter: false,
+      render: (distributionZone: any) => {
+        if (!distributionZone) return "-";
+        return <>{distributionZone.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Pop",
+      dataIndex: "distributionPop",
+      sorter: false,
+      render: (distributionPop: any) => {
+        if (!distributionPop) return "-";
+        return <>{distributionPop.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Mobile",
+      dataIndex: "mobileNo",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Connection Address",
+      dataIndex: "connectionAddress",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Credits",
+      dataIndex: "credits",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Package",
+      dataIndex: "customerPackage",
+      sorter: false,
+      render: (customerPackage: any) => {
+        if (!customerPackage) return "-";
+        return <>{customerPackage.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Expiration Date",
+      dataIndex: "expirationTime",
+      sorter: false,
+      render: (expirationTime: any) => {
+        if (!expirationTime) return "-";
+        const date = new Date(expirationTime);
+        const result2 = addOneDay(date);
+        return <>{format(result2, "yyyy-MM-dd pp")}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -264,7 +351,7 @@ const SearchCustomer = () => {
     // },
     // createdOn
     {
-      title: "Created At",
+      title: "Creation/Onboard Date",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
