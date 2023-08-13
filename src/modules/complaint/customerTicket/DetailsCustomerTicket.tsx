@@ -351,9 +351,9 @@ const DetailsCustomerTicket = ({ id }: any) => {
       getRootCauseList();
 
       if (item.checkList) {
-        let convertData = item?.checkList;
-        convertData = convertData.replaceAll('"', "&quot;");
-        convertData = convertData.replaceAll("'", '"');
+        const convertData = item?.checkList;
+        // convertData = convertData.replaceAll('"', "&quot;");
+        // convertData = convertData.replaceAll("'", '"');
 
         const checklists = JSON.parse(convertData);
 
@@ -372,7 +372,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
       }
     }
   }, [item]);
-
+  console.log(item);
   return (
     <>
       <AppRowContainer>
@@ -421,19 +421,20 @@ const DetailsCustomerTicket = ({ id }: any) => {
             >
               CheckList
             </Button>
-
-            <Dropdown
-              menu={{ items }}
-              placement="bottom"
-              arrow={{ pointAtCenter: true }}
-            >
-              <Button type="primary">
-                <Space>
-                  Actions
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
+            {item.status != "closed" && (
+              <Dropdown
+                menu={{ items }}
+                placement="bottom"
+                arrow={{ pointAtCenter: true }}
+              >
+                <Button type="primary">
+                  <Space>
+                    Actions
+                    <DownOutlined />
+                  </Space>
+                </Button>
+              </Dropdown>
+            )}
           </div>
         )}
 

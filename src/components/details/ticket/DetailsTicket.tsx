@@ -3,7 +3,7 @@ import { TicketData } from "@/interfaces/TicketData";
 import { FileImageOutlined } from "@ant-design/icons";
 import { Card, Col, Row, Button, Modal } from "antd";
 import { formatDistanceToNow } from "date-fns";
-
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 
 interface PropData {
@@ -13,6 +13,7 @@ interface PropData {
 
 const DetailsTicket = ({ item, replys }: PropData) => {
   console.log(item);
+
   const [createdDate, setCreatedDate] = useState<Date | null>(null);
   const [timeDiff, setTimeDiff] = useState<string>("");
 
@@ -103,14 +104,34 @@ const DetailsTicket = ({ item, replys }: PropData) => {
               <span className="font-bold">Customer Username:</span>
               <span className="mx-2">{item.customer.username}</span>
             </p>
-            {/* <p>
-              <span className="font-bold">Assigned To:</span>
-              <span className="mx-2">{item.}</span>
-            </p>
             <p>
-              <span className="font-bold">Closed By:</span>
-              <span className="mx-2">{item.cl}</span>
-            </p> */}
+              <span className="font-bold">Owner:</span>
+              <span className="mx-2">{item.assignedTo?.name}</span>
+            </p>
+            {item.status == "closed" && (
+              <>
+                <p>
+                  <span className="font-bold">Closed By:</span>
+                  <span className="mx-2">{item.closedBy?.name}</span>
+                </p>
+
+                <p>
+                  <span className="font-bold">Closed Time:</span>
+                  <span className="mx-2">
+                    {item.closedTime
+                      ? format(new Date(item.closedTime), "yyyy-MM-dd pp")
+                      : null}
+                  </span>
+                </p>
+
+                <p>
+                  <span className="font-bold">Root Cause:</span>
+                  <span className="mx-2">
+                    {item.rootCause?.title ? item.rootCause?.title : null}
+                  </span>
+                </p>
+              </>
+            )}
           </div>
         </Card>
 

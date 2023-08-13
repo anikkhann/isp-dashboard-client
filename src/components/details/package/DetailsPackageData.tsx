@@ -49,7 +49,24 @@ const DetailsPackageData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.name}</span>
               </Col>
             </Row>
-
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Display Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.displayName}</span>
+              </Col>
+            </Row>
             <Row
               style={{
                 marginTop: "2px"
@@ -182,6 +199,26 @@ const DetailsPackageData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.validityUnit}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">IP Pool Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.ipPoolName ? item.ipPoolName : null}
+                </span>
               </Col>
             </Row>
           </div>
