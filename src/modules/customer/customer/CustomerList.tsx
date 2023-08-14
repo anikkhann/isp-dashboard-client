@@ -67,8 +67,8 @@ const CustomerList: React.FC = () => {
     }
   });
 
-  function addOneDay(date = new Date()) {
-    date.setDate(date.getDate() + 1);
+  function subOneDay(date = new Date()) {
+    date.setDate(date.getDate() - 1);
 
     return date;
   }
@@ -576,7 +576,7 @@ const CustomerList: React.FC = () => {
       render: (expirationTime: any) => {
         if (!expirationTime) return "-";
         const date = new Date(expirationTime);
-        const result2 = addOneDay(date);
+        const result2 = subOneDay(date);
         return <>{format(result2, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
