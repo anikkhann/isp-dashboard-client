@@ -74,7 +74,7 @@ const SearchCustomer = () => {
     };
     const { data } = await axios.post("/api/customer/get-list", body);
 
-    console.log("data.body", data);
+    // console.log("data.body", data);
 
     const list = data.body.map((item: any) => {
       return {
@@ -176,8 +176,8 @@ const SearchCustomer = () => {
       }
     }
   };
-  function addOneDay(date = new Date()) {
-    date.setDate(date.getDate() + 1);
+  function subOneDay(date = new Date()) {
+    date.setDate(date.getDate() - 1);
 
     return date;
   }
@@ -311,7 +311,7 @@ const SearchCustomer = () => {
       render: (expirationTime: any) => {
         if (!expirationTime) return "-";
         const date = new Date(expirationTime);
-        const result2 = addOneDay(date);
+        const result2 = subOneDay(date);
         return <>{format(result2, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
