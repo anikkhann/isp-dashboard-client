@@ -577,8 +577,17 @@ const CustomerList: React.FC = () => {
         if (!expirationTime) return "-";
         const date = new Date(expirationTime);
         const result2 = subOneDay(date);
-        return <>{format(result2, "yyyy-MM-dd pp")}</>;
+        const today = new Date();
+
+        const isDateGreen = result2 >= today;
+        const color = isDateGreen ? "green" : "red";
+
+        return <span style={{ color }}>{format(result2, "yyyy-MM-dd")}</span>;
+
+        // return <>{format(result2, "yyyy-MM-dd")}</>;
       },
+      // return <>{result2}</>;
+      // pp
       width: "20%",
       align: "center" as AlignType
     },
@@ -620,6 +629,7 @@ const CustomerList: React.FC = () => {
       render: (createdOn: any) => {
         if (!createdOn) return "-";
         const date = new Date(createdOn);
+
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
