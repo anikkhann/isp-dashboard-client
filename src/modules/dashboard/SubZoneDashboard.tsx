@@ -4,11 +4,14 @@
 // import CustomerMonthlyColumnChart from "@/components/charts/clientDashboard/CustomerMonthlyColumnChart";
 // import CustomerQuarterColumnChart from "@/components/charts/clientDashboard/CustomerQuarterColumnChart";
 // import CustomerYearlyColumnChart from "@/components/charts/clientDashboard/CustomerYearlyColumnChart";
-import ZoneCardData from "@/components/dashboard/Zone/ZoneCardData";
-import ZoneWiseCardData from "@/components/dashboard/Zone/ZoneWiseCardData";
-import SubZoneWiseCardData from "@/components/dashboard/Zone/SubZoneWiseCardData";
+// import ZoneCardData from "@/components/dashboard/Zone/ZoneCardData";
+// import ZoneWiseCardData from "@/components/dashboard/Zone/ZoneWiseCardData";
+// import SubZoneWiseCardData from "@/components/dashboard/Zone/SubZoneWiseCardData";
 // import ClientCardData from "@/components/dashboard/client/ClientCardData";
 // import CustomerCardData from "@/components/dashboard/client/CustomerCardData";
+import SubZoneCardData from "@/components/dashboard/SubZone/SubZoneCardData";
+import SubZoneTableData from "@/components/dashboard/SubZone/SubZoneTableData";
+import RetailerWiseTableData from "@/components/dashboard/SubZone/RetailerWiseTableData";
 import AppAnimate from "@/lib/AppAnimate";
 import AppRowContainer from "@/lib/AppRowContainer";
 // import { Card, Col, Select, Space } from "antd";
@@ -45,7 +48,7 @@ import { Col } from "antd";
 //   }
 // ];
 
-const ZoneDashboard = () => {
+const SubZoneDashboard = () => {
   // const [selectedClientDataType, setSelectedClientDataType] = useState<string>(
   //   clientDataType[0].value
   // );
@@ -66,7 +69,7 @@ const ZoneDashboard = () => {
       <AppAnimate>
         <AppRowContainer>
           <Col span={24}>
-            <ZoneCardData />
+            <SubZoneCardData />
           </Col>
 
           {/* <Col xs={24} lg={12}>
@@ -149,10 +152,10 @@ const ZoneDashboard = () => {
         </AppRowContainer>
         <AppRowContainer>
           <Col span={24}>
-            <ZoneWiseCardData />
+            <SubZoneTableData />
           </Col>
           <Col span={24}>
-            <SubZoneWiseCardData />
+            <RetailerWiseTableData />
           </Col>
         </AppRowContainer>
       </AppAnimate>
@@ -160,4 +163,4 @@ const ZoneDashboard = () => {
   );
 };
 
-export default ZoneDashboard;
+export default SubZoneDashboard;

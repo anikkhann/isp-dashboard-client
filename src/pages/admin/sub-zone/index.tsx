@@ -1,6 +1,8 @@
 import SubZoneLayout from "@/core/layouts/SubZoneLayout";
 import AppLoader from "@/lib/AppLoader";
-import MainDashboard from "@/modules/dashboard/MainDashboard";
+import SubZoneDashboard from "@/modules/dashboard/SubZoneDashboard";
+// import MainDashboard from "@/modules/dashboard/MainDashboard";
+
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -13,7 +15,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("subZone.dashboard", "") ? <MainDashboard /> : <Forbidden />}
+      {ability.can("subZone.dashboard", "") ? (
+        <SubZoneDashboard />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };
