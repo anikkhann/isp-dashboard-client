@@ -9,19 +9,17 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   networkName: string;
   networkAddress: string;
   subnetMask: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
-
 const CreateIPForm = () => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -39,6 +37,7 @@ const CreateIPForm = () => {
   };
 
   const onSubmit = (data: FormData) => {
+    setLoading(true);
     // console.log(data);
     const { networkName, networkAddress, subnetMask } = data;
 
@@ -82,140 +81,145 @@ const CreateIPForm = () => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            networkName: "",
-            networkAddress: "",
-            subnetMask: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }}
-          colon={false}
-          scrollToFirstError
-        >
-          {/* networkName */}
-          <Form.Item
-            label="Network Name"
-            style={{
-              marginBottom: 0,
-              fontWeight: "bold"
+      {!loading && (
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{
+              networkName: "",
+              networkAddress: "",
+              subnetMask: ""
             }}
-            name="networkName"
-            rules={[
-              {
-                required: true,
-                message: "Please input your networkName!"
-              }
-            ]}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            labelCol={{ flex: "110px" }}
+            labelAlign="left"
+            labelWrap
+            wrapperCol={{ flex: 1 }}
+            colon={false}
+            scrollToFirstError
           >
-            <Input
-              type="text"
-              placeholder="networkName"
-              className={`form-control`}
+            {/* networkName */}
+            <Form.Item
+              label="Network Name"
+              style={{
+                marginBottom: 0,
+                fontWeight: "bold"
+              }}
               name="networkName"
-              style={{ padding: "6px" }}
-            />
-          </Form.Item>
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your networkName!"
+                }
+              ]}
+            >
+              <Input
+                type="text"
+                placeholder="networkName"
+                className={`form-control`}
+                name="networkName"
+                style={{ padding: "6px" }}
+              />
+            </Form.Item>
 
-          {/* networkAddress */}
-          <Form.Item
-            label="Network Address"
-            style={{
-              marginBottom: 0,
-              fontWeight: "bold"
-            }}
-            name="networkAddress"
-            rules={[
-              {
-                required: true,
-                message: "Please input your networkAddress!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="networkAddress"
-              className={`form-control`}
+            {/* networkAddress */}
+            <Form.Item
+              label="Network Address"
+              style={{
+                marginBottom: 0,
+                fontWeight: "bold"
+              }}
               name="networkAddress"
-              style={{ padding: "6px" }}
-            />
-          </Form.Item>
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your networkAddress!"
+                }
+              ]}
+            >
+              <Input
+                type="text"
+                placeholder="networkAddress"
+                className={`form-control`}
+                name="networkAddress"
+                style={{ padding: "6px" }}
+              />
+            </Form.Item>
 
-          {/* subnetMask */}
+            {/* subnetMask */}
 
-          <Form.Item
-            label="Subnet Mask"
-            style={{
-              marginBottom: 0,
-              fontWeight: "bold"
-            }}
-            name="subnetMask"
-            rules={[
-              {
-                required: true,
-                message: "Please input your subnetMask!"
-              }
-            ]}
-          >
-            <Input
-              type="text"
-              placeholder="subnetMask"
-              className={`form-control`}
+            <Form.Item
+              label="Subnet Mask"
+              style={{
+                marginBottom: 0,
+                fontWeight: "bold"
+              }}
               name="subnetMask"
-              style={{ padding: "6px" }}
-            />
-          </Form.Item>
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your subnetMask!"
+                }
+              ]}
+            >
+              <Input
+                type="text"
+                placeholder="subnetMask"
+                className={`form-control`}
+                name="subnetMask"
+                style={{ padding: "6px" }}
+              />
+            </Form.Item>
 
-          {/* status */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleActive} checked={isActive}>
-              Active
-            </Checkbox>
-          </Form.Item>
+            {/* status */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox onChange={handleActive} checked={isActive}>
+                Active
+              </Checkbox>
+            </Form.Item>
 
-          {/* submit */}
-          <Row justify="center">
-            <Col>
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

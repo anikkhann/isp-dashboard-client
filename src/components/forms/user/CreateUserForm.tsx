@@ -18,6 +18,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface AdminFormData {
   name: string;
@@ -34,6 +35,8 @@ interface AdminFormData {
 
 const CreateUserForm = () => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -54,8 +57,6 @@ const CreateUserForm = () => {
     setCheckedList(value as any);
   };
 
-  console.log(checkedList);
-
   const getRoles = async () => {
     const body = {
       meta: {
@@ -73,8 +74,6 @@ const CreateUserForm = () => {
 
     const res = await axios.post("/api/role/get-list", body);
     if (res.data.status == 200) {
-      // console.log(res.data.data.roles);
-
       const items = res.data.body.map((item: any) => {
         return {
           label: item.name,
@@ -94,11 +93,11 @@ const CreateUserForm = () => {
   };
 
   const onSubmit = (data: AdminFormData) => {
-    // console.log(data)
+    setLoading(true);
+
     const { name, email, password, username, phone } = data;
 
     // convert to array
-
     const roleId = [checkedList];
 
     const formData = {
@@ -147,354 +146,341 @@ const CreateUserForm = () => {
       // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
+
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            name: "",
-            email: "",
-            password: "",
-            username: "",
-            phone: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          // labelCol={{ flex: "110px" }}
-          // labelAlign="left"
-          // labelWrap
-          // wrapperCol={{ flex: 1 }}
-          colon={false}
-          scrollToFirstError
-        >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
-          >
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Name"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  className={`form-control`}
-                  name="name"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="username"
-                label="Username"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Username!"
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Username"
-                  className={`form-control`}
-                  name="username"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Email"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="email"
-                rules={[
-                  {
-                    type: "email",
-                    message: "The input is not valid E-mail!"
-                  },
-                  {
-                    required: true,
-                    message: "Please input your E-mail!"
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  }
-                ]}
-              >
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  className={`form-control`}
-                  name="email"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Phone"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="phone"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Phone!"
-                  },
-                  {
-                    pattern: new RegExp(/^(01)[0-9]{9}$/),
-                    message: "Please enter correct BD Phone number."
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Phone"
-                  className={`form-control`}
-                  name="phone"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="password"
-                label="Password"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your password!"
-                  },
-                  {
-                    min: 6,
-                    message: "Password must be minimum 6 characters."
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  }
-                ]}
-                hasFeedback
-              >
-                <Input.Password
-                  placeholder="Password"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="confirm"
-                label="Confirm Password"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                // placeholder="Confirm Password"
-                dependencies={["password"]}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "Please confirm your password!"
-                  },
-                  {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                    message:
-                      "Only letters, numbers, underscores and hyphens allowed"
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue("password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error(
-                          "confirm password that you entered do not match with password!"
-                        )
-                      );
-                    }
-                  })
-                ]}
-              >
-                <Input.Password
-                  placeholder="Confirm Password"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Roles"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    // mode="multiple"
-
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleRoleChange}
-                    options={roles}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-          </Row>
-
-          {/* <Form.Item
-            label="Roles"
-            style={{
-              marginBottom: 0
+      {!loading && (
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{
+              name: "",
+              email: "",
+              password: "",
+              username: "",
+              phone: ""
             }}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
           >
-            <Space style={{ width: "100%" }} direction="vertical">
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: "100%" }}
-                placeholder="Please select"
-                onChange={handleRoleChange}
-                options={roles}
-              />
-            </Space>
-          </Form.Item> */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleActive} checked={isActive}>
-              Active
-            </Checkbox>
-          </Form.Item>
-
-          <Row justify="center">
-            <Col>
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+              justify="space-between"
+            >
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Name"
                   style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Name!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Name"
+                    className={`form-control`}
+                    name="name"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="username"
+                  label="Username"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Username!"
+                    },
+                    {
+                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                      message:
+                        "Only letters, numbers, underscores and hyphens allowed"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Username"
+                    className={`form-control`}
+                    name="username"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Email"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="email"
+                  rules={[
+                    {
+                      type: "email",
+                      message: "The input is not valid E-mail!"
+                    },
+                    {
+                      required: true,
+                      message: "Please input your E-mail!"
+                    },
+                    {
+                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                      message:
+                        "Only letters, numbers, underscores and hyphens allowed"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    className={`form-control`}
+                    name="email"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Phone"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="phone"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Phone!"
+                    },
+                    {
+                      pattern: new RegExp(/^(01)[0-9]{9}$/),
+                      message: "Please enter correct BD Phone number."
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Phone"
+                    className={`form-control`}
+                    name="phone"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your password!"
+                    },
+                    {
+                      min: 6,
+                      message: "Password must be minimum 6 characters."
+                    },
+                    {
+                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                      message:
+                        "Only letters, numbers, underscores and hyphens allowed"
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password
+                    placeholder="Password"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="confirm"
+                  label="Confirm Password"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  // placeholder="Confirm Password"
+                  dependencies={["password"]}
+                  hasFeedback
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please confirm your password!"
+                    },
+                    {
+                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                      message:
+                        "Only letters, numbers, underscores and hyphens allowed"
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error(
+                            "confirm password that you entered do not match with password!"
+                          )
+                        );
+                      }
+                    })
+                  ]}
+                >
+                  <Input.Password
+                    placeholder="Confirm Password"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Roles"
+                  style={{
+                    marginBottom: 0,
                     fontWeight: "bold"
                   }}
                 >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      // mode="multiple"
+
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleRoleChange}
+                      options={roles}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox onChange={handleActive} checked={isActive}>
+                Active
+              </Checkbox>
+            </Form.Item>
+
+            <Row justify="center">
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    // type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

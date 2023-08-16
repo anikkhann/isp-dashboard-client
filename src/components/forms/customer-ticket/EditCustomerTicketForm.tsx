@@ -15,6 +15,7 @@ import { TicketData } from "@/interfaces/TicketData";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PropData {
   item: TicketData;
@@ -22,6 +23,8 @@ interface PropData {
 
 const EditCustomerTicketForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -74,6 +77,7 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
   );
 
   const onSubmit = (data: any) => {
+    setLoading(true);
     const { note } = data;
 
     const bodyData = {
@@ -119,109 +123,114 @@ const EditCustomerTicketForm = ({ item }: PropData) => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            notes: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          // labelCol={{ flex: "110px" }}
-          // labelAlign="left"
-          // labelWrap
-          // wrapperCol={{ flex: 1 }}
-          colon={false}
-          scrollToFirstError
-        >
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-            <Col xs={24} className="gutter-row">
-              {/* note */}
-              <Form.Item
-                label="Note"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="note"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your note!"
-                  }
-                ]}
-              >
-                <Input.TextArea
-                  rows={4}
-                  cols={16}
-                  placeholder="note"
-                  className={`form-control`}
-                  name="note"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-            <Col>
-              <Form.Item
-                label="Attachment"
-                style={{
-                  marginBottom: 0,
-                  width: "100%",
-                  textAlign: "center",
-                  fontWeight: "bold"
-                }}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Upload
-                    customRequest={dummyAction}
-                    onChange={handleFileChange}
-                    maxCount={1}
-                    listType="picture"
-                    fileList={fileList}
-                  >
-                    {fileList.length >= 1 ? null : uploadButton}
-                  </Upload>
-                </Space>
-              </Form.Item>
-            </Col>
-          </Row>
-
-          {/* submit */}
-          <Row justify="center">
-            <Col>
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
+      {!loading && (
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{
+              notes: ""
+            }}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            // labelCol={{ flex: "110px" }}
+            // labelAlign="left"
+            // labelWrap
+            // wrapperCol={{ flex: 1 }}
+            colon={false}
+            scrollToFirstError
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col xs={24} className="gutter-row">
+                {/* note */}
+                <Form.Item
+                  label="Note"
                   style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="note"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your note!"
+                    }
+                  ]}
+                >
+                  <Input.TextArea
+                    rows={4}
+                    cols={16}
+                    placeholder="note"
+                    className={`form-control`}
+                    name="note"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.Item
+                  label="Attachment"
+                  style={{
+                    marginBottom: 0,
+                    width: "100%",
+                    textAlign: "center",
                     fontWeight: "bold"
                   }}
                 >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Upload
+                      customRequest={dummyAction}
+                      onChange={handleFileChange}
+                      maxCount={1}
+                      listType="picture"
+                      fileList={fileList}
+                    >
+                      {fileList.length >= 1 ? null : uploadButton}
+                    </Upload>
+                  </Space>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    // type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

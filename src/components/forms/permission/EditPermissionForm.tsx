@@ -9,6 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PermissionData {
   createdOn: number;
@@ -99,6 +100,8 @@ const tagsList = [
 const EditPermissionForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
+  const [loading, setLoading] = useState(false);
+
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -125,6 +128,7 @@ const EditPermissionForm = ({ item }: PropData) => {
   }, [item]);
 
   const onSubmit = (data: PermissionFormData) => {
+    setLoading(true);
     const { displayName, tag } = data;
     try {
       const token = Cookies.get("token");
@@ -164,164 +168,164 @@ const EditPermissionForm = ({ item }: PropData) => {
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      // // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="my-6">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          style={{
-            width: "100%"
-          }}
-          name="wrap"
-          // labelCol={{ flex: "110px" }}
-          // labelAlign="left"
-          // labelWrap
-          // wrapperCol={{ flex: 1 }}
-          colon={false}
-          initialValues={{
-            displayName: item.displayName || "",
-            tag: item.tag || "",
-            actionTags: item.actionTags || []
-          }}
-        >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
+      {!loading && (
+        <div className="my-6">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            style={{
+              width: "100%"
+            }}
+            name="wrap"
+            colon={false}
+            initialValues={{
+              displayName: item.displayName || "",
+              tag: item.tag || "",
+              actionTags: item.actionTags || []
+            }}
           >
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+              justify="space-between"
             >
-              <Form.Item
-                label="Display Name"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="displayName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Display Name!"
-                  }
-                ]}
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Input
-                  type="text"
-                  placeholder="displayName"
-                  className={`form-control`}
-                  name="displayName"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Tag"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="tag"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Tag!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Tag"
-                  className={`form-control`}
-                  name="tag"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Action Tags"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="actionTags"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select actions"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleChange}
-                    options={tagsList}
-                    value={actionTags}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row justify="center">
-            <Col>
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
+                <Form.Item
+                  label="Display Name"
                   style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
+                    marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  name="displayName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Display Name!"
+                    }
+                  ]}
                 >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+                  <Input
+                    type="text"
+                    placeholder="displayName"
+                    className={`form-control`}
+                    name="displayName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Tag"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="tag"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Tag!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Tag"
+                    className={`form-control`}
+                    name="tag"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Action Tags"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="actionTags"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select actions"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      mode="multiple"
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleChange}
+                      options={tagsList}
+                      value={actionTags}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row justify="center">
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    // type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

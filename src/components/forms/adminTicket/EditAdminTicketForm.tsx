@@ -15,12 +15,15 @@ import { TicketData } from "@/interfaces/TicketData";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PropData {
   item: TicketData;
 }
 
 const EditAdminTicketForm = ({ item }: PropData) => {
+  const [loading, setLoading] = useState(false);
+
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -74,6 +77,7 @@ const EditAdminTicketForm = ({ item }: PropData) => {
   );
 
   const onSubmit = (data: any) => {
+    setLoading(true);
     const { note } = data;
 
     const bodyData = {
@@ -120,11 +124,14 @@ const EditAdminTicketForm = ({ item }: PropData) => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3">
@@ -215,6 +222,7 @@ const EditAdminTicketForm = ({ item }: PropData) => {
                     color: "#FFFFFF",
                     fontWeight: "bold"
                   }}
+                  disabled={loading}
                 >
                   Submit
                 </Button>
