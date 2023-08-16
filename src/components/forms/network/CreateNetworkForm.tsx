@@ -9,19 +9,18 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   networkName: string;
   networkAddress: string;
   subnetMask: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
-
 const CreateNetworkForm = () => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
+
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -39,7 +38,8 @@ const CreateNetworkForm = () => {
   };
 
   const onSubmit = (data: FormData) => {
-    // console.log(data);
+    setLoading(true);
+
     const { networkName, networkAddress, subnetMask } = data;
 
     const formData = {
@@ -82,173 +82,174 @@ const CreateNetworkForm = () => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            networkName: "",
-            networkAddress: "",
-            subnetMask: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          /* labelCol={{ flex: "110px" }}
-          labelAlign="left"
-          labelWrap
-          wrapperCol={{ flex: 1 }} */
-          colon={false}
-          scrollToFirstError
-        >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
-          >
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* networkName */}
-              <Form.Item
-                label="Network Name"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="networkName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Network Name!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Network Name"
-                  className={`form-control`}
-                  name="networkName"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* networkAddress */}
-              <Form.Item
-                label="Network Address"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="networkAddress"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Network Address!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Network Address"
-                  className={`form-control`}
-                  name="networkAddress"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* subnetMask */}
-              <Form.Item
-                label="Subnet Mask"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="subnetMask"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Subnet Mask!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="Subnet Mask"
-                  className={`form-control`}
-                  name="subnetMask"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          {/* status */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
+      {!loading && (
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{
+              networkName: "",
+              networkAddress: "",
+              subnetMask: ""
             }}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
           >
-            <Checkbox onChange={handleActive} checked={isActive}>
-              Active
-            </Checkbox>
-          </Form.Item>
-
-          {/* submit */}
-          <Row justify="center">
-            <Col>
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+              justify="space-between"
+            >
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* networkName */}
+                <Form.Item
+                  label="Network Name"
                   style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
+                    marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  name="networkName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Network Name!"
+                    }
+                  ]}
                 >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+                  <Input
+                    type="text"
+                    placeholder="Network Name"
+                    className={`form-control`}
+                    name="networkName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* networkAddress */}
+                <Form.Item
+                  label="Network Address"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="networkAddress"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Network Address!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Network Address"
+                    className={`form-control`}
+                    name="networkAddress"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* subnetMask */}
+                <Form.Item
+                  label="Subnet Mask"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="subnetMask"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Subnet Mask!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Subnet Mask"
+                    className={`form-control`}
+                    name="subnetMask"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            {/* status */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox onChange={handleActive} checked={isActive}>
+                Active
+              </Checkbox>
+            </Form.Item>
+
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    // type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

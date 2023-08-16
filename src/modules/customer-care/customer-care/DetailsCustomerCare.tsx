@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // import AppLoader from "@/lib/AppLoader";
-
 import AppRowContainer from "@/lib/AppRowContainer";
 import {
   // Alert,
@@ -27,7 +26,6 @@ import AppLoader from "@/lib/AppLoader";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { useRouter } from "next/router";
-import ConnectionStatus from "@/components/details/customerCare/ConnectionStatus";
 
 interface TabData {
   key: string;
@@ -176,12 +174,6 @@ const DetailsCustomerCare = ({ id }: any) => {
       key: "5",
       label: `Activity Log`,
       children: <>{item && <ActivityLog item={item} />}</>,
-      permission: "customerCare.list"
-    },
-    {
-      key: "6",
-      label: `Connection Status`,
-      children: <>{item && <ConnectionStatus item={item} />}</>,
       permission: "customerCare.list"
     }
   ];

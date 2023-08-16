@@ -10,6 +10,7 @@ import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   amount: string;
@@ -33,6 +34,8 @@ const types = [
 
 const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -58,7 +61,7 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
   }, [item]);
 
   const onSubmit = (data: FormData) => {
-    // console.log(data);
+    setLoading(true);
     const { amount, remarks } = data;
 
     const formData = {
@@ -101,165 +104,165 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            type: "",
-            amount: "",
-            remarks: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          // labelCol={{ flex: "110px" }}
-          // labelAlign="left"
-          // labelWrap
-          // wrapperCol={{ flex: 1 }}
-          colon={false}
-          scrollToFirstError
-        >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
+      {!loading && (
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{
+              type: "",
+              amount: "",
+              remarks: ""
+            }}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
           >
-            <Col
-              xs={24}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+              justify="space-between"
             >
-              {/* type */}
-              <Form.Item
-                label="Type"
-                name="type"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Type!"
-                  }
-                ]}
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
               >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Type"
-                    onChange={handleChange}
-                    options={types}
-                    value={selectType}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
-            >
-              {/* Amount */}
-              <Form.Item
-                label="Amount"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="amount"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Amount!"
-                  }
-                ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="amount"
-                  className={`form - control`}
-                  name="amount"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-
-            <Col
-              xs={24}
-              sm={24}
-              md={24}
-              lg={24}
-              xl={24}
-              xxl={24}
-              className="gutter-row"
-            >
-              {/* remarks */}
-              <Form.Item
-                label="remarks"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="remarks"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your remarks!"
-                  }
-                ]}
-              >
-                <Input.TextArea
-                  placeholder="remarks"
-                  className={`form - control`}
-                  name="remarks"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          {/* submit */}
-          <Row justify="center">
-            <Col>
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
+                {/* type */}
+                <Form.Item
+                  label="Type"
+                  name="type"
                   style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
+                    marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Type!"
+                    }
+                  ]}
                 >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Type"
+                      onChange={handleChange}
+                      options={types}
+                      value={selectType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* Amount */}
+                <Form.Item
+                  label="Amount"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="amount"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Amount!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="amount"
+                    className={`form - control`}
+                    name="amount"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={24}
+                xxl={24}
+                className="gutter-row"
+              >
+                {/* remarks */}
+                <Form.Item
+                  label="remarks"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="remarks"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your remarks!"
+                    }
+                  ]}
+                >
+                  <Input.TextArea
+                    placeholder="remarks"
+                    className={`form - control`}
+                    name="remarks"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    // type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

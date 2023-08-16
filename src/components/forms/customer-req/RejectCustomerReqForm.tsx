@@ -10,6 +10,7 @@ import { Alert, Button, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   remarks: string;
@@ -20,6 +21,8 @@ interface PropData {
 }
 const RejectCustomerReqForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -37,7 +40,7 @@ const RejectCustomerReqForm = ({ item }: PropData) => {
   }, [item]);
 
   const onSubmit = (data: FormData) => {
-    // console.log(data);
+    setLoading(true);
     const { remarks } = data;
 
     const formData = {
@@ -78,92 +81,93 @@ const RejectCustomerReqForm = ({ item }: PropData) => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            note: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          // labelCol={{ flex: "110px" }}
-          // labelAlign="left"
-          // labelWrap
-          // wrapperCol={{ flex: 1 }}
-          colon={false}
-          scrollToFirstError
-        >
-          <Row
-            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-            justify="space-between"
+      {!loading && (
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{
+              note: ""
+            }}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
           >
-            <Col
-              xs={24}
-              sm={24}
-              md={24}
-              lg={24}
-              xl={24}
-              xxl={24}
-              className="gutter-row"
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+              justify="space-between"
             >
-              {/* remarks */}
-              <Form.Item
-                label="remarks"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="remarks"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your remarks!"
-                  }
-                ]}
+              <Col
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={24}
+                xxl={24}
+                className="gutter-row"
               >
-                <Input.TextArea
-                  placeholder="remarks"
-                  className={`form - control`}
-                  name="remarks"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          {/* submit */}
-          <Row justify="center">
-            <Col>
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
+                {/* remarks */}
+                <Form.Item
+                  label="remarks"
                   style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
+                    marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  name="remarks"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your remarks!"
+                    }
+                  ]}
                 >
-                  Submit
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+                  <Input.TextArea
+                    placeholder="remarks"
+                    className={`form - control`}
+                    name="remarks"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    // type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

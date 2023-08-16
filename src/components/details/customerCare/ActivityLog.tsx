@@ -81,8 +81,6 @@ const ActivityLog = ({ item }: PropData) => {
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data.data", data);
-
         if (data.body) {
           setData(data.body);
           setTableParams({
@@ -181,7 +179,7 @@ const ActivityLog = ({ item }: PropData) => {
                 {array.map((checklist: any, index: number) => {
                   return (
                     <List.Item key={index}>
-                      {checklist.key} : {checklist.oldValue} {"->"}
+                      {checklist.key} : {checklist.oldValue} {"-> "}
                       {checklist.currentValue},
                     </List.Item>
                   );
@@ -195,6 +193,18 @@ const ActivityLog = ({ item }: PropData) => {
       },
 
       /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // actionBy
+    {
+      title: "Action By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      //   width: "20%",
       align: "center" as AlignType
     },
     {

@@ -23,6 +23,7 @@ import Cookies from "js-cookie";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 // import { useAppSelector } from "@/store/hooks";
 
 const steps = [
@@ -37,6 +38,8 @@ const steps = [
 ];
 
 const CreateAdminTicketForm = () => {
+  const [loading, setLoading] = useState(false);
+
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
@@ -168,6 +171,8 @@ const CreateAdminTicketForm = () => {
   }, []);
 
   const onSubmit = (data: any) => {
+    setLoading(true);
+
     const bodyData = {
       body: {
         ticketCategory: "parent",
@@ -215,198 +220,215 @@ const CreateAdminTicketForm = () => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      <div>
-        <div className="flex justify-content-between mb-10 ">
-          <Steps
-            size="small"
-            current={current}
-            items={items}
-            direction="horizontal"
-          />
-        </div>
-      </div>
+      {!loading && (
+        <>
+          <div>
+            <div className="flex justify-content-between mb-10 ">
+              <Steps
+                size="small"
+                current={current}
+                items={items}
+                direction="horizontal"
+              />
+            </div>
+          </div>
 
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            complainTypeId: "",
-            complainDetails: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          colon={false}
-          scrollToFirstError
-        >
-          {current === 0 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* complainTypeId */}
-                  <Form.Item
-                    label="Complain Type"
-                    name="complainTypeId"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Complain Type!"
-                      }
-                    ]}
+          <div className="mt-3">
+            <Form
+              // {...layout}
+              layout="vertical"
+              autoComplete="off"
+              onFinish={onSubmit}
+              form={form}
+              initialValues={{
+                complainTypeId: "",
+                complainDetails: ""
+              }}
+              style={{ maxWidth: "100%" }}
+              name="wrap"
+              colon={false}
+              scrollToFirstError
+            >
+              {current === 0 && (
+                <>
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
                   >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Complain Type"
-                        onChange={handleComplainTypeChange}
-                        options={complainTypes}
-                        value={selectedComplainType}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </>
-          )}
-
-          {current === 1 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
-                  {/* complainDetails */}
-                  <Form.Item
-                    label="Note"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="complainDetails"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your complain Details!"
-                      }
-                    ]}
-                  >
-                    <Input.TextArea
-                      rows={4}
-                      cols={16}
-                      placeholder="Complain Details"
-                      className={`form-control`}
-                      name="complainDetails"
-                      style={{ padding: "6px" }}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.Item
-                    label="Attachment"
-                    style={{
-                      marginBottom: 0,
-                      width: "100%",
-                      textAlign: "center",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Upload
-                        customRequest={dummyAction}
-                        onChange={handleFileChange}
-                        maxCount={1}
-                        listType="picture"
-                        fileList={fileList}
-                      >
-                        {fileList.length >= 1 ? null : uploadButton}
-                      </Upload>
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </>
-          )}
-
-          {/* submit */}
-          <Row justify="center">
-            <Col>
-              <div style={{ marginTop: 24 }}>
-                {current > 0 && (
-                  <Button
-                    style={{
-                      margin: "0 8px",
-                      fontWeight: "bold",
-                      color: "#FFFFFF"
-                    }}
-                    onClick={() => prev()}
-                    shape="round"
-                    type="primary"
-                  >
-                    Previous
-                  </Button>
-                )}
-                {current < steps.length - 1 && (
-                  <Button
-                    // type="primary"
-                    shape="round"
-                    onClick={() => next()}
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Next
-                  </Button>
-                )}
-              </div>
-
-              <Form.Item style={{ margin: "0 8px" }}>
-                <div style={{ marginTop: 24 }}>
-                  {current === steps.length - 1 && (
-                    <Button
-                      // type="primary"
-                      htmlType="submit"
-                      shape="round"
-                      style={{
-                        backgroundColor: "#F15F22",
-                        color: "#FFFFFF",
-                        fontWeight: "bold"
-                      }}
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={8}
+                      lg={8}
+                      xl={8}
+                      xxl={8}
+                      className="gutter-row"
                     >
-                      Submit
-                    </Button>
-                  )}
-                </div>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+                      {/* complainTypeId */}
+                      <Form.Item
+                        label="Complain Type"
+                        name="complainTypeId"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Complain Type!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Complain Type"
+                            onChange={handleComplainTypeChange}
+                            options={complainTypes}
+                            value={selectedComplainType}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </>
+              )}
+
+              {current === 1 && (
+                <>
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
+                  >
+                    <Col xs={24} className="gutter-row">
+                      {/* complainDetails */}
+                      <Form.Item
+                        label="Note"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="complainDetails"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your complain Details!"
+                          }
+                        ]}
+                      >
+                        <Input.TextArea
+                          rows={4}
+                          cols={16}
+                          placeholder="Complain Details"
+                          className={`form-control`}
+                          name="complainDetails"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
+                  >
+                    <Col>
+                      <Form.Item
+                        label="Attachment"
+                        style={{
+                          marginBottom: 0,
+                          width: "100%",
+                          textAlign: "center",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Upload
+                            customRequest={dummyAction}
+                            onChange={handleFileChange}
+                            maxCount={1}
+                            listType="picture"
+                            fileList={fileList}
+                          >
+                            {fileList.length >= 1 ? null : uploadButton}
+                          </Upload>
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </>
+              )}
+
+              {/* submit */}
+              <Row justify="center">
+                <Col>
+                  <div style={{ marginTop: 24 }}>
+                    {current > 0 && (
+                      <Button
+                        style={{
+                          margin: "0 8px",
+                          fontWeight: "bold",
+                          color: "#FFFFFF"
+                        }}
+                        onClick={() => prev()}
+                        shape="round"
+                        type="primary"
+                      >
+                        Previous
+                      </Button>
+                    )}
+                    {current < steps.length - 1 && (
+                      <Button
+                        // type="primary"
+                        shape="round"
+                        onClick={() => next()}
+                        style={{
+                          backgroundColor: "#F15F22",
+                          color: "#FFFFFF",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        Next
+                      </Button>
+                    )}
+                  </div>
+
+                  <Form.Item style={{ margin: "0 8px" }}>
+                    <div style={{ marginTop: 24 }}>
+                      {current === steps.length - 1 && (
+                        <Button
+                          // type="primary"
+                          htmlType="submit"
+                          shape="round"
+                          style={{
+                            backgroundColor: "#F15F22",
+                            color: "#FFFFFF",
+                            fontWeight: "bold"
+                          }}
+                          disabled={loading}
+                        >
+                          Submit
+                        </Button>
+                      )}
+                    </div>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </>
+      )}
     </>
   );
 };

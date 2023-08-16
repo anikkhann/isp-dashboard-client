@@ -10,6 +10,7 @@ import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PropData {
   item: CustomerData;
@@ -17,6 +18,8 @@ interface PropData {
 
 const ApproveCustomerReqForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -121,7 +124,7 @@ const ApproveCustomerReqForm = ({ item }: PropData) => {
   }, [item]);
 
   const onSubmit = () => {
-    // console.log(data);
+    setLoading(true);
 
     const formData = {
       id: item.id,
@@ -162,11 +165,14 @@ const ApproveCustomerReqForm = ({ item }: PropData) => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3">

@@ -24,6 +24,7 @@ import Cookies from "js-cookie";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
+import AppImageLoader from "@/components/loader/AppImageLoader";
 // import { useAppSelector } from "@/store/hooks";
 
 const steps = [
@@ -47,6 +48,8 @@ const steps = [
 
 const CreateCustomerTicketForm = () => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -329,7 +332,7 @@ const CreateCustomerTicketForm = () => {
   }, [selectedCustomer]);
 
   const onSubmit = () => {
-    // console.log(data);
+    setLoading(true);
     // Filter keys to keep only those starting with "checklist-"
 
     // Convert to JSON format
@@ -383,339 +386,360 @@ const CreateCustomerTicketForm = () => {
       // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
+      {!loading && (
+        <>
+          <div>
+            <div className="flex justify-content-between mb-10 ">
+              <Steps
+                size="small"
+                current={current}
+                items={items}
+                direction="horizontal"
+              />
+            </div>
+          </div>
 
-      <div>
-        <div className="flex justify-content-between mb-10 ">
-          <Steps
-            size="small"
-            current={current}
-            items={items}
-            direction="horizontal"
-          />
-        </div>
-      </div>
-
-      <div className="mt-3">
-        <Form
-          // {...layout}
-          layout="vertical"
-          autoComplete="off"
-          onFinish={onSubmit}
-          form={form}
-          initialValues={{
-            ticketCategory: "",
-            customerId: "",
-            complainTypeId: "",
-            complainDetails: "",
-            assignedTo: ""
-          }}
-          style={{ maxWidth: "100%" }}
-          name="wrap"
-          colon={false}
-          scrollToFirstError
-        >
-          {current === 0 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* customerId */}
-                  <Form.Item
-                    label="Customer"
-                    name="customerId"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Customer!"
-                      }
-                    ]}
+          <div className="mt-3">
+            <Form
+              // {...layout}
+              layout="vertical"
+              autoComplete="off"
+              onFinish={onSubmit}
+              form={form}
+              initialValues={{
+                ticketCategory: "",
+                customerId: "",
+                complainTypeId: "",
+                complainDetails: "",
+                assignedTo: ""
+              }}
+              style={{ maxWidth: "100%" }}
+              name="wrap"
+              colon={false}
+              scrollToFirstError
+            >
+              {current === 0 && (
+                <>
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
                   >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Customer"
-                        onChange={handleCustomerChange}
-                        options={customers}
-                        value={selectedCustomer}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </>
-          )}
-
-          {current === 1 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* complainTypeId */}
-                  <Form.Item
-                    label="Complain Type"
-                    name="complainTypeId"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Complain Type!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Complain Type"
-                        onChange={handleComplainTypeChange}
-                        options={complainTypes}
-                        value={selectedComplainType}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-              {checkListItems.length > 0 && (
-                <Row
-                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                  justify="center"
-                >
-                  <Col>
-                    {/* checklist */}
-                    {checkListItems.map((itemData: any, index: any) => (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={8}
+                      lg={8}
+                      xl={8}
+                      xxl={8}
+                      className="gutter-row"
+                    >
+                      {/* customerId */}
                       <Form.Item
-                        key={index}
-                        // label={itemData.title}
-                        name={`checklist-${itemData.title}`}
+                        label="Customer"
+                        name="customerId"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
                         rules={[
                           {
                             required: true,
-                            message: "Please select!"
+                            message: "Please select Customer!"
                           }
                         ]}
                       >
-                        <div
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Customer"
+                            onChange={handleCustomerChange}
+                            options={customers}
+                            value={selectedCustomer}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </>
+              )}
+
+              {current === 1 && (
+                <>
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
+                  >
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={8}
+                      lg={8}
+                      xl={8}
+                      xxl={8}
+                      className="gutter-row"
+                    >
+                      {/* complainTypeId */}
+                      <Form.Item
+                        label="Complain Type"
+                        name="complainTypeId"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Complain Type!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Complain Type"
+                            onChange={handleComplainTypeChange}
+                            options={complainTypes}
+                            value={selectedComplainType}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  {checkListItems.length > 0 && (
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="center"
+                    >
+                      <Col>
+                        {/* checklist */}
+                        {checkListItems.map((itemData: any, index: any) => (
+                          <Form.Item
+                            key={index}
+                            // label={itemData.title}
+                            name={`checklist-${itemData.title}`}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select!"
+                              }
+                            ]}
+                          >
+                            <div
+                              style={{
+                                marginBottom: 0,
+                                display: "flex",
+                                width: "100%",
+                                flexDirection: "row",
+                                border: "2px solid #000000",
+                                padding: "10px",
+                                borderRadius: "4px"
+                              }}
+                            >
+                              <span
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start",
+                                  marginRight: "10px"
+                                }}
+                              >
+                                {itemData.title}
+                              </span>
+                              <Radio.Group
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "start"
+                                }}
+                                key={index}
+                              >
+                                <Radio value="yes">Yes</Radio>
+                                <Radio value="no">No</Radio>
+                              </Radio.Group>
+                            </div>
+                          </Form.Item>
+                        ))}
+                      </Col>
+                    </Row>
+                  )}
+                </>
+              )}
+
+              {current === 2 && (
+                <>
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
+                  >
+                    <Col xs={24} className="gutter-row">
+                      {/* complainDetails */}
+                      <Form.Item
+                        label="Note"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="complainDetails"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your complain Details!"
+                          }
+                        ]}
+                      >
+                        <Input.TextArea
+                          rows={4}
+                          cols={16}
+                          placeholder="Complain Details"
+                          className={`form-control`}
+                          name="complainDetails"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
+                  >
+                    <Col>
+                      <Form.Item
+                        label="Attachment"
+                        style={{
+                          marginBottom: 0,
+                          width: "100%",
+                          textAlign: "center",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Upload
+                            customRequest={dummyAction}
+                            onChange={handleFileChange}
+                            maxCount={1}
+                            listType="picture"
+                            fileList={fileList}
+                          >
+                            {fileList.length >= 1 ? null : uploadButton}
+                          </Upload>
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </>
+              )}
+
+              {current === 3 && (
+                <>
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    justify="center"
+                  >
+                    {selectedCustomer != null && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={8}
+                        lg={8}
+                        xl={8}
+                        xxl={8}
+                        className="gutter-row"
+                      >
+                        {/* assignedTo */}
+                        <Form.Item
+                          label="Assigned To"
+                          name="assignedTo"
+                          /*   rules={[
+            {
+              required: true,
+              message: "Please select Assigned To!"
+            }
+          ]} */
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Assigned To"
+                              onChange={handleAssignedToChange}
+                              options={assignedTo}
+                              value={selectedAssignedTo}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    )}
+                  </Row>
+                </>
+              )}
+
+              {/* submit */}
+              <Row justify="center">
+                <Col>
+                  <div style={{ marginTop: 24 }}>
+                    {current > 0 && (
+                      <Button
+                        style={{
+                          margin: "0 8px",
+                          fontWeight: "bold",
+                          color: "#FFFFFF"
+                        }}
+                        onClick={() => prev()}
+                        shape="round"
+                        type="primary"
+                      >
+                        Previous
+                      </Button>
+                    )}
+                    {current < steps.length - 1 && (
+                      <Button
+                        // type="primary"
+                        shape="round"
+                        onClick={() => next()}
+                        style={{
+                          backgroundColor: "#F15F22",
+                          color: "#FFFFFF",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        Next
+                      </Button>
+                    )}
+                  </div>
+
+                  <Form.Item style={{ margin: "0 8px" }}>
+                    <div style={{ marginTop: 24 }}>
+                      {current === steps.length - 1 && (
+                        <Button
+                          // type="primary"
+                          htmlType="submit"
+                          shape="round"
                           style={{
-                            marginBottom: 0,
-                            display: "flex",
-                            width: "100%",
-                            flexDirection: "row",
-                            border: "2px solid #000000",
-                            padding: "10px",
-                            borderRadius: "4px"
+                            backgroundColor: "#F15F22",
+                            color: "#FFFFFF",
+                            fontWeight: "bold"
                           }}
                         >
-                          <span
-                            style={{
-                              width: "100%",
-                              textAlign: "start",
-                              marginRight: "10px"
-                            }}
-                          >
-                            {itemData.title}
-                          </span>
-                          <Radio.Group
-                            style={{
-                              display: "flex",
-                              justifyContent: "start"
-                            }}
-                            key={index}
-                          >
-                            <Radio value="yes">Yes</Radio>
-                            <Radio value="no">No</Radio>
-                          </Radio.Group>
-                        </div>
-                      </Form.Item>
-                    ))}
-                  </Col>
-                </Row>
-              )}
-            </>
-          )}
-
-          {current === 2 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
-                  {/* complainDetails */}
-                  <Form.Item
-                    label="Note"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="complainDetails"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your complain Details!"
-                      }
-                    ]}
-                  >
-                    <Input.TextArea
-                      rows={4}
-                      cols={16}
-                      placeholder="Complain Details"
-                      className={`form-control`}
-                      name="complainDetails"
-                    />
+                          Submit
+                        </Button>
+                      )}
+                    </div>
                   </Form.Item>
                 </Col>
               </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.Item
-                    label="Attachment"
-                    style={{
-                      marginBottom: 0,
-                      width: "100%",
-                      textAlign: "center",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Upload
-                        customRequest={dummyAction}
-                        onChange={handleFileChange}
-                        maxCount={1}
-                        listType="picture"
-                        fileList={fileList}
-                      >
-                        {fileList.length >= 1 ? null : uploadButton}
-                      </Upload>
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </>
-          )}
-
-          {current === 3 && (
-            <>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                {selectedCustomer != null && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* assignedTo */}
-                    <Form.Item
-                      label="Assigned To"
-                      name="assignedTo"
-                      /*   rules={[
-          {
-            required: true,
-            message: "Please select Assigned To!"
-          }
-        ]} */
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Assigned To"
-                          onChange={handleAssignedToChange}
-                          options={assignedTo}
-                          value={selectedAssignedTo}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-              </Row>
-            </>
-          )}
-
-          {/* submit */}
-          <Row justify="center">
-            <Col>
-              <div style={{ marginTop: 24 }}>
-                {current > 0 && (
-                  <Button
-                    style={{
-                      margin: "0 8px",
-                      fontWeight: "bold",
-                      color: "#FFFFFF"
-                    }}
-                    onClick={() => prev()}
-                    shape="round"
-                    type="primary"
-                  >
-                    Previous
-                  </Button>
-                )}
-                {current < steps.length - 1 && (
-                  <Button
-                    // type="primary"
-                    shape="round"
-                    onClick={() => next()}
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Next
-                  </Button>
-                )}
-              </div>
-
-              <Form.Item style={{ margin: "0 8px" }}>
-                <div style={{ marginTop: 24 }}>
-                  {current === steps.length - 1 && (
-                    <Button
-                      // type="primary"
-                      htmlType="submit"
-                      shape="round"
-                      style={{
-                        backgroundColor: "#F15F22",
-                        color: "#FFFFFF",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      Submit
-                    </Button>
-                  )}
-                </div>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+            </Form>
+          </div>
+        </>
+      )}
     </>
   );
 };
