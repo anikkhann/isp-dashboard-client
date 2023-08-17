@@ -81,7 +81,7 @@ const CreatePackageForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  // const [zones, setZones] = useState([]);
+  // const [expiredPackage, setExpiredPackage] = useState([]);
 
   // const [selectedZone, setSelectedZone] = useState<any[]>([]);
 
@@ -616,6 +616,16 @@ const CreatePackageForm = () => {
                   //   }
                   // ]}
                 >
+                  {/* <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Zone"
+                      onChange={handleZoneChange}
+                      options={zoneList}
+                      value={zoneId}
+                    />
+                  </Space> */}
                   <Input
                     type="text"
                     placeholder="Next Expired Package"

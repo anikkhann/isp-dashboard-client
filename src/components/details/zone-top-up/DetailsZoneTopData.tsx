@@ -46,7 +46,7 @@ const DetailsZoneTopData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Agent :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.agent.name}</span>
+                <span className="mx-1 text-base">{item.agent?.name}</span>
               </Col>
             </Row>
             <Row

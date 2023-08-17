@@ -19,12 +19,12 @@ interface FormData {
 
 const types = [
   {
-    label: "debit",
-    value: "debit"
-  },
-  {
     label: "credit",
     value: "credit"
+  },
+  {
+    label: "debit",
+    value: "debit"
   }
 ];
 
@@ -36,7 +36,7 @@ const CreateAgentTopForm = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
-  const [selectType, setSelectType] = useState<any>(null);
+  const [selectType, setSelectType] = useState<any>("credit");
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -196,7 +196,7 @@ const CreateAgentTopForm = () => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
+                      placeholder="Please select Agent"
                       onChange={handleZoneChange}
                       options={agentList}
                       value={agentId}
@@ -252,7 +252,7 @@ const CreateAgentTopForm = () => {
               >
                 {/* amount */}
                 <Form.Item
-                  label="amount"
+                  label="Amount"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -267,7 +267,7 @@ const CreateAgentTopForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="amount"
+                    placeholder="Amount"
                     className={`form-control`}
                     name="amount"
                     style={{ padding: "6px" }}
@@ -285,7 +285,7 @@ const CreateAgentTopForm = () => {
               >
                 {/* remarks */}
                 <Form.Item
-                  label="remarks"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -300,7 +300,7 @@ const CreateAgentTopForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="remarks"
+                    placeholder="Remarks"
                     className={`form-control`}
                     name="remarks"
                     style={{ padding: "6px" }}

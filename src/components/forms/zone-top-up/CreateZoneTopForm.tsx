@@ -197,7 +197,7 @@ const CreateZoneTopForm = () => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
+                      placeholder="Please select Zone Manager"
                       onChange={handleZoneChange}
                       options={zoneList}
                       value={zoneManagerId}
@@ -253,7 +253,7 @@ const CreateZoneTopForm = () => {
               >
                 {/* amount */}
                 <Form.Item
-                  label="amount"
+                  label="Amount"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -268,7 +268,7 @@ const CreateZoneTopForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="amount"
+                    placeholder="Amount"
                     className={`form-control`}
                     name="amount"
                     style={{ padding: "6px" }}
@@ -286,7 +286,7 @@ const CreateZoneTopForm = () => {
               >
                 {/* remarks */}
                 <Form.Item
-                  label="remarks"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -301,7 +301,7 @@ const CreateZoneTopForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="remarks"
+                    placeholder="Remarks"
                     className={`form-control`}
                     name="remarks"
                     style={{ padding: "6px" }}

@@ -196,6 +196,16 @@ const AgentTopUpList: React.FC = () => {
        align: "center" as AlignType
      }, */
     {
+      title: "Type",
+      dataIndex: "type",
+      sorter: false,
+      render: (type: any) => {
+        return <>{type ? type : "N/A"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Amount",
       dataIndex: "amount",
       sorter: true,
@@ -203,21 +213,11 @@ const AgentTopUpList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "remarks",
+      title: "Remarks",
       dataIndex: "remarks",
       sorter: false,
       render: (remarks: any) => {
         return <>{remarks ? remarks : "N/A"}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "type",
-      dataIndex: "type",
-      sorter: false,
-      render: (type: any) => {
-        return <>{type ? type : "N/A"}</>;
       },
       width: "20%",
       align: "center" as AlignType
