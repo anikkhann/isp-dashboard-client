@@ -272,32 +272,32 @@ const CustomerOnboardingReqList: React.FC = () => {
                   </Tooltip>
                 ) : null)}
               {/* approve */}
-              {authUser &&
+              {(authUser &&
                 authUser.partnerId != record.partnerId &&
-                record.zoneStatus == "Approved" &&
-                record.zoneStatus == "Pending" &&
-                (ability.can("customerOnboardingReq.approve", "") ? (
-                  <Tooltip
-                    title="Approve Onboarding Request"
-                    placement="bottomRight"
-                    color="green"
-                  >
-                    <Space size="middle" align="center" wrap>
-                      <Link
-                        href={`/admin/customer/customer-onboarding-req/${record.id}/approve`}
-                      >
-                        <Button
-                          type="primary"
-                          icon={<CheckSquareOutlined />}
-                          style={{
-                            backgroundColor: "#0B666A",
-                            color: "#ffffff"
-                          }}
-                        />
-                      </Link>
-                    </Space>
-                  </Tooltip>
-                ) : null)}
+                record.zoneStatus == "Approved") ||
+                (record.zoneStatus == "Pending" &&
+                  (ability.can("customerOnboardingReq.approve", "") ? (
+                    <Tooltip
+                      title="Approve Onboarding Request"
+                      placement="bottomRight"
+                      color="green"
+                    >
+                      <Space size="middle" align="center" wrap>
+                        <Link
+                          href={`/admin/customer/customer-onboarding-req/${record.id}/approve`}
+                        >
+                          <Button
+                            type="primary"
+                            icon={<CheckSquareOutlined />}
+                            style={{
+                              backgroundColor: "#0B666A",
+                              color: "#ffffff"
+                            }}
+                          />
+                        </Link>
+                      </Space>
+                    </Tooltip>
+                  ) : null))}
               {/* reject */}
               {(record.clientStatus == "Pending" ||
                 record.zoneStatus == "Pending") &&
