@@ -56,6 +56,7 @@ export interface CustomerData {
   clientStatus?: string;
   zoneNote?: string;
   zoneStatus?: string;
+  contactNumber?: number;
 }
 
 export interface CustomerType {

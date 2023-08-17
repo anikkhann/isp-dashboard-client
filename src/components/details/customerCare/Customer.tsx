@@ -12,6 +12,7 @@ interface PropData {
 }
 
 const Customer = ({ item }: PropData) => {
+  console.log(item);
   const [data, setData] = useState<any>({
     assigned_ip: "",
     connection_status: "",
@@ -52,14 +53,23 @@ const Customer = ({ item }: PropData) => {
     }
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (data) {
       setData(data);
     }
   }, [data]);
 
+  function subOneDay(date = new Date()) {
+    date.setDate(date.getDate() - 1);
+
+    return date;
+  }
+  const date = new Date(item?.expirationTime);
+  const result2 = subOneDay(date);
+  const today = new Date();
+
+  const isDateGreen = result2 >= today;
+  const color = isDateGreen ? "green" : "red";
   return (
     <>
       {isLoading && isFetching && (
@@ -111,6 +121,28 @@ const Customer = ({ item }: PropData) => {
             xxl={12}
             className="gutter-row"
           >
+            <div
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                // border: "1px solid #F15F22",
+                textAlign: "center",
+                marginTop: "1rem"
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: "1.3rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                  color: "#0e8fdc"
+                }}
+              >
+                Basic Information
+              </h1>
+            </div>
             <Card
               hoverable
               bordered={false}
@@ -152,6 +184,24 @@ const Customer = ({ item }: PropData) => {
                       alignItems: "end"
                     }}
                   >
+                    <span className="font-bold text-base">Customer ID :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.customerId}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
                     <span className="font-bold text-base">Username :</span>
                   </Col>
                   <Col>
@@ -177,6 +227,42 @@ const Customer = ({ item }: PropData) => {
                     <span className="mx-1 text-base">{item?.password}</span>
                   </Col>
                 </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Credits :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.credits}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Discount :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.discount}</span>
+                  </Col>
+                </Row>
 
                 <Row
                   style={{
@@ -190,10 +276,30 @@ const Customer = ({ item }: PropData) => {
                       alignItems: "end"
                     }}
                   >
-                    <span className="font-bold text-base">Mobile Number :</span>
+                    <span className="font-bold text-base">Mobile No :</span>
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">{item?.mobileNo}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Alternative Mobile No :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.altMobileNo}</span>
                   </Col>
                 </Row>
 
@@ -254,12 +360,12 @@ const Customer = ({ item }: PropData) => {
                     }}
                   >
                     <span className="font-bold text-base">
-                      Contact Number :
+                      Contact Person Contact :
                     </span>
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">
-                      {item?.contactPersonNumber}
+                      {item?.contactNumber}
                     </span>
                   </Col>
                 </Row>
@@ -283,7 +389,7 @@ const Customer = ({ item }: PropData) => {
                   </Col>
                 </Row>
 
-                <Row
+                {/* <Row
                   style={{
                     marginTop: "2px"
                   }}
@@ -300,9 +406,9 @@ const Customer = ({ item }: PropData) => {
                   <Col>
                     <span className="mx-1 text-base">{item?.houseNo}</span>
                   </Col>
-                </Row>
+                </Row> */}
 
-                <Row
+                {/* <Row
                   style={{
                     marginTop: "2px"
                   }}
@@ -319,9 +425,9 @@ const Customer = ({ item }: PropData) => {
                   <Col>
                     <span className="mx-1 text-base">{item?.flatNo}</span>
                   </Col>
-                </Row>
+                </Row> */}
 
-                <Row
+                {/* <Row
                   style={{
                     marginTop: "2px"
                   }}
@@ -338,7 +444,7 @@ const Customer = ({ item }: PropData) => {
                   <Col>
                     <span className="mx-1 text-base">{item?.roadNo}</span>
                   </Col>
-                </Row>
+                </Row> */}
 
                 <Row
                   style={{
@@ -437,6 +543,174 @@ const Customer = ({ item }: PropData) => {
                 </Row>
               </div>
             </Card>
+
+            <div
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                // border: "1px solid #F15F22",
+                textAlign: "center",
+                marginTop: "1rem"
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: "1.3rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                  color: "#0e8fdc"
+                }}
+              >
+                Connection Information
+              </h1>
+            </div>
+            <Card
+              hoverable
+              bordered={false}
+              style={{
+                textAlign: "start",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                border: "1px solid #F15F22"
+              }}
+            >
+              <div>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Zone :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">POP :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">House No :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.houseNo}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Road No :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.roadNo}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Flat No :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.flatNo}</span>
+                  </Col>
+                </Row>
+
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Area :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.area}</span>
+                  </Col>
+                </Row>
+
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Connection Address :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.connectionAddress}
+                    </span>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
           </Col>
           <Col
             xs={24}
@@ -447,6 +721,28 @@ const Customer = ({ item }: PropData) => {
             xxl={12}
             className="gutter-row"
           >
+            <div
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                // border: "1px solid #F15F22",
+                textAlign: "center",
+                marginTop: "1rem"
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: "1.3rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                  color: "#0e8fdc"
+                }}
+              >
+                Subscription Information
+              </h1>
+            </div>
             <Card
               hoverable
               bordered={false}
@@ -455,7 +751,147 @@ const Customer = ({ item }: PropData) => {
                 backgroundColor: "white",
                 borderRadius: "10px",
                 border: "1px solid #F15F22"
-                // marginTop: "1rem"
+              }}
+            >
+              <div>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Account Status :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span
+                      className="mx-1 text-base"
+                      style={{
+                        color: item && item?.isActive == true ? "green" : "red"
+                      }}
+                    >
+                      {item && item?.isActive == true ? "Active" : "Inactive"}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Package :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base" style={{ color }}>
+                      {format(result2, "yyyy-MM-dd")}
+                    </span>
+                  </Col>
+                </Row>
+
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Subscription Status :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {/* {format(result2, "yyyy-MM-dd")} */}
+                    </span>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+
+            <div
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                // border: "1px solid #F15F22",
+                textAlign: "center",
+                marginTop: "1rem"
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: "1.3rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                  color: "#0e8fdc"
+                }}
+              >
+                Link Information
+              </h1>
+            </div>
+            <Card
+              hoverable
+              bordered={false}
+              style={{
+                textAlign: "start",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                border: "1px solid #F15F22"
+              }}
+            >
+              <div>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Connection Type :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">hi</span>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+
+            <Card
+              hoverable
+              bordered={false}
+              style={{
+                textAlign: "start",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                border: "1px solid #F15F22",
+                marginTop: "1rem"
               }}
             >
               <div>
