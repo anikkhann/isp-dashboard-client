@@ -12,8 +12,6 @@ interface PropData {
 }
 
 const DetailsTicket = ({ item, replys }: PropData) => {
-  console.log(item);
-
   const [createdDate, setCreatedDate] = useState<Date | null>(null);
   const [timeDiff, setTimeDiff] = useState<string>("");
 

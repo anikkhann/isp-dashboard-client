@@ -13,7 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EyeOutlined } from "@ant-design/icons";
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import { TicketData } from "@/interfaces/TicketData";
 
 interface TableParams {
@@ -314,27 +314,6 @@ const CustomerTicketList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Customer ID",
-      dataIndex: "customer.customerId",
-      sorter: false,
-      render: (customer, row) => {
-        return <>{row.customer.customerId}</>;
-      },
-
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "customer.username",
-      sorter: false,
-      render: (customer, row) => {
-        return <>{row.customer.username}</>;
-      },
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
       title: "complainType",
       dataIndex: "complainType",
       render: (complainType, row) => {
@@ -365,27 +344,60 @@ const CustomerTicketList: React.FC = () => {
       width: 150,
       align: "center" as AlignType
     },
+    // assignedTo
+    {
+      title: "Assigned To",
+      dataIndex: "assignedTo",
+      sorter: false,
+      render: (assignedTo: any) => {
+        if (!assignedTo) return "-";
+        return <>{assignedTo.name}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: 200,
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+
     // createdOn
     {
       title: "Created At",
       dataIndex: "createdOn",
-      sorter: false,
+      sorter: true,
       render: (createdOn: any) => {
         if (!createdOn) return "-";
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+
+    // age
+    {
+      title: "Age",
+      dataIndex: "age",
+      sorter: false,
+      render: (_, row) => {
+        if (!row.createdOn) return "-";
+        const createdTime = new Date(row.createdOn);
+        const currentTime = new Date();
+        return (
+          <>
+            {differenceInDays(currentTime, createdTime).toLocaleString()} days
+          </>
+        );
       },
       width: 200,
       align: "center" as AlignType
