@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Select, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -12,13 +12,9 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { EyeOutlined } from "@ant-design/icons";
+import { AgentTopUpData } from "@/interfaces/AgentTopUpData";
+import { format } from "date-fns";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -27,13 +23,16 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const IpManagementList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+const AgentTopUpList: React.FC = () => {
+  const [data, setData] = useState<AgentTopUpData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [agents, setAgents] = useState<any[]>([]);
+  const [selectedAgent, setSelectedAgent] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -46,10 +45,10 @@ const IpManagementList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    agentId?: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -65,11 +64,13 @@ const IpManagementList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        agent: {
+          id: agentId
+        }
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/agent-topup/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,9 +79,9 @@ const IpManagementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["agent-top-up-list", page, limit, order, sort, selectedAgent],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(page, limit, order, sort, selectedAgent);
       return response;
     },
     onSuccess(data: any) {
@@ -114,13 +115,52 @@ const IpManagementList: React.FC = () => {
     }
   });
 
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedAgent(value as any);
+  };
+
+  const handleClear = () => {
+    setSelectedAgent(null);
+  };
+
+  async function getUsers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {}
+    };
+    const res = await axios.post("/api/users/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setAgents(items);
+    }
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   useEffect(() => {
     if (data) {
       setData(data);
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<AgentTopUpData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -132,86 +172,125 @@ const IpManagementList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Status",
-      dataIndex: "isActive",
-      sorter: true,
-      render: (isActive: any) => {
-        return (
-          <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
-          </>
-        );
+      title: "Agent",
+      dataIndex: "agent",
+      sorter: false,
+      render: (agent: any) => {
+        return <>{agent ? agent.name : "N/A"}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
+    /*  {
+       title: "Serial No",
+       dataIndex: "serialNo",
+       sorter: true,
+       render: (serialNo: any) => {
+         return <>{serialNo ? serialNo : "N/A"}</>;
+       },
+       width: "20%",
+       align: "center" as AlignType
+     }, */
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "remarks",
+      dataIndex: "remarks",
+      sorter: false,
+      render: (remarks: any) => {
+        return <>{remarks ? remarks : "N/A"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "type",
+      dataIndex: "type",
+      sorter: false,
+      render: (type: any) => {
+        return <>{type ? type : "N/A"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    // rechargedBy
+    {
+      title: "Recharged By",
+      dataIndex: "rechargedBy",
+      sorter: false,
+      render: (rechargedBy: any) => {
+        if (!rechargedBy) return "-";
+        return <>{rechargedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Recharged At",
+      dataIndex: "rechargedDate",
+      sorter: false,
+      render: (rechargedDate: any) => {
+        if (!rechargedDate) return "-";
+        const date = new Date(rechargedDate);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // editedBy
+    // {
+    //   title: "Updated By",
+    //   dataIndex: "editedBy",
+    //   sorter: false,
+    //   render: (editedBy: any) => {
+    //     if (!editedBy) return "-";
+    //     return <>{editedBy.name}</>;
+    //   },
+
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
+    // updatedOn
+    // {
+    //   title: "Updated At",
+    //   dataIndex: "updatedOn",
+    //   sorter: false,
+    //   render: (updatedOn: any) => {
+    //     if (!updatedOn) return "-";
+    //     const date = new Date(updatedOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Action",
       dataIndex: "action",
       sorter: false,
       render: (text: any, record: any) => {
         return (
-          <>
+          <div className="flex flex-row">
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
+              {ability.can("agentTopUp.view", "") ? (
+                <Space size="middle" align="center" wrap className="mx-1">
+                  <Link href={`/admin/top-up/agent-top-up/${record.id}`}>
+                    <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
               ) : null}
             </Space>
-          </>
+          </div>
         );
       },
       align: "center" as AlignType
@@ -221,22 +300,24 @@ const IpManagementList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<AgentTopUpData> | SorterResult<AgentTopUpData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<AgentTopUpData>).order) {
+      // // console.log((sorter as SorterResult<AgentTopUpData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<AgentTopUpData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<AgentTopUpData>).field) {
+      // // console.log((sorter as SorterResult<AgentTopUpData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<AgentTopUpData>).field as string);
     }
   };
 
@@ -278,10 +359,10 @@ const IpManagementList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Agent Top up List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/top-up/agent-top-up/create"
+            permission="agentTopUp.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -290,11 +371,42 @@ const IpManagementList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              {/* search */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Agent</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleChange}
+                    options={agents}
+                    value={selectedAgent}
+                    showSearch
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
               <Table
                 columns={columns}
                 rowKey={record => record.id}
@@ -311,4 +423,4 @@ const IpManagementList: React.FC = () => {
   );
 };
 
-export default IpManagementList;
+export default AgentTopUpList;

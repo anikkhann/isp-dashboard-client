@@ -1,7 +1,7 @@
 import TopUpLayout from "@/core/layouts/TopUpLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
+import AgentTopUpList from "@/modules/top-up/agentTopUp/AgentTopUpList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("agentTopUp.list", "") ? <AgentTopUpList /> : <Forbidden />}
     </>
   );
 };
