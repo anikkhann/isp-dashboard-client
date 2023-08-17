@@ -11,40 +11,33 @@ const topUpRoutes = [
 
   {
     key: "/admin/top-up",
-    label: "Setting Dashboard",
+    label: "Top Up Dashboard",
     path: "/admin/top-up",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "topUp.dashboard"
   },
 
   {
-    key: "/admin/top-up/approved-territory-top-up",
-    label: "Approved Territory Top Up",
-    path: "/admin/top-up/approved-territory-top-up",
+    key: "/admin/top-up/agent-top-up",
+    label: "Agent Topup",
+    path: "/admin/top-up/agent-top-up",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "agentTopUp.list"
   },
   {
-    key: "/admin/top-up/req-territory-top-up",
-    label: "Territory Top Up Req",
-    path: "/admin/top-up/req-territory-top-up",
+    key: "/admin/top-up/zone-top-up",
+    label: "Zone Topup",
+    path: "/admin/top-up/zone-top-up",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/top-up/approved-users-top-up",
-    label: "Approved Users Top-UP Req",
-    path: "/admin/top-up/approved-users-top-up",
-    icon: <SettingOutlined />,
-    permission: "dashboard.view"
-  },
-  {
-    key: "/admin/top-up/req-users-top-up",
-    label: "Users Top Up Req",
-    path: "/admin/top-up/req-users-top-up",
-    icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "zoneTopUp.list"
   }
+  /*  {
+     key: "/admin/top-up/request-top-up",
+     label: "Topup Request",
+     path: "/admin/top-up/request-top-up",
+     icon: <SettingOutlined />,
+     permission: "dashboard.view"
+   }, */
 ];
 
 export default topUpRoutes;

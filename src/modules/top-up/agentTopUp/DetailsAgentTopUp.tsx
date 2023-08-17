@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import DetailsAgentTopData from "@/components/details/agent-top-up/DetailsAgentTopData";
+import { AgentTopUpData } from "@/interfaces/AgentTopUpData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,19 +11,18 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditNetwork = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+const DetailsAgentTopUp = ({ id }: any) => {
+  const [item, SetItem] = useState<AgentTopUpData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/partner/get-by-id/${id}`);
+    const response = await axios.get(`/api/agent-topup/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["agent-top-up-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -57,36 +56,60 @@ const EditNetwork = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/top-up">Top Up Dashboard</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: <Link href="/admin/top-up/agent-top-up">Agent Top Up</Link>
             },
             {
-              title: "Edit Client"
+              title: "Agent Top Up Details"
             }
           ]}
         />
-
-        <Card
-          title="Edit Client"
+        <div
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
+            // border: "1px solid #F15F22",
             textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            Agent Top Up Details
+          </h1>
+        </div>
+        <Card
+          hoverable
+          style={{
+            width: "90%",
+            // backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
+            borderRadius: "10px",
+            margin: "0 auto",
+            textAlign: "center",
+            marginTop: "2rem",
+            marginBottom: "2rem"
+            // border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <DetailsAgentTopData item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditNetwork;
+export default DetailsAgentTopUp;
