@@ -563,6 +563,281 @@ const Customer = ({ item }: PropData) => {
                   color: "#0e8fdc"
                 }}
               >
+                Miscellaneous Information
+              </h1>
+            </div>
+            <Card
+              hoverable
+              bordered={false}
+              style={{
+                textAlign: "start",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                border: "1px solid #F15F22"
+              }}
+            >
+              <div>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Auto Renew :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item && item?.autoRenew == true ? "Yes" : "No"}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Email Alert :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item && item?.emailAlert == true ? "Yes" : "No"}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">SMS Alert :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item && item?.smsAlert == true ? "Yes" : "No"}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Is SAF Verified :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span
+                      className="mx-1 text-base"
+                      style={{
+                        color:
+                          item && item?.isSafVerified == true ? "green" : "red"
+                      }}
+                    >
+                      {item && item?.isSafVerified == true ? "Yes" : "No"}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Division :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.division?.name}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">District :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.district?.name}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Upazilla :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.upazilla?.name}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Union :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.union?.name}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Zone Manager :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.zoneManager?.name}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Sub Zone Manager :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.subZoneManager?.name}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Adjustment Day :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.adjustmentDay}
+                    </span>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+          </Col>
+          <Col
+            xs={24}
+            sm={24}
+            md={12}
+            lg={12}
+            xl={12}
+            xxl={12}
+            className="gutter-row"
+          >
+            <div
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                // border: "1px solid #F15F22",
+                textAlign: "center",
+                marginTop: "1rem"
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: "1.3rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                  color: "#0e8fdc"
+                }}
+              >
                 Connection Information
               </h1>
             </div>
@@ -711,16 +986,230 @@ const Customer = ({ item }: PropData) => {
                 </Row>
               </div>
             </Card>
-          </Col>
-          <Col
-            xs={24}
-            sm={24}
-            md={12}
-            lg={12}
-            xl={12}
-            xxl={12}
-            className="gutter-row"
-          >
+
+            <div
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                // border: "1px solid #F15F22",
+                textAlign: "center",
+                marginTop: "1rem"
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: "1.3rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                  color: "#0e8fdc"
+                }}
+              >
+                Link Information
+              </h1>
+            </div>
+            <Card
+              hoverable
+              bordered={false}
+              style={{
+                textAlign: "start",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                border: "1px solid #F15F22"
+              }}
+            >
+              <div>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Connection Type :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.connectionType}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Fiber Optic Device :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">OLT Device :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">ONU Device :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">
+                      Switch Port No :
+                    </span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.swPortNo}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Vlan Box Name :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.vlanBoxName}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Splitter :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Cable ID :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Cable Length :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">{item?.cableLength}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Color Code :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base"></span>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
             <div
               style={{
                 width: "90%",
@@ -846,43 +1335,9 @@ const Customer = ({ item }: PropData) => {
                   color: "#0e8fdc"
                 }}
               >
-                Link Information
+                Connection Status
               </h1>
             </div>
-            <Card
-              hoverable
-              bordered={false}
-              style={{
-                textAlign: "start",
-                backgroundColor: "white",
-                borderRadius: "10px",
-                border: "1px solid #F15F22"
-              }}
-            >
-              <div>
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">
-                      Connection Type :
-                    </span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">hi</span>
-                  </Col>
-                </Row>
-              </div>
-            </Card>
-
             <Card
               hoverable
               bordered={false}

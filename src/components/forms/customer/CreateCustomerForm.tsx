@@ -186,6 +186,12 @@ const CreateCustomerForm = () => {
   const [retailers, setRetailers] = useState([]);
   const [selectedRetailer, setSelectedRetailer] = useState(null);
 
+  const [oltDevice, setOltDevice] = useState([]);
+  const [oltDeviceId, setOltDeviceId] = useState(null);
+
+  const [onuDevice, setOnuDevice] = useState([]);
+  const [onuDeviceId, setOnuDeviceId] = useState(null);
+
   const { useBreakpoint } = Grid;
 
   const { lg } = useBreakpoint();
@@ -325,7 +331,80 @@ const CreateCustomerForm = () => {
     form.setFieldsValue({ ipMode: value });
     setSelectedIpMode(value as any);
   };
+  //handle olt
+  const handleOltDevice = (value: any) => {
+    form.setFieldsValue({ oltDeviceId: value });
+    setOltDeviceId(value as any);
+  };
+  //handle onu
+  const handleOnuDevice = (value: any) => {
+    form.setFieldsValue({ onuDeviceId: value });
+    setOnuDeviceId(value as any);
+  };
+  // olt device
+  function getOltDevice() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // partnerType: "zone",
+        deviceType: "OLT",
+        isActive: true
+      }
+    };
+    axios.post("/api/device/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
 
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setOltDevice(list);
+    });
+  }
+  // onu device
+  function getOnuDevice() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // partnerType: "zone",
+        deviceType: "ONU",
+        isActive: true
+      }
+    };
+    axios.post("/api/device/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setOnuDevice(list);
+    });
+  }
   function getZoneManagers() {
     const body = {
       // FOR PAGINATION - OPTIONAL
@@ -360,7 +439,7 @@ const CreateCustomerForm = () => {
     });
   }
 
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -373,7 +452,7 @@ const CreateCustomerForm = () => {
       },
       body: {
         partnerType: "sub_zone",
-        // zoneManager: { id: selectedZone },
+        zoneManager: { id: selectedZoneId },
         isActive: true
       }
     };
@@ -731,21 +810,27 @@ const CreateCustomerForm = () => {
     getCustomers();
     getUsers();
     getZoneManagers();
-    getSubZoneManagers();
+
     getRetailers();
+    getOltDevice();
+    getOnuDevice();
 
     form.setFieldsValue({
       identityType: "nid",
       ipMode: "nas"
     });
   }, []);
-
+  // getSubZoneManagers();
   useEffect(() => {
     if (selectedDistributionZone) {
       getDistributionPops(selectedDistributionZone);
     }
   }, [selectedDistributionZone]);
-
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
   useEffect(() => {
     if (selectedDivision) {
       getDistricts(selectedDivision);
@@ -1507,6 +1592,12 @@ const CreateCustomerForm = () => {
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Customer Package!"
+                          }
+                        ]}
                         name="customerPackageId"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
@@ -2453,13 +2544,26 @@ const CreateCustomerForm = () => {
                             //   }
                             // ]}
                           >
-                            <Input
+                            {/* <Input
                               type="text"
                               placeholder="Olt Device"
                               className={`form-control`}
                               name="oltDeviceId"
                               style={{ padding: "6px" }}
-                            />
+                            /> */}
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleOltDevice}
+                                options={oltDevice}
+                                value={oltDeviceId}
+                              />
+                            </Space>
                           </Form.Item>
                         </Col>
                       )}
@@ -2489,13 +2593,26 @@ const CreateCustomerForm = () => {
                             //   }
                             // ]}
                           >
-                            <Input
+                            {/* <Input
                               type="text"
                               placeholder="Onu Device"
                               className={`form-control`}
                               name="onuDeviceId"
                               style={{ padding: "6px" }}
-                            />
+                            /> */}
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleOnuDevice}
+                                options={onuDevice}
+                                value={onuDeviceId}
+                              />
+                            </Space>
                           </Form.Item>
                         </Col>
                       )}

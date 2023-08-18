@@ -1269,6 +1269,12 @@ const CreateCustomerReqForm = () => {
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Customer Package!"
+                    }
+                  ]}
                   name="customerPackageId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">

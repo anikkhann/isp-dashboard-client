@@ -74,6 +74,7 @@ const CustomerTicketList: React.FC = () => {
     setSelectedClosedBy(null);
     setSelectedCreatedBy(null);
     setSelectedAssignTo(null);
+    setSelectedTicketNumber(null);
   };
 
   function getStatusList() {

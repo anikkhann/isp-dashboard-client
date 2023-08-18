@@ -29,7 +29,7 @@ interface FormData {
   downloadLimit: string;
   downloadLimitUnit: string;
   ipPoolName: string;
-  nextExpiredPackageId: string;
+  nextExpiredPackageId: any;
   validity: string;
   vat: string;
   totalPrice: string;
@@ -91,6 +91,9 @@ const CreatePackageForm = () => {
 
   const [selectedDownloadUnit, setSelectedDownloadUnit] = useState("Mbps");
 
+  const [nextExpired, setNextExpired] = useState([]);
+  const [nextExpiredId, setNextExpiredId] = useState(null);
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -127,8 +130,46 @@ const CreatePackageForm = () => {
     form.setFieldsValue({ downloadLimitUnit: value });
     setSelectedDownloadUnit(value as any);
   };
+  //handle nextExpiredPackageId
+  const handleNextExpiredPackageId = (value: any) => {
+    form.setFieldsValue({ nextExpiredPackageId: value });
+    setNextExpiredId(value as any);
+  };
+  // NextExpiredPackageId
+  function getNextExpiredPackageId() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // partnerType: "zone",
+        // deviceType: "OLT",
+        // name: "30Mbps Unlimited"
+        isActive: true
+      }
+    };
+    axios.post("/api/customer-package/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
 
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setNextExpired(list);
+    });
+  }
   useEffect(() => {
+    getNextExpiredPackageId();
     form.setFieldsValue({ validityUnit: selectedUnit });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -616,23 +657,23 @@ const CreatePackageForm = () => {
                   //   }
                   // ]}
                 >
-                  {/* <Space style={{ width: "100%" }} direction="vertical">
+                  <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Zone"
-                      onChange={handleZoneChange}
-                      options={zoneList}
-                      value={zoneId}
+                      onChange={handleNextExpiredPackageId}
+                      options={nextExpired}
+                      value={nextExpiredId}
                     />
-                  </Space> */}
-                  <Input
+                  </Space>
+                  {/* <Input
                     type="text"
                     placeholder="Next Expired Package"
                     className={`form-control`}
                     name="nextExpiredPackageId"
                     style={{ padding: "6px" }}
-                  />
+                  /> */}
                 </Form.Item>
               </Col>
               <Col

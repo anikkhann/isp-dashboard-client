@@ -1,4 +1,6 @@
+import { Union, Upazilla } from "./ClientData";
 import { EditedBy } from "./RoleData";
+import { SubZoneManager, ZoneManager } from "./TicketData";
 
 export interface CustomerData {
   createdOn: number;
@@ -57,6 +59,17 @@ export interface CustomerData {
   zoneNote?: string;
   zoneStatus?: string;
   contactNumber?: number;
+  connectionType?: string;
+  swPortNo?: any;
+  vlanBoxName?: string;
+  cableLength?: number;
+  division?: Division;
+  district?: District;
+  upazilla?: Upazilla;
+  union?: Union;
+  zoneManager?: ZoneManager;
+  subZoneManager?: SubZoneManager;
+  adjustmentDay?: any;
 }
 
 export interface CustomerType {
