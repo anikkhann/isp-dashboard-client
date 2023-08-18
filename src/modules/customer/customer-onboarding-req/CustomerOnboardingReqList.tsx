@@ -272,11 +272,10 @@ const CustomerOnboardingReqList: React.FC = () => {
                   </Tooltip>
                 ) : null)}
               {/* approve */}
-              {authUser &&
+              {((authUser &&
                 authUser.partnerId != record.partnerId &&
-                record.zoneStatus == "Approved" &&
-                // record.clientStatus != "Approved" &&
-                record.zoneStatus == "Pending" &&
+                record.zoneStatus == "Approved") ||
+                record.zoneStatus == "Pending") &&
                 (ability.can("customerOnboardingReq.approve", "") ? (
                   <Tooltip
                     title="Approve Onboarding Request"
