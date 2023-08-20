@@ -457,7 +457,7 @@ const EditCustomerForm = ({ item }: PropData) => {
     });
   }
 
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -470,7 +470,7 @@ const EditCustomerForm = ({ item }: PropData) => {
       },
       body: {
         partnerType: "sub_zone",
-        // zoneManager: { id: selectedZone },
+        zone: { id: selectedZoneId },
         isActive: true
       }
     };
@@ -537,6 +537,7 @@ const EditCustomerForm = ({ item }: PropData) => {
         area: item.area,
         mobileNo: item.mobileNo,
         altMobileNo: item.altMobileNo,
+
         identityType: item.identityType,
         identityNo: item.identityNo,
         remarks: item.remarks,
@@ -574,12 +575,52 @@ const EditCustomerForm = ({ item }: PropData) => {
         radiusIpId: item.radiusIpId,
         discount: item.discount
       });
-      setSelectedDivision(item.divisionId);
-      setSelectedDistrict(item.districtId);
-      setSelectedUpazilla(item.upazillaId);
-      setSelectedUnion(item.unionId);
+      // setSelectedDivision(item.divisionId);
+      if (item.divisionId) {
+        form.setFieldsValue({
+          divisionId: item.divisionId
+        });
+        setSelectedDivision(item.divisionId);
+      }
+      if (item.districtId) {
+        form.setFieldsValue({
+          districtId: item.districtId
+        });
+        setSelectedDistrict(item.districtId);
+      }
+      if (item.upazillaId) {
+        form.setFieldsValue({
+          upazillaId: item.upazillaId
+        });
+        setSelectedUpazilla(item.upazillaId);
+      }
+      if (item.unionId) {
+        form.setFieldsValue({
+          unionId: item.unionId
+        });
+        setSelectedUnion(item.unionId);
+      }
+      if (item.oltDeviceId) {
+        form.setFieldsValue({
+          oltDeviceId: item.oltDeviceId
+        });
+        setOltDeviceId(item.oltDeviceId);
+      }
+      if (item.onuDeviceId) {
+        form.setFieldsValue({
+          onuDeviceId: item.onuDeviceId
+        });
+        setOnuDeviceId(item.onuDeviceId);
+      }
       setSelectedCustomerType(item.customerTypeId);
-      setSelectedCustomerPackage(item.customerPackageId);
+
+      if (item.customerPackageId) {
+        form.setFieldsValue({
+          customerPackageId: item.customerPackageId
+        });
+        setSelectedCustomerPackage(item.customerPackageId);
+      }
+
       setSelectedReferenceType(item.referenceType);
       setSelectedConnectionType(item.connectionType);
       setSelectedFiberOpticDeviceType(item.fiberOpticDeviceType);
@@ -906,7 +947,7 @@ const EditCustomerForm = ({ item }: PropData) => {
     getUsers();
 
     getZoneManagers();
-    getSubZoneManagers();
+    // getSubZoneManagers();
     getRetailers();
     getOltDevice();
     getOnuDevice();
@@ -931,6 +972,12 @@ const EditCustomerForm = ({ item }: PropData) => {
     }
   }, [selectedUpazilla]);
 
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
+
   const onSubmit = (data: FormData) => {
     setLoading(true);
     const {
@@ -948,7 +995,7 @@ const EditCustomerForm = ({ item }: PropData) => {
       houseNo,
       roadNo,
       area,
-      identityType,
+      // identityType,
       identityNo,
       remarks,
       isMacBound,
@@ -956,12 +1003,12 @@ const EditCustomerForm = ({ item }: PropData) => {
       simultaneousUser,
       ipMode,
       staticIp,
-      referenceType,
-      referrerCustomer,
-      referrerUserId,
+      // referenceType,
+      // referrerCustomer,
+      // referrerUserId,
       referrerName,
-      connectionType,
-      fiberOpticDeviceType,
+      // connectionType,
+      // fiberOpticDeviceType,
       oltDeviceId,
       serialNo,
       cableLength,
@@ -971,19 +1018,24 @@ const EditCustomerForm = ({ item }: PropData) => {
       colorCode,
       splitter,
       onuDeviceId,
-      accountStatus,
+      // accountStatus,
       autoRenew,
       discount,
       smsAlert,
       emailAlert
+      // divisionId,
+      // districtId,
+      // upazillaId,
+      // unionId,
+      // customerPackageId,
     } = data;
-
+    //
     const formData = {
       id: item.id,
       name: name,
       username: username,
       password: password,
-      // customerTypeId: string
+      customerTypeId: selectedCustomerType,
       mobileNo: mobileNo,
       altMobileNo: altMobileNo,
       email: email,
@@ -994,20 +1046,28 @@ const EditCustomerForm = ({ item }: PropData) => {
       houseNo: houseNo,
       roadNo: roadNo,
       area: area,
-      identityType: identityType,
+      identityType: selectedIdentityType,
       identityNo: identityNo,
+      divisionId: selectedDivision,
+      districtId: selectedDistrict,
+      upazillaId: selectedUpazilla,
+      unionId: selectedUnion,
+      customerPackageId: selectedCustomerPackage,
       remarks: remarks,
+      distributionZoneId: selectedDistributionZone,
+      distributionPopId: selectedDistributionPop,
+
       isMacBound: isMacBound,
       mac: mac,
       simultaneousUser: simultaneousUser,
       ipMode: ipMode,
       staticIp: staticIp,
-      referenceType: referenceType,
-      referrerCustomer: referrerCustomer,
-      referrerUserId: referrerUserId,
+      referenceType: selectedReferenceType,
+      referrerCustomer: selectedCustomer,
+      referrerUserId: selectedUser,
       referrerName: referrerName,
-      connectionType: connectionType,
-      fiberOpticDeviceType: fiberOpticDeviceType,
+      connectionType: selectedConnectionType,
+      fiberOpticDeviceType: selectedFiberOpticDeviceType,
       oltDeviceId: oltDeviceId,
       serialNo: serialNo,
       cableLength: cableLength,
@@ -1017,7 +1077,7 @@ const EditCustomerForm = ({ item }: PropData) => {
       colorCode: colorCode,
       splitter: splitter,
       onuDeviceId: onuDeviceId,
-      accountStatus: accountStatus,
+      // accountStatus: accountStatus,
       autoRenew: autoRenew,
       discount: discount,
       smsAlert: smsAlert,
@@ -1054,6 +1114,11 @@ const EditCustomerForm = ({ item }: PropData) => {
         })
         .catch(err => {
           // console.log(err);
+          MySwal.fire({
+            title: "Error",
+            text: err.response.data.message || "Updated Failed",
+            icon: "error"
+          });
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });
@@ -1790,77 +1855,6 @@ const EditCustomerForm = ({ item }: PropData) => {
                     gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                     justify="space-between"
                   >
-                    {authUser && authUser.userType == "client" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={8}
-                        xl={8}
-                        xxl={8}
-                        className="gutter-row"
-                      >
-                        {/* zoneManagerId */}
-                        <Form.Item
-                          label="Zone Manager"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="zoneManagerId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneChange}
-                              options={zones}
-                              value={selectedZone}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                    )}
-
-                    {authUser &&
-                      (authUser.userType == "client" ||
-                        authUser.userType == "zone") && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* subZoneManagerId */}
-                          <Form.Item
-                            label="SubZone Manager"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            name="subZoneManagerId"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleSubZoneChange}
-                                options={subZones}
-                                value={selectedSubZone}
-                              />
-                            </Space>
-                          </Form.Item>
-                        </Col>
-                      )}
-
                     {authUser && authUser.userType == "subZone" && (
                       <Col
                         xs={24}
@@ -2185,6 +2179,74 @@ const EditCustomerForm = ({ item }: PropData) => {
                           </Form.Item>
                         </Col>
                       )}
+                    {/* {authUser && authUser.userType == "client" && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Form.Item
+                          label="Zone Manager"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="zoneManagerId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    )}
+
+                    {authUser &&
+                      (authUser.userType == "client" ||
+                        authUser.userType == "zone") && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Form.Item
+                            label="SubZone Manager"
+                            style={{
+                              marginBottom: 0,
+                              fontWeight: "bold"
+                            }}
+                            name="subZoneManagerId"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleSubZoneChange}
+                                options={subZones}
+                                value={selectedSubZone}
+                              />
+                            </Space>
+                          </Form.Item>
+                        </Col>
+                      )} */}
 
                     <Col
                       xs={24}

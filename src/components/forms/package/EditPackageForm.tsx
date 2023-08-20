@@ -2,7 +2,6 @@
 // ** React Imports
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -63,6 +62,7 @@ interface PropData {
 }
 
 const EditPackageForm = ({ item }: PropData) => {
+  console.log(item);
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -87,7 +87,7 @@ const EditPackageForm = ({ item }: PropData) => {
   const [selectedDownloadUnit, setSelectedDownloadUnit] = useState<any>(null);
 
   const [nextExpired, setNextExpired] = useState([]);
-  const [nextExpiredId, setNextExpiredId] = useState(null);
+  const [nextExpiredId, setNextExpiredId] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -188,6 +188,13 @@ const EditPackageForm = ({ item }: PropData) => {
       setIsAssignedToZone(item.isAssignedToZone);
       setIsAssignedToSubZone(item.isAssignedToSubZone);
       setIsActive(item.isActive);
+
+      if (item.nextExpiredPackage) {
+        form.setFieldsValue({
+          nextExpiredPackageId: item.nextExpiredPackage.id
+        });
+        setNextExpiredId(item.nextExpiredPackage.id);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
@@ -202,7 +209,7 @@ const EditPackageForm = ({ item }: PropData) => {
       downloadLimit,
       downloadLimitUnit,
       ipPoolName,
-      nextExpiredPackageId,
+      // nextExpiredPackageId,
       validity,
       vat,
       totalPrice,
@@ -219,7 +226,8 @@ const EditPackageForm = ({ item }: PropData) => {
       downloadLimit: downloadLimit,
       downloadLimitUnit: downloadLimitUnit,
       ipPoolName: ipPoolName,
-      nextExpiredPackageId: nextExpiredPackageId,
+      // nextExpiredPackageId: nextExpiredPackageId,
+      nextExpiredPackageId: nextExpiredId,
       validityUnit: selectedUnit,
       validity: validity,
       vat: vat,
@@ -258,6 +266,11 @@ const EditPackageForm = ({ item }: PropData) => {
         })
         .catch(err => {
           // console.log(err);
+          MySwal.fire({
+            title: "Error",
+            text: err.response.data.message || "Something went wrong",
+            icon: "error"
+          });
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });

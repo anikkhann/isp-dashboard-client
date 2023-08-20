@@ -157,6 +157,7 @@ const CreateDeviceForm = () => {
 
   const handleOltTypeChange = (value: any) => {
     // console.log("checked = ", value);
+
     form.setFieldsValue({ oltType: value });
     setSelectedOltType(value as any);
   };
@@ -245,7 +246,8 @@ const CreateDeviceForm = () => {
 
     form.setFieldsValue({
       deviceType: selectedDeviceType,
-      monitoringType: selectedMonitoringType
+      monitoringType: selectedMonitoringType,
+      oltType: selectedOltType
     });
   }, []);
 
@@ -341,6 +343,11 @@ const CreateDeviceForm = () => {
         })
         .catch(err => {
           // console.log(err);
+          MySwal.fire({
+            title: "Error",
+            text: err.response.data.message || "Added Failed",
+            icon: "error"
+          });
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });
@@ -411,117 +418,6 @@ const CreateDeviceForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
-                {/* name */}
-                <Form.Item
-                  label="Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Name!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* distributionZoneId */}
-                <Form.Item
-                  label="Distribution Zone"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="distributionZoneId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Distribution Zone!"
-                    }
-                  ]}
-                >
-                  <Space
-                    style={{ width: "100%", textAlign: "start" }}
-                    direction="vertical"
-                  >
-                    <Select
-                      allowClear
-                      style={{ width: "100%" }}
-                      placeholder="Please select Distribution Zone"
-                      onChange={handleDistributionZoneChange}
-                      options={distributionZones}
-                      value={selectedDistributionZone}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* distributionPopId */}
-                <Form.Item
-                  label="Distribution Pop"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="distributionPopId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Distribution Pop!"
-                    }
-                  ]}
-                >
-                  <Space
-                    style={{ width: "100%", textAlign: "start" }}
-                    direction="vertical"
-                  >
-                    <Select
-                      allowClear
-                      style={{ width: "100%" }}
-                      placeholder="Please select Distribution Pop"
-                      onChange={handleDistributionPopChange}
-                      options={distributionPops}
-                      value={selectedDistributionPop}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
                 {/* deviceTypeList */}
                 <Form.Item
                   label="Device Type"
@@ -549,6 +445,7 @@ const CreateDeviceForm = () => {
                   </Space>
                 </Form.Item>
               </Col>
+
               {selectedDeviceType == "NAS" && (
                 <Col
                   xs={24}
@@ -673,7 +570,7 @@ const CreateDeviceForm = () => {
                   {/* totalEitherPort */}
                   <Form.Item
                     name="totalEitherPort"
-                    label="Total Either Port"
+                    label="Total Ether Port"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -681,13 +578,13 @@ const CreateDeviceForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Total Either Port!"
+                        message: "Please input your Total Ether Port!"
                       }
                     ]}
                   >
                     <Input
                       type="text"
-                      placeholder="Total Either Port"
+                      placeholder="Total Ether Port"
                       className={`form-control`}
                       name="totalEitherPort"
                       style={{ padding: "6px" }}
@@ -708,7 +605,7 @@ const CreateDeviceForm = () => {
                   {/* totalPonPort */}
                   <Form.Item
                     name="totalPonPort"
-                    label="Total Pon Port"
+                    label="Total PON Port"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -716,13 +613,13 @@ const CreateDeviceForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Total Pon Port!"
+                        message: "Please input your Total PON Port!"
                       }
                     ]}
                   >
                     <Input
                       type="text"
-                      placeholder="Total Pon Port"
+                      placeholder="Total PON Port"
                       className={`form-control`}
                       name="totalPonPort"
                       style={{ padding: "6px" }}
@@ -730,7 +627,123 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
-
+              {/* name */}
+              {selectedDeviceType == "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Name"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="name"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Name!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      className={`form-control`}
+                      name="name"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+              {/* distributionZoneId */}
+              {selectedDeviceType == "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Distribution Zone"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="distributionZoneId"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Distribution Zone!"
+                      }
+                    ]}
+                  >
+                    <Space
+                      style={{ width: "100%", textAlign: "start" }}
+                      direction="vertical"
+                    >
+                      <Select
+                        allowClear
+                        style={{ width: "100%" }}
+                        placeholder="Please select Distribution Zone"
+                        onChange={handleDistributionZoneChange}
+                        options={distributionZones}
+                        value={selectedDistributionZone}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+              {selectedDeviceType == "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* distributionPopId */}
+                  <Form.Item
+                    label="Distribution Pop"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="distributionPopId"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Distribution Pop!"
+                      }
+                    ]}
+                  >
+                    <Space
+                      style={{ width: "100%", textAlign: "start" }}
+                      direction="vertical"
+                    >
+                      <Select
+                        allowClear
+                        style={{ width: "100%" }}
+                        placeholder="Please select Distribution Pop"
+                        onChange={handleDistributionPopChange}
+                        options={distributionPops}
+                        value={selectedDistributionPop}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
               {/* mac */}
               {selectedDeviceType == "ONU" && (
                 <Col
@@ -743,7 +756,7 @@ const CreateDeviceForm = () => {
                   className="gutter-row"
                 >
                   <Form.Item
-                    label="Mac"
+                    label="MAC"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -758,7 +771,7 @@ const CreateDeviceForm = () => {
                   >
                     <Input
                       type="text"
-                      placeholder="Mac"
+                      placeholder="MAC"
                       className={`form-control`}
                       name="mac"
                       style={{ padding: "6px" }}
@@ -1171,7 +1184,7 @@ const CreateDeviceForm = () => {
                   {/* snmpPortNo */}
                   <Form.Item
                     name="snmpPortNo"
-                    label="Snmp Port No"
+                    label="SNMP Port No"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -1179,7 +1192,7 @@ const CreateDeviceForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Snmp Port No!"
+                        message: "Please input your SNMP Port No!"
                       }
                     ]}
                   >
