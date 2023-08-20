@@ -25,6 +25,7 @@ export interface PackageData {
   insertedBy: InsertedBy;
   editedBy: InsertedBy;
   zones: ClientData[];
+  nextExpiredPackage?: nextExpiredPackage;
 }
 
 export interface Master {
@@ -103,4 +104,25 @@ export interface InsertedBy {
   partner: Partner;
   userType: string;
   credits: number;
+}
+export interface nextExpiredPackage {
+  autoRenew: boolean;
+  createdOn: any;
+  displayName: string;
+  downloadLimit: number;
+  downloadLimitUnit: any;
+  id: string;
+  ipPoolName: string;
+  isActive: boolean;
+  isAssignedToSubZone: boolean;
+  isAssignedToZone: boolean;
+  name: string;
+  partner?: Partner;
+  totalPrice: number;
+  unitPrice: number;
+  uploadLimit: number;
+  uploadLimitUnit: any;
+  validity: number;
+  validityUnit: string;
+  vat: number;
 }

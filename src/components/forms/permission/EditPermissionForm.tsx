@@ -164,6 +164,11 @@ const EditPermissionForm = ({ item }: PropData) => {
         })
         .catch(err => {
           // console.log(err);
+          MySwal.fire({
+            title: "Error",
+            text: err.response.data.message || "Something went wrong",
+            icon: "error"
+          });
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });

@@ -452,7 +452,7 @@ const CreateCustomerForm = () => {
       },
       body: {
         partnerType: "sub_zone",
-        zoneManager: { id: selectedZoneId },
+        zone: { id: selectedZoneId },
         isActive: true
       }
     };
@@ -969,6 +969,11 @@ const CreateCustomerForm = () => {
         })
         .catch(err => {
           // console.log(err);
+          MySwal.fire({
+            title: "Error",
+            text: err.response.data.message || " Added Failed",
+            icon: "error"
+          });
           setShowError(true);
           setErrorMessages(err.response.data.message);
         });
