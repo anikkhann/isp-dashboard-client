@@ -16,6 +16,9 @@ import ability from "@/services/guard/ability";
 import { DistributionPopData } from "@/interfaces/DistributionPopData";
 import { format } from "date-fns";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -25,6 +28,8 @@ interface TableParams {
 
 const DistributionPopList: React.FC = () => {
   const [data, setData] = useState<DistributionPopData[]>([]);
+
+  const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -130,6 +135,16 @@ const DistributionPopList: React.FC = () => {
     axios.post("/api/distribution-zone/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {

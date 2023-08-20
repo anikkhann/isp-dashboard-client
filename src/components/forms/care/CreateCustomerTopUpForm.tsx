@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useEffect, useState } from "react";
@@ -7,66 +6,54 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Space,
-  Row,
-  Col
-} from "antd";
+import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useAppSelector } from "@/store/hooks";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+
 interface FormData {
-  name: string;
-  zoneId: string;
-  latitude: string;
-  longitude: string;
+  amount: string;
+  remarks: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
+const types = [
+  {
+    label: "debit",
+    value: "debit"
+  },
+  {
+    label: "credit",
+    value: "credit"
+  }
+];
 
-const CreateDistributionPopForm = () => {
-  const [loading, setLoading] = useState(false);
-
-  const user = useAppSelector(state => state.auth.user);
+const CreateCustomerTopUpForm = () => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
-  const [isActive, setIsActive] = useState(true);
-
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [zoneList, setZoneList] = useState([]);
-  const [zoneId, setZoneId] = useState(null);
+  const [customers, setCustomers] = useState<any>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+
+  const [selectType, setSelectType] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleActive = (e: any) => {
-    setIsActive(e.target.checked ? true : false);
-  };
-
-  const handleZoneChange = (value: any) => {
+  const handleChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ zoneId: value });
-    setZoneId(value as any);
+    form.setFieldsValue({ type: value });
+    setSelectType(value as any);
   };
 
-  function getZoneList() {
+  const getCustomers = async () => {
     const body = {
-      // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
@@ -76,55 +63,49 @@ const CreateDistributionPopForm = () => {
         ]
       },
       body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        client: {
-          id: user?.partnerId
-        },
         isActive: true
       }
     };
-    axios.post("/api/distribution-zone/get-list", body).then(res => {
-      const { data } = res;
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
+    const res = await axios.post("/api/customer/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
-      setZoneList(list);
-    });
-  }
+
+      setCustomers(items);
+    }
+  };
+
+  // customerId
+  const handleCustomerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ customerId: value });
+    setSelectedCustomer(value as any);
+  };
 
   useEffect(() => {
-    getZoneList();
+    getCustomers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { name, latitude, longitude } = data;
+    const { amount, remarks } = data;
 
     const formData = {
-      zoneId: zoneId,
-      name: name,
-      isActive: isActive,
-      latitude: latitude,
-      longitude: longitude
+      customerId: selectedCustomer,
+      amount: amount,
+      type: selectType,
+      remarks: remarks
     };
 
     try {
       axios
-        .post("/api/distribution-pop/create", formData)
+        .post("/api/customer-topup/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -142,7 +123,7 @@ const CreateDistributionPopForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/customer/distribution-pop");
+              router.replace(`/admin/customer-care/customer-top-up`);
             });
           }
         })
@@ -169,7 +150,6 @@ const CreateDistributionPopForm = () => {
     <>
       {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-
       {!loading && (
         <div className="mt-3">
           <Form
@@ -179,10 +159,9 @@ const CreateDistributionPopForm = () => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              zoneId: "",
-              name: "",
-              latitude: "",
-              longitude: ""
+              type: "",
+              amount: "",
+              remarks: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -196,16 +175,16 @@ const CreateDistributionPopForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* zoneId */}
+                {/* customerId */}
                 <Form.Item
-                  label="Zone"
-                  name="zoneId"
+                  label="Customer"
+                  name="customerId"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -213,7 +192,7 @@ const CreateDistributionPopForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please select Zone!"
+                      message: "Please select Customer!"
                     }
                   ]}
                 >
@@ -221,153 +200,139 @@ const CreateDistributionPopForm = () => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Zone"
-                      onChange={handleZoneChange}
-                      options={zoneList}
-                      value={zoneId}
+                      placeholder="Please select Customer"
+                      onChange={handleCustomerChange}
+                      options={customers}
+                      value={selectedCustomer}
                     />
                   </Space>
                 </Form.Item>
               </Col>
+
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* name */}
+                {/* type */}
                 <Form.Item
-                  label="Name"
+                  label="Type"
+                  name="type"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="name"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Name!"
+                      message: "Please select Type!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Type"
+                      onChange={handleChange}
+                      options={types}
+                      value={selectType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* Amount */}
+                <Form.Item
+                  label="Amount"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="amount"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Amount!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
+                    placeholder="amount"
+                    className={`form - control`}
+                    name="amount"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
+
               <Col
                 xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={24}
+                xxl={24}
                 className="gutter-row"
               >
-                {/* latitude */}
+                {/* remarks */}
                 <Form.Item
-                  label="Latitude"
+                  label="remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="latitude"
+                  name="remarks"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your remarks!"
+                    }
+                  ]}
                 >
-                  <Input
-                    type="text"
-                    placeholder="Latitude"
-                    className={`form-control`}
-                    name="latitude"
+                  <Input.TextArea
+                    placeholder="remarks"
+                    className={`form - control`}
+                    name="remarks"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* longitude */}
-                <Form.Item
-                  label="Longitude"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="longitude"
-                >
-                  <Input
-                    type="text"
-                    placeholder="Longitude"
-                    className={`form-control`}
-                    name="longitude"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
             </Row>
-
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
 
             {/* submit */}
             <Row justify="center">
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                >
-                  Submit
-                </Button>
-              </Form.Item>
+              <Col>
+                <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                  <Button
+                    // type="primary"
+                    htmlType="submit"
+                    shape="round"
+                    style={{
+                      backgroundColor: "#F15F22",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Col>
             </Row>
           </Form>
         </div>
@@ -376,4 +341,4 @@ const CreateDistributionPopForm = () => {
   );
 };
 
-export default CreateDistributionPopForm;
+export default CreateCustomerTopUpForm;

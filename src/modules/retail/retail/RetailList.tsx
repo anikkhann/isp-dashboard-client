@@ -16,6 +16,9 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { ClientData } from "@/interfaces/ClientData";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const statusList = [
   {
     label: "Active",
@@ -35,6 +38,8 @@ interface TableParams {
 
 const RetailList: React.FC = () => {
   const [data, setData] = useState<ClientData[]>([]);
+
+  const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -169,6 +174,16 @@ const RetailList: React.FC = () => {
     axios.post("/api/partner/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {

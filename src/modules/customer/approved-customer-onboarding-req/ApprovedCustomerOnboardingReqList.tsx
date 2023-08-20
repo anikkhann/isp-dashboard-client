@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Button,
   // Button,
   Card,
   Col,
   Space,
-  Tag
+  Tag,
+  Tooltip
 } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
@@ -21,6 +23,16 @@ import axios from "axios";
 // import ability from "@/services/guard/ability";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
+import Link from "next/link";
+import {
+  CheckSquareOutlined,
+  CloseSquareOutlined,
+  EditOutlined,
+  EyeOutlined,
+  IssuesCloseOutlined
+} from "@ant-design/icons";
+import { useAppSelector } from "@/store/hooks";
+import ability from "@/services/guard/ability";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -30,6 +42,8 @@ interface TableParams {
 }
 
 const ApprovedCustomerOnboardingReqList: React.FC = () => {
+  const authUser = useAppSelector(state => state.auth.user);
+
   const [data, setData] = useState<CustomerData[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -165,6 +179,31 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    // Requested By
+    {
+      title: "Requested By",
+      dataIndex: "partner.name",
+      sorter: false,
+      render: (_, row: any) => {
+        if (!row.partner) return "-";
+        return <>{row.partner.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // Requested User Type
+    {
+      title: "Requested User Type",
+      dataIndex: "partner.partnerType",
+      sorter: false,
+      render: (_, row: any) => {
+        if (!row.partner) return "-";
+        return <>{row.partner.partnerType}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
     // insertedBy
     // {
     //   title: "Created By",
@@ -179,7 +218,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
     // },
     // createdOn
     {
-      title: "Created At",
+      title: "Request Time",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
@@ -189,7 +228,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
       },
       /* width: "20%", */
       align: "center" as AlignType
-    }
+    },
     // editedBy
     // {
     //   title: "Updated By",
@@ -215,7 +254,136 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
     //   },
     //   width: "20%",
     //   align: "center" as AlignType
-    // }
+    // },
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <div className="flex flex-row">
+            <Space size="middle" align="center">
+              {/* edit */}
+              {authUser &&
+                authUser.partnerId == record.partnerId &&
+                record.clientStatus != "Approved" &&
+                (ability.can("customerOnboardingReq.update", "") ? (
+                  <Tooltip
+                    title="Update Onboarding Request"
+                    placement="bottomRight"
+                    color="blue"
+                  >
+                    <Space size="middle" align="center" wrap>
+                      <Link
+                        href={`/admin/customer/customer-onboarding-req/${record.id}/edit`}
+                      >
+                        <Button type="primary" icon={<EditOutlined />} />
+                      </Link>
+                    </Space>
+                  </Tooltip>
+                ) : null)}
+              {/* approve */}
+              {((authUser &&
+                authUser.partnerId != record.partnerId &&
+                record.zoneStatus == "Approved") ||
+                record.zoneStatus == "Pending") &&
+                (ability.can("customerOnboardingReq.approve", "") ? (
+                  <Tooltip
+                    title="Approve Onboarding Request"
+                    placement="bottomRight"
+                    color="green"
+                  >
+                    <Space size="middle" align="center" wrap>
+                      <Link
+                        href={`/admin/customer/customer-onboarding-req/${record.id}/approve`}
+                      >
+                        <Button
+                          type="primary"
+                          icon={<CheckSquareOutlined />}
+                          style={{
+                            backgroundColor: "#0B666A",
+                            color: "#ffffff"
+                          }}
+                        />
+                      </Link>
+                    </Space>
+                  </Tooltip>
+                ) : null)}
+              {/* reject */}
+              {(record.clientStatus == "Pending" ||
+                record.zoneStatus == "Pending") &&
+                (ability.can("customerOnboardingReq.reject", "") ? (
+                  <Tooltip
+                    title="Reject Onboarding Request"
+                    placement="bottomRight"
+                    color="#EA1179"
+                  >
+                    <Space size="middle" align="center" wrap>
+                      <Link
+                        href={`/admin/customer/customer-onboarding-req/${record.id}/reject`}
+                      >
+                        <Button
+                          type="primary"
+                          icon={<CloseSquareOutlined />}
+                          style={{
+                            backgroundColor: "#EA1179",
+                            color: "#ffffff"
+                          }}
+                        />
+                      </Link>
+                    </Space>
+                  </Tooltip>
+                ) : null)}
+              {/* reinitiate */}
+
+              {authUser &&
+                authUser.partnerId == record.partnerId &&
+                (record.clientStatus == "Rejected" ||
+                  record.zoneStatus == "Rejected") &&
+                (ability.can("customerOnboardingReq.reinitiate", "") ? (
+                  <Tooltip
+                    title="ReInitiate Onboarding Request"
+                    placement="bottomRight"
+                    color="blue"
+                  >
+                    <Space size="middle" align="center" wrap>
+                      <Link
+                        href={`/admin/customer/customer-onboarding-req/${record.id}/reinitiate`}
+                      >
+                        <Button
+                          type="primary"
+                          icon={<IssuesCloseOutlined />}
+                          style={{
+                            backgroundColor: "#241468",
+                            color: "#ffffff"
+                          }}
+                        />
+                      </Link>
+                    </Space>
+                  </Tooltip>
+                ) : null)}
+              {/* view */}
+              {ability.can("customerOnboardingReq.view", "") ? (
+                <Tooltip
+                  title="Details Onboarding Request"
+                  placement="bottomRight"
+                  color="#FF5630"
+                >
+                  <Space size="middle" align="center" wrap className="mx-1">
+                    <Link
+                      href={`/admin/customer/customer-onboarding-req/${record.id}`}
+                    >
+                      <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+            </Space>
+          </div>
+        );
+      },
+      align: "center" as AlignType
+    }
   ];
 
   const handleTableChange = (

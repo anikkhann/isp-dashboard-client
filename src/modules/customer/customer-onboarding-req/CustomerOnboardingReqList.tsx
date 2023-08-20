@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag, Tooltip } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  DatePicker,
+  Input,
+  Select,
+  Space,
+  Tag,
+  Tooltip
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -23,6 +33,26 @@ import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
 import { useAppSelector } from "@/store/hooks";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -33,9 +63,25 @@ interface TableParams {
 const CustomerOnboardingReqList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
 
-  console.log(authUser);
+  const { RangePicker } = DatePicker;
+
+  const MySwal = withReactContent(Swal);
 
   const [data, setData] = useState<CustomerData[]>([]);
+
+  const [customerTypes, setCustomerTypes] = useState<any[]>([]);
+  const [customerPackages, setCustomerPackages] = useState<any[]>([]);
+
+  const [selectedCustomerType, setSelectedCustomerType] = useState<any>(null);
+  const [selectedCustomerPackage, setSelectedCustomerPackage] =
+    useState<any>(null);
+
+  const [selectedUsername, setSelectedUsername] = useState<any>(null);
+
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -53,10 +99,18 @@ const CustomerOnboardingReqList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    customerTypeParam: string,
+    customerPackageParam: string,
+    usernameParam: string,
+    startDateParam: string,
+    endDateParam: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const zoneStatus =
+      authUser && authUser.userType == "client" ? `Approved` : null;
 
     const body = {
       meta: {
@@ -71,6 +125,20 @@ const CustomerOnboardingReqList: React.FC = () => {
       },
       body: {
         // clientStatus: "Pending"
+        // zoneStatus : "Pending"
+        zoneStatus,
+        customerType: {
+          id: customerTypeParam
+        },
+        customerPackage: {
+          id: customerPackageParam
+        },
+        username: usernameParam,
+        dateRangeFilter: {
+          field: "createdOn",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
       }
     };
 
@@ -83,9 +151,30 @@ const CustomerOnboardingReqList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-req-list", page, limit, order, sort],
+    queryKey: [
+      "customer-req-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedCustomerType,
+      selectedCustomerPackage,
+      selectedUsername,
+      selectedStartDate,
+      selectedEndDate
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedCustomerType,
+        selectedCustomerPackage,
+        selectedUsername,
+        selectedStartDate,
+        selectedEndDate
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -122,6 +211,123 @@ const CustomerOnboardingReqList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+
+  const getCustomerPackages = () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // isActive: true
+      }
+    };
+    axios.post("/api/customer-package/get-list", body).then(res => {
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setCustomerPackages(list);
+    });
+  };
+
+  function getCustomerTypes() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "title"
+          }
+        ]
+      },
+      body: {
+        // isActive: true
+      }
+    };
+    axios.post("/api/customer-type/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.title,
+          value: item.id
+        };
+      });
+
+      setCustomerTypes(list);
+    });
+  }
+
+  useEffect(() => {
+    getCustomerPackages();
+    getCustomerTypes();
+  }, []);
+
+  const handleCustomerTypeChange = (value: any) => {
+    setSelectedCustomerType(value);
+  };
+
+  const handleCustomerPackageChange = (value: any) => {
+    setSelectedCustomerPackage(value);
+  };
+
+  const handleClear = () => {
+    setSelectedCustomerType(null);
+    setSelectedCustomerPackage(null);
+    setSelectedUsername(null);
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+  };
+
+  const handleDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    }
+  };
 
   // console.log(error, isLoading, isError)
 
@@ -207,7 +413,7 @@ const CustomerOnboardingReqList: React.FC = () => {
     // },
     // createdOn
     {
-      title: "Created At",
+      title: "Request Time",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
@@ -452,11 +658,83 @@ const CustomerOnboardingReqList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Customer Types</b>
+                  </span>
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleCustomerTypeChange}
+                    options={customerTypes}
+                    value={selectedCustomerType}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Customer Package</b>
+                  </span>
+                  <Select
+                    showSearch
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleCustomerPackageChange}
+                    options={customerPackages}
+                    value={selectedCustomerPackage}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Username</b>
+                  </span>
+                  <Input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Username"
+                    value={selectedUsername}
+                    onChange={e => {
+                      setSelectedUsername(e.target.value);
+                    }}
+                  />
+                </Space>
+
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <span>
+                    <b>Date Range</b>
+                  </span>
+                  <RangePicker
+                    style={{ width: "100%" }}
+                    onChange={handleDateChange}
+                    value={selectedDateRange}
+                    placeholder={["Start Date", "End Date"]}
+                  />
+                </Space>
+
+                <Button
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                  onClick={() => {
+                    handleClear();
+                  }}
+                  className="ant-btn  ant-btn-lg"
+                >
+                  Clear filters
+                </Button>
+              </Space>
+
               <Table
                 columns={columns}
                 rowKey={record => record.id}

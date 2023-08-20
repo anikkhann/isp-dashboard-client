@@ -16,6 +16,9 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { PackageData } from "@/interfaces/PackageData";
 import { format } from "date-fns";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -25,6 +28,8 @@ interface TableParams {
 
 const PackageList: React.FC = () => {
   const [data, setData] = useState<PackageData[]>([]);
+
+  const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -138,6 +143,16 @@ const PackageList: React.FC = () => {
     axios.post("/api/customer-package/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {

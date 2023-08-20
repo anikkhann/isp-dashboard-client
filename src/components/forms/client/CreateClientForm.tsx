@@ -170,6 +170,16 @@ const CreateClientForm = () => {
       // console.log(res);
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -202,6 +212,15 @@ const CreateClientForm = () => {
     axios.post("/api/district/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -232,6 +251,16 @@ const CreateClientForm = () => {
 
     axios.post("/api/upazilla/get-list", body).then(res => {
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {
@@ -264,6 +293,16 @@ const CreateClientForm = () => {
     axios.post("/api/union/get-list", body).then(res => {
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -279,6 +318,16 @@ const CreateClientForm = () => {
       .get("/api/lookup-details/get-by-master-key/license_type")
       .then(res => {
         const { data } = res;
+
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
         const list = data.body.map((item: any) => {
           return {
             label: item.name,
@@ -312,6 +361,15 @@ const CreateClientForm = () => {
 
     axios.post("/api/radius-ip/get-list", body).then(res => {
       const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
       const list = data.body.map((item: any) => {
         return {
           label: item.name,

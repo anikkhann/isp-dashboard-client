@@ -16,6 +16,9 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { ClientData } from "@/interfaces/ClientData";
 // import { format } from "date-fns";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const tagsList = [
   {
     label: "Tri Cycle",
@@ -58,6 +61,8 @@ const ClientList: React.FC = () => {
   const [selectedLicenseType, setSelectedLicenseType] = useState<any>(null);
 
   const [contactNumber, setContactNumber] = useState<any>(null);
+
+  const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -271,6 +276,16 @@ const ClientList: React.FC = () => {
       // console.log(res);
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -300,6 +315,16 @@ const ClientList: React.FC = () => {
     axios.post("/api/division/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {
@@ -334,6 +359,16 @@ const ClientList: React.FC = () => {
     axios.post("/api/district/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -367,6 +402,16 @@ const ClientList: React.FC = () => {
       // console.log(res);
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -399,6 +444,16 @@ const ClientList: React.FC = () => {
     axios.post("/api/union/get-list", body).then(res => {
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -414,6 +469,16 @@ const ClientList: React.FC = () => {
       .get("/api/lookup-details/get-by-master-key/license_type")
       .then(res => {
         const { data } = res;
+
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
         const list = data.body.map((item: any) => {
           return {
             label: item.name,

@@ -121,6 +121,15 @@ const CreateRetailForm = () => {
     axios.post("/api/division/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {
@@ -154,6 +163,16 @@ const CreateRetailForm = () => {
     axios.post("/api/district/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -186,6 +205,16 @@ const CreateRetailForm = () => {
       // console.log(res);
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -216,6 +245,16 @@ const CreateRetailForm = () => {
 
     axios.post("/api/union/get-list", body).then(res => {
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {

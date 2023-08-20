@@ -16,6 +16,9 @@ import ability from "@/services/guard/ability";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -25,6 +28,8 @@ interface TableParams {
 
 const CustomerList: React.FC = () => {
   const [data, setData] = useState<CustomerData[]>([]);
+
+  const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -225,6 +230,16 @@ const CustomerList: React.FC = () => {
       // console.log(res);
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -256,6 +271,16 @@ const CustomerList: React.FC = () => {
     axios.post("/api/partner/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {
@@ -289,6 +314,16 @@ const CustomerList: React.FC = () => {
       // console.log(res);
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -317,6 +352,15 @@ const CustomerList: React.FC = () => {
 
     axios.post("/api/distribution-zone/get-list", body).then(res => {
       const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -345,6 +389,16 @@ const CustomerList: React.FC = () => {
     axios.post("/api/distribution-pop/get-list", body).then(res => {
       const { data } = res;
 
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -371,6 +425,16 @@ const CustomerList: React.FC = () => {
     };
     axios.post("/api/customer-package/get-list", body).then(res => {
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -397,6 +461,15 @@ const CustomerList: React.FC = () => {
     };
     axios.post("/api/customer/get-list", body).then(res => {
       const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
       const list = data.body.map((item: any) => {
         return {
           label: item.username,

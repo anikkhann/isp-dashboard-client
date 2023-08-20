@@ -1,30 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { CustomerData } from "@/interfaces/CustomerData";
+import { ActivityLogData } from "@/interfaces/ActivityLogData";
 import AppRowContainer from "@/lib/AppRowContainer";
 import {
   Breadcrumb,
   Button,
   Card,
-  Input,
+  DatePicker,
+  List,
   Select,
   Space,
-  Table,
-  Tag
+  Table
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import ability from "@/services/guard/ability";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { AlignType } from "rc-table/lib/interface";
-import { EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+import { Can } from "@/services/guard/Can";
+import { PlusSquareOutlined } from "@ant-design/icons";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -33,8 +50,10 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const SearchCustomer = () => {
-  const [data, setData] = useState<CustomerData[]>([]);
+const SearchTopUpList = () => {
+  const [data, setData] = useState<ActivityLogData[]>([]);
+
+  const { RangePicker } = DatePicker;
 
   const MySwal = withReactContent(Swal);
 
@@ -51,14 +70,13 @@ const SearchCustomer = () => {
     }
   });
 
-  const [customerIds, setCustomerIds] = useState<any[]>([]);
-  const [selectedCustomerId, setSelectedCustomerId] = useState<any>(null);
-
   const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
-  const [selectedEmail, setSelectedEmail] = useState<any>(null);
-  const [selectedMobile, setSelectedMobile] = useState<any>(null);
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
 
   const getCustomers = async () => {
     const token = Cookies.get("token");
@@ -69,7 +87,7 @@ const SearchCustomer = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -80,6 +98,7 @@ const SearchCustomer = () => {
     const { data } = await axios.post("/api/customer/get-list", body);
 
     // console.log("data.body", data);
+
     if (data.status != 200) {
       MySwal.fire({
         title: "Error",
@@ -93,22 +112,10 @@ const SearchCustomer = () => {
     const list = data.body.map((item: any) => {
       return {
         label: item.username,
-        value: item.username
+        value: item.id
       };
     });
     setCustomers(list);
-
-    const customerIds = data.body.map((item: any) => {
-      return {
-        label: item.customerId,
-        value: item.customerId
-      };
-    });
-    setCustomerIds(customerIds);
-  };
-
-  const handleCustomerIDChange = (value: any) => {
-    setSelectedCustomerId(value);
   };
 
   const handleUsernameChange = (value: any) => {
@@ -120,11 +127,11 @@ const SearchCustomer = () => {
   }, []);
 
   const handleClear = () => {
-    setSelectedCustomerId(null);
     setSelectedCustomer(null);
-    setSelectedEmail(null);
-    setSelectedMobile(null);
     setData([]);
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
   };
 
   const handleSubmit = async (
@@ -133,9 +140,8 @@ const SearchCustomer = () => {
     order: string,
     sort: string,
     customerIdParam?: string,
-    usernameParam?: string,
-    emailParam?: string,
-    mobileParam?: string
+    startDateParam?: string,
+    endDateParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -152,14 +158,19 @@ const SearchCustomer = () => {
         ]
       },
       body: {
-        customerId: customerIdParam,
-        username: usernameParam,
-        email: emailParam,
-        mobile: mobileParam
+        customer: {
+          id: customerIdParam
+        },
+        subject: "Top Up",
+        dateRangeFilter: {
+          field: "createdOn",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
       }
     };
 
-    const { data } = await axios.post("/api/customer/get-list", body, {
+    const { data } = await axios.post("/api/activity-log/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -190,35 +201,6 @@ const SearchCustomer = () => {
       }
     }
   };
-  function subOneDay(date = new Date()) {
-    date.setDate(date.getDate() - 1);
-
-    return date;
-  }
-
-  const handleTableChange = (
-    pagination: TablePaginationConfig,
-    filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<CustomerData> | SorterResult<CustomerData>[]
-  ) => {
-    SetPage(pagination.current as number);
-    SetLimit(pagination.pageSize as number);
-
-    if (sorter && (sorter as SorterResult<CustomerData>).order) {
-      // // console.log((sorter as SorterResult<CustomerData>).order)
-
-      SetOrder(
-        (sorter as SorterResult<CustomerData>).order === "ascend"
-          ? "asc"
-          : "desc"
-      );
-    }
-    if (sorter && (sorter as SorterResult<CustomerData>).field) {
-      // // console.log((sorter as SorterResult<CustomerData>).field)
-
-      SetSort((sorter as SorterResult<CustomerData>).field as string);
-    }
-  };
 
   useEffect(() => {
     if (data) {
@@ -226,9 +208,29 @@ const SearchCustomer = () => {
     }
   }, [data]);
 
+  const handleDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    }
+  };
+
   // console.log(error, isLoading, isError)
 
-  const columns: ColumnsType<CustomerData> = [
+  const columns: ColumnsType<ActivityLogData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -240,136 +242,89 @@ const SearchCustomer = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      width: "10%",
       align: "center" as AlignType
     },
+    // subject
     {
-      title: "Customer ID",
-      dataIndex: "customerId",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Zone",
-      dataIndex: "distributionZone",
+      title: "Subject",
+      dataIndex: "subject",
       sorter: false,
-      render: (distributionZone: any) => {
-        if (!distributionZone) return "-";
-        return <>{distributionZone.name}</>;
+      render: (subject: any) => {
+        if (!subject) return "-";
+        return <>{subject}</>;
       },
-      width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
+    // remarks
     {
-      title: "Pop",
-      dataIndex: "distributionPop",
+      title: "Remarks",
+      dataIndex: "remarks",
       sorter: false,
-      render: (distributionPop: any) => {
-        if (!distributionPop) return "-";
-        return <>{distributionPop.name}</>;
+      render: (remarks: any) => {
+        if (!remarks) return "-";
+        return <>{remarks}</>;
       },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Mobile",
-      dataIndex: "mobileNo",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Connection Address",
-      dataIndex: "connectionAddress",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Credits",
-      dataIndex: "credits",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Package",
-      dataIndex: "customerPackage",
-      sorter: false,
-      render: (customerPackage: any) => {
-        if (!customerPackage) return "-";
-        return <>{customerPackage.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Expiration Date",
-      dataIndex: "expirationTime",
-      sorter: false,
-      render: (expirationTime: any) => {
-        if (!expirationTime) return "-";
-        const date = new Date(expirationTime);
-        const result2 = subOneDay(date);
-        const today = new Date();
 
-        const isDateGreen = result2 >= today;
-        const color = isDateGreen ? "green" : "red";
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // changedData
+    {
+      title: "Changed Data",
+      dataIndex: "changedData",
+      sorter: false,
+      render: (changedData: any) => {
+        if (!changedData) return "-";
 
-        return <span style={{ color }}>{format(result2, "yyyy-MM-dd")}</span>;
-        // return <>{format(result2, "yyyy-MM-dd pp")}</>;
+        if (changedData == "{}") return "-";
+
+        if (changedData) {
+          const jsonObject = JSON.parse(changedData) as Array<any>;
+
+          const array = [];
+
+          for (const object of jsonObject) {
+            array.push(object);
+          }
+
+          return (
+            <>
+              <List>
+                {array.map((checklist: any, index: number) => {
+                  return (
+                    <List.Item key={index}>
+                      {checklist.key} : {checklist.oldValue} {"-> "}
+                      {checklist.currentValue},
+                    </List.Item>
+                  );
+                })}
+              </List>
+            </>
+          );
+        }
+
+        return <>{changedData}</>;
       },
-      width: "20%",
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    // actionBy
+    {
+      title: "Action By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      //   width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Status",
-      dataIndex: "isActive",
-      sorter: true,
-      render: (isActive: any) => {
-        return (
-          <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
-          </>
-        );
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // createdOn
-    {
-      title: "Creation/Onboard Date",
+      title: "Action Date",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
@@ -379,55 +334,26 @@ const SearchCustomer = () => {
       },
       width: "20%",
       align: "center" as AlignType
-    },
-    // editedBy
-    // {
-    //   title: "Updated By",
-    //   dataIndex: "editedBy",
-    //   sorter: false,
-    //   render: (editedBy: any) => {
-    //     if (!editedBy) return "-";
-    //     return <>{editedBy.name}</>;
-    //   },
-
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // updatedOn
-    // {
-    //   title: "Updated At",
-    //   dataIndex: "updatedOn",
-    //   sorter: false,
-    //   render: (updatedOn: any) => {
-    //     if (!updatedOn) return "-";
-    //     const date = new Date(updatedOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    {
-      title: "Action",
-      dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <>
-            <Space size="middle" align="center">
-              {ability.can("customer.view", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/customer-care/${record.id}`}>
-                    <Button type="primary" icon={<EyeOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-            </Space>
-          </>
-        );
-      },
-      align: "center" as AlignType
     }
   ];
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<any> | SorterResult<any>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<any>).order) {
+      SetOrder(
+        (sorter as SorterResult<any>).order === "ascend" ? "asc" : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<any>).field) {
+      SetSort((sorter as SorterResult<any>).field as string);
+    }
+  };
 
   return (
     <>
@@ -447,7 +373,7 @@ const SearchCustomer = () => {
               )
             },
             {
-              title: "Customer Care"
+              title: "Customer Top Up List"
             }
           ]}
         />
@@ -469,7 +395,7 @@ const SearchCustomer = () => {
               color: "#F15F22"
             }}
           >
-            Customer Care
+            Customer Top Up Activity Log
           </h1>
         </div>
 
@@ -486,26 +412,25 @@ const SearchCustomer = () => {
             marginBottom: "1rem",
             border: "1px solid #F15F22"
           }}
+          extra={
+            <>
+              <Can I="customerCare.list">
+                <Link href="/admin/customer-top-up/create">
+                  <Button
+                    type="primary"
+                    icon={<PlusSquareOutlined />}
+                    size={"middle"}
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    New Top Up
+                  </Button>
+                </Link>
+              </Can>
+            </>
+          }
         >
           <>
             <Space style={{ marginBottom: 16 }}>
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>Customer Id</b>
-                </span>
-                <Select
-                  allowClear
-                  style={{
-                    width: "100%",
-                    textAlign: "start"
-                  }}
-                  placeholder="Please select"
-                  onChange={handleCustomerIDChange}
-                  options={customerIds}
-                  value={selectedCustomerId}
-                />
-              </Space>
-
               <Space style={{ width: "100%" }} direction="vertical">
                 <span>
                   <b>Username</b>
@@ -523,27 +448,13 @@ const SearchCustomer = () => {
 
               <Space style={{ width: "100%" }} direction="vertical">
                 <span>
-                  <b>Email</b>
+                  <b>Date Range</b>
                 </span>
-                <Input
-                  type="text"
-                  className="ant-input"
-                  placeholder="Email"
-                  value={selectedEmail}
-                  onChange={e => setSelectedEmail(e.target.value)}
-                />
-              </Space>
-
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>Mobile</b>
-                </span>
-                <Input
-                  type="text"
-                  className="ant-input"
-                  placeholder="Mobile"
-                  value={selectedMobile}
-                  onChange={e => setSelectedMobile(e.target.value)}
+                <RangePicker
+                  style={{ width: "100%" }}
+                  onChange={handleDateChange}
+                  value={selectedDateRange}
+                  placeholder={["Start Date", "End Date"]}
                 />
               </Space>
 
@@ -561,10 +472,9 @@ const SearchCustomer = () => {
                     limit,
                     order,
                     sort,
-                    selectedCustomerId,
                     selectedCustomer,
-                    selectedEmail,
-                    selectedMobile
+                    selectedStartDate,
+                    selectedEndDate
                   );
                 }}
                 className="ant-btn  ant-btn-lg"
@@ -606,4 +516,4 @@ const SearchCustomer = () => {
   );
 };
 
-export default SearchCustomer;
+export default SearchTopUpList;

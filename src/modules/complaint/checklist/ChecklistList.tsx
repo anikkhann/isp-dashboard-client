@@ -16,6 +16,9 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { ChecklistData } from "@/interfaces/ChecklistData";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -33,6 +36,8 @@ const ChecklistList: React.FC = () => {
 
   const [complainTypes, setComplainTypes] = useState<any>([]);
   const [selectedComplainType, setSelectComplainType] = useState<any>(null);
+
+  const MySwal = withReactContent(Swal);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -155,6 +160,16 @@ const ChecklistList: React.FC = () => {
     axios.post("/api/complain-type/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
 
       const list = data.body.map((item: any) => {
         return {
