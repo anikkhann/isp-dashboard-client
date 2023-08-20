@@ -33,9 +33,9 @@ const customerCareRoutes = [
     permission: "customerCare.list"
   },
   {
-    key: "/admin/zonal-manager-tag-or-remove",
+    key: "/admin/zone-manager-tag-or-remove",
     label: "Zone Manager Tag Or Remove",
-    path: "/admin/zonal-manager-tag-or-remove",
+    path: "/admin/zone-manager-tag-or-remove",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
   },

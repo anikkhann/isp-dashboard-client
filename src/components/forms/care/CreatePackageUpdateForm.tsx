@@ -12,22 +12,22 @@ import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  amount: string;
-  remarks: string;
+  mac: string;
+  comment: string;
 }
 
 const types = [
   {
-    label: "debit",
-    value: "debit"
+    label: "bind",
+    value: "bind"
   },
   {
-    label: "credit",
-    value: "credit"
+    label: "remove",
+    value: "remove"
   }
 ];
 
-const CreateCustomerTopUpForm = () => {
+const CreatePackageUpdateForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -94,18 +94,18 @@ const CreateCustomerTopUpForm = () => {
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { amount, remarks } = data;
+    const { mac, comment } = data;
 
     const formData = {
       customerId: selectedCustomer,
-      amount: amount,
-      type: selectType,
-      remarks: remarks
+      mac: mac,
+      action: selectType,
+      comment: comment
     };
 
     try {
       axios
-        .post("/api/customer-topup/create", formData)
+        .post("/api/customer/mac-change", formData)
         .then(res => {
           const { data } = res;
 
@@ -123,7 +123,7 @@ const CreateCustomerTopUpForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace(`/admin/customer-top-up`);
+              router.replace(`/admin/customer-mac-bind-or-remove`);
             });
           }
         })
@@ -160,8 +160,8 @@ const CreateCustomerTopUpForm = () => {
             form={form}
             initialValues={{
               type: "",
-              amount: "",
-              remarks: ""
+              mac: "",
+              comment: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -246,39 +246,41 @@ const CreateCustomerTopUpForm = () => {
                 </Form.Item>
               </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* Amount */}
-                <Form.Item
-                  label="Amount"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="amount"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Amount!"
-                    }
-                  ]}
+              {selectType == "bind" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="amount"
-                    className={`form - control`}
-                    name="amount"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+                  {/* mac */}
+                  <Form.Item
+                    label="MAC"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="mac"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your mac!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="mac"
+                      className={`form - control`}
+                      name="mac"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
 
               <Col
                 xs={24}
@@ -289,25 +291,25 @@ const CreateCustomerTopUpForm = () => {
                 xxl={24}
                 className="gutter-row"
               >
-                {/* remarks */}
+                {/* comment */}
                 <Form.Item
-                  label="remarks"
+                  label="comment"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="remarks"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your remarks!"
-                    }
-                  ]}
+                  name="comment"
+                  /*  rules={[
+                   {
+                     required: true,
+                     message: "Please input your comment!"
+                   }
+                 ]} */
                 >
                   <Input.TextArea
-                    placeholder="remarks"
+                    placeholder="comment"
                     className={`form - control`}
-                    name="remarks"
+                    name="comment"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
@@ -341,4 +343,4 @@ const CreateCustomerTopUpForm = () => {
   );
 };
 
-export default CreateCustomerTopUpForm;
+export default CreatePackageUpdateForm;
