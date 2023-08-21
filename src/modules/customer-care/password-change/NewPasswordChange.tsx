@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import CreateCustomerTopUpForm from "@/components/forms/care/CreateCustomerTopUpForm";
+import CreatePasswordUpdateForm from "@/components/forms/care/CreatePasswordUpdateForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -63,7 +63,7 @@ const NewPasswordChange = () => {
             border: "1px solid #F15F22"
           }}
         >
-          <CreateCustomerTopUpForm />
+          <CreatePasswordUpdateForm />
         </Card>
       </AppRowContainer>
     </>
