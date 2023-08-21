@@ -12,20 +12,8 @@ import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  mac: string;
   comment: string;
 }
-
-const types = [
-  {
-    label: "bind",
-    value: "bind"
-  },
-  {
-    label: "remove",
-    value: "remove"
-  }
-];
 
 const CreateZonePopUpdateForm = () => {
   const [form] = Form.useForm();
@@ -39,18 +27,17 @@ const CreateZonePopUpdateForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [customers, setCustomers] = useState<any>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
 
-  const [selectType, setSelectType] = useState<any>(null);
+  const [distributionZones, setDistributionZones] = useState([]);
+  const [distributionPops, setDistributionPops] = useState([]);
+
+  const [selectedDistributionZone, setSelectedDistributionZone] =
+    useState(null);
+  const [selectedDistributionPop, setSelectedDistributionPop] = useState(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-  const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ type: value });
-    setSelectType(value as any);
-  };
 
   const getCustomers = async () => {
     const body = {
@@ -80,32 +67,131 @@ const CreateZonePopUpdateForm = () => {
     }
   };
 
-  // customerId
+  // customerIds
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
+    form.setFieldsValue({ customerIds: value });
+    setSelectedCustomer(value as any[]);
   };
+
+  const handleDistributionZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ zoneId: value });
+    setSelectedDistributionZone(value as any);
+  };
+
+  const handleDistributionPopChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ popId: value });
+    setSelectedDistributionPop(value as any);
+  };
+
+  function getDistributionZones() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        isActive: true
+      }
+    };
+
+    axios.post("/api/distribution-zone/get-list", body).then(res => {
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setDistributionZones(list);
+    });
+  }
+
+  function getDistributionPops(selectedDistributionZone: any) {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        isActive: true,
+        distributionZone: {
+          id: selectedDistributionZone
+        }
+      }
+    };
+
+    axios.post("/api/distribution-pop/get-list", body).then(res => {
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setDistributionPops(list);
+    });
+  }
 
   useEffect(() => {
     getCustomers();
+    getDistributionZones();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (selectedDistributionZone) {
+      getDistributionPops(selectedDistributionZone);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDistributionZone]);
+
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { mac, comment } = data;
+    const { comment } = data;
 
     const formData = {
-      customerId: selectedCustomer,
-      mac: mac,
-      action: selectType,
+      customerIds: selectedCustomer,
+      zoneId: selectedDistributionZone,
+      popId: selectedDistributionPop,
       comment: comment
     };
 
     try {
       axios
-        .post("/api/customer/mac-change", formData)
+        .post("/api/customer/package-zone-pop-change", formData)
         .then(res => {
           const { data } = res;
 
@@ -159,8 +245,8 @@ const CreateZonePopUpdateForm = () => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              type: "",
-              mac: "",
+              zoneId: "",
+              popId: "",
               comment: ""
             }}
             style={{ maxWidth: "100%" }}
@@ -181,10 +267,10 @@ const CreateZonePopUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* customerId */}
+                {/* customerIds */}
                 <Form.Item
                   label="Customer"
-                  name="customerId"
+                  name="customerIds"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -199,6 +285,7 @@ const CreateZonePopUpdateForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      mode="multiple"
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer"
                       onChange={handleCustomerChange}
@@ -218,18 +305,18 @@ const CreateZonePopUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* type */}
+                {/* zoneId */}
                 <Form.Item
-                  label="Type"
-                  name="type"
+                  label="Distribution Zone"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  name="zoneId"
                   rules={[
                     {
                       required: true,
-                      message: "Please select Type!"
+                      message: "Please select Distribution Zone!"
                     }
                   ]}
                 >
@@ -237,50 +324,50 @@ const CreateZonePopUpdateForm = () => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Type"
-                      onChange={handleChange}
-                      options={types}
-                      value={selectType}
+                      placeholder="Please select Distribution Zone"
+                      onChange={handleDistributionZoneChange}
+                      options={distributionZones}
+                      value={selectedDistributionZone}
                     />
                   </Space>
                 </Form.Item>
               </Col>
-
-              {selectType == "bind" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* popId */}
+                <Form.Item
+                  label="Distribution Pop"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="popId"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Distribution Pop!"
+                    }
+                  ]}
                 >
-                  {/* mac */}
-                  <Form.Item
-                    label="MAC"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="mac"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your mac!"
-                      }
-                    ]}
-                  >
-                    <Input
-                      type="text"
-                      placeholder="mac"
-                      className={`form - control`}
-                      name="mac"
-                      style={{ padding: "6px" }}
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Distribution Pop"
+                      onChange={handleDistributionPopChange}
+                      options={distributionPops}
+                      value={selectedDistributionPop}
                     />
-                  </Form.Item>
-                </Col>
-              )}
+                  </Space>
+                </Form.Item>
+              </Col>
 
               <Col
                 xs={24}
@@ -300,11 +387,11 @@ const CreateZonePopUpdateForm = () => {
                   }}
                   name="comment"
                   /*  rules={[
-                   {
-                     required: true,
-                     message: "Please input your comment!"
-                   }
-                 ]} */
+                 {
+                   required: true,
+                   message: "Please input your comment!"
+                 }
+               ]} */
                 >
                   <Input.TextArea
                     placeholder="comment"

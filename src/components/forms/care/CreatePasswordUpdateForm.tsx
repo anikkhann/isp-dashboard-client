@@ -12,20 +12,9 @@ import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  mac: string;
+  password: string;
   comment: string;
 }
-
-const types = [
-  {
-    label: "bind",
-    value: "bind"
-  },
-  {
-    label: "remove",
-    value: "remove"
-  }
-];
 
 const CreatePasswordUpdateForm = () => {
   const [form] = Form.useForm();
@@ -39,18 +28,10 @@ const CreatePasswordUpdateForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [customers, setCustomers] = useState<any>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
-
-  const [selectType, setSelectType] = useState<any>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-  const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ type: value });
-    setSelectType(value as any);
-  };
 
   const getCustomers = async () => {
     const body = {
@@ -80,11 +61,11 @@ const CreatePasswordUpdateForm = () => {
     }
   };
 
-  // customerId
+  // customerIds
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
+    form.setFieldsValue({ customerIds: value });
+    setSelectedCustomer(value as any[]);
   };
 
   useEffect(() => {
@@ -94,18 +75,17 @@ const CreatePasswordUpdateForm = () => {
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { mac, comment } = data;
+    const { password, comment } = data;
 
     const formData = {
-      customerId: selectedCustomer,
-      mac: mac,
-      action: selectType,
+      customerIds: selectedCustomer,
+      password: password,
       comment: comment
     };
 
     try {
       axios
-        .post("/api/customer/mac-change", formData)
+        .post("/api/customer/password-change", formData)
         .then(res => {
           const { data } = res;
 
@@ -123,7 +103,7 @@ const CreatePasswordUpdateForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace(`/admin/customer-mac-bind-or-remove`);
+              router.replace(`/admin/customer-password-change`);
             });
           }
         })
@@ -159,8 +139,7 @@ const CreatePasswordUpdateForm = () => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              type: "",
-              mac: "",
+              password: "",
               comment: ""
             }}
             style={{ maxWidth: "100%" }}
@@ -181,10 +160,10 @@ const CreatePasswordUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* customerId */}
+                {/* customerIds */}
                 <Form.Item
                   label="Customer"
-                  name="customerId"
+                  name="customerIds"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -199,6 +178,7 @@ const CreatePasswordUpdateForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      mode="multiple"
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer"
                       onChange={handleCustomerChange}
@@ -218,69 +198,30 @@ const CreatePasswordUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* type */}
+                {/* password */}
                 <Form.Item
-                  label="Type"
-                  name="type"
+                  label="password"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  name="password"
                   rules={[
                     {
                       required: true,
-                      message: "Please select Type!"
+                      message: "Please input your password!"
                     }
                   ]}
                 >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Type"
-                      onChange={handleChange}
-                      options={types}
-                      value={selectType}
-                    />
-                  </Space>
+                  <Input
+                    type="text"
+                    placeholder="password"
+                    className={`form - control`}
+                    name="password"
+                    style={{ padding: "6px" }}
+                  />
                 </Form.Item>
               </Col>
-
-              {selectType == "bind" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* mac */}
-                  <Form.Item
-                    label="MAC"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="mac"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your mac!"
-                      }
-                    ]}
-                  >
-                    <Input
-                      type="text"
-                      placeholder="mac"
-                      className={`form - control`}
-                      name="mac"
-                      style={{ padding: "6px" }}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
 
               <Col
                 xs={24}
@@ -300,11 +241,11 @@ const CreatePasswordUpdateForm = () => {
                   }}
                   name="comment"
                   /*  rules={[
-                   {
-                     required: true,
-                     message: "Please input your comment!"
-                   }
-                 ]} */
+                 {
+                   required: true,
+                   message: "Please input your comment!"
+                 }
+               ]} */
                 >
                   <Input.TextArea
                     placeholder="comment"

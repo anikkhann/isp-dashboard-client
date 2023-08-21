@@ -6,20 +6,29 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col,
+  Checkbox
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  mac: string;
   comment: string;
 }
 
 const types = [
   {
-    label: "bind",
-    value: "bind"
+    label: "tag",
+    value: "tag"
   },
   {
     label: "remove",
@@ -39,9 +48,14 @@ const CreateSubZoneManagerUpdateForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [customers, setCustomers] = useState<any>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
 
   const [selectType, setSelectType] = useState<any>(null);
+
+  const [subzones, setSubZones] = useState([]);
+  const [selectedSubZone, setSelectedSubZone] = useState(null);
+
+  const [isRemoveChildTag, setIsRemoveChildTag] = useState(false);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -50,6 +64,10 @@ const CreateSubZoneManagerUpdateForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ type: value });
     setSelectType(value as any);
+  };
+
+  const handleRemoveChildTag = (e: any) => {
+    setIsRemoveChildTag(e.target.checked ? true : false);
   };
 
   const getCustomers = async () => {
@@ -80,32 +98,81 @@ const CreateSubZoneManagerUpdateForm = () => {
     }
   };
 
-  // customerId
+  // customerIds
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
+    form.setFieldsValue({ customerIds: value });
+    setSelectedCustomer(value as any[]);
+  };
+
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "sub_zone",
+        isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setSubZones(list);
+    });
+  }
+
+  const handleZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ subZoneManagerId: value });
+    setSelectedSubZone(value as any);
   };
 
   useEffect(() => {
     getCustomers();
+    getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { mac, comment } = data;
+    const { comment } = data;
 
     const formData = {
-      customerId: selectedCustomer,
-      mac: mac,
+      customerIds: selectedCustomer,
       action: selectType,
+      subsubZoneManagerId: selectedSubZone,
+      isRemoveChildTag: isRemoveChildTag,
       comment: comment
     };
 
     try {
       axios
-        .post("/api/customer/mac-change", formData)
+        .post("/api/customer/sub-zone-manager-assign", formData)
         .then(res => {
           const { data } = res;
 
@@ -160,7 +227,6 @@ const CreateSubZoneManagerUpdateForm = () => {
             form={form}
             initialValues={{
               type: "",
-              mac: "",
               comment: ""
             }}
             style={{ maxWidth: "100%" }}
@@ -181,10 +247,10 @@ const CreateSubZoneManagerUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* customerId */}
+                {/* customerIds */}
                 <Form.Item
                   label="Customer"
-                  name="customerId"
+                  name="customerIds"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -199,6 +265,7 @@ const CreateSubZoneManagerUpdateForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      mode="multiple"
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer"
                       onChange={handleCustomerChange}
@@ -246,7 +313,7 @@ const CreateSubZoneManagerUpdateForm = () => {
                 </Form.Item>
               </Col>
 
-              {selectType == "bind" && (
+              {selectType == "tag" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -256,28 +323,25 @@ const CreateSubZoneManagerUpdateForm = () => {
                   xxl={12}
                   className="gutter-row"
                 >
-                  {/* mac */}
+                  {/* subZoneManagerId */}
                   <Form.Item
-                    label="MAC"
+                    label="Sub Zone Manager"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="mac"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your mac!"
-                      }
-                    ]}
+                    name="subZoneManagerId"
                   >
-                    <Input
-                      type="text"
-                      placeholder="mac"
-                      className={`form - control`}
-                      name="mac"
-                      style={{ padding: "6px" }}
-                    />
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleZoneChange}
+                        options={subzones}
+                        value={selectedSubZone}
+                      />
+                    </Space>
                   </Form.Item>
                 </Col>
               )}
@@ -300,11 +364,11 @@ const CreateSubZoneManagerUpdateForm = () => {
                   }}
                   name="comment"
                   /*  rules={[
-                   {
-                     required: true,
-                     message: "Please input your comment!"
-                   }
-                 ]} */
+                 {
+                   required: true,
+                   message: "Please input your comment!"
+                 }
+               ]} */
                 >
                   <Input.TextArea
                     placeholder="comment"
@@ -315,6 +379,27 @@ const CreateSubZoneManagerUpdateForm = () => {
                 </Form.Item>
               </Col>
             </Row>
+
+            <Space
+              size={[8, 8]}
+              wrap
+              style={{ marginTop: "2rem", marginBottom: "2rem" }}
+            >
+              {/* isRemoveChildTag */}
+              <Form.Item
+                label=""
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Checkbox
+                  onChange={handleRemoveChildTag}
+                  checked={isRemoveChildTag}
+                >
+                  Remove Child Tag
+                </Checkbox>
+              </Form.Item>
+            </Space>
 
             {/* submit */}
             <Row justify="center">

@@ -12,18 +12,29 @@ import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  mac: string;
-  comment: string;
+  day: string;
+  remarks: string;
 }
 
 const types = [
   {
-    label: "bind",
-    value: "bind"
+    label: "Extension",
+    value: "Extension"
   },
   {
-    label: "remove",
-    value: "remove"
+    label: "Deduction",
+    value: "Deduction"
+  }
+];
+// (dropdown - "Conditional", "Adjustment")
+const extensionTypes = [
+  {
+    label: "Conditional",
+    value: "Conditional"
+  },
+  {
+    label: "Adjustment",
+    value: "Adjustment"
   }
 ];
 
@@ -43,6 +54,8 @@ const CreateExpireDateUpdateForm = () => {
 
   const [selectType, setSelectType] = useState<any>(null);
 
+  const [selectExtensionType, setSelectExtensionType] = useState<any>(null);
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -50,6 +63,12 @@ const CreateExpireDateUpdateForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ type: value });
     setSelectType(value as any);
+  };
+
+  const handleExtensionTypeChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ extensionType: value });
+    setSelectExtensionType(value as any);
   };
 
   const getCustomers = async () => {
@@ -94,18 +113,19 @@ const CreateExpireDateUpdateForm = () => {
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { mac, comment } = data;
+    const { day, remarks } = data;
 
     const formData = {
       customerId: selectedCustomer,
-      mac: mac,
-      action: selectType,
-      comment: comment
+      day: day,
+      type: selectType,
+      extensionType: selectExtensionType,
+      remarks: remarks
     };
 
     try {
       axios
-        .post("/api/customer/mac-change", formData)
+        .post("/api/customer/expiration", formData)
         .then(res => {
           const { data } = res;
 
@@ -160,8 +180,8 @@ const CreateExpireDateUpdateForm = () => {
             form={form}
             initialValues={{
               type: "",
-              mac: "",
-              comment: ""
+              day: "",
+              remarks: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -246,7 +266,7 @@ const CreateExpireDateUpdateForm = () => {
                 </Form.Item>
               </Col>
 
-              {selectType == "bind" && (
+              {selectType == "Extension" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -256,31 +276,68 @@ const CreateExpireDateUpdateForm = () => {
                   xxl={12}
                   className="gutter-row"
                 >
-                  {/* mac */}
+                  {/* extensionType */}
                   <Form.Item
-                    label="MAC"
+                    label="extensionType"
+                    name="extensionType"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="mac"
                     rules={[
                       {
                         required: true,
-                        message: "Please input your mac!"
+                        message: "Please select extensionType!"
                       }
                     ]}
                   >
-                    <Input
-                      type="text"
-                      placeholder="mac"
-                      className={`form - control`}
-                      name="mac"
-                      style={{ padding: "6px" }}
-                    />
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select extensionType"
+                        onChange={handleExtensionTypeChange}
+                        options={extensionTypes}
+                        value={selectExtensionType}
+                      />
+                    </Space>
                   </Form.Item>
                 </Col>
               )}
+
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* day */}
+                <Form.Item
+                  label="day"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="day"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your day!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="day"
+                    className={`form - control`}
+                    name="day"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
 
               <Col
                 xs={24}
@@ -291,25 +348,25 @@ const CreateExpireDateUpdateForm = () => {
                 xxl={24}
                 className="gutter-row"
               >
-                {/* comment */}
+                {/* remarks */}
                 <Form.Item
-                  label="comment"
+                  label="remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="comment"
-                  /*  rules={[
-                   {
-                     required: true,
-                     message: "Please input your comment!"
-                   }
-                 ]} */
+                  name="remarks"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your remarks!"
+                    }
+                  ]}
                 >
                   <Input.TextArea
-                    placeholder="comment"
+                    placeholder="remarks"
                     className={`form - control`}
-                    name="comment"
+                    name="remarks"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>

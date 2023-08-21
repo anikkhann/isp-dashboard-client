@@ -12,20 +12,8 @@ import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  mac: string;
   comment: string;
 }
-
-const types = [
-  {
-    label: "bind",
-    value: "bind"
-  },
-  {
-    label: "remove",
-    value: "remove"
-  }
-];
 
 const CreatePackageUpdateForm = () => {
   const [form] = Form.useForm();
@@ -39,17 +27,53 @@ const CreatePackageUpdateForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [customers, setCustomers] = useState<any>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
 
-  const [selectType, setSelectType] = useState<any>(null);
+  const [customerPackages, setCustomerPackages] = useState([]);
+  const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleChange = (value: any) => {
+  const handleCustomerPackageChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ type: value });
-    setSelectType(value as any);
+    form.setFieldsValue({ customerPackageId: value });
+    setSelectedCustomerPackage(value as any);
+  };
+
+  const getCustomerPackages = () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        isActive: true
+      }
+    };
+    axios.post("/api/customer-package/get-list", body).then(res => {
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+      setCustomerPackages(list);
+    });
   };
 
   const getCustomers = async () => {
@@ -80,32 +104,32 @@ const CreatePackageUpdateForm = () => {
     }
   };
 
-  // customerId
+  // customerIds
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
+    form.setFieldsValue({ customerIds: value });
+    setSelectedCustomer(value as any[]);
   };
 
   useEffect(() => {
     getCustomers();
+    getCustomerPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { mac, comment } = data;
+    const { comment } = data;
 
     const formData = {
-      customerId: selectedCustomer,
-      mac: mac,
-      action: selectType,
+      customerIds: selectedCustomer,
+      packageId: selectedCustomerPackage,
       comment: comment
     };
 
     try {
       axios
-        .post("/api/customer/mac-change", formData)
+        .post("/api/customer/package-assign", formData)
         .then(res => {
           const { data } = res;
 
@@ -123,7 +147,7 @@ const CreatePackageUpdateForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace(`/admin/customer-mac-bind-or-remove`);
+              router.replace(`/admin/customer-package-update`);
             });
           }
         })
@@ -160,7 +184,6 @@ const CreatePackageUpdateForm = () => {
             form={form}
             initialValues={{
               type: "",
-              mac: "",
               comment: ""
             }}
             style={{ maxWidth: "100%" }}
@@ -181,10 +204,10 @@ const CreatePackageUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* customerId */}
+                {/* customerIds */}
                 <Form.Item
                   label="Customer"
-                  name="customerId"
+                  name="customerIds"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -199,6 +222,7 @@ const CreatePackageUpdateForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      mode="multiple"
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer"
                       onChange={handleCustomerChange}
@@ -218,10 +242,9 @@ const CreatePackageUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* type */}
+                {/* customerPackageId */}
                 <Form.Item
-                  label="Type"
-                  name="type"
+                  label="Customer Package"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -229,58 +252,23 @@ const CreatePackageUpdateForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please select Type!"
+                      message: "Please select Customer Package!"
                     }
                   ]}
+                  name="customerPackageId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Type"
-                      onChange={handleChange}
-                      options={types}
-                      value={selectType}
+                      placeholder="Please select Customer Package"
+                      onChange={handleCustomerPackageChange}
+                      options={customerPackages}
+                      value={selectedCustomerPackage}
                     />
                   </Space>
                 </Form.Item>
               </Col>
-
-              {selectType == "bind" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* mac */}
-                  <Form.Item
-                    label="MAC"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="mac"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your mac!"
-                      }
-                    ]}
-                  >
-                    <Input
-                      type="text"
-                      placeholder="mac"
-                      className={`form - control`}
-                      name="mac"
-                      style={{ padding: "6px" }}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
 
               <Col
                 xs={24}
@@ -300,11 +288,11 @@ const CreatePackageUpdateForm = () => {
                   }}
                   name="comment"
                   /*  rules={[
-                   {
-                     required: true,
-                     message: "Please input your comment!"
-                   }
-                 ]} */
+                 {
+                   required: true,
+                   message: "Please input your comment!"
+                 }
+               ]} */
                 >
                   <Input.TextArea
                     placeholder="comment"

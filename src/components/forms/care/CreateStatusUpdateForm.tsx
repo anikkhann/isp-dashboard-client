@@ -6,26 +6,24 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col,
+  Checkbox
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  mac: string;
   comment: string;
 }
-
-const types = [
-  {
-    label: "bind",
-    value: "bind"
-  },
-  {
-    label: "remove",
-    value: "remove"
-  }
-];
 
 const CreateStatusUpdateForm = () => {
   const [form] = Form.useForm();
@@ -39,17 +37,15 @@ const CreateStatusUpdateForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [customers, setCustomers] = useState<any>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
 
-  const [selectType, setSelectType] = useState<any>(null);
+  const [isActive, setIsActive] = useState(true);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ type: value });
-    setSelectType(value as any);
+  const handleActive = (e: any) => {
+    setIsActive(e.target.checked ? true : false);
   };
 
   const getCustomers = async () => {
@@ -80,11 +76,11 @@ const CreateStatusUpdateForm = () => {
     }
   };
 
-  // customerId
+  // customerIds
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
+    form.setFieldsValue({ customerIds: value });
+    setSelectedCustomer(value as any[]);
   };
 
   useEffect(() => {
@@ -94,18 +90,17 @@ const CreateStatusUpdateForm = () => {
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { mac, comment } = data;
+    const { comment } = data;
 
     const formData = {
-      customerId: selectedCustomer,
-      mac: mac,
-      action: selectType,
+      customerIds: selectedCustomer,
+      status: isActive,
       comment: comment
     };
 
     try {
       axios
-        .post("/api/customer/mac-change", formData)
+        .post("/api/customer/package-status-change", formData)
         .then(res => {
           const { data } = res;
 
@@ -160,7 +155,6 @@ const CreateStatusUpdateForm = () => {
             form={form}
             initialValues={{
               type: "",
-              mac: "",
               comment: ""
             }}
             style={{ maxWidth: "100%" }}
@@ -181,10 +175,10 @@ const CreateStatusUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* customerId */}
+                {/* customerIds */}
                 <Form.Item
                   label="Customer"
-                  name="customerId"
+                  name="customerIds"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -199,6 +193,7 @@ const CreateStatusUpdateForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      mode="multiple"
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer"
                       onChange={handleCustomerChange}
@@ -208,79 +203,6 @@ const CreateStatusUpdateForm = () => {
                   </Space>
                 </Form.Item>
               </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* type */}
-                <Form.Item
-                  label="Type"
-                  name="type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Type!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Type"
-                      onChange={handleChange}
-                      options={types}
-                      value={selectType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              {selectType == "bind" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* mac */}
-                  <Form.Item
-                    label="MAC"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="mac"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your mac!"
-                      }
-                    ]}
-                  >
-                    <Input
-                      type="text"
-                      placeholder="mac"
-                      className={`form - control`}
-                      name="mac"
-                      style={{ padding: "6px" }}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
 
               <Col
                 xs={24}
@@ -300,11 +222,11 @@ const CreateStatusUpdateForm = () => {
                   }}
                   name="comment"
                   /*  rules={[
-                   {
-                     required: true,
-                     message: "Please input your comment!"
-                   }
-                 ]} */
+                 {
+                   required: true,
+                   message: "Please input your comment!"
+                 }
+               ]} */
                 >
                   <Input.TextArea
                     placeholder="comment"
@@ -315,6 +237,24 @@ const CreateStatusUpdateForm = () => {
                 </Form.Item>
               </Col>
             </Row>
+
+            <Space
+              size={[8, 8]}
+              wrap
+              style={{ marginTop: "2rem", marginBottom: "2rem" }}
+            >
+              {/* status */}
+              <Form.Item
+                label=""
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Checkbox onChange={handleActive} checked={isActive}>
+                  Status
+                </Checkbox>
+              </Form.Item>
+            </Space>
 
             {/* submit */}
             <Row justify="center">
