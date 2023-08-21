@@ -415,7 +415,7 @@ const SearchZonPopList = () => {
           extra={
             <>
               <Can I="customerCare.list">
-                <Link href="/admin/customer-top-up/create">
+                <Link href="/admin/customer-zone-or-pop-update/create">
                   <Button
                     type="primary"
                     icon={<PlusSquareOutlined />}

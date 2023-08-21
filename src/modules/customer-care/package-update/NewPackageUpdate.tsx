@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import CreateCustomerTopUpForm from "@/components/forms/care/CreateCustomerTopUpForm";
+import CreatePackageUpdateForm from "@/components/forms/care/CreatePackageUpdateForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -23,7 +23,7 @@ const NewPackageUpdate = () => {
               title: <Link href="/admin/customer-care">Customer Care</Link>
             },
             {
-              title: "Top Up Customer Care"
+              title: "Package Update"
             }
           ]}
         />
@@ -45,7 +45,7 @@ const NewPackageUpdate = () => {
               color: "#F15F22"
             }}
           >
-            Top Up Customer Care
+            Package Update
           </h1>
         </div>
 
@@ -63,7 +63,7 @@ const NewPackageUpdate = () => {
             border: "1px solid #F15F22"
           }}
         >
-          <CreateCustomerTopUpForm />
+          <CreatePackageUpdateForm />
         </Card>
       </AppRowContainer>
     </>

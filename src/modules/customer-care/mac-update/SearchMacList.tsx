@@ -373,7 +373,7 @@ const SearchMacList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "MAC Update"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchMacList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            MAC Update
           </h1>
         </div>
 

@@ -23,7 +23,7 @@ const NewPasswordChange = () => {
               title: <Link href="/admin/customer-care">Customer Care</Link>
             },
             {
-              title: "Top Up Customer Care"
+              title: "Password Change"
             }
           ]}
         />
@@ -45,7 +45,7 @@ const NewPasswordChange = () => {
               color: "#F15F22"
             }}
           >
-            Top Up Customer Care
+            Password Change
           </h1>
         </div>
 

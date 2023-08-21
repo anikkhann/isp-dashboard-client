@@ -373,7 +373,7 @@ const SearchZoneList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Zone Manager Update"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchZoneList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Zone Manager Update
           </h1>
         </div>
 

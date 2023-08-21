@@ -373,7 +373,7 @@ const SearchPasswordChangeList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Password Change"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchPasswordChangeList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Password Change
           </h1>
         </div>
 

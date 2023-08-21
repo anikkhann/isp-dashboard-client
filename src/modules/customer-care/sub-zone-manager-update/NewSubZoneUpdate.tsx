@@ -23,7 +23,7 @@ const NewSubZoneUpdate = () => {
               title: <Link href="/admin/customer-care">Customer Care</Link>
             },
             {
-              title: "Top Up Customer Care"
+              title: "Sub Zone Update"
             }
           ]}
         />
@@ -45,7 +45,7 @@ const NewSubZoneUpdate = () => {
               color: "#F15F22"
             }}
           >
-            Top Up Customer Care
+            Sub Zone Update
           </h1>
         </div>
 

@@ -373,7 +373,7 @@ const SearchExpireDateUpdateList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Expire Date Update List"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchExpireDateUpdateList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Expire Date Update List
           </h1>
         </div>
 

@@ -112,6 +112,9 @@ const CustomerOnboardingReqList: React.FC = () => {
     const zoneStatus =
       authUser && authUser.userType == "client" ? `Approved` : null;
 
+    const clientStatus =
+      authUser && authUser.userType == "client" ? `Pending` : null;
+
     const body = {
       meta: {
         limit: limit,
@@ -127,6 +130,7 @@ const CustomerOnboardingReqList: React.FC = () => {
         // clientStatus: "Pending"
         // zoneStatus : "Pending"
         zoneStatus,
+        clientStatus,
         customerType: {
           id: customerTypeParam
         },

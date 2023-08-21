@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import CreateCustomerTopUpForm from "@/components/forms/care/CreateCustomerTopUpForm";
+import CreateZonePopUpdateForm from "@/components/forms/care/CreateZonePopUpdateForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -23,7 +23,7 @@ const NewZonePopUpdate = () => {
               title: <Link href="/admin/customer-care">Customer Care</Link>
             },
             {
-              title: "Top Up Customer Care"
+              title: "Zone POP Update"
             }
           ]}
         />
@@ -45,7 +45,7 @@ const NewZonePopUpdate = () => {
               color: "#F15F22"
             }}
           >
-            Top Up Customer Care
+            Zone POP Update
           </h1>
         </div>
 
@@ -63,7 +63,7 @@ const NewZonePopUpdate = () => {
             border: "1px solid #F15F22"
           }}
         >
-          <CreateCustomerTopUpForm />
+          <CreateZonePopUpdateForm />
         </Card>
       </AppRowContainer>
     </>

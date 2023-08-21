@@ -373,7 +373,7 @@ const SearchPackageList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Package Update"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchPackageList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Package Update
           </h1>
         </div>
 

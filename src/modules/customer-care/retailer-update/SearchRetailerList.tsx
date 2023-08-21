@@ -373,7 +373,7 @@ const SearchRetailerList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Retailer Update"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchRetailerList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Retailer Update
           </h1>
         </div>
 

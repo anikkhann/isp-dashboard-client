@@ -373,7 +373,7 @@ const SearchStatusUpdateList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Status Update"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchStatusUpdateList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Status Update
           </h1>
         </div>
 

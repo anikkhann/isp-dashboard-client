@@ -23,7 +23,7 @@ const NewExpireDateUpdate = () => {
               title: <Link href="/admin/customer-care">Customer Care</Link>
             },
             {
-              title: "Top Up Customer Care"
+              title: "Expire Date Update"
             }
           ]}
         />
@@ -45,7 +45,7 @@ const NewExpireDateUpdate = () => {
               color: "#F15F22"
             }}
           >
-            Top Up Customer Care
+            Expire Date Update
           </h1>
         </div>
 

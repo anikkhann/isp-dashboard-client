@@ -373,7 +373,7 @@ const SearchSubZoneList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Sub Zone Manager Update"
             }
           ]}
         />
@@ -395,7 +395,7 @@ const SearchSubZoneList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Sub Zone Manager Update
           </h1>
         </div>
 

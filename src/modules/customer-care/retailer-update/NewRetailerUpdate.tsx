@@ -22,7 +22,7 @@ const NewRetailerUpdate = () => {
               title: <Link href="/admin/customer-care">Customer Care</Link>
             },
             {
-              title: "Top Up Customer Care"
+              title: "Retailer Update"
             }
           ]}
         />
@@ -44,7 +44,7 @@ const NewRetailerUpdate = () => {
               color: "#F15F22"
             }}
           >
-            Top Up Customer Care
+            Retailer Update
           </h1>
         </div>
 
