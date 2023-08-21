@@ -498,7 +498,10 @@ const EditCustomerForm = ({ item }: PropData) => {
       },
       body: {
         partnerType: "sub_zone",
-        zone: { id: selectedZoneId },
+        zoneManager: { id: selectedZoneId },
+        client: {
+          id: authUser?.partnerId
+        },
         isActive: true
       }
     };
@@ -1120,6 +1123,10 @@ const EditCustomerForm = ({ item }: PropData) => {
       getSubZoneManagers(selectedZone);
     }
   }, [selectedZone]);
+
+  useEffect(() => {
+    getSubZoneManagers(null);
+  }, []);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);

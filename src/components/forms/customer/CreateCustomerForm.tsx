@@ -481,7 +481,10 @@ const CreateCustomerForm = () => {
       },
       body: {
         partnerType: "sub_zone",
-        zone: { id: selectedZoneId },
+        zoneManager: { id: selectedZoneId },
+        client: {
+          id: authUser?.partnerId
+        },
         isActive: true
       }
     };
@@ -971,11 +974,17 @@ const CreateCustomerForm = () => {
       getDistributionPops(selectedDistributionZone);
     }
   }, [selectedDistributionZone]);
+
   useEffect(() => {
     if (selectedZone) {
       getSubZoneManagers(selectedZone);
     }
   }, [selectedZone]);
+
+  useEffect(() => {
+    getSubZoneManagers(null);
+  }, []);
+
   useEffect(() => {
     if (selectedDivision) {
       getDistricts(selectedDivision);
