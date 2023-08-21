@@ -443,6 +443,10 @@ const SearchZonPopList = () => {
                   onChange={handleUsernameChange}
                   options={customers}
                   value={selectedCustomer}
+                  filterOption={(input, option) =>
+                    option?.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
                 />
               </Space>
 
