@@ -293,7 +293,7 @@ const CreateMacUpdateForm = () => {
               >
                 {/* comment */}
                 <Form.Item
-                  label="comment"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -307,7 +307,7 @@ const CreateMacUpdateForm = () => {
                  ]} */
                 >
                   <Input.TextArea
-                    placeholder="comment"
+                    placeholder="Remarks"
                     className={`form - control`}
                     name="comment"
                     style={{ padding: "6px" }}

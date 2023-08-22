@@ -336,6 +336,12 @@ const CreateZoneManagerUpdateForm = () => {
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Zone Manager!"
+                      }
+                    ]}
                     name="zoneManagerId"
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
@@ -363,7 +369,7 @@ const CreateZoneManagerUpdateForm = () => {
               >
                 {/* comment */}
                 <Form.Item
-                  label="comment"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -377,7 +383,7 @@ const CreateZoneManagerUpdateForm = () => {
                ]} */
                 >
                   <Input.TextArea
-                    placeholder="comment"
+                    placeholder="Remarks"
                     className={`form - control`}
                     name="comment"
                     style={{ padding: "6px" }}

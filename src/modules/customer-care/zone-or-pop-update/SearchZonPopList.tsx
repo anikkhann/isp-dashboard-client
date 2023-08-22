@@ -245,6 +245,17 @@ const SearchZonPopList = () => {
       width: "10%",
       align: "center" as AlignType
     },
+    {
+      title: "Customer",
+      dataIndex: "customer",
+      sorter: false,
+      render: (customer: any) => {
+        if (!customer) return "-";
+        return <>{customer?.username}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     // subject
     {
       title: "Subject",
@@ -373,7 +384,7 @@ const SearchZonPopList = () => {
               )
             },
             {
-              title: "Customer Top Up List"
+              title: "Zone POP Update"
             }
           ]}
         />
@@ -395,7 +406,7 @@ const SearchZonPopList = () => {
               color: "#F15F22"
             }}
           >
-            Customer Top Up Activity Log
+            Zone POP Update
           </h1>
         </div>
 
@@ -422,7 +433,7 @@ const SearchZonPopList = () => {
                     size={"middle"}
                     style={{ marginLeft: "1rem" }}
                   >
-                    New Top Up
+                    Zone POP Update
                   </Button>
                 </Link>
               </Can>

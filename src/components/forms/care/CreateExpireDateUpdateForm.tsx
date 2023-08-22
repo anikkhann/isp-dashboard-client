@@ -316,7 +316,7 @@ const CreateExpireDateUpdateForm = () => {
               >
                 {/* day */}
                 <Form.Item
-                  label="day"
+                  label="Day"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -350,7 +350,7 @@ const CreateExpireDateUpdateForm = () => {
               >
                 {/* remarks */}
                 <Form.Item
-                  label="remarks"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

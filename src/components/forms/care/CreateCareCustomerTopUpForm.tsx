@@ -14,6 +14,7 @@ import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   amount: string;
+  type: string;
   remarks: string;
 }
 
@@ -23,12 +24,12 @@ interface PropData {
 
 const types = [
   {
-    label: "debit",
-    value: "debit"
-  },
-  {
     label: "credit",
     value: "credit"
+  },
+  {
+    label: "debit",
+    value: "debit"
   }
 ];
 
@@ -43,7 +44,7 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [selectType, setSelectType] = useState<any>(null);
+  const [selectType, setSelectType] = useState<any>("credit");
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -222,7 +223,7 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
               >
                 {/* remarks */}
                 <Form.Item
-                  label="remarks"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

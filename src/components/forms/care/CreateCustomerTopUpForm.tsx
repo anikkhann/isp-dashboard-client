@@ -41,7 +41,7 @@ const CreateCustomerTopUpForm = () => {
   const [customers, setCustomers] = useState<any>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
-  const [selectType, setSelectType] = useState<any>(null);
+  const [selectType, setSelectType] = useState<any>("credit");
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -291,7 +291,7 @@ const CreateCustomerTopUpForm = () => {
               >
                 {/* remarks */}
                 <Form.Item
-                  label="remarks"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

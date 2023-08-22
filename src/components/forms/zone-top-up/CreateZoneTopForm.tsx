@@ -36,7 +36,7 @@ const CreateZoneTopForm = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
-  const [selectType, setSelectType] = useState<any>(null);
+  const [selectType, setSelectType] = useState<any>("credit");
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);

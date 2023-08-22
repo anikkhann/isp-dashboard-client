@@ -325,18 +325,24 @@ const CreateRetailerUpdateForm = () => {
                 >
                   {/* retailerId */}
                   <Form.Item
-                    label="Zone Manager"
+                    label="Retailer"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Retailer!"
+                      }
+                    ]}
                     name="retailerId"
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select retailer"
                         onChange={handleZoneChange}
                         options={zones}
                         value={selectedRetailer}
@@ -357,7 +363,7 @@ const CreateRetailerUpdateForm = () => {
               >
                 {/* comment */}
                 <Form.Item
-                  label="comment"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -371,7 +377,7 @@ const CreateRetailerUpdateForm = () => {
                ]} */
                 >
                   <Input.TextArea
-                    placeholder="comment"
+                    placeholder="Remarks"
                     className={`form - control`}
                     name="comment"
                     style={{ padding: "6px" }}
@@ -389,7 +395,8 @@ const CreateRetailerUpdateForm = () => {
               <Form.Item
                 label=""
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  visibility: "hidden"
                 }}
               >
                 <Checkbox

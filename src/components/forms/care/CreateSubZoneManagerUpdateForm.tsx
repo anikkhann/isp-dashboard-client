@@ -165,7 +165,7 @@ const CreateSubZoneManagerUpdateForm = () => {
     const formData = {
       customerIds: selectedCustomer,
       action: selectType,
-      subsubZoneManagerId: selectedSubZone,
+      subZoneManagerId: selectedSubZone,
       isRemoveChildTag: isRemoveChildTag,
       comment: comment
     };
@@ -330,6 +330,12 @@ const CreateSubZoneManagerUpdateForm = () => {
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Sub Zone Manager!"
+                      }
+                    ]}
                     name="subZoneManagerId"
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
@@ -357,7 +363,7 @@ const CreateSubZoneManagerUpdateForm = () => {
               >
                 {/* comment */}
                 <Form.Item
-                  label="comment"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -371,7 +377,7 @@ const CreateSubZoneManagerUpdateForm = () => {
                ]} */
                 >
                   <Input.TextArea
-                    placeholder="comment"
+                    placeholder="Remarks"
                     className={`form - control`}
                     name="comment"
                     style={{ padding: "6px" }}

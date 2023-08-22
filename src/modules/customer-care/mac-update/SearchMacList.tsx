@@ -245,6 +245,17 @@ const SearchMacList = () => {
       width: "10%",
       align: "center" as AlignType
     },
+    {
+      title: "Customer",
+      dataIndex: "customer",
+      sorter: false,
+      render: (customer: any) => {
+        if (!customer) return "-";
+        return <>{customer?.username}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     // subject
     {
       title: "Subject",
@@ -422,7 +433,7 @@ const SearchMacList = () => {
                     size={"middle"}
                     style={{ marginLeft: "1rem" }}
                   >
-                    New Top Up
+                    Update MAC
                   </Button>
                 </Link>
               </Can>

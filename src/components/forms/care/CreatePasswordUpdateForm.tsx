@@ -200,7 +200,7 @@ const CreatePasswordUpdateForm = () => {
               >
                 {/* password */}
                 <Form.Item
-                  label="password"
+                  label="Password"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -215,7 +215,7 @@ const CreatePasswordUpdateForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="password"
+                    placeholder="Password"
                     className={`form - control`}
                     name="password"
                     style={{ padding: "6px" }}
@@ -234,7 +234,7 @@ const CreatePasswordUpdateForm = () => {
               >
                 {/* comment */}
                 <Form.Item
-                  label="comment"
+                  label="Remarks"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -248,7 +248,7 @@ const CreatePasswordUpdateForm = () => {
                ]} */
                 >
                   <Input.TextArea
-                    placeholder="comment"
+                    placeholder="Remarks"
                     className={`form - control`}
                     name="comment"
                     style={{ padding: "6px" }}
