@@ -241,6 +241,17 @@ const CreateMacUpdateForm = () => {
                       onChange={handleChange}
                       options={types}
                       value={selectType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>

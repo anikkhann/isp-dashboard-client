@@ -271,6 +271,17 @@ const CreateRetailerUpdateForm = () => {
                       onChange={handleCustomerChange}
                       options={customers}
                       value={selectedCustomer}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -308,6 +319,17 @@ const CreateRetailerUpdateForm = () => {
                       onChange={handleChange}
                       options={types}
                       value={selectType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -346,6 +368,13 @@ const CreateRetailerUpdateForm = () => {
                         onChange={handleZoneChange}
                         options={zones}
                         value={selectedRetailer}
+                        showSearch
+                        // filterOption={(input, option) => {
+                        //   if (typeof option?.label === 'string') {
+                        //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                        //   }
+                        //   return false;
+                        // }}
                       />
                     </Space>
                   </Form.Item>

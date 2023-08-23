@@ -429,6 +429,7 @@ const CreateDeviceForm = () => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
+              {/* deviceTypeList */}
               <Col
                 xs={24}
                 sm={12}
@@ -438,7 +439,6 @@ const CreateDeviceForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
-                {/* deviceTypeList */}
                 <Form.Item
                   label="Device Type"
                   style={{
@@ -465,7 +465,7 @@ const CreateDeviceForm = () => {
                   </Space>
                 </Form.Item>
               </Col>
-
+              {/* secret */}
               {selectedDeviceType == "NAS" && (
                 <Col
                   xs={24}
@@ -476,7 +476,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* secret */}
                   <Form.Item
                     name="secret"
                     label="Secret"
@@ -501,6 +500,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* incomingPort */}
               {selectedDeviceType == "NAS" && (
                 <Col
                   xs={24}
@@ -511,7 +511,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* incomingPort */}
                   <Form.Item
                     name="incomingPort"
                     label="Incoming Port"
@@ -536,6 +535,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* oltTypesList */}
               {selectedDeviceType == "OLT" && (
                 <Col
                   xs={24}
@@ -546,7 +546,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* oltTypesList */}
                   <Form.Item
                     label="OLT Type"
                     style={{
@@ -577,6 +576,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* totalEitherPort */}
               {selectedDeviceType == "OLT" && (
                 <Col
                   xs={24}
@@ -587,7 +587,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* totalEitherPort */}
                   <Form.Item
                     name="totalEitherPort"
                     label="Total Ether Port"
@@ -612,6 +611,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* totalPonPort */}
               {selectedDeviceType == "OLT" && (
                 <Col
                   xs={24}
@@ -622,7 +622,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* totalPonPort */}
                   <Form.Item
                     name="totalPonPort"
                     label="Total PON Port"
@@ -723,6 +722,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* distributionPopId */}
               {selectedDeviceType == "ONU" && (
                 <Col
                   xs={24}
@@ -733,7 +733,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* distributionPopId */}
                   <Form.Item
                     label="Distribution Pop"
                     style={{
@@ -835,6 +834,187 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* monitoringTypesList */}
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Monitoring Type"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="monitoringType"
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please select Monitoring Type!"
+                    //   }
+                    // ]}
+                  >
+                    <Space
+                      style={{ width: "100%", textAlign: "start" }}
+                      direction="vertical"
+                    >
+                      <Select
+                        allowClear
+                        style={{ width: "100%" }}
+                        placeholder="Please select Monitoring Type"
+                        onChange={handleMonuitoringTypeChange}
+                        options={monitoringTypesList}
+                        value={selectedMonitoringType}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+              {/* location */}
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    name="location"
+                    label="Location"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please input your Location!"
+                    //   }
+                    // ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Location"
+                      className={`form-control`}
+                      name="location"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+              {/* ip */}
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    name="ip"
+                    label="IP"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your IP!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="IP"
+                      className={`form-control`}
+                      name="ip"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+              {/* latitude */}
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    name="latitude"
+                    label="Latitude"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please input your Latitude!"
+                    //   }
+                    // ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Latitude"
+                      className={`form-control`}
+                      name="latitude"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+              {/* longitude */}
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    name="longitude"
+                    label="Longitude"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please input your Longitude!"
+                    //   }
+                    // ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Longitude"
+                      className={`form-control`}
+                      name="longitude"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
               {/* totalPort */}
               {selectedDeviceType == "Router" && (
                 <Col
@@ -870,6 +1050,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* totalPort */}
               {selectedDeviceType == "Switch" && (
                 <Col
                   xs={24}
@@ -904,46 +1085,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* monitoringTypesList */}
-                <Form.Item
-                  label="Monitoring Type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="monitoringType"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please select Monitoring Type!"
-                  //   }
-                  // ]}
-                >
-                  <Space
-                    style={{ width: "100%", textAlign: "start" }}
-                    direction="vertical"
-                  >
-                    <Select
-                      allowClear
-                      style={{ width: "100%" }}
-                      placeholder="Please select Monitoring Type"
-                      onChange={handleMonuitoringTypeChange}
-                      options={monitoringTypesList}
-                      value={selectedMonitoringType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
+              {/* apiPort */}
               {selectedMonitoringType == "API" && (
                 <Col
                   xs={24}
@@ -954,7 +1096,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* apiPort */}
                   <Form.Item
                     name="apiPort"
                     label="Api Port"
@@ -979,6 +1120,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* apiUsername */}
               {selectedMonitoringType == "API" && (
                 <Col
                   xs={24}
@@ -989,7 +1131,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* apiUsername */}
                   <Form.Item
                     name="apiUsername"
                     label="Api Username"
@@ -1014,6 +1155,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* apiPassword */}
               {selectedMonitoringType == "API" && (
                 <Col
                   xs={24}
@@ -1024,7 +1166,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* apiPassword */}
                   <Form.Item
                     name="apiPassword"
                     label="Api Password"
@@ -1049,7 +1190,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
-
+              {/* telnetLoginName */}
               {selectedMonitoringType == "Telnet" && (
                 <Col
                   xs={24}
@@ -1060,7 +1201,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* telnetLoginName */}
                   <Form.Item
                     name="telnetLoginName"
                     label="Telnet Login Name"
@@ -1085,6 +1225,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* telnetLoginPassword */}
               {selectedMonitoringType == "Telnet" && (
                 <Col
                   xs={24}
@@ -1095,7 +1236,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* telnetLoginPassword */}
                   <Form.Item
                     name="telnetLoginPassword"
                     label="Telnet Login Password"
@@ -1120,6 +1260,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* telnetPrivilegedPassword */}
               {selectedMonitoringType == "Telnet" && (
                 <Col
                   xs={24}
@@ -1130,7 +1271,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* telnetPrivilegedPassword */}
                   <Form.Item
                     name="telnetPrivilegedPassword"
                     label="Telnet Privileged Password"
@@ -1155,6 +1295,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* telnetPonPortNumber */}
               {selectedMonitoringType == "Telnet" && (
                 <Col
                   xs={24}
@@ -1165,7 +1306,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* telnetPonPortNumber */}
                   <Form.Item
                     name="telnetPonPortNumber"
                     label="Telnet Port Number"
@@ -1190,7 +1330,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
-
+              {/* snmpPortNo */}
               {selectedMonitoringType == "SNMP" && (
                 <Col
                   xs={24}
@@ -1201,7 +1341,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* snmpPortNo */}
                   <Form.Item
                     name="snmpPortNo"
                     label="SNMP Port No"
@@ -1227,6 +1366,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* snmpVersion */}
               {selectedMonitoringType == "SNMP" && (
                 <Col
                   xs={24}
@@ -1237,7 +1377,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* snmpVersion */}
                   <Form.Item
                     name="snmpVersion"
                     label="Snmp Version"
@@ -1263,6 +1402,7 @@ const CreateDeviceForm = () => {
                   </Form.Item>
                 </Col>
               )}
+              {/* snmpCommunity */}
               {selectedMonitoringType == "SNMP" && (
                 <Col
                   xs={24}
@@ -1273,7 +1413,6 @@ const CreateDeviceForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* snmpCommunity */}
                   <Form.Item
                     name="snmpCommunity"
                     label="Snmp Community"
@@ -1300,138 +1439,6 @@ const CreateDeviceForm = () => {
                 </Col>
               )}
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* location */}
-                <Form.Item
-                  name="location"
-                  label="Location"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Location!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Location"
-                    className={`form-control`}
-                    name="location"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* ip */}
-                <Form.Item
-                  name="ip"
-                  label="IP"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your IP!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="IP"
-                    className={`form-control`}
-                    name="ip"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* latitude */}
-                <Form.Item
-                  name="latitude"
-                  label="Latitude"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Latitude!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Latitude"
-                    className={`form-control`}
-                    name="latitude"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* longitude */}
-                <Form.Item
-                  name="longitude"
-                  label="Longitude"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Longitude!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Longitude"
-                    className={`form-control`}
-                    name="longitude"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
               <Col
                 xs={24}
                 sm={12}

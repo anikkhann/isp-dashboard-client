@@ -224,6 +224,17 @@ const CreateExpireDateUpdateForm = () => {
                       onChange={handleCustomerChange}
                       options={customers}
                       value={selectedCustomer}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -261,6 +272,17 @@ const CreateExpireDateUpdateForm = () => {
                       onChange={handleChange}
                       options={types}
                       value={selectType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -278,7 +300,7 @@ const CreateExpireDateUpdateForm = () => {
                 >
                   {/* extensionType */}
                   <Form.Item
-                    label="extensionType"
+                    label="Extension Type"
                     name="extensionType"
                     style={{
                       marginBottom: 0,
@@ -295,10 +317,21 @@ const CreateExpireDateUpdateForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select extensionType"
+                        placeholder="Please select Extension Type"
                         onChange={handleExtensionTypeChange}
                         options={extensionTypes}
                         value={selectExtensionType}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
                       />
                     </Space>
                   </Form.Item>

@@ -60,8 +60,8 @@ const SearchZonPopList = () => {
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
 
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -444,7 +444,9 @@ const SearchZonPopList = () => {
             <Space style={{ marginBottom: 16 }}>
               <Space style={{ width: "100%" }} direction="vertical">
                 <span>
-                  <b>Username</b>
+                  <b>
+                    Username <span style={{ color: "red" }}>*</span>
+                  </b>
                 </span>
                 <Select
                   showSearch
@@ -482,6 +484,14 @@ const SearchZonPopList = () => {
                   color: "#ffffff"
                 }}
                 onClick={() => {
+                  if (!selectedCustomer) {
+                    MySwal.fire({
+                      title: "Error",
+                      text: "Select Username",
+                      icon: "error"
+                    });
+                    return;
+                  }
                   handleSubmit(
                     page,
                     limit,

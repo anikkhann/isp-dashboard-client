@@ -328,6 +328,13 @@ const CreateZonePopUpdateForm = () => {
                       onChange={handleDistributionZoneChange}
                       options={distributionZones}
                       value={selectedDistributionZone}
+                      showSearch
+                      // filterOption={(input, option) => {
+                      //   if (typeof option?.label === 'string') {
+                      //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                      //   }
+                      //   return false;
+                      // }}
                     />
                   </Space>
                 </Form.Item>
@@ -364,6 +371,13 @@ const CreateZonePopUpdateForm = () => {
                       onChange={handleDistributionPopChange}
                       options={distributionPops}
                       value={selectedDistributionPop}
+                      showSearch
+                      // filterOption={(input, option) => {
+                      //   if (typeof option?.label === 'string') {
+                      //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                      //   }
+                      //   return false;
+                      // }}
                     />
                   </Space>
                 </Form.Item>

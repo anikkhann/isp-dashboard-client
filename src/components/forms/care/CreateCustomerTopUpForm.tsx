@@ -89,11 +89,14 @@ const CreateCustomerTopUpForm = () => {
 
   useEffect(() => {
     getCustomers();
+    form.setFieldsValue({ type: selectType });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
+    // return false;
     const { amount, remarks } = data;
 
     const formData = {
@@ -204,6 +207,17 @@ const CreateCustomerTopUpForm = () => {
                       onChange={handleCustomerChange}
                       options={customers}
                       value={selectedCustomer}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -241,6 +255,17 @@ const CreateCustomerTopUpForm = () => {
                       onChange={handleChange}
                       options={types}
                       value={selectType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>

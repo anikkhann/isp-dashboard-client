@@ -60,8 +60,8 @@ const SearchTopUpList = () => {
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
 
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -183,6 +183,7 @@ const SearchTopUpList = () => {
         setData(data.body);
         setTableParams({
           pagination: {
+            total: data.meta.totalRecords,
             pageSize: data.meta.limit,
             current: (data.meta.page as number) + 1,
             pageSizeOptions: ["10", "20", "30", "40", "50"]
@@ -444,16 +445,18 @@ const SearchTopUpList = () => {
             <Space style={{ marginBottom: 16 }}>
               <Space style={{ width: "100%" }} direction="vertical">
                 <span>
-                  <b>Username</b>
+                  <b>
+                    Username <span style={{ color: "red" }}>*</span>{" "}
+                  </b>
                 </span>
                 <Select
-                  showSearch
                   allowClear
                   style={{ width: "100%", textAlign: "start" }}
                   placeholder="Please select"
                   onChange={handleUsernameChange}
                   options={customers}
                   value={selectedCustomer}
+                  showSearch
                   filterOption={(input, option) =>
                     option?.label.toLowerCase().indexOf(input.toLowerCase()) >=
                     0
@@ -482,6 +485,15 @@ const SearchTopUpList = () => {
                   color: "#ffffff"
                 }}
                 onClick={() => {
+                  if (!selectedCustomer) {
+                    MySwal.fire({
+                      title: "Error",
+                      text: "Select Username",
+                      icon: "error"
+                    });
+                    return;
+                  }
+
                   handleSubmit(
                     page,
                     limit,

@@ -100,6 +100,7 @@ const CreateZoneTopForm = () => {
 
   useEffect(() => {
     getZoneList();
+    form.setFieldsValue({ type: selectType });
   }, []);
 
   const onSubmit = (data: FormData) => {

@@ -99,6 +99,7 @@ const CreateAgentTopForm = () => {
 
   useEffect(() => {
     getagentList();
+    form.setFieldsValue({ type: selectType });
   }, []);
 
   const onSubmit = (data: FormData) => {
