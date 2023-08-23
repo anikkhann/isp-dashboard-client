@@ -81,7 +81,7 @@ const CreateSubZoneManagerUpdateForm = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
 

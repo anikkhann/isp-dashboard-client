@@ -92,7 +92,7 @@ const SearchStatusUpdateList = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
     const { data } = await axios.post("/api/customer/get-list", body);

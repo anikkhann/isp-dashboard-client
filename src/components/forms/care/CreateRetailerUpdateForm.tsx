@@ -81,7 +81,7 @@ const CreateRetailerUpdateForm = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
 

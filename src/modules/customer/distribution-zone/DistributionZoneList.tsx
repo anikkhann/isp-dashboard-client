@@ -59,7 +59,7 @@ const DistributionZoneList: React.FC = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
 

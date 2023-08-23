@@ -74,7 +74,7 @@ const SearchCustomer = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
     const { data } = await axios.post("/api/customer/get-list", body);
@@ -503,6 +503,11 @@ const SearchCustomer = () => {
                   onChange={handleCustomerIDChange}
                   options={customerIds}
                   value={selectedCustomerId}
+                  showSearch
+                  filterOption={(input, option) =>
+                    option?.label.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
                 />
               </Space>
 

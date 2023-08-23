@@ -1008,7 +1008,7 @@ const EditCustomerForm = ({ item }: PropData) => {
     });
   }
 
-  function getDistributionPops() {
+  function getDistributionPops(selectedDistributionZone: string) {
     const body = {
       meta: {
         sort: [
@@ -1019,6 +1019,7 @@ const EditCustomerForm = ({ item }: PropData) => {
         ]
       },
       body: {
+        zone: { id: selectedDistributionZone },
         isActive: true
       }
     };
@@ -1087,7 +1088,7 @@ const EditCustomerForm = ({ item }: PropData) => {
     getDivisions();
     getCustomerPackages();
     getDistributionZones();
-    getDistributionPops();
+    // getDistributionPops();
     getCustomerTypes();
     getCustomers();
     getUsers();
@@ -1099,7 +1100,11 @@ const EditCustomerForm = ({ item }: PropData) => {
     getOnuDevice();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  useEffect(() => {
+    if (selectedDistributionZone) {
+      getDistributionPops(selectedDistributionZone);
+    }
+  }, [selectedDistributionZone]);
   useEffect(() => {
     if (selectedDivision) {
       getDistricts(selectedDivision);

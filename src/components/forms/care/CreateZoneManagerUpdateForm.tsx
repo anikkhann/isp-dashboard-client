@@ -84,7 +84,7 @@ const CreateZoneManagerUpdateForm = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
 

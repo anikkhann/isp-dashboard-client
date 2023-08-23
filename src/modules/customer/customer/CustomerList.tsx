@@ -13,6 +13,7 @@ import axios from "axios";
 import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
+import { useAppSelector } from "@/store/hooks";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
 
@@ -27,6 +28,8 @@ interface TableParams {
 }
 
 const CustomerList: React.FC = () => {
+  const authUser = useAppSelector(state => state.auth.user);
+  // const [form] = Form.useForm();
   const [data, setData] = useState<CustomerData[]>([]);
 
   const MySwal = withReactContent(Swal);
@@ -251,7 +254,7 @@ const CustomerList: React.FC = () => {
     });
   }
 
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -264,6 +267,11 @@ const CustomerList: React.FC = () => {
       },
       body: {
         partnerType: "sub_zone",
+
+        zoneManager: { id: selectedZoneId },
+        client: {
+          id: authUser?.partnerId
+        },
         isActive: true
       }
     };
@@ -371,7 +379,7 @@ const CustomerList: React.FC = () => {
     });
   }
 
-  function getDistributionPops() {
+  function getDistributionPops(selectedDistributionZone: any) {
     const body = {
       meta: {
         sort: [
@@ -382,6 +390,9 @@ const CustomerList: React.FC = () => {
         ]
       },
       body: {
+        zone: {
+          id: selectedDistributionZone
+        },
         isActive: true
       }
     };
@@ -456,7 +467,7 @@ const CustomerList: React.FC = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
     axios.post("/api/customer/get-list", body).then(res => {
@@ -509,11 +520,15 @@ const CustomerList: React.FC = () => {
   };
 
   const handleZoneChange = (value: any) => {
-    setSelectedZone(value);
+    // setSelectedZone(value);
+    // form.setFieldsValue({ zoneManagerId: value });
+    setSelectedZone(value as any);
   };
 
   const handleSubZoneChange = (value: any) => {
-    setSelectedSubZone(value);
+    // setSelectedSubZone(value);
+    // form.setFieldsValue({ subZoneManagerId: value });
+    setSelectedSubZone(value as any);
   };
 
   const handleRetailerChange = (value: any) => {
@@ -535,13 +550,29 @@ const CustomerList: React.FC = () => {
 
   useEffect(() => {
     getZoneManagers();
-    getSubZoneManagers();
+    // getSubZoneManagers();
     getRetailers();
     getDistributionZones();
-    getDistributionPops();
+    // getDistributionPops();
+    // getDistributionPops(selectedDistributionZone);
+
     getCustomerPackages();
     getCustomers();
   }, []);
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
+
+  useEffect(() => {
+    getSubZoneManagers(null);
+  }, []);
+  useEffect(() => {
+    if (selectedDistributionZone) {
+      getDistributionPops(selectedDistributionZone);
+    }
+  }, [selectedDistributionZone]);
 
   useEffect(() => {
     if (data) {
@@ -856,6 +887,17 @@ const CustomerList: React.FC = () => {
                     onChange={handleCustomerIDChange}
                     options={customerIds}
                     value={selectedCustomerId}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
 
