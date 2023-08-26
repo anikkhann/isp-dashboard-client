@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Select, Space, Tag } from "antd";
+import { Button, Card, Col, Select, Space, Tag, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ interface TableParams {
 
 const PackageList: React.FC = () => {
   const [data, setData] = useState<PackageData[]>([]);
-
+  const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
@@ -443,36 +443,87 @@ const PackageList: React.FC = () => {
           >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space style={{ marginBottom: 16 }}>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Name</b>
-                  </span>
-                  <Select
-                    showSearch
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handlePackageChange}
-                    options={packages}
-                    value={selectedPackage}
-                  />
-                </Space>
-
-                <Button
-                  style={{
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "25px",
-                    backgroundColor: "#F15F22",
-                    color: "#ffffff"
-                  }}
-                  onClick={() => {
-                    handleClear();
-                  }}
-                  className="ant-btn  ant-btn-lg"
-                >
-                  Clear filters
-                </Button>
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Packages Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Name</b>
+                            </span>
+                            <Select
+                              showSearch
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handlePackageChange}
+                              options={packages}
+                              value={selectedPackage}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
               </Space>
               <Table
                 columns={columns}

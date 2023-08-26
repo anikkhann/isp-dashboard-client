@@ -351,7 +351,7 @@ const ClientList: React.FC = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        // division: { id: selectedDivision }
+        division: { id: selectedDivision },
         isActive: true
       }
     };
@@ -393,7 +393,7 @@ const ClientList: React.FC = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        // district: { id: selectedDistrict }
+        district: { id: selectedDistrict },
         isActive: true
       }
     };
@@ -436,7 +436,7 @@ const ClientList: React.FC = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        // upazilla: { id: selectedUpazilla }
+        upazilla: { id: selectedUpazilla },
         isActive: true
       }
     };
@@ -777,6 +777,17 @@ const ClientList: React.FC = () => {
                     onChange={handleChange}
                     options={tagsList}
                     value={clientLevel}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
 
@@ -792,6 +803,16 @@ const ClientList: React.FC = () => {
                     onChange={handleClientChange}
                     options={clients}
                     value={selectedClient}
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
 
@@ -800,13 +821,23 @@ const ClientList: React.FC = () => {
                     <b>License Type</b>
                   </span>
                   <Select
-                    showSearch
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleLicenseTypeChange}
                     options={licenseTypes}
                     value={selectedLicenseType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
 
@@ -816,13 +847,23 @@ const ClientList: React.FC = () => {
                   </span>
 
                   <Select
-                    showSearch
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDivisionChange}
                     options={divisions}
                     value={selectedDivision}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
 
@@ -832,13 +873,23 @@ const ClientList: React.FC = () => {
                   </span>
 
                   <Select
-                    showSearch
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleDistrictChange}
                     options={districts}
                     value={selectedDistrict}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
                 <Space style={{ width: "100%" }} direction="vertical">
@@ -846,13 +897,23 @@ const ClientList: React.FC = () => {
                     <b>Upazilla</b>
                   </span>
                   <Select
-                    showSearch
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUpazillaChange}
                     options={upazillas}
                     value={selectedUpazilla}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
 
@@ -862,12 +923,22 @@ const ClientList: React.FC = () => {
                   </span>
                   <Select
                     allowClear
-                    showSearch
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleUnionChange}
                     options={unions}
                     value={selectedUnion}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
 

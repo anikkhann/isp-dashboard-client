@@ -95,6 +95,18 @@ const ZoneWiseCardData = () => {
       /* width: "20%", */
       align: "center" as AlignType
     },
+    {
+      title: "Sub Zone In Charge",
+      dataIndex: "sub_zone_manager",
+      sorter: false,
+      render: (sub_zone_manager: any) => {
+        if (sub_zone_manager == 0) return <>{sub_zone_manager}</>;
+        if (!sub_zone_manager) return "-";
+        return <>{sub_zone_manager}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     // active_customer
     {
       title: "Total Customer",

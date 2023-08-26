@@ -73,7 +73,7 @@ const ZoneCardData = () => {
                 title="Total Zone In Charge"
                 value={item?.zone_incharge}
                 // precision={2}
-                valueStyle={{ color: "#3f8600" }}
+                valueStyle={{ color: "#0e8fdc" }}
                 prefix={<FaUsers className="w-7 h-6 mr-3 " />}
                 // suffix="%"
               />
@@ -99,7 +99,7 @@ const ZoneCardData = () => {
                 title="Active Zone In Charge"
                 value={item?.active_zone_incharge}
                 // precision={2}
-                valueStyle={{ color: "#0e8fdc" }}
+                valueStyle={{ color: "#3f8600" }}
                 prefix={<FaUsers className="w-7 h-6 mr-3 " />}
                 // suffix="%"
               />

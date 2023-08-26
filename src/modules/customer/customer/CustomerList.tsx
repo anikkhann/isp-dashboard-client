@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Input, Select, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Select, Space, Tag, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -30,6 +30,7 @@ interface TableParams {
 const CustomerList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
   // const [form] = Form.useForm();
+  const { Panel } = Collapse;
   const [data, setData] = useState<CustomerData[]>([]);
 
   const MySwal = withReactContent(Swal);
@@ -873,180 +874,393 @@ const CustomerList: React.FC = () => {
           >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space style={{ marginBottom: 16 }}>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Customer Id</b>
-                  </span>
-                  <Select
-                    allowClear
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
                     style={{
-                      width: "100%",
-                      textAlign: "start"
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
                     }}
-                    placeholder="Please select"
-                    onChange={handleCustomerIDChange}
-                    options={customerIds}
-                    value={selectedCustomerId}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
+                  >
+                    <Panel header="Customers Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Customer Id</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleCustomerIDChange}
+                              options={customerIds}
+                              value={selectedCustomerId}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Username</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleUsernameChange}
+                              options={customers}
+                              value={selectedCustomer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Distribution Zone</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleDistributionZoneChange}
+                              options={distributionZones}
+                              value={selectedDistributionZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Distribution Pop</b>
+                            </span>
 
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Username</b>
-                  </span>
-                  <Select
-                    showSearch
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleUsernameChange}
-                    options={customers}
-                    value={selectedCustomer}
-                  />
-                </Space>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleDistributionPopChange}
+                              options={distributionPops}
+                              value={selectedDistributionPop}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Package</b>
+                            </span>
 
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Distribution Zone</b>
-                  </span>
-                  <Select
-                    showSearch
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleDistributionZoneChange}
-                    options={distributionZones}
-                    value={selectedDistributionZone}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Distribution Pop</b>
-                  </span>
-
-                  <Select
-                    showSearch
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleDistributionPopChange}
-                    options={distributionPops}
-                    value={selectedDistributionPop}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Package</b>
-                  </span>
-
-                  <Select
-                    showSearch
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handlePackageChange}
-                    options={packages}
-                    value={selectedPackage}
-                  />
-                </Space>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Zone Manager</b>
-                  </span>
-                  <Select
-                    showSearch
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleZoneChange}
-                    options={zones}
-                    value={selectedZone}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Sub Zone</b>
-                  </span>
-                  <Select
-                    allowClear
-                    showSearch
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleSubZoneChange}
-                    options={subZones}
-                    value={selectedSubZone}
-                  />
-                </Space>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Retailer</b>
-                  </span>
-                  <Select
-                    allowClear
-                    showSearch
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleRetailerChange}
-                    options={retailers}
-                    value={selectedRetailer}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Email</b>
-                  </span>
-                  <Input
-                    type="text"
-                    className="ant-input"
-                    placeholder="Email"
-                    value={selectedEmail}
-                    onChange={e => setSelectedEmail(e.target.value)}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Mobile</b>
-                  </span>
-                  <Input
-                    type="text"
-                    className="ant-input"
-                    placeholder="Mobile"
-                    value={selectedMobile}
-                    onChange={e => setSelectedMobile(e.target.value)}
-                  />
-                </Space>
-
-                <Button
-                  style={{
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "25px",
-                    backgroundColor: "#F15F22",
-                    color: "#ffffff"
-                  }}
-                  onClick={() => {
-                    handleClear();
-                  }}
-                  className="ant-btn  ant-btn-lg"
-                >
-                  Clear filters
-                </Button>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handlePackageChange}
+                              options={packages}
+                              value={selectedPackage}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Zone Manager</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Sub Zone</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleSubZoneChange}
+                              options={subZones}
+                              value={selectedSubZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Retailer</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Email</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Email"
+                              value={selectedEmail}
+                              onChange={e => setSelectedEmail(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Mobile</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Mobile"
+                              value={selectedMobile}
+                              onChange={e => setSelectedMobile(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
               </Space>
 
               <Table

@@ -25,7 +25,7 @@ interface TableParams {
 
 const IpManagementList: React.FC = () => {
   const [data, setData] = useState<IpData[]>([]);
-
+  // const { Panel } = Collapse;
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");

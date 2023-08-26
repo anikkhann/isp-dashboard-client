@@ -191,7 +191,7 @@ const CreateZonePopUpdateForm = () => {
 
     try {
       axios
-        .post("/api/customer/package-zone-pop-change", formData)
+        .post("/api/customer/customer-zone-pop-change", formData)
         .then(res => {
           const { data } = res;
 
