@@ -1,11 +1,11 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateGatewayConfigForm from "@/components/forms/notification/gatewayConfig/CreateGatewayConfigForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewNetwork = () => {
+const NewSmsAlertConfig = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,19 +19,16 @@ const NewNetwork = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
-            },
-            {
-              title: "New Client"
+              title: "New Gateway"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New Gateway"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -40,11 +37,11 @@ const NewNetwork = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateGatewayConfigForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewNetwork;
+export default NewSmsAlertConfig;

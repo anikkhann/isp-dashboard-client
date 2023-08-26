@@ -27,7 +27,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const NetworkList: React.FC = () => {
+const ClientSmsTemplateList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -66,20 +66,23 @@ const NetworkList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
-      headers: {
-        "Content-Type": "application/json"
+    const { data } = await axios.post(
+      "/api/client-sms-template/get-list",
+      body,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["client-sms-template-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -138,47 +141,49 @@ const NetworkList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "client",
+      dataIndex: "client",
       sorter: true,
+      render: (client: any) => {
+        return (
+          <>
+            <Space>{client ? client.username : "-"}</Space>
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "subject",
+      dataIndex: "subject",
+      sorter: true,
+      render: (subject: any) => {
+        return (
+          <>
+            <Space>{subject}</Space>
+          </>
+        );
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
+      title: "template",
+      dataIndex: "template",
       sorter: true,
+      render: (template: any) => {
+        return (
+          <>
+            <Space>{template}</Space>
+          </>
+        );
+      },
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -205,9 +210,11 @@ const NetworkList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
+              {ability.can("clientsms.update", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
+                  <Link
+                    href={`/admin/notification/sms/client-sms/sms-template/${record.id}/edit`}
+                  >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
                 </Space>
@@ -280,10 +287,10 @@ const NetworkList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="client Sms Template List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/notification/sms/client-sms/sms-template/create"
+            permission="clientsms.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -313,4 +320,4 @@ const NetworkList: React.FC = () => {
   );
 };
 
-export default NetworkList;
+export default ClientSmsTemplateList;
