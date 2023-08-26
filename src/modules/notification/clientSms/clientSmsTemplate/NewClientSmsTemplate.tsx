@@ -1,4 +1,4 @@
-import CreateGatewayConfigForm from "@/components/forms/notification/gatewayConfig/CreateGatewayConfigForm";
+import CreateClientTemplateForm from "@/components/forms/notification/clientTemplate/CreateClientTemplateForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
@@ -22,13 +22,13 @@ const NewClientSmsTemplate = () => {
               title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: "New Gateway"
+              title: "New Template"
             }
           ]}
         />
 
         <Card
-          title="New Gateway"
+          title="New Template"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -37,7 +37,7 @@ const NewClientSmsTemplate = () => {
             textAlign: "center"
           }}
         >
-          <CreateGatewayConfigForm />
+          <CreateClientTemplateForm />
         </Card>
       </AppRowContainer>
     </>

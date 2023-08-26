@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import EditGatewayConfigForm from "@/components/forms/notification/gatewayConfig/EditGatewayConfigForm";
-import { GatewayConfigData } from "@/interfaces/GatewayConfigData";
+import EditClientTemplateForm from "@/components/forms/notification/clientTemplate/EditClientTemplateForm";
+import { ClientSmsData } from "@/interfaces/ClientSmsData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,17 +11,19 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditClientSmsTemplate = ({ id }: any) => {
-  const [item, SetItem] = useState<GatewayConfigData | null>(null);
+  const [item, SetItem] = useState<ClientSmsData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/sms-gateway-config/get-by-id/${id}`);
+    const response = await axios.get(
+      `/api/client-sms-template/get-by-id/${id}`
+    );
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["sms-gateway-config-list", id],
+    queryKey: ["client-sms-template-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -58,13 +60,13 @@ const EditClientSmsTemplate = ({ id }: any) => {
               title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: "Edit Gateway"
+              title: "Edit Template"
             }
           ]}
         />
 
         <Card
-          title="Edit Gateway"
+          title="Edit Template"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -77,7 +79,7 @@ const EditClientSmsTemplate = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditGatewayConfigForm item={item} />}
+          {!isLoading && item && <EditClientTemplateForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

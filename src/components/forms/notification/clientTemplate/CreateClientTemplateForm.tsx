@@ -12,9 +12,7 @@ import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   subject: string;
-  key: string;
   template: string;
-  placeholder: string;
 }
 
 const CreateClientTemplateForm = () => {
@@ -41,19 +39,17 @@ const CreateClientTemplateForm = () => {
   const onSubmit = (data: FormData) => {
     setLoading(true);
 
-    const { subject, key, template, placeholder } = data;
+    const { subject, template } = data;
 
     const formData = {
       subject: subject,
-      key: key,
       template: template,
-      placeholder: placeholder,
       isActive: isActive
     };
 
     try {
       axios
-        .post("/api/system-sms-template/create", formData)
+        .post("/api/client-sms-template/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -71,7 +67,7 @@ const CreateClientTemplateForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/notification/sms/system-sms-template");
+              router.replace("/admin/notification/sms/client-sms/sms-template");
             });
           }
         })
@@ -109,9 +105,7 @@ const CreateClientTemplateForm = () => {
             form={form}
             initialValues={{
               subject: "",
-              key: "",
-              template: "",
-              placeholder: ""
+              template: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -155,39 +149,7 @@ const CreateClientTemplateForm = () => {
                   />
                 </Form.Item>
               </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* key */}
-                <Form.Item
-                  label="key"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="key"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your key!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="key"
-                    className={`form-control`}
-                    name="key"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+
               <Col
                 xs={24}
                 sm={12}
@@ -217,39 +179,6 @@ const CreateClientTemplateForm = () => {
                     placeholder="template"
                     className={`form-control`}
                     name="template"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* placeholder */}
-                <Form.Item
-                  label="placeholder"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="placeholder"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your placeholder!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="placeholder"
-                    className={`form-control`}
-                    name="placeholder"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>

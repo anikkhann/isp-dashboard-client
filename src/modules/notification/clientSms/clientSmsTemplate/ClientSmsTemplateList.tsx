@@ -13,12 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { ClientSmsData } from "@/interfaces/ClientSmsData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +23,7 @@ interface TableParams {
 }
 
 const ClientSmsTemplateList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<ClientSmsData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -125,7 +120,7 @@ const ClientSmsTemplateList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<ClientSmsData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -230,22 +225,24 @@ const ClientSmsTemplateList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<ClientSmsData> | SorterResult<ClientSmsData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<ClientSmsData>).order) {
+      // // console.log((sorter as SorterResult<ClientSmsData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<ClientSmsData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<ClientSmsData>).field) {
+      // // console.log((sorter as SorterResult<ClientSmsData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<ClientSmsData>).field as string);
     }
   };
 

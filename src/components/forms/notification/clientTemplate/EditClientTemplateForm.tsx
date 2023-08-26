@@ -9,7 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { SystemSmsData } from "@/interfaces/SystemSmsData";
+import { ClientSmsData } from "@/interfaces/ClientSmsData";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
@@ -20,7 +20,7 @@ interface FormData {
 }
 
 interface PropData {
-  item: SystemSmsData;
+  item: ClientSmsData;
 }
 
 const EditClientTemplateForm = ({ item }: PropData) => {
@@ -47,9 +47,7 @@ const EditClientTemplateForm = ({ item }: PropData) => {
     if (item) {
       form.setFieldsValue({
         subject: item.subject,
-        key: item.key,
-        template: item.template,
-        placeholder: item.placeholder
+        template: item.template
       });
       setIsActive(item.isActive);
     }
@@ -59,20 +57,18 @@ const EditClientTemplateForm = ({ item }: PropData) => {
   const onSubmit = (data: FormData) => {
     setLoading(true);
 
-    const { subject, key, template, placeholder } = data;
+    const { subject, template } = data;
 
     const formData = {
       id: item.id,
       subject: subject,
-      key: key,
       template: template,
-      placeholder: placeholder,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/system-sms-template/update", formData)
+        .put("/api/client-sms-template/update", formData)
         .then(res => {
           const { data } = res;
 
@@ -90,7 +86,7 @@ const EditClientTemplateForm = ({ item }: PropData) => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/notification/sms/system-sms-template");
+              router.replace("/admin/notification/sms/client-sms/sms-template");
             });
           }
         })
@@ -128,9 +124,7 @@ const EditClientTemplateForm = ({ item }: PropData) => {
             form={form}
             initialValues={{
               subject: "",
-              key: "",
-              template: "",
-              placeholder: ""
+              template: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -178,39 +172,6 @@ const EditClientTemplateForm = ({ item }: PropData) => {
                   />
                 </Form.Item>
               </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* key */}
-                <Form.Item
-                  label="key"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="key"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your key!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="key"
-                    className={`form-control`}
-                    name="key"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
 
               <Col
                 xs={24}
@@ -241,40 +202,6 @@ const EditClientTemplateForm = ({ item }: PropData) => {
                     placeholder="template"
                     className={`form-control`}
                     name="template"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* placeholder */}
-                <Form.Item
-                  label="placeholder"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="placeholder"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your placeholder!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="placeholder"
-                    className={`form-control`}
-                    name="placeholder"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
