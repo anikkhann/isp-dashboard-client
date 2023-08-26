@@ -1,7 +1,6 @@
 .next
 out
 public
-styles
 README.md
 package.json
 package-lock.json

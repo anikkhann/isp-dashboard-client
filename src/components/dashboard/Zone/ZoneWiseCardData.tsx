@@ -95,6 +95,7 @@ const ZoneWiseCardData = () => {
       /* width: "20%", */
       align: "center" as AlignType
     },
+
     // active_customer
     {
       title: "Total Customer",

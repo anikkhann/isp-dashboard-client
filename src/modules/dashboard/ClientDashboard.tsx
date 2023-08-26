@@ -13,31 +13,31 @@ import React, { useState } from "react";
 
 const clientDataType = [
   {
-    label: "Monthly New Clients",
+    label: "Monthly",
     value: "monthly"
   },
 
   {
-    label: "Quarterly New Clients",
+    label: "Quarterly",
     value: "quarterly"
   },
   {
-    label: "Yearly New Clients",
+    label: "Yearly",
     value: "yearly"
   }
 ];
 
 const customerDataType = [
   {
-    label: "Monthly New Customers",
+    label: "Monthly ",
     value: "monthly"
   },
   {
-    label: "Quarterly New Customers",
+    label: "Quarterly ",
     value: "quarterly"
   },
   {
-    label: "Yearly New Customers",
+    label: "Yearly ",
     value: "yearly"
   }
 ];

@@ -38,6 +38,7 @@ const ComplainTypeList: React.FC = () => {
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
+      total: 0,
       current: 1,
       pageSize: 10
     }
@@ -91,6 +92,7 @@ const ComplainTypeList: React.FC = () => {
           setData(data.body);
           setTableParams({
             pagination: {
+              total: data.meta.resultCount,
               pageSize: data.meta.limit,
               current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]
