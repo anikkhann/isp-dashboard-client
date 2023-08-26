@@ -1,7 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
+import NewSingleSms from "@/modules/notification/singleSms/NewSingleSms";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("smsSingle.create", "") ? <NewAdmin /> : <Forbidden />}
+      {ability.can("smsSingle.create", "") ? <NewSingleSms /> : <Forbidden />}
     </>
   );
 };

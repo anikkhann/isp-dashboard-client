@@ -1,11 +1,11 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateSystemSmsForm from "@/components/forms/notification/systemSmsTemplate/CreateSystemSmsForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewNetwork = () => {
+const NewSystemSmsTemplate = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,19 +19,23 @@ const NewNetwork = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/notification/sms/system-sms-template">
+                  System SMS Template
+                </Link>
+              )
             },
             {
-              title: "New Client"
+              title: "New System SMS Template"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New System SMS Template"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -40,11 +44,11 @@ const NewNetwork = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateSystemSmsForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewNetwork;
+export default NewSystemSmsTemplate;

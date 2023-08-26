@@ -1,7 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
+import SystemSmsTemplateList from "@/modules/notification/systemSmsTemplate/SystemSmsTemplateList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -14,7 +14,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("systemSmsTemplate.list", "") ? (
-        <AdminList />
+        <SystemSmsTemplateList />
       ) : (
         <Forbidden />
       )}

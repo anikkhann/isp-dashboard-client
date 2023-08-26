@@ -1,8 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewAdmin from "@/modules/user/user/NewUser";
-
+import NewSystemSmsTemplate from "@/modules/notification/systemSmsTemplate/NewSystemSmsTemplate";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
@@ -14,7 +13,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("systemSmsTemplate.create", "") ? (
-        <NewAdmin />
+        <NewSystemSmsTemplate />
       ) : (
         <Forbidden />
       )}

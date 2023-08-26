@@ -11,12 +11,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
-  networkName: string;
-  networkAddress: string;
-  subnetMask: string;
+  name: string;
+  baseUrl: string;
 }
 
-const CreateNetworkForm = () => {
+const CreateGatewayForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -40,18 +39,17 @@ const CreateNetworkForm = () => {
   const onSubmit = (data: FormData) => {
     setLoading(true);
 
-    const { networkName, networkAddress, subnetMask } = data;
+    const { name, baseUrl } = data;
 
     const formData = {
-      networkName: networkName,
-      networkAddress: networkAddress,
-      subnetMask: subnetMask,
+      name: name,
+      baseUrl: baseUrl,
       isActive: isActive
     };
 
     try {
       axios
-        .post("/api/ip-subnet/create", formData)
+        .post("/api/sms-gateway/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -69,7 +67,7 @@ const CreateNetworkForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/device/network");
+              router.replace("/admin/notification/sms/gateway");
             });
           }
         })
@@ -106,9 +104,8 @@ const CreateNetworkForm = () => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              networkName: "",
-              networkAddress: "",
-              subnetMask: ""
+              name: "",
+              baseUrl: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -122,32 +119,32 @@ const CreateNetworkForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* networkName */}
+                {/* name */}
                 <Form.Item
-                  label="Network Name"
+                  label="Name"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="networkName"
+                  name="name"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Network Name!"
+                      message: "Please input your Name!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Network Name"
+                    placeholder="Name"
                     className={`form-control`}
-                    name="networkName"
+                    name="name"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
@@ -155,65 +152,32 @@ const CreateNetworkForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* networkAddress */}
+                {/* baseUrl */}
                 <Form.Item
-                  label="Network Address"
+                  label="BaseUrl"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="networkAddress"
+                  name="baseUrl"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Network Address!"
+                      message: "Please input your BaseUrl!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Network Address"
+                    placeholder="BaseUrl"
                     className={`form-control`}
-                    name="networkAddress"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* subnetMask */}
-                <Form.Item
-                  label="Subnet Mask"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="subnetMask"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Subnet Mask!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Subnet Mask"
-                    className={`form-control`}
-                    name="subnetMask"
+                    name="baseUrl"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
@@ -259,4 +223,4 @@ const CreateNetworkForm = () => {
   );
 };
 
-export default CreateNetworkForm;
+export default CreateGatewayForm;

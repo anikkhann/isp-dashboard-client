@@ -1,7 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
+import BulkSmsList from "@/modules/notification/bulkSms/BulkSmsList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("smsBulk.list", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("smsBulk.list", "") ? <BulkSmsList /> : <Forbidden />}
     </>
   );
 };

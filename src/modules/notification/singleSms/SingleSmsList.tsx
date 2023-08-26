@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,14 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import ability from "@/services/guard/ability";
-import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
 interface DataType {
   id: number;
-  name: string;
-  slug: string;
-  group: string;
+  mobileNo: string;
+  subject: string;
+  message: string;
 }
 
 interface TableParams {
@@ -27,7 +24,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const IpManagementList: React.FC = () => {
+const SingleSmsList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -66,11 +63,12 @@ const IpManagementList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
+        // mobileNo: ""
+        // subject  : ""
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/send-sms/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -79,7 +77,7 @@ const IpManagementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["send-sms-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -138,47 +136,27 @@ const IpManagementList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "mobileNo",
+      dataIndex: "mobileNo",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
+      title: "subject",
+      dataIndex: "subject",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
+      title: "message",
+      dataIndex: "message",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -195,27 +173,6 @@ const IpManagementList: React.FC = () => {
         );
       },
       width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <>
-            <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-            </Space>
-          </>
-        );
-      },
       align: "center" as AlignType
     }
   ];
@@ -280,10 +237,10 @@ const IpManagementList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Single Sms List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/notification/sms/send-sms-single/create"
+            permission="smsSingle.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -313,4 +270,4 @@ const IpManagementList: React.FC = () => {
   );
 };
 
-export default IpManagementList;
+export default SingleSmsList;

@@ -1,11 +1,11 @@
-import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
+import CreateSingleSmsForm from "@/components/forms/notification/singleSms/CreateSingleSmsForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewIpManagement = () => {
+const NewSingleSms = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,19 +19,23 @@ const NewIpManagement = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/notification/sms/send-sms-single">
+                  Single Sms List
+                </Link>
+              )
             },
             {
-              title: "New Client"
+              title: "New Single Sms"
             }
           ]}
         />
 
         <Card
-          title="New Client"
+          title="New Single Sms"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -40,11 +44,11 @@ const NewIpManagement = () => {
             textAlign: "center"
           }}
         >
-          <CreateRoleForm />
+          <CreateSingleSmsForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewIpManagement;
+export default NewSingleSms;

@@ -1,7 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
+import GatewayList from "@/modules/notification/gateway/GatewayList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,11 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("emailNotification.view", "") ? (
-        <AdminList />
-      ) : (
-        <Forbidden />
-      )}
+      {ability.can("smsGateway.view", "") ? <GatewayList /> : <Forbidden />}
     </>
   );
 };

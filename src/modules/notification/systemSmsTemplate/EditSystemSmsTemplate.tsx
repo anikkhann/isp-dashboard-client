@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditUserForm from "@/components/forms/user/EditUserForm";
-import { UserData } from "@/interfaces/UserData";
+import EditSystemSmsForm from "@/components/forms/notification/systemSmsTemplate/EditSystemSmsForm";
+import { SystemSmsData } from "@/interfaces/SystemSmsData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,18 +11,20 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditNetwork = ({ id }: any) => {
-  const [item, SetItem] = useState<UserData | null>(null);
+const EditSystemSmsTemplate = ({ id }: any) => {
+  const [item, SetItem] = useState<SystemSmsData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/partner/get-by-id/${id}`);
+    const response = await axios.get(
+      `/api/system-sms-template/get-by-id/${id}`
+    );
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", id],
+    queryKey: ["system-sms-template-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -56,19 +58,23 @@ const EditNetwork = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client Dashboard</Link>
+              title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: <Link href="/admin/client/client">Client</Link>
+              title: (
+                <Link href="/admin/notification/sms/system-sms-template">
+                  System SMS Template
+                </Link>
+              )
             },
             {
-              title: "Edit Client"
+              title: "Edit System SMS Template"
             }
           ]}
         />
 
         <Card
-          title="Edit Client"
+          title="Edit System SMS Template"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -81,11 +87,11 @@ const EditNetwork = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditUserForm item={item} />}
+          {!isLoading && item && <EditSystemSmsForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditNetwork;
+export default EditSystemSmsTemplate;

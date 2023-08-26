@@ -1,7 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditAdmin from "@/modules/user/user/EditUser";
+import EditSystemSmsTemplate from "@/modules/notification/systemSmsTemplate/EditSystemSmsTemplate";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,7 +18,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("systemSmsTemplate.update", "") ? (
-        <EditAdmin id={id} />
+        <EditSystemSmsTemplate id={id} />
       ) : (
         <Forbidden />
       )}

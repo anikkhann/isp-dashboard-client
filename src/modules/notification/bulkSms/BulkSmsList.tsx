@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Card, Col, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,9 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import ability from "@/services/guard/ability";
-import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
 interface DataType {
   id: number;
   name: string;
@@ -27,7 +24,7 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const NetworkList: React.FC = () => {
+const BulkSmsList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
   const [page, SetPage] = useState(0);
@@ -50,7 +47,6 @@ const NetworkList: React.FC = () => {
     sort: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -66,11 +62,10 @@ const NetworkList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client"
       }
     };
 
-    const { data } = await axios.post("/api/partner/get-list", body, {
+    const { data } = await axios.post("/api/bulk-sms/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -79,7 +74,7 @@ const NetworkList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["clients-list", page, limit, order, sort],
+    queryKey: ["bulk-sms-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -138,84 +133,70 @@ const NetworkList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Distribution Zone",
+      dataIndex: "distributionZone",
+      sorter: true,
+      render: distributionZone => {
+        return (
+          <>
+            {distributionZone && distributionZone.name
+              ? distributionZone.name
+              : "-"}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Distribution Pop",
+      dataIndex: "distributionPop",
+      sorter: true,
+      render: distributionPop => {
+        return (
+          <>
+            {distributionPop && distributionPop.name
+              ? distributionPop.name
+              : "-"}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Sms Gateway",
+      dataIndex: "smsGateway",
+      sorter: true,
+      render: smsGateway => {
+        return <>{smsGateway && smsGateway.name ? smsGateway.name : "-"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "subject",
+      dataIndex: "subject",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Contact Number",
-      dataIndex: "contactNumber",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
+      title: "message",
+      dataIndex: "message",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Status",
-      dataIndex: "isActive",
+      dataIndex: "status",
       sorter: true,
-      render: (isActive: any) => {
-        return (
-          <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
-          </>
-        );
+      render: (status: any) => {
+        return <>{status}</>;
       },
       width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <>
-            <Space size="middle" align="center">
-              {ability.can("user.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/client/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-            </Space>
-          </>
-        );
-      },
       align: "center" as AlignType
     }
   ];
@@ -280,10 +261,10 @@ const NetworkList: React.FC = () => {
           )}
 
           <TableCard
-            title="Clients List"
+            title="Bulk Sms List"
             hasLink={true}
-            addLink="/admin/client/client/create"
-            permission="user.create"
+            addLink="/admin/notification/sms/send-sms-bulk/create"
+            permission="smsBulk.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -313,4 +294,4 @@ const NetworkList: React.FC = () => {
   );
 };
 
-export default NetworkList;
+export default BulkSmsList;

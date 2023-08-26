@@ -73,7 +73,16 @@ const notificationRoutes = [
         label: "Client SMS",
         path: "/admin/notification/sms/client-sms",
         icon: <SettingOutlined />,
-        permission: "clientsms.list"
+        permission: "clientsms.list",
+        children: [
+          {
+            key: "/admin/notification/sms/client-sms/client-sms-template",
+            label: "Client SMS Template",
+            path: "/admin/notification/sms/client-sms/client-sms-template",
+            icon: <SettingOutlined />,
+            permission: "clientsms.list"
+          }
+        ]
       }
     ]
   }

@@ -9,20 +9,21 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { IpSubnetData } from "@/interfaces/IpSubnetData";
+import { SystemSmsData } from "@/interfaces/SystemSmsData";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  networkName: string;
-  networkAddress: string;
-  subnetMask: string;
+  subject: string;
+  key: string;
+  template: string;
+  placeholder: string;
 }
 
 interface PropData {
-  item: IpSubnetData;
+  item: SystemSmsData;
 }
 
-const EditNetworkForm = ({ item }: PropData) => {
+const EditSystemSmsForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -45,9 +46,10 @@ const EditNetworkForm = ({ item }: PropData) => {
   useEffect(() => {
     if (item) {
       form.setFieldsValue({
-        networkName: item.networkName,
-        networkAddress: item.networkAddress,
-        subnetMask: item.subnetMask
+        subject: item.subject,
+        key: item.key,
+        template: item.template,
+        placeholder: item.placeholder
       });
       setIsActive(item.isActive);
     }
@@ -57,20 +59,20 @@ const EditNetworkForm = ({ item }: PropData) => {
   const onSubmit = (data: FormData) => {
     setLoading(true);
 
-    const { networkName, networkAddress, subnetMask } = data;
+    const { subject, key, template, placeholder } = data;
 
     const formData = {
       id: item.id,
-      networkName: networkName,
-      networkAddress: networkAddress,
-      subnetMask: subnetMask,
-
+      subject: subject,
+      key: key,
+      template: template,
+      placeholder: placeholder,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/ip-subnet/update", formData)
+        .put("/api/system-sms-template/update", formData)
         .then(res => {
           const { data } = res;
 
@@ -88,7 +90,7 @@ const EditNetworkForm = ({ item }: PropData) => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/device/network");
+              router.replace("/admin/notification/sms/system-sms-template");
             });
           }
         })
@@ -125,9 +127,10 @@ const EditNetworkForm = ({ item }: PropData) => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              networkName: "",
-              networkAddress: "",
-              subnetMask: ""
+              subject: "",
+              key: "",
+              template: "",
+              placeholder: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -145,32 +148,32 @@ const EditNetworkForm = ({ item }: PropData) => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* networkName */}
+                {/* subject */}
                 <Form.Item
-                  label="Network Name"
+                  label="subject"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="networkName"
+                  name="subject"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Network Name!"
+                      message: "Please input your subject!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Network Name"
+                    placeholder="subject"
                     className={`form-control`}
-                    name="networkName"
+                    name="subject"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
@@ -178,65 +181,100 @@ const EditNetworkForm = ({ item }: PropData) => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* networkAddress */}
+                {/* key */}
                 <Form.Item
-                  label="Network Address"
+                  label="key"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="networkAddress"
+                  name="key"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Network Address!"
+                      message: "Please input your key!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Network Address"
+                    placeholder="key"
                     className={`form-control`}
-                    name="networkAddress"
+                    name="key"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
+
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* subnetMask */}
+                {/* template */}
                 <Form.Item
-                  label="Subnet Mask"
+                  label="template"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="subnetMask"
+                  name="template"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Subnet Mask!"
+                      message: "Please input your template!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Subnet Mask"
+                    placeholder="template"
                     className={`form-control`}
-                    name="subnetMask"
+                    name="template"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* placeholder */}
+                <Form.Item
+                  label="placeholder"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="placeholder"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your placeholder!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="placeholder"
+                    className={`form-control`}
+                    name="placeholder"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
@@ -282,4 +320,4 @@ const EditNetworkForm = ({ item }: PropData) => {
   );
 };
 
-export default EditNetworkForm;
+export default EditSystemSmsForm;
