@@ -1,9 +1,9 @@
 // sass-utils
-@import './_fonts';
+@import "./_fonts";
 
 // vendors
-@import './_tailwind';
-@import './_antd';
+@import "./_tailwind";
+@import "./_antd";
 
 // base
 html,
@@ -22,28 +22,37 @@ a {
   @apply font-poppins;
 }
 
+@import "./_button";
 
-
- @import './_button';
-
-
-
-
-.ant-layout{
-  background-color: #F4F7FE;
-  
+.ant-layout {
+  background-color: #f4f7fe;
 }
 
-.ant-menu{
+.ant-menu {
   font-size: 13px !important;
   font-weight: 600 !important;
-  
 }
 
- .ant-menu-inline .ant-menu-item{
+.ant-menu-inline .ant-menu-item {
   height: 50px !important;
-  background-color:  #0e8fdc !important;
-  color: #F4F7FE !important;
+  background-color: #0e8fdc !important;
+  color: #f4f7fe !important;
+}
+
+.ant-menu-submenu {
+  background-color: #0e8fdc !important;
+  color: #f4f7fe !important;
+}
+.ant-menu-submenu-selected {
+  background-color: #0e8fdc !important;
+  color: #f4f7fe !important;
+}
+.ant-menu-submenu-title {
+  color: #f4f7fe !important;
+}
+.ant-menu-submenu-inline {
+  background-color: #0e8fdc !important;
+  color: #f4f7fe !important;
 }
 
 // .ant-layout-sider{
@@ -51,53 +60,52 @@ a {
 //   color: #F4F7FE;
 // }
 
-.ant-menu-item .ant-menu-submenu-title{
-    inset-inline-start: 0;
-    /* padding-inline: calc(50% - 12px); */
-    text-overflow: clip;
-    font-weight: 500;
-    font-size: 12px;
+.ant-menu-item .ant-menu-submenu-title {
+  inset-inline-start: 0;
+  /* padding-inline: calc(50% - 12px); */
+  text-overflow: clip;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
 }
-.ant-drawer-content-wrapper{
-    width: 80% !important;
+.ant-drawer-content-wrapper {
+  width: 80% !important;
 }
 
-  .pointer {
-    cursor: pointer;
+.pointer {
+  cursor: pointer;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+  transform: scale(1);
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
+    transform: scale(1.05);
   }
+}
 
-  .text-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .card-hover {
-    transition: all 0.3s ease;
-    transform: scale(1);
-
-    &:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, .45);
-      transform: scale(1.05);
-    }
-  }
-
-  .text-uppercase {
-    text-transform: uppercase;
-  }
-
+.text-uppercase {
+  text-transform: uppercase;
+}
 
 .ant-table-thead .ant-table-cell {
-    // background-color: #4B6BFB !important;
-    background-color: #0e8fdc !important;
-    color:#F4F7FE !important;
+  // background-color: #4B6BFB !important;
+  background-color: #0e8fdc !important;
+  color: #f4f7fe !important;
 }
 
 // .ant-table-tbody > tr.ant-table-row:hover > td {
 //     background-color: #0e8fdc !important;
 //     color:#F4F7FE !important;
 // }
-
 
 .is-invalid {
   border-color: #dc3545 !important;

@@ -46,6 +46,7 @@ const SearchCustomer = () => {
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
+      total: 0,
       current: 1,
       pageSize: 10
     }
