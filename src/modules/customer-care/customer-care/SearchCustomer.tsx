@@ -10,7 +10,8 @@ import {
   Select,
   Space,
   Table,
-  Tag
+  Tag,
+  Collapse
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -25,6 +26,7 @@ import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { Row, Col } from "antd";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -35,7 +37,7 @@ interface TableParams {
 
 const SearchCustomer = () => {
   const [data, setData] = useState<CustomerData[]>([]);
-
+  const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
@@ -479,120 +481,217 @@ const SearchCustomer = () => {
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
-            overflow: "scroll",
+            // overflowX: "scroll",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center",
-            marginTop: "1rem",
+            // textAlign: "center",
+            marginTop: "2rem",
             marginBottom: "1rem",
             border: "1px solid #F15F22"
           }}
         >
           <>
             <Space style={{ marginBottom: 16 }}>
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>Customer Id</b>
-                </span>
-                <Select
-                  allowClear
+              <div style={{ padding: "20px", backgroundColor: "white" }}>
+                <Collapse
+                  accordion
                   style={{
-                    width: "100%",
-                    textAlign: "start"
+                    backgroundColor: "#FFC857",
+                    color: "white",
+                    borderRadius: 4,
+                    // marginBottom: 24,
+                    // border: 0,
+                    overflow: "hidden",
+                    fontWeight: "bold",
+                    font: "1rem"
                   }}
-                  placeholder="Please select"
-                  onChange={handleCustomerIDChange}
-                  options={customerIds}
-                  value={selectedCustomerId}
-                  showSearch
-                  filterOption={(input, option) =>
-                    option?.label.toLowerCase().indexOf(input.toLowerCase()) >=
-                    0
-                  }
-                />
-              </Space>
-
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>Username</b>
-                </span>
-                <Select
-                  showSearch
-                  allowClear
-                  style={{ width: "100%", textAlign: "start" }}
-                  placeholder="Please select"
-                  onChange={handleUsernameChange}
-                  options={customers}
-                  value={selectedCustomer}
-                />
-              </Space>
-
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>Email</b>
-                </span>
-                <Input
-                  type="text"
-                  className="ant-input"
-                  placeholder="Email"
-                  value={selectedEmail}
-                  onChange={e => setSelectedEmail(e.target.value)}
-                />
-              </Space>
-
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>Mobile</b>
-                </span>
-                <Input
-                  type="text"
-                  className="ant-input"
-                  placeholder="Mobile"
-                  value={selectedMobile}
-                  onChange={e => setSelectedMobile(e.target.value)}
-                />
-              </Space>
-
-              <Button
-                style={{
-                  width: "100%",
-                  textAlign: "center",
-                  marginTop: "25px",
-                  backgroundColor: "#0e8fdc",
-                  color: "#ffffff"
-                }}
-                onClick={() => {
-                  handleSubmit(
-                    page,
-                    limit,
-                    order,
-                    sort,
-                    selectedCustomerId,
-                    selectedCustomer,
-                    selectedEmail,
-                    selectedMobile
-                  );
-                }}
-                className="ant-btn  ant-btn-lg"
-              >
-                Submit
-              </Button>
-
-              <Button
-                style={{
-                  width: "100%",
-                  textAlign: "center",
-                  marginTop: "25px",
-                  backgroundColor: "#F15F22",
-                  color: "#ffffff"
-                }}
-                onClick={() => {
-                  handleClear();
-                }}
-                className="ant-btn  ant-btn-lg"
-              >
-                Clear filters
-              </Button>
+                >
+                  <Panel header="Customer Care Filters" key="1">
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Customer Id</b>
+                          </span>
+                          <Select
+                            allowClear
+                            style={{
+                              width: "100%",
+                              textAlign: "start"
+                            }}
+                            placeholder="Please select"
+                            onChange={handleCustomerIDChange}
+                            options={customerIds}
+                            value={selectedCustomerId}
+                            showSearch
+                            filterOption={(input, option) =>
+                              option?.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Username</b>
+                          </span>
+                          <Select
+                            showSearch
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select"
+                            onChange={handleUsernameChange}
+                            options={customers}
+                            value={selectedCustomer}
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Email</b>
+                          </span>
+                          <Input
+                            type="text"
+                            className="ant-input"
+                            placeholder="Email"
+                            value={selectedEmail}
+                            onChange={e => setSelectedEmail(e.target.value)}
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Mobile</b>
+                          </span>
+                          <Input
+                            type="text"
+                            className="ant-input"
+                            placeholder="Mobile"
+                            value={selectedMobile}
+                            onChange={e => setSelectedMobile(e.target.value)}
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Button
+                          style={{
+                            width: "100%",
+                            textAlign: "center",
+                            marginTop: "25px",
+                            backgroundColor: "#0e8fdc",
+                            color: "#ffffff"
+                          }}
+                          onClick={() => {
+                            handleSubmit(
+                              page,
+                              limit,
+                              order,
+                              sort,
+                              selectedCustomerId,
+                              selectedCustomer,
+                              selectedEmail,
+                              selectedMobile
+                            );
+                          }}
+                          className="ant-btn  ant-btn-lg"
+                        >
+                          Submit
+                        </Button>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Button
+                          style={{
+                            width: "100%",
+                            textAlign: "center",
+                            marginTop: "25px",
+                            backgroundColor: "#F15F22",
+                            color: "#ffffff"
+                          }}
+                          onClick={() => {
+                            handleClear();
+                          }}
+                          className="ant-btn  ant-btn-lg"
+                        >
+                          Clear filters
+                        </Button>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      ></Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      ></Col>
+                    </Row>
+                  </Panel>
+                </Collapse>
+              </div>
             </Space>
           </>
 

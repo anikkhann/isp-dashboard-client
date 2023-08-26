@@ -54,6 +54,30 @@ const ClientCardData = () => {
       <Row gutter={16}>
         <Col lg={12} span={24}>
           <Card
+            hoverable
+            style={{
+              width: "90%",
+              backgroundColor: "#ffffff",
+              borderRadius: "10px",
+              margin: "0 auto",
+              textAlign: "center",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              border: "2px solid #F15F22"
+            }}
+          >
+            <Statistic
+              title="Total Clients"
+              value={item?.total_client}
+              // precision={2}
+              valueStyle={{ color: "#0e8fdc" }}
+              prefix={<FaUsers className="w-7 h-6 mr-3 " />}
+              // suffix="%"
+            />
+          </Card>
+        </Col>
+        <Col lg={12} span={24}>
+          <Card
             // bordered={false}
             hoverable
             style={{
@@ -73,30 +97,6 @@ const ClientCardData = () => {
               value={item?.active_client}
               // precision={2}
               valueStyle={{ color: "#3f8600" }}
-              prefix={<FaUsers className="w-7 h-6 mr-3 " />}
-              // suffix="%"
-            />
-          </Card>
-        </Col>
-        <Col lg={12} span={24}>
-          <Card
-            hoverable
-            style={{
-              width: "90%",
-              backgroundColor: "#ffffff",
-              borderRadius: "10px",
-              margin: "0 auto",
-              textAlign: "center",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-              border: "2px solid #F15F22"
-            }}
-          >
-            <Statistic
-              title="Total Clients"
-              value={item?.total_client}
-              // precision={2}
-              valueStyle={{ color: "#0e8fdc" }}
               prefix={<FaUsers className="w-7 h-6 mr-3 " />}
               // suffix="%"
             />

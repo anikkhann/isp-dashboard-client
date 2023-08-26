@@ -10,7 +10,8 @@ import {
   List,
   Select,
   Space,
-  Table
+  Table,
+  Collapse
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -33,6 +34,7 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { Can } from "@/services/guard/Can";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import { Row, Col } from "antd";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -52,7 +54,7 @@ interface TableParams {
 
 const SearchRetailerList = () => {
   const [data, setData] = useState<ActivityLogData[]>([]);
-
+  const { Panel } = Collapse;
   const { RangePicker } = DatePicker;
 
   const MySwal = withReactContent(Swal);
@@ -416,11 +418,11 @@ const SearchRetailerList = () => {
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
-            overflow: "scroll",
+            // overflow: "scroll",
             borderRadius: "10px",
             margin: "0 auto",
-            textAlign: "center",
-            marginTop: "1rem",
+            // textAlign: "center",
+            marginTop: "2rem",
             marginBottom: "1rem",
             border: "1px solid #F15F22"
           }}
@@ -443,86 +445,147 @@ const SearchRetailerList = () => {
         >
           <>
             <Space style={{ marginBottom: 16 }}>
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>
-                    Username<span style={{ color: "red" }}>*</span>
-                  </b>
-                </span>
-                <Select
-                  showSearch
-                  allowClear
-                  style={{ width: "100%", textAlign: "start" }}
-                  placeholder="Please select"
-                  onChange={handleUsernameChange}
-                  options={customers}
-                  value={selectedCustomer}
-                  filterOption={(input, option) =>
-                    option?.label.toLowerCase().indexOf(input.toLowerCase()) >=
-                    0
-                  }
-                />
-              </Space>
-
-              <Space style={{ width: "100%" }} direction="vertical">
-                <span>
-                  <b>Date Range</b>
-                </span>
-                <RangePicker
-                  style={{ width: "100%" }}
-                  onChange={handleDateChange}
-                  value={selectedDateRange}
-                  placeholder={["Start Date", "End Date"]}
-                />
-              </Space>
-
-              <Button
-                style={{
-                  width: "100%",
-                  textAlign: "center",
-                  marginTop: "25px",
-                  backgroundColor: "#0e8fdc",
-                  color: "#ffffff"
-                }}
-                onClick={() => {
-                  if (!selectedCustomer) {
-                    MySwal.fire({
-                      title: "Error",
-                      text: "Select Username",
-                      icon: "error"
-                    });
-                    return;
-                  }
-                  handleSubmit(
-                    page,
-                    limit,
-                    order,
-                    sort,
-                    selectedCustomer,
-                    selectedStartDate,
-                    selectedEndDate
-                  );
-                }}
-                className="ant-btn  ant-btn-lg"
-              >
-                Submit
-              </Button>
-
-              <Button
-                style={{
-                  width: "100%",
-                  textAlign: "center",
-                  marginTop: "25px",
-                  backgroundColor: "#F15F22",
-                  color: "#ffffff"
-                }}
-                onClick={() => {
-                  handleClear();
-                }}
-                className="ant-btn  ant-btn-lg"
-              >
-                Clear filters
-              </Button>
+              <div style={{ padding: "20px", backgroundColor: "white" }}>
+                <Collapse
+                  accordion
+                  style={{
+                    backgroundColor: "#FFC857",
+                    color: "white",
+                    borderRadius: 4,
+                    // marginBottom: 24,
+                    // border: 0,
+                    overflow: "hidden",
+                    fontWeight: "bold",
+                    font: "1rem"
+                  }}
+                >
+                  <Panel header="Retailer Update Filters" key="1">
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>
+                              Username<span style={{ color: "red" }}>*</span>
+                            </b>
+                          </span>
+                          <Select
+                            showSearch
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select"
+                            onChange={handleUsernameChange}
+                            options={customers}
+                            value={selectedCustomer}
+                            filterOption={(input, option) =>
+                              option?.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Date Range</b>
+                          </span>
+                          <RangePicker
+                            style={{ width: "100%" }}
+                            onChange={handleDateChange}
+                            value={selectedDateRange}
+                            placeholder={["Start Date", "End Date"]}
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Button
+                          style={{
+                            width: "100%",
+                            textAlign: "center",
+                            marginTop: "25px",
+                            backgroundColor: "#0e8fdc",
+                            color: "#ffffff"
+                          }}
+                          onClick={() => {
+                            if (!selectedCustomer) {
+                              MySwal.fire({
+                                title: "Error",
+                                text: "Select Username",
+                                icon: "error"
+                              });
+                              return;
+                            }
+                            handleSubmit(
+                              page,
+                              limit,
+                              order,
+                              sort,
+                              selectedCustomer,
+                              selectedStartDate,
+                              selectedEndDate
+                            );
+                          }}
+                          className="ant-btn  ant-btn-lg"
+                        >
+                          Submit
+                        </Button>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Button
+                          style={{
+                            width: "100%",
+                            textAlign: "center",
+                            marginTop: "25px",
+                            backgroundColor: "#F15F22",
+                            color: "#ffffff"
+                          }}
+                          onClick={() => {
+                            handleClear();
+                          }}
+                          className="ant-btn  ant-btn-lg"
+                        >
+                          Clear filters
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Panel>
+                </Collapse>
+              </div>
             </Space>
           </>
 
