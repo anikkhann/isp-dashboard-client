@@ -86,7 +86,7 @@ const IpManagementList: React.FC = () => {
           setData(data.body);
           setTableParams({
             pagination: {
-              total: data.meta.resultCount,
+              total: data.meta.totalRecords,
               pageSize: data.meta.limit,
               current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]
