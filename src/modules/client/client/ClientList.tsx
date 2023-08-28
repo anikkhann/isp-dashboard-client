@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Input, Select, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Select, Space, Tag, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -39,7 +39,7 @@ interface TableParams {
 
 const ClientList: React.FC = () => {
   const [data, setData] = useState<ClientData[]>([]);
-
+  const { Panel } = Collapse;
   const [clientLevel, setClientLevel] = useState<any>(null);
 
   const [clients, setClients] = useState<any[]>([]);
@@ -765,213 +765,346 @@ const ClientList: React.FC = () => {
           >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space style={{ marginBottom: 16 }}>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Client Level</b>
-                  </span>
-                  <Select
-                    allowClear
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
                     style={{
-                      width: "100%",
-                      textAlign: "start"
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
                     }}
-                    placeholder="Please select"
-                    onChange={handleChange}
-                    options={tagsList}
-                    value={clientLevel}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
+                  >
+                    <Panel header="Clients List Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Client Level</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleChange}
+                              options={tagsList}
+                              value={clientLevel}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Client Name</b>
+                            </span>
+                            <Select
+                              showSearch
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>License Type</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleLicenseTypeChange}
+                              options={licenseTypes}
+                              value={selectedLicenseType}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Division</b>
+                            </span>
 
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Client Name</b>
-                  </span>
-                  <Select
-                    showSearch
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleClientChange}
-                    options={clients}
-                    value={selectedClient}
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleDivisionChange}
+                              options={divisions}
+                              value={selectedDivision}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>District</b>
+                            </span>
 
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>License Type</b>
-                  </span>
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleLicenseTypeChange}
-                    options={licenseTypes}
-                    value={selectedLicenseType}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Division</b>
-                  </span>
-
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleDivisionChange}
-                    options={divisions}
-                    value={selectedDivision}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>District</b>
-                  </span>
-
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleDistrictChange}
-                    options={districts}
-                    value={selectedDistrict}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Upazilla</b>
-                  </span>
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleUpazillaChange}
-                    options={upazillas}
-                    value={selectedUpazilla}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Union</b>
-                  </span>
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleUnionChange}
-                    options={unions}
-                    value={selectedUnion}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
-                    }}
-                  />
-                </Space>
-
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Contact Number</b>
-                  </span>
-                  <Input
-                    type="text"
-                    className="ant-input"
-                    placeholder="Contact Number"
-                    value={contactNumber}
-                    onChange={e => setContactNumber(e.target.value)}
-                  />
-                </Space>
-
-                <Button
-                  style={{
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "25px",
-                    backgroundColor: "#F15F22",
-                    color: "#ffffff"
-                  }}
-                  onClick={() => {
-                    handleClear();
-                  }}
-                  className="ant-btn  ant-btn-lg"
-                >
-                  Clear filters
-                </Button>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleDistrictChange}
+                              options={districts}
+                              value={selectedDistrict}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Upazilla</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleUpazillaChange}
+                              options={upazillas}
+                              value={selectedUpazilla}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Union</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleUnionChange}
+                              options={unions}
+                              value={selectedUnion}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Contact Number</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Contact Number"
+                              value={contactNumber}
+                              onChange={e => setContactNumber(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
               </Space>
               <Table
                 columns={columns}

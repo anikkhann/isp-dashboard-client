@@ -9,15 +9,15 @@ import React, { useEffect, useState } from "react";
 import { AlignType } from "rc-table/lib/interface";
 import type { ColumnsType } from "antd/es/table";
 
-const ZoneWiseCardData = () => {
+const PackageWiseActiveData = () => {
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
-      `/api/dashboard/get-total-active-customer-zone-inCharge`,
+      `/api/dashboard/get-active-total-customer-package-wise`,
       {
         headers: {
           "Content-Type": "application/json"
@@ -28,7 +28,7 @@ const ZoneWiseCardData = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["dashboard-active-customer-zone-wise-list"],
+    queryKey: ["dashboard-active-customer-data-package-wise"],
     queryFn: async () => {
       const response = await fetchData();
       return response;
@@ -84,13 +84,13 @@ const ZoneWiseCardData = () => {
     // },
     // total_customer
     {
-      title: "Zone In Charge",
-      dataIndex: "zone_incharge",
+      title: "Package Name",
+      dataIndex: "package_name",
       sorter: false,
-      render: (zone_incharge: any) => {
-        if (zone_incharge == 0) return <>{zone_incharge}</>;
-        if (!zone_incharge) return "-";
-        return <>{zone_incharge}</>;
+      render: (package_name: any) => {
+        if (package_name == 0) return <>{package_name}</>;
+        if (!package_name) return "-";
+        return <>{package_name}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -191,7 +191,7 @@ const ZoneWiseCardData = () => {
             )}
 
             <TableCard
-              title="Active Customer List(Zone Wise)"
+              title="Active Customer (Package Wise)"
               hasLink={false}
               addLink=""
               permission=""
@@ -221,4 +221,4 @@ const ZoneWiseCardData = () => {
   );
 };
 
-export default ZoneWiseCardData;
+export default PackageWiseActiveData;
