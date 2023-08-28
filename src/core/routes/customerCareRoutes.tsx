@@ -14,7 +14,7 @@ const customerCareRoutes = [
     label: "Customer Care",
     path: "/admin/customer-care",
     icon: <SettingOutlined />,
-    permission: "customerCare.list"
+    permission: "customerCare.customer"
   },
 
   {
@@ -27,28 +27,28 @@ const customerCareRoutes = [
 
   {
     key: "/admin/expire-date-extend-deduction",
-    label: "Expire Date Extend/Deduction",
+    label: "Expiry Date Adjustment",
     path: "/admin/expired-date-extend-deduction",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
   },
   {
     key: "/admin/zone-manager-tag-or-remove",
-    label: "Zone Manager Tag Or Remove",
+    label: "ZM Tag/Remove",
     path: "/admin/zone-manager-tag-or-remove",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
   },
   {
     key: "/admin/sub-zone-manager-tag-or-remove",
-    label: "Sub Zone Manager Tag or Remove",
+    label: "SZM Tag/Remove",
     path: "/admin/sub-zone-manager-tag-or-remove",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
   },
   {
     key: "/admin/retailer-tag-or-remove",
-    label: "Retailer Tag or Remove",
+    label: "Retailer Tag/Remove",
     path: "/admin/retailer-tag-or-remove",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
@@ -69,21 +69,21 @@ const customerCareRoutes = [
   },
   {
     key: "/admin/customer-zone-or-pop-update",
-    label: "Customer Zone or POP Update ",
+    label: "Zone/POP Update ",
     path: "/admin/customer-zone-or-pop-update",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
   },
   {
     key: "/admin/customer-password-change",
-    label: "Customer Password Change",
+    label: "Password Update",
     path: "/admin/customer-password-change",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
   },
   {
     key: "/admin/customer-mac-bind-or-remove",
-    label: "Customer MAC Bind or Remove",
+    label: "MAC Bind/Remove",
     path: "/admin/customer-mac-bind-or-remove",
     icon: <SettingOutlined />,
     permission: "customerCare.list"

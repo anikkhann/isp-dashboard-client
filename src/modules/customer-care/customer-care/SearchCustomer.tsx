@@ -21,7 +21,7 @@ import ability from "@/services/guard/ability";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { AlignType } from "rc-table/lib/interface";
-import { EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 
 import Swal from "sweetalert2";
@@ -415,15 +415,24 @@ const SearchCustomer = () => {
       render: (text: any, record: any) => {
         return (
           <>
-            <Space size="middle" align="center">
-              {ability.can("customer.view", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/customer-care/${record.id}`}>
-                    <Button type="primary" icon={<EyeOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-            </Space>
+            <div className="flex flex-row">
+              <Space size="middle" align="center">
+                {ability.can("customerCare.update", "") ? (
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/customer-care/${record.id}/edit`}>
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                ) : null}
+                {ability.can("customerCare.view", "") ? (
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/customer-care/${record.id}`}>
+                      <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
+                  </Space>
+                ) : null}
+              </Space>
+            </div>
           </>
         );
       },

@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerCare.list", "") ? (
+      {ability.can("customerCare.customer", "") ? (
         <DetailsCustomerCare id={id} />
       ) : (
         <Forbidden />
