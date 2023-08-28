@@ -188,7 +188,7 @@ const PopWiseCustomerStatisticData = () => {
                 {/* {data && data.length != 0 && ( */}
                 <Table
                   columns={columns}
-                  rowKey={record => record.client}
+                  rowKey={record => record.total_customer}
                   dataSource={data}
                   loading={isLoading || isFetching}
                 />

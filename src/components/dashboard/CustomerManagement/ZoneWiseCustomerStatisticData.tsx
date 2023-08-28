@@ -188,7 +188,7 @@ const ZoneWiseCustomerStatisticData = () => {
                 {/* {data && data.length != 0 && ( */}
                 <Table
                   columns={columns}
-                  rowKey={record => record.client}
+                  rowKey={record => record.active_customer}
                   dataSource={data}
                   loading={isLoading || isFetching}
                 />
