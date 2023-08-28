@@ -25,7 +25,7 @@ import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
 import Link from "next/link";
 import {
-  CheckSquareOutlined,
+  // CheckSquareOutlined,
   CloseSquareOutlined,
   EditOutlined,
   EyeOutlined,
@@ -155,7 +155,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
     },
 
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
       sorter: true,
       width: "20%",
@@ -285,7 +285,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
                   </Tooltip>
                 ) : null)}
               {/* approve */}
-              {((authUser &&
+              {/* {((authUser &&
                 authUser.partnerId != record.partnerId &&
                 record.zoneStatus == "Approved") ||
                 record.zoneStatus == "Pending") &&
@@ -310,7 +310,7 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
                       </Link>
                     </Space>
                   </Tooltip>
-                ) : null)}
+                ) : null)} */}
               {/* reject */}
               {(record.clientStatus == "Pending" ||
                 record.zoneStatus == "Pending") &&

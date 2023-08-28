@@ -53,8 +53,16 @@ const CustomerCard = () => {
 
       {isError && <div>{error.message}</div>}
 
-      <Row gutter={16}>
-        <Col lg={6} span={24}>
+      <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }} justify="space-between">
+        <Col
+          xs={24}
+          sm={24}
+          md={8}
+          lg={8}
+          xl={8}
+          xxl={8}
+          className="gutter-row"
+        >
           <Card
             hoverable
             style={{
@@ -78,7 +86,15 @@ const CustomerCard = () => {
             />
           </Card>
         </Col>
-        <Col lg={6} span={24}>
+        <Col
+          xs={24}
+          sm={24}
+          md={8}
+          lg={8}
+          xl={8}
+          xxl={8}
+          className="gutter-row"
+        >
           <Card
             // bordered={false}
             hoverable
@@ -96,7 +112,7 @@ const CustomerCard = () => {
             <Statistic
               style={{ backgroundColor: "#ffffff !important" }}
               title="Active Customers"
-              value={item?.active_customer}
+              value={item?.active_customer ? item?.active_customer : 0}
               // precision={2}
               valueStyle={{ color: "#3f8600" }}
               prefix={<FaUsers className="w-7 h-6 mr-3 " />}
@@ -104,7 +120,15 @@ const CustomerCard = () => {
             />
           </Card>
         </Col>
-        <Col lg={6} span={24}>
+        <Col
+          xs={24}
+          sm={24}
+          md={8}
+          lg={8}
+          xl={8}
+          xxl={8}
+          className="gutter-row"
+        >
           <Card
             // bordered={false}
             hoverable
@@ -122,7 +146,7 @@ const CustomerCard = () => {
             <Statistic
               style={{ backgroundColor: "#ffffff !important" }}
               title="Registered Customers"
-              value={item?.registered_customer}
+              value={item?.registered_customer ? item?.registered_customer : 0}
               // precision={2}
               valueStyle={{ color: "#3f8600" }}
               prefix={<FaUsers className="w-7 h-6 mr-3 " />}
@@ -130,7 +154,15 @@ const CustomerCard = () => {
             />
           </Card>
         </Col>
-        <Col lg={6} span={24}>
+        <Col
+          xs={24}
+          sm={24}
+          md={8}
+          lg={8}
+          xl={8}
+          xxl={8}
+          className="gutter-row"
+        >
           <Card
             // bordered={false}
             hoverable
@@ -148,7 +180,7 @@ const CustomerCard = () => {
             <Statistic
               style={{ backgroundColor: "#ffffff !important" }}
               title="Expired Customers"
-              value={item?.expired_customer}
+              value={item?.expired_customer ? item?.expired_customer : 0}
               // precision={2}
               valueStyle={{ color: "#3f8600" }}
               prefix={<FaUsers className="w-7 h-6 mr-3 " />}

@@ -354,14 +354,14 @@ const CustomerOnboardingReqList: React.FC = () => {
     },
 
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Status",
+      title: "Client Status",
       dataIndex: "clientStatus",
       sorter: true,
       render: (clientStatus: any) => {
@@ -373,6 +373,26 @@ const CustomerOnboardingReqList: React.FC = () => {
               <Tag color="red">{clientStatus}</Tag>
             ) : (
               <Tag color="blue">{clientStatus}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Zone Status",
+      dataIndex: "zoneStatus",
+      sorter: true,
+      render: (zoneStatus: any) => {
+        return (
+          <>
+            {zoneStatus === "Pending" ? (
+              <Tag color="green">{zoneStatus}</Tag>
+            ) : zoneStatus === "Rejected" ? (
+              <Tag color="red">{zoneStatus}</Tag>
+            ) : (
+              <Tag color="blue">{zoneStatus}</Tag>
             )}
           </>
         );

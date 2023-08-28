@@ -316,28 +316,6 @@ const Customer = ({ item }: PropData) => {
                     }}
                   >
                     <span className="font-bold text-base">
-                      Connection Address :
-                    </span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">
-                      {item?.connectionAddress}
-                    </span>
-                  </Col>
-                </Row>
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">
                       Contact Person :
                     </span>
                   </Col>
@@ -718,16 +696,25 @@ const Customer = ({ item }: PropData) => {
                     }}
                   >
                     <span className="font-bold text-base">
-                      Account Status :
+                      Connection Status :
                     </span>
                   </Col>
                   <Col>
-                    <span className="mx-1 text-base">
-                      {item?.isActive == true ? "Active" : "Inactive"}
+                    <span
+                      className="mx-1 text-base"
+                      style={{
+                        color:
+                          data && data.connection_status == "Online"
+                            ? "green"
+                            : "red"
+                      }}
+                    >
+                      {data && data.connection_status == "Online"
+                        ? "Online"
+                        : "Offline"}
                     </span>
                   </Col>
                 </Row>
-
                 <Row
                   style={{
                     marginTop: "2px"
@@ -744,29 +731,6 @@ const Customer = ({ item }: PropData) => {
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">{data.assigned_ip}</span>
-                  </Col>
-                </Row>
-
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">
-                      Connection Status :
-                    </span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">
-                      {data.connection_status}
-                    </span>
                   </Col>
                 </Row>
 
@@ -807,6 +771,92 @@ const Customer = ({ item }: PropData) => {
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">{data.router_mac}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Is MAC Bound :</span>
+                  </Col>
+                  <Col>
+                    <span
+                      className="mx-1 text-base"
+                      style={{
+                        color:
+                          item && item?.isMacBound == true ? "green" : "red"
+                      }}
+                    >
+                      {item && item?.isMacBound == true ? "Yes" : "No"}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Bind MAC :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.mac ? item?.mac : ""}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">IP Mode :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.ipMode ? item?.ipMode : ""}
+                    </span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "end"
+                    }}
+                  >
+                    <span className="font-bold text-base">Assigned IP :</span>
+                  </Col>
+                  <Col>
+                    <span className="mx-1 text-base">
+                      {item?.staticIp ? item?.staticIp : ""}
+                    </span>
                   </Col>
                 </Row>
               </div>
@@ -1265,7 +1315,12 @@ const Customer = ({ item }: PropData) => {
                     <span className="font-bold text-base">Auto Renew :</span>
                   </Col>
                   <Col>
-                    <span className="mx-1 text-base">
+                    <span
+                      className="mx-1 text-base"
+                      style={{
+                        color: item && item?.autoRenew == true ? "green" : "red"
+                      }}
+                    >
                       {item && item?.autoRenew == true ? "Yes" : "No"}
                     </span>
                   </Col>
@@ -1285,7 +1340,13 @@ const Customer = ({ item }: PropData) => {
                     <span className="font-bold text-base">Email Alert :</span>
                   </Col>
                   <Col>
-                    <span className="mx-1 text-base">
+                    <span
+                      className="mx-1 text-base"
+                      style={{
+                        color:
+                          item && item?.emailAlert == true ? "green" : "red"
+                      }}
+                    >
                       {item && item?.emailAlert == true ? "Yes" : "No"}
                     </span>
                   </Col>
@@ -1305,7 +1366,12 @@ const Customer = ({ item }: PropData) => {
                     <span className="font-bold text-base">SMS Alert :</span>
                   </Col>
                   <Col>
-                    <span className="mx-1 text-base">
+                    <span
+                      className="mx-1 text-base"
+                      style={{
+                        color: item && item?.smsAlert == true ? "green" : "red"
+                      }}
+                    >
                       {item && item?.smsAlert == true ? "Yes" : "No"}
                     </span>
                   </Col>

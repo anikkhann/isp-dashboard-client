@@ -56,6 +56,7 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
   };
 
   useEffect(() => {
+    form.setFieldsValue({ type: selectType });
     if (item) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

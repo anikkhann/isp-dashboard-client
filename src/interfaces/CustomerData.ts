@@ -70,6 +70,8 @@ export interface CustomerData {
   zoneManager?: ZoneManager;
   subZoneManager?: SubZoneManager;
   adjustmentDay?: any;
+  mac: string;
+  staticIp: string;
 }
 
 export interface CustomerType {

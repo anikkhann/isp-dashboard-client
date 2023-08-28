@@ -172,7 +172,7 @@ const PopWiseCustomerStatisticData = () => {
             )}
 
             <TableCard
-              title="Customer Statistic (Type Wise)"
+              title="Customer Statistic (POP Wise)"
               hasLink={false}
               addLink=""
               permission=""

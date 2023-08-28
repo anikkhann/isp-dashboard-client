@@ -21,7 +21,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 // import { CustomerData } from "@/interfaces/CustomerData";
 
@@ -147,7 +147,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
 
   const [loading, setLoading] = useState(false);
 
-  const authUser = useAppSelector(state => state.auth.user);
+  // const authUser = useAppSelector(state => state.auth.user);
 
   // ** States
   const [showError, setShowError] = useState(false);
@@ -157,7 +157,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
 
   const [autoRenew, setAutoRenew] = useState(true);
 
-  const [isMacBound, setIsMacBound] = useState(false);
+  // const [isMacBound, setIsMacBound] = useState(false);
 
   const [smsAlert, setSmsAlert] = useState(true);
   const [emailAlert, setEmailAlert] = useState(true);
@@ -178,8 +178,8 @@ const EditCustomerCareForm = ({ item }: PropData) => {
 
   const [selectedIdentityType, setSelectedIdentityType] = useState(null);
 
-  const [distributionZones, setDistributionZones] = useState([]);
-  const [distributionPops, setDistributionPops] = useState([]);
+  // const [distributionZones, setDistributionZones] = useState([]);
+  // const [distributionPops, setDistributionPops] = useState([]);
 
   const [selectedDistributionZone, setSelectedDistributionZone] =
     useState(null);
@@ -188,7 +188,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
   const [customerTypes, setCustomerTypes] = useState([]);
   const [selectedCustomerType, setSelectedCustomerType] = useState(null);
 
-  const [customerPackages, setCustomerPackages] = useState([]);
+  // const [customerPackages, setCustomerPackages] = useState([]);
   const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
 
   const [selectedReferenceType, setSelectedReferenceType] = useState(null);
@@ -203,13 +203,13 @@ const EditCustomerCareForm = ({ item }: PropData) => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const [zones, setZones] = useState([]);
+  // const [zones, setZones] = useState([]);
   const [selectedZone, setSelectedZone] = useState(null);
 
-  const [subZones, setSubZones] = useState([]);
+  // const [subZones, setSubZones] = useState([]);
   const [selectedSubZone, setSelectedSubZone] = useState(null);
 
-  const [retailers, setRetailers] = useState([]);
+  // const [retailers, setRetailers] = useState([]);
   const [selectedRetailer, setSelectedRetailer] = useState(null);
 
   const [oltDevice, setOltDevice] = useState([]);
@@ -240,9 +240,9 @@ const EditCustomerCareForm = ({ item }: PropData) => {
     setAutoRenew(e.target.checked ? true : false);
   };
 
-  const handleMacBound = (e: any) => {
-    setIsMacBound(e.target.checked ? true : false);
-  };
+  // const handleMacBound = (e: any) => {
+  //   setIsMacBound(e.target.checked ? true : false);
+  // };
 
   const handleIdentityTypeChange = (value: any) => {
     console.log("checked = ", value);
@@ -273,30 +273,30 @@ const EditCustomerCareForm = ({ item }: PropData) => {
     form.setFieldsValue({ unionId: value });
     setSelectedUnion(value as any);
   };
+  // console.log("checked = ", value);
+  // const handleCustomerPackageChange = (value: any) => {
 
-  const handleCustomerPackageChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ customerPackageId: value });
-    setSelectedCustomerPackage(value as any);
-  };
+  //   form.setFieldsValue({ customerPackageId: value });
+  //   setSelectedCustomerPackage(value as any);
+  // };
 
   const handleCustomerTypeChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ customerTypeId: value });
     setSelectedCustomerType(value as any);
   };
+  // console.log("checked = ", value);
+  // const handleDistributionZoneChange = (value: any) => {
 
-  const handleDistributionZoneChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ distributionZoneId: value });
-    setSelectedDistributionZone(value as any);
-  };
+  //   form.setFieldsValue({ distributionZoneId: value });
+  //   setSelectedDistributionZone(value as any);
+  // };
+  // console.log("checked = ", value);
+  // const handleDistributionPopChange = (value: any) => {
 
-  const handleDistributionPopChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ distributionPopId: value });
-    setSelectedDistributionPop(value as any);
-  };
+  //   form.setFieldsValue({ distributionPopId: value });
+  //   setSelectedDistributionPop(value as any);
+  // };
 
   const handleReferenceTypeChange = (value: any) => {
     // console.log("checked = ", value);
@@ -327,28 +327,29 @@ const EditCustomerCareForm = ({ item }: PropData) => {
     form.setFieldsValue({ fiberOpticDeviceType: value });
     setSelectedFiberOpticDeviceType(value as any);
   };
+  // console.log("checked = ", value);
+  // const handleZoneChange = (value: any) => {
 
-  const handleZoneChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ zoneManagerId: value });
-    setSelectedZone(value as any);
-  };
+  //   form.setFieldsValue({ zoneManagerId: value });
+  //   setSelectedZone(value as any);
+  // };
+  // console.log("checked = ", value);
+  // const handleSubZoneChange = (value: any) => {
 
-  const handleSubZoneChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ subZoneManagerId: value });
-    setSelectedSubZone(value as any);
-  };
+  //   form.setFieldsValue({ subZoneManagerId: value });
+  //   setSelectedSubZone(value as any);
+  // };
   const handleIpModeChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ ipMode: value });
     setSelectedIpMode(value as any);
   };
-  const handleRetailerChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ retailerId: value });
-    setSelectedRetailer(value as any);
-  };
+  // console.log("checked = ", value);
+  // const handleRetailerChange = (value: any) => {
+
+  //   form.setFieldsValue({ retailerId: value });
+  //   setSelectedRetailer(value as any);
+  // };
   //handle olt
   const handleOltDevice = (value: any) => {
     form.setFieldsValue({ oltDeviceId: value });
@@ -441,138 +442,139 @@ const EditCustomerCareForm = ({ item }: PropData) => {
       setOnuDevice(list);
     });
   }
+  // FOR PAGINATION - OPTIONAL
+  // function getZoneManagers() {
+  //   const body = {
 
-  function getZoneManagers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "zone",
-        client: {
-          id: authUser?.partnerId
-        },
-        isActive: true
-      }
-    };
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       partnerType: "zone",
+  //       client: {
+  //         id: authUser?.partnerId
+  //       },
+  //       isActive: true
+  //     }
+  //   };
+  //   axios.post("/api/partner/get-list", body).then(res => {
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
+  //     const { data } = res;
 
-      if (!data.body) return;
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
 
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
+  //     if (!data.body) return;
 
-      setZones(list);
-    });
-  }
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
 
-  function getSubZoneManagers(selectedZoneId: any) {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "sub_zone",
-        zoneManager: { id: selectedZoneId },
-        client: {
-          id: authUser?.partnerId
-        },
-        isActive: true
-      }
-    };
+  //     setZones(list);
+  //   });
+  // }
+  // console.log(res);
+  // FOR PAGINATION - OPTIONAL
+  // function getSubZoneManagers(selectedZoneId: any) {
+  //   const body = {
 
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       partnerType: "sub_zone",
+  //       zoneManager: { id: selectedZoneId },
+  //       client: {
+  //         id: authUser?.partnerId
+  //       },
+  //       isActive: true
+  //     }
+  //   };
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
+  //   axios.post("/api/partner/get-list", body).then(res => {
 
-      if (!data.body) return;
+  //     const { data } = res;
 
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
 
-      setSubZones(list);
-    });
-  }
+  //     if (!data.body) return;
 
-  function getRetailers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
-        isActive: true
-      }
-    };
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
 
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
+  //     setSubZones(list);
+  //   });
+  // }
+  // FOR PAGINATION - OPTIONAL
+  // function getRetailers() {
+  //   const body = {
 
-      if (!data.body) return;
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       partnerType: "retailer",
+  //       // subZoneManager: { id: selectedSubZone },
+  //       isActive: true
+  //     }
+  //   };
 
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
+  //   axios.post("/api/partner/get-list", body).then(res => {
 
-      setRetailers(list);
-    });
-  }
+  //     const { data } = res;
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
+
+  //     if (!data.body) return;
+
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
+
+  //     setRetailers(list);
+  //   });
+  // }
 
   useEffect(() => {
     if (item) {
@@ -686,7 +688,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
       setAutoRenew(item.autoRenew);
       setSmsAlert(item.smsAlert);
       setEmailAlert(item.emailAlert);
-      setIsMacBound(item.isMacBound);
+      // setIsMacBound(item.isMacBound);
       setIsActive(item.isActive);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -972,140 +974,140 @@ const EditCustomerCareForm = ({ item }: PropData) => {
     });
   }
 
-  function getDistributionZones() {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        isActive: true
-      }
-    };
+  // function getDistributionZones() {
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       isActive: true
+  //     }
+  //   };
 
-    axios.post("/api/distribution-zone/get-list", body).then(res => {
-      const { data } = res;
+  //   axios.post("/api/distribution-zone/get-list", body).then(res => {
+  //     const { data } = res;
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
 
-      if (!data.body) return;
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setDistributionZones(list);
-    });
-  }
+  //     if (!data.body) return;
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
+  //     setDistributionZones(list);
+  //   });
+  // }
 
-  function getDistributionPops(selectedDistributionZone: string) {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        zone: { id: selectedDistributionZone },
-        isActive: true
-      }
-    };
+  // function getDistributionPops(selectedDistributionZone: string) {
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       zone: { id: selectedDistributionZone },
+  //       isActive: true
+  //     }
+  //   };
 
-    axios.post("/api/distribution-pop/get-list", body).then(res => {
-      const { data } = res;
+  //   axios.post("/api/distribution-pop/get-list", body).then(res => {
+  //     const { data } = res;
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
 
-      if (!data.body) return;
+  //     if (!data.body) return;
 
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setDistributionPops(list);
-    });
-  }
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
+  //     setDistributionPops(list);
+  //   });
+  // }
 
-  const getCustomerPackages = () => {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        isActive: true
-      }
-    };
-    axios.post("/api/customer-package/get-list", body).then(res => {
-      const { data } = res;
+  // const getCustomerPackages = () => {
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       isActive: true
+  //     }
+  //   };
+  //   axios.post("/api/customer-package/get-list", body).then(res => {
+  //     const { data } = res;
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
 
-      if (!data.body) return;
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setCustomerPackages(list);
-    });
-  };
+  //     if (!data.body) return;
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
+  //     setCustomerPackages(list);
+  //   });
+  // };
 
   // call on page load
   useEffect(() => {
     getDivisions();
-    getCustomerPackages();
-    getDistributionZones();
+    // getCustomerPackages();
+    // getDistributionZones();
     // getDistributionPops();
     getCustomerTypes();
     getCustomers();
     getUsers();
 
-    getZoneManagers();
+    // getZoneManagers();
     // getSubZoneManagers();
-    getRetailers();
+    // getRetailers();
     getOltDevice();
     getOnuDevice();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    if (selectedDistributionZone) {
-      getDistributionPops(selectedDistributionZone);
-    }
-  }, [selectedDistributionZone]);
+  // useEffect(() => {
+  //   if (selectedDistributionZone) {
+  //     getDistributionPops(selectedDistributionZone);
+  //   }
+  // }, [selectedDistributionZone]);
   useEffect(() => {
     if (selectedDivision) {
       getDistricts(selectedDivision);
@@ -1124,15 +1126,15 @@ const EditCustomerCareForm = ({ item }: PropData) => {
     }
   }, [selectedUpazilla]);
 
-  useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedZone);
-    }
-  }, [selectedZone]);
+  // useEffect(() => {
+  //   if (selectedZone) {
+  //     getSubZoneManagers(selectedZone);
+  //   }
+  // }, [selectedZone]);
 
-  useEffect(() => {
-    getSubZoneManagers(null);
-  }, []);
+  // useEffect(() => {
+  //   getSubZoneManagers(null);
+  // }, []);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
@@ -1532,7 +1534,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         />
                       </Form.Item>
                     </Col>
-                    <Col
+                    {/* <Col
                       xs={24}
                       sm={12}
                       md={12}
@@ -1541,7 +1543,6 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* password */}
                       <Form.Item
                         name="password"
                         label="Password"
@@ -1570,7 +1571,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
-                    </Col>
+                    </Col> */}
 
                     <Col
                       xs={24}
@@ -1857,7 +1858,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         />
                       </Form.Item>
                     </Col>
-                    <Col
+                    {/* <Col
                       xs={24}
                       sm={12}
                       md={12}
@@ -1866,7 +1867,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* customerPackageId */}
+                   
                       <Form.Item
                         label="Customer Package"
                         style={{
@@ -1892,7 +1893,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           />
                         </Space>
                       </Form.Item>
-                    </Col>
+                    </Col> */}
 
                     <Col
                       xs={24}
@@ -2011,7 +2012,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                     gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                     justify="space-between"
                   >
-                    {authUser && authUser.userType == "subZone" && (
+                    {/* {authUser && authUser.userType == "subZone" && (
                       <Col
                         xs={24}
                         sm={12}
@@ -2021,7 +2022,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         xxl={12}
                         className="gutter-row"
                       >
-                        {/* retailerId */}
+                      
                         <Form.Item
                           label="Retailer"
                           style={{
@@ -2042,7 +2043,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           </Space>
                         </Form.Item>
                       </Col>
-                    )}
+                    )} */}
 
                     <Col
                       xs={24}
@@ -2205,7 +2206,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         />
                       </Form.Item>
                     </Col>
-                    <Col
+                    {/* <Col
                       xs={24}
                       sm={12}
                       md={12}
@@ -2214,7 +2215,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* distributionZoneId */}
+                   
                       <Form.Item
                         label="Distribution Zone"
                         style={{
@@ -2234,8 +2235,8 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           />
                         </Space>
                       </Form.Item>
-                    </Col>
-                    <Col
+                    </Col> */}
+                    {/* <Col
                       xs={24}
                       sm={12}
                       md={12}
@@ -2244,7 +2245,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* distributionPopId */}
+                     
                       <Form.Item
                         label="Distribution Pop"
                         style={{
@@ -2264,8 +2265,8 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           />
                         </Space>
                       </Form.Item>
-                    </Col>
-                    {authUser && authUser.userType == "client" && (
+                    </Col> */}
+                    {/* {authUser && authUser.userType == "client" && (
                       <Col
                         xs={24}
                         sm={12}
@@ -2275,7 +2276,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         xxl={12}
                         className="gutter-row"
                       >
-                        {/* zoneManagerId */}
+                     
                         <Form.Item
                           label="Zone Manager"
                           style={{
@@ -2296,9 +2297,9 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           </Space>
                         </Form.Item>
                       </Col>
-                    )}
+                    )} */}
 
-                    {authUser &&
+                    {/* {authUser &&
                       (authUser.userType == "client" ||
                         authUser.userType == "zone") && (
                         <Col
@@ -2310,7 +2311,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           xxl={12}
                           className="gutter-row"
                         >
-                          {/* subZoneManagerId */}
+                       
                           <Form.Item
                             label="SubZone Manager"
                             style={{
@@ -2334,7 +2335,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                             </Space>
                           </Form.Item>
                         </Col>
-                      )}
+                      )} */}
                     {/* {authUser && authUser.userType == "client" && (
                       <Col
                         xs={24}
@@ -3262,7 +3263,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                     gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                     justify="center"
                   >
-                    <Col
+                    {/* <Col
                       xs={24}
                       sm={12}
                       md={12}
@@ -3273,9 +3274,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                     >
                       <Form.Item
                         label=""
-                        // style={{
-                        //   marginBottom: 0
-                        // }}
+                    
                       >
                         <Checkbox
                           onChange={handleMacBound}
@@ -3284,8 +3283,8 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           MAC Bind
                         </Checkbox>
                       </Form.Item>
-                    </Col>
-                    {isMacBound && (
+                    </Col> */}
+                    {/* {isMacBound && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3295,7 +3294,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         xxl={12}
                         className="gutter-row"
                       >
-                        {/* mac */}
+                       
                         <Form.Item
                           name="mac"
                           label="MAC"
@@ -3319,7 +3318,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           />
                         </Form.Item>
                       </Col>
-                    )}
+                    )} */}
                   </Row>
                 </Card>
                 <Card
