@@ -188,7 +188,7 @@ const CustomerStatisticData = () => {
                 {/* {data && data.length != 0 && ( */}
                 <Table
                   columns={columns}
-                  rowKey={record => record.client}
+                  rowKey={record => record.customer_type}
                   dataSource={data}
                   loading={isLoading || isFetching}
                 />

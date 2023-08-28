@@ -1,10 +1,10 @@
 import AppAnimate from "@/lib/AppAnimate";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Col } from "antd";
-import NumberOfCustomerData from "@/components/dashboard/CustomerManagement/NumberOfCustomerData";
 import CustomerStatisticData from "@/components/dashboard/CustomerManagement/CustomerStatisticData";
 import ZoneWiseCustomerStatisticData from "@/components/dashboard/CustomerManagement/ZoneWiseCustomerStatisticData";
 import PopWiseCustomerStatisticData from "@/components/dashboard/CustomerManagement/PopWiseCustomerStatisticData";
+import CustomerCard from "@/components/dashboard/CustomerManagement/CustomerCard";
 const CMDashboard = () => {
   return (
     <>
@@ -16,7 +16,7 @@ const CMDashboard = () => {
         </AppRowContainer> */}
         <AppRowContainer>
           <Col span={24}>
-            <NumberOfCustomerData />
+            <CustomerCard />
           </Col>
           <Col span={24}>
             <CustomerStatisticData />
