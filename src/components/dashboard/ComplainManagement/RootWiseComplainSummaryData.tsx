@@ -9,15 +9,15 @@ import React, { useEffect, useState } from "react";
 import { AlignType } from "rc-table/lib/interface";
 import type { ColumnsType } from "antd/es/table";
 
-const ZoneWiseCardData = () => {
+const RootWiseComplainSummaryData = () => {
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
-      `/api/dashboard/get-total-active-customer-zone-inCharge`,
+      `/api/dashboard/get-customer-complain-root-cause-wise`,
       {
         headers: {
           "Content-Type": "application/json"
@@ -28,7 +28,7 @@ const ZoneWiseCardData = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["dashboard-active-customer-zone-wise-list"],
+    queryKey: ["dashboard-get-customer-complain-root-cause-wise-complain"],
     queryFn: async () => {
       const response = await fetchData();
       return response;
@@ -70,82 +70,52 @@ const ZoneWiseCardData = () => {
       width: "10%",
       align: "center" as AlignType
     },
-    // client
-    // {
-    //   title: "Client",
-    //   dataIndex: "client",
-    //   sorter: false,
-    //   render: (client: any) => {
-    //     if (!client) return "-";
-    //     return <>{client}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // total_customer
     {
-      title: "Zone In Charge",
-      dataIndex: "zone_incharge",
+      title: "Root Cause",
+      dataIndex: "root_cause",
       sorter: false,
-      render: (zone_incharge: any) => {
-        if (zone_incharge == 0) return <>{zone_incharge}</>;
-        if (!zone_incharge) return "-";
-        return <>{zone_incharge}</>;
+      render: (root_cause: any) => {
+        if (root_cause == 0) return <>{root_cause}</>;
+        if (!root_cause) return "-";
+        return <>{root_cause}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
 
-    // active_customer
     {
-      title: "Total Customer",
-      dataIndex: "total_customer",
+      title: "Total Ticket",
+      dataIndex: "total_ticket",
       sorter: false,
-      render: (total_customer: any) => {
-        if (total_customer == 0) return <>{total_customer}</>;
-        if (!total_customer) return "-";
-        return <>{total_customer}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // registered_customer
-    {
-      title: "Active Customer",
-      dataIndex: "active_customer",
-      sorter: false,
-      render: (active_customer: any) => {
-        if (active_customer == 0) return <>{active_customer}</>;
-
-        if (!active_customer) return "-";
-
-        return <>{active_customer}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // expired_customer
-    {
-      title: "Registered Customer",
-      dataIndex: "registered_customer",
-      sorter: false,
-      render: (registered_customer: any) => {
-        if (registered_customer == 0) return <>{registered_customer}</>;
-        if (!registered_customer) return "-";
-        return <>{registered_customer}</>;
+      render: (total_ticket: any) => {
+        if (total_ticket == 0) return <>{total_ticket}</>;
+        if (!total_ticket) return "-";
+        return <>{total_ticket}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Expired Customer",
-      dataIndex: "expired_customer",
+      title: "Total Closed By Me",
+      dataIndex: "total_closed_by_me",
       sorter: false,
-      render: (expired_customer: any) => {
-        if (expired_customer == 0) return <>{expired_customer}</>;
-        if (!expired_customer) return "-";
-
-        return <>{expired_customer}</>;
+      render: (total_closed_by_me: any) => {
+        if (total_closed_by_me == 0) return <>{total_closed_by_me}</>;
+        if (!total_closed_by_me) return "-";
+        return <>{total_closed_by_me}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Total Closed In Last 7 Days",
+      dataIndex: "total_closed_in_last_7_days",
+      sorter: false,
+      render: (total_closed_in_last_7_days: any) => {
+        if (total_closed_in_last_7_days == 0)
+          return <>{total_closed_in_last_7_days}</>;
+        if (!total_closed_in_last_7_days) return "-";
+        return <>{total_closed_in_last_7_days}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -191,7 +161,7 @@ const ZoneWiseCardData = () => {
             )}
 
             <TableCard
-              title="Active Customer List(Zone Wise)"
+              title="Customer Complain (Root Cause Wise)"
               hasLink={false}
               addLink=""
               permission=""
@@ -221,4 +191,4 @@ const ZoneWiseCardData = () => {
   );
 };
 
-export default ZoneWiseCardData;
+export default RootWiseComplainSummaryData;

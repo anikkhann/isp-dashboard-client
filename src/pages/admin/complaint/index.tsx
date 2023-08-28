@@ -1,7 +1,8 @@
 import ComplaintLayout from "@/core/layouts/ComplaintLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import MainDashboard from "@/modules/dashboard/MainDashboard";
+import ComplainManagementDashboard from "@/modules/dashboard/ComplainManagementDashboard";
+// import MainDashboard from "@/modules/dashboard/MainDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -15,7 +16,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("complaint.dashboard", "") ? (
-        <MainDashboard />
+        <ComplainManagementDashboard />
       ) : (
         <Forbidden />
       )}

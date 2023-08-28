@@ -94,6 +94,14 @@ const tagsList = [
   {
     label: "Cancel",
     value: "cancel"
+  },
+  {
+    label: "Customer",
+    value: "customer"
+  },
+  {
+    label: "Anik",
+    value: "anik"
   }
 ];
 

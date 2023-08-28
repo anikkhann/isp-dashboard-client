@@ -9,15 +9,15 @@ import React, { useEffect, useState } from "react";
 import { AlignType } from "rc-table/lib/interface";
 import type { ColumnsType } from "antd/es/table";
 
-const ZoneWiseCardData = () => {
+const PackageWiseRevCustomerData = () => {
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
-      `/api/dashboard/get-total-active-customer-zone-inCharge`,
+      `/api/dashboard/get-revenue-customer-package-wise`,
       {
         headers: {
           "Content-Type": "application/json"
@@ -28,7 +28,7 @@ const ZoneWiseCardData = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["dashboard-active-customer-zone-wise-list"],
+    queryKey: ["dashboard-revenue-customer-data-package-wise"],
     queryFn: async () => {
       const response = await fetchData();
       return response;
@@ -84,13 +84,25 @@ const ZoneWiseCardData = () => {
     // },
     // total_customer
     {
-      title: "Zone In Charge",
-      dataIndex: "zone_incharge",
+      title: "Package Name",
+      dataIndex: "package_name",
       sorter: false,
-      render: (zone_incharge: any) => {
-        if (zone_incharge == 0) return <>{zone_incharge}</>;
-        if (!zone_incharge) return "-";
-        return <>{zone_incharge}</>;
+      render: (package_name: any) => {
+        if (package_name == 0) return <>{package_name}</>;
+        if (!package_name) return "-";
+        return <>{package_name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Package Price",
+      dataIndex: "package_price",
+      sorter: false,
+      render: (package_price: any) => {
+        if (package_price == 0) return <>{package_price}</>;
+        if (!package_price) return "-";
+        return <>{package_price}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -124,6 +136,20 @@ const ZoneWiseCardData = () => {
       /* width: "20%", */
       align: "center" as AlignType
     },
+    {
+      title: "Active Customer Revenue",
+      dataIndex: "active_customer_rev",
+      sorter: false,
+      render: (active_customer_rev: any) => {
+        if (active_customer_rev == 0) return <>{active_customer_rev}</>;
+
+        if (!active_customer_rev) return "-";
+
+        return <>{active_customer_rev}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     // expired_customer
     {
       title: "Registered Customer",
@@ -138,6 +164,18 @@ const ZoneWiseCardData = () => {
       align: "center" as AlignType
     },
     {
+      title: "Registered Customer Revenue",
+      dataIndex: "registered_customer_rev",
+      sorter: false,
+      render: (registered_customer_rev: any) => {
+        if (registered_customer_rev == 0) return <>{registered_customer_rev}</>;
+        if (!registered_customer_rev) return "-";
+        return <>{registered_customer_rev}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
       title: "Expired Customer",
       dataIndex: "expired_customer",
       sorter: false,
@@ -146,6 +184,19 @@ const ZoneWiseCardData = () => {
         if (!expired_customer) return "-";
 
         return <>{expired_customer}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Expired Customer Revenue",
+      dataIndex: "expired_customer_rev",
+      sorter: false,
+      render: (expired_customer_rev: any) => {
+        if (expired_customer_rev == 0) return <>{expired_customer_rev}</>;
+        if (!expired_customer_rev) return "-";
+
+        return <>{expired_customer_rev}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -191,7 +242,7 @@ const ZoneWiseCardData = () => {
             )}
 
             <TableCard
-              title="Active Customer List(Zone Wise)"
+              title="Revenue Customer (Package Wise)"
               hasLink={false}
               addLink=""
               permission=""
@@ -221,4 +272,4 @@ const ZoneWiseCardData = () => {
   );
 };
 
-export default ZoneWiseCardData;
+export default PackageWiseRevCustomerData;

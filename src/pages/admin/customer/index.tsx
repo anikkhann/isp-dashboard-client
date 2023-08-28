@@ -1,7 +1,8 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import MainDashboard from "@/modules/dashboard/MainDashboard";
+import CMDashboard from "@/modules/dashboard/CMDashboard";
+// import MainDashboard from "@/modules/dashboard/MainDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -14,11 +15,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customer.dashboard", "") ? (
-        <MainDashboard />
-      ) : (
-        <Forbidden />
-      )}
+      {ability.can("customer.dashboard", "") ? <CMDashboard /> : <Forbidden />}
     </>
   );
 };

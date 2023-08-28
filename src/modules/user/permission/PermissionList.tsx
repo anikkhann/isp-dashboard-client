@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Input, Space, Tag } from "antd";
+import { Button, Card, Col, Input, Space, Tag, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -37,7 +37,7 @@ interface TableParams {
 
 const PermissionList: React.FC = () => {
   const [tableData, setTableData] = useState<DataType[]>([]);
-
+  const { Panel } = Collapse;
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -383,46 +383,107 @@ const PermissionList: React.FC = () => {
           >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space style={{ marginBottom: 16 }}>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Name</b>
-                  </span>
-                  <Input
-                    value={name}
-                    placeholder="Name"
-                    onChange={e => {
-                      setName(e.target.value);
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
                     }}
-                  />
-                </Space>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <span>
-                    <b>Tag</b>
-                  </span>
-                  <Input
-                    value={tag}
-                    placeholder="Tag"
-                    onChange={e => {
-                      setTag(e.target.value);
-                    }}
-                  />
-                </Space>
-
-                <Button
-                  style={{
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "25px",
-                    backgroundColor: "#F15F22",
-                    color: "#ffffff"
-                  }}
-                  onClick={() => {
-                    handleClear();
-                  }}
-                  className="ant-btn  ant-btn-lg"
-                >
-                  Clear filters
-                </Button>
+                  >
+                    <Panel header="Permission List Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Name</b>
+                            </span>
+                            <Input
+                              value={name}
+                              placeholder="Name"
+                              onChange={e => {
+                                setName(e.target.value);
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Tag</b>
+                            </span>
+                            <Input
+                              value={tag}
+                              placeholder="Tag"
+                              onChange={e => {
+                                setTag(e.target.value);
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
               </Space>
               <Table
                 columns={columns}

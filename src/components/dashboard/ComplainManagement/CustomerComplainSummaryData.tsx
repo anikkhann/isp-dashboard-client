@@ -9,15 +9,15 @@ import React, { useEffect, useState } from "react";
 import { AlignType } from "rc-table/lib/interface";
 import type { ColumnsType } from "antd/es/table";
 
-const ZoneWiseCardData = () => {
+const CustomerComplainSummaryData = () => {
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
-      `/api/dashboard/get-total-active-customer-zone-inCharge`,
+      `/api/dashboard/get-customer-complain-type-wise`,
       {
         headers: {
           "Content-Type": "application/json"
@@ -28,7 +28,7 @@ const ZoneWiseCardData = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["dashboard-active-customer-zone-wise-list"],
+    queryKey: ["dashboard-get-customer-complain-type-wise-complain"],
     queryFn: async () => {
       const response = await fetchData();
       return response;
@@ -70,82 +70,39 @@ const ZoneWiseCardData = () => {
       width: "10%",
       align: "center" as AlignType
     },
-    // client
-    // {
-    //   title: "Client",
-    //   dataIndex: "client",
-    //   sorter: false,
-    //   render: (client: any) => {
-    //     if (!client) return "-";
-    //     return <>{client}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // total_customer
     {
-      title: "Zone In Charge",
-      dataIndex: "zone_incharge",
+      title: "Complain Type",
+      dataIndex: "complain_type",
       sorter: false,
-      render: (zone_incharge: any) => {
-        if (zone_incharge == 0) return <>{zone_incharge}</>;
-        if (!zone_incharge) return "-";
-        return <>{zone_incharge}</>;
+      render: (complain_type: any) => {
+        if (complain_type == 0) return <>{complain_type}</>;
+        if (!complain_type) return "-";
+        return <>{complain_type}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
 
-    // active_customer
     {
-      title: "Total Customer",
-      dataIndex: "total_customer",
+      title: "Total Open Ticket",
+      dataIndex: "total_open_ticket",
       sorter: false,
-      render: (total_customer: any) => {
-        if (total_customer == 0) return <>{total_customer}</>;
-        if (!total_customer) return "-";
-        return <>{total_customer}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // registered_customer
-    {
-      title: "Active Customer",
-      dataIndex: "active_customer",
-      sorter: false,
-      render: (active_customer: any) => {
-        if (active_customer == 0) return <>{active_customer}</>;
-
-        if (!active_customer) return "-";
-
-        return <>{active_customer}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // expired_customer
-    {
-      title: "Registered Customer",
-      dataIndex: "registered_customer",
-      sorter: false,
-      render: (registered_customer: any) => {
-        if (registered_customer == 0) return <>{registered_customer}</>;
-        if (!registered_customer) return "-";
-        return <>{registered_customer}</>;
+      render: (total_open_ticket: any) => {
+        if (total_open_ticket == 0) return <>{total_open_ticket}</>;
+        if (!total_open_ticket) return "-";
+        return <>{total_open_ticket}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Expired Customer",
-      dataIndex: "expired_customer",
+      title: "Total Own Open Ticket",
+      dataIndex: "total_own_open_ticket",
       sorter: false,
-      render: (expired_customer: any) => {
-        if (expired_customer == 0) return <>{expired_customer}</>;
-        if (!expired_customer) return "-";
-
-        return <>{expired_customer}</>;
+      render: (total_own_open_ticket: any) => {
+        if (total_own_open_ticket == 0) return <>{total_own_open_ticket}</>;
+        if (!total_own_open_ticket) return "-";
+        return <>{total_own_open_ticket}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -191,7 +148,7 @@ const ZoneWiseCardData = () => {
             )}
 
             <TableCard
-              title="Active Customer List(Zone Wise)"
+              title="Customer Complain Summary"
               hasLink={false}
               addLink=""
               permission=""
@@ -221,4 +178,4 @@ const ZoneWiseCardData = () => {
   );
 };
 
-export default ZoneWiseCardData;
+export default CustomerComplainSummaryData;
