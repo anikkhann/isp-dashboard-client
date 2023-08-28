@@ -142,7 +142,9 @@ const SearchCustomer = () => {
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
+    if (!customerIdParam && !usernameParam && !emailParam && !mobileParam) {
+      return true;
+    }
     const body = {
       meta: {
         limit: limit,
