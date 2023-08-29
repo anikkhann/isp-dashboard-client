@@ -141,7 +141,7 @@ const SmsAlertConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "key",
+      title: "Key",
       dataIndex: "key",
       sorter: true,
       render: (key: any) => {
@@ -155,7 +155,7 @@ const SmsAlertConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "placeholder",
+      title: "Placeholder",
       dataIndex: "placeholder",
       sorter: true,
       render: (placeholder: any) => {
@@ -170,7 +170,7 @@ const SmsAlertConfigList: React.FC = () => {
     },
 
     {
-      title: "subject",
+      title: "Subject",
       dataIndex: "subject",
       sorter: true,
       render: (subject: any) => {
@@ -184,7 +184,7 @@ const SmsAlertConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "template",
+      title: "Template",
       dataIndex: "template",
       sorter: true,
       render: (template: any) => {
@@ -301,7 +301,7 @@ const SmsAlertConfigList: React.FC = () => {
           )}
 
           <TableCard
-            title="client Sms Gateway List"
+            title="Client Sms Gateway List"
             hasLink={true}
             addLink="/admin/notification/sms/client-sms/gateway/create"
             permission="clientsms.create"

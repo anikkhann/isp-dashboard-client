@@ -141,28 +141,28 @@ const SystemSmsTemplateList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "key",
+      title: "Key",
       dataIndex: "key",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "placeholder",
+      title: "Placeholder",
       dataIndex: "placeholder",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "subject",
+      title: "Subject",
       dataIndex: "subject",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "template",
+      title: "Template",
       dataIndex: "template",
       sorter: true,
       width: "20%",

@@ -717,6 +717,17 @@ const CreateBulkSmsForm = () => {
                       onChange={handleCustomerStatusChange}
                       options={customerStatuses}
                       value={selectedCustomerStatus}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -748,6 +759,17 @@ const CreateBulkSmsForm = () => {
                       onChange={handleSubscriptionStatusChange}
                       options={subscriptionStatuses}
                       value={selectedSubscriptionStatus}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -764,7 +786,7 @@ const CreateBulkSmsForm = () => {
               >
                 {/* subject */}
                 <Form.Item
-                  label="subject"
+                  label="Subject"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -797,7 +819,7 @@ const CreateBulkSmsForm = () => {
               >
                 {/* message */}
                 <Form.Item
-                  label="message"
+                  label="Message"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

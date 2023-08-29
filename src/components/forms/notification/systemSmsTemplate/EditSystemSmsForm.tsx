@@ -156,7 +156,7 @@ const EditSystemSmsForm = ({ item }: PropData) => {
               >
                 {/* subject */}
                 <Form.Item
-                  label="subject"
+                  label="Subject"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -189,7 +189,7 @@ const EditSystemSmsForm = ({ item }: PropData) => {
               >
                 {/* key */}
                 <Form.Item
-                  label="key"
+                  label="Key"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -223,7 +223,7 @@ const EditSystemSmsForm = ({ item }: PropData) => {
               >
                 {/* template */}
                 <Form.Item
-                  label="template"
+                  label="Template"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -257,7 +257,7 @@ const EditSystemSmsForm = ({ item }: PropData) => {
               >
                 {/* placeholder */}
                 <Form.Item
-                  label="placeholder"
+                  label="Placeholder"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

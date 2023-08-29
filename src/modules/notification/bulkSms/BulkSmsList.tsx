@@ -165,7 +165,7 @@ const BulkSmsList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Sms Gateway",
+      title: "SMS Gateway",
       dataIndex: "smsGateway",
       sorter: true,
       render: smsGateway => {
@@ -176,14 +176,14 @@ const BulkSmsList: React.FC = () => {
     },
 
     {
-      title: "subject",
+      title: "Subject",
       dataIndex: "subject",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "message",
+      title: "Message",
       dataIndex: "message",
       sorter: true,
       width: "20%",

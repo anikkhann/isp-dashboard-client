@@ -19,7 +19,7 @@ const NewClientSmsTemplate = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/notification">Notification</Link>
+              title: <Link href="/admin/admin/notification">Notification</Link>
             },
             {
               title: "New Template"

@@ -133,7 +133,7 @@ const CreateSystemSmsForm = () => {
               >
                 {/* subject */}
                 <Form.Item
-                  label="subject"
+                  label="Subject"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -166,7 +166,7 @@ const CreateSystemSmsForm = () => {
               >
                 {/* key */}
                 <Form.Item
-                  label="key"
+                  label="Key"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -199,7 +199,7 @@ const CreateSystemSmsForm = () => {
               >
                 {/* template */}
                 <Form.Item
-                  label="template"
+                  label="Template"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -232,7 +232,7 @@ const CreateSystemSmsForm = () => {
               >
                 {/* placeholder */}
                 <Form.Item
-                  label="placeholder"
+                  label="Placeholder"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

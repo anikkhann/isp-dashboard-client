@@ -136,7 +136,7 @@ const ClientSmsTemplateList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "client",
+      title: "Client",
       dataIndex: "client",
       sorter: true,
       render: (client: any) => {
@@ -151,7 +151,7 @@ const ClientSmsTemplateList: React.FC = () => {
     },
 
     {
-      title: "subject",
+      title: "Subject",
       dataIndex: "subject",
       sorter: true,
       render: (subject: any) => {
@@ -165,7 +165,7 @@ const ClientSmsTemplateList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "template",
+      title: "Template",
       dataIndex: "template",
       sorter: true,
       render: (template: any) => {
@@ -284,7 +284,7 @@ const ClientSmsTemplateList: React.FC = () => {
           )}
 
           <TableCard
-            title="client Sms Template List"
+            title="Client Sms Template List"
             hasLink={true}
             addLink="/admin/notification/sms/client-sms/sms-template/create"
             permission="clientsms.create"
