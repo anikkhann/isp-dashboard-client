@@ -198,7 +198,7 @@ const CreateCustomerTicketForm = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
 
@@ -256,6 +256,7 @@ const CreateCustomerTicketForm = () => {
         ]
       },
       body: {
+        complainCategory: "customer",
         isActive: true
       }
     };
@@ -470,6 +471,17 @@ const CreateCustomerTicketForm = () => {
                             onChange={handleCustomerChange}
                             options={customers}
                             value={selectedCustomer}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
                           />
                         </Space>
                       </Form.Item>
@@ -516,6 +528,17 @@ const CreateCustomerTicketForm = () => {
                             onChange={handleComplainTypeChange}
                             options={complainTypes}
                             value={selectedComplainType}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
                           />
                         </Space>
                       </Form.Item>
@@ -678,6 +701,17 @@ const CreateCustomerTicketForm = () => {
                               onChange={handleAssignedToChange}
                               options={assignedTo}
                               value={selectedAssignedTo}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Form.Item>
