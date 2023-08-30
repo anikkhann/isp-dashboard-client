@@ -67,7 +67,7 @@ const CreateClientTemplateForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/notification/sms/client-sms/sms-template");
+              router.replace("/admin/notification/sms/client-sms-template");
             });
           }
         })

@@ -524,7 +524,7 @@ const CreateBulkSmsForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/notification/sms/send-sms-single");
+              router.replace("/admin/notification/sms/send-sms-bulk");
             });
           }
         })

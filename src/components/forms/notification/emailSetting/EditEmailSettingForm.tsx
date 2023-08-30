@@ -134,7 +134,7 @@ const EditEmailSettingForm = ({ item }: PropData) => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/notification/email-setting");
+              router.replace("/admin/notification/email/email-setting");
             });
           }
         })
