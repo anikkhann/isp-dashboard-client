@@ -26,15 +26,36 @@ const UpdateSmsAlertConfig = () => {
             }
           ]}
         />
-
-        <Card
-          title="Update Sms Alert Config"
+        <div
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
+            // border: "1px solid #F15F22",
             textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            Update Sms Alert Config
+          </h1>
+        </div>
+        <Card
+          // title="Update Sms Alert Config"
+          style={{
+            width: "90%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            textAlign: "center",
+            marginTop: "1rem"
           }}
         >
           <UpdateSmsAlertForm />
