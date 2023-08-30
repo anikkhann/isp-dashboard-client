@@ -73,21 +73,21 @@ const notificationRoutes = [
         label: "Client Gateway Setting",
         path: "/admin/notification/sms/client-gateway-setting",
         icon: <SettingOutlined />,
-        permission: "clientsms.list"
+        permission: "clientGatewaySetting.list"
       },
       {
         key: "/admin/notification/sms/client-sms-alert",
         label: "Client SMS Alert",
         path: "/admin/notification/sms/client-sms-alert",
         icon: <SettingOutlined />,
-        permission: "clientsms.list"
+        permission: "clientSmsAlert.list"
       },
       {
         key: "/admin/notification/sms/client-sms-template",
         label: "Client SMS Template",
         path: "/admin/notification/sms/client-sms-template",
         icon: <SettingOutlined />,
-        permission: "clientsms.list"
+        permission: "clientSmsTemplate.list"
       }
     ]
   }
