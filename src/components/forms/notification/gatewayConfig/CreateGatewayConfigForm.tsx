@@ -190,7 +190,7 @@ const CreateGatewayConfigForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/notification/sms/client-sms/gateway");
+              router.replace("/admin/notification/sms/client-gateway-setting");
             });
           }
         })
