@@ -213,7 +213,7 @@ const GatewayConfigList: React.FC = () => {
               {ability.can("clientsms.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link
-                    href={`/admin/notification/sms/client-sms/gateway/${record.id}/edit`}
+                    href={`/admin/notification/sms/client-gateway-setting/${record.id}/edit`}
                   >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
@@ -289,7 +289,7 @@ const GatewayConfigList: React.FC = () => {
           <TableCard
             title="client Sms Gateway List"
             hasLink={true}
-            addLink="/admin/notification/sms/client-sms/gateway/create"
+            addLink="/admin/notification/sms/client-gateway-setting/create"
             permission="clientsms.create"
             style={{
               borderRadius: "10px",

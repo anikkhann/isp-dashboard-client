@@ -1,8 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditSmsAlertConfig from "@/modules/notification/clientSms/smsAlertConfig/EditSmsAlertConfig";
-
+import EditClientSmsTemplate from "@/modules/notification/clientSms/clientSmsTemplate/EditClientSmsTemplate";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/router";
@@ -17,8 +16,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("clientsms.update", "") ? (
-        <EditSmsAlertConfig id={id} />
+      {ability.can("clientSmsTemplate.update", "") ? (
+        <EditClientSmsTemplate id={id} />
       ) : (
         <Forbidden />
       )}

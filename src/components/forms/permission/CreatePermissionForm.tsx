@@ -89,8 +89,16 @@ const tagsList = [
     value: "customer"
   },
   {
-    label: "Anik",
-    value: "anik"
+    label: "Client Gateway Setting",
+    value: "clientGatewaySetting"
+  },
+  {
+    label: "Client Sms Alert",
+    value: "clientSmsAlert"
+  },
+  {
+    label: "Client Sms Template",
+    value: "clientSmsTemplate"
   }
 ];
 

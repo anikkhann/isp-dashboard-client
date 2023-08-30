@@ -1,8 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import SmsAlertConfigList from "@/modules/notification/clientSms/smsAlertConfig/SmsAlertConfigList";
-
+import ClientSmsTemplateList from "@/modules/notification/clientSms/clientSmsTemplate/ClientSmsTemplateList";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
@@ -13,8 +12,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("clientsms.list", "") ? (
-        <SmsAlertConfigList />
+      {ability.can("clientSmsTemplate.list", "") ? (
+        <ClientSmsTemplateList />
       ) : (
         <Forbidden />
       )}

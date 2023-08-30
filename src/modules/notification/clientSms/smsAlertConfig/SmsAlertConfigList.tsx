@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,9 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import ability from "@/services/guard/ability";
-import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
 interface DataType {
   id: number;
   name: string;
@@ -215,29 +212,6 @@ const SmsAlertConfigList: React.FC = () => {
       },
       width: "20%",
       align: "center" as AlignType
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <>
-            <Space size="middle" align="center">
-              {ability.can("clientsms.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link
-                    href={`/admin/notification/sms/client-sms/gateway/${record.id}/edit`}
-                  >
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-            </Space>
-          </>
-        );
-      },
-      align: "center" as AlignType
     }
   ];
 
@@ -301,10 +275,11 @@ const SmsAlertConfigList: React.FC = () => {
           )}
 
           <TableCard
-            title="client Sms Gateway List"
+            title="client Sms Alert List"
             hasLink={true}
-            addLink="/admin/notification/sms/client-sms/gateway/create"
-            permission="clientsms.create"
+            addLink="/admin/notification/sms/client-sms-alert/update"
+            permission="clientSmsAlert.update"
+            btnText="Update All Alert"
             style={{
               borderRadius: "10px",
               padding: "10px",

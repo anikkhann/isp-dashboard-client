@@ -1,12 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Row, Col } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Input,
+  Row,
+  Col,
+  Switch,
+  Space,
+  Select
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
@@ -21,6 +31,13 @@ const CreateSingleSmsForm = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [useTemplate, setUseTemplate] = useState(false);
+  const [templateList, setTemplateList] = useState([]);
+
+  const [templateData, setTemplateData] = useState<any>(null);
+
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
+
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -30,6 +47,71 @@ const CreateSingleSmsForm = () => {
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  const changeTemplate = () => {
+    setUseTemplate(!useTemplate);
+  };
+
+  const handleTemplateChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedTemplate(value as any);
+
+    if (value) {
+      const template = templateData.find((item: any) => item.id == value);
+
+      form.setFieldsValue({ subject: template.subject });
+      form.setFieldsValue({ message: template.template });
+    } else {
+      form.setFieldsValue({ subject: "" });
+      form.setFieldsValue({ message: "" });
+    }
+  };
+
+  function getTemplatesList() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "subject"
+          }
+        ]
+      },
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        isActive: true
+      }
+    };
+    axios.post("/api/client-sms-template/get-list", body).then(res => {
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+      // console.log(data.body)
+
+      setTemplateData(data.body);
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.subject,
+          value: item.id
+        };
+      });
+      setTemplateList(list);
+    });
+  }
+
+  useEffect(() => {
+    getTemplatesList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
@@ -109,6 +191,62 @@ const CreateSingleSmsForm = () => {
             scrollToFirstError
           >
             <Row
+              justify="space-between"
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            >
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+                style={{ textAlign: "left" }}
+              >
+                <Form.Item name="template" label="Use Template">
+                  <Switch checked={useTemplate} onChange={changeTemplate} />
+                </Form.Item>
+              </Col>
+              {useTemplate && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Templates"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleTemplateChange}
+                        options={templateList}
+                        value={selectedTemplate}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+            </Row>
+
+            <Row
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
@@ -145,6 +283,7 @@ const CreateSingleSmsForm = () => {
                   />
                 </Form.Item>
               </Col>
+
               <Col
                 xs={24}
                 sm={12}
