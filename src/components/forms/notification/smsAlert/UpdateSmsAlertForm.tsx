@@ -161,7 +161,12 @@ const UpdateSmsAlertForm = () => {
                         xl={6}
                         xxl={6}
                         className="gutter-row"
-                        style={{ textAlign: "right" }}
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          color: "#0e8fdc"
+                        }}
                       >
                         {item.subject}
                       </Col>
@@ -184,7 +189,11 @@ const UpdateSmsAlertForm = () => {
                           }}
                         >
                           <Col>
-                            <span>Status &nbsp; &nbsp;</span>
+                            <span
+                              style={{ fontWeight: "bold", color: "#F15F22" }}
+                            >
+                              Status &nbsp; &nbsp;
+                            </span>
                             <Switch
                               checked={item.isActive}
                               onChange={() => {

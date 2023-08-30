@@ -150,7 +150,7 @@ const EditClientTemplateForm = ({ item }: PropData) => {
               >
                 {/* subject */}
                 <Form.Item
-                  label="subject"
+                  label="Subject"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -184,7 +184,7 @@ const EditClientTemplateForm = ({ item }: PropData) => {
               >
                 {/* template */}
                 <Form.Item
-                  label="template"
+                  label="Template"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -197,8 +197,8 @@ const EditClientTemplateForm = ({ item }: PropData) => {
                     }
                   ]}
                 >
-                  <Input
-                    type="text"
+                  <Input.TextArea
+                    // type="text"
                     placeholder="template"
                     className={`form-control`}
                     name="template"
