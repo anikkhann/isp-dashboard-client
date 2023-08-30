@@ -212,8 +212,8 @@ const CreateSystemSmsForm = () => {
                     }
                   ]}
                 >
-                  <Input
-                    type="text"
+                  <Input.TextArea
+                    // type="text"
                     placeholder="template"
                     className={`form-control`}
                     name="template"

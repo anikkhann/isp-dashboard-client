@@ -1,25 +1,28 @@
 import { CustomerData } from "@/interfaces/CustomerData";
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card } from "antd";
+import { Row, Col, Card, Button } from "antd";
 import { format } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import axios from "axios";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 interface PropData {
   item: CustomerData;
 }
 
 const Customer = ({ item }: PropData) => {
-  console.log(item);
   const [data, setData] = useState<any>({
     assigned_ip: "",
     connection_status: "",
     nasipaddress: "",
     router_mac: ""
   });
+  const [showRenewButton, setShowRenewButton] = useState<boolean>(false);
 
+  const MySwal = withReactContent(Swal);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -64,12 +67,55 @@ const Customer = ({ item }: PropData) => {
 
     return date;
   }
+  useEffect(() => {
+    if (item?.expirationTime) {
+      const date = new Date(item?.expirationTime);
+      const today = new Date();
+      if (date < today) {
+        setShowRenewButton(true);
+      }
+    }
+  }, [item]);
   const date = new Date(item?.expirationTime);
   const result2 = subOneDay(date);
   const today = new Date();
 
   const isDateGreen = result2 >= today;
   const color = isDateGreen ? "green" : "red";
+
+  async function handleRenew(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Renew customer!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.get(`/api/customer/renew/${id}`);
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.body.message, "success").then(() => {
+            // router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
   return (
     <>
       {isLoading && isFetching && (
@@ -642,7 +688,20 @@ const Customer = ({ item }: PropData) => {
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">
-                      {/* {format(result2, "yyyy-MM-dd")} */}
+                      {showRenewButton && (
+                        <Button
+                          style={{
+                            marginLeft: "auto",
+                            marginRight: "20px",
+                            backgroundColor: "#D61355",
+                            color: "#ffffff",
+                            textAlign: "right"
+                          }}
+                          onClick={() => handleRenew(item?.id)}
+                        >
+                          Renew
+                        </Button>
+                      )}
                     </span>
                   </Col>
                 </Row>
