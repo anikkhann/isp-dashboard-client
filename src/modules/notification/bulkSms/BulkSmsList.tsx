@@ -326,8 +326,8 @@ const BulkSmsList: React.FC = () => {
         ]
       },
       body: {
-        zone: { id: selectedDistributionZone },
-        isActive: true
+        zone: { id: selectedDistributionZone }
+        // isActive: true
       }
     };
 
@@ -368,8 +368,8 @@ const BulkSmsList: React.FC = () => {
         partnerType: "zone",
         client: {
           id: authUser?.partnerId
-        },
-        isActive: true
+        }
+        // isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
@@ -413,8 +413,8 @@ const BulkSmsList: React.FC = () => {
         zoneManager: { id: selectedZoneId },
         client: {
           id: authUser?.partnerId
-        },
-        isActive: true
+        }
+        // isActive: true
       }
     };
 
@@ -455,9 +455,9 @@ const BulkSmsList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "retailer",
+        partnerType: "retailer"
         // subZoneManager: { id: selectedSubZone },
-        isActive: true
+        // isActive: true
       }
     };
 
@@ -497,7 +497,7 @@ const BulkSmsList: React.FC = () => {
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
     axios.post("/api/customer-package/get-list", body).then(res => {
