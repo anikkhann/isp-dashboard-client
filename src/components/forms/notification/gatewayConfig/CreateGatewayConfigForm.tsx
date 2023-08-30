@@ -264,6 +264,17 @@ const CreateGatewayConfigForm = () => {
                       onChange={handleClientChange}
                       options={clients}
                       value={selectedClient}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -295,6 +306,17 @@ const CreateGatewayConfigForm = () => {
                       onChange={handleSmsGatewayChange}
                       options={smsGateways}
                       value={selectedSmsGateway}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -311,7 +333,7 @@ const CreateGatewayConfigForm = () => {
               >
                 {/* credentials */}
                 <Form.Item
-                  label="credentials"
+                  label="Credentials"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

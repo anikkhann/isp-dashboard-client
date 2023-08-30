@@ -21,13 +21,7 @@ const NewSingleSms = () => {
             {
               title: <Link href="/admin/notification">Notification</Link>
             },
-            {
-              title: (
-                <Link href="/admin/notification/sms/send-sms-single">
-                  Single Sms List
-                </Link>
-              )
-            },
+
             {
               title: "New Single Sms"
             }

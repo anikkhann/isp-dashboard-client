@@ -21,13 +21,7 @@ const NewSystemSmsTemplate = () => {
             {
               title: <Link href="/admin/notification">Notification</Link>
             },
-            {
-              title: (
-                <Link href="/admin/notification/sms/system-sms-template">
-                  System SMS Template
-                </Link>
-              )
-            },
+
             {
               title: "New System SMS Template"
             }

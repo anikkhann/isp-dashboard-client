@@ -136,21 +136,21 @@ const SingleSmsList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "mobileNo",
+      title: "Mobile No",
       dataIndex: "mobileNo",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "subject",
+      title: "Subject",
       dataIndex: "subject",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "message",
+      title: "Message",
       dataIndex: "message",
       sorter: true,
       width: "20%",

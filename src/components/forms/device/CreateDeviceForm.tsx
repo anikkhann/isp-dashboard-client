@@ -465,6 +465,114 @@ const CreateDeviceForm = () => {
                   </Space>
                 </Form.Item>
               </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Name!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Name"
+                    className={`form-control`}
+                    name="name"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Distribution Zone"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="distributionZoneId"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Distribution Zone!"
+                    }
+                  ]}
+                >
+                  <Space
+                    style={{ width: "100%", textAlign: "start" }}
+                    direction="vertical"
+                  >
+                    <Select
+                      allowClear
+                      style={{ width: "100%" }}
+                      placeholder="Please select Distribution Zone"
+                      onChange={handleDistributionZoneChange}
+                      options={distributionZones}
+                      value={selectedDistributionZone}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Distribution Pop"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="distributionPopId"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Distribution Pop!"
+                    }
+                  ]}
+                >
+                  <Space
+                    style={{ width: "100%", textAlign: "start" }}
+                    direction="vertical"
+                  >
+                    <Select
+                      allowClear
+                      style={{ width: "100%" }}
+                      placeholder="Please select Distribution Pop"
+                      onChange={handleDistributionPopChange}
+                      options={distributionPops}
+                      value={selectedDistributionPop}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
               {/* secret */}
               {selectedDeviceType == "NAS" && (
                 <Col

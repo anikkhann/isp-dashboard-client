@@ -141,7 +141,7 @@ const GatewayConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "client",
+      title: "Client",
       dataIndex: "client",
       sorter: true,
       render: (client: any) => {
@@ -155,7 +155,7 @@ const GatewayConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "smsGateway",
+      title: "SMS Gateway",
       dataIndex: "smsGateway",
       sorter: true,
       render: (smsGateway: any) => {
@@ -170,7 +170,7 @@ const GatewayConfigList: React.FC = () => {
     },
 
     {
-      title: "credentials",
+      title: "Credentials",
       dataIndex: "credentials",
       sorter: true,
       render: (credentials: any) => {
@@ -287,7 +287,7 @@ const GatewayConfigList: React.FC = () => {
           )}
 
           <TableCard
-            title="client Sms Gateway List"
+            title="Client Sms Gateway List"
             hasLink={true}
             addLink="/admin/notification/sms/client-gateway-setting/create"
             permission="clientsms.create"

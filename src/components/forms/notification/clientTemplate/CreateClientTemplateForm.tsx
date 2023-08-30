@@ -127,7 +127,7 @@ const CreateClientTemplateForm = () => {
               >
                 {/* subject */}
                 <Form.Item
-                  label="subject"
+                  label="Subject"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -142,7 +142,7 @@ const CreateClientTemplateForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="subject"
+                    placeholder="Subject"
                     className={`form-control`}
                     name="subject"
                     style={{ padding: "6px" }}
@@ -161,7 +161,7 @@ const CreateClientTemplateForm = () => {
               >
                 {/* template */}
                 <Form.Item
-                  label="template"
+                  label="Template"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -176,7 +176,7 @@ const CreateClientTemplateForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="template"
+                    placeholder="Template"
                     className={`form-control`}
                     name="template"
                     style={{ padding: "6px" }}

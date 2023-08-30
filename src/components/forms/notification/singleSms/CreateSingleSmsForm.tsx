@@ -261,7 +261,7 @@ const CreateSingleSmsForm = () => {
               >
                 {/* mobileNo */}
                 <Form.Item
-                  label="mobileNo"
+                  label="Mobile No"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -276,7 +276,7 @@ const CreateSingleSmsForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="mobileNo"
+                    placeholder="Mobile No"
                     className={`form-control`}
                     name="mobileNo"
                     style={{ padding: "6px" }}
@@ -295,7 +295,7 @@ const CreateSingleSmsForm = () => {
               >
                 {/* subject */}
                 <Form.Item
-                  label="subject"
+                  label="Subject"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -310,7 +310,7 @@ const CreateSingleSmsForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="subject"
+                    placeholder="Subject"
                     className={`form-control`}
                     name="subject"
                     style={{ padding: "6px" }}
@@ -328,7 +328,7 @@ const CreateSingleSmsForm = () => {
               >
                 {/* message */}
                 <Form.Item
-                  label="message"
+                  label="Message"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -342,7 +342,7 @@ const CreateSingleSmsForm = () => {
                   ]}
                 >
                   <Input.TextArea
-                    placeholder="message"
+                    placeholder="Message"
                     className={`form-control`}
                     name="message"
                     style={{ padding: "6px" }}
