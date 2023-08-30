@@ -201,6 +201,7 @@ const AdminTicketList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         ticketCategory: "parent",
+        rootCauseCategory: "parent",
         complainType: {
           id: complainTypeParams
         },

@@ -202,6 +202,8 @@ const CustomerTicketList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         ticketCategory: "customer",
+        rootCauseCategory: "customer",
+
         complainType: {
           id: complainTypeParams
         },
