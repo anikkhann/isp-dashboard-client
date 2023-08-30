@@ -1,7 +1,7 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import GatewayConfigList from "@/modules/notification/clientSms/gatewayConfig/GatewayConfigList";
+import SmsAlertConfigList from "@/modules/notification/clientSms/smsAlertConfig/SmsAlertConfigList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,8 +13,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("clientsms.view", "") ? (
-        <GatewayConfigList />
+      {ability.can("clientSmsAlert.list", "") ? (
+        <SmsAlertConfigList />
       ) : (
         <Forbidden />
       )}

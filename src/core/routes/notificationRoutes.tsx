@@ -69,34 +69,25 @@ const notificationRoutes = [
         permission: "systemSmsTemplate.list"
       },
       {
-        key: "/admin/notification/sms/client-sms",
-        label: "Client SMS",
-        path: "/admin/notification/sms/client-sms",
+        key: "/admin/notification/sms/client-gateway-setting",
+        label: "Client Gateway Setting",
+        path: "/admin/notification/sms/client-gateway-setting",
         icon: <SettingOutlined />,
-        permission: "clientsms.list",
-        children: [
-          {
-            key: "/admin/notification/sms/client-sms/gateway",
-            label: "Gateway",
-            path: "/admin/notification/sms/client-sms/gateway",
-            icon: <SettingOutlined />,
-            permission: "clientsms.list"
-          },
-          {
-            key: "/admin/notification/sms/client-sms/sms-alert",
-            label: "SMS Alert",
-            path: "/admin/notification/sms/client-sms/sms-alert",
-            icon: <SettingOutlined />,
-            permission: "clientsms.list"
-          },
-          {
-            key: "/admin/notification/sms/client-sms/sms-template",
-            label: "SMS Template",
-            path: "/admin/notification/sms/client-sms/sms-template",
-            icon: <SettingOutlined />,
-            permission: "clientsms.list"
-          }
-        ]
+        permission: "clientsms.list"
+      },
+      {
+        key: "/admin/notification/sms/client-sms-alert",
+        label: "Client SMS Alert",
+        path: "/admin/notification/sms/client-sms-alert",
+        icon: <SettingOutlined />,
+        permission: "clientsms.list"
+      },
+      {
+        key: "/admin/notification/sms/client-sms-template",
+        label: "Client SMS Template",
+        path: "/admin/notification/sms/client-sms-template",
+        icon: <SettingOutlined />,
+        permission: "clientsms.list"
       }
     ]
   }

@@ -208,7 +208,7 @@ const ClientSmsTemplateList: React.FC = () => {
               {ability.can("clientsms.update", "") ? (
                 <Space size="middle" align="center" wrap>
                   <Link
-                    href={`/admin/notification/sms/client-sms/sms-template/${record.id}/edit`}
+                    href={`/admin/notification/sms/client-sms-template/${record.id}/edit`}
                   >
                     <Button type="primary" icon={<EditOutlined />} />
                   </Link>
@@ -286,7 +286,7 @@ const ClientSmsTemplateList: React.FC = () => {
           <TableCard
             title="Client Sms Template List"
             hasLink={true}
-            addLink="/admin/notification/sms/client-sms/sms-template/create"
+            addLink="/admin/notification/sms/client-sms-template/create"
             permission="clientsms.create"
             style={{
               borderRadius: "10px",

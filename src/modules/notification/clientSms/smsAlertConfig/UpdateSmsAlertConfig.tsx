@@ -1,11 +1,11 @@
-import CreateGatewayConfigForm from "@/components/forms/notification/gatewayConfig/CreateGatewayConfigForm";
+import UpdateSmsAlertForm from "@/components/forms/notification/smsAlert/UpdateSmsAlertForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewSmsAlertConfig = () => {
+const UpdateSmsAlertConfig = () => {
   return (
     <>
       <AppRowContainer>
@@ -22,13 +22,13 @@ const NewSmsAlertConfig = () => {
               title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: "New Gateway"
+              title: "Sms Alert Config"
             }
           ]}
         />
 
         <Card
-          title="New Gateway"
+          title="Update Sms Alert Config"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -37,11 +37,11 @@ const NewSmsAlertConfig = () => {
             textAlign: "center"
           }}
         >
-          <CreateGatewayConfigForm />
+          <UpdateSmsAlertForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewSmsAlertConfig;
+export default UpdateSmsAlertConfig;

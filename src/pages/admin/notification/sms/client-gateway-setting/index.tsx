@@ -1,7 +1,8 @@
 import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import NewClientSmsTemplate from "@/modules/notification/clientSms/clientSmsTemplate/NewClientSmsTemplate";
+import GatewayConfigList from "@/modules/notification/clientSms/gatewayConfig/GatewayConfigList";
+
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
@@ -12,8 +13,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("clientsms.create", "") ? (
-        <NewClientSmsTemplate />
+      {ability.can("clientGatewaySetting.list", "") ? (
+        <GatewayConfigList />
       ) : (
         <Forbidden />
       )}

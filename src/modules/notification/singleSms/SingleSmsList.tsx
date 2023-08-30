@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Collapse, Input, Row, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -27,10 +27,14 @@ interface TableParams {
 const SingleSmsList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
 
+  const { Panel } = Collapse;
+
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [selectedMobile, setSelectedMobile] = useState("");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -44,10 +48,10 @@ const SingleSmsList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    mobileParam?: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -63,7 +67,7 @@ const SingleSmsList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        // mobileNo: ""
+        mobileNo: mobileParam
         // subject  : ""
       }
     };
@@ -77,9 +81,15 @@ const SingleSmsList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["send-sms-list", page, limit, order, sort],
+    queryKey: ["send-sms-list", page, limit, order, sort, selectedMobile],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedMobile
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -119,6 +129,10 @@ const SingleSmsList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+
+  const handleClear = () => {
+    setSelectedMobile("");
+  };
 
   const columns: ColumnsType<DataType> = [
     {
@@ -249,11 +263,97 @@ const SingleSmsList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Mobile</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Mobile"
+                              value={selectedMobile}
+                              onChange={e => setSelectedMobile(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
+              </Space>
+
               <Table
                 columns={columns}
                 rowKey={record => record.id}
