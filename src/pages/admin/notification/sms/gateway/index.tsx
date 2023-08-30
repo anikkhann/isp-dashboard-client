@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("smsGateway.view", "") ? <GatewayList /> : <Forbidden />}
+      {ability.can("smsGateway.list", "") ? <GatewayList /> : <Forbidden />}
     </>
   );
 };
