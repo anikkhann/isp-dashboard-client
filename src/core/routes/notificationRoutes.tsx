@@ -17,9 +17,9 @@ const notificationRoutes = [
     permission: "notification.dashboard"
   },
   {
-    key: "/admin/notification/email",
+    key: "email-management",
     label: "Email",
-    path: "/admin/notification/email",
+    path: "email-management",
     icon: <SettingOutlined />,
     permission: "emailNotification.list",
     children: [
@@ -34,9 +34,9 @@ const notificationRoutes = [
   },
 
   {
-    key: "/admin/notification/sms",
+    key: "sms-management",
     label: "SMS",
-    path: "/admin/notification/sms",
+    path: "sms-management",
     icon: <SettingOutlined />,
     permission: "smsNotification.list",
     children: [
