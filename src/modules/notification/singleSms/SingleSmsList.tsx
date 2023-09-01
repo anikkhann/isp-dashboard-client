@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
+import { format } from "date-fns";
 interface DataType {
   id: number;
   mobileNo: string;
@@ -171,20 +172,76 @@ const SingleSmsList: React.FC = () => {
       align: "center" as AlignType
     },
 
+    // {
+    //   title: "Status",
+    //   dataIndex: "isActive",
+    //   sorter: true,
+    //   render: (isActive: any) => {
+    //     return (
+    //       <>
+    //         {isActive ? (
+    //           <Tag color="blue">Active</Tag>
+    //         ) : (
+    //           <Tag color="red">Inactive</Tag>
+    //         )}
+    //       </>
+    //     );
+    //   },
     {
       title: "Status",
-      dataIndex: "isActive",
+      dataIndex: "status",
       sorter: true,
-      render: (isActive: any) => {
+      render: (status: any) => {
+        // let color = "red";
+        // let label = "Failed";
+
+        // if (status === 0) {
+        //   color = "blue";
+        //   label = "Pending";
+        // } else if (status === 1) {
+        //   color = "green";
+        //   label = "Success";
+        // }
+
+        // return <Tag color={color}>{label}</Tag>;
         return (
           <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
+            {status && status == 0 ? (
+              <Tag color="blue">Pending</Tag>
+            ) : status && status == 1 ? (
+              <Tag color="green">Success</Tag>
             ) : (
-              <Tag color="red">Inactive</Tag>
+              <Tag color="red">Failed</Tag>
             )}
           </>
         );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // insertedBy
+    // {
+    //   title: "Action By",
+    //   dataIndex: "CreatedBy",
+    //   sorter: false,
+    //   render: (CreatedBy: any) => {
+    //     if (createdBy == 0) return <>{createdBy}</>;
+    //     if (!CreatedBy) return "-";
+    //     return <>{CreatedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
+    // createdOn
+    {
+      title: "Action Date",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (createdOn == 0) return <>{createdOn}</>;
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
       align: "center" as AlignType

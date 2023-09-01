@@ -174,8 +174,8 @@ const CreateClientTemplateForm = () => {
                     }
                   ]}
                 >
-                  <Input
-                    type="text"
+                  <Input.TextArea
+                    // type="text"
                     placeholder="Template"
                     className={`form-control`}
                     name="template"

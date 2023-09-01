@@ -14,7 +14,7 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
 import { ClientSmsData } from "@/interfaces/ClientSmsData";
-
+import { format } from "date-fns";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -135,20 +135,20 @@ const ClientSmsTemplateList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
-    {
-      title: "Client",
-      dataIndex: "client",
-      sorter: true,
-      render: (client: any) => {
-        return (
-          <>
-            <Space>{client ? client.username : "-"}</Space>
-          </>
-        );
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Client",
+    //   dataIndex: "client",
+    //   sorter: true,
+    //   render: (client: any) => {
+    //     return (
+    //       <>
+    //         <Space>{client ? client.username : "-"}</Space>
+    //       </>
+    //     );
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
 
     {
       title: "Subject",
@@ -218,6 +218,31 @@ const ClientSmsTemplateList: React.FC = () => {
           </>
         );
       },
+      align: "center" as AlignType
+    },
+    // {
+    //   title: "Action By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (insertedBy == 0) return <>{insertedBy}</>;
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
+    {
+      title: "Action Date",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (createdOn == 0) return <>{createdOn}</>;
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
       align: "center" as AlignType
     }
   ];

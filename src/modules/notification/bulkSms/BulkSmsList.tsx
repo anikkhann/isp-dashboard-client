@@ -1,6 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Collapse, Input, Row, Select, Space } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Collapse,
+  Input,
+  Row,
+  Select,
+  Space,
+  Tag
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -11,7 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-
+import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useAppSelector } from "@/store/hooks";
@@ -575,7 +585,7 @@ const BulkSmsList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Distribution Zone",
+      title: "Zone",
       dataIndex: "distributionZone",
       sorter: true,
       render: distributionZone => {
@@ -591,7 +601,7 @@ const BulkSmsList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Distribution Pop",
+      title: "POP",
       dataIndex: "distributionPop",
       sorter: true,
       render: distributionPop => {
@@ -607,11 +617,65 @@ const BulkSmsList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "SMS Gateway",
-      dataIndex: "smsGateway",
+      title: "ZM",
+      dataIndex: "zoneManager",
       sorter: true,
-      render: smsGateway => {
-        return <>{smsGateway && smsGateway.name ? smsGateway.name : "-"}</>;
+      render: zoneManager => {
+        return <>{zoneManager && zoneManager.name ? zoneManager.name : "-"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "SZM",
+      dataIndex: "subZoneManager",
+      sorter: true,
+      render: subZoneManager => {
+        return (
+          <>
+            {subZoneManager && subZoneManager.name ? subZoneManager.name : "-"}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer Package",
+      dataIndex: "customerPackage",
+      sorter: true,
+      render: customerPackage => {
+        return (
+          <>
+            {customerPackage && customerPackage.name
+              ? customerPackage.name
+              : "-"}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer Status",
+      dataIndex: "customerStatus",
+      sorter: true,
+      render: (customerStatus: any) => {
+        if (customerStatus == 0) return <>{customerStatus}</>;
+        if (!customerStatus) return "-";
+        return <>{customerStatus}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Subscription Status",
+      dataIndex: "subscriptionStatus",
+      sorter: true,
+      render: (subscriptionStatus: any) => {
+        if (subscriptionStatus == 0) return <>{subscriptionStatus}</>;
+        if (!subscriptionStatus) return "-";
+        return <>{subscriptionStatus}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -636,7 +700,30 @@ const BulkSmsList: React.FC = () => {
       dataIndex: "status",
       sorter: true,
       render: (status: any) => {
-        return <>{status}</>;
+        return (
+          <>
+            {status && status == "Initial" ? (
+              <Tag color="blue">Pending</Tag>
+            ) : status && status == "processed" ? (
+              <Tag color="green">Processed</Tag>
+            ) : (
+              <Tag color="red">Failed</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Action Date",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (createdOn == 0) return <>{createdOn}</>;
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
       align: "center" as AlignType

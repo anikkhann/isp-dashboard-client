@@ -26,7 +26,7 @@ interface TableParams {
 
 const SmsAlertConfigList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
-
+  console.log(data);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -138,19 +138,33 @@ const SmsAlertConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Key",
-      dataIndex: "key",
+      title: "Subject",
+      dataIndex: "subject",
       sorter: true,
-      render: (key: any) => {
+      render: (subject: any) => {
         return (
           <>
-            <Space>{key}</Space>
+            <Space>{subject}</Space>
           </>
         );
       },
       width: "20%",
       align: "center" as AlignType
     },
+    // {
+    //   title: "Key",
+    //   dataIndex: "key",
+    //   sorter: true,
+    //   render: (key: any) => {
+    //     return (
+    //       <>
+    //         <Space>{key}</Space>
+    //       </>
+    //     );
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Placeholder",
       dataIndex: "placeholder",
@@ -166,20 +180,6 @@ const SmsAlertConfigList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    {
-      title: "Subject",
-      dataIndex: "subject",
-      sorter: true,
-      render: (subject: any) => {
-        return (
-          <>
-            <Space>{subject}</Space>
-          </>
-        );
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
     {
       title: "Template",
       dataIndex: "template",
@@ -275,7 +275,7 @@ const SmsAlertConfigList: React.FC = () => {
           )}
 
           <TableCard
-            title="client Sms Alert List"
+            title="Client Sms Alert List"
             hasLink={true}
             addLink="/admin/notification/sms/client-sms-alert/update"
             permission="clientSmsAlert.update"

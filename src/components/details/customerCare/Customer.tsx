@@ -8,7 +8,7 @@ import axios from "axios";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import { useRouter } from "next/router";
 interface PropData {
   item: CustomerData;
 }
@@ -21,7 +21,7 @@ const Customer = ({ item }: PropData) => {
     router_mac: ""
   });
   const [showRenewButton, setShowRenewButton] = useState<boolean>(false);
-
+  const router = useRouter();
   const MySwal = withReactContent(Swal);
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -99,7 +99,43 @@ const Customer = ({ item }: PropData) => {
         const { data } = await axios.get(`/api/customer/renew/${id}`);
         if (data.status === 200) {
           MySwal.fire("Success!", data.body.message, "success").then(() => {
-            // router.reload();
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
+  async function handleDisconnect(username: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Disconnect customer!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.get(
+          `/api/customer/disconnect/${username}`
+        );
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.body.message, "success").then(() => {
+            router.reload();
+            // window.location.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
@@ -688,7 +724,43 @@ const Customer = ({ item }: PropData) => {
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">
-                      {showRenewButton && (
+                      {showRenewButton === true ? (
+                        <>
+                          <span
+                            style={{
+                              fontWeight: "bold",
+                              color: "red",
+                              margin: "5px"
+                            }}
+                          >
+                            Expired
+                          </span>
+                          <Button
+                            style={{
+                              marginLeft: "auto",
+                              marginRight: "20px",
+                              backgroundColor: "#D61355",
+                              color: "#ffffff",
+                              textAlign: "right"
+                            }}
+                            onClick={() => handleRenew(item?.id)}
+                          >
+                            Renew
+                          </Button>
+                        </>
+                      ) : (
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            color: "green",
+                            margin: "5px"
+                          }}
+                        >
+                          Registered
+                        </span>
+                      )}
+                      {/* {showRenewButton == true && (
+                       
                         <Button
                           style={{
                             marginLeft: "auto",
@@ -701,7 +773,7 @@ const Customer = ({ item }: PropData) => {
                         >
                           Renew
                         </Button>
-                      )}
+                      )} */}
                     </span>
                   </Col>
                 </Row>
@@ -768,9 +840,32 @@ const Customer = ({ item }: PropData) => {
                             : "red"
                       }}
                     >
-                      {data && data.connection_status == "Online"
-                        ? "Online"
-                        : "Offline"}
+                      {data && data.connection_status == "Online" ? (
+                        <>
+                          <span
+                            style={{
+                              fontWeight: "bold",
+                              // color: "red",
+                              margin: "5px"
+                            }}
+                          >
+                            Online
+                          </span>
+                          <Button
+                            style={{
+                              marginLeft: "auto",
+                              marginRight: "20px",
+                              backgroundColor: "#F94A29",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => handleDisconnect(item?.username)}
+                          >
+                            Disconnect
+                          </Button>
+                        </>
+                      ) : (
+                        "Offline"
+                      )}
                     </span>
                   </Col>
                 </Row>

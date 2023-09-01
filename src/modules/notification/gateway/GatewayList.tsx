@@ -144,7 +144,7 @@ const GatewayList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "baseUrl",
+      title: "Base Url",
       dataIndex: "baseUrl",
       sorter: true,
       width: "20%",
