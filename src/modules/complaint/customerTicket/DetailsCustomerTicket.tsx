@@ -116,7 +116,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
 
     const body = {
       body: {
-        ticketCategory: item?.ticketCategory,
+        rootCauseCategory: item?.ticketCategory,
         isActive: true
       }
     };
@@ -129,7 +129,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
     });
     setRootCauseList(list);
   };
-
+  console.log(item);
   const getAssignedTo = async () => {
     // console.log("selectedCustomer", selectedCustomer)
     const res = await axios.get(

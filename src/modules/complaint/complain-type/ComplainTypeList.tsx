@@ -14,6 +14,7 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
+import { useAppSelector } from "@/store/hooks";
 interface DataType {
   id: number;
   name: string;
@@ -30,7 +31,7 @@ interface TableParams {
 
 const ComplainTypeList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -137,6 +138,22 @@ const ComplainTypeList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+
+    {
+      title: "Complain Category",
+      dataIndex: "complainCategory",
+      sorter: true,
+      render: (complainCategory: any) => {
+        return (
+          <>
+            {authUser && authUser.userType != "durjoy" ? complainCategory : "-"}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
     {
       title: "Complain Type",
       dataIndex: "name",
@@ -144,13 +161,6 @@ const ComplainTypeList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    // {
-    //   title: "Complain Category",
-    //   dataIndex: "complainCategory",
-    //   sorter: true,
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
 
     {
       title: "Status",

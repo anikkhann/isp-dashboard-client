@@ -8,10 +8,12 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { AlignType } from "rc-table/lib/interface";
 import type { ColumnsType } from "antd/es/table";
+import Link from "next/link";
+import ability from "@/services/guard/ability";
 
 const LatestComplainData = () => {
   const [data, setData] = useState<any[]>([]);
-
+  console.log(data);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -70,27 +72,39 @@ const LatestComplainData = () => {
       width: "10%",
       align: "center" as AlignType
     },
-    {
-      title: "ID",
-      dataIndex: "id",
-      sorter: false,
-      render: (id: any) => {
-        if (id == 0) return <>{id}</>;
-        if (!id) return "-";
-        return <>{id}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "ID",
+    //   dataIndex: "id",
+    //   sorter: false,
+    //   render: (id: any) => {
+    //     if (id == 0) return <>{id}</>;
+    //     if (!id) return "-";
+    //     return <>{id}</>;
+    //   },
+    //    width: "20%",
+    //   align: "center" as AlignType
+    // },
 
     {
       title: "Ticket No",
       dataIndex: "ticket_no",
       sorter: false,
-      render: (ticket_no: any) => {
+      render: (ticket_no: any, record) => {
         if (ticket_no == 0) return <>{ticket_no}</>;
         if (!ticket_no) return "-";
-        return <>{ticket_no}</>;
+        return (
+          <>
+            {/* {ticket_no} */}{" "}
+            {ability.can("customerTicket.view", "") ? (
+              <Space size="middle" align="center" wrap className="mx-1">
+                <Link href={`/admin/complaint/customer-ticket/${record.id}`}>
+                  {ticket_no}
+                  {/* <Button type="primary" icon={<EyeOutlined />} /> */}
+                </Link>
+              </Space>
+            ) : null}
+          </>
+        );
       },
       /* width: "20%", */
       align: "center" as AlignType

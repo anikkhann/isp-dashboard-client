@@ -15,7 +15,7 @@ import Link from "next/link";
 import { EditOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { RootCauseData } from "@/interfaces/RootCauseData";
-
+import { useAppSelector } from "@/store/hooks";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -25,7 +25,7 @@ interface TableParams {
 
 const RootCauseList: React.FC = () => {
   const [data, setData] = useState<RootCauseData[]>([]);
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -139,14 +139,23 @@ const RootCauseList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    /* 
+
     {
-      title: "Root Cause Category",
+      title: "Category",
       dataIndex: "rootCauseCategory",
+      render: (rootCauseCategory: any) => {
+        return (
+          <>
+            {authUser && authUser.userType != "durjoy"
+              ? rootCauseCategory
+              : "-"}
+          </>
+        );
+      },
       sorter: true,
       width: "20%",
       align: "center" as AlignType
-    }, */
+    },
 
     {
       title: "Status",

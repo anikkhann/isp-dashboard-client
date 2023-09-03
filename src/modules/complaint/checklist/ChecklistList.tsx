@@ -15,7 +15,7 @@ import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { ChecklistData } from "@/interfaces/ChecklistData";
-
+import { useAppSelector } from "@/store/hooks";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -28,6 +28,7 @@ interface TableParams {
 
 const ChecklistList: React.FC = () => {
   const [data, setData] = useState<ChecklistData[]>([]);
+  const authUser = useAppSelector(state => state.auth.user);
   const { Panel } = Collapse;
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -209,6 +210,7 @@ const ChecklistList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+
     {
       title: "Complain Type",
       dataIndex: "complainType",
@@ -219,7 +221,23 @@ const ChecklistList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    {
+      title: "Complain Category",
+      dataIndex: "complainCategory",
 
+      render: (complainCategory, row) => {
+        return (
+          <>
+            {authUser && authUser.userType != "durjoy"
+              ? row.complainType.complainCategory
+              : "-"}
+          </>
+        );
+      },
+      sorter: false,
+      width: "20%",
+      align: "center" as AlignType
+    },
     {
       title: "Check List",
       dataIndex: "title",

@@ -119,7 +119,7 @@ const DetailsAdminTicket = ({ id }: any) => {
 
     const body = {
       body: {
-        ticketCategory: item?.ticketCategory,
+        rootCauseCategory: item?.ticketCategory,
         isActive: true
       }
     };

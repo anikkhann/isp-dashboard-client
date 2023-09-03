@@ -21,10 +21,20 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useAppSelector } from "@/store/hooks";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import { Space, Select } from "antd";
 interface FormData {
   title: string;
 }
-
+const complainCategoryList = [
+  {
+    label: "Parent",
+    value: "parent"
+  },
+  {
+    label: "Customer",
+    value: "customer"
+  }
+];
 const CreateRootCauseForm = () => {
   const [form] = Form.useForm();
 
@@ -49,14 +59,19 @@ const CreateRootCauseForm = () => {
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
-
+  const handleCategoryChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ complainCategory: value });
+    setSelectCategory(value as any);
+  };
   useEffect(() => {
     if (authUser) {
       if (authUser.userType == "durjoy") {
         setSelectCategory("parent");
-      } else {
-        setSelectCategory("customer");
       }
+      // else {
+      //   setSelectCategory("customer");
+      // }
     }
   }, [authUser]);
 
@@ -137,6 +152,54 @@ const CreateRootCauseForm = () => {
             scrollToFirstError
           >
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              {authUser && authUser.userType != "durjoy" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Complain Category"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="complainCategory"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Complain Category"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Complain Category"
+                        onChange={handleCategoryChange}
+                        options={complainCategoryList}
+                        value={selectCategory}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
               <Col
                 xs={24}
                 sm={12}
@@ -148,7 +211,7 @@ const CreateRootCauseForm = () => {
               >
                 {/* title */}
                 <Form.Item
-                  label="Title"
+                  label="Root Cause"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -157,13 +220,13 @@ const CreateRootCauseForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Title!"
+                      message: "Please input your Root Cause!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Title"
+                    placeholder="Root Cause"
                     className={`form-control`}
                     name="title"
                     style={{ padding: "6px" }}

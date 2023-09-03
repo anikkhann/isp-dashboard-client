@@ -6,7 +6,17 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input, Row, Col } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Row,
+  Col,
+  Space,
+  Select
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useAppSelector } from "@/store/hooks";
@@ -17,7 +27,16 @@ interface FormData {
   latitude: string;
   longitude: string;
 }
-
+const complainCategoryList = [
+  {
+    label: "Customer",
+    value: "customer"
+  },
+  {
+    label: "Parent",
+    value: "parent"
+  }
+];
 const CreateComplainTypeForm = () => {
   const [form] = Form.useForm();
 
@@ -43,13 +62,20 @@ const CreateComplainTypeForm = () => {
     setIsActive(e.target.checked ? true : false);
   };
 
+  const handleCategoryChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ complainCategory: value });
+    setSelectComplainCategory(value as any);
+  };
+
   useEffect(() => {
     if (authUser) {
       if (authUser.userType == "durjoy") {
         setSelectComplainCategory("parent");
-      } else {
-        setSelectComplainCategory("customer");
       }
+      // else {
+      //   setSelectComplainCategory("customer");
+      // }
     }
   }, [authUser]);
 
@@ -128,6 +154,55 @@ const CreateComplainTypeForm = () => {
             scrollToFirstError
           >
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              {authUser && authUser.userType != "durjoy" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Complain Category"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="complainCategory"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Complain Category"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Complain Category"
+                        onChange={handleCategoryChange}
+                        options={complainCategoryList}
+                        value={selectComplainCategory}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
               <Col
                 xs={24}
                 sm={12}
