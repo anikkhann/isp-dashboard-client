@@ -198,6 +198,19 @@ const ClientSmsTemplateList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (createdOn == 0) return <>{createdOn}</>;
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Action",
       dataIndex: "action",
       sorter: false,
@@ -219,7 +232,7 @@ const ClientSmsTemplateList: React.FC = () => {
         );
       },
       align: "center" as AlignType
-    },
+    }
     // {
     //   title: "Action By",
     //   dataIndex: "insertedBy",
@@ -232,19 +245,6 @@ const ClientSmsTemplateList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
-    {
-      title: "Action Date",
-      dataIndex: "createdOn",
-      sorter: false,
-      render: (createdOn: any) => {
-        if (createdOn == 0) return <>{createdOn}</>;
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    }
   ];
 
   const handleTableChange = (

@@ -25,6 +25,7 @@ interface TableParams {
 
 const CustomerTicketList: React.FC = () => {
   const [data, setData] = useState<TicketData[]>([]);
+
   const { Panel } = Collapse;
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -316,6 +317,16 @@ const CustomerTicketList: React.FC = () => {
       dataIndex: "ticketNo",
       sorter: true,
       width: 200,
+      align: "center" as AlignType
+    },
+    {
+      title: "Username",
+      dataIndex: "customer",
+      render: (customer, row) => {
+        return <>{row.customer.name}</>;
+      },
+      sorter: false,
+      width: 400,
       align: "center" as AlignType
     },
     {

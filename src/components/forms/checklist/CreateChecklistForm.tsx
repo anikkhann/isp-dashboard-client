@@ -20,10 +20,20 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import { useAppSelector } from "@/store/hooks";
 interface FormData {
   title: string;
 }
-
+const complainCategoryList = [
+  {
+    label: "Parent",
+    value: "parent"
+  },
+  {
+    label: "Customer",
+    value: "customer"
+  }
+];
 const CreateChecklistForm = () => {
   const [form] = Form.useForm();
 
@@ -31,12 +41,14 @@ const CreateChecklistForm = () => {
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [isActive, setIsActive] = useState(true);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
+  const [selectComplainCategory, setSelectComplainCategory] =
+    useState<any>(null);
   const [categories, setCategories] = useState<any>([]);
   const [selectCategory, setSelectCategory] = useState<any>(null);
 
@@ -46,14 +58,18 @@ const CreateChecklistForm = () => {
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
-
+  const handleCategoryChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ complainCategory: value });
+    setSelectComplainCategory(value as any);
+  };
   const handleChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ complainTypeId: value });
     setSelectCategory(value as any);
   };
 
-  function getCategories() {
+  function getCategories(selectComplainCategory: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -65,6 +81,7 @@ const CreateChecklistForm = () => {
         ]
       },
       body: {
+        complainCategory: selectComplainCategory,
         isActive: true
       }
     };
@@ -93,15 +110,31 @@ const CreateChecklistForm = () => {
     });
   }
 
+  // useEffect(() => {
+  //   getCategories();
+  // }, []);
   useEffect(() => {
-    getCategories();
-  }, []);
+    if (selectComplainCategory) {
+      getCategories(selectComplainCategory);
+    }
+  }, [selectComplainCategory]);
 
+  useEffect(() => {
+    if (authUser) {
+      if (authUser.userType == "durjoy") {
+        setSelectComplainCategory("parent");
+      }
+      // else {
+      //   setSelectComplainCategory("customer");
+      // }
+    }
+  }, [authUser]);
   const onSubmit = (data: FormData) => {
     setLoading(true);
     const { title } = data;
 
     const formData = {
+      complainCategory: selectComplainCategory,
       complainTypeId: selectCategory,
       title: title,
       isActive: isActive
@@ -164,6 +197,7 @@ const CreateChecklistForm = () => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
+              complainCategory: "",
               complainTypeId: "",
               name: ""
             }}
@@ -183,10 +217,59 @@ const CreateChecklistForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Complain Category"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="complainCategory"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Complain Category"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Complain Category"
+                      onChange={handleCategoryChange}
+                      options={complainCategoryList}
+                      value={selectComplainCategory}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              {/* {authUser && authUser.userType != "durjoy" && (
+                
+              )} */}
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* complainTypeId */}
@@ -212,6 +295,17 @@ const CreateChecklistForm = () => {
                       onChange={handleChange}
                       options={categories}
                       value={selectCategory}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -219,10 +313,10 @@ const CreateChecklistForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* title */}
@@ -249,6 +343,15 @@ const CreateChecklistForm = () => {
                   />
                 </Form.Item>
               </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              ></Col>
             </Row>
 
             {/* status */}

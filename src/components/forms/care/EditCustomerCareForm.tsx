@@ -162,7 +162,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
   const [smsAlert, setSmsAlert] = useState(true);
   const [emailAlert, setEmailAlert] = useState(true);
 
-  const [selectedIpMode, setSelectedIpMode] = useState("nas");
+  const [selectedIpMode, setSelectedIpMode] = useState(null);
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
@@ -602,6 +602,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
         simultaneousUser: item.simultaneousUser,
         ipMode: item.ipMode,
         staticIp: item.staticIp,
+
         referenceType: item.referenceType,
         referrerName: item.referrerName,
         connectionType: item.connectionType,
@@ -673,7 +674,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
         });
         setSelectedCustomerPackage(item.customerPackageId);
       }
-
+      setSelectedIpMode(item.ipMode);
       setSelectedReferenceType(item.referenceType);
       setSelectedConnectionType(item.connectionType);
       setSelectedFiberOpticDeviceType(item.fiberOpticDeviceType);

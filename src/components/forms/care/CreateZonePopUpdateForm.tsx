@@ -209,7 +209,7 @@ const CreateZonePopUpdateForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace(`/admin/customer-mac-bind-or-remove`);
+              router.replace(`/admin/customer-zone-or-pop-update`);
             });
           }
         })
