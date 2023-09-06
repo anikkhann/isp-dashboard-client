@@ -1107,6 +1107,7 @@ const ClientList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}

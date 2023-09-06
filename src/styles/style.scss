@@ -106,8 +106,13 @@ a {
 //     background-color: #0e8fdc !important;
 //     color:#F4F7FE !important;
 // }
-
 .is-invalid {
   border-color: #dc3545 !important;
   background-image: none !important;
+}
+.table-striped-rows tr:nth-child(2n) td {
+  background-color: #fbfbfb;
+}
+.table-striped-rows thead {
+  background-color: #f1f1f1;
 }
