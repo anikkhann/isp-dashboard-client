@@ -153,7 +153,6 @@ const ComplainTypeList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-
     {
       title: "Complain Type",
       dataIndex: "name",

@@ -229,6 +229,17 @@ const EditChecklistForm = ({ item }: PropData) => {
                       onChange={handleChange}
                       options={categories}
                       value={selectCategory}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>

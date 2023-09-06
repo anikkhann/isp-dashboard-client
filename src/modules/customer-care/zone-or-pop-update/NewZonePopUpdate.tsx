@@ -20,7 +20,11 @@ const NewZonePopUpdate = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/customer-care">Customer Care</Link>
+              title: (
+                <Link href="/admin/customer-zone-or-pop-update">
+                  Zone POP Update List
+                </Link>
+              )
             },
             {
               title: "Zone POP Update"
