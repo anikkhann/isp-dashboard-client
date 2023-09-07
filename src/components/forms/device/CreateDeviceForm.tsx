@@ -575,7 +575,7 @@ const CreateDeviceForm = () => {
                   className="gutter-row"
                 >
                   <Form.Item
-                    label="Distribution Pop"
+                    label="Distribution POP"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -584,7 +584,7 @@ const CreateDeviceForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please select Distribution Pop!"
+                        message: "Please select Distribution POP!"
                       }
                     ]}
                   >
@@ -595,7 +595,7 @@ const CreateDeviceForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%" }}
-                        placeholder="Please select Distribution Pop"
+                        placeholder="Please select Distribution POP"
                         onChange={handleDistributionPopChange}
                         options={distributionPops}
                         value={selectedDistributionPop}
@@ -1559,7 +1559,7 @@ const CreateDeviceForm = () => {
                 >
                   <Form.Item
                     name="snmpVersion"
-                    label="Snmp Version"
+                    label="SNMP Version"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -1567,7 +1567,7 @@ const CreateDeviceForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Snmp Version!"
+                        message: "Please input your SNMP Version!"
                       }
                     ]}
                   >
@@ -1595,7 +1595,7 @@ const CreateDeviceForm = () => {
                 >
                   <Form.Item
                     name="snmpCommunity"
-                    label="Snmp Community"
+                    label="SNMP Community"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -1603,7 +1603,7 @@ const CreateDeviceForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Snmp Community!"
+                        message: "Please input your SNMP Community!"
                       }
                     ]}
                   >

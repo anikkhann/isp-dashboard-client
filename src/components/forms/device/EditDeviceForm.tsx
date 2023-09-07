@@ -597,7 +597,7 @@ const EditDeviceForm = ({ item }: any) => {
                   className="gutter-row"
                 >
                   <Form.Item
-                    label="Distribution Pop"
+                    label="Distribution POP"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -614,7 +614,7 @@ const EditDeviceForm = ({ item }: any) => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Distribution Pop"
+                        placeholder="Please select Distribution POP"
                         onChange={handleDistributionPopChange}
                         options={distributionPops}
                         value={selectedDistributionPop}
@@ -1531,7 +1531,7 @@ const EditDeviceForm = ({ item }: any) => {
                 >
                   <Form.Item
                     name="snmpPortNo"
-                    label="Snmp Port No"
+                    label="SNMP Port No"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -1539,13 +1539,13 @@ const EditDeviceForm = ({ item }: any) => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Snmp Port No!"
+                        message: "Please input your SNMP Port No!"
                       }
                     ]}
                   >
                     <Input
                       type="text"
-                      placeholder="Snmp Port No"
+                      placeholder="SNMP Port No"
                       className={`form-control`}
                       name="snmpPortNo"
                       style={{ padding: "6px" }}
@@ -1566,7 +1566,7 @@ const EditDeviceForm = ({ item }: any) => {
                 >
                   <Form.Item
                     name="snmpVersion"
-                    label="Snmp Version"
+                    label="SNMP Version"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -1574,13 +1574,13 @@ const EditDeviceForm = ({ item }: any) => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Snmp Version!"
+                        message: "Please input your SNMP Version!"
                       }
                     ]}
                   >
                     <Input
                       type="text"
-                      placeholder="Snmp Version"
+                      placeholder="SNMP Version"
                       className={`form-control`}
                       name="snmpVersion"
                       style={{ padding: "6px" }}
@@ -1601,7 +1601,7 @@ const EditDeviceForm = ({ item }: any) => {
                 >
                   <Form.Item
                     name="snmpCommunity"
-                    label="Snmp Community"
+                    label="SNMP Community"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -1609,13 +1609,13 @@ const EditDeviceForm = ({ item }: any) => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Snmp Community!"
+                        message: "Please input your SNMP Community!"
                       }
                     ]}
                   >
                     <Input
                       type="text"
-                      placeholder="Snmp Community"
+                      placeholder="SNMP Community"
                       className={`form-control`}
                       name="snmpCommunity"
                       style={{ padding: "6px" }}
