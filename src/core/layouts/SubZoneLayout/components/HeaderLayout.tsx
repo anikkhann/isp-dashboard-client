@@ -44,7 +44,7 @@ const items: MenuProps["items"] = [
   {
     key: "1",
     label: (
-      <Link href="/">
+      <Link href="/admin/profile">
         <Space>
           <UserOutlined />
           Profile
@@ -58,7 +58,7 @@ const items: MenuProps["items"] = [
   {
     key: "2",
     label: (
-      <Link href="/">
+      <Link href="/admin/change-password">
         <Space>
           <ControlOutlined />
           Change Password

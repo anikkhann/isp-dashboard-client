@@ -33,7 +33,7 @@ const UserInfo = () => {
   const items = [
     {
       key: 1,
-      label: <div onClick={() => router.push("/my-profile")}>My Profile</div>
+      label: <div onClick={() => router.push("/admin/profile")}>My Profile</div>
     },
     {
       key: 2,
