@@ -13,8 +13,8 @@ const DetailsProfileData = ({ item }: PropData) => {
       <Col
         xs={24}
         sm={24}
-        md={24}
-        lg={24}
+        md={12}
+        lg={12}
         xl={12}
         xxl={12}
         className="gutter-row"
@@ -99,7 +99,7 @@ const DetailsProfileData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">partnerIp :</span>
+                <span className="font-bold text-base">Partner Ip :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.partnerIp}</span>
@@ -118,14 +118,14 @@ const DetailsProfileData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">partnerUsername :</span>
+                <span className="font-bold text-base">Partner Username :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.partnerUsername}</span>
               </Col>
             </Row>
 
-            <Row
+            {/* <Row
               style={{
                 marginTop: "2px"
               }}
@@ -137,12 +137,12 @@ const DetailsProfileData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">userName :</span>
+                <span className="font-bold text-base">User Name :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.userName}</span>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row
               style={{
@@ -156,7 +156,7 @@ const DetailsProfileData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">userType :</span>
+                <span className="font-bold text-base">User Type :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.userType}</span>
