@@ -280,7 +280,8 @@ const SystemSmsTemplateList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto"
+              overflowX: "auto",
+              backgroundColor: "#d5dfe6"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
@@ -290,6 +291,7 @@ const SystemSmsTemplateList: React.FC = () => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}

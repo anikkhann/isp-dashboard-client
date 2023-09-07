@@ -191,6 +191,7 @@ const RetailerWiseCardData = () => {
               <Space direction="vertical" style={{ width: "100%" }}>
                 {/* {data && data.length != 0 && ( */}
                 <Table
+                  className={"table-striped-rows"}
                   columns={columns}
                   rowKey={record => record.client}
                   dataSource={data}

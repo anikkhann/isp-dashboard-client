@@ -591,6 +591,7 @@ const SearchPackageList = () => {
 
           {data && data.length > 0 ? (
             <Table
+              className={"table-striped-rows"}
               style={{ overflow: "scroll" }}
               columns={columns}
               rowKey={record => record.id}

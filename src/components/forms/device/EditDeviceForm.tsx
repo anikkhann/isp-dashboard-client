@@ -33,6 +33,7 @@ interface FormData {
   mac: string;
   brandName: string;
   oltType: any;
+  oltVendor: any;
   totalEitherPort: string;
   totalPonPort: string;
   apiPort: string;
@@ -104,6 +105,20 @@ const oltTypesList = [
     value: "XPON"
   }
 ];
+const oltVendorList = [
+  {
+    label: "VSOL",
+    value: "VSOL"
+  },
+  {
+    label: "C-DATA",
+    value: "C-DATA"
+  },
+  {
+    label: "Others",
+    value: "Others"
+  }
+];
 
 const EditDeviceForm = ({ item }: any) => {
   const [form] = Form.useForm();
@@ -121,6 +136,7 @@ const EditDeviceForm = ({ item }: any) => {
   const [selectedDeviceType, setSelectedDeviceType] = useState(null);
   const [selectedMonitoringType, setSelectedMonitoringType] = useState(null);
   const [selectedOltType, setSelectedOltType] = useState(null);
+  const [selectedVendorType, setSelectedVendorType] = useState(null);
 
   const [distributionZones, setDistributionZones] = useState<any[]>([]);
   const [selectedDistributionZone, setSelectedDistributionZone] =
@@ -154,7 +170,12 @@ const EditDeviceForm = ({ item }: any) => {
     form.setFieldsValue({ oltType: value });
     setSelectedOltType(value as any);
   };
+  const handleVendorTypeChange = (value: any) => {
+    // console.log("checked = ", value);
 
+    form.setFieldsValue({ oltVendor: value });
+    setSelectedVendorType(value as any);
+  };
   const handleDistributionZoneChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ distributionZoneId: value });
@@ -274,6 +295,7 @@ const EditDeviceForm = ({ item }: any) => {
         mac: item.mac,
         brandName: item.brandName,
         oltType: item.oltType,
+        oltVendor: item.oltVendor,
         totalEitherPort: item.totalEitherPort,
         totalPonPort: item.totalPonPort,
         apiPort: item.apiPort,
@@ -294,6 +316,7 @@ const EditDeviceForm = ({ item }: any) => {
       setSelectedDeviceType(item.deviceType);
       setSelectedMonitoringType(item.monitoringType);
       setSelectedOltType(item.oltType);
+      setSelectedVendorType(item.oltVendor);
       setSelectedDistributionZone(item.distributionZoneId);
       setSelectedDistributionPop(item.distributionPopId);
     }
@@ -315,6 +338,7 @@ const EditDeviceForm = ({ item }: any) => {
       mac,
       brandName,
       oltType,
+      oltVendor,
       totalEitherPort,
       totalPonPort,
       apiPort,
@@ -344,6 +368,7 @@ const EditDeviceForm = ({ item }: any) => {
       mac: mac,
       brandName: brandName,
       oltType: oltType,
+      oltVendor: oltVendor,
       totalEitherPort: totalEitherPort,
       totalPonPort: totalPonPort,
       apiPort: apiPort,
@@ -426,6 +451,7 @@ const EditDeviceForm = ({ item }: any) => {
               mac: "",
               brandName: "",
               oltType: "",
+              oltVendor: "",
               totalEitherPort: "",
               totalPonPort: "",
               apiPort: "",
@@ -488,108 +514,116 @@ const EditDeviceForm = ({ item }: any) => {
                   </Space>
                 </Form.Item>
               </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Name!"
-                    }
-                  ]}
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
+                  <Form.Item
+                    label="Name"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
                     name="name"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Distribution Zone"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="distributionZoneId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Distribution Zone!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Distribution Zone"
-                      onChange={handleDistributionZoneChange}
-                      options={distributionZones}
-                      value={selectedDistributionZone}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Name!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      className={`form-control`}
+                      name="name"
+                      style={{ padding: "6px" }}
                     />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Distribution Pop"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="distributionPopId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Distribution Pop!"
-                    }
-                  ]}
+                  </Form.Item>
+                </Col>
+              )}
+
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Distribution Pop"
-                      onChange={handleDistributionPopChange}
-                      options={distributionPops}
-                      value={selectedDistributionPop}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                  <Form.Item
+                    label="Distribution Zone"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="distributionZoneId"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Distribution Zone!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Distribution Zone"
+                        onChange={handleDistributionZoneChange}
+                        options={distributionZones}
+                        value={selectedDistributionZone}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+              {selectedDeviceType != "ONU" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Distribution Pop"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="distributionPopId"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Distribution Pop!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Distribution Pop"
+                        onChange={handleDistributionPopChange}
+                        options={distributionPops}
+                        value={selectedDistributionPop}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
               {/* secret */}
               {selectedDeviceType == "NAS" && (
                 <Col
@@ -693,6 +727,47 @@ const EditDeviceForm = ({ item }: any) => {
                         onChange={handleOltTypeChange}
                         options={oltTypesList}
                         value={selectedOltType}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+              {/* oltVendor */}
+              {selectedDeviceType == "OLT" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="OLT Vendor"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="oltVendor"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select OLT Vendor!"
+                      }
+                    ]}
+                  >
+                    <Space
+                      style={{ width: "100%", textAlign: "start" }}
+                      direction="vertical"
+                    >
+                      <Select
+                        allowClear
+                        style={{ width: "100%" }}
+                        placeholder="Please select OLT Vendor"
+                        onChange={handleVendorTypeChange}
+                        options={oltVendorList}
+                        value={selectedVendorType}
                       />
                     </Space>
                   </Form.Item>

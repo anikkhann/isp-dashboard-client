@@ -93,7 +93,7 @@ const ChangePasswordForm = () => {
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       {!loading && (
-        <div className="mt-3 mx-5">
+        <div className="mt-8 mx-5">
           <Form
             layout="vertical"
             autoComplete="off"
@@ -113,15 +113,15 @@ const ChangePasswordForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 <Form.Item
                   name="oldPassword"
-                  label="oldPassword"
+                  label="Old Password"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -129,7 +129,7 @@ const ChangePasswordForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your oldPassword!"
+                      message: "Please input your Old Password!"
                     },
                     {
                       min: 6,
@@ -144,7 +144,7 @@ const ChangePasswordForm = () => {
                   hasFeedback
                 >
                   <Input.Password
-                    placeholder="oldPassword"
+                    placeholder="Old Password"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
@@ -153,15 +153,15 @@ const ChangePasswordForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 <Form.Item
                   name="newPassword"
-                  label="newPassword"
+                  label="New Password"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -172,7 +172,7 @@ const ChangePasswordForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please confirm your newPassword!"
+                      message: "Please confirm your New Password!"
                     },
                     {
                       pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
@@ -191,10 +191,10 @@ const ChangePasswordForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 <Form.Item

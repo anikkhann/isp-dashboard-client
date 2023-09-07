@@ -213,6 +213,7 @@ const ZoneWiseCardData = () => {
             >
               <Space direction="vertical" style={{ width: "100%" }}>
                 <Table
+                  className={"table-striped-rows"}
                   columns={columns}
                   rowKey={record => record.client}
                   dataSource={data}
