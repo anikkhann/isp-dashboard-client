@@ -472,13 +472,17 @@ const EditClientForm = ({ item }: PropData) => {
         serviceType: item.serviceType,
         packageType: item.packageType,
         dnsName: item.dnsName,
-        wsdCommission: item.dnsName,
+        wsdCommission: item.wsdCommission,
         bankName: item.bankName,
         bankAccountName: item.bankAccountName,
         bankBranchName: item.bankBranchName,
         bankRoutingNumber: item.bankRoutingNumber,
         bankAccountCode: item.bankAccountCode
       });
+
+      setServiceType(item.serviceType);
+      setPackageType(item.packageType);
+
       setSelectedDivision(item.divisionId);
       setSelectedDistrict(item.districtId);
       if (item.upazillaId) {
