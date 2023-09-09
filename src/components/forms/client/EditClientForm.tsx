@@ -44,7 +44,9 @@ const dateFormat = "YYYY-MM-DD";
 
 interface FormData {
   clientLevel: string;
+
   name: string;
+
   username: string;
   password: string;
   contactPerson: string;
@@ -62,6 +64,15 @@ interface FormData {
   btrcLicenseNo: any;
   licenseExpireDate: any;
   radiusIpId: string;
+  serviceType: string;
+  packageType: string;
+  dnsName: string;
+  wsdCommission: number;
+  bankName: string;
+  bankAccountName: string;
+  bankBranchName: string;
+  bankRoutingNumber: string;
+  bankAccountCode: string;
 }
 
 const tagsList = [
@@ -72,6 +83,26 @@ const tagsList = [
   {
     label: "Quad Cycle",
     value: "quad_cycle"
+  }
+];
+const serviceTypeList = [
+  {
+    label: "Technology",
+    value: "technology"
+  },
+  {
+    label: "Sales Marketing",
+    value: "salesMarketing"
+  }
+];
+const packageTypeList = [
+  {
+    label: "Voucher",
+    value: "voucher"
+  },
+  {
+    label: "Voucher Online",
+    value: "voucherOnline"
   }
 ];
 interface PropData {
@@ -92,7 +123,8 @@ const EditClientForm = ({ item }: PropData) => {
   const MySwal = withReactContent(Swal);
 
   const [clientLevel, setClientLevel] = useState<any>(null);
-
+  const [serviceType, setServiceType] = useState<any>(null);
+  const [packageType, setPackageType] = useState<any>(null);
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
 
@@ -130,7 +162,16 @@ const EditClientForm = ({ item }: PropData) => {
     form.setFieldsValue({ clientLevel: value });
     setClientLevel(value as any);
   };
-
+  const handleService = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ serviceType: value });
+    setServiceType(value as any);
+  };
+  const handlePackage = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ packageType: value });
+    setPackageType(value as any);
+  };
   const handleDivisionChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ divisionId: value });
@@ -427,7 +468,16 @@ const EditClientForm = ({ item }: PropData) => {
         contactPerson: item.contactPerson,
         radiusIpId: item.radiusIpId,
         clientLevel: item.clientLevel,
-        btrcLicenseNo: item.btrcLicenseNo
+        btrcLicenseNo: item.btrcLicenseNo,
+        serviceType: item.serviceType,
+        packageType: item.packageType,
+        dnsName: item.dnsName,
+        wsdCommission: item.dnsName,
+        bankName: item.bankName,
+        bankAccountName: item.bankAccountName,
+        bankBranchName: item.bankBranchName,
+        bankRoutingNumber: item.bankRoutingNumber,
+        bankAccountCode: item.bankAccountCode
       });
       setSelectedDivision(item.divisionId);
       setSelectedDistrict(item.districtId);
@@ -479,6 +529,7 @@ const EditClientForm = ({ item }: PropData) => {
     setLoading(true);
     const {
       clientLevel,
+
       name,
       username,
       email,
@@ -495,7 +546,16 @@ const EditClientForm = ({ item }: PropData) => {
       btrcLicenseNo,
       licenseExpireDate,
       contactPerson,
-      radiusIpId
+      radiusIpId,
+      serviceType,
+      packageType,
+      dnsName,
+      wsdCommission,
+      bankName,
+      bankAccountName,
+      bankBranchName,
+      bankRoutingNumber,
+      bankAccountCode
     } = data;
 
     if (!item) {
@@ -516,7 +576,9 @@ const EditClientForm = ({ item }: PropData) => {
       id: item ? item.id : null,
       partnerType: "client",
       clientLevel: clientLevel,
+
       name: name,
+
       username: username,
       contactPerson: contactPerson,
       contactNumber: contactNumber,
@@ -533,6 +595,16 @@ const EditClientForm = ({ item }: PropData) => {
       btrcLicenseNo: btrcLicenseNo,
       licenseExpireDate: formatDate,
       radiusIpId: radiusIpId,
+      serviceType: serviceType,
+      packageType: packageType,
+      dnsName: dnsName,
+      wsdCommission: wsdCommission,
+      bankName: bankName,
+      bankAccountName: bankAccountName,
+      bankBranchName: bankBranchName,
+      bankRoutingNumber: bankRoutingNumber,
+      bankAccountCode: bankAccountCode,
+
       isActive: isActive
     };
 
@@ -592,10 +664,12 @@ const EditClientForm = ({ item }: PropData) => {
             form={form}
             initialValues={{
               name: "",
+
               email: "",
               password: "",
               username: "",
               clientLevel: "",
+
               contactPerson: "",
               contactNumber: "",
               altContactNumber: "",
@@ -609,7 +683,16 @@ const EditClientForm = ({ item }: PropData) => {
               radiusIpId: "",
               address: "",
               latitude: "",
-              longitude: ""
+              longitude: "",
+              serviceType: "",
+              packageType: "",
+              dnsName: "",
+              wsdCommission: "",
+              bankName: "",
+              bankAccountName: "",
+              bankBranchName: "",
+              bankRoutingNumber: "",
+              bankAccountCode: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -1195,6 +1278,307 @@ const EditClientForm = ({ item }: PropData) => {
                     placeholder="Longitude"
                     className={`form-control`}
                     name="longitude"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Service Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="serviceType"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please select Service Type"
+                  //   }
+                  // ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{
+                        width: "100%",
+                        textAlign: "start"
+                      }}
+                      placeholder="Please select Service Type"
+                      onChange={handleService}
+                      options={serviceTypeList}
+                      value={serviceType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Package Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="packageType"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please select Service Type"
+                  //   }
+                  // ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{
+                        width: "100%",
+                        textAlign: "start"
+                      }}
+                      placeholder="Please select Package Type"
+                      onChange={handlePackage}
+                      options={packageTypeList}
+                      value={packageType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="DNS Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="dnsName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="DNS Name"
+                    className={`form-control`}
+                    name="dnsName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="WSD Commission (%)"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="wsdCommission"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="WSD Commission"
+                    className={`form-control`}
+                    name="wsdCommission"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Bank Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Bank Name"
+                    className={`form-control`}
+                    name="bankName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Account Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankAccountName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Account Name"
+                    className={`form-control`}
+                    name="bankAccountName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Branch Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankBranchName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Branch Name"
+                    className={`form-control`}
+                    name="bankBranchName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Routing Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankRoutingNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Routing Number"
+                    className={`form-control`}
+                    name="bankRoutingNumber"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Account Code"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankAccountCode"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Account Code"
+                    className={`form-control`}
+                    name="bankAccountCode"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>

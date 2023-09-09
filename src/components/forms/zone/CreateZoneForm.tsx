@@ -37,6 +37,12 @@ interface FormData {
   unionId: any;
   nidNo: string;
   salesDistributionCommission: string;
+  wsdCommission: number;
+  bankName: string;
+  bankAccountName: string;
+  bankBranchName: string;
+  bankRoutingNumber: string;
+  bankAccountCode: string;
 }
 
 const CreateZoneForm = () => {
@@ -297,6 +303,7 @@ const CreateZoneForm = () => {
       password,
       email,
       address,
+
       altContactNumber,
       contactNumber,
       districtId,
@@ -305,7 +312,13 @@ const CreateZoneForm = () => {
       unionId,
       contactPerson,
       nidNo,
-      salesDistributionCommission
+      salesDistributionCommission,
+      wsdCommission,
+      bankName,
+      bankAccountName,
+      bankBranchName,
+      bankRoutingNumber,
+      bankAccountCode
     } = data;
 
     const formData = {
@@ -313,6 +326,7 @@ const CreateZoneForm = () => {
       name: name,
       username: username,
       password: password,
+
       contactPerson: contactPerson,
       contactNumber: contactNumber,
       altContactNumber: altContactNumber,
@@ -324,6 +338,13 @@ const CreateZoneForm = () => {
       unionId: unionId,
       nidNo: nidNo,
       salesDistributionCommission: salesDistributionCommission,
+      wsdCommission: wsdCommission,
+      bankName: bankName,
+      bankAccountName: bankAccountName,
+      bankBranchName: bankBranchName,
+      bankRoutingNumber: bankRoutingNumber,
+      bankAccountCode: bankAccountCode,
+
       isActive: isActive
     };
 
@@ -386,6 +407,7 @@ const CreateZoneForm = () => {
               email: "",
               password: "",
               username: "",
+
               contactPerson: "",
               contactNumber: "",
               altContactNumber: "",
@@ -395,7 +417,13 @@ const CreateZoneForm = () => {
               unionId: "",
               address: "",
               nidNo: "",
-              salesDistributionCommission: 0
+              salesDistributionCommission: 0,
+              wsdCommission: 0,
+              bankName: "",
+              bankAccountName: "",
+              bankBranchName: "",
+              bankRoutingNumber: "",
+              bankAccountCode: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -946,6 +974,199 @@ const CreateZoneForm = () => {
                       value={selectedUnion}
                     />
                   </Space>
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="WSD Commission (%)"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="wsdCommission"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="WSD Commission"
+                    className={`form-control`}
+                    name="wsdCommission"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Bank Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Bank Name"
+                    className={`form-control`}
+                    name="bankName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Account Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankAccountName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Account Name"
+                    className={`form-control`}
+                    name="bankAccountName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Branch Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankBranchName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Branch Name"
+                    className={`form-control`}
+                    name="bankBranchName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Routing Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankRoutingNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Routing Number"
+                    className={`form-control`}
+                    name="bankRoutingNumber"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Account Code"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankAccountCode"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Account Code"
+                    className={`form-control`}
+                    name="bankAccountCode"
+                    style={{ padding: "6px" }}
+                  />
                 </Form.Item>
               </Col>
 

@@ -25,7 +25,9 @@ import { Col, Row } from "antd";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   clientLevel: string;
+
   name: string;
+
   username: string;
   password: string;
   contactPerson: string;
@@ -43,6 +45,15 @@ interface FormData {
   radiusIpId: string;
   latitude: string;
   longitude: string;
+  serviceType: string;
+  packageType: string;
+  dnsName: string;
+  wsdCommission: number;
+  bankName: string;
+  bankAccountName: string;
+  bankBranchName: string;
+  bankRoutingNumber: string;
+  bankAccountCode: string;
 }
 
 // const layout = {
@@ -60,6 +71,26 @@ const tagsList = [
     value: "quad_cycle"
   }
 ];
+const serviceTypeList = [
+  {
+    label: "Technology",
+    value: "technology"
+  },
+  {
+    label: "Sales Marketing",
+    value: "salesMarketing"
+  }
+];
+const packageTypeList = [
+  {
+    label: "Voucher",
+    value: "voucher"
+  },
+  {
+    label: "Voucher Online",
+    value: "voucherOnline"
+  }
+];
 
 const CreateClientForm = () => {
   const [form] = Form.useForm();
@@ -75,7 +106,8 @@ const CreateClientForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [clientLevel, setClientLevel] = useState(null);
-
+  const [serviceType, setServiceType] = useState("technology");
+  const [packageType, setPackageType] = useState("voucher");
   const [divisions, setDivisions] = useState([]);
   const [selectedDivision, setSelectedDivision] = useState(null);
 
@@ -110,7 +142,16 @@ const CreateClientForm = () => {
     form.setFieldsValue({ clientLevel: value });
     setClientLevel(value as any);
   };
-
+  const handleService = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ serviceType: value });
+    setServiceType(value as any);
+  };
+  const handlePackage = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ packageType: value });
+    setPackageType(value as any);
+  };
   const onDateChange: DatePickerProps["onChange"] = (date, dateString) => {
     console.log(date, dateString);
   };
@@ -408,7 +449,9 @@ const CreateClientForm = () => {
     setLoading(true);
     const {
       clientLevel,
+
       name,
+
       username,
       password,
       email,
@@ -425,7 +468,16 @@ const CreateClientForm = () => {
       licenseTypeId,
       radiusIpId,
       latitude,
-      longitude
+      longitude,
+      serviceType,
+      packageType,
+      dnsName,
+      wsdCommission,
+      bankName,
+      bankAccountName,
+      bankBranchName,
+      bankRoutingNumber,
+      bankAccountCode
     } = data;
 
     let formatDate = null;
@@ -437,7 +489,9 @@ const CreateClientForm = () => {
     const formData = {
       partnerType: "client",
       clientLevel: clientLevel,
+
       name: name,
+
       username: username,
       password: password,
       contactPerson: contactPerson,
@@ -455,7 +509,16 @@ const CreateClientForm = () => {
       btrcLicenseNo: btrcLicenseNo,
       licenseExpireDate: formatDate,
       isActive: isActive,
-      radiusIpId: radiusIpId
+      radiusIpId: radiusIpId,
+      serviceType: serviceType,
+      packageType: packageType,
+      dnsName: dnsName,
+      wsdCommission: wsdCommission,
+      bankName: bankName,
+      bankAccountName: bankAccountName,
+      bankBranchName: bankBranchName,
+      bankRoutingNumber: bankRoutingNumber,
+      bankAccountCode: bankAccountCode
     };
 
     try {
@@ -514,10 +577,12 @@ const CreateClientForm = () => {
             form={form}
             initialValues={{
               name: "",
+
               email: "",
               password: "",
               username: "",
               clientLevel: "",
+
               contactPerson: "",
               contactNumber: "",
               altContactNumber: "",
@@ -531,7 +596,16 @@ const CreateClientForm = () => {
               radiusIpId: "",
               address: "",
               latitude: "",
-              longitude: ""
+              longitude: "",
+              serviceType: "",
+              packageType: "",
+              dnsName: "",
+              wsdCommission: 0,
+              bankName: "",
+              bankAccountName: "",
+              bankBranchName: "",
+              bankRoutingNumber: "",
+              bankAccountCode: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -585,6 +659,7 @@ const CreateClientForm = () => {
                   </Space>
                 </Form.Item>
               </Col>
+
               <Col
                 xs={24}
                 sm={12}
@@ -1223,6 +1298,308 @@ const CreateClientForm = () => {
                   />
                 </Form.Item>
               </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Service Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="serviceType"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please select Service Type"
+                  //   }
+                  // ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{
+                        width: "100%",
+                        textAlign: "start"
+                      }}
+                      placeholder="Please select Service Type"
+                      onChange={handleService}
+                      options={serviceTypeList}
+                      value={serviceType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Package Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="packageType"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please select Service Type"
+                  //   }
+                  // ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{
+                        width: "100%",
+                        textAlign: "start"
+                      }}
+                      placeholder="Please select Package Type"
+                      onChange={handlePackage}
+                      options={packageTypeList}
+                      value={packageType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="DNS Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="dnsName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="DNS Name"
+                    className={`form-control`}
+                    name="dnsName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="WSD Commission (%)"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="wsdCommission"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="WSD Commission"
+                    className={`form-control`}
+                    name="wsdCommission"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Bank Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Bank Name"
+                    className={`form-control`}
+                    name="bankName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Account Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankAccountName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Account Name"
+                    className={`form-control`}
+                    name="bankAccountName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Branch Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankBranchName"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Branch Name"
+                    className={`form-control`}
+                    name="bankBranchName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Routing Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankRoutingNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Routing Number"
+                    className={`form-control`}
+                    name="bankRoutingNumber"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Account Code"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankAccountCode"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Account Code"
+                    className={`form-control`}
+                    name="bankAccountCode"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
               <Col
                 xs={24}
                 sm={12}

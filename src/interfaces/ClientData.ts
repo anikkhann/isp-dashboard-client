@@ -39,6 +39,15 @@ export interface ClientData {
   activeCustomer: number;
   registeredCustomer: number;
   expiredCustomer: number;
+  serviceType: string;
+  packageType: string;
+  dnsName: string;
+  wsdCommission: number;
+  bankName: string;
+  bankAccountName: string;
+  bankBranchName: string;
+  bankRoutingNumber: string;
+  bankAccountCode: string;
 }
 
 export interface Division {
