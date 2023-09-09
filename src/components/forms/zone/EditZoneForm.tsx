@@ -295,6 +295,7 @@ const EditZoneForm = ({ item }: any) => {
         bankRoutingNumber: item.bankRoutingNumber,
         bankAccountCode: item.bankAccountCode
       });
+
       setSelectedDivision(item.divisionId);
       setSelectedDistrict(item.districtId);
       setSelectedUpazilla(item.upazillaId);
