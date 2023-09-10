@@ -44,6 +44,9 @@ export interface ClientData {
   dnsName: string;
   wsdCommission: number;
   bankName: string;
+  bankAccountNumber: number;
+  bKashNumber: number;
+  nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
   bankRoutingNumber: string;

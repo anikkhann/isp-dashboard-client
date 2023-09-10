@@ -40,6 +40,9 @@ interface FormData {
   salesDistributionCommission: string;
   wsdCommission: number;
   bankName: string;
+  bankAccountNumber: number;
+  bKashNumber: number;
+  nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
   bankRoutingNumber: string;
@@ -295,6 +298,9 @@ const EditSubZoneForm = ({ item }: PropData) => {
         salesDistributionCommission: item.salesDistributionCommission,
         wsdCommission: item.wsdCommission,
         bankName: item.bankName,
+        bankAccountNumber: item.bankAccountNumber,
+        bKashNumber: item.bKashNumber,
+        nagadNumber: item.nagadNumber,
         bankAccountName: item.bankAccountName,
         bankBranchName: item.bankBranchName,
         bankRoutingNumber: item.bankRoutingNumber,
@@ -352,6 +358,9 @@ const EditSubZoneForm = ({ item }: PropData) => {
       salesDistributionCommission,
       wsdCommission,
       bankName,
+      bankAccountNumber,
+      bKashNumber,
+      nagadNumber,
       bankAccountName,
       bankBranchName,
       bankRoutingNumber,
@@ -377,6 +386,9 @@ const EditSubZoneForm = ({ item }: PropData) => {
       salesDistributionCommission: salesDistributionCommission,
       wsdCommission: wsdCommission,
       bankName: bankName,
+      bankAccountNumber: bankAccountNumber,
+      bKashNumber: bKashNumber,
+      nagadNumber: nagadNumber,
       bankAccountName: bankAccountName,
       bankBranchName: bankBranchName,
       bankRoutingNumber: bankRoutingNumber,
@@ -454,6 +466,9 @@ const EditSubZoneForm = ({ item }: PropData) => {
               salesDistributionCommission: "",
               wsdCommission: "",
               bankName: "",
+              bankAccountNumber: "",
+              bKashNumber: "",
+              nagadNumber: "",
               bankAccountName: "",
               bankBranchName: "",
               bankRoutingNumber: "",
@@ -980,6 +995,102 @@ const EditSubZoneForm = ({ item }: PropData) => {
                     placeholder="Bank Name"
                     className={`form-control`}
                     name="bankName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Account Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bankAccountNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Account Number"
+                    className={`form-control`}
+                    name="bankAccountNumber"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="BKash Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bKashNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="BKash Number"
+                    className={`form-control`}
+                    name="bKashNumber"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Nagad Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="nagadNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Nagad Number"
+                    className={`form-control`}
+                    name="nagadNumber"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
