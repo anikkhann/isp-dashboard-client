@@ -1030,70 +1030,6 @@ const EditZoneForm = ({ item }: any) => {
                 className="gutter-row"
               >
                 <Form.Item
-                  label="BKash Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bKashNumber"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="number"
-                    placeholder="BKash Number"
-                    className={`form-control`}
-                    name="bKashNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Nagad Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="nagadNumber"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="number"
-                    placeholder="Nagad Number"
-                    className={`form-control`}
-                    name="nagadNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
                   label="Account Name"
                   style={{
                     marginBottom: 0,
@@ -1208,6 +1144,71 @@ const EditZoneForm = ({ item }: any) => {
                     placeholder="Account Code"
                     className={`form-control`}
                     name="bankAccountCode"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="BKash Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="bKashNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="BKash Number"
+                    className={`form-control`}
+                    name="bKashNumber"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Nagad Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="nagadNumber"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input your Name!"
+                  //   }
+                  // ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Nagad Number"
+                    className={`form-control`}
+                    name="nagadNumber"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
