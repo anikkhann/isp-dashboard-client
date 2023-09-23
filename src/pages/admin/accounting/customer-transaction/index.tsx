@@ -1,6 +1,6 @@
 import AccountLayout from "@/core/layouts/AccountLayout";
 import AppLoader from "@/lib/AppLoader";
-import AccountDashboard from "@/modules/dashboard/AccountDashboard";
+import CustomerTransactionList from "@/modules/accounting/customerTransaction/CustomerTransactionList";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -13,8 +13,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("accounting.zoneTransaction", "") ? (
-        <AccountDashboard />
+      {ability.can("accounting.customerTransaction", "") ? (
+        <CustomerTransactionList />
       ) : (
         <Forbidden />
       )}

@@ -110,6 +110,34 @@ const tagsList = [
   {
     label: "Client Sms Template",
     value: "clientSmsTemplate"
+  },
+  {
+    label: "Customer Transaction",
+    value: "customerTransaction"
+  },
+  {
+    label: "Agent Transaction",
+    value: "agentTransaction"
+  },
+  {
+    label: "Zone Transaction",
+    value: "zoneTransaction"
+  },
+  {
+    label: "Zone Revenue",
+    value: "zoneRevenue"
+  },
+  {
+    label: "SubZone Revenue",
+    value: "subZoneRevenue"
+  },
+  {
+    label: "Retailer Revenue",
+    value: "retailerRevenue"
+  },
+  {
+    label: "My Revenue",
+    value: "myRevenue"
   }
 ];
 

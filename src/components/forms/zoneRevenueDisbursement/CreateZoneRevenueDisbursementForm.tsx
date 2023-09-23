@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
@@ -11,158 +10,97 @@ import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
-
-interface PermissionFormData {
-  displayName: string;
-  tag: string;
+import { useAppSelector } from "@/store/hooks";
+interface FormData {
+  amount: number;
+  note: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
-
-const tagsList = [
-  {
-    label: "Dashboard",
-    value: "dashboard"
-  },
-  {
-    label: "Create",
-    value: "create"
-  },
-  {
-    label: "View",
-    value: "view"
-  },
-  {
-    label: "Update",
-    value: "update"
-  },
-  {
-    label: "Delete",
-    value: "delete"
-  },
-  {
-    label: "List",
-    value: "list"
-  },
-  {
-    label: "Approve",
-    value: "approve"
-  },
-  {
-    label: "Reject",
-    value: "reject"
-  },
-  {
-    label: "ReInitiate",
-    value: "reinitiate"
-  },
-  {
-    label: "Basic Search",
-    value: "basicSearch"
-  },
-  {
-    label: "Advanced Search",
-    value: "advancedSearch"
-  },
-  {
-    label: "Top Up",
-    value: "topUp"
-  },
-  {
-    label: "Renew",
-    value: "renew"
-  },
-  {
-    label: "Disconnect",
-    value: "disconnect"
-  },
-
-  {
-    label: "Cancel",
-    value: "cancel"
-  },
-  {
-    label: "Customer",
-    value: "customer"
-  },
-  {
-    label: "Client Gateway Setting",
-    value: "clientGatewaySetting"
-  },
-  {
-    label: "Client Sms Alert",
-    value: "clientSmsAlert"
-  },
-  {
-    label: "Client Sms Template",
-    value: "clientSmsTemplate"
-  },
-  {
-    label: "Customer Transaction",
-    value: "customerTransaction"
-  },
-  {
-    label: "Agent Transaction",
-    value: "agentTransaction"
-  },
-  {
-    label: "Zone Transaction",
-    value: "zoneTransaction"
-  },
-  {
-    label: "Zone Revenue",
-    value: "zoneRevenue"
-  },
-  {
-    label: "SubZone Revenue",
-    value: "subZoneRevenue"
-  },
-  {
-    label: "Retailer Revenue",
-    value: "retailerRevenue"
-  },
-  {
-    label: "My Revenue",
-    value: "myRevenue"
-  }
-];
-
-const CreatePermissionForm = () => {
-  const [loading, setLoading] = useState(false);
-
+const CreateZoneRevenueDisbursementForm = () => {
   const [form] = Form.useForm();
+
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
-
-  const [actionTags, setActionTags] = useState<any[]>([]);
+  const authUser = useAppSelector(state => state.auth.user);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const handleChange = (value: any[]) => {
+  const [zones, setZones] = useState<any>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const token = Cookies.get("token");
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  const ZoneChange = (value: any) => {
     // console.log("checked = ", value);
-    setActionTags(value as any[]);
-    form.setFieldsValue({
-      actionTags: value
-    });
+    form.setFieldsValue({ zoneManagerId: value });
+    setSelectedZone(value as any);
   };
 
-  const onSubmit = (data: PermissionFormData) => {
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        },
+        isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  useEffect(() => {
+    getZoneManagers();
+  }, []);
+
+  const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { displayName, tag } = data;
+    const { amount, note } = data;
+
+    const formData = {
+      zoneManagerId: selectedZone,
+      note: note,
+      amount: amount
+    };
+
     try {
-      const token = Cookies.get("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios
-        .post("/api/permission/create", {
-          displayName: displayName,
-          tag: tag,
-          actionTags: actionTags
-        })
+        .post("/api/zone-revenue-disbursement/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -177,10 +115,10 @@ const CreatePermissionForm = () => {
           if (data.status == 200) {
             MySwal.fire({
               title: "Success",
-              text: data.message || "Permission created successfully",
+              text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/user/permission");
+              router.replace("/admin/accounting/zone-revenue-disbursement");
             });
           }
         })
@@ -195,7 +133,7 @@ const CreatePermissionForm = () => {
           setErrorMessages(err.response.data.message);
         });
     } catch (err: any) {
-      //  console.log(err)
+      // console.log(err)
       setShowError(true);
       setErrorMessages(err.message);
     } finally {
@@ -207,17 +145,20 @@ const CreatePermissionForm = () => {
     <>
       {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
+
       {!loading && (
-        <div className="my-6">
+        <div className="mt-3">
           <Form
             // {...layout}
             layout="vertical"
             autoComplete="off"
             onFinish={onSubmit}
             form={form}
-            style={{
-              width: "100%"
+            initialValues={{
+              amount: "",
+              note: ""
             }}
+            style={{ maxWidth: "100%" }}
             name="wrap"
             // labelCol={{ flex: "110px" }}
             // labelAlign="left"
@@ -225,11 +166,6 @@ const CreatePermissionForm = () => {
             // wrapperCol={{ flex: 1 }}
             colon={false}
             scrollToFirstError
-            initialValues={{
-              displayName: "",
-              tag: "",
-              actionTags: []
-            }}
           >
             <Row
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
@@ -238,108 +174,120 @@ const CreatePermissionForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
                 <Form.Item
-                  label="Display Name"
+                  label="Zone Manager"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="displayName"
+                  name="zoneManagerId"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Display Name!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="displayName"
-                    className={`form-control`}
-                    name="displayName"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Tag"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="tag"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Tag!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Tag"
-                    className={`form-control`}
-                    name="tag"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Action Tags"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="actionTags"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select actions"
+                      message: "Please select Zone Manager!"
                     }
                   ]}
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
-                      mode="multiple"
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
-                      onChange={handleChange}
-                      options={tagsList}
-                      value={actionTags}
+                      onChange={ZoneChange}
+                      options={zones}
+                      value={selectedZone}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
               </Col>
-            </Row>
-            {/* <Row>
-            <Col></Col>
-          </Row> */}
 
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* amount */}
+                <Form.Item
+                  label="Amount"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="amount"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your amount!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="amount"
+                    className={`form-control`}
+                    name="amount"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={24}
+                xxl={24}
+                className="gutter-row"
+              >
+                {/* note */}
+                <Form.Item
+                  label="Note"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="note"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your note!"
+                    }
+                  ]}
+                >
+                  <Input.TextArea
+                    rows={6}
+                    placeholder="note"
+                    className={`form-control`}
+                    name="note"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            {/* submit */}
             <Row justify="center">
               <Col>
                 <Form.Item>
@@ -366,4 +314,4 @@ const CreatePermissionForm = () => {
   );
 };
 
-export default CreatePermissionForm;
+export default CreateZoneRevenueDisbursementForm;

@@ -1,6 +1,6 @@
 import AccountLayout from "@/core/layouts/AccountLayout";
 import AppLoader from "@/lib/AppLoader";
-import AccountDashboard from "@/modules/dashboard/AccountDashboard";
+import NewRetailerRevenueDisbursement from "@/modules/accounting/retailerRevenueDisbursement/NewRetailerRevenueDisbursement";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -13,8 +13,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("accounting.zoneTransaction", "") ? (
-        <AccountDashboard />
+      {ability.can("retailerRevenueDisbursement.create", "") ? (
+        <NewRetailerRevenueDisbursement />
       ) : (
         <Forbidden />
       )}

@@ -1,11 +1,11 @@
 import AccountLayout from "@/core/layouts/AccountLayout";
 import AppLoader from "@/lib/AppLoader";
-import AccountDashboard from "@/modules/dashboard/AccountDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
+import RetailerRevenueList from "@/modules/accounting/retailerRevenue/RetailerRevenueList";
 
 const Home = () => {
   const auth = useAppSelector(state => state.auth);
@@ -13,8 +13,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("accounting.zoneTransaction", "") ? (
-        <AccountDashboard />
+      {ability.can("accounting.agentTransaction", "") ? (
+        <RetailerRevenueList />
       ) : (
         <Forbidden />
       )}

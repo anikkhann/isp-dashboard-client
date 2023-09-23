@@ -1,20 +1,25 @@
 import AccountLayout from "@/core/layouts/AccountLayout";
+
 import AppLoader from "@/lib/AppLoader";
-import AccountDashboard from "@/modules/dashboard/AccountDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
+import { useRouter } from "next/router";
 import { ReactNode } from "react";
+import DetailsZoneRevenueDisbursement from "@Modules/accounting/zoneRevenueDisbursement/DetailsZoneRevenueDisbursement";
 
 const Home = () => {
   const auth = useAppSelector(state => state.auth);
 
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("accounting.zoneTransaction", "") ? (
-        <AccountDashboard />
+      {ability.can("zoneRevenueDisbursement.view", "") ? (
+        <DetailsZoneRevenueDisbursement id={id} />
       ) : (
         <Forbidden />
       )}
