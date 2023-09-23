@@ -60,6 +60,9 @@ const ZoneRevenueList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
+  const [users, setUsers] = useState<any[]>([]);
+  const [selectUser, setSelectUser] = useState<any>(null);
+
   const [selectedMonth, setSelectedMonth] = useState<any>("current_month");
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
@@ -83,7 +86,8 @@ const ZoneRevenueList: React.FC = () => {
     sort: string,
     monthParam?: string,
     startDateParam?: string,
-    endDateParam?: string
+    endDateParam?: string,
+    zoneParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -94,7 +98,7 @@ const ZoneRevenueList: React.FC = () => {
     }
 
     const { data } = await axios.get(
-      `/api/revenue/get-zone-commission-list?filterType=${monthParam}&dateRange=${date}`,
+      `/api/revenue/get-zone-commission-list?filterType=${monthParam}&dateRange=${date}&zoneId=${zoneParam}`,
       {
         headers: {
           "Content-Type": "application/json"
@@ -113,7 +117,8 @@ const ZoneRevenueList: React.FC = () => {
       sort,
       selectedMonth,
       selectedStartDate,
-      selectedEndDate
+      selectedEndDate,
+      selectUser
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -123,7 +128,8 @@ const ZoneRevenueList: React.FC = () => {
         sort,
         selectedMonth,
         selectedStartDate,
-        selectedEndDate
+        selectedEndDate,
+        selectUser
       );
       return response;
     },
@@ -203,9 +209,62 @@ const ZoneRevenueList: React.FC = () => {
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setSelectUser(null);
+  };
+  function getUsers() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "zone",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setUsers(list);
+    });
+  }
+
+  const handleUserChange = (value: any) => {
+    // console.log("checked = ", value);
+    if (value) {
+      setSelectUser(value);
+    } else {
+      setSelectUser(null);
+    }
   };
 
   useEffect(() => {
+    getUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -370,6 +429,30 @@ const ZoneRevenueList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Zone</b>
+                            </span>
+                            <Select
+                              showSearch
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleUserChange}
+                              options={users}
+                              value={selectUser}
+                            />
+                          </Space>
+                        </Col>
                         <Col
                           xs={24}
                           sm={12}

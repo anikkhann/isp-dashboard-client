@@ -232,11 +232,12 @@ const PackageList: React.FC = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "zone",
         isActive: true
       }
     };
 
-    axios.post("/api/customer/get-list", body).then(res => {
+    axios.post("/api/partner/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -252,7 +253,7 @@ const PackageList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -293,22 +294,40 @@ const PackageList: React.FC = () => {
 
   const handleUserChange = (value: any) => {
     // console.log("checked = ", value);
-    setSelectUser(value);
+    if (value) {
+      setSelectUser(value);
+    } else {
+      setSelectUser(null);
+    }
   };
 
   const handleTransactionModeChange = (value: any) => {
     // console.log("checked = ", value);
-    setSelectedTransactionMode(value);
+    if (value) {
+      setSelectedTransactionMode(value);
+    } else {
+      setSelectedTransactionMode(null);
+    }
   };
 
   const handleTransactionTypeChange = (value: any) => {
     // console.log("checked = ", value);
-    setSelectedTransactionType(value);
+    // setSelectedTransactionType(value);
+    if (value) {
+      setSelectedTransactionType(value);
+    } else {
+      setSelectedTransactionType(null);
+    }
   };
 
   const handleTransactionByChange = (value: any) => {
     // console.log("checked = ", value);
-    setSelectedTransactionBy(value);
+    // setSelectedTransactionBy(value);
+    if (value) {
+      setSelectedTransactionBy(value);
+    } else {
+      setSelectedTransactionBy(null);
+    }
   };
 
   const handleDateChange = (value: any) => {
@@ -618,7 +637,7 @@ const PackageList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>User</b>
+                              <b>Zone</b>
                             </span>
                             <Select
                               showSearch

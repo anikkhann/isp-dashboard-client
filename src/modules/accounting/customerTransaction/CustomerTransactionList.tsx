@@ -252,7 +252,7 @@ const PackageList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -293,7 +293,12 @@ const PackageList: React.FC = () => {
 
   const handleUserChange = (value: any) => {
     // console.log("checked = ", value);
-    setSelectUser(value);
+    // setSelectUser(value);
+    if (value) {
+      setSelectUser(value);
+    } else {
+      setSelectUser(null);
+    }
   };
 
   const handleTransactionModeChange = (value: any) => {
@@ -308,7 +313,12 @@ const PackageList: React.FC = () => {
 
   const handleTransactionByChange = (value: any) => {
     // console.log("checked = ", value);
-    setSelectedTransactionBy(value);
+    // setSelectedTransactionBy(value);
+    if (value) {
+      setSelectedTransactionBy(value);
+    } else {
+      setSelectedTransactionBy(null);
+    }
   };
 
   const handleDateChange = (value: any) => {
@@ -618,7 +628,7 @@ const PackageList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>User</b>
+                              <b>Customer</b>
                             </span>
                             <Select
                               showSearch
