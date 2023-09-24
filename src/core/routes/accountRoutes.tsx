@@ -42,7 +42,7 @@ const accountRoutes = [
     label: "zone revenue disbursement",
     path: "/admin/accounting/zone-revenue-disbursement",
     icon: <AccountBookOutlined />,
-    permission: "accounting.zoneRevenueDisbursement"
+    permission: "zoneRevenueDisbursement.list"
   },
 
   {
@@ -50,7 +50,7 @@ const accountRoutes = [
     label: "subZone revenue disbursement",
     path: "/admin/accounting/subZone-revenue-disbursement",
     icon: <AccountBookOutlined />,
-    permission: "accounting.subZoneRevenueDisbursement"
+    permission: "subZoneRevenueDisbursement.list"
   },
 
   {
@@ -58,7 +58,7 @@ const accountRoutes = [
     label: "retailer revenue disbursement",
     path: "/admin/accounting/retailer-revenue-disbursement",
     icon: <AccountBookOutlined />,
-    permission: "accounting.retailerRevenueDisbursement"
+    permission: "retailerRevenueDisbursement.list"
   },
   {
     key: "/admin/accounting/zone-revenue",
