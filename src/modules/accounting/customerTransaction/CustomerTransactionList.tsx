@@ -83,6 +83,7 @@ const PackageList: React.FC = () => {
     useState<any>(null);
 
   const [transactionByList, setTransactionByList] = useState<any[]>([]);
+  console.log(transactionByList);
   const [selectedTransactionBy, setSelectedTransactionBy] = useState<any>(null);
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
