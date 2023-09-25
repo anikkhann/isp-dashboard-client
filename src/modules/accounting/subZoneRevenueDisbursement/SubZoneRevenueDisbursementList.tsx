@@ -221,16 +221,27 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+    {
+      title: "Requested To",
+      dataIndex: "subZoneManager",
+      sorter: false,
+      render: (subZoneManager: any) => {
+        if (!subZoneManager) return "-";
+        return <>{subZoneManager.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
 
     {
-      title: "amount",
+      title: "Amount",
       dataIndex: "amount",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "note",
+      title: "Note",
       dataIndex: "note",
       sorter: true,
       width: "20%",
@@ -257,7 +268,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
     },
     // insertedBy
     {
-      title: "Created By",
+      title: "Requested By",
       dataIndex: "insertedBy",
       sorter: false,
       render: (insertedBy: any) => {
@@ -269,7 +280,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
     },
     // createdOn
     {
-      title: "Created At",
+      title: "Requested At",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {

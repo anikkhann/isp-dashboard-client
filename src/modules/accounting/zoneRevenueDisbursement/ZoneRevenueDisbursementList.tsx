@@ -26,7 +26,7 @@ interface TableParams {
 
 const ZoneRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
-
+  console.log(data);
   const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
@@ -221,16 +221,26 @@ const ZoneRevenueDisbursementList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
-
     {
-      title: "amount",
+      title: "Requested To",
+      dataIndex: "zoneManager",
+      sorter: false,
+      render: (zoneManager: any) => {
+        if (!zoneManager) return "-";
+        return <>{zoneManager.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Amount",
       dataIndex: "amount",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "note",
+      title: "Note",
       dataIndex: "note",
       sorter: true,
       width: "20%",
@@ -257,7 +267,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
     },
     // insertedBy
     {
-      title: "Created By",
+      title: "Requested By",
       dataIndex: "insertedBy",
       sorter: false,
       render: (insertedBy: any) => {
@@ -269,7 +279,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
     },
     // createdOn
     {
-      title: "Created At",
+      title: "Requested At",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {

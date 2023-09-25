@@ -221,16 +221,26 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
-
     {
-      title: "amount",
+      title: "Requested To",
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Amount",
       dataIndex: "amount",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "note",
+      title: "Note",
       dataIndex: "note",
       sorter: true,
       width: "20%",
