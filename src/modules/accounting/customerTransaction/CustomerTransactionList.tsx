@@ -137,10 +137,10 @@ const PackageList: React.FC = () => {
         // "dateRangeFilter": {"field": "trxDate", "startDate": null, "endDate": null}
         userType: "customer",
         userId: userParam,
-        transaction_id: transactionIdParam,
-        trx_mode: transactionModeParam,
-        trx_type: transactionTypeParam,
-        trx_by: transactionByParam,
+        transactionId: transactionIdParam,
+        trxMode: transactionModeParam,
+        trxType: transactionTypeParam,
+        trxBy: transactionByParam,
         dateRangeFilter: {
           field: "trxDate",
           startDate: startDateParam,
