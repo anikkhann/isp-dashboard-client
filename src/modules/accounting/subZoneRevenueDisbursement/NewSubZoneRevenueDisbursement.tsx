@@ -29,7 +29,7 @@ const NewZoneRevenueDisbursement = () => {
               )
             },
             {
-              title: "New subZone Revenue Disbursement"
+              title: "New Sub Zone Revenue Disbursement"
             }
           ]}
         />
