@@ -230,15 +230,15 @@ const MyRevenueList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+    // {
+    //   title: "zone_manager",
+    //   dataIndex: "zone_manager",
+    //   sorter: true,
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
-      title: "zone_manager",
-      dataIndex: "zone_manager",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "total_commission",
+      title: "Total Revenue",
       dataIndex: "total_commission",
       render: (text, record) => {
         return (
@@ -252,7 +252,7 @@ const MyRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "online_commission",
+      title: "Online Revenue",
       dataIndex: "online_commission",
       render: (text, record) => {
         return (
@@ -267,7 +267,7 @@ const MyRevenueList: React.FC = () => {
     },
 
     {
-      title: "offline_commission",
+      title: "Offline Revenue",
       dataIndex: "offline_commission",
       sorter: true,
       width: "20%",

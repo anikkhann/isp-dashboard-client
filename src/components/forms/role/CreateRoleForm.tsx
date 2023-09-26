@@ -211,7 +211,7 @@ const CreateRoleForm = () => {
                 lg={12}
                 xl={12}
                 xxl={12}
-                className="gutter-row"
+                className="gutter-row px-5"
               >
                 <Form.Item
                   label="Name"
@@ -271,7 +271,9 @@ const CreateRoleForm = () => {
                 justifyContent: "left",
                 textTransform: "capitalize",
                 marginBottom: 10,
-                textAlign: "left"
+                textAlign: "left",
+                paddingLeft: "15px",
+                paddingRight: "15px"
               }}
             >
               <Checkbox
@@ -288,12 +290,24 @@ const CreateRoleForm = () => {
 
             <Form.Item label="" name="permissions" valuePropName="permissions">
               <Checkbox.Group onChange={onChange} value={checkedList}>
-                <Row>
+                <Row
+                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  justify="space-between"
+                >
                   {permissions &&
                     permissions.length > 0 &&
                     permissions.map((permission: any) => {
                       return (
-                        <Col span={24} key={permission.id}>
+                        <Col
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                          xxl={24}
+                          className="gutter-row"
+                          key={permission.id}
+                        >
                           <Divider orientation="left">
                             <h5
                               style={{
@@ -310,13 +324,21 @@ const CreateRoleForm = () => {
                             </h5>
                           </Divider>
 
-                          <Row>
+                          <Row gutter={16}>
                             {permission.children &&
                               permission.children.length > 0 &&
                               permission.children.map((item: any) => {
                                 return (
-                                  <Col lg={4} md={12} sm={12} key={item.value}>
-                                    <Space>
+                                  <>
+                                    <Col
+                                      span={24}
+                                      sm={12}
+                                      md={8}
+                                      lg={8}
+                                      className="gutter-row "
+                                      key={item.value}
+                                    >
+                                      {/* <Space> */}
                                       <Card
                                         hoverable
                                         style={{
@@ -336,11 +358,20 @@ const CreateRoleForm = () => {
                                             fontWeight: "bold"
                                           }}
                                         >
-                                          {item.label}
+                                          <span
+                                            style={{
+                                              overflow: "hidden",
+                                              textOverflow: "ellipsis",
+                                              whiteSpace: "nowrap"
+                                            }}
+                                          >
+                                            {item.label}
+                                          </span>
                                         </Checkbox>
                                       </Card>
-                                    </Space>
-                                  </Col>
+                                      {/* </Space> */}
+                                    </Col>
+                                  </>
                                 );
                               })}
                           </Row>

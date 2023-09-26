@@ -83,6 +83,7 @@ const PackageList: React.FC = () => {
     useState<any>(null);
 
   const [transactionByList, setTransactionByList] = useState<any[]>([]);
+  console.log(transactionByList);
   const [selectedTransactionBy, setSelectedTransactionBy] = useState<any>(null);
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
@@ -136,10 +137,10 @@ const PackageList: React.FC = () => {
         // "dateRangeFilter": {"field": "trxDate", "startDate": null, "endDate": null}
         userType: "customer",
         userId: userParam,
-        transaction_id: transactionIdParam,
-        trx_mode: transactionModeParam,
-        trx_type: transactionTypeParam,
-        trx_by: transactionByParam,
+        transactionId: transactionIdParam,
+        trxMode: transactionModeParam,
+        trxType: transactionTypeParam,
+        trxBy: transactionByParam,
         dateRangeFilter: {
           field: "trxDate",
           startDate: startDateParam,
@@ -380,7 +381,44 @@ const PackageList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "TransactionId",
+      title: "Customer",
+      dataIndex: "trxFor",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Trx Type",
+      dataIndex: "trxType",
+      render: (text, record) => {
+        return (
+          <>
+            <Space>{record.trxType}</Space>
+          </>
+        );
+      },
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Trx Mode",
+      dataIndex: "trxMode",
+      render: (text, record) => {
+        return (
+          <>
+            <Space>{record.trxMode}</Space>
+          </>
+        );
+      },
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Transaction Id",
       dataIndex: "transactionId",
       sorter: true,
       width: "20%",
@@ -416,45 +454,7 @@ const PackageList: React.FC = () => {
     },
 
     {
-      title: "Trx For",
-      dataIndex: "trxFor",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "TrxType",
-      dataIndex: "trxType",
-      render: (text, record) => {
-        return (
-          <>
-            <Space>{record.trxType}</Space>
-          </>
-        );
-      },
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "trxMode",
-      dataIndex: "trxMode",
-      render: (text, record) => {
-        return (
-          <>
-            <Space>{record.trxMode}</Space>
-          </>
-        );
-      },
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "remarks",
+      title: "Remarks",
       dataIndex: "remarks",
       sorter: true,
       render: (remarks: any) => {
@@ -469,7 +469,7 @@ const PackageList: React.FC = () => {
     },
     // insertedBy
     {
-      title: "Created By",
+      title: "Trx By",
       dataIndex: "insertedBy",
       sorter: false,
       render: (insertedBy: any) => {
@@ -481,7 +481,7 @@ const PackageList: React.FC = () => {
     },
     // createdOn
     {
-      title: "Created At",
+      title: "Trx Date",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {

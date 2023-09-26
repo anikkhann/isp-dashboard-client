@@ -5,6 +5,7 @@ import CustomerMonthlyColumnChart from "@/components/charts/clientDashboard/Cust
 import CustomerQuarterColumnChart from "@/components/charts/clientDashboard/CustomerQuarterColumnChart";
 import CustomerYearlyColumnChart from "@/components/charts/clientDashboard/CustomerYearlyColumnChart";
 import ClientCardData from "@/components/dashboard/client/ClientCardData";
+// import ZoneRevenueData from "@/components/dashboard/Accounts/ZoneRevenueData";
 import CustomerCardData from "@/components/dashboard/client/CustomerCardData";
 import AppAnimate from "@/lib/AppAnimate";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -64,6 +65,7 @@ const AccountDashboard = () => {
         <AppRowContainer>
           <Col span={24}>
             <ClientCardData />
+            {/* <ZoneRevenueData></ZoneRevenueData> */}
           </Col>
 
           <Col xs={24} lg={12}>
