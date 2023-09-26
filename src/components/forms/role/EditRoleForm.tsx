@@ -231,7 +231,7 @@ const EditRoleForm = ({ item }: PropData) => {
                 lg={12}
                 xl={12}
                 xxl={12}
-                className="gutter-row"
+                className="gutter-row px-5"
               >
                 <Form.Item
                   label="Name"
@@ -276,7 +276,9 @@ const EditRoleForm = ({ item }: PropData) => {
                 justifyContent: "left",
                 textTransform: "capitalize",
                 marginBottom: 10,
-                textAlign: "left"
+                textAlign: "left",
+                paddingLeft: "15px",
+                paddingRight: "15px"
               }}
             >
               <Checkbox
@@ -297,12 +299,24 @@ const EditRoleForm = ({ item }: PropData) => {
               valuePropName="permissions"
             >
               <Checkbox.Group onChange={onChange} value={checkedList}>
-                <Row>
+                <Row
+                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  justify="space-between"
+                >
                   {permissions &&
                     permissions.length > 0 &&
                     permissions.map((permission: any) => {
                       return (
-                        <Col span={24} key={permission.id}>
+                        <Col
+                          xs={24}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                          xxl={24}
+                          className="gutter-row"
+                          key={permission.id}
+                        >
                           <Divider orientation="left">
                             <h5
                               style={{
@@ -319,36 +333,49 @@ const EditRoleForm = ({ item }: PropData) => {
                             </h5>
                           </Divider>
 
-                          <Row>
+                          <Row gutter={16}>
                             {permission.children &&
                               permission.children.length > 0 &&
                               permission.children.map((item: any) => {
                                 return (
-                                  <Col lg={4} md={12} sm={12} key={item.value}>
-                                    <Space>
-                                      <Card
-                                        hoverable
+                                  <Col
+                                    span={24}
+                                    sm={12}
+                                    md={8}
+                                    lg={8}
+                                    className="gutter-row "
+                                    key={item.value}
+                                  >
+                                    <Card
+                                      hoverable
+                                      style={{
+                                        // backgroundColor: "#FFC857",
+                                        // fontWeight: "bold",
+                                        // fontSize: "10px"
+                                        backgroundColor: "#F15F22"
+                                      }}
+                                    >
+                                      <Checkbox
+                                        value={item.value}
                                         style={{
-                                          // backgroundColor: "#FFC857",
-                                          // fontWeight: "bold",
-                                          // fontSize: "10px"
-                                          backgroundColor: "#F15F22"
+                                          display: "flex",
+                                          justifyContent: "left",
+                                          fontSize: "15px",
+                                          color: "#FFFFFF",
+                                          fontWeight: "bold"
                                         }}
                                       >
-                                        <Checkbox
-                                          value={item.value}
+                                        <span
                                           style={{
-                                            display: "flex",
-                                            justifyContent: "left",
-                                            fontSize: "15px",
-                                            color: "#FFFFFF",
-                                            fontWeight: "bold"
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            whiteSpace: "nowrap"
                                           }}
                                         >
                                           {item.label}
-                                        </Checkbox>
-                                      </Card>
-                                    </Space>
+                                        </span>
+                                      </Checkbox>
+                                    </Card>
                                   </Col>
                                 );
                               })}
