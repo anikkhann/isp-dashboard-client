@@ -94,7 +94,7 @@ const MyRevenueList: React.FC = () => {
     }
 
     const { data } = await axios.get(
-      `/api/revenue/get-logged-in-user-revenue?filterType=${monthParam}}&dateRange=${date}`,
+      `/api/revenue/get-logged-in-user-revenue?filterType=${monthParam}&dateRange=${date}`,
       {
         headers: {
           "Content-Type": "application/json"
