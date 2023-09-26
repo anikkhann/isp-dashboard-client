@@ -70,7 +70,7 @@ const AccountDashboard = () => {
               style={{
                 fontSize: "1rem",
                 fontWeight: "bold",
-                color: "#F15F22",
+                color: "#0e8fdc",
                 paddingLeft: "2rem",
                 paddingRight: "2rem"
               }}
@@ -85,7 +85,7 @@ const AccountDashboard = () => {
               style={{
                 fontSize: "1rem",
                 fontWeight: "bold",
-                color: "#F15F22",
+                color: "#0e8fdc",
                 paddingLeft: "2rem",
                 paddingRight: "2rem"
               }}

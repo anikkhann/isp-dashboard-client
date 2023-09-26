@@ -18,7 +18,9 @@ const LastMonthRevenue = () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/get-my-revenue-last-month`);
+    const response = await axios.get(
+      `/api/dashboard/get-my-revenue-last-month`
+    );
     return response;
   };
 
