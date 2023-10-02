@@ -11,7 +11,8 @@ import {
   Space,
   Table,
   Tag,
-  Collapse
+  Collapse,
+  DatePicker
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -28,6 +29,23 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Row, Col } from "antd";
 
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -39,6 +57,12 @@ const SearchCustomer = () => {
   const [data, setData] = useState<CustomerData[]>([]);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
+
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+
+  const { RangePicker } = DatePicker;
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -128,6 +152,9 @@ const SearchCustomer = () => {
     setSelectedEmail(null);
     setSelectedMobile(null);
     setData([]);
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
   };
 
   const handleSubmit = async (
@@ -138,7 +165,9 @@ const SearchCustomer = () => {
     customerIdParam?: string,
     usernameParam?: string,
     emailParam?: string,
-    mobileParam?: string
+    mobileParam?: string,
+    startDateParam?: string,
+    endDateParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -160,7 +189,12 @@ const SearchCustomer = () => {
         customerId: customerIdParam,
         username: usernameParam,
         email: emailParam,
-        mobile: mobileParam
+        mobile: mobileParam,
+        dateRangeFilter: {
+          field: "expirationTime",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
       }
     };
 
@@ -443,6 +477,26 @@ const SearchCustomer = () => {
     }
   ];
 
+  const handleDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    }
+  };
+
   return (
     <>
       <AppRowContainer>
@@ -631,6 +685,27 @@ const SearchCustomer = () => {
                         xxl={12}
                         className="gutter-row"
                       >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Date Range By (Expiration Date)</b>
+                          </span>
+                          <RangePicker
+                            style={{ width: "100%" }}
+                            onChange={handleDateChange}
+                            value={selectedDateRange}
+                            placeholder={["Start Date", "End Date"]}
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
                         <Button
                           style={{
                             width: "100%",
@@ -648,7 +723,9 @@ const SearchCustomer = () => {
                               selectedCustomerId,
                               selectedCustomer,
                               selectedEmail,
-                              selectedMobile
+                              selectedMobile,
+                              selectedStartDate,
+                              selectedEndDate
                             );
                           }}
                           className="ant-btn  ant-btn-lg"

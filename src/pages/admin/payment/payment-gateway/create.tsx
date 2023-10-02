@@ -1,7 +1,7 @@
 import PaymentLayout from "@/core/layouts/PaymentLayout";
 import AppLoader from "@/lib/AppLoader";
-import MainDashboard from "@/modules/dashboard/MainDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
+import NewPaymentGateway from "@/modules/payment/payment-gateway/NewPaymentGateway";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("payment.dashboard", "") ? <MainDashboard /> : <Forbidden />}
+      {ability.can("paymentGateway.create", "") ? (
+        <NewPaymentGateway />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

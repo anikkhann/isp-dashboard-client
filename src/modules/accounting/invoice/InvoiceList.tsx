@@ -1,15 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Button,
-  Card,
-  Col,
-  Input,
-  Select,
-  Space,
-  Tag,
-  Row,
-  DatePicker
-} from "antd";
+import { Button, Card, Col, Select, Space, Row, DatePicker } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -20,11 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-import ability from "@/services/guard/ability";
-import { useAppSelector } from "@/store/hooks";
-import { CustomerData } from "@/interfaces/CustomerData";
+import { TopUpTransactionData } from "@/interfaces/TopUpTransactionData";
 import { format } from "date-fns";
 
 import Swal from "sweetalert2";
@@ -37,6 +23,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -54,12 +41,10 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const CustomerList: React.FC = () => {
+const InvoiceList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
-  // const [form] = Form.useForm();
+  const [data, setData] = useState<TopUpTransactionData[]>([]);
   const { Panel } = Collapse;
-  const [data, setData] = useState<CustomerData[]>([]);
-
   const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
@@ -67,22 +52,11 @@ const CustomerList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
-  const [customerIds, setCustomerIds] = useState<any[]>([]);
+  const [customerIds, setCustomerIds] = useState<any>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<any>(null);
 
-  const [customers, setCustomers] = useState<any[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
-
-  const [distributionZones, setDistributionZones] = useState<any[]>([]);
-  const [selectedDistributionZone, setSelectedDistributionZone] =
-    useState<any>(null);
-
-  const [distributionPops, setDistributionPops] = useState<any[]>([]);
-  const [selectedDistributionPop, setSelectedDistributionPop] =
-    useState<any>(null);
-
-  const [selectedEmail, setSelectedEmail] = useState<any>(null);
-  const [selectedMobile, setSelectedMobile] = useState<any>(null);
+  const [customers, setCustomers] = useState<any>([]);
+  const [selectedCustomername, setSelectedCustomername] = useState<any>(null);
 
   const [packages, setPackages] = useState<any[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
@@ -110,29 +84,19 @@ const CustomerList: React.FC = () => {
     }
   });
 
-  function subOneDay(date = new Date()) {
-    date.setDate(date.getDate() - 1);
-
-    return date;
-  }
-
   const fetchData = async (
     page: number,
     limit: number,
     order: string,
     sort: string,
-    customerIdParam?: string,
-    usernameParam?: string,
-    distributionZoneParam?: string,
-    distributionPopParam?: string,
-    packageParam?: string,
-    zoneParam?: string,
-    subZoneParam?: string,
-    retailerParam?: string,
-    emailParam?: string,
-    mobileParam?: string,
-    startDateParam?: string,
-    endDateParam?: string
+    customerIdParam: string,
+    customerNameParam: string,
+    customerPackageParam: string,
+    zoneManagerParam: string,
+    subZoneManagerParam: string,
+    retailerParam: string,
+    startDateParam: string,
+    endDateParam: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -149,37 +113,29 @@ const CustomerList: React.FC = () => {
         ]
       },
       body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        // "customerId": "23934007", // Customer List API
+        // "username": "babul", // customer user name
+        // "customerPackageId": "62baaea0-9d5e-4390-a3e8-9641ddfcaa15", // (dropdown) Customer Package Get List API
+        // "zoneManagerId": "679cd29a-ece1-42c1-a62c-56effcaff985", // (dropdown) Zone Manager Get List API
+        // "subZoneManagerId":"c2060e52-f473-4b70-8cc5-7e95f512c8e6", // (dropdown)  Sub Zone Manager Get List API
+        // "retailerId":"fc061bb8-08a6-4eb8-bb31-4536a3e8d32f", // (dropdown) Retailer Get List API
+        // "dateRangeFilter": {"field": "createdOn", "startDate": null, "endDate": null}
         customerId: customerIdParam,
-        username: usernameParam,
-        email: emailParam,
-        mobile: mobileParam,
-        distributionZone: {
-          id: distributionZoneParam
-        },
-        distributionPop: {
-          id: distributionPopParam
-        },
-        customerPackage: {
-          id: packageParam
-        },
-        zoneManager: {
-          id: zoneParam
-        },
-        subZoneManager: {
-          id: subZoneParam
-        },
-        retailer: {
-          id: retailerParam
-        },
+        username: customerNameParam,
+        customerPackageId: customerPackageParam,
+        zoneManagerId: zoneManagerParam,
+        subZoneManagerId: subZoneManagerParam,
+        retailerId: retailerParam,
         dateRangeFilter: {
-          field: "expirationTime",
+          field: "createdOn",
           startDate: startDateParam,
           endDate: endDateParam
         }
       }
     };
 
-    const { data } = await axios.post("/api/customer/get-list", body, {
+    const { data } = await axios.post("/api/customer-invoice/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -189,21 +145,17 @@ const CustomerList: React.FC = () => {
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
-      "customer-list",
+      "customer-invoice-list",
       page,
       limit,
       order,
       sort,
       selectedCustomerId,
-      selectedCustomer,
-      selectedDistributionZone,
-      selectedDistributionPop,
+      selectedCustomername,
       selectedPackage,
       selectedZone,
       selectedSubZone,
       selectedRetailer,
-      selectedEmail,
-      selectedMobile,
       selectedStartDate,
       selectedEndDate
     ],
@@ -214,15 +166,11 @@ const CustomerList: React.FC = () => {
         order,
         sort,
         selectedCustomerId,
-        selectedCustomer,
-        selectedDistributionZone,
-        selectedDistributionPop,
+        selectedCustomername,
         selectedPackage,
         selectedZone,
         selectedSubZone,
         selectedRetailer,
-        selectedEmail,
-        selectedMobile,
         selectedStartDate,
         selectedEndDate
       );
@@ -259,26 +207,6 @@ const CustomerList: React.FC = () => {
       console.log("error", error);
     }
   });
-
-  const handleDateChange = (value: any) => {
-    // console.log(value);
-
-    if (value) {
-      setSelectedDateRange(value);
-
-      const startDate = dayjs(value[0]).format(dateFormat);
-      const endDate = dayjs(value[1]).format(dateFormat);
-
-      setSelectedStartDate(startDate);
-      setSelectedEndDate(endDate);
-
-      // console.log(startDate, endDate);
-    } else {
-      setSelectedDateRange(null);
-      setSelectedStartDate(null);
-      setSelectedEndDate(null);
-    }
-  };
 
   function getZoneManagers() {
     const body = {
@@ -410,83 +338,6 @@ const CustomerList: React.FC = () => {
     });
   }
 
-  function getDistributionZones() {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        isActive: true
-      }
-    };
-
-    axios.post("/api/distribution-zone/get-list", body).then(res => {
-      const { data } = res;
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setDistributionZones(list);
-    });
-  }
-
-  function getDistributionPops(selectedDistributionZone: any) {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        zone: {
-          id: selectedDistributionZone
-        },
-        isActive: true
-      }
-    };
-
-    axios.post("/api/distribution-pop/get-list", body).then(res => {
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-      setDistributionPops(list);
-    });
-  }
-
   const getCustomerPackages = () => {
     const body = {
       meta: {
@@ -571,15 +422,7 @@ const CustomerList: React.FC = () => {
   };
 
   const handleUsernameChange = (value: any) => {
-    setSelectedCustomer(value);
-  };
-
-  const handleDistributionZoneChange = (value: any) => {
-    setSelectedDistributionZone(value);
-  };
-
-  const handleDistributionPopChange = (value: any) => {
-    setSelectedDistributionPop(value);
+    setSelectedCustomername(value);
   };
 
   const handlePackageChange = (value: any) => {
@@ -602,47 +445,47 @@ const CustomerList: React.FC = () => {
     setSelectedRetailer(value);
   };
 
+  const handleDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    }
+  };
+
   const handleClear = () => {
-    setSelectedCustomerId(null);
-    setSelectedCustomer(null);
-    setSelectedDistributionZone(null);
-    setSelectedDistributionPop(null);
-    setSelectedPackage(null);
-    setSelectedZone(null);
-    setSelectedSubZone(null);
-    setSelectedRetailer(null);
-    setSelectedEmail(null);
-    setSelectedMobile(null);
+    setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
-    setSelectedDateRange(null);
   };
 
   useEffect(() => {
-    getZoneManagers();
-    // getSubZoneManagers();
-    getRetailers();
-    getDistributionZones();
-    // getDistributionPops();
-    // getDistributionPops(selectedDistributionZone);
-
     getCustomerPackages();
     getCustomers();
+    getZoneManagers();
+    getSubZoneManagers(null);
+    getRetailers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     if (selectedZone) {
       getSubZoneManagers(selectedZone);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedZone]);
-
-  useEffect(() => {
-    getSubZoneManagers(null);
-  }, []);
-  useEffect(() => {
-    if (selectedDistributionZone) {
-      getDistributionPops(selectedDistributionZone);
-    }
-  }, [selectedDistributionZone]);
 
   useEffect(() => {
     if (data) {
@@ -650,9 +493,7 @@ const CustomerList: React.FC = () => {
     }
   }, [data]);
 
-  // console.log(error, isLoading, isError)
-
-  const columns: ColumnsType<CustomerData> = [
+  const columns: ColumnsType<TopUpTransactionData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -664,119 +505,17 @@ const CustomerList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      width: "10%",
       align: "center" as AlignType
     },
-
     {
-      title: "Customer ID",
-      dataIndex: "customerId",
+      title: "totalPrice",
+      dataIndex: "totalPrice",
       sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Zone",
-      dataIndex: "distributionZone",
-      sorter: false,
-      render: (distributionZone: any) => {
-        if (!distributionZone) return "-";
-        return <>{distributionZone.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Pop",
-      dataIndex: "distributionPop",
-      sorter: false,
-      render: (distributionPop: any) => {
-        if (!distributionPop) return "-";
-        return <>{distributionPop.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Mobile",
-      dataIndex: "mobileNo",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Connection Address",
-      dataIndex: "connectionAddress",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Credits",
-      dataIndex: "credits",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Package",
-      dataIndex: "customerPackage",
-      sorter: false,
-      render: (customerPackage: any) => {
-        if (!customerPackage) return "-";
-        return <>{customerPackage.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Expiration Date",
-      dataIndex: "expirationTime",
-      sorter: false,
-      render: (expirationTime: any) => {
-        if (!expirationTime) return "-";
-        const date = new Date(expirationTime);
-        const result2 = subOneDay(date);
-        const today = new Date();
-
-        const isDateGreen = result2 >= today;
-        const color = isDateGreen ? "green" : "red";
-
-        return <span style={{ color }}>{format(result2, "yyyy-MM-dd")}</span>;
-
-        // return <>{format(result2, "yyyy-MM-dd")}</>;
-      },
-      // return <>{result2}</>;
-      // pp
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Status",
-      dataIndex: "isActive",
-      sorter: true,
-      render: (isActive: any) => {
+      render: (totalPrice: any) => {
         return (
           <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
+            <Space>{totalPrice}</Space>
           </>
         );
       },
@@ -784,31 +523,30 @@ const CustomerList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
     {
-      title: "Creation/Onboard Date",
+      title: "Created Date",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
         if (!createdOn) return "-";
         const date = new Date(createdOn);
-
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
       align: "center" as AlignType
-    },
+    }
     // editedBy
     // {
     //   title: "Updated By",
@@ -835,57 +573,31 @@ const CustomerList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
-    {
-      title: "Action",
-      dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <div className="flex flex-row">
-            <Space size="middle" align="center">
-              {ability.can("customer.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/customer/customer/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-              {ability.can("customer.view", "") ? (
-                <Space size="middle" align="center" wrap className="mx-1">
-                  <Link href={`/admin/customer/customer/${record.id}`}>
-                    <Button type="primary" icon={<EyeOutlined />} />
-                  </Link>
-                </Space>
-              ) : null}
-            </Space>
-          </div>
-        );
-      },
-      align: "center" as AlignType
-    }
   ];
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<CustomerData> | SorterResult<CustomerData>[]
+    sorter:
+      | SorterResult<TopUpTransactionData>
+      | SorterResult<TopUpTransactionData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<CustomerData>).order) {
-      // // console.log((sorter as SorterResult<CustomerData>).order)
+    if (sorter && (sorter as SorterResult<TopUpTransactionData>).order) {
+      // // console.log((sorter as SorterResult<TopUpTransactionData>).order)
 
       SetOrder(
-        (sorter as SorterResult<CustomerData>).order === "ascend"
+        (sorter as SorterResult<TopUpTransactionData>).order === "ascend"
           ? "asc"
           : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<CustomerData>).field) {
-      // // console.log((sorter as SorterResult<CustomerData>).field)
+    if (sorter && (sorter as SorterResult<TopUpTransactionData>).field) {
+      // // console.log((sorter as SorterResult<TopUpTransactionData>).field)
 
-      SetSort((sorter as SorterResult<CustomerData>).field as string);
+      SetSort((sorter as SorterResult<TopUpTransactionData>).field as string);
     }
   };
 
@@ -900,9 +612,7 @@ const CustomerList: React.FC = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  margin: " 10px 5px",
-                  backgroundColor: "#ffffff",
-                  width: "100%"
+                  margin: " 10px 5px"
                 }}
               >
                 <Card
@@ -929,12 +639,11 @@ const CustomerList: React.FC = () => {
           )}
 
           <TableCard
-            title="Customers List"
-            hasLink={true}
-            addLink="/admin/customer/customer/create"
-            permission="customer.create"
+            title="Invoice List"
+            hasLink={false}
+            addLink="/admin/accounting/invoice/create"
+            permission="invoice.create"
             style={{
-              // backgroundColor: "#FFFFFF",
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
@@ -958,7 +667,7 @@ const CustomerList: React.FC = () => {
                       font: "1rem"
                     }}
                   >
-                    <Panel header="Customers Filters" key="1">
+                    <Panel header="Filters" key="1">
                       <Row
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
@@ -1019,7 +728,7 @@ const CustomerList: React.FC = () => {
                               placeholder="Please select"
                               onChange={handleUsernameChange}
                               options={customers}
-                              value={selectedCustomer}
+                              value={selectedCustomername}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
@@ -1034,86 +743,27 @@ const CustomerList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        {authUser?.userType == "client" && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={8}
-                            lg={8}
-                            xl={8}
-                            xxl={8}
-                            className="gutter-row"
-                          >
-                            <Space
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range</b>
+                            </span>
+                            <RangePicker
                               style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <span>
-                                <b>Distribution Zone</b>
-                              </span>
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleDistributionZoneChange}
-                                options={distributionZones}
-                                value={selectedDistributionZone}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Space>
-                          </Col>
-                        )}
-                        {authUser?.userType == "client" && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={8}
-                            lg={8}
-                            xl={8}
-                            xxl={8}
-                            className="gutter-row"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <span>
-                                <b>Distribution Pop</b>
-                              </span>
-
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleDistributionPopChange}
-                                options={distributionPops}
-                                value={selectedDistributionPop}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Space>
-                          </Col>
-                        )}
-
+                              onChange={handleDateChange}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
                         <Col
                           xs={24}
                           sm={12}
@@ -1257,50 +907,7 @@ const CustomerList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Email</b>
-                            </span>
-                            <Input
-                              type="text"
-                              className="ant-input"
-                              placeholder="Email"
-                              value={selectedEmail}
-                              onChange={e => setSelectedEmail(e.target.value)}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Mobile</b>
-                            </span>
-                            <Input
-                              type="text"
-                              className="ant-input"
-                              placeholder="Mobile"
-                              value={selectedMobile}
-                              onChange={e => setSelectedMobile(e.target.value)}
-                            />
-                          </Space>
-                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}
@@ -1308,27 +915,6 @@ const CustomerList: React.FC = () => {
                           lg={12}
                           xl={12}
                           xxl={12}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Date Range By (Expiration Date)</b>
-                            </span>
-                            <RangePicker
-                              style={{ width: "100%" }}
-                              onChange={handleDateChange}
-                              value={selectedDateRange}
-                              placeholder={["Start Date", "End Date"]}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -1350,19 +936,10 @@ const CustomerList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         ></Col>
                       </Row>
@@ -1370,7 +947,6 @@ const CustomerList: React.FC = () => {
                   </Collapse>
                 </div>
               </Space>
-
               <Table
                 className={"table-striped-rows"}
                 columns={columns}
@@ -1388,4 +964,4 @@ const CustomerList: React.FC = () => {
   );
 };
 
-export default CustomerList;
+export default InvoiceList;

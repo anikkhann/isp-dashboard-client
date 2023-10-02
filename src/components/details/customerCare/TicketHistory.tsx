@@ -12,6 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import { TicketData } from "@/interfaces/TicketData";
 import { format } from "date-fns";
+import Link from "next/link";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -63,7 +64,8 @@ const TicketHistory = ({ item }: PropData) => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         customer: {
-          id: item.id
+          id: item.id,
+          status: "open"
         }
       }
     };
@@ -140,6 +142,15 @@ const TicketHistory = ({ item }: PropData) => {
       title: "Ticket Number",
       dataIndex: "ticketNo",
       sorter: true,
+      render: (ticketNo, row) => {
+        return (
+          <Space size="middle" align="center" wrap className="mx-1">
+            <Link href={`/admin/complaint/customer-ticket/${row.id}`}>
+              {ticketNo}
+            </Link>
+          </Space>
+        );
+      },
       width: 200,
       align: "center" as AlignType
     },

@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Select, Space, Row, Input, DatePicker } from "antd";
+import { Button, Card, Col, Select, Space, Tag, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,28 +11,14 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { TopUpTransactionData } from "@/interfaces/TopUpTransactionData";
+import ability from "@/services/guard/ability";
+import Link from "next/link";
+import { EditOutlined } from "@ant-design/icons";
+import { PaymentGatewayConfigData } from "@/interfaces/PaymentGatewayConfigData";
 import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
-import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import localeData from "dayjs/plugin/localeData";
-import weekday from "dayjs/plugin/weekday";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import weekYear from "dayjs/plugin/weekYear";
-
-dayjs.extend(customParseFormat);
-dayjs.extend(advancedFormat);
-dayjs.extend(weekday);
-dayjs.extend(localeData);
-dayjs.extend(weekOfYear);
-dayjs.extend(weekYear);
-
-const dateFormat = "YYYY-MM-DD";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -40,30 +27,19 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const transactionModes = [
+const statusList = [
   {
-    label: "Debit",
-    value: "debit"
+    label: "Active",
+    value: "true"
   },
   {
-    label: "Credit",
-    value: "credit"
+    label: "Inactive",
+    value: "false"
   }
 ];
 
-const transactionTypes = [
-  {
-    label: "Online",
-    value: "online"
-  },
-  {
-    label: "Offline",
-    value: "offline"
-  }
-];
-
-const AgentTransactionList: React.FC = () => {
-  const [data, setData] = useState<TopUpTransactionData[]>([]);
+const PaymentGatewayConfigList: React.FC = () => {
+  const [data, setData] = useState<PaymentGatewayConfigData[]>([]);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
 
@@ -72,24 +48,14 @@ const AgentTransactionList: React.FC = () => {
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
-  const [users, setUsers] = useState<any[]>([]);
-  const [selectUser, setSelectUser] = useState<any>(null);
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any | null>(null);
 
-  const [transactionId, setTransactionId] = useState<any>(null);
-
-  const [selectedTransactionMode, setSelectedTransactionMode] =
-    useState<any>(null);
-  const [selectedTransactionType, setSelectedTransactionType] =
+  const [paymentGateways, setPaymentGateways] = useState<any>([]);
+  const [selectedPaymentGateway, setSelectedPaymentGateway] =
     useState<any>(null);
 
-  const [transactionByList, setTransactionByList] = useState<any[]>([]);
-  const [selectedTransactionBy, setSelectedTransactionBy] = useState<any>(null);
-
-  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
-
-  const { RangePicker } = DatePicker;
+  const [selectedStatus, setSelectedStatus] = useState<any | null>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -104,13 +70,9 @@ const AgentTransactionList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
-    userParam?: string,
-    transactionModeParam?: string,
-    transactionTypeParam?: string,
-    transactionByParam?: string,
-    transactionIdParam?: string,
-    startDateParam?: string,
-    endDateParam?: string
+    clientParam?: string,
+    paymentGatewayParam?: string,
+    statusParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -128,48 +90,38 @@ const AgentTransactionList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        // "userId": "f5e50c82-a6a0-41df-a56f-03c93aad6218", //dropdown - Customer List API
-        // "transaction_id": null,
-        // "trx_mode": null, //dropdown (debit, credit)
-        // "trx_type": null, //dropdown (Online, Offline)
-        // "trx_by": null, //dropdown Transaction By API
-        // "dateRangeFilter": {"field": "trxDate", "startDate": null, "endDate": null}
-        userType: "agent",
-        userId: userParam,
-        transactionId: transactionIdParam,
-        trxMode: transactionModeParam,
-        trxType: transactionTypeParam,
-        trxBy: transactionByParam,
-        dateRangeFilter: {
-          field: "trxDate",
-          startDate: startDateParam,
-          endDate: endDateParam
-        }
+        client: {
+          id: clientParam
+        },
+        paymentGateway: {
+          id: paymentGatewayParam
+        },
+        isActive: statusParam
       }
     };
 
-    const { data } = await axios.post("/api/topup-transaction/get-list", body, {
-      headers: {
-        "Content-Type": "application/json"
+    const { data } = await axios.post(
+      "/api/payment-gateway-config/get-list",
+      body,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
-      "customer-transactions-list",
+      "payment-gateway-config-list",
       page,
       limit,
       order,
       sort,
-      selectUser,
-      selectedTransactionMode,
-      selectedTransactionType,
-      selectedTransactionBy,
-      transactionId,
-      selectedStartDate,
-      selectedEndDate
+      selectedClient,
+      selectedPaymentGateway,
+      selectedStatus
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -177,13 +129,9 @@ const AgentTransactionList: React.FC = () => {
         limit,
         order,
         sort,
-        selectUser,
-        selectedTransactionMode,
-        selectedTransactionType,
-        selectedTransactionBy,
-        transactionId,
-        selectedStartDate,
-        selectedEndDate
+        selectedClient,
+        selectedPaymentGateway,
+        selectedStatus
       );
       return response;
     },
@@ -219,7 +167,62 @@ const AgentTransactionList: React.FC = () => {
     }
   });
 
-  function getUsers() {
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value);
+  };
+
+  const handlePaymentGatewayChange = (value: any) => {
+    setSelectedPaymentGateway(value);
+  };
+
+  const handleStatusChange = (value: any) => {
+    setSelectedStatus(value);
+  };
+
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
+  function getPaymentGateway() {
     const body = {
       meta: {
         sort: [
@@ -236,7 +239,7 @@ const AgentTransactionList: React.FC = () => {
       }
     };
 
-    axios.post("/api/users/get-list", body).then(res => {
+    axios.post("/api/payment-gateway/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -252,110 +255,24 @@ const AgentTransactionList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.username,
+          label: item.bankName,
           value: item.id
         };
       });
 
-      setUsers(list);
+      setPaymentGateways(list);
     });
   }
 
-  function getTransactionByList() {
-    axios
-      .get(
-        "/api/topup-transaction/get-transaction-user-wise-filter?userType=customer"
-      )
-      .then(res => {
-        // console.log(res);
-        const { data } = res;
-
-        if (data.status != 200) {
-          MySwal.fire({
-            title: "Error",
-            text: data.message || "Something went wrong",
-            icon: "error"
-          });
-        }
-
-        if (!data.body) return;
-
-        const list = data.body.map((item: any) => {
-          return {
-            label: item.name,
-            value: item.id
-          };
-        });
-
-        setTransactionByList(list);
-      });
-  }
-
-  const handleUserChange = (value: any) => {
-    // console.log("checked = ", value);
-    // setSelectUser(value);
-    if (value) {
-      setSelectUser(value);
-    } else {
-      setSelectUser(null);
-    }
-  };
-
-  const handleTransactionModeChange = (value: any) => {
-    // console.log("checked = ", value);
-    setSelectedTransactionMode(value);
-  };
-
-  const handleTransactionTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    setSelectedTransactionType(value);
-  };
-
-  const handleTransactionByChange = (value: any) => {
-    // console.log("checked = ", value);
-    // setSelectedTransactionBy(value);
-    if (value) {
-      setSelectedTransactionBy(value);
-    } else {
-      setSelectedTransactionBy(null);
-    }
-  };
-
-  const handleDateChange = (value: any) => {
-    // console.log(value);
-
-    if (value) {
-      setSelectedDateRange(value);
-
-      const startDate = dayjs(value[0]).format(dateFormat);
-      const endDate = dayjs(value[1]).format(dateFormat);
-
-      setSelectedStartDate(startDate);
-      setSelectedEndDate(endDate);
-
-      // console.log(startDate, endDate);
-    } else {
-      setSelectedDateRange(null);
-      setSelectedStartDate(null);
-      setSelectedEndDate(null);
-    }
-  };
-
   const handleClear = () => {
-    setSelectUser(null);
-    setSelectedTransactionMode(null);
-    setSelectedTransactionType(null);
-    setSelectedTransactionBy(null);
-    setTransactionId(null);
-    setSelectedDateRange(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
+    setSelectedClient(null);
+    setSelectedPaymentGateway(null);
+    setSelectedStatus(null);
   };
 
   useEffect(() => {
-    getUsers();
-    getTransactionByList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getClients();
+    getPaymentGateway();
   }, []);
 
   useEffect(() => {
@@ -364,7 +281,7 @@ const AgentTransactionList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<TopUpTransactionData> = [
+  const columns: ColumnsType<PaymentGatewayConfigData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -380,86 +297,53 @@ const AgentTransactionList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Agent",
-      dataIndex: "trxFor",
+      title: "client",
+      dataIndex: "client",
+      sorter: false,
+      render: (_, record) => {
+        return (
+          <>
+            <Space>{record.client.name}</Space>
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "paymentGateway",
+      dataIndex: "paymentGateway",
+      sorter: false,
+      render: (_, record) => {
+        return (
+          <>
+            <Space>{record.paymentGateway.bankName}</Space>
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "credential",
+      dataIndex: "credential",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
 
     {
-      title: "Trx Type",
-      dataIndex: "trxType",
-      render: (text, record) => {
+      title: "Status",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
         return (
           <>
-            <Space>{record.trxType}</Space>
-          </>
-        );
-      },
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "Trx Mode",
-      dataIndex: "trxMode",
-      render: (text, record) => {
-        return (
-          <>
-            <Space>{record.trxMode}</Space>
-          </>
-        );
-      },
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Transaction Id",
-      dataIndex: "transactionId",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      render: (text, record) => {
-        return (
-          <>
-            <Space>{record.amount} BDT</Space>
-          </>
-        );
-      },
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Balance",
-      dataIndex: "balance",
-      render: (text, record) => {
-        return (
-          <>
-            <Space>{record.balance} BDT</Space>
-          </>
-        );
-      },
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "Remarks",
-      dataIndex: "remarks",
-      sorter: true,
-      render: (remarks: any) => {
-        return (
-          <>
-            <Space>{remarks}</Space>
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
           </>
         );
       },
@@ -467,20 +351,20 @@ const AgentTransactionList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    {
-      title: "Trx By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
-      title: "Trx Date",
+      title: "Created At",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
@@ -490,7 +374,7 @@ const AgentTransactionList: React.FC = () => {
       },
       width: "20%",
       align: "center" as AlignType
-    }
+    },
     // editedBy
     // {
     //   title: "Updated By",
@@ -517,31 +401,56 @@ const AgentTransactionList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (_, record: any) => {
+        return (
+          <div className="flex flex-row">
+            <Space size="middle" align="center">
+              {ability.can("paymentGatewayConfig.update", "") ? (
+                <Space size="middle" align="center" wrap>
+                  <Link
+                    href={`/admin/payment/payment-gateway-config/${record.id}/edit`}
+                  >
+                    <Button type="primary" icon={<EditOutlined />} />
+                  </Link>
+                </Space>
+              ) : null}
+            </Space>
+          </div>
+        );
+      },
+      align: "center" as AlignType
+    }
   ];
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
     sorter:
-      | SorterResult<TopUpTransactionData>
-      | SorterResult<TopUpTransactionData>[]
+      | SorterResult<PaymentGatewayConfigData>
+      | SorterResult<PaymentGatewayConfigData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<TopUpTransactionData>).order) {
-      // // console.log((sorter as SorterResult<TopUpTransactionData>).order)
+    if (sorter && (sorter as SorterResult<PaymentGatewayConfigData>).order) {
+      // // console.log((sorter as SorterResult<PaymentGatewayConfigData>).order)
 
       SetOrder(
-        (sorter as SorterResult<TopUpTransactionData>).order === "ascend"
+        (sorter as SorterResult<PaymentGatewayConfigData>).order === "ascend"
           ? "asc"
           : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<TopUpTransactionData>).field) {
-      // // console.log((sorter as SorterResult<TopUpTransactionData>).field)
+    if (sorter && (sorter as SorterResult<PaymentGatewayConfigData>).field) {
+      // // console.log((sorter as SorterResult<PaymentGatewayConfigData>).field)
 
-      SetSort((sorter as SorterResult<TopUpTransactionData>).field as string);
+      SetSort(
+        (sorter as SorterResult<PaymentGatewayConfigData>).field as string
+      );
     }
   };
 
@@ -583,10 +492,10 @@ const AgentTransactionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Agent Transactions List"
-            hasLink={false}
-            addLink="/admin/package/package/create"
-            permission="package.create"
+            title="Payment Gateway Config List"
+            hasLink={true}
+            addLink="/admin/payment/payment-gateway-config/create"
+            permission="paymentGatewayConfig.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -627,16 +536,16 @@ const AgentTransactionList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Agent</b>
+                              <b>Client</b>
                             </span>
                             <Select
                               showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleUserChange}
-                              options={users}
-                              value={selectUser}
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
                             />
                           </Space>
                         </Col>
@@ -651,16 +560,16 @@ const AgentTransactionList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Transaction Mode</b>
+                              <b>Payment Gateway</b>
                             </span>
                             <Select
                               showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleTransactionModeChange}
-                              options={transactionModes}
-                              value={selectedTransactionMode}
+                              onChange={handlePaymentGatewayChange}
+                              options={paymentGateways}
+                              value={selectedPaymentGateway}
                             />
                           </Space>
                         </Col>
@@ -675,87 +584,19 @@ const AgentTransactionList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Transaction Type</b>
+                              <b>Status</b>
                             </span>
                             <Select
                               showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleTransactionTypeChange}
-                              options={transactionTypes}
-                              value={selectedTransactionType}
+                              onChange={handleStatusChange}
+                              options={statusList}
+                              value={selectedStatus}
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Transaction By</b>
-                            </span>
-                            <Select
-                              showSearch
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleTransactionByChange}
-                              options={transactionByList}
-                              value={selectedTransactionBy}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Transaction Id</b>
-                            </span>
-                            <Input
-                              placeholder="Transaction Id"
-                              value={transactionId}
-                              onChange={e => setTransactionId(e.target.value)}
-                              type="text"
-                              allowClear
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Date Range By (Transaction Date)</b>
-                            </span>
-                            <RangePicker
-                              style={{ width: "100%" }}
-                              onChange={handleDateChange}
-                              value={selectedDateRange}
-                              placeholder={["Start Date", "End Date"]}
-                            />
-                          </Space>
-                        </Col>
-
                         <Col
                           xs={24}
                           sm={12}
@@ -812,4 +653,4 @@ const AgentTransactionList: React.FC = () => {
   );
 };
 
-export default AgentTransactionList;
+export default PaymentGatewayConfigList;

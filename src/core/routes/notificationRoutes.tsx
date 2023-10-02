@@ -29,6 +29,13 @@ const notificationRoutes = [
         path: "/admin/notification/email/email-setting",
         icon: <SettingOutlined />,
         permission: "emailNotification.list"
+      },
+      {
+        key: "/admin/notification/email/email-template",
+        label: "Email Template",
+        path: "/admin/notification/email/email-template",
+        icon: <SettingOutlined />,
+        permission: "emailTemplate.list"
       }
     ]
   },

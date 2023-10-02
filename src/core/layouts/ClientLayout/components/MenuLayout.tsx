@@ -22,7 +22,6 @@ const MenuLayout = ({ style, closeDrawer }: MenuLayoutProps) => {
       return route;
     }
   });
-
   return (
     <StyledVerticalNav
       theme="light"

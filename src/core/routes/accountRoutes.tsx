@@ -17,6 +17,13 @@ const accountRoutes = [
     permission: "accounting.dashboard"
   },
   {
+    key: "/admin/accounting/invoice",
+    label: "Customer Invoice",
+    path: "/admin/accounting/invoice",
+    icon: <AccountBookOutlined />,
+    permission: "invoice.list"
+  },
+  {
     key: "/admin/accounting/customer-transaction",
     label: "Customer Transaction",
     path: "/admin/accounting/customer-transaction",

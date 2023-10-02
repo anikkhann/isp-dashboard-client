@@ -1,7 +1,7 @@
-import PaymentLayout from "@/core/layouts/PaymentLayout";
+import NotificationLayout from "@/core/layouts/NotificationLayout";
 import AppLoader from "@/lib/AppLoader";
-import MainDashboard from "@/modules/dashboard/MainDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
+import EmailTemplateList from "@/modules/notification/email-template/EmailTemplateList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,11 +13,17 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("payment.dashboard", "") ? <MainDashboard /> : <Forbidden />}
+      {ability.can("emailTemplate.list", "") ? (
+        <EmailTemplateList />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };
 
-Home.getLayout = (page: ReactNode) => <PaymentLayout>{page}</PaymentLayout>;
+Home.getLayout = (page: ReactNode) => (
+  <NotificationLayout>{page}</NotificationLayout>
+);
 
 export default Home;

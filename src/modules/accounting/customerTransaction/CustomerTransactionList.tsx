@@ -62,7 +62,7 @@ const transactionTypes = [
   }
 ];
 
-const PackageList: React.FC = () => {
+const CustomerTransactionList: React.FC = () => {
   const [data, setData] = useState<TopUpTransactionData[]>([]);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
@@ -813,4 +813,4 @@ const PackageList: React.FC = () => {
   );
 };
 
-export default PackageList;
+export default CustomerTransactionList;

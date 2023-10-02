@@ -11,10 +11,24 @@ const paymentRoutes = [
 
   {
     key: "/admin/payment",
-    label: "Payment Gateway",
+    label: "Payment Dashboard",
     path: "/admin/payment",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "payment.dashboard"
+  },
+  {
+    key: "/admin/payment/payment-gateway",
+    label: "Payment Gateway",
+    path: "/admin/payment/payment-gateway",
+    icon: <SettingOutlined />,
+    permission: "paymentGateway.list"
+  },
+  {
+    key: "/admin/payment/payment-gateway-config",
+    label: "Payment Gateway Config",
+    path: "/admin/payment/payment-gateway-config",
+    icon: <SettingOutlined />,
+    permission: "paymentGatewayConfig.list"
   }
 ];
 
