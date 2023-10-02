@@ -68,6 +68,26 @@ const DetailsProfileData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.phone}</span>
               </Col>
             </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Address :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item ? item.address : null}
+                </span>
+              </Col>
+            </Row>
 
             <Row
               style={{
@@ -83,84 +103,17 @@ const DetailsProfileData = ({ item }: PropData) => {
               >
                 <span className="font-bold text-base">Email :</span>
               </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.email}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Partner Ip :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.partnerIp}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Partner Username :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.partnerUsername}</span>
-              </Col>
-            </Row>
-
-            {/* <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">User Name :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.userName}</span>
-              </Col>
-            </Row> */}
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">User Type :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.userType}</span>
+              <Col className="overflow-hidden whitespace-nowrap overflow-ellipsis">
+                <span
+                  className="mx-1 text-base"
+                  style={{
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis"
+                  }}
+                >
+                  {item.email}
+                </span>
               </Col>
             </Row>
           </div>
