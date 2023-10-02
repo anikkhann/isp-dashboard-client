@@ -76,7 +76,7 @@ const CurrentMonthRevenue = () => {
             }}
           >
             <Statistic
-              title="Total Commission"
+              title="Total"
               value={item?.total_commission}
               // precision={2}
               valueStyle={{ color: "#0e8fdc" }}
@@ -110,7 +110,7 @@ const CurrentMonthRevenue = () => {
           >
             <Statistic
               style={{ backgroundColor: "#ffffff !important" }}
-              title="Online Commission"
+              title="Online"
               value={item?.online_commission}
               // precision={2}
               valueStyle={{ color: "#3f8600" }}
@@ -144,7 +144,7 @@ const CurrentMonthRevenue = () => {
           >
             <Statistic
               style={{ backgroundColor: "#ffffff !important" }}
-              title="Offline Commission"
+              title="Offline"
               value={item?.offline_commission}
               // precision={2}
               valueStyle={{ color: "red" }}
