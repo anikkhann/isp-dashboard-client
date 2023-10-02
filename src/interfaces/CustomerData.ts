@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Union, Upazilla } from "./ClientData";
 import { EditedBy } from "./RoleData";
 import { SubZoneManager, ZoneManager } from "./TicketData";

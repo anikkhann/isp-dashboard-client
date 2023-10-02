@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CustomerData } from "@/interfaces/CustomerData";
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Button } from "antd";

@@ -30,14 +30,14 @@ const topUpRoutes = [
     path: "/admin/top-up/zone-top-up",
     icon: <SettingOutlined />,
     permission: "zoneTopUp.list"
+  },
+  {
+    key: "/admin/top-up/zone-top-up-request",
+    label: "Zone Topup Request",
+    path: "/admin/top-up/zone-top-up-request",
+    icon: <SettingOutlined />,
+    permission: "zoneTopUpRequest.list"
   }
-  /*  {
-     key: "/admin/top-up/request-top-up",
-     label: "Topup Request",
-     path: "/admin/top-up/request-top-up",
-     icon: <SettingOutlined />,
-     permission: "dashboard.view"
-   }, */
 ];
 
 export default topUpRoutes;

@@ -498,6 +498,7 @@ const ClientList: React.FC = () => {
     getUpazillas();
     getUnions();
     getLicenseTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns: ColumnsType<ClientData> = [

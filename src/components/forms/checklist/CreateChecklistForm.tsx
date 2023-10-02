@@ -117,6 +117,7 @@ const CreateChecklistForm = () => {
     if (selectComplainCategory) {
       getCategories(selectComplainCategory);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectComplainCategory]);
 
   useEffect(() => {

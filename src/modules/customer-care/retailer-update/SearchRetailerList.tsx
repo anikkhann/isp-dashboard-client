@@ -127,6 +127,7 @@ const SearchRetailerList = () => {
 
   useEffect(() => {
     getCustomers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClear = () => {

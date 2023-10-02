@@ -129,7 +129,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
     });
     setRootCauseList(list);
   };
-  console.log(item);
+  // console.log(item);
   const getAssignedTo = async () => {
     // console.log("selectedCustomer", selectedCustomer)
     const res = await axios.get(
@@ -371,6 +371,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
         setCheckLists(checkListData);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
   console.log(item);
   return (

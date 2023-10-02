@@ -136,6 +136,7 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
       //   })
       // }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
   useEffect(() => {

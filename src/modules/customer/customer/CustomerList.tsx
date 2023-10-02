@@ -628,20 +628,21 @@ const CustomerList: React.FC = () => {
 
     getCustomerPackages();
     getCustomers();
+    getSubZoneManagers(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (selectedZone) {
       getSubZoneManagers(selectedZone);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedZone]);
 
-  useEffect(() => {
-    getSubZoneManagers(null);
-  }, []);
   useEffect(() => {
     if (selectedDistributionZone) {
       getDistributionPops(selectedDistributionZone);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDistributionZone]);
 
   useEffect(() => {

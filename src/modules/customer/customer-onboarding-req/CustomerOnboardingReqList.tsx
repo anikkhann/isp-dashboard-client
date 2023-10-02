@@ -296,6 +296,7 @@ const CustomerOnboardingReqList: React.FC = () => {
   useEffect(() => {
     getCustomerPackages();
     getCustomerTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCustomerTypeChange = (value: any) => {

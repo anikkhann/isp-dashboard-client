@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 import { TicketData } from "@/interfaces/TicketData";
 import { FileImageOutlined } from "@ant-design/icons";

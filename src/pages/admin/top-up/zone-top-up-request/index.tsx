@@ -1,7 +1,7 @@
 import TopUpLayout from "@/core/layouts/TopUpLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import AdminList from "@/modules/user/user/UserList";
+import ZoneTopUpRequestList from "@/modules/top-up/zoneTopUpRequest/ZoneTopUpRequestList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,7 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("user.view", "") ? <AdminList /> : <Forbidden />}
+      {ability.can("zoneTopUpRequest.list", "") ? (
+        <ZoneTopUpRequestList />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

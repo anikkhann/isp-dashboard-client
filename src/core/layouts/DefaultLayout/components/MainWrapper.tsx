@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Layout } from "antd";
 import styled, { css } from "styled-components";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const MainWrapper = styled(({ collapsed, ...props }) => <Layout {...props} />)`
+const MainWrapper = styled(({ collapsed, ...props }: MainLayoutProps) => (
+  <Layout {...props} />
+))`
   transition: 0.2s all;
   margin-left: 250px;
   ${({ collapsed }) =>

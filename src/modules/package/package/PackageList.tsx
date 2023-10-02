@@ -178,6 +178,7 @@ const PackageList: React.FC = () => {
 
   useEffect(() => {
     getPackages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

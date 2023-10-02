@@ -2,11 +2,12 @@ import React from "react";
 import { Row, Col, Card } from "antd";
 
 interface PropData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: any;
 }
 
 const DetailsProfileData = ({ item }: PropData) => {
-  console.log("item", item);
+  // console.log("item", item);
   // const data = JSON.stringify(item);
   return (
     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between">
