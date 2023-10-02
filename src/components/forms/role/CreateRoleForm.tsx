@@ -338,7 +338,6 @@ const CreateRoleForm = () => {
                                       className="gutter-row "
                                       key={item.value}
                                     >
-                                      {/* <Space> */}
                                       <Card
                                         hoverable
                                         style={{
@@ -369,7 +368,6 @@ const CreateRoleForm = () => {
                                           </span>
                                         </Checkbox>
                                       </Card>
-                                      {/* </Space> */}
                                     </Col>
                                   </>
                                 );

@@ -86,7 +86,10 @@ export const StyledAuthWellAction = styled.div`
   padding: 24px;
   display: none;
   // background-color: ${({ theme }) => theme.palette.primary.main};
-  background: ${({ theme }) => theme.palette.blue[8]};
+  // background: ${({ theme }) => theme.palette.blue[8]};
+  background: #4776e6;
+  background: -webkit-linear-gradient(to right, #4776e6, #8e54e9);
+  background: linear-gradient(to right, #4776e6, #8e54e9);
   color: white;
   font-size: ${({ theme }) => theme.font.size.base};
   width: 100%;

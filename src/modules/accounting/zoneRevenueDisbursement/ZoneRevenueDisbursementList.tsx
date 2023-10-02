@@ -240,7 +240,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Note",
+      title: "Party-A Note",
       dataIndex: "note",
       sorter: true,
       width: "20%",
@@ -248,7 +248,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
     },
 
     {
-      title: "Child Note",
+      title: "Party-B Note",
       dataIndex: "childNote",
       sorter: true,
       width: "20%",

@@ -114,6 +114,7 @@ const LoginComponent = () => {
           }}
           onFinish={signInUser}
           onFinishFailed={onFinishFailed}
+          style={{ fontWeight: "bold" }}
         >
           <Form.Item
             label="Email"
@@ -154,7 +155,16 @@ const LoginComponent = () => {
           </Form.Item>
 
           <div className="form-btn-field">
-            <SignInButton type="primary" htmlType="submit">
+            <SignInButton
+              type="primary"
+              htmlType="submit"
+              style={{
+                backgroundColor: "#4776e6",
+                background:
+                  "-webkit-linear-gradient(to right, #4776e6, #8e54e9)",
+                fontWeight: "bold"
+              }}
+            >
               Login
             </SignInButton>
           </div>
