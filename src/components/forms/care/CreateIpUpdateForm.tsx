@@ -9,39 +9,25 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { IpData } from "@/interfaces/IpData";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
-  assignedType: string;
-  assignedTo: string;
+  staticIp: string;
+  comment: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
-
-interface PropData {
-  item: IpData;
-}
-
-const assignTypes = [
+const types = [
   {
-    label: "customer",
-    value: "customer"
+    label: "assign",
+    value: "assign"
   },
   {
-    label: "others",
-    value: "others"
-  },
-  {
-    label: "free",
-    value: "free"
+    label: "remove",
+    value: "remove"
   }
 ];
 
-const EditIPForm = ({ item }: PropData) => {
+const CreateIpUpdateForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -52,33 +38,21 @@ const EditIPForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [customers, setCustomers] = useState<any[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
+  const [customers, setCustomers] = useState<any>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
-  const [selectedAssignType, setSelectedAssignType] = useState<any[]>([]);
-  const [requiredCustomer, setRequiredCustomer] = useState<boolean>(false);
+  const [selectType, setSelectType] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleCustomerChange = (value: any) => {
+  const handleChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
+    form.setFieldsValue({ type: value });
+    setSelectType(value as any);
   };
 
-  const handleAssignTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ assignedType: value });
-    setSelectedAssignType(value as any);
-    if (value === "customer") {
-      setRequiredCustomer(true);
-    } else {
-      setRequiredCustomer(false);
-    }
-  };
-
-  function getCustomers() {
+  const getCustomers = async () => {
     const body = {
       meta: {
         sort: [
@@ -88,69 +62,50 @@ const EditIPForm = ({ item }: PropData) => {
           }
         ]
       },
-      // FOR SEARCHING DATA - OPTIONAL
       body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client",
-        isActive: true
+        // isActive: true
       }
     };
 
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-      const list = data.body.map((item: any) => {
+    const res = await axios.post("/api/customer/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
-      setCustomers(list);
-    });
-  }
+
+      setCustomers(items);
+    }
+  };
+
+  // customerId
+  const handleCustomerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ customerId: value });
+    setSelectedCustomer(value as any);
+  };
 
   useEffect(() => {
     getCustomers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (item) {
-      form.setFieldsValue({
-        ip: item.ip,
-        customerId: item.ipSubnet.partner.id
-      });
-      setSelectedCustomer(item.ipSubnet.partner.id as any);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = (data: FormData) => {
     setLoading(true);
-
-    const { assignedTo } = data;
+    const { staticIp, comment } = data;
 
     const formData = {
-      id: item.id,
-      assignedType: selectedAssignType,
       customerId: selectedCustomer,
-      assignedTo: assignedTo
+      staticIp: staticIp,
+      action: selectType,
+      comment: comment
     };
 
     try {
       axios
-        .put("/api/ip-list/update", formData)
+        .post("/api/customer/ip-change", formData)
         .then(res => {
           const { data } = res;
 
@@ -168,7 +123,7 @@ const EditIPForm = ({ item }: PropData) => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/device/ip-management");
+              router.replace(`/admin/static-ip-assign`);
             });
           }
         })
@@ -195,7 +150,6 @@ const EditIPForm = ({ item }: PropData) => {
     <>
       {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-
       {!loading && (
         <div className="mt-3">
           <Form
@@ -205,9 +159,9 @@ const EditIPForm = ({ item }: PropData) => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              assignedType: "",
-              customerId: "",
-              assignedTo: ""
+              type: "",
+              mac: "",
+              comment: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -227,46 +181,18 @@ const EditIPForm = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* ip */}
+                {/* customerId */}
                 <Form.Item
-                  label="IP Address"
+                  label="Customer"
+                  name="customerId"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="ip"
-                >
-                  <Input
-                    type="text"
-                    placeholder="IP Address"
-                    className={`form-control`}
-                    name="ip"
-                    disabled
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* assignedType */}
-                <Form.Item
-                  label="Assign Type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="assignedType"
                   rules={[
                     {
                       required: true,
-                      message: "Please select!"
+                      message: "Please select Customer!"
                     }
                   ]}
                 >
@@ -274,53 +200,26 @@ const EditIPForm = ({ item }: PropData) => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleAssignTypeChange}
-                      options={assignTypes}
-                      value={selectedAssignType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* customerId */}
-                <Form.Item
-                  label="Customers"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="customerId"
-                  rules={[
-                    {
-                      required: requiredCustomer ? true : false,
-                      message: "Please select Customers!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Customers"
+                      placeholder="Please select Customer"
                       onChange={handleCustomerChange}
                       options={customers}
                       value={selectedCustomer}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
               </Col>
 
-              {/* assignedTo */}
               <Col
                 xs={24}
                 sm={12}
@@ -330,19 +229,109 @@ const EditIPForm = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row"
               >
+                {/* type */}
                 <Form.Item
-                  label="Assigned To"
+                  label="Type"
+                  name="type"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="assignedTo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Type!"
+                    }
+                  ]}
                 >
-                  <Input
-                    type="text"
-                    placeholder="Assigned To"
-                    className={`form-control`}
-                    name="assignedTo"
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Type"
+                      onChange={handleChange}
+                      options={types}
+                      value={selectType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+
+              {selectType == "assign" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  {/* staticIp */}
+                  <Form.Item
+                    label="staticIp"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="staticIp"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your staticIp!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="staticIp"
+                      className={`form - control`}
+                      name="staticIp"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+
+              <Col
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={24}
+                xxl={24}
+                className="gutter-row"
+              >
+                {/* comment */}
+                <Form.Item
+                  label="Remarks"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="comment"
+                  /*  rules={[
+                 {
+                   required: true,
+                   message: "Please input your comment!"
+                 }
+               ]} */
+                >
+                  <Input.TextArea
+                    placeholder="Remarks"
+                    className={`form - control`}
+                    name="comment"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
@@ -353,6 +342,7 @@ const EditIPForm = ({ item }: PropData) => {
             <Row justify="center">
               <Col>
                 <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
                   <Button
                     // type="primary"
                     htmlType="submit"
@@ -362,6 +352,7 @@ const EditIPForm = ({ item }: PropData) => {
                       color: "#FFFFFF",
                       fontWeight: "bold"
                     }}
+                    disabled={loading}
                   >
                     Submit
                   </Button>
@@ -375,4 +366,4 @@ const EditIPForm = ({ item }: PropData) => {
   );
 };
 
-export default EditIPForm;
+export default CreateIpUpdateForm;

@@ -6,42 +6,12 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
+import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { IpData } from "@/interfaces/IpData";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
-interface FormData {
-  assignedType: string;
-  assignedTo: string;
-}
-
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
-
-interface PropData {
-  item: IpData;
-}
-
-const assignTypes = [
-  {
-    label: "customer",
-    value: "customer"
-  },
-  {
-    label: "others",
-    value: "others"
-  },
-  {
-    label: "free",
-    value: "free"
-  }
-];
-
-const EditIPForm = ({ item }: PropData) => {
+const CreatePackageMigrationForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -52,33 +22,22 @@ const EditIPForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [customers, setCustomers] = useState<any[]>([]);
+  const [customers, setCustomers] = useState<any>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
 
-  const [selectedAssignType, setSelectedAssignType] = useState<any[]>([]);
-  const [requiredCustomer, setRequiredCustomer] = useState<boolean>(false);
+  const [customerPackages, setCustomerPackages] = useState([]);
+  const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleCustomerChange = (value: any) => {
+  const handleCustomerPackageChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any);
+    form.setFieldsValue({ customerPackageId: value });
+    setSelectedCustomerPackage(value as any);
   };
 
-  const handleAssignTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ assignedType: value });
-    setSelectedAssignType(value as any);
-    if (value === "customer") {
-      setRequiredCustomer(true);
-    } else {
-      setRequiredCustomer(false);
-    }
-  };
-
-  function getCustomers() {
+  const getCustomerPackages = () => {
     const body = {
       meta: {
         sort: [
@@ -88,18 +47,12 @@ const EditIPForm = ({ item }: PropData) => {
           }
         ]
       },
-      // FOR SEARCHING DATA - OPTIONAL
       body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client",
         isActive: true
       }
     };
-
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
+    axios.post("/api/customer-package/get-list", body).then(res => {
       const { data } = res;
-
       if (data.status != 200) {
         MySwal.fire({
           title: "Error",
@@ -115,42 +68,61 @@ const EditIPForm = ({ item }: PropData) => {
           value: item.id
         };
       });
-      setCustomers(list);
+      setCustomerPackages(list);
     });
-  }
+  };
+
+  const getCustomers = async () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // isActive: true
+      }
+    };
+
+    const res = await axios.post("/api/customer/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setCustomers(items);
+    }
+  };
+
+  // customerId
+  const handleCustomerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ customerId: value });
+    setSelectedCustomer(value as any[]);
+  };
 
   useEffect(() => {
     getCustomers();
+    getCustomerPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (item) {
-      form.setFieldsValue({
-        ip: item.ip,
-        customerId: item.ipSubnet.partner.id
-      });
-      setSelectedCustomer(item.ipSubnet.partner.id as any);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit = (data: FormData) => {
+  const onSubmit = () => {
     setLoading(true);
-
-    const { assignedTo } = data;
-
     const formData = {
-      id: item.id,
-      assignedType: selectedAssignType,
       customerId: selectedCustomer,
-      assignedTo: assignedTo
+      customerPackageId: selectedCustomerPackage
     };
 
     try {
       axios
-        .put("/api/ip-list/update", formData)
+        .post("/api/package-migration/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -168,7 +140,7 @@ const EditIPForm = ({ item }: PropData) => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/device/ip-management");
+              router.replace(`/admin/customer-package-update`);
             });
           }
         })
@@ -195,7 +167,6 @@ const EditIPForm = ({ item }: PropData) => {
     <>
       {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-
       {!loading && (
         <div className="mt-3">
           <Form
@@ -205,9 +176,8 @@ const EditIPForm = ({ item }: PropData) => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              assignedType: "",
-              customerId: "",
-              assignedTo: ""
+              type: "",
+              comment: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
@@ -227,100 +197,46 @@ const EditIPForm = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* ip */}
+                {/* customerId */}
                 <Form.Item
-                  label="IP Address"
+                  label="Customer"
+                  name="customerId"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="ip"
-                >
-                  <Input
-                    type="text"
-                    placeholder="IP Address"
-                    className={`form-control`}
-                    name="ip"
-                    disabled
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* assignedType */}
-                <Form.Item
-                  label="Assign Type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="assignedType"
                   rules={[
                     {
                       required: true,
-                      message: "Please select!"
+                      message: "Please select Customer!"
                     }
                   ]}
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      mode="multiple"
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleAssignTypeChange}
-                      options={assignTypes}
-                      value={selectedAssignType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* customerId */}
-                <Form.Item
-                  label="Customers"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="customerId"
-                  rules={[
-                    {
-                      required: requiredCustomer ? true : false,
-                      message: "Please select Customers!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Customers"
+                      placeholder="Please select Customer"
                       onChange={handleCustomerChange}
                       options={customers}
                       value={selectedCustomer}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
               </Col>
 
-              {/* assignedTo */}
               <Col
                 xs={24}
                 sm={12}
@@ -330,21 +246,38 @@ const EditIPForm = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row"
               >
+                {/* customerPackageId */}
                 <Form.Item
-                  label="Assigned To"
+                  label="Customer Package"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="assignedTo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Customer Package!"
+                    }
+                  ]}
+                  name="customerPackageId"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Assigned To"
-                    className={`form-control`}
-                    name="assignedTo"
-                    style={{ padding: "6px" }}
-                  />
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Customer Package"
+                      onChange={handleCustomerPackageChange}
+                      options={customerPackages}
+                      value={selectedCustomerPackage}
+                      showSearch
+                      // filterOption={(input, option) => {
+                      //   if (typeof option?.label === 'string') {
+                      //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                      //   }
+                      //   return false;
+                      // }}
+                    />
+                  </Space>
                 </Form.Item>
               </Col>
             </Row>
@@ -353,6 +286,7 @@ const EditIPForm = ({ item }: PropData) => {
             <Row justify="center">
               <Col>
                 <Form.Item>
+                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
                   <Button
                     // type="primary"
                     htmlType="submit"
@@ -375,4 +309,4 @@ const EditIPForm = ({ item }: PropData) => {
   );
 };
 
-export default EditIPForm;
+export default CreatePackageMigrationForm;

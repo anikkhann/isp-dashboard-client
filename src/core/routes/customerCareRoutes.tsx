@@ -87,6 +87,20 @@ const customerCareRoutes = [
     path: "/admin/customer-mac-bind-or-remove",
     icon: <SettingOutlined />,
     permission: "customerCare.list"
+  },
+  {
+    key: "/admin/static-ip-assign",
+    label: "Static IP Assign/Remove",
+    path: "/admin/static-ip-assign",
+    icon: <SettingOutlined />,
+    permission: "customerCare.list"
+  },
+  {
+    key: "/admin/package-migration",
+    label: "Package Migration",
+    path: "/admin/package-migration",
+    icon: <SettingOutlined />,
+    permission: "customerCare.list"
   }
 ];
 
