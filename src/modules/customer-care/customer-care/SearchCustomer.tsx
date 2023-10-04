@@ -22,7 +22,7 @@ import ability from "@/services/guard/ability";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { AlignType } from "rc-table/lib/interface";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined, VerifiedOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 
 import Swal from "sweetalert2";
@@ -459,6 +459,48 @@ const SearchCustomer = () => {
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/customer-care/${record.id}/edit`}>
                       <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                ) : null}
+                {ability.can("customerCare.update", "") &&
+                !record.isSafOtpVerified ? (
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/customer-care/${record.id}/saf`}>
+                      <Button
+                        style={{
+                          backgroundColor: "#F15F22",
+                          color: "#ffffff"
+                        }}
+                        icon={<VerifiedOutlined />}
+                      />
+                    </Link>
+                  </Space>
+                ) : null}
+                {ability.can("customerCare.update", "") &&
+                !record.isSafOtpSend ? (
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/customer-care/${record.id}/saf`}>
+                      <Button
+                        style={{
+                          backgroundColor: "#F15F22",
+                          color: "#ffffff"
+                        }}
+                        icon={<VerifiedOutlined />}
+                      />
+                    </Link>
+                  </Space>
+                ) : null}
+                {ability.can("customerCare.update", "") &&
+                !record.isSafVerified ? (
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/customer-care/${record.id}/saf`}>
+                      <Button
+                        style={{
+                          backgroundColor: "#F15F22",
+                          color: "#ffffff"
+                        }}
+                        icon={<VerifiedOutlined />}
+                      />
                     </Link>
                   </Space>
                 ) : null}

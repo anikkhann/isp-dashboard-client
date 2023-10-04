@@ -25,6 +25,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import { PaymentGatewayConfigData } from "@/interfaces/PaymentGatewayConfigData";
 
 interface FormData {
   paidAmount: string;
@@ -96,7 +97,7 @@ const CreateZoneTopUpRequestForm = () => {
         isActive: true
       }
     };
-    axios.post("/api/payment-gateway/get-list", body).then(res => {
+    axios.post("/api/payment-gateway-config/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -110,9 +111,9 @@ const CreateZoneTopUpRequestForm = () => {
 
       if (!data.body) return;
 
-      const list = data.body.map((item: any) => {
+      const list = data.body.map((item: PaymentGatewayConfigData) => {
         return {
-          label: item.bankName,
+          label: item.paymentGateway.bankName,
           value: item.id
         };
       });
