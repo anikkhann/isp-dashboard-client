@@ -42,6 +42,14 @@ const userRoutes = [
     path: "/admin/user/permission",
     icon: <SlidersOutlined />,
     permission: "permission.list"
+  },
+
+  {
+    key: "/admin/user/bw-nttn-provider",
+    label: "BW NTTN Providers",
+    path: "/admin/user/bw-nttn-provider",
+    icon: <SlidersOutlined />,
+    permission: "bwNttnProvider.list"
   }
 ];
 
