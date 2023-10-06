@@ -1,5 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Collapse,
+  DatePicker,
+  Row,
+  Select,
+  Space
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -17,6 +26,24 @@ import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useAppSelector } from "@/store/hooks";
+
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -26,13 +53,26 @@ interface TableParams {
 
 const ZoneRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
-  console.log(data);
+  // console.log(data);
   const MySwal = withReactContent(Swal);
+
+  const { RangePicker } = DatePicker;
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const authUser = useAppSelector(state => state.auth.user);
+
+  const { Panel } = Collapse;
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -130,11 +170,17 @@ const ZoneRevenueDisbursementList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    zoneManagerParam: string | null,
+    startDateParam: string | null,
+    endDateParam: string | null
   ) => {
     const token = Cookies.get("token");
     // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    // "zoneManager": {"id":"679cd29a-ece1-42c1-a62c-56effcaff985"} // Zone Manager List API
+    // "dateRangeFilter": {"field": "createdOn", "startDate": null, "endDate": null}
 
     const body = {
       meta: {
@@ -146,6 +192,16 @@ const ZoneRevenueDisbursementList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        zoneManager: {
+          id: zoneManagerParam
+        },
+        dateRangeFilter: {
+          field: "createdOn",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
       }
     };
 
@@ -162,9 +218,26 @@ const ZoneRevenueDisbursementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["zone-revenue-disbursement-list", page, limit, order, sort],
+    queryKey: [
+      "zone-revenue-disbursement-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedZone,
+      selectedStartDate,
+      selectedEndDate
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedZone,
+        selectedStartDate,
+        selectedEndDate
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -204,6 +277,26 @@ const ZoneRevenueDisbursementList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+
+  const handleDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    }
+  };
 
   // // console.log(error, isLoading, isError)
   const columns: ColumnsType<ZoneRevenueDisbursement> = [
@@ -327,7 +420,8 @@ const ZoneRevenueDisbursementList: React.FC = () => {
              
             {/* approve */}
             <Space size="middle" align="center" className="mx-1">
-              {ability.can("zoneRevenueDisbursement.reject", "") ? (
+              {ability.can("zoneRevenueDisbursement.reject", "") &&
+              authUser?.userType == "zone" ? (
                 <Space size="middle" align="center" wrap>
                   <Link
                     href={`/admin/accounting/zone-revenue-disbursement/${record.id}/reject`}
@@ -345,7 +439,8 @@ const ZoneRevenueDisbursementList: React.FC = () => {
                 </Space>
               ) : null}
 
-              {ability.can("zoneRevenueDisbursement.approve", "") ? (
+              {ability.can("zoneRevenueDisbursement.approve", "") &&
+              authUser?.userType == "zone" ? (
                 <Space size="middle" align="center" wrap>
                   <Button
                     icon={<CheckOutlined />}
@@ -360,7 +455,8 @@ const ZoneRevenueDisbursementList: React.FC = () => {
               ) : null}
 
               {/* cancel */}
-              {ability.can("zoneRevenueDisbursement.cancel", "") ? (
+              {ability.can("zoneRevenueDisbursement.cancel", "") &&
+              authUser?.userType == "client" ? (
                 <Space size="middle" align="center" wrap>
                   <Button
                     icon={<CloseOutlined />}
@@ -417,6 +513,66 @@ const ZoneRevenueDisbursementList: React.FC = () => {
     }
   };
 
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  const handleClear = () => {
+    setSelectedZone(null);
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+  };
+
+  useEffect(() => {
+    getZoneManagers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleZoneChange = (value: any) => {
+    setSelectedZone(value);
+  };
+
   return (
     <>
       <AppRowContainer>
@@ -470,11 +626,111 @@ const ZoneRevenueDisbursementList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Zone Manager</b>
+                            </span>
+                            <Select
+                              showSearch
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range By (Expiration Date)</b>
+                            </span>
+                            <RangePicker
+                              style={{ width: "100%" }}
+                              onChange={handleDateChange}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
+              </Space>
+
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

@@ -17,6 +17,7 @@ import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useAppSelector } from "@/store/hooks";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -28,6 +29,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
 
   const MySwal = withReactContent(Swal);
+
+  const authUser = useAppSelector(state => state.auth.user);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -328,7 +331,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
 
             {/* approve */}
             <Space size="middle" align="center" className="mx-1">
-              {ability.can("subZoneRevenueDisbursement.reject", "") ? (
+              {ability.can("subZoneRevenueDisbursement.reject", "") &&
+              authUser?.userType == "sub_zone" ? (
                 <Space size="middle" align="center" wrap>
                   <Link
                     href={`/admin/accounting/subZone-revenue-disbursement/${record.id}/reject`}
@@ -346,7 +350,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                 </Space>
               ) : null}
 
-              {ability.can("subZoneRevenueDisbursement.approve", "") ? (
+              {ability.can("subZoneRevenueDisbursement.approve", "") &&
+              authUser?.userType == "sub_zone" ? (
                 <Space size="middle" align="center" wrap>
                   <Button
                     icon={<CheckOutlined />}
@@ -361,7 +366,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
               ) : null}
 
               {/* cancel */}
-              {ability.can("subZoneRevenueDisbursement.cancel", "") ? (
+              {ability.can("subZoneRevenueDisbursement.cancel", "") &&
+              authUser?.partnerId == record.partnerId ? (
                 <Space size="middle" align="center" wrap>
                   <Button
                     icon={<CloseOutlined />}
