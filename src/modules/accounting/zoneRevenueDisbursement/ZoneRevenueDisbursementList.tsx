@@ -35,6 +35,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { useRouter } from "next/router";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -55,6 +56,8 @@ const ZoneRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
   // console.log(data);
   const MySwal = withReactContent(Swal);
+
+  const router = useRouter();
 
   const { RangePicker } = DatePicker;
 
@@ -106,7 +109,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
         );
         if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
-            // router.reload();
+            router.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
@@ -148,7 +151,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
         );
         if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
-            // router.reload();
+            router.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
