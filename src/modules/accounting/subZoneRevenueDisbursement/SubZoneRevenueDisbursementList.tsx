@@ -3,7 +3,7 @@ import { Button, Card, Col, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -333,52 +333,58 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
             <Space size="middle" align="center" className="mx-1">
               {ability.can("subZoneRevenueDisbursement.reject", "") &&
               authUser?.userType == "sub_zone" ? (
-                <Space size="middle" align="center" wrap>
-                  <Link
-                    href={`/admin/accounting/subZone-revenue-disbursement/${record.id}/reject`}
-                  >
-                    <Button
-                      type="primary"
-                      icon={<AlertOutlined />}
-                      style={{
-                        color: "#FFFFFF",
-                        backgroundColor: "#FF5630",
-                        borderColor: "#FF5630"
-                      }}
-                    />
-                  </Link>
-                </Space>
+                <Tooltip title="Reject" placement="bottomRight" color="gold">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/accounting/subZone-revenue-disbursement/${record.id}/reject`}
+                    >
+                      <Button
+                        type="primary"
+                        icon={<AlertOutlined />}
+                        style={{
+                          color: "#FFFFFF",
+                          backgroundColor: "#FF5630",
+                          borderColor: "#FF5630"
+                        }}
+                      />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
 
               {ability.can("subZoneRevenueDisbursement.approve", "") &&
               authUser?.userType == "sub_zone" ? (
-                <Space size="middle" align="center" wrap>
-                  <Button
-                    icon={<CheckOutlined />}
-                    style={{
-                      color: "#FFFFFF",
-                      backgroundColor: "#570DF8",
-                      borderColor: "#570DF8"
-                    }}
-                    onClick={() => handleApprove(record.id)}
-                  />
-                </Space>
+                <Tooltip title="Approve" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      icon={<CheckOutlined />}
+                      style={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#570DF8",
+                        borderColor: "#570DF8"
+                      }}
+                      onClick={() => handleApprove(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
               ) : null}
 
               {/* cancel */}
               {ability.can("subZoneRevenueDisbursement.cancel", "") &&
               authUser?.partnerId == record.partnerId ? (
-                <Space size="middle" align="center" wrap>
-                  <Button
-                    icon={<CloseOutlined />}
-                    style={{
-                      color: "#FFFFFF",
-                      backgroundColor: "#FF5630",
-                      borderColor: "#FF5630"
-                    }}
-                    onClick={() => handleCancel(record.id)}
-                  />
-                </Space>
+                <Tooltip title="Cancel" placement="bottomRight" color="red">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      icon={<CloseOutlined />}
+                      style={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#FF5630",
+                        borderColor: "#FF5630"
+                      }}
+                      onClick={() => handleCancel(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
               ) : null}
 
               {/* {ability.can("subZoneRevenueDisbursement.view", "") ? (
