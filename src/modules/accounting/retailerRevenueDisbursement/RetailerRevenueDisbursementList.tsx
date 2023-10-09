@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space } from "antd";
+import { Button, Card, Col, Space, Tooltip } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useAppSelector } from "@/store/hooks";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -26,7 +27,7 @@ interface TableParams {
 
 const RetailerRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
-
+  const authUser = useAppSelector(state => state.auth.user);
   const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
@@ -327,51 +328,60 @@ const RetailerRevenueDisbursementList: React.FC = () => {
 
             {/* approve */}
             <Space size="middle" align="center" className="mx-1">
-              {ability.can("retailerRevenueDisbursement.reject", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link
-                    href={`/admin/accounting/retailer-revenue-disbursement/${record.id}/reject`}
-                  >
+              {ability.can("retailerRevenueDisbursement.reject", "") &&
+              authUser?.userType == "retailer" ? (
+                <Tooltip title="Reject" placement="bottomRight" color="gold">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/accounting/retailer-revenue-disbursement/${record.id}/reject`}
+                    >
+                      <Button
+                        type="primary"
+                        icon={<AlertOutlined />}
+                        style={{
+                          color: "#FFFFFF",
+                          backgroundColor: "#FF5630",
+                          borderColor: "#FF5630"
+                        }}
+                      />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {ability.can("retailerRevenueDisbursement.approve", "") &&
+              authUser?.userType == "retailer" ? (
+                <Tooltip title="Approve" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap>
                     <Button
-                      type="primary"
-                      icon={<AlertOutlined />}
+                      icon={<CheckOutlined />}
+                      style={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#570DF8",
+                        borderColor: "#570DF8"
+                      }}
+                      onClick={() => handleApprove(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {/* cancel */}
+              {ability.can("retailerRevenueDisbursement.cancel", "") &&
+              authUser?.userType == "sub_zone" ? (
+                <Tooltip title="Cancel" placement="bottomRight" color="red">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      icon={<CloseOutlined />}
                       style={{
                         color: "#FFFFFF",
                         backgroundColor: "#FF5630",
                         borderColor: "#FF5630"
                       }}
+                      onClick={() => handleCancel(record.id)}
                     />
-                  </Link>
-                </Space>
-              ) : null}
-
-              {ability.can("retailerRevenueDisbursement.approve", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Button
-                    icon={<CheckOutlined />}
-                    style={{
-                      color: "#FFFFFF",
-                      backgroundColor: "#570DF8",
-                      borderColor: "#570DF8"
-                    }}
-                    onClick={() => handleApprove(record.id)}
-                  />
-                </Space>
-              ) : null}
-
-              {/* cancel */}
-              {ability.can("retailerRevenueDisbursement.cancel", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Button
-                    icon={<CloseOutlined />}
-                    style={{
-                      color: "#FFFFFF",
-                      backgroundColor: "#FF5630",
-                      borderColor: "#FF5630"
-                    }}
-                    onClick={() => handleCancel(record.id)}
-                  />
-                </Space>
+                  </Space>
+                </Tooltip>
               ) : null}
 
               {/* {ability.can("retailerRevenueDisbursement.view", "") ? (
