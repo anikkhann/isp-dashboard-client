@@ -163,7 +163,7 @@ const ZoneWiseCardData = () => {
       align: "center" as AlignType
     }
   ];
-
+  //functions for getting zone manger list data using POST request
   function getZoneManagers() {
     const body = {
       // FOR PAGINATION - OPTIONAL
