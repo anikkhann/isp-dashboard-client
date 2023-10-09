@@ -23,7 +23,7 @@ const CreatePackageMigrationForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [customers, setCustomers] = useState<any>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   const [customerPackages, setCustomerPackages] = useState([]);
   const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
@@ -104,7 +104,7 @@ const CreatePackageMigrationForm = () => {
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ customerId: value });
-    setSelectedCustomer(value as any[]);
+    setSelectedCustomer(value);
   };
 
   useEffect(() => {
@@ -215,7 +215,6 @@ const CreatePackageMigrationForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      mode="multiple"
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Customer"
                       onChange={handleCustomerChange}
