@@ -517,10 +517,15 @@ const SearchSubZoneList = () => {
                           />
                         </Space>
                       </Col>
+                    </Row>
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
+                        sm={24}
+                        md={24}
                         lg={12}
                         xl={12}
                         xxl={12}
@@ -560,8 +565,8 @@ const SearchSubZoneList = () => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
+                        sm={24}
+                        md={24}
                         lg={12}
                         xl={12}
                         xxl={12}

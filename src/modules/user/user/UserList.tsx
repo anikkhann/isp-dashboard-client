@@ -3,7 +3,7 @@ import { Button, Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -262,11 +262,13 @@ const UserList: React.FC = () => {
           <>
             <Space size="middle" align="center">
               {ability.can("user.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/user/user/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/user/user/${record.id}/edit`}>
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </>

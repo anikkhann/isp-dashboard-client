@@ -389,11 +389,7 @@ const PackageMigrationList: React.FC = () => {
               {/* Cancel */}
               {record.status == "Pending" &&
                 (ability.can("customerCare.list", "") ? (
-                  <Tooltip
-                    title="Cancel Package Migration"
-                    placement="bottomRight"
-                    color="#EA1179"
-                  >
+                  <Tooltip title="Cancel " placement="bottomRight" color="red">
                     <Space size="middle" align="center" wrap>
                       <Button
                         type="primary"

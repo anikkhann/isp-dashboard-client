@@ -619,10 +619,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -643,10 +643,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -667,10 +667,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -691,10 +691,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -715,10 +715,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -737,10 +737,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -759,10 +759,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -784,10 +784,10 @@ const AgentTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         ></Col>
                       </Row>

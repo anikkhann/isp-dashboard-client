@@ -44,7 +44,9 @@ const NewPackageMigration = () => {
               marginBottom: "1rem",
               color: "#F15F22"
             }}
-          ></h1>
+          >
+            New Package Migration
+          </h1>
         </div>
 
         <Card

@@ -325,7 +325,7 @@ const PaymentGatewayConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "credential",
+      title: "Credential",
       dataIndex: "credential",
       sorter: true,
       width: "20%",

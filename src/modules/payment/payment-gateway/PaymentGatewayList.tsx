@@ -3,7 +3,7 @@ import { Button, Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -138,7 +138,7 @@ const PaymentGatewayList: React.FC = () => {
     },
 
     {
-      title: "bankName",
+      title: "Bank Name",
       dataIndex: "bankName",
       sorter: true,
       width: "20%",
@@ -146,7 +146,7 @@ const PaymentGatewayList: React.FC = () => {
     },
 
     {
-      title: "paymentUrl",
+      title: "Payment URL",
       dataIndex: "paymentUrl",
       render: (text, record) => {
         return (
@@ -161,7 +161,7 @@ const PaymentGatewayList: React.FC = () => {
     },
 
     {
-      title: "key",
+      title: "Key",
       dataIndex: "key",
       render: (text, record) => {
         return (
@@ -253,13 +253,15 @@ const PaymentGatewayList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("paymentGateway.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link
-                    href={`/admin/payment/payment-gateway/${record.id}/edit`}
-                  >
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/payment/payment-gateway/${record.id}/edit`}
+                    >
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </div>

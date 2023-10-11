@@ -3,7 +3,7 @@ import { Button, Card, Col, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -140,7 +140,7 @@ const BwNttnProviderList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "userName",
+      title: "User Name",
       dataIndex: "userName",
       sorter: true,
       width: "20%",
@@ -154,14 +154,14 @@ const BwNttnProviderList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "contactPersonName",
+      title: "Contact Person Name",
       dataIndex: "contactPersonName",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "contactPersonNumber",
+      title: "Contact Person Number",
       dataIndex: "contactPersonNumber",
       sorter: true,
       width: "20%",
@@ -228,11 +228,15 @@ const BwNttnProviderList: React.FC = () => {
           <>
             <Space size="middle" align="center">
               {ability.can("bwNttnProvider.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/user/bw-nttn-provider/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/user/bw-nttn-provider/${record.id}/edit`}
+                    >
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </>

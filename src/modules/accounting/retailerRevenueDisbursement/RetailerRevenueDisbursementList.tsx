@@ -330,7 +330,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
             <Space size="middle" align="center" className="mx-1">
               {ability.can("retailerRevenueDisbursement.reject", "") &&
               authUser?.userType == "retailer" ? (
-                <Tooltip title="Reject" placement="bottomRight" color="gold">
+                <Tooltip title="Reject" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Link
                       href={`/admin/accounting/retailer-revenue-disbursement/${record.id}/reject`}

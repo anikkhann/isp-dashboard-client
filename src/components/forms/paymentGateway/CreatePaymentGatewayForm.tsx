@@ -168,7 +168,7 @@ const CreatePaymentGatewayForm = () => {
               >
                 {/* key */}
                 <Form.Item
-                  label="key"
+                  label="Key"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -202,7 +202,7 @@ const CreatePaymentGatewayForm = () => {
               >
                 {/* paymentUrl */}
                 <Form.Item
-                  label="paymentUrl"
+                  label="Payment URL"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

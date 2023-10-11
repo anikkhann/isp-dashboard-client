@@ -290,14 +290,14 @@ const ZoneRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "zone_manager",
+      title: "Zone Manager",
       dataIndex: "zone_manager",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "total_commission",
+      title: "Total",
       dataIndex: "total_commission",
       render: (text, record) => {
         return (
@@ -311,7 +311,7 @@ const ZoneRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "online_commission",
+      title: "Online",
       dataIndex: "online_commission",
       render: (text, record) => {
         return (
@@ -326,7 +326,7 @@ const ZoneRevenueList: React.FC = () => {
     },
 
     {
-      title: "offline_commission",
+      title: "Offline",
       dataIndex: "offline_commission",
       sorter: true,
       width: "20%",
@@ -432,10 +432,10 @@ const ZoneRevenueList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -456,10 +456,10 @@ const ZoneRevenueList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -480,10 +480,10 @@ const ZoneRevenueList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -502,10 +502,10 @@ const ZoneRevenueList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -527,10 +527,10 @@ const ZoneRevenueList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         ></Col>
                       </Row>

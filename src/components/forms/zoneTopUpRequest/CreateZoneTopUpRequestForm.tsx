@@ -251,10 +251,10 @@ const CreateZoneTopUpRequestForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* paymentType */}
@@ -282,10 +282,10 @@ const CreateZoneTopUpRequestForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* paidAmount */}
@@ -316,10 +316,10 @@ const CreateZoneTopUpRequestForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* paymentGatewayId */}
@@ -344,39 +344,40 @@ const CreateZoneTopUpRequestForm = () => {
               </Form.Item>
             </Col>
           </Row>
-
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-            <Col>
-              <Form.Item
-                label="file"
-                style={{
-                  marginBottom: 0,
-                  width: "100%",
-                  textAlign: "center",
-                  fontWeight: "bold"
-                }}
-                name="file"
-                rules={[
-                  {
-                    required: paymentType ? paymentType === "offline" : false,
-                    message: "Please upload file!"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Upload
-                    customRequest={dummyAction}
-                    onChange={handleFileChange}
-                    maxCount={1}
-                    listType="picture"
-                    fileList={fileList}
-                  >
-                    {fileList.length >= 1 ? null : uploadButton}
-                  </Upload>
-                </Space>
-              </Form.Item>
-            </Col>
-          </Row>
+          {paymentType == "online" && (
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.Item
+                  label="Attachment"
+                  style={{
+                    marginBottom: 0,
+                    width: "100%",
+                    textAlign: "center",
+                    fontWeight: "bold"
+                  }}
+                  name="file"
+                  rules={[
+                    {
+                      required: paymentType ? paymentType === "offline" : false,
+                      message: "Please upload file!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Upload
+                      customRequest={dummyAction}
+                      onChange={handleFileChange}
+                      maxCount={1}
+                      listType="picture"
+                      fileList={fileList}
+                    >
+                      {fileList.length >= 1 ? null : uploadButton}
+                    </Upload>
+                  </Space>
+                </Form.Item>
+              </Col>
+            </Row>
+          )}
 
           {/* submit */}
           <Row justify="center">

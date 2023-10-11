@@ -3,7 +3,7 @@ import { Button, Card, Col, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -239,20 +239,24 @@ const ComplainTypeList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("complainType.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link
-                    href={`/admin/complaint/complain-type/${record.id}/edit`}
-                  >
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/complaint/complain-type/${record.id}/edit`}
+                    >
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
               {ability.can("complainType.view", "") ? (
-                <Space size="middle" align="center" wrap className="mx-1">
-                  <Link href={`/admin/complaint/complain-type/${record.id}`}>
-                    <Button type="primary" icon={<EyeOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="View" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap className="mx-1">
+                    <Link href={`/admin/complaint/complain-type/${record.id}`}>
+                      <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </div>

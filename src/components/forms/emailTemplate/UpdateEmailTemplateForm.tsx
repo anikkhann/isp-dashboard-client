@@ -293,10 +293,10 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* brandOf */}
@@ -326,15 +326,15 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* chequeInFavour */}
               <Form.Item
-                label="chequeInFavour"
+                label="Cheque In Favour"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -359,15 +359,15 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* supportNumber */}
               <Form.Item
-                label="supportNumber"
+                label="Support Number"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -392,15 +392,15 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* supportEmail */}
               <Form.Item
-                label="supportEmail"
+                label="Support Email"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -425,15 +425,15 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* phone */}
               <Form.Item
-                label="phone"
+                label="Phone"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -458,15 +458,15 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* address */}
               <Form.Item
-                label="address"
+                label="Address"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -491,15 +491,15 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* mushak */}
               <Form.Item
-                label="mushak"
+                label="Mushak"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -524,15 +524,15 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* website */}
               <Form.Item
-                label="website"
+                label="Website"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -557,26 +557,26 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* cc */}
               <Form.Item
-                label="cc"
+                label="CC"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
                 name="cc"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input cc!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input cc!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -590,26 +590,26 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* bcc */}
               <Form.Item
-                label="bcc"
+                label="BCC"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
                 name="bcc"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Bcc!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input Bcc!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -623,10 +623,10 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* emailSettingsId */}
@@ -650,6 +650,24 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                 </Space>
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
 
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">

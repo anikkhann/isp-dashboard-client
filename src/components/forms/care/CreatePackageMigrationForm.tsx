@@ -140,7 +140,7 @@ const CreatePackageMigrationForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace(`/admin/customer-package-update`);
+              router.replace(`/admin/package-migration`);
             });
           }
         })

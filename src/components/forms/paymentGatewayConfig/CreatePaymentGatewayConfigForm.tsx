@@ -34,6 +34,7 @@ const CreatePaymentGatewayConfigForm = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
+  const [isActiveForSystem, setIsActiveForSystem] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
   const router = useRouter();
@@ -49,6 +50,9 @@ const CreatePaymentGatewayConfigForm = () => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  const handleActiveForSystem = (e: any) => {
+    setIsActiveForSystem(e.target.checked ? true : false);
+  };
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
@@ -162,6 +166,7 @@ const CreatePaymentGatewayConfigForm = () => {
     const { credential } = data;
 
     const formData = {
+      isForSystem: isActiveForSystem,
       clientId: selectedClient,
       paymentGatewayId: selectedPaymentGateway,
       credential: credential,
@@ -239,42 +244,45 @@ const CreatePaymentGatewayConfigForm = () => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* clientId */}
-                <Form.Item
-                  label="Client"
-                  name="clientId"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select!"
-                    }
-                  ]}
+              {isActiveForSystem != true && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
                 >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleClientChange}
-                      options={clients}
-                      value={selectedClient}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                  {/* clientId */}
+                  <Form.Item
+                    label="Client"
+                    name="clientId"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleClientChange}
+                        options={clients}
+                        value={selectedClient}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
               <Col
                 xs={24}
                 sm={12}
@@ -323,7 +331,7 @@ const CreatePaymentGatewayConfigForm = () => {
               >
                 {/* credential */}
                 <Form.Item
-                  label="credential"
+                  label="Credential"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -361,18 +369,34 @@ const CreatePaymentGatewayConfigForm = () => {
               ></Col>
             </Row>
 
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {/* isForSystem */}
+              <Form.Item
+                label=""
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Checkbox
+                  onChange={handleActiveForSystem}
+                  checked={isActiveForSystem}
+                >
+                  System
+                </Checkbox>
+              </Form.Item>
 
+              {/* status */}
+              <Form.Item
+                label=""
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Checkbox onChange={handleActive} checked={isActive}>
+                  Active
+                </Checkbox>
+              </Form.Item>
+            </div>
             {/* submit */}
             <Row justify="center">
               <Form.Item>

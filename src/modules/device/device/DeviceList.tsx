@@ -3,7 +3,7 @@ import { Button, Card, Col, Input, Select, Space, Tag, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table, Collapse } from "antd";
+import { Table, Collapse, Tooltip } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -386,18 +386,22 @@ const DeviceList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("device.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/device/device/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/device/device/${record.id}/edit`}>
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
               {ability.can("device.view", "") ? (
-                <Space size="middle" align="center" wrap className="mx-1">
-                  <Link href={`/admin/device/device/${record.id}`}>
-                    <Button type="primary" icon={<EyeOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="View" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap className="mx-1">
+                    <Link href={`/admin/device/device/${record.id}`}>
+                      <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </div>

@@ -8,7 +8,8 @@ import {
   Space,
   Tag,
   Row,
-  DatePicker
+  DatePicker,
+  Tooltip
 } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
@@ -845,18 +846,22 @@ const CustomerList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("customer.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/customer/customer/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/customer/customer/${record.id}/edit`}>
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
               {ability.can("customer.view", "") ? (
-                <Space size="middle" align="center" wrap className="mx-1">
-                  <Link href={`/admin/customer/customer/${record.id}`}>
-                    <Button type="primary" icon={<EyeOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="View" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap className="mx-1">
+                    <Link href={`/admin/customer/customer/${record.id}`}>
+                      <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </div>
@@ -1305,10 +1310,10 @@ const CustomerList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">

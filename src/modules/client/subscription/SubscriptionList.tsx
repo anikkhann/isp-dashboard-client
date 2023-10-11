@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Space, Tag, Tooltip } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -253,20 +253,24 @@ const SubscriptionList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("subscription.update", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/subscription/${record.id}/edit`}>
-                    <Button type="primary" icon={<EditOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/client/subscription/${record.id}/edit`}>
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
             <Space size="middle" align="center" className="mx-1">
               {ability.can("subscription.view", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/client/subscription/${record.id}`}>
-                    <Button type="primary" icon={<EyeOutlined />} />
-                  </Link>
-                </Space>
+                <Tooltip title="View" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/client/subscription/${record.id}`}>
+                      <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </div>

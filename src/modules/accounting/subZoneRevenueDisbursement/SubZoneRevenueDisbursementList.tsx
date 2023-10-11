@@ -333,7 +333,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
             <Space size="middle" align="center" className="mx-1">
               {ability.can("subZoneRevenueDisbursement.reject", "") &&
               authUser?.userType == "sub_zone" ? (
-                <Tooltip title="Reject" placement="bottomRight" color="gold">
+                <Tooltip title="Reject" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Link
                       href={`/admin/accounting/subZone-revenue-disbursement/${record.id}/reject`}

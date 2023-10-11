@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space } from "antd";
+import { Button, Card, Col, Space, Tooltip } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -228,7 +228,7 @@ const ZoneTopUpRequestList: React.FC = () => {
     },
 
     {
-      title: "creditAmount",
+      title: "Credit Amount",
       dataIndex: "creditAmount",
       sorter: true,
       render: (creditAmount: any) => {
@@ -238,7 +238,7 @@ const ZoneTopUpRequestList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "paidAmount",
+      title: "Paid Amount",
       dataIndex: "paidAmount",
       sorter: false,
       render: (paidAmount: any) => {
@@ -248,14 +248,14 @@ const ZoneTopUpRequestList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "paymentType",
+      title: "Payment Type",
       dataIndex: "paymentType",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "paymentStatus",
+      title: "Payment Status",
       dataIndex: "paymentStatus",
       sorter: false,
       render: (paymentStatus: any) => {
@@ -265,7 +265,7 @@ const ZoneTopUpRequestList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "status",
+      title: "Status",
       dataIndex: "status",
       sorter: false,
       render: (status: any) => {
@@ -275,7 +275,7 @@ const ZoneTopUpRequestList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "requestNo",
+      title: "Request No",
       dataIndex: "requestNo",
       sorter: false,
       render: (requestNo: any) => {
@@ -287,7 +287,7 @@ const ZoneTopUpRequestList: React.FC = () => {
 
     // requestedBy
     {
-      title: "requested By",
+      title: "Requested By",
       dataIndex: "requestedBy",
       sorter: false,
       render: (requestedBy: any) => {
@@ -360,50 +360,56 @@ const ZoneTopUpRequestList: React.FC = () => {
             <Space size="middle" align="center" className="mx-1">
               {/* reject */}
               {ability.can("zoneRevenueDisbursement.reject", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Link
-                    href={`/admin/top-up/zone-top-up-request/${record.id}/reject`}
-                  >
+                <Tooltip title="Reject" placement="bottomRight" color="red">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/top-up/zone-top-up-request/${record.id}/reject`}
+                    >
+                      <Button
+                        type="primary"
+                        icon={<AlertOutlined />}
+                        style={{
+                          color: "#FFFFFF",
+                          backgroundColor: "#FF5630",
+                          borderColor: "#FF5630"
+                        }}
+                      />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {ability.can("zoneRevenueDisbursement.approve", "") ? (
+                <Tooltip title="Approve" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap>
                     <Button
-                      type="primary"
-                      icon={<AlertOutlined />}
+                      icon={<CheckOutlined />}
+                      style={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#570DF8",
+                        borderColor: "#570DF8"
+                      }}
+                      onClick={() => handleApprove(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {/* cancel */}
+              {ability.can("zoneRevenueDisbursement.cancel", "") ? (
+                <Tooltip title="Cancel" placement="bottomRight" color="red">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      icon={<CloseOutlined />}
                       style={{
                         color: "#FFFFFF",
                         backgroundColor: "#FF5630",
                         borderColor: "#FF5630"
                       }}
+                      onClick={() => handleCancel(record.id)}
                     />
-                  </Link>
-                </Space>
-              ) : null}
-
-              {ability.can("zoneRevenueDisbursement.approve", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Button
-                    icon={<CheckOutlined />}
-                    style={{
-                      color: "#FFFFFF",
-                      backgroundColor: "#570DF8",
-                      borderColor: "#570DF8"
-                    }}
-                    onClick={() => handleApprove(record.id)}
-                  />
-                </Space>
-              ) : null}
-
-              {/* cancel */}
-              {ability.can("zoneRevenueDisbursement.cancel", "") ? (
-                <Space size="middle" align="center" wrap>
-                  <Button
-                    icon={<CloseOutlined />}
-                    style={{
-                      color: "#FFFFFF",
-                      backgroundColor: "#FF5630",
-                      borderColor: "#FF5630"
-                    }}
-                    onClick={() => handleCancel(record.id)}
-                  />
-                </Space>
+                  </Space>
+                </Tooltip>
               ) : null}
             </Space>
           </div>

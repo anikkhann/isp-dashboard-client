@@ -490,11 +490,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                 authUser.partnerId == record.partnerId &&
                 record.clientStatus != "Approved" &&
                 (ability.can("customerOnboardingReq.update", "") ? (
-                  <Tooltip
-                    title="Update Onboarding Request"
-                    placement="bottomRight"
-                    color="blue"
-                  >
+                  <Tooltip title="Edit" placement="bottomRight" color="magenta">
                     <Space size="middle" align="center" wrap>
                       <Link
                         href={`/admin/customer/customer-onboarding-req/${record.id}/edit`}
@@ -511,7 +507,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                 record.zoneStatus == "Pending") &&
                 (ability.can("customerOnboardingReq.approve", "") ? (
                   <Tooltip
-                    title="Approve Onboarding Request"
+                    title="Approve"
                     placement="bottomRight"
                     color="green"
                   >
@@ -535,11 +531,7 @@ const CustomerOnboardingReqList: React.FC = () => {
               {(record.clientStatus == "Pending" ||
                 record.zoneStatus == "Pending") &&
                 (ability.can("customerOnboardingReq.reject", "") ? (
-                  <Tooltip
-                    title="Reject Onboarding Request"
-                    placement="bottomRight"
-                    color="#EA1179"
-                  >
+                  <Tooltip title="Reject" placement="bottomRight" color="red">
                     <Space size="middle" align="center" wrap>
                       <Link
                         href={`/admin/customer/customer-onboarding-req/${record.id}/reject`}
@@ -564,7 +556,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                   record.zoneStatus == "Rejected") &&
                 (ability.can("customerOnboardingReq.reinitiate", "") ? (
                   <Tooltip
-                    title="ReInitiate Onboarding Request"
+                    title="ReInitiate"
                     placement="bottomRight"
                     color="blue"
                   >
@@ -586,11 +578,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                 ) : null)}
               {/* view */}
               {ability.can("customerOnboardingReq.view", "") ? (
-                <Tooltip
-                  title="Details Onboarding Request"
-                  placement="bottomRight"
-                  color="#FF5630"
-                >
+                <Tooltip title="Details" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap className="mx-1">
                     <Link
                       href={`/admin/customer/customer-onboarding-req/${record.id}`}

@@ -182,7 +182,7 @@ const CreateBwNttnProviderForm = () => {
                 className="gutter-row"
               >
                 <Form.Item
-                  name="userName"
+                  name="User Name"
                   label="userName"
                   style={{
                     marginBottom: 0,
@@ -191,7 +191,7 @@ const CreateBwNttnProviderForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your userName!"
+                      message: "Please input your User Name!"
                     },
                     {
                       pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
@@ -202,7 +202,7 @@ const CreateBwNttnProviderForm = () => {
                 >
                   <Input
                     type="text"
-                    placeholder="userName"
+                    placeholder="User Name"
                     className={`form-control`}
                     name="userName"
                     style={{ padding: "6px" }}
