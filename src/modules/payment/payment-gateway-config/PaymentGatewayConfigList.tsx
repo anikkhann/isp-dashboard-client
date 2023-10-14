@@ -303,7 +303,7 @@ const PaymentGatewayConfigList: React.FC = () => {
       render: (_, record) => {
         return (
           <>
-            <Space>{record.client.name}</Space>
+            <Space>{record.client?.name}</Space>
           </>
         );
       },

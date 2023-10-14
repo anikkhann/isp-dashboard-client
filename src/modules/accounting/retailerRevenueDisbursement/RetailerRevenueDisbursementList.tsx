@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tooltip } from "antd";
+import {
+  Button,
+  Card,
+  Row,
+  Col,
+  Select,
+  Space,
+  Tooltip,
+  DatePicker,
+  Collapse
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -18,6 +28,24 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useAppSelector } from "@/store/hooks";
+
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+// import { useRouter } from "next/router";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -29,11 +57,26 @@ const RetailerRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
   const authUser = useAppSelector(state => state.auth.user);
   const MySwal = withReactContent(Swal);
+  const { Panel } = Collapse;
+  const { RangePicker } = DatePicker;
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const [subZones, setSubZones] = useState([]);
+  const [selectedSubZone, setSelectedSubZone] = useState(null);
+
+  const [retailers, setRetailers] = useState([]);
+  const [selectedRetailer, setSelectedRetailer] = useState(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -131,7 +174,12 @@ const RetailerRevenueDisbursementList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    zoneManagerParam: string | null,
+    subZoneManagerParam: string | null,
+    retailerParam: string | null,
+    startDateParam: string | null,
+    endDateParam: string | null
   ) => {
     const token = Cookies.get("token");
     // // console.log('token', token)
@@ -147,6 +195,22 @@ const RetailerRevenueDisbursementList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        zoneManager: {
+          id: zoneManagerParam
+        },
+        subZoneManager: {
+          id: subZoneManagerParam
+        },
+        retailer: {
+          id: retailerParam
+        },
+        dateRangeFilter: {
+          field: "createdOn",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
       }
     };
 
@@ -163,9 +227,30 @@ const RetailerRevenueDisbursementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["retailer-revenue-disbursement-list", page, limit, order, sort],
+    queryKey: [
+      "retailer-revenue-disbursement-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedZone,
+      selectedSubZone,
+      selectedRetailer,
+      selectedStartDate,
+      selectedEndDate
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedZone,
+        selectedSubZone,
+        selectedRetailer,
+        selectedStartDate,
+        selectedEndDate
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -205,6 +290,192 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+
+  const handleDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    }
+  };
+
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+  function getSubZoneManagers(selectedZoneId: any) {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "sub_zone",
+        zoneManager: { id: selectedZoneId }
+        // client: {
+        //   id: authUser?.partnerId
+        // },
+        // isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setSubZones(list);
+    });
+  }
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer",
+        // subZoneManager: { id: selectedSubZone },
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
+
+  const handleClear = () => {
+    setSelectedZone(null);
+    setSelectedSubZone(null);
+    setSelectedRetailer(null);
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+  };
+
+  useEffect(() => {
+    getZoneManagers();
+    getRetailers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
+
+  useEffect(() => {
+    getSubZoneManagers(null);
+  }, []);
+
+  const handleZoneChange = (value: any) => {
+    setSelectedZone(value as any);
+  };
+  const handleSubZoneChange = (value: any) => {
+    setSelectedSubZone(value as any);
+  };
+  const handleRetailerChange = (value: any) => {
+    setSelectedRetailer(value as any);
+  };
 
   // // console.log(error, isLoading, isError)
   const columns: ColumnsType<ZoneRevenueDisbursement> = [
@@ -485,6 +756,177 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                 <Button >Clear filters</Button>
                 <Button >Clear filters and sorters</Button>
               </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        {authUser && authUser.userType == "client" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                            xxl={12}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Zone Manager</b>
+                              </span>
+                              <Select
+                                showSearch
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select"
+                                onChange={handleZoneChange}
+                                options={zones}
+                                value={selectedZone}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
+                        {authUser && authUser.userType == "client" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                            xxl={12}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Sub Zone Manager</b>
+                              </span>
+
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select"
+                                onChange={handleSubZoneChange}
+                                options={subZones}
+                                value={selectedSubZone}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Retailer</b>
+                            </span>
+
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range By (Expiration Date)</b>
+                            </span>
+                            <RangePicker
+                              style={{ width: "100%" }}
+                              onChange={handleDateChange}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
+              </Space>
               <Table
                 className={"table-striped-rows"}
                 columns={columns}
