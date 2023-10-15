@@ -38,7 +38,7 @@ const EditPaymentGatewayConfigForm = ({ item }: PropData) => {
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
-
+  const [isActiveForSystem, setIsActiveForSystem] = useState<boolean>(false);
   const [isActive, setIsActive] = useState(true);
 
   const router = useRouter();
@@ -54,6 +54,9 @@ const EditPaymentGatewayConfigForm = ({ item }: PropData) => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  const handleActiveForSystem = (e: any) => {
+    setIsActiveForSystem(e.target.checked ? true : false);
+  };
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
@@ -164,6 +167,7 @@ const EditPaymentGatewayConfigForm = ({ item }: PropData) => {
 
   useEffect(() => {
     if (item) {
+      setIsActiveForSystem(item.isForSystem);
       setIsActive(item.isActive);
       form.setFieldsValue({
         credential: item.credential
@@ -193,6 +197,7 @@ const EditPaymentGatewayConfigForm = ({ item }: PropData) => {
       clientId: selectedClient,
       paymentGatewayId: selectedPaymentGateway,
       credential: credential,
+      isActiveForSystem: isActiveForSystem,
       isActive: isActive
     };
 
@@ -267,42 +272,45 @@ const EditPaymentGatewayConfigForm = ({ item }: PropData) => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* clientId */}
-                <Form.Item
-                  label="Client"
-                  name="clientId"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select!"
-                    }
-                  ]}
+              {isActiveForSystem === false && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
                 >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleClientChange}
-                      options={clients}
-                      value={selectedClient}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                  {/* clientId */}
+                  <Form.Item
+                    label="Client"
+                    name="clientId"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleClientChange}
+                        options={clients}
+                        value={selectedClient}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
               <Col
                 xs={24}
                 sm={12}
@@ -368,18 +376,33 @@ const EditPaymentGatewayConfigForm = ({ item }: PropData) => {
                 </Form.Item>
               </Col>
             </Row>
-
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {/* isForSystem */}
+              <Form.Item
+                label=""
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Checkbox
+                  onChange={handleActiveForSystem}
+                  checked={isActiveForSystem}
+                >
+                  System
+                </Checkbox>
+              </Form.Item>
+              {/* status */}
+              <Form.Item
+                label=""
+                style={{
+                  marginBottom: 0
+                }}
+              >
+                <Checkbox onChange={handleActive} checked={isActive}>
+                  Active
+                </Checkbox>
+              </Form.Item>
+            </div>
 
             {/* submit */}
             <Row justify="center">

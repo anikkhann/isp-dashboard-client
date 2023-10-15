@@ -297,7 +297,7 @@ const PaymentGatewayConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "client",
+      title: "Client",
       dataIndex: "client",
       sorter: false,
       render: (_, record) => {
@@ -311,7 +311,7 @@ const PaymentGatewayConfigList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "paymentGateway",
+      title: "Payment Gateway",
       dataIndex: "paymentGateway",
       sorter: false,
       render: (_, record) => {

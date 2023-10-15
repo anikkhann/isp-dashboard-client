@@ -193,7 +193,7 @@ const CreatePaymentGatewayConfigForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/customer/distribution-pop");
+              router.replace("/admin/payment/payment-gateway-config");
             });
           }
         })
@@ -244,7 +244,7 @@ const CreatePaymentGatewayConfigForm = () => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
-              {isActiveForSystem != true && (
+              {isActiveForSystem === false && (
                 <Col
                   xs={24}
                   sm={12}

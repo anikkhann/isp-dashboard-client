@@ -70,5 +70,6 @@ export interface PaymentGatewayConfigData {
   paymentGatewayId: string;
   paymentGateway: PaymentGateway;
   credential: string;
+  isForSystem: boolean;
   isActive: boolean;
 }
