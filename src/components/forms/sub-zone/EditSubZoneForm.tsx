@@ -370,7 +370,7 @@ const EditSubZoneForm = ({ item }: PropData) => {
 
     const formData = {
       id: item.id,
-      partnerType: "sub_zone",
+      partnerType: "reseller",
       name: name,
       username: username,
       password: password,

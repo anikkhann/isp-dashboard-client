@@ -97,7 +97,7 @@ const SubZoneInChargeList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         id: clientParam,
         contactNumber: contactNumberParam,
         isActive: statusParam
@@ -180,7 +180,7 @@ const SubZoneInChargeList: React.FC = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "sub_zone"
+        partnerType: "reseller"
       }
     };
 

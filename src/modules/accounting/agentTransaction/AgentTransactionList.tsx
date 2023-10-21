@@ -282,8 +282,8 @@ const AgentTransactionList: React.FC = () => {
 
         const list = data.body.map((item: any) => {
           return {
-            label: item.name,
-            value: item.id
+            label: item.trx_by,
+            value: item.trx_by
           };
         });
 

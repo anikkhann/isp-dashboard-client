@@ -261,7 +261,7 @@ const InvoiceList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
 
         zoneManager: { id: selectedZoneId },
         client: {

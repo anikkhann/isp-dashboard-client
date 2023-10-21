@@ -51,7 +51,7 @@ const CreateSubZoneRevenueDisbursementForm = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         isActive: true
       }
     };

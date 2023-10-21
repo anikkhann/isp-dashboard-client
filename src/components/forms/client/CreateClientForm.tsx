@@ -73,6 +73,22 @@ const tagsList = [
   {
     label: "Quad Cycle",
     value: "quad_cycle"
+  },
+  {
+    label: "Quad Cycle Hotspot",
+    value: "quad_cycle_hotspot"
+  },
+  {
+    label: "Tri Cycle Hotspot",
+    value: "tri_cycle_hotspot"
+  },
+  {
+    label: "Quad Cycle ISP Hotspot",
+    value: "quad_cycle_isp_hotspot"
+  },
+  {
+    label: "Tri Cycle ISP Hotspot",
+    value: "tri_cycle_isp_hotspot"
   }
 ];
 const serviceTypeList = [

@@ -347,7 +347,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         zoneManager: { id: selectedZoneId }
         // client: {
         //   id: authUser?.partnerId
@@ -532,7 +532,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
             {/* approve */}
             <Space size="middle" align="center" className="mx-1">
               {ability.can("subZoneRevenueDisbursement.reject", "") &&
-              authUser?.userType == "sub_zone" ? (
+              authUser?.userType == "reseller" ? (
                 <Tooltip title="Reject" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Link
@@ -553,7 +553,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
               ) : null}
 
               {ability.can("subZoneRevenueDisbursement.approve", "") &&
-              authUser?.userType == "sub_zone" ? (
+              authUser?.userType == "reseller" ? (
                 <Tooltip title="Approve" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Button

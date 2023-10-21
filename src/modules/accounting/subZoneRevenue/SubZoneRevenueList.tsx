@@ -225,7 +225,7 @@ const SubZoneRevenueList: React.FC = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         isActive: true
       }
     };

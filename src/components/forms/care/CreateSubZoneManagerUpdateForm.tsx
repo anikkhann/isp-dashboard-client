@@ -117,7 +117,7 @@ const CreateSubZoneManagerUpdateForm = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         isActive: true
       }
     };

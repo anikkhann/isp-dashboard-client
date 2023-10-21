@@ -328,7 +328,7 @@ const CreateSubZoneForm = () => {
     } = data;
 
     const formData = {
-      partnerType: "sub_zone",
+      partnerType: "reseller",
       name: name,
       username: username,
       password: password,
