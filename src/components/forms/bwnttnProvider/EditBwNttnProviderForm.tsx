@@ -171,6 +171,44 @@ const EditBwNttnProviderForm = ({ item }: PropData) => {
                 className="gutter-row"
               >
                 <Form.Item
+                  name="userName"
+                  label="User Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your userName!"
+                    },
+                    {
+                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                      message:
+                        "Only letters, numbers, underscores and hyphens allowed"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    readOnly={true}
+                    placeholder="userName"
+                    className={`form-control`}
+                    name="userName"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
                   label="Name"
                   style={{
                     marginBottom: 0,
@@ -193,43 +231,7 @@ const EditBwNttnProviderForm = ({ item }: PropData) => {
                   />
                 </Form.Item>
               </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="userName"
-                  label="userName"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your userName!"
-                    },
-                    {
-                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                      message:
-                        "Only letters, numbers, underscores and hyphens allowed"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="userName"
-                    className={`form-control`}
-                    name="userName"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+
               <Col
                 xs={24}
                 sm={12}

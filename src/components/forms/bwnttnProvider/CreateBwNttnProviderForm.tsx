@@ -182,8 +182,8 @@ const CreateBwNttnProviderForm = () => {
                 className="gutter-row"
               >
                 <Form.Item
-                  name="User Name"
-                  label="userName"
+                  name="userName"
+                  label="User Name"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

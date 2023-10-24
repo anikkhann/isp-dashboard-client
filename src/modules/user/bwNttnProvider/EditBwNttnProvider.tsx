@@ -95,7 +95,7 @@ const EditBwNttnProvider = ({ id }: any) => {
           </h1>
         </div>
         <Card
-          title="Edit Bw Nttn Provider"
+          // title="Edit Bw Nttn Provider"
           hoverable
           style={{
             width: "90%",

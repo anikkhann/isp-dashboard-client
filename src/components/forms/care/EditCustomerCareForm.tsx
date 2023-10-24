@@ -119,16 +119,16 @@ const connectionTypes = [
     value: "utp"
   }
 ];
-const ipModes = [
-  {
-    label: "NAS",
-    value: "nas"
-  },
-  {
-    label: "StaticIP",
-    value: "staticip"
-  }
-];
+// const ipModes = [
+//   {
+//     label: "NAS",
+//     value: "nas"
+//   },
+//   {
+//     label: "StaticIP",
+//     value: "staticip"
+//   }
+// ];
 const fiberOpticDeviceTypes = [
   {
     label: "MC",
@@ -163,7 +163,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
   const [smsAlert, setSmsAlert] = useState(true);
   const [emailAlert, setEmailAlert] = useState(true);
 
-  const [selectedIpMode, setSelectedIpMode] = useState(null);
+  // const [selectedIpMode, setSelectedIpMode] = useState(null);
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
@@ -340,11 +340,11 @@ const EditCustomerCareForm = ({ item }: PropData) => {
   //   form.setFieldsValue({ subZoneManagerId: value });
   //   setSelectedSubZone(value as any);
   // };
-  const handleIpModeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ ipMode: value });
-    setSelectedIpMode(value as any);
-  };
+  // const handleIpModeChange = (value: any) => {
+
+  //   form.setFieldsValue({ ipMode: value });
+  //   setSelectedIpMode(value as any);
+  // };
   // console.log("checked = ", value);
   // const handleRetailerChange = (value: any) => {
 
@@ -675,7 +675,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
         });
         setSelectedCustomerPackage(item.customerPackageId);
       }
-      setSelectedIpMode(item.ipMode);
+      // setSelectedIpMode(item.ipMode);
       setSelectedReferenceType(item.referenceType);
       setSelectedConnectionType(item.connectionType);
       setSelectedFiberOpticDeviceType(item.fiberOpticDeviceType);
@@ -2445,7 +2445,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                     gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                     justify="space-between"
                   >
-                    <Col
+                    {/* <Col
                       xs={24}
                       sm={12}
                       md={12}
@@ -2454,7 +2454,6 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* simultaneousUser */}
                       <Form.Item
                         name="simultaneousUser"
                         label="Simultaneous User"
@@ -2477,8 +2476,8 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
-                    </Col>
-                    <Col
+                    </Col> */}
+                    {/* <Col
                       xs={24}
                       sm={12}
                       md={12}
@@ -2487,7 +2486,6 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* ipMode */}
                       <Form.Item
                         name="ipMode"
                         label="IP Mode"
@@ -2512,16 +2510,9 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                             value={selectedIpMode}
                           />
                         </Space>
-                        {/* <Input
-                        type="text"
-                        placeholder="IP Mode"
-                        className={`form-control`}
-                        name="ipMode"
-                        style={{ padding: "6px" }}
-                      /> */}
                       </Form.Item>
-                    </Col>
-                    {selectedIpMode && selectedIpMode == "staticip" && (
+                    </Col> */}
+                    {/* {selectedIpMode && selectedIpMode == "staticip" && (
                       <Col
                         xs={24}
                         sm={12}
@@ -2531,7 +2522,6 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         xxl={12}
                         className="gutter-row"
                       >
-                        {/* staticIp */}
                         <Form.Item
                           name="staticIp"
                           label="Static Ip"
@@ -2555,7 +2545,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           />
                         </Form.Item>
                       </Col>
-                    )}
+                    )} */}
 
                     <Col
                       xs={24}
