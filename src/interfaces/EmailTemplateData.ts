@@ -167,6 +167,10 @@ export interface EmailTemplateData {
   website: string;
   cc: string;
   bcc: string;
+  facebook: string;
+  twitter: string;
+  instagram: string;
+  linkedin: string;
   client: Client;
   clientId: string;
   insertedBy: InsertedBy;

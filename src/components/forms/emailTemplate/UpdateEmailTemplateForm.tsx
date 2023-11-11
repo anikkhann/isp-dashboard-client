@@ -42,6 +42,10 @@ interface FormData {
   website: string;
   cc: string;
   bcc: string;
+  facebook: string;
+  twitter: string;
+  instagram: string;
+  linkedin: string;
 }
 
 const UpdateEmailTemplateForm = ({ item }: PropData) => {
@@ -126,7 +130,11 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
         mushak: item.mushak,
         website: item.website,
         cc: item.cc,
-        bcc: item.bcc
+        bcc: item.bcc,
+        facebook: item.facebook,
+        twitter: item.twitter,
+        instagram: item.instagram,
+        linkedin: item.linkedin
       });
 
       // if (item.emailSettingsId) {
@@ -186,7 +194,11 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
       mushak,
       website,
       cc,
-      bcc
+      bcc,
+      facebook,
+      twitter,
+      instagram,
+      linkedin
     } = data;
 
     const bodyData = {
@@ -201,7 +213,11 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
       website: website,
       emailSettingsId: selectedEmailSettings,
       cc: cc,
-      bcc: bcc
+      bcc: bcc,
+      facebook: facebook,
+      twitter: twitter,
+      instagram: instagram,
+      linkedin: linkedin
     };
 
     const formData = new FormData();
@@ -278,7 +294,11 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             mushak: "",
             website: "",
             cc: "",
-            bcc: ""
+            bcc: "",
+            facebook: "",
+            twitter: "",
+            instagram: "",
+            linkedin: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -648,6 +668,138 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                     value={selectedEmailSettings}
                   />
                 </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* facebook */}
+              <Form.Item
+                label="Facebook"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="facebook"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input facebook"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="facebook"
+                  className={`form-control`}
+                  name="facebook"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* twitter */}
+              <Form.Item
+                label="twitter"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="twitter"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input twitter!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="twitter"
+                  className={`form-control`}
+                  name="twitter"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* instagram */}
+              <Form.Item
+                label="Instagram"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="instagram"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input instagram!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="instagram"
+                  className={`form-control`}
+                  name="instagram"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* address */}
+              <Form.Item
+                label="Linkedin"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="linkedin"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input linkedin!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="linkedin"
+                  className={`form-control`}
+                  name="linkedin"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
             <Col

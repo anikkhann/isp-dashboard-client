@@ -61,7 +61,7 @@ const EditEmailTemplate = ({ id }: any) => {
               title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: "Edit Email Template"
+              title: "Email Template"
             }
           ]}
         />
@@ -83,7 +83,7 @@ const EditEmailTemplate = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            New Package Migration
+            Email Template
           </h1>
         </div>
         <Card
