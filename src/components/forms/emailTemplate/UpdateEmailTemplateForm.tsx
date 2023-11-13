@@ -46,6 +46,7 @@ interface FormData {
   twitter: string;
   instagram: string;
   linkedin: string;
+  aboutUs: string;
 }
 
 const UpdateEmailTemplateForm = ({ item }: PropData) => {
@@ -134,7 +135,8 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
         facebook: item.facebook,
         twitter: item.twitter,
         instagram: item.instagram,
-        linkedin: item.linkedin
+        linkedin: item.linkedin,
+        aboutUs: item.aboutUs
       });
 
       // if (item.emailSettingsId) {
@@ -198,7 +200,8 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
       facebook,
       twitter,
       instagram,
-      linkedin
+      linkedin,
+      aboutUs
     } = data;
 
     const bodyData = {
@@ -217,7 +220,8 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
       facebook: facebook,
       twitter: twitter,
       instagram: instagram,
-      linkedin: linkedin
+      linkedin: linkedin,
+      aboutUs: aboutUs
     };
 
     const formData = new FormData();
@@ -298,7 +302,8 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             facebook: "",
             twitter: "",
             instagram: "",
-            linkedin: ""
+            linkedin: "",
+            aboutUs: ""
           }}
           style={{ maxWidth: "100%" }}
           name="wrap"
@@ -798,6 +803,40 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   placeholder="linkedin"
                   className={`form-control`}
                   name="linkedin"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* address */}
+              <Form.Item
+                label="About Us"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="aboutUs"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input linkedin!"
+                //   }
+                // ]}
+              >
+                <Input.TextArea
+                  // type="text"
+                  placeholder="About Us"
+                  className={`form-control`}
+                  name="aboutUs"
+                  maxLength={200}
                   style={{ padding: "6px" }}
                 />
               </Form.Item>

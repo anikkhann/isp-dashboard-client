@@ -67,7 +67,7 @@ const UserList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post("/api/users/get-list", body, {
+    const { data } = await axios.post("/api/users/get-list-for-table", body, {
       headers: {
         "Content-Type": "application/json"
       }

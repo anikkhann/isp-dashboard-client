@@ -171,6 +171,7 @@ export interface EmailTemplateData {
   twitter: string;
   instagram: string;
   linkedin: string;
+  aboutUs: string;
   client: Client;
   clientId: string;
   insertedBy: InsertedBy;
