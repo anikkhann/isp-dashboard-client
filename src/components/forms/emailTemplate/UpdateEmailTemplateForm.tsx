@@ -58,8 +58,10 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
   const [errorMessages, setErrorMessages] = useState(null);
 
   const [emailSettings, setEmailSettings] = useState<any[]>([]);
-  const [selectedEmailSettings, setSelectedEmailSettings] = useState<any>(null);
-
+  const [selectedEmailSettings, setSelectedEmailSettings] = useState<any>(
+    item.emailSettingsId || null
+  );
+  console.log(emailSettings);
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
@@ -671,6 +673,7 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                     onChange={handleEmailSettingsChange}
                     options={emailSettings}
                     value={selectedEmailSettings}
+                    defaultValue={selectedEmailSettings}
                   />
                 </Space>
               </Form.Item>
@@ -692,12 +695,12 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="facebook"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input facebook"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input facebook"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -725,12 +728,12 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="twitter"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input twitter!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input twitter!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -758,12 +761,12 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="instagram"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input instagram!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input instagram!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -791,12 +794,12 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="linkedin"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input linkedin!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input linkedin!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -824,12 +827,12 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="aboutUs"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input linkedin!"
-                //   }
-                // ]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input linkedin!"
+                  }
+                ]}
               >
                 <Input.TextArea
                   // type="text"

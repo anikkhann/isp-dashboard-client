@@ -164,6 +164,7 @@ export interface EmailTemplateData {
   phone: string;
   address: string;
   mushak: string;
+  emailSettingsId: string;
   website: string;
   cc: string;
   bcc: string;
