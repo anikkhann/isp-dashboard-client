@@ -317,69 +317,71 @@ const EditRoleForm = ({ item }: PropData) => {
                           className="gutter-row"
                           key={permission.id}
                         >
-                          <Divider orientation="left">
-                            <h5
-                              style={{
-                                fontWeight: "bold",
-                                marginBottom: 10,
-                                marginLeft: 10,
-                                fontSize: 14,
-                                textTransform: "uppercase",
-                                textAlign: "left",
-                                color: "#0e8fdc"
-                              }}
-                            >
-                              {permission.displayName}
-                            </h5>
-                          </Divider>
+                          <Card className="hover:shadow-md transition duration-300 ease-in-out">
+                            <Divider orientation="left">
+                              <h5
+                                style={{
+                                  fontWeight: "bold",
+                                  marginBottom: 10,
+                                  marginLeft: 10,
+                                  fontSize: 14,
+                                  textTransform: "uppercase",
+                                  textAlign: "left",
+                                  color: "#0e8fdc"
+                                }}
+                              >
+                                {permission.displayName}
+                              </h5>
+                            </Divider>
 
-                          <Row gutter={16}>
-                            {permission.children &&
-                              permission.children.length > 0 &&
-                              permission.children.map((item: any) => {
-                                return (
-                                  <Col
-                                    span={24}
-                                    sm={12}
-                                    md={8}
-                                    lg={8}
-                                    className="gutter-row "
-                                    key={item.value}
-                                  >
-                                    <Card
-                                      hoverable
-                                      style={{
-                                        // backgroundColor: "#FFC857",
-                                        // fontWeight: "bold",
-                                        // fontSize: "10px"
-                                        backgroundColor: "#F15F22"
-                                      }}
+                            <Row gutter={16}>
+                              {permission.children &&
+                                permission.children.length > 0 &&
+                                permission.children.map((item: any) => {
+                                  return (
+                                    <Col
+                                      span={24}
+                                      sm={12}
+                                      md={8}
+                                      lg={8}
+                                      className="gutter-row "
+                                      key={item.value}
                                     >
-                                      <Checkbox
-                                        value={item.value}
+                                      <Card
+                                        hoverable
                                         style={{
-                                          display: "flex",
-                                          justifyContent: "left",
-                                          fontSize: "15px",
-                                          color: "#FFFFFF",
-                                          fontWeight: "bold"
+                                          // backgroundColor: "#FFC857",
+                                          // fontWeight: "bold",
+                                          // fontSize: "10px"
+                                          backgroundColor: "#F15F22"
                                         }}
                                       >
-                                        <span
+                                        <Checkbox
+                                          value={item.value}
                                           style={{
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            whiteSpace: "nowrap"
+                                            display: "flex",
+                                            justifyContent: "left",
+                                            fontSize: "15px",
+                                            color: "#FFFFFF",
+                                            fontWeight: "bold"
                                           }}
                                         >
-                                          {item.label}
-                                        </span>
-                                      </Checkbox>
-                                    </Card>
-                                  </Col>
-                                );
-                              })}
-                          </Row>
+                                          <span
+                                            style={{
+                                              overflow: "hidden",
+                                              textOverflow: "ellipsis",
+                                              whiteSpace: "nowrap"
+                                            }}
+                                          >
+                                            {item.label}
+                                          </span>
+                                        </Checkbox>
+                                      </Card>
+                                    </Col>
+                                  );
+                                })}
+                            </Row>
+                          </Card>
                         </Col>
                       );
                     })}

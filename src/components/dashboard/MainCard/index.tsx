@@ -39,7 +39,14 @@ const MainCard = ({ icon, title, bgColor, link, color }: SalesStateProps) => {
               className="text-truncate"
               level={3}
               style={{
-                color: color
+                color: color,
+                fontSize: "1rem",
+                display: "inline-block",
+                flex: "1",
+                overflow: "visible",
+                whiteSpace: "normal",
+                textOverflow: "clip",
+                textAlign: "start"
               }}
             >
               {title}
