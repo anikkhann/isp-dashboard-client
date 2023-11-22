@@ -19,35 +19,38 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { SubscriptionData } from "@/interfaces/SubscriptionData";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { SurveyData } from "@/interfaces/SurveyData";
 interface FormData {
-  name: string;
-  packageType: string;
-  slabStart: string;
-  slabEnd: string;
-  chargeAmount: string;
+  options: OptionData[];
+  type: string;
+  title: string;
 }
 
-interface PropData {
-  item: SubscriptionData;
+interface OptionData {
+  option: string;
 }
 
 const types = [
   {
-    label: "Monthly",
-    value: "Monthly"
+    label: "Troubleshoot",
+    value: "Troubleshoot"
   },
   {
-    label: "Per Customer",
-    value: "Per Customer"
+    label: "Survey",
+    value: "Survey"
   }
 ];
 
-const EditSubscriptionForm = ({ item }: PropData) => {
+interface PropData {
+  item: SurveyData;
+}
+
+const EditSurveyForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -57,7 +60,9 @@ const EditSubscriptionForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [packageType, setPackageType] = useState<any>(null);
+  const [type, setType] = useState<any>(null);
+
+  const [optionsValue, setOptionsValue] = useState<any[]>([]);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -67,24 +72,36 @@ const EditSubscriptionForm = ({ item }: PropData) => {
   };
 
   const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ packageType: value });
-    setPackageType(value as any);
+    form.setFieldsValue({ type: value });
+    setType(value as any);
   };
 
   useEffect(() => {
     if (item) {
       form.setFieldsValue({
-        name: item.name,
-        packageType: item.packageType,
-        chargeAmount: item.chargeAmount,
-        slabStart: item.slabStart,
-        slabEnd: item.slabEnd
+        type: item.type,
+        title: item.title
       });
 
-      setPackageType(item.packageType);
+      // convert options to array
+      const options = item.options
+        .slice(1, -1) // Remove the curly braces
+        .split(",")
+        .map(option => option.replace(/'/g, "").trim());
+
+      const newOptions = options.map((option: any, index: number) => {
+        return {
+          option: option,
+          index: index
+        };
+      });
+
+      setOptionsValue(newOptions);
+
+      setType(item.type);
 
       setIsActive(item.isActive);
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
@@ -92,21 +109,26 @@ const EditSubscriptionForm = ({ item }: PropData) => {
   const onSubmit = (data: FormData) => {
     setLoading(true);
 
-    const { name, chargeAmount, slabStart, slabEnd, packageType } = data;
+    const { title, type, options } = data;
+
+    // Extract values from the array of objects
+    const values = options.map((obj: { option: any }) => obj.option);
+    // Create a string by joining the values with commas and formatting
+    const resultString = `{${values
+      .map((value: any) => `'${value}'`)
+      .join(",")}}`;
 
     const formData = {
       id: item.id,
-      name: name,
-      packageType: packageType,
-      chargeAmount: chargeAmount,
-      slabStart: slabStart,
-      slabEnd: slabEnd,
+      type: type,
+      title: title,
+      options: resultString,
       isActive: isActive
     };
 
     try {
       axios
-        .put("/api/subscription-plan/update", formData)
+        .put("/api/troubleshoot-survey/update", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
@@ -125,7 +147,7 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               text: data.message || "subscription Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/client/subscription");
+              router.replace("/admin/client/survey");
             });
           }
         })
@@ -151,6 +173,7 @@ const EditSubscriptionForm = ({ item }: PropData) => {
     <>
       {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
+
       {!loading && (
         <div className="mt-3">
           <Form
@@ -160,14 +183,15 @@ const EditSubscriptionForm = ({ item }: PropData) => {
             onFinish={onSubmit}
             form={form}
             initialValues={{
-              name: "",
-              packageType: "",
-              chargeAmount: "",
-              slabStart: "",
-              slabEnd: ""
+              type: "",
+              title: ""
             }}
             style={{ maxWidth: "100%" }}
             name="wrap"
+            // labelCol={{ flex: "110px" }}
+            // labelAlign="left"
+            // labelWrap
+            // wrapperCol={{ flex: 1 }}
             colon={false}
             scrollToFirstError
           >
@@ -178,24 +202,25 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* packageType*/}
+                {/* type*/}
+
                 <Form.Item
-                  label="Package Type"
+                  label="Type"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="packageType"
+                  name="type"
                   rules={[
                     {
                       required: true,
-                      message: "Please select package type!"
+                      message: "Please select type!"
                     }
                   ]}
                 >
@@ -206,7 +231,7 @@ const EditSubscriptionForm = ({ item }: PropData) => {
                       placeholder="Please select"
                       onChange={handleChange}
                       options={types}
-                      value={packageType}
+                      value={type}
                     />
                   </Space>
                 </Form.Item>
@@ -214,162 +239,90 @@ const EditSubscriptionForm = ({ item }: PropData) => {
               <Col
                 xs={24}
                 sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* name */}
+                {/* title */}
                 <Form.Item
-                  label="Name"
+                  label="Title"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="name"
+                  name="title"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Name!"
+                      message: "Please input your title!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Name"
+                    placeholder="title"
                     className={`form-control`}
-                    name="name"
+                    name="title"
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
+
               <Col
                 xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
+                sm={24}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* chargeAmount */}
-                <Form.Item
-                  label="Charge Amount"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="chargeAmount"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Enter a Numeric Value!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Charge Amount"
-                    className={`form-control`}
-                    name="chargeAmount"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
+                {!loading && (
+                  <Form.List name="options" initialValue={optionsValue}>
+                    {(fields, { add, remove }) => (
+                      <>
+                        {fields.map(({ key, name, ...restField }) => (
+                          <Space
+                            key={key}
+                            style={{
+                              display: "flex",
+                              marginBottom: 8,
+                              width: "100%"
+                            }}
+                            align="baseline"
+                          >
+                            <Form.Item
+                              {...restField}
+                              name={[name, "option"]}
+                              rules={[
+                                { required: true, message: "Missing option" }
+                              ]}
+                              style={{
+                                width: "90%"
+                              }}
+                            >
+                              <Input placeholder="Option" />
+                            </Form.Item>
+                            <MinusCircleOutlined onClick={() => remove(name)} />
+                          </Space>
+                        ))}
+                        <Form.Item>
+                          <Button
+                            type="dashed"
+                            onClick={() => add()}
+                            block
+                            icon={<PlusOutlined />}
+                          >
+                            Add field
+                          </Button>
+                        </Form.Item>
+                      </>
+                    )}
+                  </Form.List>
+                )}
               </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* slabStart */}
-                <Form.Item
-                  label="Slab Start"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="slabStart"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Enter a Numeric Value!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Slab Start"
-                    className={`form-control`}
-                    name="slabStart"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* slabEnd */}
-                <Form.Item
-                  label="Slab End"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="slabEnd"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please Enter a Numeric Value!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Slab End"
-                    className={`form-control`}
-                    name="slabEnd"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
             </Row>
 
             {/* status */}
@@ -411,4 +364,4 @@ const EditSubscriptionForm = ({ item }: PropData) => {
   );
 };
 
-export default EditSubscriptionForm;
+export default EditSurveyForm;

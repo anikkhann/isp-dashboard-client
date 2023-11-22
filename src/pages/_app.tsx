@@ -26,6 +26,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StyleProvider } from "@ant-design/cssinjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppPageMeta from "@/lib/AppPageMeta";
+import { DevSupport } from "@react-buddy/ide-toolbox-next";
+import { ComponentPreviews, useInitial } from "@/dev";
 
 interface PageProps {
   authGuard?: boolean;
@@ -92,7 +94,14 @@ const App = (props: ExtendedAppProps) => {
                       <AppPageMeta />
                       <NextNProgress color="linear-gradient(90deg, #b656cb, #10a1a0)" />
 
-                      {getLayout(<Component {...pageProps} />)}
+                      {getLayout(
+                        <DevSupport
+                          ComponentPreviews={ComponentPreviews}
+                          useInitialHook={useInitial}
+                        >
+                          <Component {...pageProps} />
+                        </DevSupport>
+                      )}
                     </AbilityContext.Provider>
                   </Guard>
                 </AppThemeProvider>

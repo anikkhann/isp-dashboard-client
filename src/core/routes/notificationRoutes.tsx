@@ -97,6 +97,13 @@ const notificationRoutes = [
         permission: "clientSmsTemplate.list"
       }
     ]
+  },
+  {
+    key: "/admin/notification/notice",
+    label: "Notice Borard",
+    path: "/admin/notification/notice",
+    icon: <SettingOutlined />,
+    permission: "dashboard.view"
   }
 ];
 

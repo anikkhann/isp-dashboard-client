@@ -32,6 +32,22 @@ const accountRoutes = [
     path: "/admin/client/subscription",
     icon: <SettingOutlined />,
     permission: "subscription.list"
+  },
+
+  {
+    key: "/admin/client/survey",
+    label: "Troubleshoot & Survey",
+    path: "/admin/client/survey",
+    icon: <SettingOutlined />,
+    permission: "subscription.list"
+  },
+
+  {
+    key: "/admin/client/survey-report",
+    label: "Survey Report",
+    path: "/admin/client/survey-report",
+    icon: <SettingOutlined />,
+    permission: "subscription.list"
   }
 ];
 

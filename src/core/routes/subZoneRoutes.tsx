@@ -23,6 +23,20 @@ const subZoneRoutes = [
     path: "/admin/sub-zone/sub-zone-in-charge",
     icon: <SettingOutlined />,
     permission: "dashboard.view"
+  },
+  {
+    key: "/admin/sub-zone/daily-task",
+    label: "Daily Task Assign to reseller",
+    path: "/admin/sub-zone/daily-task",
+    icon: <SettingOutlined />,
+    permission: "dashboard.view"
+  },
+  {
+    key: "/admin/sub-zone/daily-task-report",
+    label: "Daily Task Report to reseller",
+    path: "/admin/sub-zone/daily-task-report",
+    icon: <SettingOutlined />,
+    permission: "dashboard.view"
   }
 ];
 
