@@ -1,20 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag, Tooltip } from "antd";
+import { Button, Card, Col, Select, Space, Row, DatePicker } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import ability from "@/services/guard/ability";
-import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { SubscriptionData } from "@/interfaces/SubscriptionData";
-import { format } from "date-fns";
+// import { useAppSelector } from "@/store/hooks";
+import { SurveyReportData } from "@/interfaces/SurveyReportData";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -24,12 +41,29 @@ interface TableParams {
 }
 
 const SurveyReport: React.FC = () => {
-  const [data, setData] = useState<SubscriptionData[]>([]);
+  // const authUser = useAppSelector(state => state.auth.user);
+  // const [form] = Form.useForm();
+  const { Panel } = Collapse;
+  const [data, setData] = useState<SurveyReportData[]>([]);
+
+  const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+
+  const { RangePicker } = DatePicker;
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -43,10 +77,13 @@ const SurveyReport: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    customerParam?: string,
+    partnerParam?: string,
+    startDateParam?: string,
+    endDateParam?: string
   ) => {
     const token = Cookies.get("token");
-    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -59,10 +96,23 @@ const SurveyReport: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        customer: {
+          id: customerParam
+        },
+        partner: {
+          id: partnerParam
+        },
+        dateRangeFilter: {
+          field: "createdOn",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
       }
     };
 
-    const { data } = await axios.post("/api/subscription-plan/get-list", body, {
+    const { data } = await axios.post("/api/survey-report/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -71,9 +121,28 @@ const SurveyReport: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["subscriptions-list", page, limit, order, sort],
+    queryKey: [
+      "customer-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedCustomer,
+      selectedClient,
+      selectedStartDate,
+      selectedEndDate
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedCustomer,
+        selectedClient,
+        selectedStartDate,
+        selectedEndDate
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -108,14 +177,133 @@ const SurveyReport: React.FC = () => {
     }
   });
 
+  const handleDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    }
+  };
+
+  function getClients() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "client",
+        isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
+  const getCustomers = () => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // isActive: true
+      }
+    };
+    axios.post("/api/customer/get-list", body).then(res => {
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+      setCustomers(list);
+    });
+  };
+
+  const handleCustomerChange = (value: any) => {
+    setSelectedCustomer(value);
+  };
+
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value as any);
+  };
+
+  const handleClear = () => {
+    setSelectedClient(null);
+    setSelectedCustomer(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+    setSelectedDateRange(null);
+  };
+
+  useEffect(() => {
+    getClients();
+    getCustomers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (data) {
       setData(data);
     }
   }, [data]);
 
-  // // console.log(error, isLoading, isError)
-  const columns: ColumnsType<SubscriptionData> = [
+  // console.log(error, isLoading, isError)
+
+  const columns: ColumnsType<SurveyReportData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -127,155 +315,45 @@ const SurveyReport: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "Package Name",
-      dataIndex: "name",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Package Type",
-      dataIndex: "packageType",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Slab Start",
-      dataIndex: "slabStart",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Slab End",
-      dataIndex: "slabEnd",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Charge Amount",
-      dataIndex: "chargeAmount",
-      sorter: true,
-      render: (chargeAmount: number) => {
-        return (
-          <>
-            <Space>{chargeAmount} Tk/User/Month</Space>
-          </>
-        );
-      },
-
       width: "20%",
       align: "center" as AlignType
     },
 
     {
-      title: "Status",
-      dataIndex: "isActive",
+      title: "question",
+      dataIndex: "question",
       sorter: true,
-      render: (isActive: any) => {
-        return (
-          <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
-          </>
-        );
-      },
       width: "20%",
       align: "center" as AlignType
     },
-    // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // createdOn
     {
-      title: "Created At",
-      dataIndex: "createdOn",
+      title: "answer",
+      dataIndex: "answer",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "customer",
+      dataIndex: "customer",
       sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      render: (customer: any) => {
+        if (!customer) return "-";
+        return <>{customer.username}</>;
       },
-      /* width: "20%", */
+      width: "20%",
       align: "center" as AlignType
     },
-    // editedBy
-    // {
-    //   title: "Updated By",
-    //   dataIndex: "editedBy",
-    //   sorter: false,
-    //   render: (editedBy: any) => {
-    //     if (!editedBy) return "-";
-    //     return <>{editedBy.name}</>;
-    //   },
-
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // updatedOn
-    // {
-    //   title: "Updated At",
-    //   dataIndex: "updatedOn",
-    //   sorter: false,
-    //   render: (updatedOn: any) => {
-    //     if (!updatedOn) return "-";
-    //     const date = new Date(updatedOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
     {
-      title: "Action",
-      dataIndex: "action",
+      title: "partner",
+      dataIndex: "partner",
       sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <div className="flex flex-row">
-            <Space size="middle" align="center">
-              {ability.can("subscription.update", "") ? (
-                <Tooltip title="Edit" placement="bottomRight" color="magenta">
-                  <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/client/subscription/${record.id}/edit`}>
-                      <Button type="primary" icon={<EditOutlined />} />
-                    </Link>
-                  </Space>
-                </Tooltip>
-              ) : null}
-            </Space>
-            <Space size="middle" align="center" className="mx-1">
-              {ability.can("subscription.view", "") ? (
-                <Tooltip title="View" placement="bottomRight" color="green">
-                  <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/client/subscription/${record.id}`}>
-                      <Button type="primary" icon={<EyeOutlined />} />
-                    </Link>
-                  </Space>
-                </Tooltip>
-              ) : null}
-            </Space>
-          </div>
-        );
+      render: (partner: any) => {
+        if (!partner) return "-";
+        return <>{partner.username}</>;
       },
+      width: "20%",
       align: "center" as AlignType
     }
   ];
@@ -283,24 +361,24 @@ const SurveyReport: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<SubscriptionData> | SorterResult<SubscriptionData>[]
+    sorter: SorterResult<SurveyReportData> | SorterResult<SurveyReportData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<SubscriptionData>).order) {
-      // // console.log((sorter as SorterResult<SubscriptionData>).order)
+    if (sorter && (sorter as SorterResult<SurveyReportData>).order) {
+      // // console.log((sorter as SorterResult<SurveyReportData>).order)
 
       SetOrder(
-        (sorter as SorterResult<SubscriptionData>).order === "ascend"
+        (sorter as SorterResult<SurveyReportData>).order === "ascend"
           ? "asc"
           : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<SubscriptionData>).field) {
-      // // console.log((sorter as SorterResult<SubscriptionData>).field)
+    if (sorter && (sorter as SorterResult<SurveyReportData>).field) {
+      // // console.log((sorter as SorterResult<SurveyReportData>).field)
 
-      SetSort((sorter as SorterResult<SubscriptionData>).field as string);
+      SetSort((sorter as SorterResult<SurveyReportData>).field as string);
     }
   };
 
@@ -344,11 +422,12 @@ const SurveyReport: React.FC = () => {
           )}
 
           <TableCard
-            title="Subscriptions List"
-            hasLink={true}
-            addLink="/admin/client/subscription/create"
-            permission="subscription.create"
+            title="Survey List"
+            hasLink={false}
+            addLink=""
+            permission=""
             style={{
+              // backgroundColor: "#FFFFFF",
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
@@ -357,11 +436,168 @@ const SurveyReport: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              <Space style={{ marginBottom: 16 }}>
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Customers</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleCustomerChange}
+                              options={customers}
+                              value={selectedCustomer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Client</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range By (Expiration Date)</b>
+                            </span>
+                            <RangePicker
+                              style={{ width: "100%" }}
+                              onChange={handleDateChange}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
+              </Space>
+
               <Table
                 className={"table-striped-rows"}
                 columns={columns}
