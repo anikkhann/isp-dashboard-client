@@ -19,6 +19,8 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import { useAppSelector } from "@/store/hooks";
+import { UserData } from "@/interfaces/UserData";
 
 interface AdminFormData {
   name: string;
@@ -28,20 +30,44 @@ interface AdminFormData {
   phone: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
+const categories = [
+  {
+    label: "agent",
+    value: "agent"
+  },
+  {
+    label: "sales manager",
+    value: "sales_manager"
+  },
+  {
+    label: "area manager",
+    value: "area_manager"
+  },
+  {
+    label: "tso",
+    value: "tso"
+  }
+];
 
 const CreateUserForm = () => {
   const [form] = Form.useForm();
 
-  const [loading, setLoading] = useState(false);
-  // ** States
-  const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState(null);
+  const authUser = useAppSelector(state => state.auth.user);
 
-  const [isActive, setIsActive] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  // ** States
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessages, setErrorMessages] = useState<any>(null);
+
+  const [isActive, setIsActive] = useState<boolean>(true);
+
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+
+  const [saleManagers, setSaleManagers] = useState<any[]>([]);
+  const [selectedSaleManager, setSelectedSaleManager] = useState<any>(null);
+
+  const [areaManagers, setAreaManagers] = useState<any[]>([]);
+  const [selectedAreaManager, setSelectedAreaManager] = useState<any>(null);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -53,8 +79,30 @@ const CreateUserForm = () => {
   const [checkedList, setCheckedList] = useState<any>(null);
 
   const handleRoleChange = (value: any) => {
-    console.log("checked = ", value);
+    // console.log("checked = ", value);
     setCheckedList(value as any);
+  };
+
+  const handleActive = (e: any) => {
+    setIsActive(e.target.checked ? true : false);
+  };
+
+  const handleCategoryChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ userCategory: value });
+    setSelectedCategory(value);
+  };
+
+  const handleSaleManagerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ salesManagerId: value });
+    setSelectedSaleManager(value);
+  };
+
+  const handleAreaManagerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ areaManagerId: value });
+    setSelectedAreaManager(value);
   };
 
   const getRoles = async () => {
@@ -84,13 +132,102 @@ const CreateUserForm = () => {
       setRoles(items);
     }
   };
+
+  const getSaleManagersList = async () => {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        userType: "duronto",
+        userCategory: "sales_manager",
+        isActive: true
+      }
+    };
+    axios.post("/api/users/get-list", body).then(res => {
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: UserData) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+      setSaleManagers(list);
+    });
+  };
+
+  const getAreaManagersList = async (saleManager: string) => {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        userType: "duronto",
+        userCategory: "area_manager",
+        salesManager: {
+          id: saleManager
+        },
+        isActive: true
+      }
+    };
+    axios.post("/api/users/get-list", body).then(res => {
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: UserData) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+      setAreaManagers(list);
+    });
+  };
+
   useEffect(() => {
+    getSaleManagersList();
     getRoles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleActive = (e: any) => {
-    setIsActive(e.target.checked ? true : false);
-  };
+  useEffect(() => {
+    if (selectedSaleManager) {
+      getAreaManagersList(selectedSaleManager);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSaleManager]);
 
   const onSubmit = (data: AdminFormData) => {
     setLoading(true);
@@ -107,7 +244,10 @@ const CreateUserForm = () => {
       username: username,
       phone: phone,
       isActive: isActive,
-      roleIds: roleId
+      roleIds: roleId,
+      userCategory: selectedCategory,
+      salesManagerId: selectedSaleManager,
+      areaManagerId: selectedAreaManager
     };
 
     try {
@@ -449,6 +589,124 @@ const CreateUserForm = () => {
                   </Space>
                 </Form.Item>
               </Col>
+
+              {authUser && authUser.userType == "durjoy" && (
+                <>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* userCategory */}
+
+                    <Form.Item
+                      label="User Category"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      name="userCategory"
+                      // rules={[
+                      //   {
+                      //     required: true,
+                      //     message: "Please select!"
+                      //   }
+                      // ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleCategoryChange}
+                          options={categories}
+                          value={selectedCategory}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* salesManagerId */}
+
+                    <Form.Item
+                      label="Sale Manager"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      name="salesManagerId"
+                      // rules={[
+                      //   {
+                      //     required: true,
+                      //     message: "Please select!"
+                      //   }
+                      // ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleSaleManagerChange}
+                          options={saleManagers}
+                          value={selectedSaleManager}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* areaManagerId */}
+
+                    <Form.Item
+                      label="Area Manager"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      name="areaManagerId"
+                      // rules={[
+                      //   {
+                      //     required: true,
+                      //     message: "Please select!"
+                      //   }
+                      // ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleAreaManagerChange}
+                          options={areaManagers}
+                          value={selectedAreaManager}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                </>
+              )}
             </Row>
 
             <Form.Item

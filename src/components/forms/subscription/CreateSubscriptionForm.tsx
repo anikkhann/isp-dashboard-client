@@ -62,7 +62,7 @@ const CreateSubscriptionForm = () => {
   };
 
   const handleChange = (value: any) => {
-    console.log("checked = ", value);
+    // console.log("checked = ", value);
     form.setFieldsValue({ packageType: value });
     setPackageType(value as any);
   };
