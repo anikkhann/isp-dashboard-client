@@ -121,6 +121,14 @@ const mainRoutes = [
     path: "/admin/accounting",
     icon: <SettingOutlined />,
     permission: "accounting.dashboard"
+  },
+
+  {
+    key: "/admin/hotspot",
+    label: "Wifi Hotspot",
+    path: "/admin/hotspot",
+    icon: <SettingOutlined />,
+    permission: "hotspot.dashboard"
   }
 ];
 

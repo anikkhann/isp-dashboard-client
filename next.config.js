@@ -6,10 +6,15 @@ const path = require('path');
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+const HOTSPOT_URL = process.env.NEXT_PUBLIC_HOTSPOT_URL;
 
 const nextConfig = {
   async rewrites() {
     return [
+      {
+        source: "/api-hotspot/:path*",
+        destination: `${HOTSPOT_URL}/:path*`,
+      },
       {
         source: "/api/:path*",
         destination: `${API_URL}/:path*`,

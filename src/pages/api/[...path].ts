@@ -2,8 +2,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import httpProxy from "http-proxy";
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL; // The actual URL of your API
-
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL; // The actual URL of your APIs
 const proxy = httpProxy.createProxyServer();
 
 // Make sure that we don't parse JSON bodies on this route:
@@ -13,9 +12,10 @@ export const config = {
   }
 };
 
-// console.log("API_URL", API_URL);
+console.log("API_URL", API_URL);
 
 export default (req: any, res: any) => {
+  console.log("req", req);
   return new Promise<void>((resolve, reject) => {
     proxy.web(req, res, { target: API_URL, changeOrigin: true }, err => {
       if (err) {
