@@ -2,7 +2,7 @@ import HotspotLayout from "@/core/layouts/HotspotLayout";
 
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import DetailsDurjoyRequisition from "@/modules/hotspot/durjoy-requisition/DetailsDurjoyRequisition";
+import DetailsMonthlyTarget from "@/modules/hotspot/monthly-target/DetailsMonthlyTarget";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("client.view", "") ? (
-        <DetailsDurjoyRequisition id={id} />
+      {ability.can("monthlyTarget.view", "") ? (
+        <DetailsMonthlyTarget id={id} />
       ) : (
         <Forbidden />
       )}

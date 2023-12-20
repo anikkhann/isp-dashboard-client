@@ -2,7 +2,7 @@ import HotspotLayout from "@/core/layouts/HotspotLayout";
 
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditRetailerOnboard from "@/modules/hotspot/retailer-onboard/EditRetailerOnboard";
+import RejectOtherProductSale from "@/modules/hotspot/other-product-sales/RejectOtherProductSale";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("retailerOnboard.update", "") ? (
-        <EditRetailerOnboard id={id} />
+      {ability.can("OtherProductSale.reject", "") ? (
+        <RejectOtherProductSale id={id} />
       ) : (
         <Forbidden />
       )}

@@ -10,22 +10,23 @@ interface AuthState {
   user: UserLoggedInData | null;
 }
 
-interface UserLoggedInData {
+export interface UserLoggedInData {
   userId: string;
   name: string;
-  firstName: any;
+  firstName?: any;
   userName: string;
-  lastName: any;
+  lastName?: any;
   email: string;
   phone: string;
-  profileImg: any;
-  roleId: any;
-  roleName: any;
-  roleCode: any;
-  designation: any;
+  profileImg?: any;
+  roleId?: any;
+  roleName?: any;
+  roleCode?: any;
+  designation?: any;
   userType: string;
-  partnerId: any;
-  parentPartnerId: any;
+  userCategory?: any;
+  partnerId?: any;
+  parentPartnerId?: any;
   partnerUsername: string;
   partnerIp: string;
   credit: number;

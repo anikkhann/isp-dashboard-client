@@ -151,70 +151,70 @@ const hotspotRoutes = [
     path: "/admin/hotspot/zone-transaction",
     icon: <SettingOutlined />,
     permission: "zoneTransaction.list"
+  },
+  {
+    key: "/admin/hotspot/tso-visit",
+    label: "TSO visit",
+    path: "/admin/hotspot/tso-visit",
+    icon: <SettingOutlined />,
+    permission: "zone.list"
+  },
+  {
+    key: "/admin/hotspot/reseller-visit",
+    label: "Reseller visit",
+    path: "/admin/hotspot/reseller-visit",
+    icon: <SettingOutlined />,
+    permission: "zone.list"
+  },
+  {
+    key: "/admin/hotspot/area-tagging",
+    label: "Area tagging",
+    path: "/admin/hotspot/area-tagging",
+    icon: <SettingOutlined />,
+    permission: "zone.list"
+  },
+  {
+    key: "/admin/hotspot/retailer-tagging",
+    label: "Retailer tagging",
+    path: "/admin/hotspot/retailer-tagging",
+    icon: <SettingOutlined />,
+    permission: "zone.list"
+  },
+  {
+    key: "/admin/hotspot/tso-tagging",
+    label: "TSO tagging to area manager",
+    path: "/admin/hotspot/tso-tagging",
+    icon: <SettingOutlined />,
+    permission: "zone.list"
+  },
+  {
+    key: "/admin/hotspot/monthly-target",
+    label: "Monthly Target",
+    path: "/admin/hotspot/monthly-target",
+    icon: <SettingOutlined />,
+    permission: "zone.list"
+  },
+  {
+    key: "/admin/hotspot/other-product",
+    label: "Other Product",
+    path: "/admin/hotspot/other-product",
+    icon: <SettingOutlined />,
+    permission: "zone.list"
+  },
+  {
+    key: "/admin/hotspot/other-product-sale",
+    label: "Other Product Sales",
+    path: "/admin/hotspot/other-product-sale",
+    icon: <SettingOutlined />,
+    permission: "OtherProductSale.list"
+  },
+  {
+    key: "/admin/hotspot/retailer-onboard",
+    label: "Retailer Onboard",
+    path: "/admin/hotspot/retailer-onboard",
+    icon: <SettingOutlined />,
+    permission: "retailerOnboard.list"
   }
-  // {
-  //   key: "/admin/hotspot/tso-visit",
-  //   label: "TSO visit",
-  //   path: "/admin/hotspot/tso-visit",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/reseller-visit",
-  //   label: "Reseller visit",
-  //   path: "/admin/hotspot/reseller-visit",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/area-tagging",
-  //   label: "Area tagging",
-  //   path: "/admin/hotspot/area-tagging",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/retailer-tagging",
-  //   label: "Retailer tagging",
-  //   path: "/admin/hotspot/retailer-tagging",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/tso-tagging",
-  //   label: "TSO tagging to area manager",
-  //   path: "/admin/hotspot/tso-tagging",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/monthly-target",
-  //   label: "Monthly Target",
-  //   path: "/admin/hotspot/monthly-target",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/other-product",
-  //   label: "Other Product",
-  //   path: "/admin/hotspot/other-product",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/other-product-sale",
-  //   label: "Other Product Sales",
-  //   path: "/admin/hotspot/other-product-sale",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/retailer-onboard",
-  //   label: "Retailer Onboard",
-  //   path: "/admin/hotspot/retailer-onboard",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // }
 ];
 
 export default hotspotRoutes;

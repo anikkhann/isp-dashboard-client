@@ -2,7 +2,7 @@ import HotspotLayout from "@/core/layouts/HotspotLayout";
 
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import EditDurjoyRequisition from "@/modules/hotspot/durjoy-requisition/RejectDurjoyRequisition";
+import EditOtherProduct from "@/modules/hotspot/other-product/EditOtherProduct";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("client.update", "") ? (
-        <EditDurjoyRequisition id={id} />
+      {ability.can("OtherProduct.update", "") ? (
+        <EditOtherProduct id={id} />
       ) : (
         <Forbidden />
       )}

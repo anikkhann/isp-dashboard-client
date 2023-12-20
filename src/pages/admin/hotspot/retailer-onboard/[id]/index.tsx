@@ -2,7 +2,7 @@ import HotspotLayout from "@/core/layouts/HotspotLayout";
 
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import DetailsDurjoyRequisition from "@/modules/hotspot/durjoy-requisition/DetailsDurjoyRequisition";
+import DetailsRetailerOnboard from "@/modules/hotspot/retailer-onboard/DetailsRetailerOnboard";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("client.view", "") ? (
-        <DetailsDurjoyRequisition id={id} />
+      {ability.can("retailerOnboard.view", "") ? (
+        <DetailsRetailerOnboard id={id} />
       ) : (
         <Forbidden />
       )}
