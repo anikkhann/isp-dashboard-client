@@ -6,42 +6,17 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
+import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
-interface FromData {
-  remarks: string;
-  lines: LineDataProps[];
+interface PropData {
+  item: any;
 }
 
-interface LineDataProps {
-  otherProductId: string | undefined;
-  amount: string | undefined;
-}
-
-// generate dynamic year - current year along with next two year -> default current year
-
-const currentYear = new Date().getFullYear();
-
-const months = [
-  { label: "January", value: 1 },
-  { label: "February", value: 2 },
-  { label: "March", value: 3 },
-  { label: "April", value: 4 },
-  { label: "May", value: 5 },
-  { label: "June", value: 6 },
-  { label: "July", value: 7 },
-  { label: "August", value: 8 },
-  { label: "September", value: 9 },
-  { label: "October", value: 10 },
-  { label: "November", value: 11 },
-  { label: "December", value: 12 }
-];
-
-const CreateMonthlyTargetForm = () => {
+const EditRetailerTaggingForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -52,38 +27,32 @@ const CreateMonthlyTargetForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [years, setYears] = useState<any[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
-
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
-
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
-  const [otherProducts, setOtherProducts] = useState<any[]>([]);
+  const [areaManagers, setAreaManagers] = useState<any[]>([]);
+  const [selectedAreaManager, setSelectedAreaManager] = useState<any>(null);
 
-  const [linesValues, setLinesValues] = useState<LineDataProps[]>([]);
+  const [retailers, setRetailers] = useState<any[]>([]);
+  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  //functions for getting zone manger list data using POST request
-  function getOtherProducts() {
+  function getAreaManager() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "displayName"
           }
         ]
       },
-      body: {
-        isActive: true
-      }
+      body: {}
     };
-    axios.post("/api-hotspot/other-product/get-list", body).then(res => {
+    axios.post("/api/area-manager-tag/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -99,12 +68,12 @@ const CreateMonthlyTargetForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.displayName,
           value: item.id
         };
       });
 
-      setOtherProducts(list);
+      setAreaManagers(list);
     });
   }
 
@@ -148,64 +117,99 @@ const CreateMonthlyTargetForm = () => {
     });
   }
 
-  useEffect(() => {
-    getOtherProducts();
-    getUsers();
-  }, []);
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer",
+        // subZoneManager: { id: selectedSubZone },
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
 
   useEffect(() => {
-    const years = [];
-    for (let i = currentYear; i <= currentYear + 2; i++) {
-      years.push({
-        label: i,
-        value: i
+    if (item) {
+      setSelectedUser(item.tsoId);
+      setSelectedAreaManager(item.areaManagerTagId);
+      setSelectedRetailer(item.retailerId);
+
+      form.setFieldsValue({
+        tsoId: item.tsoId,
+        areaManagerTagId: item.areaManagerTagId,
+        retailerId: item.retailerId
       });
     }
-    setYears(years);
+  }, [item]);
+
+  useEffect(() => {
+    getUsers();
+    getAreaManager();
+    getRetailers();
   }, []);
-
-  const handleOtherPrductChange = (value: any, key: number) => {
-    // make a new field in forms lines list and set pricing plan id
-    form.setFieldsValue({ [`lines[${key}].otherProductId`]: value });
-
-    if (value) {
-      const newLinesValues = [...linesValues];
-      newLinesValues[key] = {
-        ...newLinesValues[key],
-        otherProductId: value
-      };
-      setLinesValues(newLinesValues);
-    }
-  };
 
   const handleUserChange = (value: any) => {
     setSelectedUser(value);
+    form.setFieldsValue({
+      tsoId: value
+    });
   };
 
-  const handleYearChange = (value: any) => {
-    setSelectedYear(value);
+  const handleAreaManagerChange = (value: any) => {
+    setSelectedAreaManager(value);
+    form.setFieldsValue({
+      areaManagerTagId: value
+    });
   };
 
-  const handleMonthChange = (value: any) => {
-    setSelectedMonth(value);
+  const handleRetailerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ retailerId: value });
+    setSelectedRetailer(value as any);
   };
 
-  const onSubmit = (data: FromData) => {
+  const onSubmit = () => {
     setLoading(true);
-    const { lines } = data;
-
-    // console.log("data", data);
 
     const formData = {
       tsoId: selectedUser,
-      year: selectedYear,
-      month: selectedMonth,
-      productLines: lines
+      areaManagerTagId: selectedAreaManager,
+      retailerId: selectedRetailer
     };
-
     try {
       axios
-        .post("/api-hotspot/monthly-target/create", formData)
+        .post("/api/tso-retailer-tag/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -223,7 +227,7 @@ const CreateMonthlyTargetForm = () => {
               text: data.message || "Created successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/hotspot/monthly-target");
+              router.replace("/admin/hotspot/retailer-onboard");
             });
           }
         })
@@ -313,11 +317,19 @@ const CreateMonthlyTargetForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
-                <Col>
-                  {/* year */}
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* areaManagerTagId */}
                   <Form.Item
-                    label="year"
-                    name="year"
+                    label="Area Manager"
+                    name="areaManagerTagId"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -334,9 +346,9 @@ const CreateMonthlyTargetForm = () => {
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
                         placeholder="Please select"
-                        onChange={handleYearChange}
-                        options={years}
-                        value={selectedYear}
+                        onChange={handleAreaManagerChange}
+                        options={areaManagers}
+                        value={selectedAreaManager}
                         showSearch
                         filterOption={(input, option) => {
                           if (typeof option?.label === "string") {
@@ -352,15 +364,24 @@ const CreateMonthlyTargetForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
-                <Col>
-                  {/* month */}
+
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  {/* retailerId */}
                   <Form.Item
-                    label="month"
-                    name="month"
+                    label="Retailer"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
+                    name="retailerId"
                     rules={[
                       {
                         required: true,
@@ -373,99 +394,12 @@ const CreateMonthlyTargetForm = () => {
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
                         placeholder="Please select"
-                        onChange={handleMonthChange}
-                        options={months}
-                        value={selectedMonth}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
+                        onChange={handleRetailerChange}
+                        options={retailers}
+                        value={selectedRetailer}
                       />
                     </Space>
                   </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.List name="lines">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
-                            align="baseline"
-                          >
-                            <Form.Item
-                              {...restField}
-                              label="otherProductId"
-                              name={[name, "otherProductId"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={value =>
-                                  handleOtherPrductChange(value, key)
-                                }
-                                options={otherProducts}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              label="amount"
-                              name={[name, "amount"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="amount" />
-                            </Form.Item>
-
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Add field
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
                 </Col>
               </Row>
 
@@ -498,4 +432,4 @@ const CreateMonthlyTargetForm = () => {
   );
 };
 
-export default CreateMonthlyTargetForm;
+export default EditRetailerTaggingForm;

@@ -180,13 +180,13 @@ const hotspotRoutes = [
     icon: <SettingOutlined />,
     permission: "zone.list"
   },
-  {
-    key: "/admin/hotspot/tso-tagging",
-    label: "TSO tagging to area manager",
-    path: "/admin/hotspot/tso-tagging",
-    icon: <SettingOutlined />,
-    permission: "zone.list"
-  },
+  // {
+  //   key: "/admin/hotspot/tso-tagging",
+  //   label: "TSO tagging to area manager",
+  //   path: "/admin/hotspot/tso-tagging",
+  //   icon: <SettingOutlined />,
+  //   permission: "zone.list"
+  // },
   {
     key: "/admin/hotspot/monthly-target",
     label: "Monthly Target",
