@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 import CreateAreaTaggingForm from "@/components/forms/area-tagging/CreateAreaTaggingForm";
 
-const NewAreaTagging = () => {
+const NewResellerVisit = () => {
   return (
     <>
       <AppRowContainer>
@@ -23,11 +23,11 @@ const NewAreaTagging = () => {
             },
             {
               title: (
-                <Link href="/admin/hotspot/area-tagging">Area Tagging</Link>
+                <Link href="/admin/hotspot/reseller-visit">Reseller Visit</Link>
               )
             },
             {
-              title: "New Area Tagging"
+              title: "New Reseller Visit"
             }
           ]}
         />
@@ -49,7 +49,7 @@ const NewAreaTagging = () => {
               color: "#F15F22"
             }}
           >
-            New Area Tagging
+            New Reseller Visit
           </h1>
         </div>
 
@@ -74,4 +74,4 @@ const NewAreaTagging = () => {
   );
 };
 
-export default NewAreaTagging;
+export default NewResellerVisit;

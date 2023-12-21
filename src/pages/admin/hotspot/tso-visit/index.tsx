@@ -1,7 +1,7 @@
 import HotspotLayout from "@/core/layouts/HotspotLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import DurjoyRequisitionList from "@/modules/hotspot/durjoy-requisition/DurjoyRequisitionList";
+import TsoVisitList from "@/modules/hotspot/tso-visit/TsoVisitList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,11 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("client.list", "") ? (
-        <DurjoyRequisitionList />
-      ) : (
-        <Forbidden />
-      )}
+      {ability.can("tsoVisit.list", "") ? <TsoVisitList /> : <Forbidden />}
     </>
   );
 };

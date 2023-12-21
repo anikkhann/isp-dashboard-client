@@ -1,14 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Button,
-  Card,
-  Col,
-  Select,
-  Space,
-  Row,
-  Tooltip,
-  DatePicker
-} from "antd";
+import { Button, Card, Col, Select, Space, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -19,42 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import ability from "@/services/guard/ability";
-import Link from "next/link";
-import { EyeOutlined } from "@ant-design/icons";
-import { ZoneTagData } from "@/interfaces/ZoneTagData";
+import { TsoRetailerTagData } from "@/interfaces/TsoRetailerTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// import { format } from "date-fns";
-
-import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import localeData from "dayjs/plugin/localeData";
-import weekday from "dayjs/plugin/weekday";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import weekYear from "dayjs/plugin/weekYear";
 import { useAppSelector } from "@/store/hooks";
-
-dayjs.extend(customParseFormat);
-dayjs.extend(advancedFormat);
-dayjs.extend(weekday);
-dayjs.extend(localeData);
-dayjs.extend(weekOfYear);
-dayjs.extend(weekYear);
-
-const dateFormat = "YYYY-MM-DD";
-
-const statuses = [
-  {
-    label: "tag",
-    value: "tag"
-  },
-  {
-    label: "remove",
-    value: "remove"
-  }
-];
+// import { format } from "date-fns";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -64,27 +24,21 @@ interface TableParams {
 }
 
 const AreaTaggingList: React.FC = () => {
-  const [data, setData] = useState<ZoneTagData[]>([]);
+  const [data, setData] = useState<TsoRetailerTagData[]>([]);
   const { Panel } = Collapse;
-
-  const MySwal = withReactContent(Swal);
 
   const authUser = useAppSelector(state => state.auth.user);
 
-  const [selectedStatus, setSelectedStatus] = useState<any>(null);
+  const MySwal = withReactContent(Swal);
 
-  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+  const [areaManagers, setAreaManagers] = useState<any[]>([]);
+  const [selectedAreaManager, setSelectedAreaManager] = useState<any>(null);
 
-  const { RangePicker } = DatePicker;
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
 
-  const [subzoneManagers, setSubZoneManagers] = useState<any[]>([]);
-  const [selectedSubZoneManager, setSelectedSubZoneManager] =
-    useState<any>(null);
-
-  const [pricingPlans, setPricingPlans] = useState<any[]>([]);
-  const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -104,11 +58,9 @@ const AreaTaggingList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
-    selectedStatusParam?: string,
-    startDateParam?: string,
-    endDateParam?: string,
-    selectedZoneManagerParam?: string,
-    selectedPricingPlanParam?: string
+    areaManagerId?: string,
+    clientId?: string,
+    zoneId?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -126,41 +78,36 @@ const AreaTaggingList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        subZoneManagerId: selectedZoneManagerParam,
-        pricingPlanId: selectedPricingPlanParam,
-        type: selectedStatusParam,
-        dateRangeFilter: {
-          field: "createdOn",
-          startDate: startDateParam,
-          endDate: endDateParam
+        areaManager: {
+          id: areaManagerId
+        },
+        client: {
+          id: clientId
+        },
+        zoneManager: {
+          id: zoneId
         }
       }
     };
 
-    const { data } = await axios.post(
-      `/api-hotspot/sub-zone-voucher-assignment/get-list`,
-      body,
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
+    const { data } = await axios.post(`/api/area-manager-tag/get-list`, body, {
+      headers: {
+        "Content-Type": "application/json"
       }
-    );
+    });
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
-      "sub-zone-voucher-assignment-list",
+      "area-manager-tag-list",
       page,
       limit,
       order,
       sort,
-      selectedStatus,
-      selectedStartDate,
-      selectedEndDate,
-      selectedSubZoneManager,
-      selectedPricingPlan
+      selectedAreaManager,
+      selectedClient,
+      selectedZone
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -168,11 +115,9 @@ const AreaTaggingList: React.FC = () => {
         limit,
         order,
         sort,
-        selectedStatus,
-        selectedStartDate,
-        selectedEndDate,
-        selectedSubZoneManager,
-        selectedPricingPlan
+        selectedAreaManager,
+        selectedClient,
+        selectedZone
       );
       return response;
     },
@@ -212,8 +157,7 @@ const AreaTaggingList: React.FC = () => {
     }
   }, [data]);
 
-  //functions for getting zone manger list data using POST request
-  function getSubZoneManagers() {
+  const getAreaManagersList = async () => {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -225,11 +169,93 @@ const AreaTaggingList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        userCategory: "area_manager",
+
+        isActive: true
+      }
+    };
+    axios.post("/api/users/get-list", body).then(res => {
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+      setAreaManagers(list);
+    });
+  };
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
         client: {
           id: authUser?.partnerId
-        }
-        // isActive: true
+        },
+        isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
@@ -253,102 +279,43 @@ const AreaTaggingList: React.FC = () => {
         };
       });
 
-      setSubZoneManagers(list);
-    });
-  }
-
-  //functions for getting zone manger list data using POST request
-  function getPricingPlan() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        // isActive: true
-      }
-    };
-    axios.post("/api-hotspot/pricing-plan/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setPricingPlans(list);
+      setZones(list);
     });
   }
 
   useEffect(() => {
-    getSubZoneManagers();
-    getPricingPlan();
+    getClients();
+    getAreaManagersList();
+    getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClear = () => {
-    setSelectedStatus(null);
-    setSelectedDateRange(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
-    setSelectedSubZoneManager(null);
-    setSelectedPricingPlan(null);
-  };
-  const handleDateChange = (value: any) => {
-    // console.log(value);
-
-    if (value) {
-      setSelectedDateRange(value);
-
-      const startDate = dayjs(value[0]).format(dateFormat);
-      const endDate = dayjs(value[1]).format(dateFormat);
-
-      setSelectedStartDate(startDate);
-      setSelectedEndDate(endDate);
-
-      // console.log(startDate, endDate);
-    } else {
-      setSelectedDateRange(null);
-      setSelectedStartDate(null);
-      setSelectedEndDate(null);
-    }
+    setSelectedAreaManager(null);
+    setSelectedClient(null);
+    setSelectedZone(null);
   };
 
-  const handleStatusChange = (value: any) => {
-    setSelectedStatus(value);
+  const handleAreaManagerChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedAreaManager(value);
   };
 
-  const handleZoneManagerChange = (value: any) => {
-    setSelectedSubZoneManager(value);
+  const handleClientChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedClient(value);
   };
 
-  const handlePricingPlanChange = (value: any) => {
-    setSelectedPricingPlan(value);
+  const handleZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedZone(value);
   };
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const columns: ColumnsType<ZoneTagData> = [
+  const columns: ColumnsType<TsoRetailerTagData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -363,60 +330,44 @@ const AreaTaggingList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
-    {
-      title: "type",
-      dataIndex: "type",
-      sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-    {
-      title: "serialFrom",
-      dataIndex: "serialFrom",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "serialTo",
-      dataIndex: "serialTo",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "quantity",
-      dataIndex: "quantity",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
 
-    // zoneManager
+    // displayName
     {
-      title: "subZoneManager",
-      dataIndex: "subZoneManager",
+      title: "displayName",
+      dataIndex: "displayName",
       sorter: false,
-      render: (subZoneManager: any) => {
-        if (!subZoneManager) return "-";
-        return <>{subZoneManager.name}</>;
+      render: (displayName: any) => {
+        if (!displayName) return "-";
+        return <>{displayName}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
 
-    // pricingPlan
+    // areaManager
     {
-      title: "pricingPlan",
-      dataIndex: "pricingPlan",
+      title: "areaManager",
+      dataIndex: "areaManager",
       sorter: false,
-      render: (pricingPlan: any) => {
-        if (!pricingPlan) return "-";
-        return <>{pricingPlan.name}</>;
+      render: (areaManager: any) => {
+        if (!areaManager) return "-";
+        return <>{areaManager.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
+    // client
+    {
+      title: "client",
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    }
 
     // insertedBy
     // {
@@ -469,53 +420,31 @@ const AreaTaggingList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
-
-    {
-      title: "Action",
-      dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <div className="flex flex-row">
-            <Space size="middle" align="center" className="mx-1">
-              {ability.can("client.view", "") ? (
-                <Tooltip title="View" placement="bottomRight" color="green">
-                  <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/zone-tag/${record.id}`}>
-                      <Button type="primary" icon={<EyeOutlined />} />
-                    </Link>
-                  </Space>
-                </Tooltip>
-              ) : null}
-            </Space>
-          </div>
-        );
-      },
-      align: "center" as AlignType
-    }
   ];
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<ZoneTagData> | SorterResult<ZoneTagData>[]
+    sorter:
+      | SorterResult<TsoRetailerTagData>
+      | SorterResult<TsoRetailerTagData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<ZoneTagData>).order) {
-      // // console.log((sorter as SorterResult<ZoneTagData>).order)
+    if (sorter && (sorter as SorterResult<TsoRetailerTagData>).order) {
+      // // console.log((sorter as SorterResult<TsoRetailerTagData>).order)
 
       SetOrder(
-        (sorter as SorterResult<ZoneTagData>).order === "ascend"
+        (sorter as SorterResult<TsoRetailerTagData>).order === "ascend"
           ? "asc"
           : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<ZoneTagData>).field) {
-      // // console.log((sorter as SorterResult<ZoneTagData>).field)
+    if (sorter && (sorter as SorterResult<TsoRetailerTagData>).field) {
+      // // console.log((sorter as SorterResult<TsoRetailerTagData>).field)
 
-      SetSort((sorter as SorterResult<ZoneTagData>).field as string);
+      SetSort((sorter as SorterResult<TsoRetailerTagData>).field as string);
     }
   };
 
@@ -557,10 +486,10 @@ const AreaTaggingList: React.FC = () => {
           )}
 
           <TableCard
-            title="Sub Zone Tag  List"
+            title="Area Taggging List"
             hasLink={true}
-            addLink="/admin/hotspot/sub-zone-tag/create"
-            permission="client.create"
+            addLink="/admin/hotspot/area-tagging/create"
+            permission="tsoRetailerTag.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -601,16 +530,16 @@ const AreaTaggingList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Type</b>
+                              <b>Area Manager</b>
                             </span>
                             <Select
+                              showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleStatusChange}
-                              options={statuses}
-                              value={selectedStatus}
-                              showSearch
+                              onChange={handleAreaManagerChange}
+                              options={areaManagers}
+                              value={selectedAreaManager}
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
                                   return (
@@ -635,16 +564,16 @@ const AreaTaggingList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>SubZone Manager</b>
+                              <b>Client</b>
                             </span>
                             <Select
+                              showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleZoneManagerChange}
-                              options={subzoneManagers}
-                              value={selectedSubZoneManager}
-                              showSearch
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
                                   return (
@@ -669,15 +598,15 @@ const AreaTaggingList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Pricing Plan</b>
+                              <b>Zone Manager</b>
                             </span>
                             <Select
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handlePricingPlanChange}
-                              options={pricingPlans}
-                              value={selectedPricingPlan}
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
@@ -692,27 +621,7 @@ const AreaTaggingList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Date Range </b>
-                            </span>
-                            <RangePicker
-                              style={{ width: "100%" }}
-                              onChange={handleDateChange}
-                              value={selectedDateRange}
-                              placeholder={["Start Date", "End Date"]}
-                            />
-                          </Space>
-                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}
@@ -738,33 +647,6 @@ const AreaTaggingList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>

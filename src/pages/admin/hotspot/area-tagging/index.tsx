@@ -1,7 +1,7 @@
 import HotspotLayout from "@/core/layouts/HotspotLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import DurjoyRequisitionList from "@/modules/hotspot/durjoy-requisition/DurjoyRequisitionList";
+import AreaTaggingList from "@/modules/hotspot/area-tagging/AreaTaggingList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -13,8 +13,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("client.list", "") ? (
-        <DurjoyRequisitionList />
+      {ability.can("areaTagging.list", "") ? (
+        <AreaTaggingList />
       ) : (
         <Forbidden />
       )}

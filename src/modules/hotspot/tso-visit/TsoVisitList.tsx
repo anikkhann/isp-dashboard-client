@@ -136,21 +136,17 @@ const TsoVisitList: React.FC = () => {
       }
     };
 
-    const { data } = await axios.post(
-      `/api-hotspot/zone-voucher-assignment/get-list`,
-      body,
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
+    const { data } = await axios.post(`/api-hotspot/tso-visit/get-list`, body, {
+      headers: {
+        "Content-Type": "application/json"
       }
-    );
+    });
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
-      "zone-voucher-assignment-list",
+      "tso-visit-list",
       page,
       limit,
       order,
