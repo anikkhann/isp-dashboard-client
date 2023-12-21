@@ -225,7 +225,7 @@ const RetailerTagList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         retailerTag: {
           id: authUser?.partnerId
         }

@@ -639,7 +639,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
 
               {/* cancel */}
               {ability.can("retailerRevenueDisbursement.cancel", "") &&
-              authUser?.userType == "sub_zone" ? (
+              authUser?.userType == "reseller" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Button

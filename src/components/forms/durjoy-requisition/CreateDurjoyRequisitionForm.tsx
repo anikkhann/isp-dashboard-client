@@ -226,7 +226,7 @@ const CreateDurjoyRequisitionForm = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         client: {
           id: authUser?.partnerId
         },
@@ -314,8 +314,6 @@ const CreateDurjoyRequisitionForm = () => {
       lines
     } = data;
 
-    console.log("data", data);
-
     const bodyData = {
       remarks: remarks,
       paymentType: selectedPaymentType,
@@ -337,7 +335,7 @@ const CreateDurjoyRequisitionForm = () => {
 
     try {
       axios
-        .post("/api-hotspot/client-card-requisition/offline-payment", formData)
+        .post("/api-hotspot/client-card-requisition/create", formData)
         .then(res => {
           const { data } = res;
 

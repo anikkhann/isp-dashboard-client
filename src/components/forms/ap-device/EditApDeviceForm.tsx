@@ -344,7 +344,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/hotspot/ap-devices");
+              router.replace("/admin/hotspot/ap-device");
             });
           } else {
             MySwal.fire({

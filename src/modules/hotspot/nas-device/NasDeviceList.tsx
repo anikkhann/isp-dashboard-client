@@ -46,11 +46,11 @@ const dateFormat = "YYYY-MM-DD";
 
 const statuses = [
   {
-    label: "True",
+    label: "Active",
     value: true
   },
   {
-    label: "False",
+    label: "Inactive",
     value: false
   }
 ];
@@ -121,7 +121,7 @@ const NasDeviceList: React.FC = () => {
         ip: ipParam,
         isActive: selectedStatusParam,
         dateRangeFilter: {
-          field: "expirationTime",
+          field: "createdOn",
           startDate: startDateParam,
           endDate: endDateParam
         }
@@ -523,7 +523,7 @@ const NasDeviceList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Name</b>
+                              <b>Device Name</b>
                             </span>
                             <Input
                               type="text"

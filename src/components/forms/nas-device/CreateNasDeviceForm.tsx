@@ -92,7 +92,7 @@ const CreateNasDeviceForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/hotspot/nas-devices");
+              router.replace("/admin/hotspot/nas-device");
             });
           } else {
             MySwal.fire({
@@ -344,7 +344,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="apiSsl"
-                  label="apiSsl"
+                  label="api"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

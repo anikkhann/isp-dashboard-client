@@ -26,13 +26,17 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { ApDeviceData } from "@/interfaces/ApDeviceData";
 // import { format } from "date-fns";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { useAppSelector } from "@/store/hooks";
+
 const statuses = [
   {
-    label: "True",
+    label: "Active",
     value: true
   },
   {
-    label: "False",
+    label: "Inactive",
     value: false
   }
 ];
@@ -48,10 +52,24 @@ const ApDeviceList: React.FC = () => {
   const [data, setData] = useState<ApDeviceData[]>([]);
   const { Panel } = Collapse;
 
+  const MySwal = withReactContent(Swal);
+
+  const authUser = useAppSelector(state => state.auth.user);
+
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
   const [selectedName, setSelectedName] = useState<any>(null);
   const [selectedIp, setSelectedIp] = useState<any>(null);
+  const [selectedMac, setSelectedMac] = useState<any>(null);
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const [subZones, setSubZones] = useState<any[]>([]);
+  const [selectedSubZone, setSelectedSubZone] = useState<any>(null);
+
+  const [retailers, setRetailers] = useState<any[]>([]);
+  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -73,7 +91,11 @@ const ApDeviceList: React.FC = () => {
     sort: string,
     nameParam?: string,
     ipParam?: string,
-    selectedStatusParam?: string
+    selectedStatusParam?: string,
+    macParam?: string,
+    zoneManagerId?: string,
+    subZoneManagerId?: string,
+    retailerId?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -93,16 +115,11 @@ const ApDeviceList: React.FC = () => {
         // SEND FIELD NAME WITH DATA TO SEARCH
         name: nameParam,
         ip: ipParam,
-        // macAddress: null,
-        isActive: selectedStatusParam
-        // dateRangeFilter: {
-        //   field: "expirationTime",
-        //   startDate: startDateParam,
-        //   endDate: endDateParam
-        // }
-        // zoneManagerId  : null,
-        // subZoneManagerId : null,
-        // retailerId : null,
+        macAddress: macParam,
+        isActive: selectedStatusParam,
+        zoneManagerId: zoneManagerId,
+        subZoneManagerId: subZoneManagerId,
+        retailerId: retailerId
       }
     };
 
@@ -123,7 +140,11 @@ const ApDeviceList: React.FC = () => {
       sort,
       selectedName,
       selectedIp,
-      selectedStatus
+      selectedStatus,
+      selectedMac,
+      selectedZone,
+      selectedSubZone,
+      selectedRetailer
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -133,7 +154,11 @@ const ApDeviceList: React.FC = () => {
         sort,
         selectedName,
         selectedIp,
-        selectedStatus
+        selectedStatus,
+        selectedMac,
+        selectedZone,
+        selectedSubZone,
+        selectedRetailer
       );
       return response;
     },
@@ -176,16 +201,176 @@ const ApDeviceList: React.FC = () => {
   const handleClear = () => {
     setSelectedName(null);
     setSelectedIp(null);
+    setSelectedMac(null);
     setSelectedStatus(null);
+    setSelectedZone(null);
+    setSelectedSubZone(null);
+    setSelectedRetailer(null);
   };
 
   const handleStatusChange = (value: any) => {
     setSelectedStatus(value);
   };
 
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  function getSubZoneManagers(selectedZoneId: any) {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "reseller",
+
+        zoneManager: { id: selectedZoneId },
+        client: {
+          id: authUser?.partnerId
+        },
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setSubZones(list);
+    });
+  }
+
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
+
   useEffect(() => {
+    getZoneManagers();
+    getSubZoneManagers(null);
+    getRetailers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedZone]);
+
+  const handleZoneChange = (value: any) => {
+    // setSelectedZone(value);
+    // form.setFieldsValue({ zoneManagerId: value });
+    setSelectedZone(value as any);
+  };
+
+  const handleSubZoneChange = (value: any) => {
+    // setSelectedSubZone(value);
+    // form.setFieldsValue({ subZoneManagerId: value });
+    setSelectedSubZone(value as any);
+  };
+
+  const handleRetailerChange = (value: any) => {
+    setSelectedRetailer(value);
+  };
 
   const columns: ColumnsType<ApDeviceData> = [
     {
@@ -450,6 +635,109 @@ const ApDeviceList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
+                              <b>Zone Manager</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Sub Zone</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleSubZoneChange}
+                              options={subZones}
+                              value={selectedSubZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Retailer</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
                               <b>Status</b>
                             </span>
                             <Select
@@ -484,7 +772,7 @@ const ApDeviceList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Name</b>
+                              <b>Ap Name</b>
                             </span>
                             <Input
                               type="text"
@@ -514,6 +802,28 @@ const ApDeviceList: React.FC = () => {
                               placeholder="Ip"
                               value={selectedIp}
                               onChange={e => setSelectedIp(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Mac</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="mac"
+                              value={selectedMac}
+                              onChange={e => setSelectedMac(e.target.value)}
                             />
                           </Space>
                         </Col>

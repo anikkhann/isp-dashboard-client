@@ -501,7 +501,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
   //       ]
   //     },
   //     body: {
-  //       partnerType: "sub_zone",
+  //       partnerType: "reseller",
   //       zoneManager: { id: selectedZoneId },
   //       client: {
   //         id: authUser?.partnerId

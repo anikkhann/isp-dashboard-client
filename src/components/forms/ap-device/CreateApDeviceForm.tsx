@@ -161,7 +161,7 @@ const CreateApDeviceForm = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         zoneManager: { id: selectedZoneId },
         client: {
           id: authUser?.partnerId
@@ -316,7 +316,7 @@ const CreateApDeviceForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/hotspot/nas-devices");
+              router.replace("/admin/hotspot/ap-device");
             });
           } else {
             MySwal.fire({
@@ -575,7 +575,7 @@ const CreateApDeviceForm = () => {
               >
                 <Form.Item
                   name="isSnmpActive"
-                  label="isSnmpActive"
+                  label="isSnmp"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

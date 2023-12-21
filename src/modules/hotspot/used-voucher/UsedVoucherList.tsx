@@ -177,7 +177,7 @@ const UsedVoucherList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "sub_zone",
+        partnerType: "reseller",
         client: {
           id: authUser?.partnerId
         }
