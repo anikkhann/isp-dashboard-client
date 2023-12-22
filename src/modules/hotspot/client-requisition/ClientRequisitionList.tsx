@@ -7,7 +7,8 @@ import {
   Space,
   Row,
   Tooltip,
-  DatePicker
+  DatePicker,
+  Input
 } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
@@ -41,6 +42,7 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { useRouter } from "next/router";
 import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -83,6 +85,13 @@ const ClientRequisitionList: React.FC = () => {
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
+  const authUser = useAppSelector(state => state.auth.user);
+
+  const [selectedRequisitionNo, setSelectedRequisitionNo] = useState<any>(null);
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
@@ -112,7 +121,9 @@ const ClientRequisitionList: React.FC = () => {
     sort: string,
     selectedStatusParam?: string,
     startDateParam?: string,
-    endDateParam?: string
+    endDateParam?: string,
+    selectedRequisitionNoParam?: string,
+    selectedZoneParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -130,9 +141,9 @@ const ClientRequisitionList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        requisitionNo: null,
-        client: {
-          id: null
+        requisitionNo: selectedRequisitionNoParam,
+        partner: {
+          id: selectedZoneParam
         },
         isActive: selectedStatusParam,
         dateRangeFilter: {
@@ -164,7 +175,9 @@ const ClientRequisitionList: React.FC = () => {
       sort,
       selectedStatus,
       selectedStartDate,
-      selectedEndDate
+      selectedEndDate,
+      selectedRequisitionNo,
+      selectedZone
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -174,7 +187,9 @@ const ClientRequisitionList: React.FC = () => {
         sort,
         selectedStatus,
         selectedStartDate,
-        selectedEndDate
+        selectedEndDate,
+        selectedRequisitionNo,
+        selectedZone
       );
       return response;
     },
@@ -296,6 +311,8 @@ const ClientRequisitionList: React.FC = () => {
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setSelectedRequisitionNo(null);
+    setSelectedZone(null);
   };
   const handleDateChange = (value: any) => {
     // console.log(value);
@@ -321,7 +338,57 @@ const ClientRequisitionList: React.FC = () => {
     setSelectedStatus(value);
   };
 
+  //functions for getting zone manger list data using POST request
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  const handleZoneChange = (value: any) => {
+    setSelectedZone(value);
+  };
+
   useEffect(() => {
+    getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -618,6 +685,61 @@ const ClientRequisitionList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Requisition No</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Requisition No"
+                              value={selectedRequisitionNo}
+                              onChange={e =>
+                                setSelectedRequisitionNo(e.target.value)
+                              }
+                            />
+                          </Space>
+                        </Col>
+
+                        {authUser && authUser.userType == "client" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                            xxl={12}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Zone Manager</b>
+                              </span>
+                              <Select
+                                showSearch
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleZoneChange}
+                                options={zones}
+                                value={selectedZone}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
                         <Col
                           xs={24}
                           sm={12}

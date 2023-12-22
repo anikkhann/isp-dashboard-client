@@ -27,6 +27,8 @@ import {
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import { useAppSelector } from "@/store/hooks";
+import { PaymentGatewayConfigData } from "@/interfaces/PaymentGatewayConfigData";
 
 const paymentTypes = [
   {
@@ -60,12 +62,24 @@ const CreateClientRequisitionForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
+  const [wsdCommission, setWsdCommission] = useState<any>(0);
+
+  const [totalAmount, setTotalAmount] = useState<any>(0);
+
+  const authUser = useAppSelector(state => state.auth.user);
+
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [selectedPaymentType, setSelectedPaymentType] = useState<any>(null);
 
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
+
+  const [allPricingPlans, setAllPricingPlans] = useState<any[]>([]);
+
+  const [paymentGateways, setPaymentGateways] = useState<any>([]);
+  const [selectedPaymentGateway, setSelectedPaymentGateway] =
+    useState<any>(null);
 
   const [linesValues, setLinesValues] = useState<LineDataProps[]>([]);
 
@@ -140,11 +154,86 @@ const CreateClientRequisitionForm = () => {
       });
 
       setPricingPlans(list);
+      setAllPricingPlans(data.body);
     });
   }
 
+  function getPaymentGateway() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        isActive: true
+      }
+    };
+
+    axios.post("/api/payment-gateway-config/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: PaymentGatewayConfigData) => {
+        return {
+          label: item.paymentGateway.bankName,
+          value: item.id
+        };
+      });
+
+      setPaymentGateways(list);
+    });
+  }
+
+  // getWsdCommission
+  const getWsdCommission = async (partnerId: string) => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const response = await axios.get(`/api/partner/get-by-id/${partnerId}`);
+
+    const { data } = response;
+
+    if (data.status != 200) {
+      MySwal.fire({
+        title: "Error",
+        text: data.message || "Something went wrong",
+        icon: "error"
+      });
+    }
+
+    if (!data.body) return;
+
+    const { wsdCommission } = data.body;
+
+    setWsdCommission(wsdCommission);
+  };
+
+  useEffect(() => {
+    if (authUser?.partnerId) {
+      getWsdCommission(authUser.partnerId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authUser]);
+
   useEffect(() => {
     getPricingPlan();
+    getPaymentGateway();
   }, []);
 
   const handlePaymentTypeChange = (value: any) => {
@@ -167,6 +256,37 @@ const CreateClientRequisitionForm = () => {
     }
   };
 
+  const calculateTotal = () => {
+    const lines = form.getFieldValue("lines");
+
+    if (!lines) return;
+
+    let total = 0;
+    lines.map((line: any) => {
+      const { pricingPlanId, quantity } = line;
+
+      const pricingPlan = allPricingPlans.find(
+        (item: any) => item.id === pricingPlanId
+      );
+      if (pricingPlan) {
+        total += Number(pricingPlan.price) * Number(quantity);
+      }
+    });
+    const commission = (total * wsdCommission) / 100;
+
+    total = total - commission;
+
+    setTotalAmount(total);
+    setWsdCommission(commission);
+  };
+
+  const handlePaymentGatewayChange = (value: any) => {
+    setSelectedPaymentGateway(value);
+    form.setFieldsValue({
+      paymentGatewayId: value
+    });
+  };
+
   const onSubmit = (data: FromData) => {
     setLoading(true);
     const {
@@ -175,11 +295,10 @@ const CreateClientRequisitionForm = () => {
       lines
     } = data;
 
-    console.log("data", data);
-
     const bodyData = {
       remarks: remarks,
       paymentType: selectedPaymentType,
+      paymentGatewayId: selectedPaymentGateway,
 
       lines: lines
     };
@@ -192,7 +311,7 @@ const CreateClientRequisitionForm = () => {
 
     try {
       axios
-        .post("/api-hotspot/zone-card-requisition/offline-payment", formData)
+        .post("/api-hotspot/zone-card-requisition/create", formData)
         .then(res => {
           const { data } = res;
 
@@ -300,6 +419,44 @@ const CreateClientRequisitionForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
+                {selectedPaymentType === "online" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                    xxl={12}
+                    className="gutter-row"
+                  >
+                    {/* paymentGatewayId */}
+                    <Form.Item
+                      label="Payment Gateway"
+                      name="paymentGatewayId"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handlePaymentGatewayChange}
+                          options={paymentGateways}
+                          value={selectedPaymentGateway}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                )}
               </Row>
 
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
@@ -478,6 +635,14 @@ const CreateClientRequisitionForm = () => {
                             Add field
                           </Button>
                         </Form.Item>
+                        <Form.Item>
+                          <Button
+                            type="primary"
+                            onClick={() => calculateTotal()}
+                          >
+                            Calculate Total
+                          </Button>
+                        </Form.Item>
                       </>
                     )}
                   </Form.List>
@@ -513,6 +678,39 @@ const CreateClientRequisitionForm = () => {
                         {fileList.length >= 1 ? null : uploadButton}
                       </Upload>
                     </Space>
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+                <Col>
+                  <Form.Item
+                    label="WSD Commission"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    <Input
+                      placeholder="WSD Commission"
+                      value={wsdCommission}
+                      disabled
+                    />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item
+                    label="Total Amount"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    <Input
+                      placeholder="Total Amount"
+                      value={totalAmount}
+                      disabled
+                    />
                   </Form.Item>
                 </Col>
               </Row>

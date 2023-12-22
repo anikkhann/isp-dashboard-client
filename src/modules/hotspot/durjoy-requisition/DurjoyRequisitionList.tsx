@@ -7,7 +7,8 @@ import {
   Space,
   Row,
   Tooltip,
-  DatePicker
+  DatePicker,
+  Input
 } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
@@ -41,6 +42,7 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { useRouter } from "next/router";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -83,9 +85,16 @@ const DurjoyRequisitionList: React.FC = () => {
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
+  const [selectedRequisitionNo, setSelectedRequisitionNo] = useState<any>(null);
+
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
+  const authUser = useAppSelector(state => state.auth.user);
 
   const { RangePicker } = DatePicker;
   const MySwal = withReactContent(Swal);
@@ -112,7 +121,9 @@ const DurjoyRequisitionList: React.FC = () => {
     sort: string,
     selectedStatusParam?: string,
     startDateParam?: string,
-    endDateParam?: string
+    endDateParam?: string,
+    reqNoParam?: string,
+    clientParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -130,9 +141,9 @@ const DurjoyRequisitionList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        requisitionNo: null,
+        requisitionNo: reqNoParam,
         client: {
-          id: null
+          id: clientParam
         },
         isActive: selectedStatusParam,
         dateRangeFilter: {
@@ -164,7 +175,9 @@ const DurjoyRequisitionList: React.FC = () => {
       sort,
       selectedStatus,
       selectedStartDate,
-      selectedEndDate
+      selectedEndDate,
+      selectedRequisitionNo,
+      selectedClient
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -174,7 +187,9 @@ const DurjoyRequisitionList: React.FC = () => {
         sort,
         selectedStatus,
         selectedStartDate,
-        selectedEndDate
+        selectedEndDate,
+        selectedRequisitionNo,
+        selectedClient
       );
       return response;
     },
@@ -296,6 +311,8 @@ const DurjoyRequisitionList: React.FC = () => {
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setSelectedRequisitionNo(null);
+    setSelectedClient(null);
   };
   const handleDateChange = (value: any) => {
     // console.log(value);
@@ -321,9 +338,57 @@ const DurjoyRequisitionList: React.FC = () => {
     setSelectedStatus(value);
   };
 
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
   useEffect(() => {
+    getClients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value);
+  };
 
   const columns: ColumnsType<DurjoyRequisitionData> = [
     {
@@ -611,6 +676,71 @@ const DurjoyRequisitionList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser?.userType === "durjoy" ||
+                        authUser?.userType === "duronto" ? (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Client</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleClientChange}
+                                options={clients}
+                                value={selectedClient}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+                        ) : null}
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Requisition No</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Requisition No"
+                              value={selectedRequisitionNo}
+                              onChange={e =>
+                                setSelectedRequisitionNo(e.target.value)
+                              }
+                            />
+                          </Space>
+                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}

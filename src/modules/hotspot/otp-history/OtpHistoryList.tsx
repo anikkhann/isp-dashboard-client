@@ -1,15 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Button,
-  Card,
-  Col,
-  Select,
-  Space,
-  Row,
-  Tooltip,
-  DatePicker
-} from "antd";
+import { Button, Card, Col, Select, Space, Row, Input } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -20,42 +11,10 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import ability from "@/services/guard/ability";
-import Link from "next/link";
-import { EyeOutlined } from "@ant-design/icons";
 import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
-
-import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import localeData from "dayjs/plugin/localeData";
-import weekday from "dayjs/plugin/weekday";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import weekYear from "dayjs/plugin/weekYear";
-import { useAppSelector } from "@/store/hooks";
-
-dayjs.extend(customParseFormat);
-dayjs.extend(advancedFormat);
-dayjs.extend(weekday);
-dayjs.extend(localeData);
-dayjs.extend(weekOfYear);
-dayjs.extend(weekYear);
-
-const dateFormat = "YYYY-MM-DD";
-
-const statuses = [
-  {
-    label: "tag",
-    value: "tag"
-  },
-  {
-    label: "remove",
-    value: "remove"
-  }
-];
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -70,21 +29,13 @@ const OtpHistoryList: React.FC = () => {
 
   const MySwal = withReactContent(Swal);
 
-  const authUser = useAppSelector(state => state.auth.user);
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
 
-  const [selectedStatus, setSelectedStatus] = useState<any>(null);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
-  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
-
-  const { RangePicker } = DatePicker;
-
-  const [zoneManagers, setZoneManagers] = useState<any[]>([]);
-  const [selectedZoneManager, setSelectedZoneManager] = useState<any>(null);
-
-  const [pricingPlans, setPricingPlans] = useState<any[]>([]);
-  const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
+  const [selectedVoucherNumber, setSelectedVoucherNumber] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -103,12 +54,10 @@ const OtpHistoryList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
-    // selectedStatusParam?: string,
-    // startDateParam?: string,
-    // endDateParam?: string,
-    // selectedZoneManagerParam?: string,
-    // selectedPricingPlanParam?: string
+    sort: string,
+    selectedClientParam: any,
+    selectedCustomerParam: any,
+    selectedVoucherNumberParam: any
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -126,14 +75,9 @@ const OtpHistoryList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        // zoneManagerId: selectedZoneManagerParam,
-        // pricingPlanId: selectedPricingPlanParam,
-        // type: selectedStatusParam,
-        // dateRangeFilter: {
-        //   field: "createdOn",
-        //   startDate: startDateParam,
-        //   endDate: endDateParam
-        // }
+        partnerId: selectedClientParam,
+        customerId: selectedCustomerParam,
+        voucherNumber: selectedVoucherNumberParam
       }
     };
 
@@ -150,9 +94,26 @@ const OtpHistoryList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["zone-voucher-assignment-list", page, limit, order, sort],
+    queryKey: [
+      "otp-history-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedClient,
+      selectedCustomer,
+      selectedVoucherNumber
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedClient,
+        selectedCustomer,
+        selectedVoucherNumber
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -191,8 +152,8 @@ const OtpHistoryList: React.FC = () => {
     }
   }, [data]);
 
-  //functions for getting zone manger list data using POST request
-  function getZoneManagers() {
+  //functions for getting
+  function getClients() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -204,10 +165,7 @@ const OtpHistoryList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "zone",
-        client: {
-          id: authUser?.partnerId
-        }
+        partnerType: "client"
         // isActive: true
       }
     };
@@ -231,15 +189,12 @@ const OtpHistoryList: React.FC = () => {
           value: item.id
         };
       });
-
-      setZoneManagers(list);
+      setClients(list);
     });
   }
 
-  //functions for getting zone manger list data using POST request
-  function getPricingPlan() {
+  const getCustomers = async () => {
     const body = {
-      // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
@@ -252,75 +207,37 @@ const OtpHistoryList: React.FC = () => {
         // isActive: true
       }
     };
-    axios.post("/api-hotspot/pricing-plan/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
+    const res = await axios.post("/api/customer/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
-          value: item.id
+          label: item.customerId,
+          value: item.customerId
         };
       });
 
-      setPricingPlans(list);
-    });
-  }
-
+      setCustomers(items);
+    }
+  };
   useEffect(() => {
-    // getZoneManagers();
-    // getPricingPlan();
+    getClients();
+    getCustomers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClear = () => {
-    setSelectedStatus(null);
-    setSelectedDateRange(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
-    setSelectedZoneManager(null);
-    setSelectedPricingPlan(null);
-  };
-  const handleDateChange = (value: any) => {
-    // console.log(value);
+  const handleClear = () => {};
 
-    if (value) {
-      setSelectedDateRange(value);
-
-      const startDate = dayjs(value[0]).format(dateFormat);
-      const endDate = dayjs(value[1]).format(dateFormat);
-
-      setSelectedStartDate(startDate);
-      setSelectedEndDate(endDate);
-
-      // console.log(startDate, endDate);
-    } else {
-      setSelectedDateRange(null);
-      setSelectedStartDate(null);
-      setSelectedEndDate(null);
-    }
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value);
   };
 
-  const handleStatusChange = (value: any) => {
-    setSelectedStatus(value);
+  const handleCustomerChange = (value: any) => {
+    setSelectedCustomer(value);
   };
 
-  const handleZoneManagerChange = (value: any) => {
-    setSelectedZoneManager(value);
-  };
-
-  const handlePricingPlanChange = (value: any) => {
-    setSelectedPricingPlan(value);
+  const handleVoucherNumberChange = (value: any) => {
+    setSelectedVoucherNumber(value);
   };
 
   useEffect(() => {
@@ -499,7 +416,7 @@ const OtpHistoryList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
+              <Space style={{ marginBottom: 16 }}>
                 <div style={{ padding: "20px", backgroundColor: "white" }}>
                   <Collapse
                     accordion
@@ -530,15 +447,15 @@ const OtpHistoryList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Type</b>
+                              <b>Customer Id</b>
                             </span>
                             <Select
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleStatusChange}
-                              options={statuses}
-                              value={selectedStatus}
+                              onChange={handleCustomerChange}
+                              options={customers}
+                              value={selectedCustomer}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
@@ -564,15 +481,15 @@ const OtpHistoryList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Zone Manager</b>
+                              <b>Client</b>
                             </span>
                             <Select
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleZoneManagerChange}
-                              options={zoneManagers}
-                              value={selectedZoneManager}
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
@@ -587,6 +504,7 @@ const OtpHistoryList: React.FC = () => {
                             />
                           </Space>
                         </Col>
+
                         <Col
                           xs={24}
                           sm={12}
@@ -598,50 +516,20 @@ const OtpHistoryList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Pricing Plan</b>
+                              <b>Voucher Number</b>
                             </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handlePricingPlanChange}
-                              options={pricingPlans}
-                              value={selectedPricingPlan}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Voucher Number"
+                              value={selectedVoucherNumber}
+                              onChange={e =>
+                                setSelectedVoucherNumber(e.target.value)
+                              }
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Date Range </b>
-                            </span>
-                            <RangePicker
-                              style={{ width: "100%" }}
-                              onChange={handleDateChange}
-                              value={selectedDateRange}
-                              placeholder={["Start Date", "End Date"]}
-                            />
-                          </Space>
-                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}
@@ -667,38 +555,11 @@ const OtpHistoryList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>
                 </div>
-              </Space> */}
+              </Space>
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

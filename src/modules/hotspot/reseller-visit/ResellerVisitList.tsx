@@ -279,6 +279,8 @@ const ResellerVisitList: React.FC = () => {
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setSelectedRetailer(null);
+    setSelectedSubZone(null);
   };
   const handleDateChange = (value: any) => {
     // console.log(value);

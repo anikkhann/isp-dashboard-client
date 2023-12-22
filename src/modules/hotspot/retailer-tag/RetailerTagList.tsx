@@ -83,6 +83,9 @@ const RetailerTagList: React.FC = () => {
   const [selectedSubZoneManager, setSelectedSubZoneManager] =
     useState<any>(null);
 
+  const [retailers, setRetailers] = useState<any>([]);
+  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
+
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
   const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
 
@@ -108,7 +111,8 @@ const RetailerTagList: React.FC = () => {
     startDateParam?: string,
     endDateParam?: string,
     selectedZoneManagerParam?: string,
-    selectedPricingPlanParam?: string
+    selectedPricingPlanParam?: string,
+    selectedRetailerParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -128,6 +132,7 @@ const RetailerTagList: React.FC = () => {
         // SEND FIELD NAME WITH DATA TO SEARCH
         subZoneManagerId: selectedZoneManagerParam,
         pricingPlanId: selectedPricingPlanParam,
+        retailerId: selectedRetailerParam,
         type: selectedStatusParam,
         dateRangeFilter: {
           field: "createdOn",
@@ -160,7 +165,8 @@ const RetailerTagList: React.FC = () => {
       selectedStartDate,
       selectedEndDate,
       selectedSubZoneManager,
-      selectedPricingPlan
+      selectedPricingPlan,
+      selectedRetailer
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -172,7 +178,8 @@ const RetailerTagList: React.FC = () => {
         selectedStartDate,
         selectedEndDate,
         selectedSubZoneManager,
-        selectedPricingPlan
+        selectedPricingPlan,
+        selectedRetailer
       );
       return response;
     },
@@ -211,6 +218,48 @@ const RetailerTagList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
 
   //functions for getting zone manger list data using POST request
   function getSubZoneManagers() {
@@ -301,6 +350,7 @@ const RetailerTagList: React.FC = () => {
   useEffect(() => {
     getSubZoneManagers();
     getPricingPlan();
+    getRetailers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -342,6 +392,10 @@ const RetailerTagList: React.FC = () => {
 
   const handlePricingPlanChange = (value: any) => {
     setSelectedPricingPlan(value);
+  };
+
+  const handleRetailerChange = (value: any) => {
+    setSelectedRetailer(value);
   };
 
   useEffect(() => {
@@ -644,6 +698,40 @@ const RetailerTagList: React.FC = () => {
                               onChange={handleZoneManagerChange}
                               options={subzoneManagers}
                               value={selectedSubZoneManager}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Retailer</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
