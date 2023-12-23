@@ -225,8 +225,8 @@ const HotspotSessionHistory = ({ item }: PropData) => {
           <TableCard
             title="Session Lists"
             hasLink={false}
-            addLink="/admin/device/ip-management/create"
-            permission="ip.create"
+            addLink=""
+            permission=""
             style={{
               borderRadius: "10px",
               padding: "10px",

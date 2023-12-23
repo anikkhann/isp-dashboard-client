@@ -23,6 +23,7 @@ import withReactContent from "sweetalert2-react-content";
 import HotspotUsedVoucherList from "@/components/details/hotspot/customer-care/HotspotUsedVoucherList";
 import HotspotSessionHistory from "@/components/details/hotspot/customer-care/HotspotSessionHistory";
 import { useRouter } from "next/router";
+import HotspotConnectionStatus from "@/components/details/hotspot/customer-care/HotspotConnectionStatus";
 
 interface TabData {
   key: string;
@@ -54,7 +55,7 @@ const HotspotDetailsCustomer = ({ id }: any) => {
           `/api-hotspot/partner-customer/disconnect-user/${username}`
         );
         if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
+          MySwal.fire("Success!", data.message, "success").then(() => {
             router.reload();
           });
         } else {
@@ -108,19 +109,25 @@ const HotspotDetailsCustomer = ({ id }: any) => {
   const items: TabData[] = [
     {
       key: "1",
+      label: `Connection Status`,
+      children: <>{item && <HotspotConnectionStatus item={item} />}</>,
+      permission: "HotspotCustomerCare.list"
+    },
+    {
+      key: "2",
       label: `Used Voucher`,
       children: <>{item && <HotspotUsedVoucherList item={item} />}</>,
       permission: "HotspotCustomerCare.list"
     },
 
     {
-      key: "2",
+      key: "3",
       label: `Session History`,
       children: <>{item && <HotspotSessionHistory item={item} />}</>,
       permission: "HotspotCustomerCare.list"
     },
     {
-      key: "3",
+      key: "4",
       label: `Mac Binding History`,
       children: <>{item && <TransactionHistory item={item} />}</>,
       permission: "HotspotCustomerCare.list"
