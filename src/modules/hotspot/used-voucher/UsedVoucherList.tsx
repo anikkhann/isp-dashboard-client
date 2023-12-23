@@ -18,7 +18,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
 
-import { useAppSelector } from "@/store/hooks";
 import { CSVLink } from "react-csv";
 
 import dayjs from "dayjs";
@@ -52,8 +51,6 @@ const UsedVoucherList: React.FC = () => {
   const MySwal = withReactContent(Swal);
 
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
-
-  const authUser = useAppSelector(state => state.auth.user);
 
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
   const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
@@ -229,8 +226,95 @@ const UsedVoucherList: React.FC = () => {
     });
   }
 
+  function getZoneManagers(selectedClient: any) {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: selectedClient
+        }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  function getRetailers(selectedSubZone: any) {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer",
+        subZoneManager: { id: selectedSubZone }
+        // isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
+
   //functions for getting zone manger list data using POST request
-  function getSubZoneManagers(selectedZoneId: any) {
+  function getSubZoneManagers(selectedClient: any, selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -245,7 +329,7 @@ const UsedVoucherList: React.FC = () => {
         partnerType: "reseller",
         zoneManager: { id: selectedZoneId },
         client: {
-          id: authUser?.partnerId
+          id: selectedClient
         }
         // isActive: true
       }
@@ -275,7 +359,6 @@ const UsedVoucherList: React.FC = () => {
       setSubZoneManagers(list);
     });
   }
-
   //functions for getting zone manger list data using POST request
   function getPricingPlan() {
     const body = {
@@ -318,21 +401,30 @@ const UsedVoucherList: React.FC = () => {
   }
 
   useEffect(() => {
-    getSubZoneManagers(null);
     getPricingPlan();
     getClients();
-    getZoneManagers();
-    getRetailers();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    if (selectedClient) {
+      getSubZoneManagers(selectedClient, selectedZone);
+      getZoneManagers(selectedClient);
+    }
+  }, [selectedClient]);
+
+  useEffect(() => {
     if (selectedZone) {
-      getSubZoneManagers(selectedZone);
+      getSubZoneManagers(selectedClient, selectedZone);
     }
   }, [selectedZone]);
 
+  useEffect(() => {
+    if (selectedSubZoneManager) {
+      getRetailers(selectedSubZoneManager);
+    }
+  }, [selectedSubZoneManager]);
   const handleClear = () => {
     setSelectedSubZoneManager(null);
     setSelectedPricingPlan(null);
@@ -359,99 +451,6 @@ const UsedVoucherList: React.FC = () => {
     // console.log("checked = ", value);
     setSelectedClient(value as any);
   };
-
-  function getZoneManagers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "zone",
-        client: {
-          id: authUser?.partnerId
-        }
-        // isActive: true
-      }
-    };
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setZones(list);
-    });
-  }
-
-  function getRetailers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "retailer"
-        // subZoneManager: { id: selectedSubZone },
-        // isActive: true
-      }
-    };
-
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setRetailers(list);
-    });
-  }
-
-  useEffect(() => {
-    getRetailers();
-    getZoneManagers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const columns: ColumnsType<ZoneTagData> = [
     {
