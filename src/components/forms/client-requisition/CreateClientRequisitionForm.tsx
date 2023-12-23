@@ -329,7 +329,12 @@ const CreateClientRequisitionForm = () => {
               text: data.message || "Created successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/hotspot/client-requisition");
+              if (selectedPaymentType === "online") {
+                const url = data.body;
+                window.open(url, "_blank");
+              } else {
+                router.replace("/admin/hotspot/client-requisition");
+              }
             });
           }
         })
