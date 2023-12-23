@@ -352,8 +352,6 @@ const RetailerOnboardList: React.FC = () => {
     setSelectedEndDate(null);
   };
   const handleDateChange = (value: any) => {
-    // console.log(value);
-
     if (value) {
       setSelectedDateRange(value);
 

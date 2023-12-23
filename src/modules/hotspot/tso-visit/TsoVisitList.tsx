@@ -1,14 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Button,
-  Card,
-  Col,
-  Select,
-  Space,
-  Row,
-  Tooltip,
-  DatePicker
-} from "antd";
+import { Button, Card, Col, Select, Space, Row, DatePicker } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -19,10 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import ability from "@/services/guard/ability";
-import Link from "next/link";
-import { EyeOutlined } from "@ant-design/icons";
-import { ZoneTagData } from "@/interfaces/ZoneTagData";
+import { TsoRetailerTagData } from "@/interfaces/TsoRetailerTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
@@ -45,17 +33,6 @@ dayjs.extend(weekYear);
 
 const dateFormat = "YYYY-MM-DD";
 
-const statuses = [
-  {
-    label: "tag",
-    value: "tag"
-  },
-  {
-    label: "remove",
-    value: "remove"
-  }
-];
-
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -64,31 +41,29 @@ interface TableParams {
 }
 
 const TsoVisitList: React.FC = () => {
-  const [data, setData] = useState<ZoneTagData[]>([]);
+  const [data, setData] = useState<TsoRetailerTagData[]>([]);
   const { Panel } = Collapse;
+
+  const { RangePicker } = DatePicker;
 
   const MySwal = withReactContent(Swal);
 
   const authUser = useAppSelector(state => state.auth.user);
 
-  const [selectedStatus, setSelectedStatus] = useState<any>(null);
+  const [areaManagers, setAreaManagers] = useState<any[]>([]);
+  const [selectedAreaManager, setSelectedAreaManager] = useState<any>(null);
+
+  const [tsos, setTsos] = useState<any>([]);
+  const [selectedTsoid, setSelectedTsoId] = useState<any>(null);
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
 
-  const { RangePicker } = DatePicker;
-
-  const [zoneManagers, setZoneManagers] = useState<any[]>([]);
-  const [selectedZoneManager, setSelectedZoneManager] = useState<any>(null);
-
-  const [pricingPlans, setPricingPlans] = useState<any[]>([]);
-  const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
-
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -103,11 +78,10 @@ const TsoVisitList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
-    selectedStatusParam?: string,
-    startDateParam?: string,
-    endDateParam?: string,
-    selectedZoneManagerParam?: string,
-    selectedPricingPlanParam?: string
+    areaManagerId?: string,
+    tsoId?: string,
+    selectedStartDateParam?: any,
+    selectedEndDateParam?: any
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -125,13 +99,12 @@ const TsoVisitList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        zoneManagerId: selectedZoneManagerParam,
-        pricingPlanId: selectedPricingPlanParam,
-        type: selectedStatusParam,
+        areaManagerId: areaManagerId,
+        tsoId: tsoId,
         dateRangeFilter: {
           field: "createdOn",
-          startDate: startDateParam,
-          endDate: endDateParam
+          startDate: selectedStartDateParam,
+          endDate: selectedEndDateParam
         }
       }
     };
@@ -151,11 +124,10 @@ const TsoVisitList: React.FC = () => {
       limit,
       order,
       sort,
-      selectedStatus,
+      selectedAreaManager,
+      selectedTsoid,
       selectedStartDate,
-      selectedEndDate,
-      selectedZoneManager,
-      selectedPricingPlan
+      selectedEndDate
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -163,11 +135,10 @@ const TsoVisitList: React.FC = () => {
         limit,
         order,
         sort,
-        selectedStatus,
+        selectedAreaManager,
+        selectedTsoid,
         selectedStartDate,
-        selectedEndDate,
-        selectedZoneManager,
-        selectedPricingPlan
+        selectedEndDate
       );
       return response;
     },
@@ -207,8 +178,7 @@ const TsoVisitList: React.FC = () => {
     }
   }, [data]);
 
-  //functions for getting zone manger list data using POST request
-  function getZoneManagers() {
+  const getAreaManagersList = async () => {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -220,17 +190,14 @@ const TsoVisitList: React.FC = () => {
         ]
       },
       body: {
-        partnerType: "zone",
-        client: {
-          id: authUser?.partnerId
-        }
-        // isActive: true
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        userCategory: "area_manager",
+
+        isActive: true
       }
     };
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
+    axios.post("/api/users/get-list", body).then(res => {
       const { data } = res;
-
       if (data.status != 200) {
         MySwal.fire({
           title: "Error",
@@ -243,17 +210,15 @@ const TsoVisitList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
-
-      setZoneManagers(list);
+      setAreaManagers(list);
     });
-  }
+  };
 
-  //functions for getting zone manger list data using POST request
-  function getPricingPlan() {
+  function getTsoList() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -265,10 +230,10 @@ const TsoVisitList: React.FC = () => {
         ]
       },
       body: {
-        // isActive: true
+        userCategory: "area_manager"
       }
     };
-    axios.post("/api-hotspot/pricing-plan/get-list", body).then(res => {
+    axios.post("/api/users/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -289,27 +254,25 @@ const TsoVisitList: React.FC = () => {
         };
       });
 
-      setPricingPlans(list);
+      setTsos(list);
     });
   }
 
   useEffect(() => {
-    getZoneManagers();
-    getPricingPlan();
+    getTsoList();
+    getAreaManagersList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClear = () => {
-    setSelectedStatus(null);
+    setSelectedAreaManager(null);
+    setSelectedTsoId(null);
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
-    setSelectedZoneManager(null);
-    setSelectedPricingPlan(null);
   };
-  const handleDateChange = (value: any) => {
-    // console.log(value);
 
+  const handleDateChange = (value: any) => {
     if (value) {
       setSelectedDateRange(value);
 
@@ -327,23 +290,21 @@ const TsoVisitList: React.FC = () => {
     }
   };
 
-  const handleStatusChange = (value: any) => {
-    setSelectedStatus(value);
+  const handleAreaManagerChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedAreaManager(value);
   };
 
-  const handleZoneManagerChange = (value: any) => {
-    setSelectedZoneManager(value);
-  };
-
-  const handlePricingPlanChange = (value: any) => {
-    setSelectedPricingPlan(value);
+  const handleTsoChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedTsoId(value);
   };
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const columns: ColumnsType<ZoneTagData> = [
+  const columns: ColumnsType<TsoRetailerTagData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -358,60 +319,44 @@ const TsoVisitList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
-    {
-      title: "type",
-      dataIndex: "type",
-      sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-    {
-      title: "serialFrom",
-      dataIndex: "serialFrom",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "serialTo",
-      dataIndex: "serialTo",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "quantity",
-      dataIndex: "quantity",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
 
-    // zoneManager
+    // displayName
     {
-      title: "zoneManager",
-      dataIndex: "zoneManager",
+      title: "displayName",
+      dataIndex: "displayName",
       sorter: false,
-      render: (zoneManager: any) => {
-        if (!zoneManager) return "-";
-        return <>{zoneManager.name}</>;
+      render: (displayName: any) => {
+        if (!displayName) return "-";
+        return <>{displayName}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
 
-    // pricingPlan
+    // areaManager
     {
-      title: "pricingPlan",
-      dataIndex: "pricingPlan",
+      title: "areaManager",
+      dataIndex: "areaManager",
       sorter: false,
-      render: (pricingPlan: any) => {
-        if (!pricingPlan) return "-";
-        return <>{pricingPlan.name}</>;
+      render: (areaManager: any) => {
+        if (!areaManager) return "-";
+        return <>{areaManager.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
+    // client
+    {
+      title: "client",
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    }
 
     // insertedBy
     // {
@@ -464,53 +409,31 @@ const TsoVisitList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
-
-    {
-      title: "Action",
-      dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: any) => {
-        return (
-          <div className="flex flex-row">
-            <Space size="middle" align="center" className="mx-1">
-              {ability.can("client.view", "") ? (
-                <Tooltip title="View" placement="bottomRight" color="green">
-                  <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/zone-tag/${record.id}`}>
-                      <Button type="primary" icon={<EyeOutlined />} />
-                    </Link>
-                  </Space>
-                </Tooltip>
-              ) : null}
-            </Space>
-          </div>
-        );
-      },
-      align: "center" as AlignType
-    }
   ];
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<ZoneTagData> | SorterResult<ZoneTagData>[]
+    sorter:
+      | SorterResult<TsoRetailerTagData>
+      | SorterResult<TsoRetailerTagData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<ZoneTagData>).order) {
-      // // console.log((sorter as SorterResult<ZoneTagData>).order)
+    if (sorter && (sorter as SorterResult<TsoRetailerTagData>).order) {
+      // // console.log((sorter as SorterResult<TsoRetailerTagData>).order)
 
       SetOrder(
-        (sorter as SorterResult<ZoneTagData>).order === "ascend"
+        (sorter as SorterResult<TsoRetailerTagData>).order === "ascend"
           ? "asc"
           : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<ZoneTagData>).field) {
-      // // console.log((sorter as SorterResult<ZoneTagData>).field)
+    if (sorter && (sorter as SorterResult<TsoRetailerTagData>).field) {
+      // // console.log((sorter as SorterResult<TsoRetailerTagData>).field)
 
-      SetSort((sorter as SorterResult<ZoneTagData>).field as string);
+      SetSort((sorter as SorterResult<TsoRetailerTagData>).field as string);
     }
   };
 
@@ -552,10 +475,10 @@ const TsoVisitList: React.FC = () => {
           )}
 
           <TableCard
-            title="Zone Tag  List"
+            title="Tso Visit List"
             hasLink={true}
-            addLink="/admin/hotspot/zone-tag/create"
-            permission="client.create"
+            addLink="/admin/hotspot/tso-visit/create"
+            permission="tsoVisit.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -585,115 +508,94 @@ const TsoVisitList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser &&
+                          authUser.userCategory === "sales_manager" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              xl={12}
+                              xxl={12}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Area Manager</b>
+                                </span>
+                                <Select
+                                  showSearch
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleAreaManagerChange}
+                                  options={areaManagers}
+                                  value={selectedAreaManager}
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {authUser &&
+                          authUser.userCategory === "area_manager" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              xl={12}
+                              xxl={12}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Tso</b>
+                                </span>
+                                <Select
+                                  showSearch
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleTsoChange}
+                                  options={tsos}
+                                  value={selectedTsoid}
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Type</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleStatusChange}
-                              options={statuses}
-                              value={selectedStatus}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Zone Manager</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneManagerChange}
-                              options={zoneManagers}
-                              value={selectedZoneManager}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Pricing Plan</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handlePricingPlanChange}
-                              options={pricingPlans}
-                              value={selectedPricingPlan}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -708,6 +610,7 @@ const TsoVisitList: React.FC = () => {
                             />
                           </Space>
                         </Col>
+
                         <Col
                           xs={24}
                           sm={12}
@@ -733,33 +636,6 @@ const TsoVisitList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>

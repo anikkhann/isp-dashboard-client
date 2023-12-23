@@ -252,7 +252,7 @@ const ClientTransactionList: React.FC = () => {
   function getTransactionByList() {
     axios
       .get(
-        "/api/topup-transaction/get-transaction-user-wise-filter?userType=customer"
+        "/api-hotspot/transaction/get-transaction-user-wise-filter?userType=client"
       )
       .then(res => {
         // console.log(res);
