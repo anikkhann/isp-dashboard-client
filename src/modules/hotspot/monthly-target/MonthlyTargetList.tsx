@@ -426,6 +426,19 @@ const MonthlyTargetList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
+    {
+      title: "Tso",
+      dataIndex: "tso",
+      sorter: false,
+      render: (tso: any) => {
+        if (!tso) return "-";
+        return <>{tso.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    // insertedBy
     // {
     //   title: "Created By",
     //   dataIndex: "insertedBy",

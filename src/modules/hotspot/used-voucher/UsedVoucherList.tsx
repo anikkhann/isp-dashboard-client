@@ -73,6 +73,8 @@ const UsedVoucherList: React.FC = () => {
   const [selectedReferenceNumber, setSelectedReferenceNumber] =
     useState<any>(null);
 
+  const [isFilter, setIsFilter] = useState<boolean>(false);
+
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -142,9 +144,22 @@ const UsedVoucherList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["voucher-archive-list", page, limit, order, sort],
+    queryKey: ["voucher-archive-list", page, limit, order, sort, isFilter],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedPricingPlan,
+        selectedClient,
+        selectedZone,
+        selectedSubZoneManager,
+        selectedRetailer,
+        selectedVoucherNumber,
+        selectedSerialNo,
+        selectedReferenceNumber
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -428,6 +443,17 @@ const UsedVoucherList: React.FC = () => {
   const handleClear = () => {
     setSelectedSubZoneManager(null);
     setSelectedPricingPlan(null);
+    setSelectedClient(null);
+    setSelectedZone(null);
+    setSelectedRetailer(null);
+    setSelectedVoucherNumber(null);
+    setSelectedSerialNo(null);
+    setSelectedReferenceNumber(null);
+    setIsFilter(false);
+  };
+
+  const handleSubmit = () => {
+    setIsFilter(true);
   };
 
   const handleZoneChange = (value: any) => {
@@ -923,6 +949,31 @@ const UsedVoucherList: React.FC = () => {
                               }
                             />
                           </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleSubmit();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Submit Filter
+                          </Button>
                         </Col>
                         <Col
                           xs={24}

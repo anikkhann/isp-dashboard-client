@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Select, Space, Row } from "antd";
+import { Button, Card, Col, Select, Space, Row, Tooltip } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -13,6 +13,9 @@ import axios from "axios";
 import { TsoRetailerTagData } from "@/interfaces/TsoRetailerTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useRouter } from "next/router";
+import ability from "@/services/guard/ability";
+import { DeleteOutlined } from "@ant-design/icons";
 // import { format } from "date-fns";
 
 interface TableParams {
@@ -41,6 +44,8 @@ const AreaTaggingList: React.FC = () => {
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const router = useRouter();
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -318,6 +323,40 @@ const AreaTaggingList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  async function handleDelete(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Disconnect customer!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.get(`/api/area-manager-tag/delete/${id}`);
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.body.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
+
   const columns: ColumnsType<TsoRetailerTagData> = [
     {
       title: "Serial",
@@ -370,7 +409,7 @@ const AreaTaggingList: React.FC = () => {
       },
       width: "20%",
       align: "center" as AlignType
-    }
+    },
 
     // insertedBy
     // {
@@ -423,6 +462,36 @@ const AreaTaggingList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
+
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <div className="flex flex-row">
+            <Space size="middle" align="center" className="mx-1">
+              {ability.can("areaTagging.delete", "") ? (
+                <Tooltip title="Delete " placement="bottomRight" color="red">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      type="primary"
+                      icon={<DeleteOutlined />}
+                      style={{
+                        backgroundColor: "#EA1179",
+                        color: "#ffffff"
+                      }}
+                      onClick={() => handleDelete(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
+              ) : null}
+            </Space>
+          </div>
+        );
+      },
+      align: "center" as AlignType
+    }
   ];
 
   const handleTableChange = (
@@ -492,7 +561,7 @@ const AreaTaggingList: React.FC = () => {
             title="Area Taggging List"
             hasLink={true}
             addLink="/admin/hotspot/area-tagging/create"
-            permission="tsoRetailerTag.create"
+            permission="areaTagging.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
