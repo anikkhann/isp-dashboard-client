@@ -14,6 +14,7 @@ import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
+import { CSVLink } from "react-csv";
 
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -44,6 +45,8 @@ const ClientRevenueList: React.FC = () => {
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
+
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
@@ -433,6 +436,36 @@ const ClientRevenueList: React.FC = () => {
                   </Collapse>
                 </div>
               </Space>
+              <Row justify={"end"}>
+                <Col span={3}>
+                  <CSVLink
+                    data={data}
+                    asyncOnClick={true}
+                    onClick={(event, done) => {
+                      setDownloadLoading(true);
+                      setTimeout(() => {
+                        setDownloadLoading(false);
+                      }, 2000);
+                      done();
+                    }}
+                    className="ant-btn ant-btn-lg"
+                    target="_blank"
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: "25px",
+                      backgroundColor: "#F15F22",
+                      color: "#ffffff",
+                      padding: "10px"
+                    }}
+                    filename={`client-revenue-${dayjs().format(
+                      "YYYY-MM-DD"
+                    )}.csv`}
+                  >
+                    {downloadLoading ? "Loading..." : "Download"}
+                  </CSVLink>
+                </Col>
+              </Row>
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

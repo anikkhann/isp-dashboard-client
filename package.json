@@ -19,6 +19,8 @@
     "@ant-design/plots": "^1.2.5",
     "@casl/ability": "^6.4.0",
     "@casl/react": "^3.1.0",
+    "@react-buddy/ide-toolbox-next": "^2.4.1",
+    "@react-buddy/palette-antd": "^5.3.0",
     "@reduxjs/toolkit": "^1.9.6",
     "@tanstack/react-query": "^4.35.7",
     "@tanstack/react-query-devtools": "^4.35.7",
@@ -44,6 +46,7 @@
     "qs": "^6.11.1",
     "react": "18.2.0",
     "react-cookie": "^6.1.1",
+    "react-csv": "^2.2.2",
     "react-dom": "18.2.0",
     "react-highlight-words": "^0.20.0",
     "react-hook-form": "^7.47.0",
@@ -56,9 +59,7 @@
     "sweetalert2": "^11.7.31",
     "sweetalert2-react-content": "^5.0.7",
     "tailwindcss": "3.3.3",
-    "typescript": "5.2.2",
-    "@react-buddy/ide-toolbox-next": "^2.4.1",
-    "@react-buddy/palette-antd": "^5.3.0"
+    "typescript": "5.2.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
@@ -67,6 +68,7 @@
     "@tanstack/eslint-plugin-query": "^4.36.0",
     "@types/http-proxy": "^1.17.12",
     "@types/qs": "^6.9.7",
+    "@types/react-csv": "^1.1.10",
     "@types/react-highlight-words": "^0.16.5",
     "@types/styled-components": "^5.1.28",
     "@typescript-eslint/eslint-plugin": "^6.7.3",

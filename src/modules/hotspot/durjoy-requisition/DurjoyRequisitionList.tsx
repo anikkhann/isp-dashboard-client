@@ -26,6 +26,7 @@ import {
   AlertOutlined,
   CheckOutlined,
   CloseOutlined,
+  DownloadOutlined,
   EyeOutlined
 } from "@ant-design/icons";
 import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
@@ -43,6 +44,7 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { useRouter } from "next/router";
 import { useAppSelector } from "@/store/hooks";
+import { CSVLink } from "react-csv";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -82,6 +84,9 @@ interface TableParams {
 const DurjoyRequisitionList: React.FC = () => {
   const [data, setData] = useState<DurjoyRequisitionData[]>([]);
   const { Panel } = Collapse;
+
+  const [usedVoucherData, setUsedVoucherData] = useState<any[]>([]);
+  const [unusedVoucherData, setUnusedVoucherData] = useState<any[]>([]);
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
@@ -572,6 +577,174 @@ const DurjoyRequisitionList: React.FC = () => {
                 </Tooltip>
               ) : null}
             </Space>
+
+            {authUser?.userType === "durjoy" ||
+            authUser?.userType === "duronto" ? (
+              record.status === "Approved" ? (
+                <>
+                  <Space size="middle" align="center" className="mx-1">
+                    {ability.can("durjoyRequisition.view", "") ? (
+                      <Tooltip
+                        title="used Voucher Download"
+                        placement="bottomRight"
+                        color="green"
+                      >
+                        <Space size="middle" align="center" wrap>
+                          <CSVLink
+                            data={usedVoucherData}
+                            asyncOnClick={true}
+                            onClick={(event, done) => {
+                              const token = Cookies.get("token");
+                              axios.defaults.headers.common[
+                                "Authorization"
+                              ] = `Bearer ${token}`;
+
+                              const body = {
+                                meta: {
+                                  sort: [
+                                    {
+                                      order: "asc",
+                                      field: "serialNo"
+                                    }
+                                  ]
+                                },
+                                body: {
+                                  // SEND FIELD NAME WITH DATA TO SEARCH
+                                  clientCardRequisition: {
+                                    id: record.id
+                                  }
+                                }
+                              };
+
+                              axios
+                                .post(
+                                  `/api-hotspot/voucher-archive/get-list`,
+                                  body,
+                                  {
+                                    headers: {
+                                      "Content-Type": "application/json"
+                                    }
+                                  }
+                                )
+                                .then(res => {
+                                  // console.log(res);
+                                  const { data } = res;
+
+                                  if (data.status != 200) {
+                                    MySwal.fire({
+                                      title: "Error",
+                                      text:
+                                        data.message || "Something went wrong",
+                                      icon: "error"
+                                    });
+                                  }
+
+                                  if (!data.body) return;
+                                  setUsedVoucherData(data.body);
+                                  done();
+                                });
+                            }}
+                            className="ant-btn ant-btn-lg"
+                            target="_blank"
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff",
+                              padding: "10px"
+                            }}
+                            filename={`used-voucher-${dayjs().format(
+                              "YYYY-MM-DD"
+                            )}.csv`}
+                          >
+                            <DownloadOutlined />
+                          </CSVLink>
+                        </Space>
+                      </Tooltip>
+                    ) : null}
+                  </Space>
+                  <Space size="middle" align="center" className="mx-1">
+                    {ability.can("durjoyRequisition.view", "") ? (
+                      <Tooltip
+                        title="unused Voucher Download"
+                        placement="bottomRight"
+                        color="blue"
+                      >
+                        <Space size="middle" align="center" wrap>
+                          <CSVLink
+                            data={unusedVoucherData}
+                            asyncOnClick={true}
+                            onClick={(event, done) => {
+                              const token = Cookies.get("token");
+                              axios.defaults.headers.common[
+                                "Authorization"
+                              ] = `Bearer ${token}`;
+
+                              const body = {
+                                meta: {
+                                  sort: [
+                                    {
+                                      order: "asc",
+                                      field: "serialNo"
+                                    }
+                                  ]
+                                },
+                                body: {
+                                  // SEND FIELD NAME WITH DATA TO SEARCH
+                                  clientCardRequisition: {
+                                    id: record.id
+                                  }
+                                }
+                              };
+
+                              axios
+                                .post(`/api-hotspot/voucher/get-list`, body, {
+                                  headers: {
+                                    "Content-Type": "application/json"
+                                  }
+                                })
+                                .then(res => {
+                                  // console.log(res);
+                                  const { data } = res;
+
+                                  if (data.status != 200) {
+                                    MySwal.fire({
+                                      title: "Error",
+                                      text:
+                                        data.message || "Something went wrong",
+                                      icon: "error"
+                                    });
+                                  }
+
+                                  if (!data.body) return;
+                                  setUnusedVoucherData(data.body);
+                                  done();
+                                });
+                            }}
+                            className="ant-btn ant-btn-lg"
+                            target="_blank"
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#570DF8",
+                              color: "#ffffff",
+                              padding: "10px"
+                            }}
+                            filename={`used-voucher-${dayjs().format(
+                              "YYYY-MM-DD"
+                            )}.csv`}
+                          >
+                            <DownloadOutlined />
+                          </CSVLink>
+                        </Space>
+                      </Tooltip>
+                    ) : null}
+                  </Space>
+                </>
+              ) : null
+            ) : null}
           </div>
         );
       },
