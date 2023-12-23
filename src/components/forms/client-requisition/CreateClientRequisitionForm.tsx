@@ -63,6 +63,7 @@ const CreateClientRequisitionForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [wsdCommission, setWsdCommission] = useState<any>(0);
+  const [wsdCommissionValue, setWsdCommissionValue] = useState<any>(0);
 
   const [totalAmount, setTotalAmount] = useState<any>(0);
 
@@ -274,10 +275,10 @@ const CreateClientRequisitionForm = () => {
     });
     const commission = (total * wsdCommission) / 100;
 
-    total = total - commission;
+    // total = total - commission;
 
     setTotalAmount(total);
-    setWsdCommission(commission);
+    setWsdCommissionValue(commission);
   };
 
   const handlePaymentGatewayChange = (value: any) => {
@@ -611,21 +612,6 @@ const CreateClientRequisitionForm = () => {
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
                 <Col>
                   <Form.Item
-                    label="WSD Commission"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Input
-                      placeholder="WSD Commission"
-                      value={wsdCommission}
-                      disabled
-                    />
-                  </Form.Item>
-                </Col>
-                <Col>
-                  <Form.Item
                     label="Total Amount"
                     style={{
                       marginBottom: 0,
@@ -635,6 +621,21 @@ const CreateClientRequisitionForm = () => {
                     <Input
                       placeholder="Total Amount"
                       value={totalAmount}
+                      disabled
+                    />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item
+                    label="WSD Commission"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    <Input
+                      placeholder="WSD Commission"
+                      value={wsdCommissionValue}
                       disabled
                     />
                   </Form.Item>
