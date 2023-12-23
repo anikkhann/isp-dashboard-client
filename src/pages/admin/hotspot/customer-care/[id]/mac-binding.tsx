@@ -2,7 +2,7 @@ import HotspotLayout from "@/core/layouts/HotspotLayout";
 
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import HotspotDetailsCustomer from "@/modules/hotspot/customer-care/HotspotDetailsCustomer";
+import HotspotCustomerMacBinding from "@/modules/hotspot/customer-care/HotspotCustomerMacBinding";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -19,7 +19,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("HotspotCustomerCare.view", "") ? (
-        <HotspotDetailsCustomer id={id} />
+        <HotspotCustomerMacBinding id={id} />
       ) : (
         <Forbidden />
       )}
