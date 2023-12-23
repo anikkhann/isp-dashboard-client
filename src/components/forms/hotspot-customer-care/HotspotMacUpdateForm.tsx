@@ -44,7 +44,7 @@ const HotspotMacUpdateForm = ({ item }: PropData) => {
 
     try {
       axios
-        .post("/api-hotspot/customer/mac-binding", formData)
+        .put("/api-hotspot/customer/mac-binding", formData)
         .then(res => {
           const { data } = res;
 
