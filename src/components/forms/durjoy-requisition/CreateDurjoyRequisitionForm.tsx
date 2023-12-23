@@ -405,8 +405,6 @@ const CreateDurjoyRequisitionForm = () => {
 
     // total = total - commission;
 
-    console.log("total", total);
-
     setTotalAmount(total);
     setWsdCommissionValue(commission);
   };
