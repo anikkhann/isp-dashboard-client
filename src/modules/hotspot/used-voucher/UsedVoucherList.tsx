@@ -72,7 +72,6 @@ const UsedVoucherList: React.FC = () => {
   const [selectedSerialNo, setSelectedSerialNo] = useState<any>(null);
   const [selectedReferenceNumber, setSelectedReferenceNumber] =
     useState<any>(null);
-
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");

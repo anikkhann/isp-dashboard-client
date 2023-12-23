@@ -86,7 +86,7 @@ const PackageMigrationList: React.FC = () => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         const { data } = await axios.put(`/api/package-migration/cancel/${id}`);
 
-        if (data.success) {
+        if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
             router.reload();
           });
