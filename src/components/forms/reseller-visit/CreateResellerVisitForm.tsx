@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useEffect, useState } from "react";
@@ -11,6 +10,7 @@ import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 const statuses = [
@@ -52,10 +52,10 @@ interface FromData {
   lavelOneSupportShown: string | undefined;
   rateCardFestoonDisplayed: string | undefined;
 
-  lines: LineDataProps[];
+  competitorInfoLine: CompetitorInfoLineProps[];
 }
 
-interface LineDataProps {
+interface CompetitorInfoLineProps {
   contactNo: string | undefined;
   hotspotFrequency: string | undefined;
   frequentComplains: string | undefined;
@@ -73,17 +73,18 @@ const CreateResellerVisitForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
+  const [previous, setPrevious] = useState<any>(null);
 
-  // totalSalesInLastWeek
-  const [totalSalesInLastWeek, setTotalSalesInLastWeek] = useState<any>(null);
+  const [retailers, setRetailers] = useState<any[]>([]);
+  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
 
   // isCompetitionPresent
   const [isCompetitionPresent, setIsCompetitionPresent] = useState<any>(null);
 
   // frequentComplains
-  const [frequentComplains, setFrequentComplains] = useState<any[]>([]);
-
+  const [selectedfrequentComplains, setSelectedFrequentComplains] = useState<
+    any[]
+  >([]);
   // powerBackup
   const [powerBackup, setPowerBackup] = useState<any>(null);
 
@@ -97,10 +98,114 @@ const CreateResellerVisitForm = () => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  useEffect(() => {}, []);
+  const [totalSalesInLastWeek, setTotalSalesInLastWeek] = useState<any>(null);
+
+  const getTotalSalesInLastWeek = async (retailerId: string | null) => {
+    try {
+      const res = await axios.get(
+        `/api-hotspot/reseller-visit/last-seven-days-total-sales?retailerId=${retailerId}`
+      );
+      const { data } = res;
+
+      if (data.status == 200) {
+        setTotalSalesInLastWeek(data.body);
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer",
+        // subZoneManager: { id: selectedSubZone },
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
+
+  const getPreviousData = async (retailerId: string | null) => {
+    try {
+      const res = await axios.get(
+        `/api-hotspot/tso-visit/get-todays-data?retailerId=${retailerId}`
+      );
+      const { data } = res;
+
+      if (data.status == 200) {
+        setPrevious(data.body);
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getRetailers();
+    getPreviousData(null);
+    getTotalSalesInLastWeek(null);
+  }, []);
 
   const handleStatusChange = (value: any) => {
     setIsCompetitionPresent(value);
+    form.setFieldsValue({ isCompetitionPresent: value });
+  };
+  const handleRetailerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ retailerId: value });
+    setSelectedRetailer(value as any);
+  };
+
+  const handleFrequentComplainsChange = (value: any) => {
+    setSelectedFrequentComplains(value);
+    form.setFieldsValue({ frequentComplains: value });
+  };
+
+  const handlePowerBackupChange = (value: any) => {
+    setPowerBackup(value);
+    form.setFieldsValue({ powerBackup: value });
+  };
+
+  const handleSunShedBannerPresentChange = (value: any) => {
+    setSunShedBannerPresent(value);
+    form.setFieldsValue({ sunShedBannerPresent: value });
+  };
+
+  const handleRateCardFestoonDisplayedChange = (value: any) => {
+    setRateCardFestoonDisplayed(value);
+    form.setFieldsValue({ rateCardFestoonDisplayed: value });
   };
 
   const onSubmit = (data: FromData) => {
@@ -114,10 +219,11 @@ const CreateResellerVisitForm = () => {
       laserIssues,
       powerIssues,
       lavelOneSupportShown,
-      lines
+      competitorInfoLine
     } = data;
 
     const formData = {
+      id: previous?.id,
       retailerId: selectedRetailer,
       totalSalesInLastWeek: totalSalesInLastWeek,
       gpsLocation: gpsLocation,
@@ -125,7 +231,7 @@ const CreateResellerVisitForm = () => {
       hotspotFrequency: hotspotFrequency,
       internetSpeed: internetSpeed,
       totalComplainsSinceLastVisit: totalComplainsSinceLastVisit,
-      frequentComplains: frequentComplains,
+      frequentComplains: selectedfrequentComplains,
       fiberCut: fiberCut,
       laserIssues: laserIssues,
       powerIssues: powerIssues,
@@ -133,7 +239,7 @@ const CreateResellerVisitForm = () => {
       sunShedBannerPresent: sunShedBannerPresent,
       rateCardFestoonDisplayed: rateCardFestoonDisplayed,
       lavelOneSupportShown: lavelOneSupportShown,
-      competitorInfoLine: lines
+      competitorInfoLine: competitorInfoLine
     };
 
     try {
@@ -202,6 +308,69 @@ const CreateResellerVisitForm = () => {
                 <Col
                   xs={24}
                   sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  {/* retailerId */}
+                  <Form.Item
+                    label="Retailer"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="retailerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleRetailerChange}
+                        options={retailers}
+                        value={selectedRetailer}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+                <Col
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* gpsLocation */}
+                  <Form.Item
+                    label="gpsLocation"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="gpsLocation"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input gpsLocation!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      placeholder="gpsLocation"
+                      className={`form-control`}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col
+                  xs={24}
+                  sm={12}
                   md={8}
                   lg={8}
                   xl={8}
@@ -246,117 +415,337 @@ const CreateResellerVisitForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
-              </Row>
 
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
-                  {/* remarks */}
+                <Col xs={12} className="gutter-row">
+                  {/* hotspotFrequency */}
                   <Form.Item
-                    label="remarks"
+                    label="hotspotFrequency"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="remarks"
+                    name="hotspotFrequency"
                     rules={[
                       {
                         required: true,
-                        message: "Please input remarks!"
+                        message: "Please input hotspotFrequency!"
                       }
                     ]}
                   >
-                    <Input.TextArea
-                      rows={4}
-                      cols={16}
-                      placeholder="remarks"
-                      className={`form-control`}
-                    />
+                    <Input placeholder="hotspotFrequency" />
+                  </Form.Item>
+                </Col>
+                <Col xs={12} className="gutter-row">
+                  {/* internetSpeed */}
+                  <Form.Item
+                    label="internetSpeed"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="internetSpeed"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input internetSpeed!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="internetSpeed" />
                   </Form.Item>
                 </Col>
 
                 <Col xs={12} className="gutter-row">
-                  {/* deliveryType */}
+                  {/* totalComplainsSinceLastVisit */}
                   <Form.Item
-                    label="deliveryType"
+                    label="totalComplainsSinceLastVisit"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="deliveryType"
+                    name="totalComplainsSinceLastVisit"
                     rules={[
                       {
                         required: true,
-                        message: "Please input deliveryType!"
+                        message: "Please input totalComplainsSinceLastVisit!"
                       }
                     ]}
                   >
-                    <Input placeholder="deliveryType" />
+                    <Input placeholder="totalComplainsSinceLastVisit" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
-                  {/* deliveryName */}
+
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* frequentComplains */}
                   <Form.Item
-                    label="deliveryName"
+                    label="frequentComplains"
+                    name="frequentComplains"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="deliveryName"
                     rules={[
                       {
                         required: true,
-                        message: "Please input deliveryName!"
+                        message: "Please select!"
                       }
                     ]}
                   >
-                    <Input placeholder="deliveryName" />
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleFrequentComplainsChange}
+                        options={frequentComplains}
+                        value={selectedfrequentComplains}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
                   </Form.Item>
                 </Col>
 
                 <Col xs={12} className="gutter-row">
-                  {/* deliveryAddress */}
+                  {/* fiberCut */}
                   <Form.Item
-                    label="deliveryAddress"
+                    label="fiberCut"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="deliveryAddress"
+                    name="fiberCut"
                     rules={[
                       {
                         required: true,
-                        message: "Please input deliveryAddress!"
+                        message: "Please input fiberCut!"
                       }
                     ]}
                   >
-                    <Input placeholder="deliveryAddress" />
+                    <Input placeholder="fiberCut" />
+                  </Form.Item>
+                </Col>
+                <Col xs={12} className="gutter-row">
+                  {/* laserIssues */}
+                  <Form.Item
+                    label="laserIssues"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="laserIssues"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input laserIssues!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="laserIssues" />
+                  </Form.Item>
+                </Col>
+                <Col xs={12} className="gutter-row">
+                  {/* powerIssues */}
+                  <Form.Item
+                    label="powerIssues"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="powerIssues"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input powerIssues!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="powerIssues" />
+                  </Form.Item>
+                </Col>
+                <Col xs={12} className="gutter-row">
+                  {/* lavelOneSupportShown */}
+                  <Form.Item
+                    label="lavelOneSupportShown"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="lavelOneSupportShown"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input lavelOneSupportShown!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="lavelOneSupportShown" />
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
-                  {/* deliveryContact */}
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* powerBackup */}
                   <Form.Item
-                    label="deliveryContact"
+                    label="powerBackup"
+                    name="powerBackup"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="deliveryContact"
                     rules={[
                       {
                         required: true,
-                        message: "Please input deliveryContact!"
+                        message: "Please select!"
                       }
                     ]}
                   >
-                    <Input placeholder="deliveryContact" />
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handlePowerBackupChange}
+                        options={statuses}
+                        value={powerBackup}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* sunShedBannerPresent */}
+                  <Form.Item
+                    label="sunShedBannerPresent"
+                    name="sunShedBannerPresent"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleSunShedBannerPresentChange}
+                        options={statuses}
+                        value={sunShedBannerPresent}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* rateCardFestoonDisplayed */}
+                  <Form.Item
+                    label="rateCardFestoonDisplayed"
+                    name="rateCardFestoonDisplayed"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleRateCardFestoonDisplayedChange}
+                        options={statuses}
+                        value={rateCardFestoonDisplayed}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
                   </Form.Item>
                 </Col>
               </Row>
 
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
                 <Col>
-                  <Form.List name="lines">
+                  <Form.List name="competitorInfoLine">
                     {(fields, { add, remove }) => (
                       <>
                         {fields.map(({ key, name, ...restField }) => (
@@ -428,7 +817,7 @@ const CreateResellerVisitForm = () => {
                             block
                             icon={<PlusOutlined />}
                           >
-                            Add field
+                            Add field (Competitor Info)
                           </Button>
                         </Form.Item>
                       </>

@@ -3,7 +3,7 @@ import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
-import CreateAreaTaggingForm from "@/components/forms/area-tagging/CreateAreaTaggingForm";
+import CreateResellerVisitForm from "@/components/forms/reseller-visit/CreateResellerVisitForm";
 
 const NewResellerVisit = () => {
   return (
@@ -67,7 +67,7 @@ const NewResellerVisit = () => {
             border: "1px solid #F15F22"
           }}
         >
-          <CreateAreaTaggingForm />
+          <CreateResellerVisitForm />
         </Card>
       </AppRowContainer>
     </>

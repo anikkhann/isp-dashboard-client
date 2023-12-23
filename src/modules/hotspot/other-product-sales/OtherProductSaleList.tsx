@@ -91,6 +91,9 @@ const OtherProductSaleList: React.FC = () => {
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
+  const [otherProducts, setOtherProducts] = useState<any[]>([]);
+  const [selectedOtherProduct, setSelectedOtherProduct] = useState<any>(null);
+
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
@@ -122,7 +125,8 @@ const OtherProductSaleList: React.FC = () => {
     startDateParam?: string,
     endDateParam?: string,
     selectedUserParam?: string,
-    selectedTsoidParam?: string
+    selectedTsoidParam?: string,
+    selectedOtherProductIdParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -142,9 +146,13 @@ const OtherProductSaleList: React.FC = () => {
         // SEND FIELD NAME WITH DATA TO SEARCH
         // "areaManagerId": "0793ed08-c5e9-475a-a15a-91e14d7b3da9", //(dropdown) ISP Billing - Users -> User List API with filter "userCategory": "area_manager" - show this filter if userCategory = sales_manager
         // "tsoId": "0793ed08-c5e9-475a-a15a-91e14d7b3da9", //(dropdown) ISP Billing - Users -> User List API with filter "userCategory": "tso" - show this filter if userCategory = area_manager
+        // "otherProductId" : {"id":""}, // (dropdown Other Product -> List API
         tsoId: selectedTsoidParam,
         areaManagerId: selectedUserParam,
         status: selectedStatusParam,
+        otherProductId: {
+          id: selectedOtherProductIdParam
+        },
         dateRangeFilter: {
           field: "createdOn",
           startDate: startDateParam,
@@ -176,7 +184,8 @@ const OtherProductSaleList: React.FC = () => {
       selectedStartDate,
       selectedEndDate,
       selectedUser,
-      selectedTsoid
+      selectedTsoid,
+      selectedOtherProduct
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -188,7 +197,8 @@ const OtherProductSaleList: React.FC = () => {
         selectedStartDate,
         selectedEndDate,
         selectedUser,
-        selectedTsoid
+        selectedTsoid,
+        selectedOtherProduct
       );
       return response;
     },
@@ -345,6 +355,47 @@ const OtherProductSaleList: React.FC = () => {
     });
   }
 
+  function getOtherProducts() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "createdOn"
+          }
+        ]
+      },
+      body: {
+        isActive: true
+      }
+    };
+
+    axios.post("/api-hotspot/other-product/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setOtherProducts(list);
+    });
+  }
+
   const handleClear = () => {
     setSelectedStatus(null);
     setSelectedDateRange(null);
@@ -383,6 +434,10 @@ const OtherProductSaleList: React.FC = () => {
     setSelectedTsoId(value);
   };
 
+  const handleOtherProductChange = (value: any) => {
+    setSelectedOtherProduct(value);
+  };
+
   useEffect(() => {
     if (
       authUser?.userCategory === "sales_manager" ||
@@ -392,6 +447,10 @@ const OtherProductSaleList: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser]);
+
+  useEffect(() => {
+    getOtherProducts();
+  }, []);
 
   const columns: ColumnsType<DurjoyRequisitionData> = [
     {
@@ -539,7 +598,7 @@ const OtherProductSaleList: React.FC = () => {
                 <Tooltip title="Reject" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link
-                      href={`/admin/hotspot/retailer-onboard/${record.id}/reject`}
+                      href={`/admin/hotspot/other-product-sale/${record.id}/reject`}
                     >
                       <Button
                         type="primary"
@@ -558,7 +617,7 @@ const OtherProductSaleList: React.FC = () => {
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link
-                      href={`/admin/hotspot/retailer-onboard/${record.id}/edit`}
+                      href={`/admin/hotspot/other-product-sale/${record.id}/edit`}
                     >
                       <Button
                         type="primary"
@@ -579,7 +638,9 @@ const OtherProductSaleList: React.FC = () => {
               {ability.can("OtherProductSale.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/retailer-onboard/${record.id}`}>
+                    <Link
+                      href={`/admin/hotspot/other-product-sale/${record.id}`}
+                    >
                       <Button type="primary" icon={<EyeOutlined />} />
                     </Link>
                   </Space>
@@ -788,6 +849,40 @@ const OtherProductSaleList: React.FC = () => {
                               onChange={handleStatusChange}
                               options={statuses}
                               value={selectedStatus}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Other Product</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleOtherProductChange}
+                              options={otherProducts}
+                              value={selectedOtherProduct}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {

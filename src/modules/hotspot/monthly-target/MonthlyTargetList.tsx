@@ -1,14 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Button,
-  Card,
-  Col,
-  Select,
-  Space,
-  Row,
-  Tooltip,
-  DatePicker
-} from "antd";
+import { Button, Card, Col, Select, Space, Row, Tooltip } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -33,24 +24,8 @@ import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import localeData from "dayjs/plugin/localeData";
-import weekday from "dayjs/plugin/weekday";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import weekYear from "dayjs/plugin/weekYear";
 import { useRouter } from "next/router";
 import { useAppSelector } from "@/store/hooks";
-
-dayjs.extend(customParseFormat);
-dayjs.extend(advancedFormat);
-dayjs.extend(weekday);
-dayjs.extend(localeData);
-dayjs.extend(weekOfYear);
-dayjs.extend(weekYear);
-
-const dateFormat = "YYYY-MM-DD";
 
 const statuses = [
   {
@@ -78,6 +53,21 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
+const months = [
+  { label: "January", value: 1 },
+  { label: "February", value: 2 },
+  { label: "March", value: 3 },
+  { label: "April", value: 4 },
+  { label: "May", value: 5 },
+  { label: "June", value: 6 },
+  { label: "July", value: 7 },
+  { label: "August", value: 8 },
+  { label: "September", value: 9 },
+  { label: "October", value: 10 },
+  { label: "November", value: 11 },
+  { label: "December", value: 12 }
+];
+
 const MonthlyTargetList: React.FC = () => {
   const [data, setData] = useState<DurjoyRequisitionData[]>([]);
   const { Panel } = Collapse;
@@ -87,15 +77,15 @@ const MonthlyTargetList: React.FC = () => {
   const [users, setUsers] = useState<any>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
+  const [years, setYears] = useState<any>([]);
+  const [selectedYear, setSelectedYear] = useState<any>(null);
+
+  const [selectedMonth, setSelectedMonth] = useState<any>(null);
+
   const [selectedTsoid, setSelectedTsoId] = useState<any>(null);
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
-  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
-
-  const { RangePicker } = DatePicker;
   const MySwal = withReactContent(Swal);
 
   const [page, SetPage] = useState(0);
@@ -119,10 +109,10 @@ const MonthlyTargetList: React.FC = () => {
     order: string,
     sort: string,
     selectedStatusParam?: string,
-    startDateParam?: string,
-    endDateParam?: string,
     selectedUserParam?: string,
-    selectedTsoidParam?: string
+    selectedTsoidParam?: string,
+    selectedYearParam?: string,
+    selectedMonthParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -140,16 +130,11 @@ const MonthlyTargetList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        // "areaManagerId": "0793ed08-c5e9-475a-a15a-91e14d7b3da9", //(dropdown) ISP Billing - Users -> User List API with filter "userCategory": "area_manager" - show this filter if userCategory = sales_manager
-        // "tsoId": "0793ed08-c5e9-475a-a15a-91e14d7b3da9", //(dropdown) ISP Billing - Users -> User List API with filter "userCategory": "tso" - show this filter if userCategory = area_manager
         tsoId: selectedTsoidParam,
         areaManagerId: selectedUserParam,
         status: selectedStatusParam,
-        dateRangeFilter: {
-          field: "createdOn",
-          startDate: startDateParam,
-          endDate: endDateParam
-        }
+        year: selectedYearParam,
+        month: selectedMonthParam
       }
     };
 
@@ -173,10 +158,10 @@ const MonthlyTargetList: React.FC = () => {
       order,
       sort,
       selectedStatus,
-      selectedStartDate,
-      selectedEndDate,
       selectedUser,
-      selectedTsoid
+      selectedTsoid,
+      selectedYear,
+      selectedMonth
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -185,10 +170,10 @@ const MonthlyTargetList: React.FC = () => {
         order,
         sort,
         selectedStatus,
-        selectedStartDate,
-        selectedEndDate,
         selectedUser,
-        selectedTsoid
+        selectedTsoid,
+        selectedYear,
+        selectedMonth
       );
       return response;
     },
@@ -347,28 +332,10 @@ const MonthlyTargetList: React.FC = () => {
 
   const handleClear = () => {
     setSelectedStatus(null);
-    setSelectedDateRange(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
-  };
-  const handleDateChange = (value: any) => {
-    // console.log(value);
-
-    if (value) {
-      setSelectedDateRange(value);
-
-      const startDate = dayjs(value[0]).format(dateFormat);
-      const endDate = dayjs(value[1]).format(dateFormat);
-
-      setSelectedStartDate(startDate);
-      setSelectedEndDate(endDate);
-
-      // console.log(startDate, endDate);
-    } else {
-      setSelectedDateRange(null);
-      setSelectedStartDate(null);
-      setSelectedEndDate(null);
-    }
+    setSelectedUser(null);
+    setSelectedTsoId(null);
+    setSelectedYear(null);
+    setSelectedMonth(null);
   };
 
   const handleStatusChange = (value: any) => {
@@ -392,6 +359,26 @@ const MonthlyTargetList: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser]);
+
+  useEffect(() => {
+    const years = [];
+    const currentYear = new Date().getFullYear();
+    for (let i = currentYear; i <= currentYear + 2; i++) {
+      years.push({
+        label: i,
+        value: i
+      });
+    }
+    setYears(years);
+  }, []);
+
+  const handleYearChange = (value: any) => {
+    setSelectedYear(value);
+  };
+
+  const handleMonthChange = (value: any) => {
+    setSelectedMonth(value);
+  };
 
   const columns: ColumnsType<DurjoyRequisitionData> = [
     {
@@ -539,7 +526,7 @@ const MonthlyTargetList: React.FC = () => {
                 <Tooltip title="Reject" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link
-                      href={`/admin/hotspot/retailer-onboard/${record.id}/reject`}
+                      href={`/admin/hotspot/monthly-target/${record.id}/reject`}
                     >
                       <Button
                         type="primary"
@@ -558,7 +545,7 @@ const MonthlyTargetList: React.FC = () => {
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link
-                      href={`/admin/hotspot/retailer-onboard/${record.id}/edit`}
+                      href={`/admin/hotspot/monthly-target/${record.id}/edit`}
                     >
                       <Button
                         type="primary"
@@ -579,7 +566,7 @@ const MonthlyTargetList: React.FC = () => {
               {ability.can("monthlyTarget.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/retailer-onboard/${record.id}`}>
+                    <Link href={`/admin/hotspot/monthly-target/${record.id}`}>
                       <Button type="primary" icon={<EyeOutlined />} />
                     </Link>
                   </Space>
@@ -813,16 +800,65 @@ const MonthlyTargetList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Date Range </b>
+                              <b>Years</b>
                             </span>
-                            <RangePicker
-                              style={{ width: "100%" }}
-                              onChange={handleDateChange}
-                              value={selectedDateRange}
-                              placeholder={["Start Date", "End Date"]}
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleYearChange}
+                              options={years}
+                              value={selectedYear}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Month</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleMonthChange}
+                              options={months}
+                              value={selectedMonth}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}

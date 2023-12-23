@@ -1,9 +1,8 @@
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
-
 import React from "react";
-import CreateAreaTaggingForm from "@/components/forms/area-tagging/CreateAreaTaggingForm";
+import CreateTsoVisitForm from "@/components/forms/tso-visit/CreateTsoVisitForm";
 
 const NewTsoVisit = () => {
   return (
@@ -65,7 +64,7 @@ const NewTsoVisit = () => {
             border: "1px solid #F15F22"
           }}
         >
-          <CreateAreaTaggingForm />
+          <CreateTsoVisitForm />
         </Card>
       </AppRowContainer>
     </>

@@ -124,7 +124,7 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
     };
     try {
       axios
-        .post("/api-hotspot/other-product-sales/create", formData)
+        .put("/api-hotspot/other-product-sales/update", formData)
         .then(res => {
           const { data } = res;
 
