@@ -1,15 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Button,
-  Card,
-  Col,
-  Input,
-  Select,
-  Space,
-  Tag,
-  Row,
-  Tooltip
-} from "antd";
+import { Button, Card, Col, Space, Row, Tooltip, Input } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -22,20 +12,10 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { ApDeviceData } from "@/interfaces/ApDeviceData";
+import { EyeOutlined } from "@ant-design/icons";
 // import { format } from "date-fns";
 
-const statuses = [
-  {
-    label: "True",
-    value: true
-  },
-  {
-    label: "False",
-    value: false
-  }
-];
+import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -44,19 +24,17 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const CustomerList: React.FC = () => {
-  const [data, setData] = useState<ApDeviceData[]>([]);
+const HotspotCustomerList: React.FC = () => {
+  const [data, setData] = useState<ClientRequisitionData[]>([]);
   const { Panel } = Collapse;
 
-  const [selectedStatus, setSelectedStatus] = useState<any>(null);
-
-  const [selectedName, setSelectedName] = useState<any>(null);
-  const [selectedIp, setSelectedIp] = useState<any>(null);
+  const [selectedRadiusUsername, setSelectedRadiusUsername] =
+    useState<string>("");
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("DESC");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -71,9 +49,7 @@ const CustomerList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
-    nameParam?: string,
-    ipParam?: string,
-    selectedStatusParam?: string
+    selectedRadiusUsernameParam: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -91,39 +67,30 @@ const CustomerList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        name: nameParam,
-        ip: ipParam,
-        // macAddress: null,
-        isActive: selectedStatusParam
-        // dateRangeFilter: {
-        //   field: "expirationTime",
-        //   startDate: startDateParam,
-        //   endDate: endDateParam
-        // }
-        // zoneManagerId  : null,
-        // subZoneManagerId : null,
-        // retailerId : null,
+        radiusUsername: selectedRadiusUsernameParam
       }
     };
 
-    const { data } = await axios.post(`/api-hotspot/ap-device/get-list`, body, {
-      headers: {
-        "Content-Type": "application/json"
+    const { data } = await axios.post(
+      `/api-hotspot/partner-customer/get-list`,
+      body,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
-      "ap-device-list",
+      "partner-customer-list",
       page,
       limit,
       order,
       sort,
-      selectedName,
-      selectedIp,
-      selectedStatus
+      selectedRadiusUsername
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -131,9 +98,7 @@ const CustomerList: React.FC = () => {
         limit,
         order,
         sort,
-        selectedName,
-        selectedIp,
-        selectedStatus
+        selectedRadiusUsername
       );
       return response;
     },
@@ -173,21 +138,9 @@ const CustomerList: React.FC = () => {
     }
   }, [data]);
 
-  const handleClear = () => {
-    setSelectedName(null);
-    setSelectedIp(null);
-    setSelectedStatus(null);
-  };
+  const handleClear = () => {};
 
-  const handleStatusChange = (value: any) => {
-    setSelectedStatus(value);
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const columns: ColumnsType<ApDeviceData> = [
+  const columns: ColumnsType<ClientRequisitionData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -203,55 +156,66 @@ const CustomerList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-    {
-      title: "ip",
-      dataIndex: "ip",
+      title: "Customer ID",
+      dataIndex: "customerId",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-
     {
-      title: "macAddress",
-      dataIndex: "macAddress",
+      title: "Username",
+      dataIndex: "username",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-    // zoneManager
     {
-      title: "zoneManager",
-      dataIndex: "zoneManager",
+      title: "Zone",
+      dataIndex: "distributionZone",
       sorter: false,
-      render: (zoneManager: any) => {
-        if (!zoneManager) return "-";
-        return <>{zoneManager.name}</>;
+      render: (distributionZone: any) => {
+        if (!distributionZone) return "-";
+        return <>{distributionZone.name}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
-
     {
-      title: "Status",
-      dataIndex: "isActive",
-      sorter: true,
-      render: (isActive: any) => {
-        return (
-          <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
-          </>
-        );
+      title: "Pop",
+      dataIndex: "distributionPop",
+      sorter: false,
+      render: (distributionPop: any) => {
+        if (!distributionPop) return "-";
+        return <>{distributionPop.name}</>;
       },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Mobile",
+      dataIndex: "mobileNo",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Connection Address",
+      dataIndex: "connectionAddress",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Credits",
+      dataIndex: "credits",
+      sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
@@ -315,22 +279,11 @@ const CustomerList: React.FC = () => {
       render: (text: any, record: any) => {
         return (
           <div className="flex flex-row">
-            <Space size="middle" align="center">
-              {ability.can("client.update", "") ? (
-                <Tooltip title="Edit" placement="bottomRight" color="magenta">
-                  <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/ap-device/${record.id}/edit`}>
-                      <Button type="primary" icon={<EditOutlined />} />
-                    </Link>
-                  </Space>
-                </Tooltip>
-              ) : null}
-            </Space>
             <Space size="middle" align="center" className="mx-1">
-              {ability.can("client.view", "") ? (
+              {ability.can("clientRequisition.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/ap-device/${record.id}`}>
+                    <Link href={`/admin/hotspot/customer-care/${record.id}`}>
                       <Button type="primary" icon={<EyeOutlined />} />
                     </Link>
                   </Space>
@@ -347,24 +300,26 @@ const CustomerList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<ApDeviceData> | SorterResult<ApDeviceData>[]
+    sorter:
+      | SorterResult<ClientRequisitionData>
+      | SorterResult<ClientRequisitionData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<ApDeviceData>).order) {
-      // // console.log((sorter as SorterResult<ApDeviceData>).order)
+    if (sorter && (sorter as SorterResult<ClientRequisitionData>).order) {
+      // // console.log((sorter as SorterResult<ClientRequisitionData>).order)
 
       SetOrder(
-        (sorter as SorterResult<ApDeviceData>).order === "ascend"
+        (sorter as SorterResult<ClientRequisitionData>).order === "ascend"
           ? "asc"
           : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<ApDeviceData>).field) {
-      // // console.log((sorter as SorterResult<ApDeviceData>).field)
+    if (sorter && (sorter as SorterResult<ClientRequisitionData>).field) {
+      // // console.log((sorter as SorterResult<ClientRequisitionData>).field)
 
-      SetSort((sorter as SorterResult<ApDeviceData>).field as string);
+      SetSort((sorter as SorterResult<ClientRequisitionData>).field as string);
     }
   };
 
@@ -406,10 +361,10 @@ const CustomerList: React.FC = () => {
           )}
 
           <TableCard
-            title="Ap Device  List"
-            hasLink={true}
-            addLink="/admin/hotspot/ap-device/create"
-            permission="client.create"
+            title="Customer List"
+            hasLink={false}
+            addLink=""
+            permission=""
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -442,78 +397,24 @@ const CustomerList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Status</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleStatusChange}
-                              options={statuses}
-                              value={selectedStatus}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Name</b>
+                              <b>Radius Username</b>
                             </span>
                             <Input
                               type="text"
                               className="ant-input"
-                              placeholder="Name"
-                              value={selectedName}
-                              onChange={e => setSelectedName(e.target.value)}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Ip</b>
-                            </span>
-                            <Input
-                              type="text"
-                              className="ant-input"
-                              placeholder="Ip"
-                              value={selectedIp}
-                              onChange={e => setSelectedIp(e.target.value)}
+                              placeholder="Radius Username"
+                              value={selectedRadiusUsername}
+                              onChange={e =>
+                                setSelectedRadiusUsername(e.target.value)
+                              }
                             />
                           </Space>
                         </Col>
@@ -521,10 +422,10 @@ const CustomerList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Button
@@ -543,33 +444,6 @@ const CustomerList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>
@@ -592,4 +466,4 @@ const CustomerList: React.FC = () => {
   );
 };
 
-export default CustomerList;
+export default HotspotCustomerList;

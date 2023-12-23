@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Select, Space, Row, Tooltip } from "antd";
+import { Button, Card, Col, Select, Space, Row, Tooltip, Input } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -35,12 +35,26 @@ const UnusedVoucherList: React.FC = () => {
 
   const authUser = useAppSelector(state => state.auth.user);
 
+  const [pricingPlans, setPricingPlans] = useState<any[]>([]);
+  const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
+
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
   const [subzoneManagers, setSubZoneManagers] = useState<any[]>([]);
   const [selectedSubZoneManager, setSelectedSubZoneManager] =
     useState<any>(null);
 
-  const [pricingPlans, setPricingPlans] = useState<any[]>([]);
-  const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
+  const [retailers, setRetailers] = useState<any[]>([]);
+  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
+
+  const [selectedVoucherNumber, setSelectedVoucherNumber] = useState<any>(null);
+  const [selectedSerialNo, setSelectedSerialNo] = useState<any>(null);
+  const [selectedReferenceNumber, setSelectedReferenceNumber] =
+    useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -60,11 +74,14 @@ const UnusedVoucherList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
-    selectedStatusParam?: string,
-    startDateParam?: string,
-    endDateParam?: string,
-    selectedZoneManagerParam?: string,
-    selectedPricingPlanParam?: string
+    selectedPricingPlanParam?: string,
+    selectedClientParam?: string,
+    selectedZoneParam?: string,
+    selectedSubZoneManagerParam?: string,
+    selectedRetailerParam?: string,
+    selectedVoucherNumberParam?: string,
+    selectedSerialNoParam?: string,
+    selectedReferenceNumberParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -82,17 +99,17 @@ const UnusedVoucherList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        voucherNumber: "",
-        serialNo: "",
-        referenceNumber: "",
+        voucherNumber: selectedVoucherNumberParam,
+        serialNo: selectedSerialNoParam,
+        referenceNumber: selectedReferenceNumberParam,
 
         pricingPlan: {
           id: selectedPricingPlanParam
         },
-        subZoneManagerId: selectedZoneManagerParam
-        // zoneManagerId: "",
-        // retailerId  : "",
-        // clientId: "",
+        subZoneManagerId: selectedSubZoneManagerParam,
+        zoneManagerId: selectedZoneParam,
+        retailerId: selectedRetailerParam,
+        clientId: selectedClientParam
       }
     };
     const { data } = await axios.post(`/api-hotspot/voucher/get-list`, body, {
@@ -104,24 +121,9 @@ const UnusedVoucherList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: [
-      "voucher-list",
-      page,
-      limit,
-      order,
-      sort,
-      selectedSubZoneManager,
-      selectedPricingPlan
-    ],
+    queryKey: ["voucher-list", page, limit, order, sort],
     queryFn: async () => {
-      const response = await fetchData(
-        page,
-        limit,
-        order,
-        sort,
-        selectedSubZoneManager,
-        selectedPricingPlan
-      );
+      const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
@@ -160,8 +162,51 @@ const UnusedVoucherList: React.FC = () => {
     }
   }, [data]);
 
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
   //functions for getting zone manger list data using POST request
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -174,12 +219,14 @@ const UnusedVoucherList: React.FC = () => {
       },
       body: {
         partnerType: "reseller",
+        zoneManager: { id: selectedZoneId },
         client: {
           id: authUser?.partnerId
         }
         // isActive: true
       }
     };
+
     axios.post("/api/partner/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
@@ -247,25 +294,138 @@ const UnusedVoucherList: React.FC = () => {
   }
 
   useEffect(() => {
-    getSubZoneManagers();
+    getSubZoneManagers(null);
     getPricingPlan();
+    getClients();
+    getZoneManagers();
+    getRetailers();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
 
   const handleClear = () => {
     setSelectedSubZoneManager(null);
     setSelectedPricingPlan(null);
   };
 
-  const handleZoneManagerChange = (value: any) => {
+  const handleZoneChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedZone(value as any);
+  };
+
+  const handleSubZoneManagerChange = (value: any) => {
     setSelectedSubZoneManager(value);
+  };
+
+  const handleRetailerChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedRetailer(value as any);
   };
 
   const handlePricingPlanChange = (value: any) => {
     setSelectedPricingPlan(value);
   };
+  const handleClientChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedClient(value as any);
+  };
+
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  function getRetailers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer"
+        // subZoneManager: { id: selectedSubZone },
+        // isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
 
   useEffect(() => {
+    getRetailers();
+    getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -510,15 +670,117 @@ const UnusedVoucherList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
+                              <b>Client Name</b>
+                            </span>
+                            <Select
+                              showSearch
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Zone Manager</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
                               <b>SubZone Manager</b>
                             </span>
                             <Select
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleZoneManagerChange}
+                              onChange={handleSubZoneManagerChange}
                               options={subzoneManagers}
                               value={selectedSubZoneManager}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Retailer</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
@@ -564,6 +826,78 @@ const UnusedVoucherList: React.FC = () => {
                                 }
                                 return false;
                               }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Voucher Number</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Voucher Number"
+                              value={selectedVoucherNumber}
+                              onChange={e =>
+                                setSelectedVoucherNumber(e.target.value)
+                              }
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Serial No</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Serial No"
+                              value={selectedSerialNo}
+                              onChange={e =>
+                                setSelectedSerialNo(e.target.value)
+                              }
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Reference Number</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Reference Number"
+                              value={selectedReferenceNumber}
+                              onChange={e =>
+                                setSelectedReferenceNumber(e.target.value)
+                              }
                             />
                           </Space>
                         </Col>

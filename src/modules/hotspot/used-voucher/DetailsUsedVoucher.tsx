@@ -68,7 +68,7 @@ const DetailsUsedVoucher = ({ id }: any) => {
               )
             },
             {
-              title: "Details "
+              title: "Unused Voucher  Details "
             }
           ]}
         />
@@ -90,7 +90,7 @@ const DetailsUsedVoucher = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details
+            Unused Voucher Details
           </h1>
         </div>
         <Card

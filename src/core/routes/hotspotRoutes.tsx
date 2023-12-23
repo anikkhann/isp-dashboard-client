@@ -124,20 +124,13 @@ const hotspotRoutes = [
     icon: <SettingOutlined />,
     permission: "usedVoucher.list"
   },
-  // {
-  //   key: "/admin/hotspot/customer-care",
-  //   label: "Customer Care",
-  //   path: "/admin/hotspot/customer-care",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
-  // {
-  //   key: "/admin/hotspot/mac-binding",
-  //   label: "MAC binding",
-  //   path: "/admin/hotspot/mac-binding",
-  //   icon: <SettingOutlined />,
-  //   permission: "zone.list"
-  // },
+  {
+    key: "/admin/hotspot/customer-care",
+    label: "Customer Care",
+    path: "/admin/hotspot/customer-care",
+    icon: <SettingOutlined />,
+    permission: "HotspotCustomerCare.list"
+  },
   {
     key: "/admin/hotspot/client-transaction",
     label: "Client Transaction",

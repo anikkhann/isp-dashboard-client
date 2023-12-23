@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Select, Space, Row, DatePicker } from "antd";
+import { Button, Card, Col, Select, Space, Row, DatePicker, Input } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -23,6 +23,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -40,11 +41,27 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
+const transactionTypes = [
+  {
+    label: "Online",
+    value: "online"
+  },
+  {
+    label: "Offline",
+    value: "offline"
+  }
+];
+
 const ClientTransactionList: React.FC = () => {
   const [data, setData] = useState<ZoneTagData[]>([]);
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
+
+  const authUser = useAppSelector(state => state.auth.user);
+
+  const [selectedTransactionType, setSelectedTransactionType] =
+    useState<any>(null);
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
@@ -54,6 +71,11 @@ const ClientTransactionList: React.FC = () => {
 
   const [clients, setClients] = useState<any[]>([]);
   const [selectedClient, setSelectedClient] = useState<any>(null);
+
+  const [transactionByList, setTransactionByList] = useState<any[]>([]);
+  const [selectedTransactionBy, setSelectedTransactionBy] = useState<any>(null);
+
+  const [transactionId, setTransactionId] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -72,7 +94,13 @@ const ClientTransactionList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    selectedClientParam?: any,
+    selectedTransactionTypeParam?: any,
+    selectedStartDateParam?: any,
+    selectedEndDateParam?: any,
+    selectedTransactionByParam?: any,
+    transactionIdParam?: any
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -90,6 +118,15 @@ const ClientTransactionList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        clientId: selectedClientParam,
+        transactionId: transactionIdParam,
+        trxType: selectedTransactionTypeParam, //dropdown (Online, Offline)
+        trxBy: selectedTransactionByParam, //dropdown Transaction By API
+        dateRangeFilter: {
+          field: "trxDate",
+          startDate: selectedStartDateParam,
+          endDate: selectedEndDateParam
+        }
       }
     };
 
@@ -107,9 +144,32 @@ const ClientTransactionList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["client-wise-revenue", page, limit, order, sort],
+    queryKey: [
+      "transaction-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedClient,
+      selectedTransactionType,
+      selectedStartDate,
+      selectedEndDate,
+      selectedTransactionBy,
+      transactionId
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedClient,
+        selectedTransactionType,
+        selectedStartDate,
+        selectedEndDate,
+        selectedTransactionBy,
+        transactionId
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -189,8 +249,38 @@ const ClientTransactionList: React.FC = () => {
     });
   }
 
+  function getTransactionByList() {
+    axios
+      .get(
+        "/api/topup-transaction/get-transaction-user-wise-filter?userType=customer"
+      )
+      .then(res => {
+        // console.log(res);
+        const { data } = res;
+
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
+
+        const list = data.body.map((item: any) => {
+          return {
+            label: item.trx_by,
+            value: item.trx_by
+          };
+        });
+
+        setTransactionByList(list);
+      });
+  }
   useEffect(() => {
     getClients();
+    getTransactionByList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -199,6 +289,7 @@ const ClientTransactionList: React.FC = () => {
     setSelectedStartDate(null);
     setSelectedEndDate(null);
     setSelectedClient(null);
+    setSelectedTransactionType(null);
   };
   const handleDateChange = (value: any) => {
     // console.log(value);
@@ -222,6 +313,21 @@ const ClientTransactionList: React.FC = () => {
 
   const handleClientChange = (value: any) => {
     setSelectedClient(value);
+  };
+
+  const handleTransactionTypeChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedTransactionType(value);
+  };
+
+  const handleTransactionByChange = (value: any) => {
+    // console.log("checked = ", value);
+    // setSelectedTransactionBy(value);
+    if (value) {
+      setSelectedTransactionBy(value);
+    } else {
+      setSelectedTransactionBy(null);
+    }
   };
 
   useEffect(() => {
@@ -343,7 +449,7 @@ const ClientTransactionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Client Transaction  List"
+            title="Client Transaction List"
             hasLink={false}
             addLink=""
             permission=""
@@ -356,7 +462,7 @@ const ClientTransactionList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
+              <Space style={{ marginBottom: 16 }}>
                 <div style={{ padding: "20px", backgroundColor: "white" }}>
                   <Collapse
                     accordion
@@ -376,6 +482,46 @@ const ClientTransactionList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser?.userType === "durjoy" ||
+                        authUser?.userType === "duronto" ? (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Client</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleClientChange}
+                                options={clients}
+                                value={selectedClient}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+                        ) : null}
                         <Col
                           xs={24}
                           sm={12}
@@ -387,26 +533,64 @@ const ClientTransactionList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Client</b>
+                              <b>Transaction By</b>
                             </span>
                             <Select
+                              showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleClientChange}
-                              options={clients}
-                              value={selectedClient}
+                              onChange={handleTransactionByChange}
+                              options={transactionByList}
+                              value={selectedTransactionBy}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Transaction Type</b>
+                            </span>
+                            <Select
                               showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleTransactionTypeChange}
+                              options={transactionTypes}
+                              value={selectedTransactionType}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Transaction Id</b>
+                            </span>
+                            <Input
+                              placeholder="Transaction Id"
+                              value={transactionId}
+                              onChange={e => setTransactionId(e.target.value)}
+                              type="text"
+                              allowClear
                             />
                           </Space>
                         </Col>
@@ -457,38 +641,11 @@ const ClientTransactionList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>
                 </div>
-              </Space> */}
+              </Space>
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

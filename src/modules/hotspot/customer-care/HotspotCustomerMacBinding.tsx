@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import CreateCareCustomerTopUpForm from "@/components/forms/care/CreateCareCustomerTopUpForm";
+import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -8,21 +10,21 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import DetailsApDeviceData from "@/components/details/ap-device/DetailsApDeviceData";
-import { ApDeviceData } from "@/interfaces/ApDeviceData";
 
-const DetailsCustomer = ({ id }: any) => {
-  const [item, SetItem] = useState<ApDeviceData | null>(null);
+const HotspotCustomerMacBinding = ({ id }: any) => {
+  const [item, SetItem] = useState<CustomerData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api-hotspot/ap-device/get-by-id/${id}`);
+    const response = await axios.get(
+      `/api-hotspot/partner-customer/get-by-id/${id}`
+    );
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["ap-device-list", id],
+    queryKey: ["partner-customer-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -56,13 +58,12 @@ const DetailsCustomer = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/hotspot">Hotspot Dashboard</Link>
+              title: (
+                <Link href="/admin/hotspot/customer-care">Customer Care</Link>
+              )
             },
             {
-              title: <Link href="/admin/hotspot/ap-device">ap Device</Link>
-            },
-            {
-              title: "ap Device Details "
+              title: "Mac Binding Customer Care"
             }
           ]}
         />
@@ -84,32 +85,33 @@ const DetailsCustomer = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            ap Device Details
+            Mac Binding Customer Care
           </h1>
         </div>
+
+        {isLoading && isFetching && <AppLoader />}
+
+        {isError && <div>{error.message}</div>}
+
         <Card
-          // title="Details Client"
+          // title="New Customer Ticket"
           hoverable
           style={{
             width: "90%",
-            // backgroundColor: "#ffffff",
-            backgroundColor: "#ECF0F1",
+            backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "2rem",
-            marginBottom: "2rem"
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            border: "1px solid #F15F22"
           }}
         >
-          {isLoading && isFetching && <AppLoader />}
-
-          {isError && <div>{error.message}</div>}
-
-          {!isLoading && item && <DetailsApDeviceData item={item} />}
+          {!isLoading && item && <CreateCareCustomerTopUpForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default DetailsCustomer;
+export default HotspotCustomerMacBinding;
