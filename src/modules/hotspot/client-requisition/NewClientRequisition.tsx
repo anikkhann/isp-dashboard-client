@@ -23,13 +23,13 @@ const NewClientRequisition = () => {
             },
             {
               title: (
-                <Link href="/admin/hotspot/durjoy-requisition">
-                  Durjoy Requisition
+                <Link href="/admin/hotspot/client-requisition">
+                  Client Requisition
                 </Link>
               )
             },
             {
-              title: "New Durjoy Requisition"
+              title: "New Client Requisition"
             }
           ]}
         />
@@ -51,7 +51,7 @@ const NewClientRequisition = () => {
               color: "#F15F22"
             }}
           >
-            New Durjoy Requisition
+            New Client Requisition
           </h1>
         </div>
 
