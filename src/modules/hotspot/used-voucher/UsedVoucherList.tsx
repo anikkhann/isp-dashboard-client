@@ -73,8 +73,6 @@ const UsedVoucherList: React.FC = () => {
   const [selectedReferenceNumber, setSelectedReferenceNumber] =
     useState<any>(null);
 
-  const [isFilter, setIsFilter] = useState<boolean>(false);
-
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -143,8 +141,11 @@ const UsedVoucherList: React.FC = () => {
     return data;
   };
 
-  const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["voucher-archive-list", page, limit, order, sort, isFilter],
+  const { isLoading, isError, error, isFetching, refetch } = useQuery<
+    boolean,
+    any
+  >({
+    queryKey: ["voucher-archive-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(
         page,
@@ -449,11 +450,10 @@ const UsedVoucherList: React.FC = () => {
     setSelectedVoucherNumber(null);
     setSelectedSerialNo(null);
     setSelectedReferenceNumber(null);
-    setIsFilter(false);
   };
 
   const handleSubmit = () => {
-    setIsFilter(true);
+    refetch();
   };
 
   const handleZoneChange = (value: any) => {
