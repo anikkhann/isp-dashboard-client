@@ -395,38 +395,32 @@ const MonthlyTargetList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
+
     {
-      title: "name",
-      dataIndex: "name",
-      sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-    {
-      title: "address",
-      dataIndex: "address",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "contactPerson",
-      dataIndex: "contactPerson",
+      title: "month",
+      dataIndex: "month",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
 
     {
-      title: "contactNumber",
-      dataIndex: "contactNumber",
+      title: "year",
+      dataIndex: "year",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "nidNo",
-      dataIndex: "nidNo",
+      title: "status",
+      dataIndex: "status",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "rejectNote",
+      dataIndex: "rejectNote",
       sorter: true,
       width: "20%",
       align: "center" as AlignType

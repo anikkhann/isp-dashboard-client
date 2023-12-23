@@ -53,7 +53,7 @@ const CreateMonthlyTargetForm = () => {
   const MySwal = withReactContent(Swal);
 
   const [years, setYears] = useState<any[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
 
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
@@ -162,6 +162,9 @@ const CreateMonthlyTargetForm = () => {
       });
     }
     setYears(years);
+
+    setSelectedYear(currentYear);
+    form.setFieldsValue({ year: currentYear });
   }, []);
 
   const handleOtherPrductChange = (value: any, key: number) => {
@@ -179,22 +182,23 @@ const CreateMonthlyTargetForm = () => {
   };
 
   const handleUserChange = (value: any) => {
+    form.setFieldsValue({ tsoId: value });
     setSelectedUser(value);
   };
 
   const handleYearChange = (value: any) => {
+    form.setFieldsValue({ year: value });
     setSelectedYear(value);
   };
 
   const handleMonthChange = (value: any) => {
+    form.setFieldsValue({ month: value });
     setSelectedMonth(value);
   };
 
   const onSubmit = (data: FromData) => {
     setLoading(true);
     const { lines } = data;
-
-    // console.log("data", data);
 
     const formData = {
       tsoId: selectedUser,

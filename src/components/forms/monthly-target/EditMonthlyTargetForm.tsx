@@ -9,23 +9,42 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FromData {
-  otherProductId: number;
-  quantity: number;
-  customerName: string;
-  customerNumber: string;
-  address: string;
-  tsoComment: string;
+  remarks: string;
+  lines: LineDataProps[];
 }
-
 interface PropData {
   item: any;
 }
 
-const EditMonthlyTargetForm = ({ item }: PropData) => {
+interface LineDataProps {
+  otherProductId: string | undefined;
+  amount: string | undefined;
+}
+
+// generate dynamic year - current year along with next two year -> default current year
+
+const currentYear = new Date().getFullYear();
+
+const months = [
+  { label: "January", value: 1 },
+  { label: "February", value: 2 },
+  { label: "March", value: 3 },
+  { label: "April", value: 4 },
+  { label: "May", value: 5 },
+  { label: "June", value: 6 },
+  { label: "July", value: 7 },
+  { label: "August", value: 8 },
+  { label: "September", value: 9 },
+  { label: "October", value: 10 },
+  { label: "November", value: 11 },
+  { label: "December", value: 12 }
+];
+
+const CreateMonthlyTargetForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -36,12 +55,22 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
+  const [years, setYears] = useState<any[]>([]);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+
+  const [users, setUsers] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+
   const [otherProducts, setOtherProducts] = useState<any[]>([]);
-  const [selectedOtherProduct, setSelectedOtherProduct] = useState<any>(null);
+
+  const [linesValues, setLinesValues] = useState<LineDataProps[]>([]);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  //functions for getting zone manger list data using POST request
   function getOtherProducts() {
     const body = {
       // FOR PAGINATION - OPTIONAL
@@ -49,7 +78,7 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "createdOn"
+            field: "name"
           }
         ]
       },
@@ -57,7 +86,6 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
         isActive: true
       }
     };
-
     axios.post("/api-hotspot/other-product/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
@@ -83,45 +111,134 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
     });
   }
 
+  function getUsers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        userCategory: "tso"
+      }
+    };
+    axios.post("/api/users/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setUsers(list);
+    });
+  }
+
   useEffect(() => {
     getOtherProducts();
+    getUsers();
   }, []);
-
-  const handleOtherProductChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ otherProductId: value });
-    setSelectedOtherProduct(value);
-  };
 
   useEffect(() => {
     if (item) {
+      // const { productLines } = item;
+
+      // const lines = productLines.map((line: any) => {
+      //   return {
+      //     otherProductId: line.otherProductId,
+      //     amount: line.amount
+      //   };
+      // });
+
+      // setLinesValues(lines);
+
+      // form.setFieldsValue({
+      //   lines
+      // });
+
+      setSelectedUser(item.tsoId);
+      setSelectedYear(item.year);
+      setSelectedMonth(item.month);
+
       form.setFieldsValue({
-        otherProductId: item.otherProductId,
-        quantity: item.quantity,
-        customerName: item.customerName,
-        customerNumber: item.customerNumber,
-        address: item.address,
-        tsoComment: item.tsoComment
+        tsoId: item.tsoId,
+        year: item.year,
+        month: item.month
       });
-      setSelectedOtherProduct(item.otherProductId);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
+
+  useEffect(() => {
+    const years = [];
+    for (let i = currentYear; i <= currentYear + 2; i++) {
+      years.push({
+        label: i,
+        value: i
+      });
+    }
+    setYears(years);
+
+    setSelectedYear(currentYear);
+    form.setFieldsValue({ year: currentYear });
+  }, []);
+
+  const handleOtherPrductChange = (value: any, key: number) => {
+    // make a new field in forms lines list and set pricing plan id
+    form.setFieldsValue({ [`lines[${key}].otherProductId`]: value });
+
+    if (value) {
+      const newLinesValues = [...linesValues];
+      newLinesValues[key] = {
+        ...newLinesValues[key],
+        otherProductId: value
+      };
+      setLinesValues(newLinesValues);
+    }
+  };
+
+  const handleUserChange = (value: any) => {
+    form.setFieldsValue({ tsoId: value });
+    setSelectedUser(value);
+  };
+
+  const handleYearChange = (value: any) => {
+    form.setFieldsValue({ year: value });
+    setSelectedYear(value);
+  };
+
+  const handleMonthChange = (value: any) => {
+    form.setFieldsValue({ month: value });
+    setSelectedMonth(value);
+  };
 
   const onSubmit = (data: FromData) => {
     setLoading(true);
-    const { quantity, customerName, customerNumber, address, tsoComment } =
-      data;
+    const { lines } = data;
 
     const formData = {
-      id: item.id,
-      otherProductId: selectedOtherProduct,
-      quantity: quantity,
-      customerName: customerName,
-      customerNumber: customerNumber,
-      address: address,
-      tsoComment: tsoComment
+      tsoId: selectedUser,
+      year: selectedYear,
+      month: selectedMonth,
+      productLines: lines
     };
+
     try {
       axios
         .post("/api-hotspot/monthly-target/create", formData)
@@ -194,10 +311,10 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* otherProductId */}
+                  {/* tsoId */}
                   <Form.Item
-                    label="otherProductId"
-                    name="otherProductId"
+                    label="TSO"
+                    name="tsoId"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -214,9 +331,87 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
                         placeholder="Please select"
-                        onChange={handleOtherProductChange}
-                        options={otherProducts}
-                        value={selectedOtherProduct}
+                        onChange={handleUserChange}
+                        options={users}
+                        value={selectedUser}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col>
+                  {/* year */}
+                  <Form.Item
+                    label="year"
+                    name="year"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleYearChange}
+                        options={years}
+                        value={selectedYear}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col>
+                  {/* month */}
+                  <Form.Item
+                    label="month"
+                    name="month"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleMonthChange}
+                        options={months}
+                        value={selectedMonth}
                         showSearch
                         filterOption={(input, option) => {
                           if (typeof option?.label === "string") {
@@ -235,103 +430,78 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
               </Row>
 
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
-                  {/* quantity */}
-                  <Form.Item
-                    label="quantity"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="quantity"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input quantity!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="quantity" className={`form-control`} />
-                  </Form.Item>
-                </Col>
+                <Col>
+                  <Form.List name="lines">
+                    {(fields, { add, remove }) => (
+                      <>
+                        {fields.map(({ key, name, ...restField }) => (
+                          <Space
+                            key={key}
+                            style={{ display: "flex", marginBottom: 8 }}
+                            align="baseline"
+                          >
+                            <Form.Item
+                              {...restField}
+                              label="otherProductId"
+                              name={[name, "otherProductId"]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input"
+                                }
+                              ]}
+                            >
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={value =>
+                                  handleOtherPrductChange(value, key)
+                                }
+                                options={otherProducts}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              {...restField}
+                              label="amount"
+                              name={[name, "amount"]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input"
+                                }
+                              ]}
+                            >
+                              <Input placeholder="amount" />
+                            </Form.Item>
 
-                <Col xs={12} className="gutter-row">
-                  {/* customerName */}
-                  <Form.Item
-                    label="customerName"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="customerName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input customerName!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="customerName" />
-                  </Form.Item>
-                </Col>
-                <Col xs={12} className="gutter-row">
-                  {/* customerNumber */}
-                  <Form.Item
-                    label="customerNumber"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="customerNumber"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input customerNumber!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="customerNumber" />
-                  </Form.Item>
-                </Col>
-
-                <Col xs={12} className="gutter-row">
-                  {/* address */}
-                  <Form.Item
-                    label="address"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="address"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input address!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="address" />
-                  </Form.Item>
-                </Col>
-
-                <Col xs={12} className="gutter-row">
-                  {/* tsoComment */}
-                  <Form.Item
-                    label="tsoComment"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="tsoComment"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input tsoComment!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="tsoComment" />
-                  </Form.Item>
+                            <MinusCircleOutlined onClick={() => remove(name)} />
+                          </Space>
+                        ))}
+                        <Form.Item>
+                          <Button
+                            type="dashed"
+                            onClick={() => add()}
+                            block
+                            icon={<PlusOutlined />}
+                          >
+                            Add field
+                          </Button>
+                        </Form.Item>
+                      </>
+                    )}
+                  </Form.List>
                 </Col>
               </Row>
 
@@ -364,4 +534,4 @@ const EditMonthlyTargetForm = ({ item }: PropData) => {
   );
 };
 
-export default EditMonthlyTargetForm;
+export default CreateMonthlyTargetForm;
