@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import CreateCareCustomerTopUpForm from "@/components/forms/care/CreateCareCustomerTopUpForm";
+import HotspotMacUpdateForm from "@/components/forms/hotspot-customer-care/HotspotMacUpdateForm";
 import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -107,7 +107,7 @@ const HotspotCustomerMacBinding = ({ id }: any) => {
             border: "1px solid #F15F22"
           }}
         >
-          {!isLoading && item && <CreateCareCustomerTopUpForm item={item} />}
+          {!isLoading && item && <HotspotMacUpdateForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

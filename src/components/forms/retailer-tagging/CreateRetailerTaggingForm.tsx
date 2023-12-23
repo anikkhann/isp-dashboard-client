@@ -26,6 +26,9 @@ const CreateRetailerTaggingForm = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
+  const [areaManagers, setAreaManagers] = useState<any[]>([]);
+  const [selectedAreaManager, setSelectedAreaManager] = useState<any>(null);
+
   const [retailers, setRetailers] = useState<any[]>([]);
   const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
 
@@ -72,7 +75,7 @@ const CreateRetailerTaggingForm = () => {
     });
   }
 
-  function getRetailers() {
+  function getAreaManger() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -83,16 +86,12 @@ const CreateRetailerTaggingForm = () => {
           }
         ]
       },
-      body: {
-        partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
-        isActive: true
-      }
+      body: {}
     };
-
-    axios.post("/api/partner/get-list", body).then(res => {
+    axios.post("/api/area-manager-tag/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
+
       if (data.status != 200) {
         MySwal.fire({
           title: "Error",
@@ -105,19 +104,56 @@ const CreateRetailerTaggingForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.displayName,
           value: item.id
         };
       });
 
-      setRetailers(list);
+      setAreaManagers(list);
     });
+  }
+
+  function getRetailers(areaManagerTagId: any) {
+    axios
+      .get(
+        `/api/area-manager-tag/get-retailer-list-by-area-tag-id/${areaManagerTagId}`
+      )
+      .then(res => {
+        // console.log(res);
+        const { data } = res;
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
+
+        const list = data.body.map((item: any) => {
+          return {
+            label: item.name,
+            value: item.id
+          };
+        });
+
+        setRetailers(list);
+      });
   }
 
   useEffect(() => {
     getUsers();
-    getRetailers();
+    getAreaManger();
   }, []);
+
+  useEffect(() => {
+    if (selectedAreaManager) {
+      getRetailers(selectedAreaManager);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedAreaManager]);
 
   const handleUserChange = (value: any) => {
     setSelectedUser(value);
@@ -132,11 +168,18 @@ const CreateRetailerTaggingForm = () => {
     setSelectedRetailer(value as any);
   };
 
+  const handleAreaManagerChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ areaManagerTagId: value });
+    setSelectedAreaManager(value as any);
+  };
+
   const onSubmit = () => {
     setLoading(true);
 
     const formData = {
       tsoId: selectedUser,
+      areaManagerTagId: selectedAreaManager,
       retailerId: selectedRetailer
     };
     try {
@@ -234,6 +277,53 @@ const CreateRetailerTaggingForm = () => {
                         onChange={handleUserChange}
                         options={users}
                         value={selectedUser}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* areaManagerTagId */}
+                  <Form.Item
+                    label="Area"
+                    name="areaManagerTagId"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleAreaManagerChange}
+                        options={areaManagers}
+                        value={selectedAreaManager}
                         showSearch
                         filterOption={(input, option) => {
                           if (typeof option?.label === "string") {

@@ -574,7 +574,7 @@ const UsedVoucherList: React.FC = () => {
               {ability.can("usedVoucher.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/unused-voucher/${record.id}`}>
+                    <Link href={`/admin/hotspot/used-voucher/${record.id}`}>
                       <Button type="primary" icon={<EyeOutlined />} />
                     </Link>
                   </Space>

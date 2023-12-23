@@ -150,7 +150,7 @@ const OtherProductSaleList: React.FC = () => {
         tsoId: selectedTsoidParam,
         areaManagerId: selectedUserParam,
         status: selectedStatusParam,
-        otherProductId: {
+        otherProduct: {
           id: selectedOtherProductIdParam
         },
         dateRangeFilter: {

@@ -12,12 +12,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
 import AppImageLoader from "@/components/loader/AppImageLoader";
-import { useAppSelector } from "@/store/hooks";
 
 const CreateAreaTaggingForm = () => {
   const [form] = Form.useForm();
-
-  const authUser = useAppSelector(state => state.auth.user);
 
   const [loading, setLoading] = useState(false);
   // ** States
@@ -121,7 +118,7 @@ const CreateAreaTaggingForm = () => {
     });
   }
 
-  function getZoneManagers() {
+  function getZoneManagers(selectedClient: string) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -135,7 +132,7 @@ const CreateAreaTaggingForm = () => {
       body: {
         partnerType: "zone",
         client: {
-          id: authUser?.partnerId
+          id: selectedClient
         },
         isActive: true
       }
@@ -168,9 +165,15 @@ const CreateAreaTaggingForm = () => {
   useEffect(() => {
     getClients();
     getAreaManagersList();
-    getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (selectedClient) {
+      getZoneManagers(selectedClient);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedClient]);
 
   const handleAreaManagerChange = (value: any) => {
     // console.log("checked = ", value);
@@ -184,7 +187,7 @@ const CreateAreaTaggingForm = () => {
     // console.log("checked = ", value);
     setSelectedClient(value);
     form.setFieldsValue({
-      areaManagerId: value
+      clientId: value
     });
   };
 
@@ -192,7 +195,7 @@ const CreateAreaTaggingForm = () => {
     // console.log("checked = ", value);
     setSelectedZone(value);
     form.setFieldsValue({
-      areaManagerId: value
+      zoneManagerId: value
     });
   };
 
@@ -218,7 +221,7 @@ const CreateAreaTaggingForm = () => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/hotspot/sub-zone-tag");
+              router.replace("/admin/hotspot/area-tagging");
             });
           } else {
             MySwal.fire({
@@ -362,12 +365,6 @@ const CreateAreaTaggingForm = () => {
                     fontWeight: "bold"
                   }}
                   name="zoneManagerId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select!"
-                    }
-                  ]}
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select

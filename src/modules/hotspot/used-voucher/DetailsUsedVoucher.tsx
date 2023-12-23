@@ -68,7 +68,7 @@ const DetailsUsedVoucher = ({ id }: any) => {
               )
             },
             {
-              title: "Unused Voucher  Details "
+              title: "used Voucher  Details "
             }
           ]}
         />

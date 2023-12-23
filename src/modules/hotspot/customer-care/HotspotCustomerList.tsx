@@ -13,7 +13,7 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EyeOutlined } from "@ant-design/icons";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
 
@@ -155,67 +155,77 @@ const HotspotCustomerList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
+
     {
-      title: "Customer ID",
-      dataIndex: "customerId",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "username",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Zone",
-      dataIndex: "distributionZone",
+      title: "client",
+      dataIndex: "client",
       sorter: false,
-      render: (distributionZone: any) => {
-        if (!distributionZone) return "-";
-        return <>{distributionZone.name}</>;
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.name}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Pop",
-      dataIndex: "distributionPop",
+      title: "customer",
+      dataIndex: "customer",
       sorter: false,
-      render: (distributionPop: any) => {
-        if (!distributionPop) return "-";
-        return <>{distributionPop.name}</>;
+      render: (customer: any) => {
+        if (!customer) return "-";
+        return <>{customer.name}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "activePricingPlan",
+      dataIndex: "activePricingPlan",
+      sorter: false,
+      render: (activePricingPlan: any) => {
+        if (!activePricingPlan) return "-";
+        return <>{activePricingPlan.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "lastActivatedBy",
+      dataIndex: "lastActivatedBy",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Mobile",
-      dataIndex: "mobileNo",
+      title: "lastIpAddress",
+      dataIndex: "lastIpAddress",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Connection Address",
-      dataIndex: "connectionAddress",
+      title: "otp",
+      dataIndex: "otp",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Credits",
-      dataIndex: "credits",
+      title: "mac",
+      dataIndex: "mac",
       sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "expirationTime",
+      dataIndex: "expirationTime",
+      sorter: false,
+      render: (expirationTime: any) => {
+        if (!expirationTime) return "-";
+        const date = new Date(expirationTime);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },

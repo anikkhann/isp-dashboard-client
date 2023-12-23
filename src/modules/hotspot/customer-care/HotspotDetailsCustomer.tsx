@@ -77,7 +77,9 @@ const HotspotDetailsCustomer = ({ id }: any) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/partner-customer/get-by-id/${id}`);
+    const response = await axios.get(
+      `/api-hotspot/partner-customer/get-by-id/${id}`
+    );
     return response;
   };
 
@@ -205,18 +207,20 @@ const HotspotDetailsCustomer = ({ id }: any) => {
                 Disconnect
               </Button>
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#35A29F",
-                  color: "#ffffff"
-                }}
-              >
-                <Link href={`/admin/hotspot/customer-care/${id}/mac-binding`}>
-                  Mac Binding
-                </Link>
-              </Button>
+              {ability.can("HotspotCustomerCare.macBinding", "") && (
+                <Button
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "20px",
+                    backgroundColor: "#35A29F",
+                    color: "#ffffff"
+                  }}
+                >
+                  <Link href={`/admin/hotspot/customer-care/${id}/mac-binding`}>
+                    Mac Binding
+                  </Link>
+                </Button>
+              )}
             </Space>
           )}
         </Space>

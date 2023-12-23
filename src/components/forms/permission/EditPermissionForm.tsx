@@ -138,6 +138,14 @@ const tagsList = [
   {
     label: "My Revenue",
     value: "myRevenue"
+  },
+  {
+    label: "Mac Binding",
+    value: "macBinding"
+  },
+  {
+    label: "Download",
+    value: "download"
   }
 ];
 

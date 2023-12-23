@@ -13,7 +13,6 @@ import axios from "axios";
 import { TsoRetailerTagData } from "@/interfaces/TsoRetailerTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { useAppSelector } from "@/store/hooks";
 // import { format } from "date-fns";
 
 interface TableParams {
@@ -26,8 +25,6 @@ interface TableParams {
 const AreaTaggingList: React.FC = () => {
   const [data, setData] = useState<TsoRetailerTagData[]>([]);
   const { Panel } = Collapse;
-
-  const authUser = useAppSelector(state => state.auth.user);
 
   const MySwal = withReactContent(Swal);
 
@@ -239,7 +236,7 @@ const AreaTaggingList: React.FC = () => {
     });
   }
 
-  function getZoneManagers() {
+  function getZoneManagers(selectedClient: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -253,7 +250,7 @@ const AreaTaggingList: React.FC = () => {
       body: {
         partnerType: "zone",
         client: {
-          id: authUser?.partnerId
+          id: selectedClient
         },
         isActive: true
       }
@@ -286,9 +283,15 @@ const AreaTaggingList: React.FC = () => {
   useEffect(() => {
     getClients();
     getAreaManagersList();
-    getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (selectedClient) {
+      getZoneManagers(selectedClient);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedClient]);
 
   const handleClear = () => {
     setSelectedAreaManager(null);

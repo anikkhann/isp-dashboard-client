@@ -288,7 +288,7 @@ const DurjoyRequisitionList: React.FC = () => {
       });
 
       if (result.isConfirmed) {
-        const { data } = await axios.put(
+        const { data } = await axios.get(
           `/api-hotspot/client-card-requisition/approve/${id}`
         );
         if (data.status === 200) {
