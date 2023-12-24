@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import EditGatewayForm from "@/components/forms/notification/gateway/EditGatewayForm";
-import { GatewayData } from "@/interfaces/GatewayData";
+import EditNoticeForm from "@/components/forms/notification/notice/EditNoticeForm";
+import { NoticeBoardData } from "@/interfaces/NoticeBoardData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -12,17 +12,17 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const EditNotice = ({ id }: any) => {
-  const [item, SetItem] = useState<GatewayData | null>(null);
+  const [item, SetItem] = useState<NoticeBoardData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/sms-gateway/get-by-id/${id}`);
+    const response = await axios.get(`/api/notice-board/get-by-id/${id}`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["sms-gateway-list", id],
+    queryKey: ["notice-board-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -59,13 +59,13 @@ const EditNotice = ({ id }: any) => {
               title: <Link href="/admin/notification">Notification</Link>
             },
             {
-              title: "Edit Gateway"
+              title: "Edit Notice Board"
             }
           ]}
         />
 
         <Card
-          title="Edit Gateway"
+          title="Edit Notice Board"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -78,7 +78,7 @@ const EditNotice = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditGatewayForm item={item} />}
+          {!isLoading && item && <EditNoticeForm item={item} />}
         </Card>
       </AppRowContainer>
     </>

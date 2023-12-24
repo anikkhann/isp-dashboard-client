@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import DetailsSubscriptionData from "@Components/details/subscription/DetailsSubscriptionData";
-import { SubscriptionData } from "@/interfaces/SubscriptionData";
 
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -10,19 +8,23 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
+import DetailsZoneRevenueDisbursementData from "@/components/details/zone-revenue-disbursement/DetailsZoneRevenueDisbursementData";
 
-const DetailsZoneRevenueDisbursement = ({ id }: any) => {
-  const [item, SetItem] = useState<SubscriptionData | null>(null);
+const RejectZoneRevenueDisbursement = ({ id }: any) => {
+  const [item, SetItem] = useState<ZoneRevenueDisbursement | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/subscription-plan/get-by-id/${id}`);
+    const response = await axios.get(
+      `/api/zone-revenue-disbursement/get-by-id/${id}`
+    );
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["subscriptions-list", id],
+    queryKey: ["zone-revenue-disbursement-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -56,15 +58,17 @@ const DetailsZoneRevenueDisbursement = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/client">Client</Link>
+              title: <Link href="/admin/accounting">Accounting</Link>
             },
             {
               title: (
-                <Link href="/admin/client/subscription">Subscriptions</Link>
+                <Link href="/admin/accounting/zone-revenue-disbursement">
+                  Zone Revenue Disbursement
+                </Link>
               )
             },
             {
-              title: "Subscription Details"
+              title: "Zone Revenue Disbursement"
             }
           ]}
         />
@@ -86,31 +90,34 @@ const DetailsZoneRevenueDisbursement = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Subscription Details
+            Zone Revenue Disbursement
           </h1>
         </div>
         <Card
-          // title="Subscription Details"
+          // title="Edit Subscription"
+          hoverable
           style={{
             width: "90%",
-            // backgroundColor: "#ffffff",
-            backgroundColor: "#ECF0F1",
+            backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "2rem",
-            marginBottom: "2rem"
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <DetailsSubscriptionData item={item} />}
+          {!isLoading && item && (
+            <DetailsZoneRevenueDisbursementData item={item} />
+          )}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default DetailsZoneRevenueDisbursement;
+export default RejectZoneRevenueDisbursement;

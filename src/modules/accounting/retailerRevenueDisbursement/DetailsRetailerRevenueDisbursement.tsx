@@ -10,7 +10,8 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
-import RejectSubZoneRevenueDisbursementForm from "@/components/forms/subZoneRevenueDisbursement/RejectSubZoneRevenueDisbursementForm";
+
+import DetailsRetailerRevenueDisbursementData from "@/components/details/retailer-revenue-disbursement/DetailsRetailerRevenueDisbursementData";
 
 const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
   const [item, SetItem] = useState<ZoneRevenueDisbursement | null>(null);
@@ -69,7 +70,7 @@ const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
               )
             },
             {
-              title: "Reject retailer Revenue Disbursement"
+              title: "retailer Revenue Disbursement"
             }
           ]}
         />
@@ -91,7 +92,7 @@ const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Reject retailer Revenue Disbursement
+            retailer Revenue Disbursement
           </h1>
         </div>
         <Card
@@ -113,7 +114,7 @@ const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
           {isError && <div>{error.message}</div>}
 
           {!isLoading && item && (
-            <RejectSubZoneRevenueDisbursementForm item={item} />
+            <DetailsRetailerRevenueDisbursementData item={item} />
           )}
         </Card>
       </AppRowContainer>

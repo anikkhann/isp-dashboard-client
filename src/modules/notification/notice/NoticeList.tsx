@@ -12,13 +12,8 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined } from "@ant-design/icons";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { NoticeBoardData } from "@/interfaces/NoticeBoardData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -28,7 +23,7 @@ interface TableParams {
 }
 
 const NoticeList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<NoticeBoardData[]>([]);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -66,10 +61,19 @@ const NoticeList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        // "noticeType": "true", // dropdown - (for_all, client_specific, zone_manager_specific, sub_zone_manager_specific, retailer_specific package_specific, customer_specific)
+        // "isActive": true, // (true, false)
+        // "client": {"id": "d303dbd3-87bf-4fb6-8b4d-7997e1722d73"}, // dropdown - Partner -> Client list API
+        // "zoneManager": {"id": "9a1978fe-7de0-4912-b7d2-a70f3fe8c3b1"}, // dropdown - Partner -> ZoneManager list API
+        // "subZoneManager": {"id": "9a1978fe-7de0-4912-b7d2-a70f3fe8c3b1"}, // dropdown - Partner -> subZoneManager list API
+        // "retailer": {"id": "9a1978fe-7de0-4912-b7d2-a70f3fe8c3b1"}, // dropdown - Partner -> Retailer list API
+        // "customerPackage": {"id": "9a1978fe-7de0-4912-b7d2-a70f3fe8c3b1"}, // dropdown - Customer Package list API
+        // "customer": {"id": "9a1978fe-7de0-4912-b7d2-a70f3fe8c3b1"}, // dropdown - Customer list API
+        // "dateRangeFilter": {"field": "endDate", "startDate": "2023-07-20", "endDate": "2023-10-20"}
       }
     };
 
-    const { data } = await axios.post("/api/sms-gateway/get-list", body, {
+    const { data } = await axios.post("/api/notice-board/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -78,7 +82,7 @@ const NoticeList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["sms-gateway-list", page, limit, order, sort],
+    queryKey: ["notice-board-list", page, limit, order, sort],
     queryFn: async () => {
       const response = await fetchData(page, limit, order, sort);
       return response;
@@ -121,7 +125,7 @@ const NoticeList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<NoticeBoardData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -137,15 +141,15 @@ const NoticeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "noticeType",
+      dataIndex: "noticeType",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Base Url",
-      dataIndex: "baseUrl",
+      title: "message",
+      dataIndex: "message",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
@@ -179,10 +183,18 @@ const NoticeList: React.FC = () => {
               {ability.can("smsGateway.update", "") ? (
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
-                    <Link
-                      href={`/admin/notification/sms/gateway/${record.id}/edit`}
-                    >
+                    <Link href={`/admin/notification/notice/${record.id}/edit`}>
                       <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {ability.can("smsGateway.view", "") ? (
+                <Tooltip title="view" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link href={`/admin/notification/notice/${record.id}`}>
+                      <Button type="primary" icon={<EyeOutlined />} />
                     </Link>
                   </Space>
                 </Tooltip>
@@ -198,22 +210,24 @@ const NoticeList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<NoticeBoardData> | SorterResult<NoticeBoardData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
-      // // console.log((sorter as SorterResult<DataType>).order)
+    if (sorter && (sorter as SorterResult<NoticeBoardData>).order) {
+      // // console.log((sorter as SorterResult<NoticeBoardData>).order)
 
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<NoticeBoardData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      // // console.log((sorter as SorterResult<DataType>).field)
+    if (sorter && (sorter as SorterResult<NoticeBoardData>).field) {
+      // // console.log((sorter as SorterResult<NoticeBoardData>).field)
 
-      SetSort((sorter as SorterResult<DataType>).field as string);
+      SetSort((sorter as SorterResult<NoticeBoardData>).field as string);
     }
   };
 
@@ -255,9 +269,9 @@ const NoticeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Gateways List"
+            title="Notice Board List"
             hasLink={true}
-            addLink="/admin/notification/sms/gateway/create"
+            addLink="/admin/notification/notice/create"
             permission="smsGateway.create"
             style={{
               borderRadius: "10px",

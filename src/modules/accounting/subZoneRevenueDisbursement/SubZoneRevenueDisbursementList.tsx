@@ -12,7 +12,12 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { AlertOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  AlertOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  EyeOutlined
+} from "@ant-design/icons";
 import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
@@ -587,13 +592,15 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                 </Tooltip>
               ) : null}
 
-              {/* {ability.can("subZoneRevenueDisbursement.view", "") ? (
+              {ability.can("subZoneRevenueDisbursement.view", "") ? (
                 <Space size="middle" align="center" wrap>
-                  <Link href={`/admin/accounting/subZone-revenue-disbursement/${record.id}`}>
+                  <Link
+                    href={`/admin/accounting/subZone-revenue-disbursement/${record.id}`}
+                  >
                     <Button type="primary" icon={<EyeOutlined />} />
                   </Link>
                 </Space>
-              ) : null} */}
+              ) : null}
             </Space>
           </div>
         );

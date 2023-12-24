@@ -1,7 +1,7 @@
 import SubZoneLayout from "@/core/layouts/SubZoneLayout";
 import AppLoader from "@/lib/AppLoader";
 import Forbidden from "@/modules/errorPage/Forbidden";
-import SubZoneInChargeList from "@/modules/sub-zone/sub-zone-in-charge/SubZoneInChargeList";
+import ResellerDailyTaskList from "@/modules/sub-zone/reseller-daily-report/ResellerDailyTaskList";
 
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
@@ -14,7 +14,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("subZone.list", "") ? (
-        <SubZoneInChargeList />
+        <ResellerDailyTaskList />
       ) : (
         <Forbidden />
       )}
