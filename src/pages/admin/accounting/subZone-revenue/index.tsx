@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("accounting.subZoneRevenue", "") ? (
+      {ability.can("accountingZoneRevenue.list", "") ? (
         <SubZoneRevenueList />
       ) : (
         <Forbidden />

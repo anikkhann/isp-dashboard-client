@@ -813,36 +813,38 @@ const CustomerTicketList: React.FC = () => {
                 </div>
               </Space>
 
-              <Row justify={"end"}>
-                <Col span={3}>
-                  <CSVLink
-                    data={data}
-                    asyncOnClick={true}
-                    onClick={(event, done) => {
-                      setDownloadLoading(true);
-                      setTimeout(() => {
-                        setDownloadLoading(false);
-                      }, 2000);
-                      done();
-                    }}
-                    className="ant-btn ant-btn-lg"
-                    target="_blank"
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                      marginTop: "25px",
-                      backgroundColor: "#F15F22",
-                      color: "#ffffff",
-                      padding: "10px"
-                    }}
-                    filename={`customer-ticket-${dayjs().format(
-                      "YYYY-MM-DD"
-                    )}.csv`}
-                  >
-                    {downloadLoading ? "Loading..." : "Download"}
-                  </CSVLink>
-                </Col>
-              </Row>
+              {ability.can("customerTicket.download", "") && (
+                <Row justify={"end"}>
+                  <Col span={3}>
+                    <CSVLink
+                      data={data}
+                      asyncOnClick={true}
+                      onClick={(event, done) => {
+                        setDownloadLoading(true);
+                        setTimeout(() => {
+                          setDownloadLoading(false);
+                        }, 2000);
+                        done();
+                      }}
+                      className="ant-btn ant-btn-lg"
+                      target="_blank"
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff",
+                        padding: "10px"
+                      }}
+                      filename={`customer-ticket-${dayjs().format(
+                        "YYYY-MM-DD"
+                      )}.csv`}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                    </CSVLink>
+                  </Col>
+                </Row>
+              )}
 
               <Table
                 className={"table-striped-rows"}

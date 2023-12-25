@@ -1043,7 +1043,92 @@ const CustomerList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        {authUser?.userType == "client" && (
+                        {authUser?.userType == "client" &&
+                          ability.can(
+                            "CustomerSearch.distributionZone",
+                            ""
+                          ) && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Distribution Zone</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleDistributionZoneChange}
+                                  options={distributionZones}
+                                  value={selectedDistributionZone}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {authUser?.userType == "client" &&
+                          ability.can("CustomerSearch.distributionPop", "") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Distribution Pop</b>
+                                </span>
+
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleDistributionPopChange}
+                                  options={distributionPops}
+                                  value={selectedDistributionPop}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+
+                        {ability.can("CustomerSearch.package", "") && (
                           <Col
                             xs={24}
                             sm={12}
@@ -1058,15 +1143,16 @@ const CustomerList: React.FC = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Distribution Zone</b>
+                                <b>Package</b>
                               </span>
+
                               <Select
                                 allowClear
                                 style={{ width: "100%", textAlign: "start" }}
                                 placeholder="Please select"
-                                onChange={handleDistributionZoneChange}
-                                options={distributionZones}
-                                value={selectedDistributionZone}
+                                onChange={handlePackageChange}
+                                options={packages}
+                                value={selectedPackage}
                                 showSearch
                                 filterOption={(input, option) => {
                                   if (typeof option?.label === "string") {
@@ -1082,7 +1168,47 @@ const CustomerList: React.FC = () => {
                             </Space>
                           </Col>
                         )}
-                        {authUser?.userType == "client" && (
+                        {authUser?.userType == "client" &&
+                          ability.can("CustomerSearch.zone", "") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Zone Manager</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneChange}
+                                  options={zones}
+                                  value={selectedZone}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {ability.can("CustomerSearch.subZone", "") && (
                           <Col
                             xs={24}
                             sm={12}
@@ -1097,16 +1223,15 @@ const CustomerList: React.FC = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Distribution Pop</b>
+                                <b>Sub Zone</b>
                               </span>
-
                               <Select
                                 allowClear
                                 style={{ width: "100%", textAlign: "start" }}
                                 placeholder="Please select"
-                                onChange={handleDistributionPopChange}
-                                options={distributionPops}
-                                value={selectedDistributionPop}
+                                onChange={handleSubZoneChange}
+                                options={subZones}
+                                value={selectedSubZone}
                                 showSearch
                                 filterOption={(input, option) => {
                                   if (typeof option?.label === "string") {
@@ -1123,42 +1248,7 @@ const CustomerList: React.FC = () => {
                           </Col>
                         )}
 
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Package</b>
-                            </span>
-
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handlePackageChange}
-                              options={packages}
-                              value={selectedPackage}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        {authUser?.userType == "client" && (
+                        {ability.can("CustomerSearch.retailer", "") && (
                           <Col
                             xs={24}
                             sm={12}
@@ -1173,15 +1263,15 @@ const CustomerList: React.FC = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Zone Manager</b>
+                                <b>Retailer</b>
                               </span>
                               <Select
                                 allowClear
                                 style={{ width: "100%", textAlign: "start" }}
                                 placeholder="Please select"
-                                onChange={handleZoneChange}
-                                options={zones}
-                                value={selectedZone}
+                                onChange={handleRetailerChange}
+                                options={retailers}
+                                value={selectedRetailer}
                                 showSearch
                                 filterOption={(input, option) => {
                                   if (typeof option?.label === "string") {
@@ -1197,140 +1287,88 @@ const CustomerList: React.FC = () => {
                             </Space>
                           </Col>
                         )}
-
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Sub Zone</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleSubZoneChange}
-                              options={subZones}
-                              value={selectedSubZone}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Retailer</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleRetailerChange}
-                              options={retailers}
-                              value={selectedRetailer}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Email</b>
-                            </span>
-                            <Input
-                              type="text"
-                              className="ant-input"
-                              placeholder="Email"
-                              value={selectedEmail}
-                              onChange={e => setSelectedEmail(e.target.value)}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Mobile</b>
-                            </span>
-                            <Input
-                              type="text"
-                              className="ant-input"
-                              placeholder="Mobile"
-                              value={selectedMobile}
-                              onChange={e => setSelectedMobile(e.target.value)}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Date Range By (Expiration Date)</b>
-                            </span>
-                            <RangePicker
+                        {ability.can("CustomerSearch.email", "") && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
                               style={{ width: "100%" }}
-                              onChange={handleDateChange}
-                              value={selectedDateRange}
-                              placeholder={["Start Date", "End Date"]}
-                            />
-                          </Space>
-                        </Col>
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Email</b>
+                              </span>
+                              <Input
+                                type="text"
+                                className="ant-input"
+                                placeholder="Email"
+                                value={selectedEmail}
+                                onChange={e => setSelectedEmail(e.target.value)}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+                        {ability.can("CustomerSearch.mobile", "") && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Mobile</b>
+                              </span>
+                              <Input
+                                type="text"
+                                className="ant-input"
+                                placeholder="Mobile"
+                                value={selectedMobile}
+                                onChange={e =>
+                                  setSelectedMobile(e.target.value)
+                                }
+                              />
+                            </Space>
+                          </Col>
+                        )}
+                        {ability.can("CustomerSearch.dateRange", "") && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Date Range By (Expiration Date)</b>
+                              </span>
+                              <RangePicker
+                                style={{ width: "100%" }}
+                                onChange={handleDateChange}
+                                value={selectedDateRange}
+                                placeholder={["Start Date", "End Date"]}
+                              />
+                            </Space>
+                          </Col>
+                        )}
                         <Col
                           xs={24}
                           sm={12}
@@ -1362,34 +1400,37 @@ const CustomerList: React.FC = () => {
                 </div>
               </Space>
 
-              <Row justify={"end"}>
-                <Col span={3}>
-                  <CSVLink
-                    data={data}
-                    asyncOnClick={true}
-                    onClick={(event, done) => {
-                      setDownloadLoading(true);
-                      setTimeout(() => {
-                        setDownloadLoading(false);
-                      }, 2000);
-                      done();
-                    }}
-                    className="ant-btn ant-btn-lg"
-                    target="_blank"
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                      marginTop: "25px",
-                      backgroundColor: "#F15F22",
-                      color: "#ffffff",
-                      padding: "10px"
-                    }}
-                    filename={`customer-${dayjs().format("YYYY-MM-DD")}.csv`}
-                  >
-                    {downloadLoading ? "Loading..." : "Download"}
-                  </CSVLink>
-                </Col>
-              </Row>
+              {/* customer */}
+              {ability.can("customer.download", "") && (
+                <Row justify={"end"}>
+                  <Col span={3}>
+                    <CSVLink
+                      data={data}
+                      asyncOnClick={true}
+                      onClick={(event, done) => {
+                        setDownloadLoading(true);
+                        setTimeout(() => {
+                          setDownloadLoading(false);
+                        }, 2000);
+                        done();
+                      }}
+                      className="ant-btn ant-btn-lg"
+                      target="_blank"
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff",
+                        padding: "10px"
+                      }}
+                      filename={`customer-${dayjs().format("YYYY-MM-DD")}.csv`}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                    </CSVLink>
+                  </Col>
+                </Row>
+              )}
 
               <Table
                 className={"table-striped-rows"}

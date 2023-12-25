@@ -28,21 +28,21 @@ const accountRoutes = [
     label: "Customer Transaction",
     path: "/admin/accounting/customer-transaction",
     icon: <AccountBookOutlined />,
-    permission: "accounting.customerTransaction"
+    permission: "customerTransaction.list"
   },
   {
     key: "/admin/accounting/agent-transaction",
     label: "Agent Transaction",
     path: "/admin/accounting/agent-transaction",
     icon: <AccountBookOutlined />,
-    permission: "accounting.agentTransaction"
+    permission: "agentTransaction.list"
   },
   {
     key: "/admin/accounting/zone-transaction",
     label: "Zone Transaction",
     path: "/admin/accounting/zone-transaction",
     icon: <AccountBookOutlined />,
-    permission: "accounting.zoneTransaction"
+    permission: "zoneTransaction.list"
   },
   {
     key: "/admin/accounting/zone-revenue-disbursement",
@@ -72,7 +72,7 @@ const accountRoutes = [
     label: "Zone Revenue",
     path: "/admin/accounting/zone-revenue",
     icon: <AccountBookOutlined />,
-    permission: "accounting.zoneRevenue"
+    permission: "accountingZoneRevenue.list"
   },
 
   {
@@ -80,21 +80,21 @@ const accountRoutes = [
     label: "SubZone Revenue",
     path: "/admin/accounting/subZone-revenue",
     icon: <AccountBookOutlined />,
-    permission: "accounting.subZoneRevenue"
+    permission: "accountingSubZoneRevenue.list"
   },
   {
     key: "/admin/accounting/retailer-revenue",
     label: "Retailer Revenue",
     path: "/admin/accounting/retailer-revenue",
     icon: <AccountBookOutlined />,
-    permission: "accounting.retailerRevenue"
+    permission: "accountingRetailerRevenue.list"
   },
   {
     key: "/admin/accounting/my-revenue",
     label: "My Revenue",
     path: "/admin/accounting/my-revenue",
     icon: <AccountBookOutlined />,
-    permission: "accounting.myRevenue"
+    permission: "accountingMyRevenue.list"
   }
 ];
 

@@ -135,6 +135,46 @@ const tagsList = [
   {
     label: "Download",
     value: "download"
+  },
+  {
+    label: "email",
+    value: "email"
+  },
+  {
+    label: "mobile",
+    value: "mobile"
+  },
+  {
+    label: "dateRange",
+    value: "dateRange"
+  },
+  {
+    label: "retailer",
+    value: "retailer"
+  },
+  {
+    label: "subZone",
+    value: "subZone"
+  },
+  {
+    label: "zone",
+    value: "zone"
+  },
+  {
+    label: "client",
+    value: "client"
+  },
+  {
+    label: "package",
+    value: "package"
+  },
+  {
+    label: "distributionPop",
+    value: "distributionPop"
+  },
+  {
+    label: "distributionZone",
+    value: "distributionZone"
   }
 ];
 
