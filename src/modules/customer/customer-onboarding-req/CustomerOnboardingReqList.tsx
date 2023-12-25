@@ -43,6 +43,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { useRouter } from "next/router";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -68,6 +69,8 @@ const CustomerOnboardingReqList: React.FC = () => {
   const MySwal = withReactContent(Swal);
 
   const [data, setData] = useState<CustomerData[]>([]);
+
+  const router = useRouter();
 
   const [customerTypes, setCustomerTypes] = useState<any[]>([]);
   const [customerPackages, setCustomerPackages] = useState<any[]>([]);
@@ -217,6 +220,45 @@ const CustomerOnboardingReqList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+
+  async function handleApprove(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Approve!"
+      });
+
+      if (result.isConfirmed) {
+        const body = {
+          id: id,
+          action: "approve"
+        };
+
+        const { data } = await axios.put(`/api/customer-request/approve`, body);
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
 
   const getCustomerPackages = () => {
     const body = {
@@ -511,10 +553,8 @@ const CustomerOnboardingReqList: React.FC = () => {
                     placement="bottomRight"
                     color="green"
                   >
-                    <Space size="middle" align="center" wrap>
-                      <Link
-                        href={`/admin/customer/customer-onboarding-req/${record.id}/approve`}
-                      >
+                    {authUser && authUser.userType == "client" ? (
+                      <Space size="middle" align="center" wrap>
                         <Button
                           type="primary"
                           icon={<CheckSquareOutlined />}
@@ -522,9 +562,27 @@ const CustomerOnboardingReqList: React.FC = () => {
                             backgroundColor: "#0B666A",
                             color: "#ffffff"
                           }}
+                          onClick={() => {
+                            handleApprove(record.id);
+                          }}
                         />
-                      </Link>
-                    </Space>
+                      </Space>
+                    ) : (
+                      <Space size="middle" align="center" wrap>
+                        <Link
+                          href={`/admin/customer/customer-onboarding-req/${record.id}/approve`}
+                        >
+                          <Button
+                            type="primary"
+                            icon={<CheckSquareOutlined />}
+                            style={{
+                              backgroundColor: "#0B666A",
+                              color: "#ffffff"
+                            }}
+                          />
+                        </Link>
+                      </Space>
+                    )}
                   </Tooltip>
                 ) : null)}
               {/* reject */}

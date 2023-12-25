@@ -23,6 +23,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { CSVLink } from "react-csv";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -66,6 +67,8 @@ const AgentTransactionList: React.FC = () => {
   const [data, setData] = useState<TopUpTransactionData[]>([]);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
+
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -795,6 +798,38 @@ const AgentTransactionList: React.FC = () => {
                   </Collapse>
                 </div>
               </Space>
+
+              <Row justify={"end"}>
+                <Col span={3}>
+                  <CSVLink
+                    data={data}
+                    asyncOnClick={true}
+                    onClick={(event, done) => {
+                      setDownloadLoading(true);
+                      setTimeout(() => {
+                        setDownloadLoading(false);
+                      }, 2000);
+                      done();
+                    }}
+                    className="ant-btn ant-btn-lg"
+                    target="_blank"
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: "25px",
+                      backgroundColor: "#F15F22",
+                      color: "#ffffff",
+                      padding: "10px"
+                    }}
+                    filename={`agent-transaction-${dayjs().format(
+                      "YYYY-MM-DD"
+                    )}.csv`}
+                  >
+                    {downloadLoading ? "Loading..." : "Download"}
+                  </CSVLink>
+                </Col>
+              </Row>
+
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

@@ -16,6 +16,24 @@ import { EyeOutlined } from "@ant-design/icons";
 import { differenceInDays, format } from "date-fns";
 import { TicketData } from "@/interfaces/TicketData";
 
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+import { CSVLink } from "react-csv";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+// const dateFormat = "YYYY-MM-DD";
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -30,6 +48,8 @@ const AdminTicketList: React.FC = () => {
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const [complainTypeList, setComplainTypes] = useState<any>([]);
   const [selectedComplainType, setSelectedComplainType] = useState<any>(null);
@@ -766,6 +786,37 @@ const AdminTicketList: React.FC = () => {
                   </Collapse>
                 </div>
               </Space>
+
+              <Row justify={"end"}>
+                <Col span={3}>
+                  <CSVLink
+                    data={data}
+                    asyncOnClick={true}
+                    onClick={(event, done) => {
+                      setDownloadLoading(true);
+                      setTimeout(() => {
+                        setDownloadLoading(false);
+                      }, 2000);
+                      done();
+                    }}
+                    className="ant-btn ant-btn-lg"
+                    target="_blank"
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: "25px",
+                      backgroundColor: "#F15F22",
+                      color: "#ffffff",
+                      padding: "10px"
+                    }}
+                    filename={`admin-ticket-${dayjs().format(
+                      "YYYY-MM-DD"
+                    )}.csv`}
+                  >
+                    {downloadLoading ? "Loading..." : "Download"}
+                  </CSVLink>
+                </Col>
+              </Row>
 
               <Table
                 className={"table-striped-rows"}

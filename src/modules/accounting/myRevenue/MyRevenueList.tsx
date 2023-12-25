@@ -22,6 +22,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { CSVLink } from "react-csv";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -54,6 +55,8 @@ const MyRevenueList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueData[]>([]);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
+
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -441,20 +444,41 @@ const MyRevenueList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>
                 </div>
               </Space>
+
+              <Row justify={"end"}>
+                <Col span={3}>
+                  <CSVLink
+                    data={data}
+                    asyncOnClick={true}
+                    onClick={(event, done) => {
+                      setDownloadLoading(true);
+                      setTimeout(() => {
+                        setDownloadLoading(false);
+                      }, 2000);
+                      done();
+                    }}
+                    className="ant-btn ant-btn-lg"
+                    target="_blank"
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: "25px",
+                      backgroundColor: "#F15F22",
+                      color: "#ffffff",
+                      padding: "10px"
+                    }}
+                    filename={`my-revenue-${dayjs().format("YYYY-MM-DD")}.csv`}
+                  >
+                    {downloadLoading ? "Loading..." : "Download"}
+                  </CSVLink>
+                </Col>
+              </Row>
+
               <Table
                 className={"table-striped-rows"}
                 columns={columns}
