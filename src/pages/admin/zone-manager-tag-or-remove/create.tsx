@@ -14,7 +14,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerCare.list", "") ? <NewZoneUpdate /> : <Forbidden />}
+      {ability.can("customerCare.zoneManagerTag", "") ? (
+        <NewZoneUpdate />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

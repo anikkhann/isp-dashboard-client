@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerCare.list", "") ? <NewTopUp /> : <Forbidden />}
+      {ability.can("customerCare.topUp", "") ? <NewTopUp /> : <Forbidden />}
     </>
   );
 };

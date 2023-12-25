@@ -14,7 +14,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerCare.list", "") ? <NewMacUpdate /> : <Forbidden />}
+      {ability.can("customerCare.macUpdate", "") ? (
+        <NewMacUpdate />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };

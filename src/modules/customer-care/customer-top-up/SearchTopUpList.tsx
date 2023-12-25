@@ -458,7 +458,8 @@ const SearchTopUpList = () => {
                     // border: 0,
                     overflow: "hidden",
                     fontWeight: "bold",
-                    font: "1rem"
+                    font: "1rem",
+                    width: "100%"
                   }}
                 >
                   <Panel header="Customer Top Up Filters" key="1">
@@ -519,38 +520,6 @@ const SearchTopUpList = () => {
                         </Space>
                       </Col>
 
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      ></Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      ></Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      ></Col>
-                    </Row>
-                    <Row
-                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                      justify="space-between"
-                    >
                       <Col
                         xs={24}
                         sm={24}

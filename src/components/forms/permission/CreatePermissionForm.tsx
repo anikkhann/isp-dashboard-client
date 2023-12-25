@@ -175,6 +175,57 @@ const tagsList = [
   {
     label: "distributionZone",
     value: "distributionZone"
+  },
+  {
+    label: "Expire Date",
+    value: "expireDate"
+  },
+  {
+    label: "Zone Manager Tag",
+    value: "zoneManagerTag"
+  },
+  {
+    label: "Sub Zone Manager Tag",
+    value: "subZoneManagerTag"
+  },
+  {
+    label: "Retailer Tag",
+    value: "retailerTag"
+  },
+  {
+    label: "Package Update",
+    value: "packageUpdate"
+  },
+  {
+    label: "Status Update",
+    value: "statusUpdate"
+  },
+
+  {
+    label: "Distribution Zone Update",
+    value: "distributionZoneUpdate"
+  },
+
+  {
+    label: "Distribution Pop Update",
+    value: "distributionPopUpdate"
+  },
+
+  {
+    label: "Password Update",
+    value: "passwordUpdate"
+  },
+  {
+    label: "Mac Update",
+    value: "macUpdate"
+  },
+  {
+    label: "Static IP Assign",
+    value: "staticIpAssign"
+  },
+  {
+    label: "Package Migration",
+    value: "packageMigration"
   }
 ];
 

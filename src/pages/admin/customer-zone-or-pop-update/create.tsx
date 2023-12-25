@@ -15,7 +15,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerCare.list", "") ? (
+      {ability.can("customerCare.distributionZoneUpdate", "") ? (
         <NewZonePopUpdate />
       ) : (
         <Forbidden />

@@ -675,95 +675,79 @@ const SearchCustomer = () => {
                           />
                         </Space>
                       </Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={8}
-                        xl={8}
-                        xxl={8}
-                        className="gutter-row"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <span>
-                            <b>Email</b>
-                          </span>
-                          <Input
-                            type="text"
-                            className="ant-input"
-                            placeholder="Email"
-                            value={selectedEmail}
-                            onChange={e => setSelectedEmail(e.target.value)}
-                          />
-                        </Space>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={8}
-                        xl={8}
-                        xxl={8}
-                        className="gutter-row"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <span>
-                            <b>Mobile</b>
-                          </span>
-                          <Input
-                            type="text"
-                            className="ant-input"
-                            placeholder="Mobile"
-                            value={selectedMobile}
-                            onChange={e => setSelectedMobile(e.target.value)}
-                          />
-                        </Space>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={8}
-                        xl={8}
-                        xxl={8}
-                        className="gutter-row"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <span>
-                            <b>Date Range By (Expiration Date)</b>
-                          </span>
-                          <RangePicker
-                            style={{ width: "100%" }}
-                            onChange={handleDateChange}
-                            value={selectedDateRange}
-                            placeholder={["Start Date", "End Date"]}
-                          />
-                        </Space>
-                      </Col>
 
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={8}
-                        xl={8}
-                        xxl={8}
-                        className="gutter-row"
-                      ></Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={8}
-                        xl={8}
-                        xxl={8}
-                        className="gutter-row"
-                      ></Col>
-                    </Row>
-                    <Row
-                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                      justify="space-between"
-                    >
+                      {ability.can("CustomerCareSearch.email", "") && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Email</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Email"
+                              value={selectedEmail}
+                              onChange={e => setSelectedEmail(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                      )}
+                      {ability.can("CustomerCareSearch.mobile", "") && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Mobile</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Mobile"
+                              value={selectedMobile}
+                              onChange={e => setSelectedMobile(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                      )}
+                      {ability.can("CustomerCareSearch.dateRange", "") && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range By (Expiration Date)</b>
+                            </span>
+                            <RangePicker
+                              style={{ width: "100%" }}
+                              onChange={handleDateChange}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
+                      )}
+
                       <Col
                         xs={24}
                         sm={24}
