@@ -12,7 +12,8 @@ import {
   Table,
   Tag,
   Collapse,
-  DatePicker
+  DatePicker,
+  Tooltip
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -22,7 +23,13 @@ import ability from "@/services/guard/ability";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { AlignType } from "rc-table/lib/interface";
-import { EditOutlined, EyeOutlined, VerifiedOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  EyeOutlined,
+  LogoutOutlined,
+  RightSquareOutlined,
+  VerifiedOutlined
+} from "@ant-design/icons";
 import { format } from "date-fns";
 
 import Swal from "sweetalert2";
@@ -232,7 +239,6 @@ const SearchCustomer = () => {
   };
   function subOneDay(date = new Date()) {
     date.setDate(date.getDate() - 1);
-
     return date;
   }
 
@@ -266,7 +272,46 @@ const SearchCustomer = () => {
     }
   }, [data]);
 
-  // console.log(error, isLoading, isError)
+  async function handleSendSafOtp(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Send Otp!"
+      });
+
+      if (result.isConfirmed) {
+        const body = {
+          customerId: id
+        };
+
+        const { data } = await axios.post(
+          `/api/saf-verification/send-otp`,
+          body
+        );
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.message, "success").then(() => {
+            // router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
 
   const columns: ColumnsType<CustomerData> = [
     {
@@ -457,58 +502,74 @@ const SearchCustomer = () => {
               <Space size="middle" align="center">
                 {ability.can("customerCare.update", "") ? (
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/customer-care/${record.id}/edit`}>
-                      <Button type="primary" icon={<EditOutlined />} />
-                    </Link>
+                    <Tooltip title="Verify SAF OTP">
+                      <Link href={`/admin/customer-care/${record.id}/edit`}>
+                        <Button type="primary" icon={<EditOutlined />} />
+                      </Link>
+                    </Tooltip>
                   </Space>
                 ) : null}
-                {ability.can("customerCare.update", "") &&
-                !record.isSafOtpVerified ? (
-                  <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/customer-care/${record.id}/saf`}>
-                      <Button
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#ffffff"
-                        }}
-                        icon={<VerifiedOutlined />}
-                      />
-                    </Link>
-                  </Space>
-                ) : null}
+
                 {ability.can("customerCare.update", "") &&
                 !record.isSafOtpSend ? (
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/customer-care/${record.id}/saf`}>
+                    <Tooltip title="Send SAF OTP">
                       <Button
                         style={{
                           backgroundColor: "#F15F22",
+                          border: "1px solid #F15F22",
                           color: "#ffffff"
                         }}
-                        icon={<VerifiedOutlined />}
+                        icon={<RightSquareOutlined />}
+                        // onClick={() => handleSendSafOtp(record.customerId)}
+                        onClick={() => handleSendSafOtp(record.id)}
                       />
-                    </Link>
+                    </Tooltip>
                   </Space>
                 ) : null}
+
+                {ability.can("customerCare.update", "") &&
+                !record.isSafOtpVerified ? (
+                  <Space size="middle" align="center" wrap>
+                    <Tooltip title="Verify SAF OTP">
+                      <Link href={`/admin/customer-care/${record.id}/saf-otp`}>
+                        <Button
+                          style={{
+                            backgroundColor: "#F15F22",
+                            border: "1px solid #F15F22",
+                            color: "#ffffff"
+                          }}
+                          icon={<LogoutOutlined />}
+                        />
+                      </Link>
+                    </Tooltip>
+                  </Space>
+                ) : null}
+
                 {ability.can("customerCare.update", "") &&
                 !record.isSafVerified ? (
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/customer-care/${record.id}/saf`}>
-                      <Button
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#ffffff"
-                        }}
-                        icon={<VerifiedOutlined />}
-                      />
-                    </Link>
+                    <Tooltip title="Verify SAF">
+                      <Link href={`/admin/customer-care/${record.id}/saf`}>
+                        <Button
+                          style={{
+                            backgroundColor: "#F15F22",
+                            border: "1px solid #F15F22",
+                            color: "#ffffff"
+                          }}
+                          icon={<VerifiedOutlined />}
+                        />
+                      </Link>
+                    </Tooltip>
                   </Space>
                 ) : null}
                 {ability.can("customerCare.view", "") ? (
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/customer-care/${record.id}`}>
-                      <Button type="primary" icon={<EyeOutlined />} />
-                    </Link>
+                    <Tooltip title="View">
+                      <Link href={`/admin/customer-care/${record.id}`}>
+                        <Button type="primary" icon={<EyeOutlined />} />
+                      </Link>
+                    </Tooltip>
                   </Space>
                 ) : null}
               </Space>

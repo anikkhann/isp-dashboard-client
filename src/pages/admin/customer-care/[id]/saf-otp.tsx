@@ -1,7 +1,7 @@
 import CustomerCareLayout from "@/core/layouts/CustomerCareLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import NewCareCustomerSaf from "@/modules/customer-care/customer-care/NewCareCustomerSaf";
+import NewCareCustomerSafOtp from "@/modules/customer-care/customer-care/NewCareCustomerSafOtp";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -19,7 +19,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("customerCare.list", "") ? (
-        <NewCareCustomerSaf id={id} />
+        <NewCareCustomerSafOtp id={id} />
       ) : (
         <Forbidden />
       )}

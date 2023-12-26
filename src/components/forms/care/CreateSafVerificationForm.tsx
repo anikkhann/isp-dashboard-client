@@ -10,7 +10,6 @@ import withReactContent from "sweetalert2-react-content";
 import {
   Alert,
   Button,
-  Checkbox,
   Form,
   Grid,
   Input,
@@ -18,128 +17,93 @@ import {
   Space,
   Card,
   Row,
-  Col
+  Col,
+  Radio,
+  DatePicker
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useAppSelector } from "@/store/hooks";
 import AppImageLoader from "@/components/loader/AppImageLoader";
+import { CustomerData } from "@/interfaces/CustomerData";
+
+import type { RadioChangeEvent } from "antd";
+
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
 
 interface FormData {
-  name: string;
-  username: string;
-  password: string;
-  customerTypeId: string;
-  mobileNo: string;
-  altMobileNo: string;
-  email: string;
+  subscriberName: string;
   contactPerson: string;
-  contactNumber: string;
+  identificationNo: string;
+  dateOfBirth: string;
+  gender: string;
+  fatherName: string;
+  motherName: string;
+  spouseName: string;
   connectionAddress: string;
   flatNo: string;
   houseNo: string;
   roadNo: string;
   area: string;
-  identityType: string;
-  identityNo: string;
-  divisionId: any;
-  districtId: any;
-  upazillaId: any;
-  unionId: any;
-  customerPackageId: string;
-  remarks: any;
-  distributionZoneId: string;
-  distributionPopId: string;
-  isMacBound: boolean;
-  mac: string;
-  simultaneousUser: string;
-  ipMode: string;
-  staticIp: any;
-  referenceType: any;
-  referrerCustomer: any;
-  referrerUserId: any;
-  referrerName: any;
-  connectionType: any;
-  fiberOpticDeviceType: string;
-  oltDeviceId: any;
-  serialNo: any;
-  cableLength: any;
-  vlanBoxName: any;
-  swPortNo: any;
-  cableId: any;
-  colorCode: any;
-  splitter: any;
-  onuDeviceId: any;
-  accountStatus: string;
-  autoRenew: boolean;
-  discount: any;
-  smsAlert: boolean;
-  emailAlert: boolean;
+  connectionAddressDivisionId: string;
+  connectionAddressDistrictId: string;
+  connectionAddressUpazillaId: string;
+  connectionAddressPostCode: string;
+  permanentAddress: string;
+  permanentAddressDivisionId: string;
+  permanentAddressDistrictId: string;
+  permanentAddressUpazillaId: string;
+  permanentAddressPostCode: string;
+  mobileNumber: string;
+  phoneNumber: string;
+  altMobileNo: string;
+  email: string;
+  occupation: string;
 }
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
-
-const referenceTypes = [
+const occupations = [
   {
-    label: "Internal",
-    value: "Internal"
+    label: "Government Service",
+    value: "Government Service"
   },
   {
-    label: "External",
-    value: "External"
+    label: "Private Service",
+    value: "Private Service"
   },
   {
-    label: "Customer",
-    value: "Customer"
+    label: "Business",
+    value: "Business"
+  },
+  {
+    label: "Student",
+    value: "Student"
+  },
+  {
+    label: "Business",
+    value: "Business"
+  },
+  {
+    label: "Others",
+    value: "Others"
   }
 ];
 
-const identityTypes = [
-  {
-    label: "NID",
-    value: "nid"
-  },
-  {
-    label: "Passport",
-    value: "passport"
-  }
-];
-
-const connectionTypes = [
-  {
-    label: "fiber_optic",
-    value: "fiber_optic"
-  },
-  {
-    label: "utp",
-    value: "utp"
-  }
-];
-const ipModes = [
-  {
-    label: "NAS",
-    value: "nas"
-  },
-  {
-    label: "StaticIP",
-    value: "staticip"
-  }
-];
-const fiberOpticDeviceTypes = [
-  {
-    label: "MC",
-    value: "MC"
-  },
-  {
-    label: "OLT",
-    value: "OLT"
-  }
-];
 interface PropData {
-  item: any;
+  item: CustomerData;
 }
 
 const CreateSafVerificationForm = ({ item }: PropData) => {
@@ -147,76 +111,57 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
   const [loading, setLoading] = useState(false);
 
-  const authUser = useAppSelector(state => state.auth.user);
+  const [previous, setPrevious] = useState<any>(null);
 
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
-  const [isActive, setIsActive] = useState(true);
-
-  const [autoRenew, setAutoRenew] = useState(true);
-
-  const [isMacBound, setIsMacBound] = useState(false);
-
-  const [smsAlert, setSmsAlert] = useState(true);
-  const [emailAlert, setEmailAlert] = useState(true);
-
-  const [selectedIpMode, setSelectedIpMode] = useState("nas");
   const router = useRouter();
   const MySwal = withReactContent(Swal);
+
+  const [selectedOccupation, setSelectedOccupation] = useState(null);
 
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [upazillas, setUpazillas] = useState([]);
-  const [unions, setUnions] = useState([]);
 
   const [selectedDivision, setSelectedDivision] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [selectedUpazilla, setSelectedUpazilla] = useState(null);
-  const [selectedUnion, setSelectedUnion] = useState(null);
 
-  const [selectedIdentityType, setSelectedIdentityType] = useState(null);
+  const [parmanentAddressDivisions, setParmanentAddressDivisions] = useState(
+    []
+  );
+  const [parmanentAddressDistricts, setParmanentAddressDistricts] = useState(
+    []
+  );
+  const [parmanentAddressUpazillas, setParmanentAddressUpazillas] = useState(
+    []
+  );
 
-  const [distributionZones, setDistributionZones] = useState([]);
-  const [distributionPops, setDistributionPops] = useState([]);
+  const [
+    selectedParmanentAddressDivision,
+    setSelectedParmanentAddressDivision
+  ] = useState(null);
+  const [
+    selectedParmanentAddressDistrict,
+    setSelectedParmanentAddressDistrict
+  ] = useState(null);
+  const [
+    selectedParmanentAddressUpazilla,
+    setSelectedParmanentAddressUpazilla
+  ] = useState(null);
 
-  const [selectedDistributionZone, setSelectedDistributionZone] =
-    useState(null);
-  const [selectedDistributionPop, setSelectedDistributionPop] = useState(null);
+  // typeOfCustomer
+  const [typeOfCustomer, setTypeOfCustomer] = useState("");
 
-  const [customerTypes, setCustomerTypes] = useState([]);
-  const [selectedCustomerType, setSelectedCustomerType] = useState(null);
+  // gender
+  const [gender, setGender] = useState("");
 
-  const [customerPackages, setCustomerPackages] = useState([]);
-  const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
+  // dateOfBirth
+  const [selectedDateOfBirth, setSelectedDateOfBirth] = useState<any>(null);
 
-  const [selectedReferenceType, setSelectedReferenceType] = useState(null);
-  const [selectedConnectionType, setSelectedConnectionType] = useState(null);
-
-  const [selectedFiberOpticDeviceType, setSelectedFiberOpticDeviceType] =
-    useState(null);
-
-  const [customers, setCustomers] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
-
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  const [zones, setZones] = useState([]);
-  const [selectedZone, setSelectedZone] = useState(null);
-
-  const [subZones, setSubZones] = useState([]);
-  const [selectedSubZone, setSelectedSubZone] = useState(null);
-
-  const [retailers, setRetailers] = useState([]);
-  const [selectedRetailer, setSelectedRetailer] = useState(null);
-
-  const [oltDevice, setOltDevice] = useState([]);
-  const [oltDeviceId, setOltDeviceId] = useState(null);
-
-  const [onuDevice, setOnuDevice] = useState([]);
-  const [onuDeviceId, setOnuDeviceId] = useState(null);
   const { useBreakpoint } = Grid;
 
   const { lg } = useBreakpoint();
@@ -224,591 +169,76 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleActive = (e: any) => {
-    setIsActive(e.target.checked ? true : false);
+  const onTypeOfCustomerChange = (e: RadioChangeEvent) => {
+    // console.log('radio checked', e.target.value);
+    setTypeOfCustomer(e.target.value);
   };
 
-  const handleSmsAlert = (e: any) => {
-    setSmsAlert(e.target.checked ? true : false);
+  const onGenderChange = (e: RadioChangeEvent) => {
+    // console.log('radio checked', e.target.value);
+    setGender(e.target.value);
   };
 
-  const handleEmailAlert = (e: any) => {
-    setEmailAlert(e.target.checked ? true : false);
-  };
-
-  const handleAutoRenew = (e: any) => {
-    setAutoRenew(e.target.checked ? true : false);
-  };
-
-  const handleMacBound = (e: any) => {
-    setIsMacBound(e.target.checked ? true : false);
-  };
-
-  const handleIdentityTypeChange = (value: any) => {
-    console.log("checked = ", value);
-    form.setFieldsValue({ identityType: value });
-    setSelectedIdentityType(value as any);
+  const handleDateChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedDateOfBirth(value);
+    form.setFieldsValue({
+      dateOfBirth: value
+    });
   };
 
   const handleDivisionChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ divisionId: value });
+    form.setFieldsValue({ connectionAddressDivisionId: value });
     setSelectedDivision(value as any);
   };
 
   const handleDistrictChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ districtId: value });
+    form.setFieldsValue({ connectionAddressDistrictId: value });
     setSelectedDistrict(value as any);
   };
 
   const handleUpazillaChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ upazillaId: value });
+    form.setFieldsValue({ connectionAddressUpazillaId: value });
     setSelectedUpazilla(value as any);
   };
 
-  const handleUnionChange = (value: any) => {
+  const handleParmanentAddressDivisionChange = (value: any) => {
+    form.setFieldsValue({ permanentAddressDivisionId: value });
+    setSelectedParmanentAddressDivision(value as any);
+  };
+
+  const handleParmanentAddressDistrictChange = (value: any) => {
+    form.setFieldsValue({ permanentAddressDistrictId: value });
+    setSelectedParmanentAddressDistrict(value as any);
+  };
+
+  const handleParmanentAddressUpazillaChange = (value: any) => {
+    form.setFieldsValue({ permanentAddressUpazillaId: value });
+    setSelectedParmanentAddressUpazilla(value as any);
+  };
+
+  const handleOccupationChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ unionId: value });
-    setSelectedUnion(value as any);
+    setSelectedOccupation(value as any);
+    form.setFieldsValue({ occupation: value });
   };
 
-  const handleCustomerPackageChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ customerPackageId: value });
-    setSelectedCustomerPackage(value as any);
-  };
+  const getPreviousData = async (customerId: string) => {
+    // saf-verification/get-by-customer-id
+    const response = await axios.get(
+      `/api/saf-verification/get-by-customer-id/${customerId}`
+    );
+    // console.log(response);
 
-  const handleCustomerTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ customerTypeId: value });
-    setSelectedCustomerType(value as any);
-  };
+    const { data } = response;
 
-  const handleDistributionZoneChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ distributionZoneId: value });
-    setSelectedDistributionZone(value as any);
-  };
-
-  const handleDistributionPopChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ distributionPopId: value });
-    setSelectedDistributionPop(value as any);
-  };
-
-  const handleReferenceTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ referenceType: value });
-    setSelectedReferenceType(value as any);
-  };
-
-  const handleCustomerChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ referrerCustomer: value });
-    setSelectedCustomer(value as any);
-  };
-
-  const handleUserChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ referrerUserId: value });
-    setSelectedUser(value as any);
-  };
-
-  const handleConnectionTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ connectionType: value });
-    setSelectedConnectionType(value as any);
-  };
-
-  const handleFiberOpticDeviceTypeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ fiberOpticDeviceType: value });
-    setSelectedFiberOpticDeviceType(value as any);
-  };
-
-  const handleZoneChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ zoneManagerId: value });
-    setSelectedZone(value as any);
-  };
-
-  const handleSubZoneChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ subZoneManagerId: value });
-    setSelectedSubZone(value as any);
-  };
-  const handleIpModeChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ ipMode: value });
-    setSelectedIpMode(value as any);
-  };
-  const handleRetailerChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ retailerId: value });
-    setSelectedRetailer(value as any);
-  };
-  //handle olt
-  const handleOltDevice = (value: any) => {
-    form.setFieldsValue({ oltDeviceId: value });
-    setOltDeviceId(value as any);
-  };
-  //handle onu
-  const handleOnuDevice = (value: any) => {
-    form.setFieldsValue({ onuDeviceId: value });
-    setOnuDeviceId(value as any);
-  };
-  // olt device
-  function getOltDevice() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        // partnerType: "zone",
-        deviceType: "OLT",
-        isActive: true
-      }
-    };
-    axios.post("/api/device/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setOltDevice(list);
-    });
-  }
-  // onu device
-  function getOnuDevice() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        // partnerType: "zone",
-        deviceType: "ONU",
-        isActive: true
-      }
-    };
-    axios.post("/api/device/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setOnuDevice(list);
-    });
-  }
-
-  function getZoneManagers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "zone",
-        client: {
-          id: authUser?.partnerId
-        },
-        isActive: true
-      }
-    };
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setZones(list);
-    });
-  }
-
-  function getSubZoneManagers(selectedZoneId: any) {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "reseller",
-        zoneManager: { id: selectedZoneId },
-        client: {
-          id: authUser?.partnerId
-        },
-        isActive: true
-      }
-    };
-
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setSubZones(list);
-    });
-  }
-
-  function getRetailers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
-        isActive: true
-      }
-    };
-
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setRetailers(list);
-    });
-  }
-
-  useEffect(() => {
-    if (item) {
-      form.setFieldsValue({
-        name: item.name,
-        username: item.username,
-        password: item.password,
-        email: item.email,
-        address: item.address,
-        flatNo: item.flatNo,
-        houseNo: item.houseNo,
-        roadNo: item.roadNo,
-        area: item.area,
-        mobileNo: item.mobileNo,
-        altMobileNo: item.altMobileNo,
-
-        identityType: item.identityType,
-        identityNo: item.identityNo,
-        remarks: item.remarks,
-        connectionAddress: item.connectionAddress,
-        distributionZoneId: item.distributionZoneId,
-        distributionPopId: item.distributionPopId,
-        isMacBound: item.isMacBound,
-        mac: item.mac,
-        simultaneousUser: item.simultaneousUser,
-        ipMode: item.ipMode,
-        staticIp: item.staticIp,
-        referenceType: item.referenceType,
-        referrerName: item.referrerName,
-        connectionType: item.connectionType,
-        fiberOpticDeviceType: item.fiberOpticDeviceType,
-        oltDeviceId: item.oltDeviceId,
-        serialNo: item.serialNo,
-        cableLength: item.cableLength,
-        vlanBoxName: item.vlanBoxName,
-        swPortNo: item.swPortNo,
-        cableId: item.cableId,
-        colorCode: item.colorCode,
-        splitter: item.splitter,
-        onuDeviceId: item.onuDeviceId,
-
-        altContactNumber: item.altContactNumber,
-        contactNumber: item.contactNumber,
-        districtId: item.districtId,
-        divisionId: item.divisionId,
-        upazillaId: item.upazillaId,
-        unionId: item.unionId,
-        contactPerson: item.contactPerson,
-
-        customerTypeId: item.customerTypeId,
-        radiusIpId: item.radiusIpId,
-        discount: item.discount
-      });
-      // setSelectedDivision(item.divisionId);
-      if (item.divisionId) {
-        form.setFieldsValue({
-          divisionId: item.divisionId
-        });
-        setSelectedDivision(item.divisionId);
-      }
-      if (item.districtId) {
-        form.setFieldsValue({
-          districtId: item.districtId
-        });
-        setSelectedDistrict(item.districtId);
-      }
-      if (item.upazillaId) {
-        form.setFieldsValue({
-          upazillaId: item.upazillaId
-        });
-        setSelectedUpazilla(item.upazillaId);
-      }
-      if (item.unionId) {
-        form.setFieldsValue({
-          unionId: item.unionId
-        });
-        setSelectedUnion(item.unionId);
-      }
-      if (item.oltDeviceId) {
-        form.setFieldsValue({
-          oltDeviceId: item.oltDeviceId
-        });
-        setOltDeviceId(item.oltDeviceId);
-      }
-      if (item.onuDeviceId) {
-        form.setFieldsValue({
-          onuDeviceId: item.onuDeviceId
-        });
-        setOnuDeviceId(item.onuDeviceId);
-      }
-      setSelectedCustomerType(item.customerTypeId);
-
-      if (item.customerPackageId) {
-        form.setFieldsValue({
-          customerPackageId: item.customerPackageId
-        });
-        setSelectedCustomerPackage(item.customerPackageId);
-      }
-
-      setSelectedReferenceType(item.referenceType);
-      setSelectedConnectionType(item.connectionType);
-      setSelectedFiberOpticDeviceType(item.fiberOpticDeviceType);
-      setSelectedDistributionZone(item.distributionZoneId);
-      setSelectedDistributionPop(item.distributionPopId);
-      setSelectedIdentityType(item.identityType);
-      setSelectedCustomer(item.referrerCustomer);
-      setSelectedUser(item.referrerUserId);
-      setSelectedZone(item.zoneManagerId);
-      setSelectedSubZone(item.subZoneManagerId);
-      setSelectedRetailer(item.retailerId);
-      setAutoRenew(item.autoRenew);
-      setSmsAlert(item.smsAlert);
-      setEmailAlert(item.emailAlert);
-      setIsMacBound(item.isMacBound);
-      setIsActive(item.isActive);
+    if (data.body) {
+      setPrevious(data.body);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
-
-  function getCustomerTypes() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "title"
-          }
-        ]
-      },
-      body: {
-        isActive: true
-      }
-    };
-    axios.post("/api/customer-type/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.title,
-          value: item.id
-        };
-      });
-
-      setCustomerTypes(list);
-    });
-  }
-
-  function getCustomers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        isActive: true
-      }
-    };
-    axios.post("/api/customer/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setCustomers(list);
-    });
-  }
-
-  function getUsers() {
-    const body = {
-      // FOR PAGINATION - OPTIONAL
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        isActive: true
-      }
-    };
-    axios.post("/api/users/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
-      });
-
-      setUsers(list);
-    });
-  }
+  };
 
   function getDivisions() {
     const body = {
@@ -931,7 +361,47 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     });
   }
 
-  function getUnions(selectedUpazilla: string) {
+  function getPernamentAddressDivisions() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        isActive: true
+      }
+    };
+    axios.post("/api/division/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setParmanentAddressDivisions(list);
+    });
+  }
+
+  function getPernamentAddressDistricts(selectedDivision: string) {
     const body = {
       meta: {
         sort: [
@@ -944,14 +414,14 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        upazilla: { id: selectedUpazilla },
+        division: { id: selectedDivision },
         isActive: true
       }
     };
 
-    axios.post("/api/union/get-list", body).then(res => {
+    axios.post("/api/district/get-list", body).then(res => {
+      // console.log(res);
       const { data } = res;
-
       if (data.status != 200) {
         MySwal.fire({
           title: "Error",
@@ -961,18 +431,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       }
 
       if (!data.body) return;
-
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
           value: item.id
         };
       });
-      setUnions(list);
+      setParmanentAddressDistricts(list);
     });
   }
 
-  function getDistributionZones() {
+  function getPernamentAddressUpazillas(selectedDistrict: string) {
     const body = {
       meta: {
         sort: [
@@ -982,14 +451,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           }
         ]
       },
+      // FOR SEARCHING DATA - OPTIONAL
       body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        district: { id: selectedDistrict },
         isActive: true
       }
     };
 
-    axios.post("/api/distribution-zone/get-list", body).then(res => {
+    axios.post("/api/upazilla/get-list", body).then(res => {
+      // console.log(res);
       const { data } = res;
-
       if (data.status != 200) {
         MySwal.fire({
           title: "Error",
@@ -999,113 +471,49 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       }
 
       if (!data.body) return;
+
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
           value: item.id
         };
       });
-      setDistributionZones(list);
+      setParmanentAddressUpazillas(list);
     });
   }
 
-  function getDistributionPops(selectedDistributionZone: string) {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        zone: { id: selectedDistributionZone },
-        isActive: true
-      }
-    };
+  useEffect(() => {
+    if (item) {
+      getPreviousData(item.id);
 
-    axios.post("/api/distribution-pop/get-list", body).then(res => {
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
+      form.setFieldsValue({
+        area: item.area
       });
-      setDistributionPops(list);
-    });
-  }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item]);
 
-  const getCustomerPackages = () => {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      body: {
-        isActive: true
-      }
-    };
-    axios.post("/api/customer-package/get-list", body).then(res => {
-      const { data } = res;
+  useEffect(() => {
+    if (previous) {
+      setSelectedDivision(previous.connectionAddressDivisionId);
+      setSelectedDistrict(previous.connectionAddressDistrictId);
+      setSelectedUpazilla(previous.connectionAddressUpazillaId);
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.name,
-          value: item.id
-        };
+      form.setFieldsValue({
+        connectionAddressDivisionId: previous.connectionAddressDivisionId,
+        connectionAddressDistrictId: previous.connectionAddressDistrictId,
+        connectionAddressUpazillaId: previous.connectionAddressUpazillaId
       });
-      setCustomerPackages(list);
-    });
-  };
+    }
+  }, [previous]);
 
   // call on page load
   useEffect(() => {
     getDivisions();
-    getCustomerPackages();
-    getDistributionZones();
-    // getDistributionPops();
-    getCustomerTypes();
-    getCustomers();
-    getUsers();
-
-    getZoneManagers();
-    // getSubZoneManagers();
-    getRetailers();
-    getOltDevice();
-    getOnuDevice();
+    getPernamentAddressDivisions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    if (selectedDistributionZone) {
-      getDistributionPops(selectedDistributionZone);
-    }
-  }, [selectedDistributionZone]);
+
   useEffect(() => {
     if (selectedDivision) {
       getDistricts(selectedDivision);
@@ -1119,135 +527,85 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
   }, [selectedDistrict]);
 
   useEffect(() => {
-    if (selectedUpazilla) {
-      getUnions(selectedUpazilla);
+    if (selectedParmanentAddressDivision) {
+      getPernamentAddressDistricts(selectedParmanentAddressDivision);
     }
-  }, [selectedUpazilla]);
+  }, [selectedParmanentAddressDivision]);
 
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedZone);
+    if (selectedParmanentAddressDistrict) {
+      getPernamentAddressUpazillas(selectedParmanentAddressDistrict);
     }
-  }, [selectedZone]);
-
-  useEffect(() => {
-    getSubZoneManagers(null);
-  }, []);
+  }, [selectedParmanentAddressDistrict]);
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
     const {
-      name,
-      username,
-      password,
-      // customerTypeId: string
-      mobileNo,
-      altMobileNo,
-      email,
+      subscriberName,
       contactPerson,
-      contactNumber,
+      identificationNo,
+      dateOfBirth,
+      gender,
+      fatherName,
+      motherName,
+      spouseName,
       connectionAddress,
       flatNo,
       houseNo,
       roadNo,
       area,
-      // identityType,
-      identityNo,
-      remarks,
-      isMacBound,
-      mac,
-      simultaneousUser,
-      ipMode,
-      staticIp,
-      // referenceType,
-      // referrerCustomer,
-      // referrerUserId,
-      referrerName,
-      // connectionType,
-      // fiberOpticDeviceType,
-      oltDeviceId,
-      serialNo,
-      cableLength,
-      vlanBoxName,
-      swPortNo,
-      cableId,
-      colorCode,
-      splitter,
-      onuDeviceId,
-      // accountStatus,
-      autoRenew,
-      discount,
-      smsAlert,
-      emailAlert
-      // divisionId,
-      // districtId,
-      // upazillaId,
-      // unionId,
-      // customerPackageId,
+      connectionAddressDivisionId,
+      connectionAddressDistrictId,
+      connectionAddressUpazillaId,
+      connectionAddressPostCode,
+      permanentAddress,
+      permanentAddressDivisionId,
+      permanentAddressDistrictId,
+      permanentAddressUpazillaId,
+      permanentAddressPostCode,
+      mobileNumber,
+      phoneNumber,
+      altMobileNo,
+      email,
+      occupation
     } = data;
     //
     const formData = {
-      id: item.id,
-      name: name,
-      username: username,
-      password: password,
-      customerTypeId: selectedCustomerType,
-      mobileNo: mobileNo,
-      altMobileNo: altMobileNo,
-      email: email,
+      id: previous.id,
+      customerId: item.id,
+      typeOfCustomer: typeOfCustomer,
+      subscriberName: subscriberName,
       contactPerson: contactPerson,
-      contactNumber: contactNumber,
+      identificationNo: identificationNo,
+      dateOfBirth: dateOfBirth ? dayjs(dateOfBirth).format("YYYY-MM-DD") : null,
+      gender: gender,
+      fatherName: fatherName,
+      motherName: motherName,
+      spouseName: spouseName,
       connectionAddress: connectionAddress,
       flatNo: flatNo,
       houseNo: houseNo,
       roadNo: roadNo,
       area: area,
-      identityType: selectedIdentityType,
-      identityNo: identityNo,
-      divisionId: selectedDivision,
-      districtId: selectedDistrict,
-      upazillaId: selectedUpazilla,
-      unionId: selectedUnion,
-      customerPackageId: selectedCustomerPackage,
-      remarks: remarks,
-      distributionZoneId: selectedDistributionZone,
-      distributionPopId: selectedDistributionPop,
-
-      isMacBound: isMacBound,
-      mac: mac,
-      simultaneousUser: simultaneousUser,
-      ipMode: ipMode,
-      staticIp: staticIp,
-      referenceType: selectedReferenceType,
-      referrerCustomer: selectedCustomer,
-      referrerUserId: selectedUser,
-      referrerName: referrerName,
-      connectionType: selectedConnectionType,
-      fiberOpticDeviceType: selectedFiberOpticDeviceType,
-      oltDeviceId: oltDeviceId,
-      serialNo: serialNo,
-      cableLength: cableLength,
-      vlanBoxName: vlanBoxName,
-      swPortNo: swPortNo,
-      cableId: cableId,
-      colorCode: colorCode,
-      splitter: splitter,
-      onuDeviceId: onuDeviceId,
-      // accountStatus: accountStatus,
-      autoRenew: autoRenew,
-      discount: discount,
-      smsAlert: smsAlert,
-      emailAlert: emailAlert,
-      isActive: isActive,
-
-      zoneManagerId: selectedZone,
-      subZoneManagerId: selectedSubZone,
-      retailerId: selectedRetailer
+      connectionAddressDivisionId: connectionAddressDivisionId,
+      connectionAddressDistrictId: connectionAddressDistrictId,
+      connectionAddressUpazillaId: connectionAddressUpazillaId,
+      connectionAddressPostCode: connectionAddressPostCode,
+      permanentAddress: permanentAddress,
+      permanentAddressDivisionId: permanentAddressDivisionId,
+      permanentAddressDistrictId: permanentAddressDistrictId,
+      permanentAddressUpazillaId: permanentAddressUpazillaId,
+      permanentAddressPostCode: permanentAddressPostCode,
+      mobileNumber: mobileNumber,
+      phoneNumber: phoneNumber,
+      altMobileNo: altMobileNo,
+      email: email,
+      occupation: occupation
     };
 
     try {
       axios
-        .put("/api/customer/update", formData)
+        .put("/api/saf-verification/update", formData)
         .then(res => {
           // console.log(res);
           const { data } = res;
@@ -1258,7 +616,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
               text: data.message || " Updated successfully",
               icon: "success"
             }).then(() => {
-              router.replace("/admin/customer/customer");
+              router.replace(`/admin/customer-care/${item.id}`);
             });
           } else {
             MySwal.fire({
@@ -1299,60 +657,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
             autoComplete="off"
             onFinish={onSubmit}
             form={form}
-            initialValues={{
-              name: "",
-              username: "",
-              password: "",
-              // customerTypeId: string
-              mobileNo: "",
-              altMobileNo: "",
-              email: "",
-              contactPerson: "",
-              contactNumber: "",
-              connectionAddress: "",
-              flatNo: "",
-              houseNo: "",
-              roadNo: "",
-              area: "",
-              identityType: "",
-              identityNo: "",
-              divisionId: "",
-              districtId: "",
-              upazillaId: "",
-              unionId: "",
-              customerPackageId: "",
-              remarks: "",
-              distributionZoneId: "",
-              distributionPopId: "",
-              isMacBound: false,
-              mac: "",
-              simultaneousUser: "",
-              ipMode: "",
-              staticIp: "",
-              referenceType: "",
-              referrerCustomer: "",
-              referrerUserId: "",
-              referrerName: "",
-              connectionType: "",
-              fiberOpticDeviceType: "",
-              oltDeviceId: "",
-              serialNo: "",
-              cableLength: "",
-              vlanBoxName: "",
-              swPortNo: "",
-              cableId: "",
-              colorCode: "",
-              splitter: "",
-              onuDeviceId: "",
-              // accountStatus: "",
-              autoRenew: false,
-              discount: "",
-              smsAlert: false,
-              emailAlert: false,
-              zoneManagerId: "",
-              subZoneManagerId: "",
-              retailerId: ""
-            }}
+            initialValues={{}}
             style={{ maxWidth: "100%" }}
             name="wrap"
             colon={false}
@@ -1397,176 +702,62 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* name */}
+                      {/* typeOfCustomer */}
                       <Form.Item
-                        label="Name"
+                        label="typeOfCustomer"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold",
+                          alignItems: "flex-start"
+                        }}
+                        name="typeOfCustomer"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your typeOfCustomer!"
+                          }
+                        ]}
+                      >
+                        <Radio.Group
+                          onChange={onTypeOfCustomerChange}
+                          value={typeOfCustomer}
+                          style={{
+                            alignItems: "flex-start"
+                          }}
+                        >
+                          <Radio value="individual">individual</Radio>
+                          <Radio value="organization">organization</Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* subscriberName */}
+                      <Form.Item
+                        name="subscriberName"
+                        label="subscriberName"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
-                        name="name"
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Name!"
+                            message: "Please input your subscriberName!"
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Name"
+                          placeholder="subscriberName"
                           className={`form-control`}
-                          name="name"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* username */}
-                      <Form.Item
-                        name="username"
-                        label="Username"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Username!"
-                          },
-                          {
-                            pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
-                            message:
-                              "Only letters, numbers, underscores and hyphens allowed"
-                          }
-                        ]}
-                      >
-                        <Input
-                          disabled
-                          type="text"
-                          placeholder="Username"
-                          className={`form-control`}
-                          name="username"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* customerTypeId */}
-                      <Form.Item
-                        label="Customer Type"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="customerTypeId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Customer Type"
-                            onChange={handleCustomerTypeChange}
-                            options={customerTypes}
-                            value={selectedCustomerType}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* email */}
-                      <Form.Item
-                        label="Email"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="email"
-                        rules={[
-                          {
-                            type: "email",
-                            message: "The input is not valid E-mail!"
-                          },
-                          {
-                            required: true,
-                            message: "Please input your E-mail!"
-                          },
-                          {
-                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                            message:
-                              "Only letters, numbers, underscores and hyphens allowed"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="email"
-                          placeholder="Email"
-                          className={`form-control`}
-                          name="email"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* password */}
-                      <Form.Item
-                        name="password"
-                        label="Password"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your password!"
-                          },
-                          {
-                            min: 6,
-                            message: "Password must be minimum 6 characters."
-                          },
-                          {
-                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                            message:
-                              "Only letters, numbers, underscores and hyphens allowed"
-                          }
-                        ]}
-                      >
-                        <Input.Password
-                          placeholder="Password"
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
@@ -1581,70 +772,42 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* mobileNo */}
-                      <Form.Item
-                        name="mobileNo"
-                        label="Mobile No"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Mobile No!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Mobile No"
-                          className={`form-control`}
-                          name="mobileNo"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* altMobileNo */}
-                      <Form.Item
-                        name="altMobileNo"
-                        label="Alt Mobile No"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Alt Mobile No"
-                          className={`form-control`}
-                          name="altMobileNo"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* contact Person */}
+                      {/* contactPerson */}
                       <Form.Item
                         name="contactPerson"
-                        label="Contact Person"
+                        label="contactPerson"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        // rules={[
+                        //   {
+                        //     required: true,
+                        //     message: "Please input your contactPerson!"
+                        //   }
+                        // ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="contactPerson"
+                          className={`form-control`}
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* identificationNo */}
+                      <Form.Item
+                        name="identificationNo"
+                        label="identificationNo"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -1652,19 +815,84 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Contact Person!"
+                            message: "Please input your identificationNo!"
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Contact Person"
+                          placeholder="identificationNo"
                           className={`form-control`}
-                          name="contactPerson"
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
                     </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* dateOfBirth */}
+                      <Form.Item
+                        name="dateOfBirth"
+                        label="dateOfBirth"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your dateOfBirth!"
+                          }
+                        ]}
+                      >
+                        <DatePicker
+                          style={{ width: "100%", padding: "6px" }}
+                          className={`form-control`}
+                          placeholder="dateOfBirth"
+                          onChange={handleDateChange}
+                          format={dateFormat}
+                          value={selectedDateOfBirth}
+                        />
+                      </Form.Item>
+                    </Col>
+
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* gender */}
+                      <Form.Item
+                        label="gender"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="gender"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your gender!"
+                          }
+                        ]}
+                      >
+                        <Radio.Group onChange={onGenderChange} value={gender}>
+                          <Radio value="male">Male</Radio>
+                          <Radio value="female">Female</Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                    </Col>
+
                     <Col
                       xs={24}
                       sm={12}
@@ -1676,8 +904,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                     >
                       {/* contactNumber */}
                       <Form.Item
-                        name="contactNumber"
-                        label="Contact Number"
+                        name="fatherName"
+                        label="fatherName"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -1685,19 +913,73 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Contact Number!"
-                          },
-                          {
-                            pattern: new RegExp(/^(01)[0-9]{9}$/),
-                            message: "Please enter correct BD Phone number."
+                            message: "Please input your fatherName!"
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Contact Number"
+                          placeholder="fatherName"
                           className={`form-control`}
-                          name="contactNumber"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* motherName */}
+                      <Form.Item
+                        name="motherName"
+                        label="motherName"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your motherName!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="motherName"
+                          className={`form-control`}
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* spouseName */}
+                      <Form.Item
+                        name="spouseName"
+                        label="spouseName"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="spouseName"
+                          className={`form-control`}
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
@@ -1714,7 +996,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       {/* connectionAddress */}
                       <Form.Item
                         name="connectionAddress"
-                        label="Connection Address"
+                        label="connectionAddress"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -1722,15 +1004,14 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Connection Address!"
+                            message: "Please input your connectionAddress!"
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Connection Address"
+                          placeholder="connectionAddress"
                           className={`form-control`}
-                          name="connectionAddress"
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
@@ -1857,131 +1138,6 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         />
                       </Form.Item>
                     </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* customerPackageId */}
-                      <Form.Item
-                        label="Customer Package"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select Customer Package!"
-                          }
-                        ]}
-                        name="customerPackageId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Customer Package"
-                            onChange={handleCustomerPackageChange}
-                            options={customerPackages}
-                            value={selectedCustomerPackage}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* identityType */}
-                      <Form.Item
-                        label="Identity Type"
-                        style={{
-                          marginBottom: 0,
-                          marginRight: lg ? "10px" : "0px",
-                          fontWeight: "bold"
-                        }}
-                        name="identityType"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select  Identity Type!"
-                          }
-                        ]}
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Identity Type"
-                            onChange={handleIdentityTypeChange}
-                            options={identityTypes}
-                            value={selectedIdentityType}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* identityNo */}
-                      <Form.Item
-                        name="identityNo"
-                        label="Identity No"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Identity No!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Identity No"
-                          className={`form-control`}
-                          name="identityNo"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    ></Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    ></Col>
                   </Row>
                 </Card>
               </Col>
@@ -2011,39 +1167,6 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                     gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                     justify="space-between"
                   >
-                    {authUser && authUser.userType == "subZone" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* retailerId */}
-                        <Form.Item
-                          label="Retailer"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="retailerId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleRetailerChange}
-                              options={retailers}
-                              value={selectedRetailer}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                    )}
-
                     <Col
                       xs={24}
                       sm={12}
@@ -2053,9 +1176,9 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* divisionId */}
+                      {/* connectionAddressDivisionId */}
                       <Form.Item
-                        label="Division"
+                        label="connectionAddressDivisionId"
                         style={{
                           marginBottom: 0,
                           marginRight: lg ? "10px" : "0px",
@@ -2067,7 +1190,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                             message: "Please select Division!"
                           }
                         ]}
-                        name="divisionId"
+                        name="connectionAddressDivisionId"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
@@ -2090,9 +1213,9 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* districtId */}
+                      {/* connectionAddressDistrictId */}
                       <Form.Item
-                        label="District"
+                        label="connectionAddressDistrictId"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -2103,7 +1226,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                             message: "Please select District!"
                           }
                         ]}
-                        name="districtId"
+                        name="connectionAddressDistrictId"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
@@ -2126,14 +1249,14 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* upazillaId */}
+                      {/* connectionAddressUpazillaId */}
                       <Form.Item
-                        label="Upazilla"
+                        label="connectionAddressUpazillaId"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
-                        name="upazillaId"
+                        name="connectionAddressUpazillaId"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
@@ -2147,36 +1270,6 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         </Space>
                       </Form.Item>
                     </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* unionId */}
-                      <Form.Item
-                        label="Union"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="unionId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Union"
-                            onChange={handleUnionChange}
-                            options={unions}
-                            value={selectedUnion}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
 
                     <Col
                       xs={24}
@@ -2187,257 +1280,32 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* remarks */}
+                      {/* connectionAddressPostCode */}
                       <Form.Item
-                        name="remarks"
-                        label="Remarks"
+                        name="connectionAddressPostCode"
+                        label="connectionAddressPostCode"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
+                        rules={[
+                          {
+                            required: true,
+                            message:
+                              "Please input your connectionAddressPostCode!"
+                          }
+                        ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Remarks"
+                          placeholder="connectionAddressPostCode"
                           className={`form-control`}
-                          name="remarks"
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
                     </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* distributionZoneId */}
-                      <Form.Item
-                        label="Distribution Zone"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="distributionZoneId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Distribution Zone"
-                            onChange={handleDistributionZoneChange}
-                            options={distributionZones}
-                            value={selectedDistributionZone}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* distributionPopId */}
-                      <Form.Item
-                        label="Distribution Pop"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="distributionPopId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Distribution Pop"
-                            onChange={handleDistributionPopChange}
-                            options={distributionPops}
-                            value={selectedDistributionPop}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    {authUser && authUser.userType == "client" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* zoneManagerId */}
-                        <Form.Item
-                          label="Zone Manager"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="zoneManagerId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneChange}
-                              options={zones}
-                              value={selectedZone}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                    )}
-
-                    {authUser &&
-                      (authUser.userType == "client" ||
-                        authUser.userType == "zone") && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* subZoneManagerId */}
-                          <Form.Item
-                            label="SubZone Manager"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            name="subZoneManagerId"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleSubZoneChange}
-                                options={subZones}
-                                value={selectedSubZone}
-                              />
-                            </Space>
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {/* {authUser && authUser.userType == "client" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        <Form.Item
-                          label="Zone Manager"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="zoneManagerId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneChange}
-                              options={zones}
-                              value={selectedZone}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                    )}
-
-                    {authUser &&
-                      (authUser.userType == "client" ||
-                        authUser.userType == "zone") && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Form.Item
-                            label="SubZone Manager"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            name="subZoneManagerId"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleSubZoneChange}
-                                options={subZones}
-                                value={selectedSubZone}
-                              />
-                            </Space>
-                          </Form.Item>
-                        </Col>
-                      )} */}
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    ></Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    ></Col>
                   </Row>
-                </Card>
 
-                <Card
-                  hoverable
-                  style={{
-                    width: "90%",
-                    backgroundColor: "white",
-                    borderRadius: "10px",
-                    margin: "0 auto",
-                    textAlign: "center",
-                    marginTop: "1rem",
-                    marginBottom: "1rem",
-                    border: "1px solid #F15F22"
-                  }}
-                >
                   <Row
                     gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                     justify="space-between"
@@ -2451,10 +1319,10 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* simultaneousUser */}
+                      {/* permanentAddress */}
                       <Form.Item
-                        name="simultaneousUser"
-                        label="Simultaneous User"
+                        name="permanentAddress"
+                        label="permanentAddress"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -2462,15 +1330,14 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Simultaneous User!"
+                            message: "Please input your permanentAddress!"
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Simultaneous User"
+                          placeholder="permanentAddress"
                           className={`form-control`}
-                          name="simultaneousUser"
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
@@ -2484,200 +1351,34 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* ipMode */}
+                      {/* permanentAddressDivisionId */}
                       <Form.Item
-                        name="ipMode"
-                        label="IP Mode"
+                        label="permanentAddressDivisionId"
                         style={{
                           marginBottom: 0,
+                          marginRight: lg ? "10px" : "0px",
                           fontWeight: "bold"
                         }}
                         rules={[
                           {
                             required: true,
-                            message: "Please input your IP Mode!"
+                            message: "Please select Division!"
                           }
                         ]}
+                        name="permanentAddressDivisionId"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
                             allowClear
                             style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Union"
-                            onChange={handleIpModeChange}
-                            options={ipModes}
-                            value={selectedIpMode}
-                          />
-                        </Space>
-                        {/* <Input
-                        type="text"
-                        placeholder="IP Mode"
-                        className={`form-control`}
-                        name="ipMode"
-                        style={{ padding: "6px" }}
-                      /> */}
-                      </Form.Item>
-                    </Col>
-                    {selectedIpMode && selectedIpMode == "staticip" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* staticIp */}
-                        <Form.Item
-                          name="staticIp"
-                          label="Static Ip"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your Static Ip!"
-                            }
-                          ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Static Ip"
-                            className={`form-control`}
-                            name="staticIp"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )}
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* referenceType */}
-                      <Form.Item
-                        label="Reference Type"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="referenceType"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Reference Type"
-                            onChange={handleReferenceTypeChange}
-                            options={referenceTypes}
-                            value={selectedReferenceType}
+                            placeholder="Please select Division"
+                            onChange={handleParmanentAddressDivisionChange}
+                            options={parmanentAddressDivisions}
+                            value={selectedParmanentAddressDivision}
                           />
                         </Space>
                       </Form.Item>
                     </Col>
-                    {selectedReferenceType == "Internal" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* referrerUser */}
-                        <Form.Item
-                          label="Referrer User"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="referrerUserId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select Referrer User"
-                              onChange={handleUserChange}
-                              options={users}
-                              value={selectedUser}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                    )}
-                    {selectedReferenceType == "External" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* referrerName */}
-                        <Form.Item
-                          name="referrerName"
-                          label="Referrer Name"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Referrer Name"
-                            className={`form-control`}
-                            name="referrerName"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )}
-                    {selectedReferenceType == "Customer" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* referrerCustomer */}
-                        <Form.Item
-                          label="Referrer Customer"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="referrerCustomer"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select Referrer Customer"
-                              onChange={handleCustomerChange}
-                              options={customers}
-                              value={selectedCustomer}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                    )}
-
                     <Col
                       xs={24}
                       sm={12}
@@ -2687,682 +1388,9 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* connectionType */}
+                      {/* permanentAddressDistrictId */}
                       <Form.Item
-                        label="Connection Type"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="connectionType"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Connection Type"
-                            onChange={handleConnectionTypeChange}
-                            options={connectionTypes}
-                            value={selectedConnectionType}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    {selectedConnectionType == "utp" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* cableLength */}
-                        <Form.Item
-                          name="cableLength"
-                          label="Cable Length"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          // rules={[
-                          //   {
-                          //     required: true,
-                          //     message: "Please input your Cable Length!"
-                          //   }
-                          // ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Cable Length"
-                            className={`form-control`}
-                            name="cableLength"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )}
-                    {selectedConnectionType == "utp" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* vlanBoxName */}
-                        <Form.Item
-                          name="vlanBoxName"
-                          label="Vlan Box Name"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          // rules={[
-                          //   {
-                          //     required: true,
-                          //     message: "Please input your Vlan Box Name!"
-                          //   }
-                          // ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Vlan Box Name"
-                            className={`form-control`}
-                            name="vlanBoxName"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )}
-                    {selectedConnectionType == "utp" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* swPortNo */}
-                        <Form.Item
-                          name="swPortNo"
-                          label="Sw Port No"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          // rules={[
-                          //   {
-                          //     required: true,
-                          //     message: "Please input your Sw Port No!"
-                          //   }
-                          // ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Sw Port No"
-                            className={`form-control`}
-                            name="swPortNo"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )}
-                    {selectedConnectionType == "fiber_optic" && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* fiberOpticDeviceType */}
-                        <Form.Item
-                          label="Fiber Optic Device Type"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="fiberOpticDeviceType"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select Fiber Optic Device Type"
-                              onChange={handleFiberOpticDeviceTypeChange}
-                              options={fiberOpticDeviceTypes}
-                              value={selectedFiberOpticDeviceType}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                    )}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "OLT" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* oltDeviceId */}
-                          <Form.Item
-                            name="oltDeviceId"
-                            label="Olt Device"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Olt Device Id!"
-                            //   }
-                            // ]}
-                          >
-                            {/* <Input
-                              type="text"
-                              placeholder="Olt Device"
-                              className={`form-control`}
-                              name="oltDeviceId"
-                              style={{ padding: "6px" }}
-                            /> */}
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleOltDevice}
-                                options={oltDevice}
-                                value={oltDeviceId}
-                              />
-                            </Space>
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "OLT" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* onuDeviceId */}
-                          <Form.Item
-                            name="onuDeviceId"
-                            label="Onu Device"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Onu Device Id!"
-                            //   }
-                            // ]}
-                          >
-                            {/* <Input
-                              type="text"
-                              placeholder="Onu Device"
-                              className={`form-control`}
-                              name="onuDeviceId"
-                              style={{ padding: "6px" }}
-                            /> */}
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleOnuDevice}
-                                options={onuDevice}
-                                value={onuDeviceId}
-                              />
-                            </Space>
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {/* cableLength */}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "OLT" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Form.Item
-                            name="cableLength"
-                            label="Cable Length"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Cable Length!"
-                            //   }
-                            // ]}
-                          >
-                            <Input
-                              type="text"
-                              placeholder="Cable Length"
-                              className={`form-control`}
-                              name="cableLength"
-                              style={{ padding: "6px" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {/* cableId */}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "OLT" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Form.Item
-                            name="cableId"
-                            label="Cable Id"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Cable Id!"
-                            //   }
-                            // ]}
-                          >
-                            <Input
-                              type="text"
-                              placeholder="Cable Id"
-                              className={`form-control`}
-                              name="cableId"
-                              style={{ padding: "6px" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {/* colorCode */}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "OLT" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Form.Item
-                            name="colorCode"
-                            label="Color Code"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Color Code!"
-                            //   }
-                            // ]}
-                          >
-                            <Input
-                              type="text"
-                              placeholder="Color Code"
-                              className={`form-control`}
-                              name="colorCode"
-                              style={{ padding: "6px" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "OLT" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* splitter */}
-                          <Form.Item
-                            name="splitter"
-                            label="Splitter"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Splitter!"
-                            //   }
-                            // ]}
-                          >
-                            <Input
-                              type="text"
-                              placeholder="Splitter"
-                              className={`form-control`}
-                              name="splitter"
-                              style={{ padding: "6px" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "MC" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* serialNo */}
-                          <Form.Item
-                            name="serialNo"
-                            label="Serial No"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Serial No!"
-                            //   }
-                            // ]}
-                          >
-                            <Input
-                              type="text"
-                              placeholder="Serial No"
-                              className={`form-control`}
-                              name="serialNo"
-                              style={{ padding: "6px" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )}
-
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "MC" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* vlanBoxName */}
-                          <Form.Item
-                            name="vlanBoxName"
-                            label="Vlan Box Name"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Vlan Box Name!"
-                            //   }
-                            // ]}
-                          >
-                            <Input
-                              type="text"
-                              placeholder="Vlan Box Name"
-                              className={`form-control`}
-                              name="vlanBoxName"
-                              style={{ padding: "6px" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )}
-                    {selectedConnectionType == "fiber_optic" &&
-                      selectedFiberOpticDeviceType == "MC" && (
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          {/* swPortNo */}
-                          <Form.Item
-                            name="swPortNo"
-                            label="Sw Port No"
-                            style={{
-                              marginBottom: 0,
-                              fontWeight: "bold"
-                            }}
-                            // rules={[
-                            //   {
-                            //     required: true,
-                            //     message: "Please input your Sw Port No!"
-                            //   }
-                            // ]}
-                          >
-                            <Input
-                              type="text"
-                              placeholder="Sw Port No"
-                              className={`form-control`}
-                              name="swPortNo"
-                              style={{ padding: "6px" }}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )}
-
-                    {/* accountStatus */}
-                    {/* <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="accountStatus"
-                  label="Account Status"
-                  style={{
-                    marginBottom: 0
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Account Status!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Account Status"
-                    className={`form-control`}
-                    name="accountStatus"
-                  />
-                </Form.Item>
-              </Col> */}
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    ></Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    ></Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    ></Col>
-                  </Row>
-                  {/* isMacBound */}
-                  <Row
-                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                    justify="center"
-                  >
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      <Form.Item
-                        label=""
-                        // style={{
-                        //   marginBottom: 0
-                        // }}
-                      >
-                        <Checkbox
-                          onChange={handleMacBound}
-                          checked={isMacBound}
-                        >
-                          MAC Bind
-                        </Checkbox>
-                      </Form.Item>
-                    </Col>
-                    {isMacBound && (
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        {/* mac */}
-                        <Form.Item
-                          name="mac"
-                          label="MAC"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your Mac!"
-                            }
-                          ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Mac"
-                            className={`form-control`}
-                            name="mac"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )}
-                  </Row>
-                </Card>
-                <Card
-                  hoverable
-                  style={{
-                    width: "90%",
-                    backgroundColor: "white",
-                    borderRadius: "10px",
-                    margin: "0 auto",
-                    textAlign: "center",
-                    marginTop: "1rem",
-                    marginBottom: "1rem",
-                    border: "1px solid #F15F22"
-                  }}
-                >
-                  {/* autoRenew */}
-                  <Form.Item
-                    label=""
-                    style={{
-                      marginBottom: 0
-                    }}
-                  >
-                    <Checkbox onChange={handleAutoRenew} checked={autoRenew}>
-                      Auto Renew
-                    </Checkbox>
-                  </Form.Item>
-                  <Row
-                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                    justify="center"
-                  >
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* discount */}
-                      <Form.Item
-                        name="discount"
-                        label="Discount"
+                        label="permanentAddressDistrictId"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -3370,65 +1398,257 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Discount!"
+                            message: "Please select District!"
+                          }
+                        ]}
+                        name="permanentAddressDistrictId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select District"
+                            onChange={handleParmanentAddressDistrictChange}
+                            options={parmanentAddressDistricts}
+                            value={selectedParmanentAddressDistrict}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* permanentAddressUpazillaId */}
+                      <Form.Item
+                        label="permanentAddressUpazillaId"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="permanentAddressUpazillaId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Upazilla"
+                            onChange={handleParmanentAddressUpazillaChange}
+                            options={parmanentAddressUpazillas}
+                            value={selectedParmanentAddressUpazilla}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* permanentAddressPostCode */}
+                      <Form.Item
+                        name="permanentAddressPostCode"
+                        label="permanentAddressPostCode"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message:
+                              "Please input your permanentAddressPostCode!"
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Discount"
+                          placeholder="permanentAddressPostCode"
                           className={`form-control`}
-                          name="discount"
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
                     </Col>
-                  </Row>
 
-                  <Space
-                    size={[8, 8]}
-                    wrap
-                    style={{ marginTop: "2rem", marginBottom: "2rem" }}
-                  >
-                    {/* status */}
-                    <Form.Item
-                      label=""
-                      style={{
-                        marginBottom: 0
-                      }}
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Checkbox onChange={handleActive} checked={isActive}>
-                        Active
-                      </Checkbox>
-                    </Form.Item>
-
-                    {/* emailAlert */}
-                    <Form.Item
-                      label=""
-                      style={{
-                        marginBottom: 0
-                      }}
-                    >
-                      <Checkbox
-                        onChange={handleEmailAlert}
-                        checked={emailAlert}
+                      {/* mobileNumber */}
+                      <Form.Item
+                        name="mobileNumber"
+                        label="mobileNumber"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your mobileNumber!"
+                          }
+                        ]}
                       >
-                        Email Alert
-                      </Checkbox>
-                    </Form.Item>
-
-                    {/* smsAlert */}
-                    <Form.Item
-                      label=""
-                      style={{
-                        marginBottom: 0
-                      }}
+                        <Input
+                          type="text"
+                          placeholder="mobileNumber"
+                          className={`form-control`}
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Checkbox onChange={handleSmsAlert} checked={smsAlert}>
-                        SMS Alert
-                      </Checkbox>
-                    </Form.Item>
-                  </Space>
+                      {/* phoneNumber */}
+                      <Form.Item
+                        name="phoneNumber"
+                        label="phoneNumber"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your phoneNumber!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="phoneNumber"
+                          className={`form-control`}
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* altMobileNo */}
+                      <Form.Item
+                        name="altMobileNo"
+                        label="altMobileNo"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your altMobileNo!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="altMobileNo"
+                          className={`form-control`}
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    {/* email */}
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      <Form.Item
+                        label="Email"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="email"
+                        rules={[
+                          {
+                            type: "email",
+                            message: "The input is not valid E-mail!"
+                          },
+                          {
+                            required: true,
+                            message: "Please input your E-mail!"
+                          },
+                          {
+                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                            message:
+                              "Only letters, numbers, underscores and hyphens allowed"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          className={`form-control`}
+                          name="email"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    {/* occupation */}
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* occupation */}
+                      <Form.Item
+                        label="occupation"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="occupation"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select"
+                            onChange={handleOccupationChange}
+                            options={occupations}
+                            value={selectedOccupation}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 </Card>
               </Col>
             </Row>
