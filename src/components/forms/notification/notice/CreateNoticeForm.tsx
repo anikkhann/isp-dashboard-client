@@ -262,7 +262,7 @@ const CreateNoticeForm = () => {
     });
   }
 
-  const getCustomerPackages = () => {
+  const getCustomerPackages = (selectedClient: any) => {
     const body = {
       meta: {
         sort: [
@@ -273,6 +273,9 @@ const CreateNoticeForm = () => {
         ]
       },
       body: {
+        client: {
+          id: selectedClient
+        },
         isActive: true
       }
     };
@@ -341,6 +344,7 @@ const CreateNoticeForm = () => {
   }
 
   function getCustomers(
+    clientParam: any,
     packageParam: any,
     zoneParam: any,
     subZoneParam: any,
@@ -357,6 +361,9 @@ const CreateNoticeForm = () => {
         ]
       },
       body: {
+        client: {
+          id: clientParam
+        },
         customerPackage: {
           id: packageParam
         },
@@ -388,7 +395,7 @@ const CreateNoticeForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -399,13 +406,13 @@ const CreateNoticeForm = () => {
 
   useEffect(() => {
     getClients();
-    getCustomerPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (selectedClient) {
       getZoneManagers(selectedClient);
+      getCustomerPackages(selectedClient);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedClient]);
@@ -423,21 +430,17 @@ const CreateNoticeForm = () => {
   }, [selectedSubZone]);
 
   useEffect(() => {
-    if (
-      selectedCustomerPackage &&
-      selectedZone &&
-      selectedSubZone &&
+    getCustomers(
+      selectedClient,
+      selectedCustomerPackage,
+      selectedZone,
+      selectedSubZone,
       selectedRetailer
-    ) {
-      getCustomers(
-        selectedCustomerPackage,
-        selectedZone,
-        selectedSubZone,
-        selectedRetailer
-      );
-    }
+    );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    selectedClient,
     selectedCustomerPackage,
     selectedZone,
     selectedSubZone,
