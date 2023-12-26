@@ -511,7 +511,7 @@ const SearchCustomer = () => {
                 ) : null}
 
                 {ability.can("customerCare.update", "") &&
-                !record.isSafOtpSend ? (
+                !record.isSafOtpSend == false ? (
                   <Space size="middle" align="center" wrap>
                     <Tooltip title="Send SAF OTP">
                       <Button
@@ -529,7 +529,7 @@ const SearchCustomer = () => {
                 ) : null}
 
                 {ability.can("customerCare.update", "") &&
-                !record.isSafOtpVerified ? (
+                !record.isSafOtpVerified == false ? (
                   <Space size="middle" align="center" wrap>
                     <Tooltip title="Verify SAF OTP">
                       <Link href={`/admin/customer-care/${record.id}/saf-otp`}>
@@ -547,7 +547,7 @@ const SearchCustomer = () => {
                 ) : null}
 
                 {ability.can("customerCare.update", "") &&
-                !record.isSafVerified ? (
+                !record.isSafVerified == false ? (
                   <Space size="middle" align="center" wrap>
                     <Tooltip title="Verify SAF">
                       <Link href={`/admin/customer-care/${record.id}/saf`}>
