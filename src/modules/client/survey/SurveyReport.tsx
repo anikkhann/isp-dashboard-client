@@ -539,7 +539,7 @@ const SurveyReport: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Date Range By (Expiration Date)</b>
+                              <b>Date Range By (CreatedOn Date)</b>
                             </span>
                             <RangePicker
                               style={{ width: "100%" }}
