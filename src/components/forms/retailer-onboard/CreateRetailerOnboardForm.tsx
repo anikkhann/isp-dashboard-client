@@ -756,6 +756,25 @@ const CreateRetailerOnboardForm = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={12} className="gutter-row">
+                  {/* nagadNumber */}
+                  <Form.Item
+                    label="nagadNumber"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="nagadNumber"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input nagadNumber!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="nagadNumber" />
+                  </Form.Item>
+                </Col>
+                <Col xs={12} className="gutter-row">
                   {/* latitude */}
                   <Form.Item
                     label="latitude"
