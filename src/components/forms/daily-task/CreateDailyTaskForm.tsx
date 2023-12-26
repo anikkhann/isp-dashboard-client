@@ -147,7 +147,7 @@ const CreateDailyTaskForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -932,7 +932,7 @@ const CreateDailyTaskForm = () => {
                             block
                             icon={<PlusOutlined />}
                           >
-                            Add field (Package Sale)
+                            Add field (Proactive call list)
                           </Button>
                         </Form.Item>
                       </>
