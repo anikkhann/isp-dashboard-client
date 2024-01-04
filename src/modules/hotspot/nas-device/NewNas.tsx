@@ -47,7 +47,7 @@ const NewNas = () => {
               color: "#F15F22"
             }}
           >
-            New Nas Device
+            New NAS Device
           </h1>
         </div>
 

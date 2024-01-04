@@ -45,7 +45,7 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Delivery Address :</span>
+                <span className="font-bold text-base">TSO</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base"></span>
@@ -63,7 +63,7 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Delivery Contact :</span>
+                <span className="font-bold text-base">Area :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base"></span>

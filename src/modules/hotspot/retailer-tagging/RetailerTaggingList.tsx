@@ -25,7 +25,7 @@ import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { TsoRetailerTagData } from "@/interfaces/TsoRetailerTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -607,7 +607,7 @@ const RetailerTaggingList: React.FC = () => {
 
     // areaManagerTag
     {
-      title: "areaManagerTag",
+      title: "Area Manager",
       dataIndex: "areaManagerTag",
       sorter: false,
       render: (areaManagerTag: any) => {
@@ -620,7 +620,7 @@ const RetailerTaggingList: React.FC = () => {
 
     // tso
     {
-      title: "tso",
+      title: "TSO",
       dataIndex: "tso",
       sorter: false,
       render: (tso: any) => {
@@ -632,7 +632,7 @@ const RetailerTaggingList: React.FC = () => {
     },
     // retailer
     {
-      title: "retailer",
+      title: "Retailer",
       dataIndex: "retailer",
       sorter: false,
       render: (retailer: any) => {
@@ -644,30 +644,30 @@ const RetailerTaggingList: React.FC = () => {
     },
 
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // editedBy
     // {
     //   title: "Updated By",
@@ -704,7 +704,7 @@ const RetailerTaggingList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center" className="mx-1">
               {ability.can("tsoRetailerTag.update", "") ? (
-                <Tooltip title="View" placement="bottomRight" color="green">
+                <Tooltip title="Edit" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Link
                       href={`/admin/hotspot/retailer-tagging/${record.id}/edit`}
@@ -812,7 +812,7 @@ const RetailerTaggingList: React.FC = () => {
           )}
 
           <TableCard
-            title="Retailer Taggging List"
+            title="Retailer Tagging List"
             hasLink={true}
             addLink="/admin/hotspot/retailer-tagging/create"
             permission="tsoRetailerTag.create"
@@ -856,16 +856,16 @@ const RetailerTaggingList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Tso</b>
+                              <b>Client</b>
                             </span>
                             <Select
                               showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleTsoChange}
-                              options={tsoManagers}
-                              value={selectedTsoManager}
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
                                   return (
@@ -924,16 +924,51 @@ const RetailerTaggingList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Client</b>
+                              <b>TSO</b>
                             </span>
                             <Select
                               showSearch
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleClientChange}
-                              options={clients}
-                              value={selectedClient}
+                              onChange={handleTsoChange}
+                              options={tsoManagers}
+                              value={selectedTsoManager}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Retailer</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
+                              showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
                                   return (
@@ -1016,40 +1051,6 @@ const RetailerTaggingList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Retailer</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleRetailerChange}
-                              options={retailers}
-                              value={selectedRetailer}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
 
                         <Col
                           xs={24}
@@ -1097,6 +1098,24 @@ const RetailerTaggingList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>

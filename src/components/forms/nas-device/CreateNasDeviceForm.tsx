@@ -133,7 +133,10 @@ const CreateNasDeviceForm = () => {
             autoComplete="off"
             onFinish={onSubmit}
             form={form}
-            initialValues={{}}
+            initialValues={{
+              radiusIncomingPort: 1700,
+              apiPort: 1824
+            }}
             style={{ maxWidth: "100%" }}
             name="wrap"
             colon={false}
@@ -154,7 +157,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="name"
-                  label="name"
+                  label="Device Name"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -162,13 +165,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input name!"
+                      message: "Please input device name!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="name"
+                    placeholder="Device Name"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -186,7 +189,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="mapLocation"
-                  label="mapLocation"
+                  label="Map Location"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -194,13 +197,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input mapLocation!"
+                      message: "Please input Map Location!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="mapLocation"
+                    placeholder="Map Location"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -218,7 +221,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="locationDescription"
-                  label="locationDescription"
+                  label="Location Description"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -226,13 +229,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input locationDescription!"
+                      message: "Please input Location Description!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="locationDescription"
+                    placeholder="Location Description"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -249,7 +252,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="ip"
-                  label="ip"
+                  label="IP"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -257,13 +260,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input ip!"
+                      message: "Please input IP!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="ip"
+                    placeholder="IP"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -281,7 +284,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="secret"
-                  label="secret"
+                  label="Secret"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -289,13 +292,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input secret!"
+                      message: "Please input Secret!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="secret"
+                    placeholder="Secret"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -312,7 +315,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="radiusIncomingPort"
-                  label="radiusIncomingPort"
+                  label="Radius Incoming Port"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -320,13 +323,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input radiusIncomingPort!"
+                      message: "Please input Radius Incoming Port!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="radiusIncomingPort"
+                    placeholder="Radius Incoming Port"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -344,7 +347,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="apiSsl"
-                  label="api"
+                  label="API SSL"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -355,7 +358,7 @@ const CreateNasDeviceForm = () => {
                     checked={isApiSslActive}
                     className="gutter-row"
                   >
-                    apiSsl
+                    API SSL
                   </Checkbox>
                 </Form.Item>
               </Col>
@@ -371,7 +374,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="apiPort"
-                  label="apiPort"
+                  label="API Port"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -379,13 +382,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your apiPort!"
+                      message: "Please input your API Port!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="apiPort"
+                    placeholder="API Port"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -402,7 +405,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="apiUsername"
-                  label="apiUsername"
+                  label="API Username"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -410,13 +413,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your apiUsername!"
+                      message: "Please input your API Username!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="apiUsername"
+                    placeholder="API Username"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -433,7 +436,7 @@ const CreateNasDeviceForm = () => {
               >
                 <Form.Item
                   name="apiPassword"
-                  label="apiPassword"
+                  label="API Password"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -441,13 +444,13 @@ const CreateNasDeviceForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your apiPassword!"
+                      message: "Please input your API Password!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="apiPassword"
+                    placeholder="API Password"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />

@@ -349,10 +349,18 @@ const CreateMonthlyTargetForm = ({ item }: PropData) => {
                     </Space>
                   </Form.Item>
                 </Col>
-                <Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* year */}
                   <Form.Item
-                    label="year"
+                    label="Year"
                     name="year"
                     style={{
                       marginBottom: 0,
@@ -388,10 +396,18 @@ const CreateMonthlyTargetForm = ({ item }: PropData) => {
                     </Space>
                   </Form.Item>
                 </Col>
-                <Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* month */}
                   <Form.Item
-                    label="month"
+                    label="Month"
                     name="month"
                     style={{
                       marginBottom: 0,
@@ -442,7 +458,7 @@ const CreateMonthlyTargetForm = ({ item }: PropData) => {
                           >
                             <Form.Item
                               {...restField}
-                              label="otherProductId"
+                              label="Product"
                               name={[name, "otherProductId"]}
                               rules={[
                                 {
@@ -474,7 +490,7 @@ const CreateMonthlyTargetForm = ({ item }: PropData) => {
                             </Form.Item>
                             <Form.Item
                               {...restField}
-                              label="amount"
+                              label="Amount"
                               name={[name, "amount"]}
                               rules={[
                                 {
@@ -483,7 +499,7 @@ const CreateMonthlyTargetForm = ({ item }: PropData) => {
                                 }
                               ]}
                             >
-                              <Input placeholder="amount" />
+                              <Input placeholder="Amount" />
                             </Form.Item>
 
                             <MinusCircleOutlined onClick={() => remove(name)} />
@@ -496,7 +512,7 @@ const CreateMonthlyTargetForm = ({ item }: PropData) => {
                             block
                             icon={<PlusOutlined />}
                           >
-                            Add field
+                            Add Target
                           </Button>
                         </Form.Item>
                       </>

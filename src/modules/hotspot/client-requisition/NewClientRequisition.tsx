@@ -29,7 +29,7 @@ const NewClientRequisition = () => {
               )
             },
             {
-              title: "New Client Requisition"
+              title: "New ZM to Client Requisition"
             }
           ]}
         />
@@ -51,7 +51,7 @@ const NewClientRequisition = () => {
               color: "#F15F22"
             }}
           >
-            New Client Requisition
+            New ZM to Client Requisition
           </h1>
         </div>
 

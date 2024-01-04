@@ -652,7 +652,7 @@ const ClientRequisitionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Client Requisition List"
+            title="ZM to Client Requisition List"
             hasLink={true}
             addLink="/admin/hotspot/client-requisition/create"
             permission="clientRequisition.create"

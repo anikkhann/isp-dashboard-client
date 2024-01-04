@@ -25,7 +25,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -362,38 +362,9 @@ const ZoneTagList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
-    {
-      title: "type",
-      dataIndex: "type",
-      sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-    {
-      title: "serialFrom",
-      dataIndex: "serialFrom",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "serialTo",
-      dataIndex: "serialTo",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "quantity",
-      dataIndex: "quantity",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
     // zoneManager
     {
-      title: "zoneManager",
+      title: "Zone Manager",
       dataIndex: "zoneManager",
       sorter: false,
       render: (zoneManager: any) => {
@@ -403,10 +374,63 @@ const ZoneTagList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+    {
+      title: "Type",
+      dataIndex: "type",
+      sorter: true,
+      width: 500,
+      align: "center" as AlignType
+    },
+    {
+      title: "Serial From",
+      dataIndex: "serialFrom",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Serial To",
+      dataIndex: "serialTo",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
 
     // pricingPlan
     {
-      title: "pricingPlan",
+      title: "Package",
       dataIndex: "pricingPlan",
       sorter: false,
       render: (pricingPlan: any) => {
@@ -417,31 +441,6 @@ const ZoneTagList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
     // editedBy
     // {
     //   title: "Updated By",
@@ -556,7 +555,7 @@ const ZoneTagList: React.FC = () => {
           )}
 
           <TableCard
-            title="Zone Tag  List"
+            title="Zone Manager Tag List"
             hasLink={true}
             addLink="/admin/hotspot/zone-tag/create"
             permission="zoneTag.create"
@@ -589,40 +588,6 @@ const ZoneTagList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Type</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleStatusChange}
-                              options={statuses}
-                              value={selectedStatus}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
                         <Col
                           xs={24}
                           sm={12}
@@ -668,7 +633,7 @@ const ZoneTagList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Pricing Plan</b>
+                              <b>Package</b>
                             </span>
                             <Select
                               allowClear
@@ -691,6 +656,41 @@ const ZoneTagList: React.FC = () => {
                             />
                           </Space>
                         </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Type</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleStatusChange}
+                              options={statuses}
+                              value={selectedStatus}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}

@@ -276,15 +276,15 @@ const CreateAreaTaggingForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* areaManagerId */}
                 <Form.Item
-                  label="areaManagerId"
+                  label="Area Manager"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -313,15 +313,15 @@ const CreateAreaTaggingForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* clientId */}
                 <Form.Item
-                  label="clientId"
+                  label="Client"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -351,15 +351,15 @@ const CreateAreaTaggingForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* zoneManagerId */}
                 <Form.Item
-                  label="zoneManagerId"
+                  label="Zone Manager"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

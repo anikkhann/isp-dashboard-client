@@ -244,39 +244,38 @@ const CreateSubZoneTagForm = () => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
-              {/* type */}
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
-                {/* type */}
+                {/* zoneManagerId */}
                 <Form.Item
-                  label="type"
+                  label="Sub Zone Manager"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="type"
                   rules={[
                     {
                       required: true,
-                      message: "Please select!"
+                      message: "Please input Sub Zone Manager!"
                     }
                   ]}
+                  name="zoneManagerId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleTypeChange}
-                      options={types}
-                      value={selectedType}
+                      placeholder="Please select Sub Zone Manager"
+                      onChange={handleZoneManagerChange}
+                      options={zoneManagers}
+                      value={selectedZoneManager}
                     />
                   </Space>
                 </Form.Item>
@@ -291,9 +290,9 @@ const CreateSubZoneTagForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
+                {/* pricingPlanId */}
                 <Form.Item
-                  name="serialFrom"
-                  label="serialFrom"
+                  label="Package"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -301,13 +300,49 @@ const CreateSubZoneTagForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input serialFrom!"
+                      message: "Please input Package!"
+                    }
+                  ]}
+                  name="pricingPlanId"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Package"
+                      onChange={handlePricingPlanChange}
+                      options={pricingPlans}
+                      value={selectedPricingPlan}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="serialFrom"
+                  label="Serial From"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Serial From!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="serialFrom"
+                    placeholder="Serial From"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
@@ -325,7 +360,7 @@ const CreateSubZoneTagForm = () => {
               >
                 <Form.Item
                   name="serialTo"
-                  label="serialTo"
+                  label="Serial To"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -333,45 +368,51 @@ const CreateSubZoneTagForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input serialTo!"
+                      message: "Please input Serial To!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="serialTo"
+                    placeholder="Serial To"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
-
+              {/* type */}
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
-                {/* zoneManagerId */}
+                {/* type */}
                 <Form.Item
-                  label="Sub Zone Manager"
+                  label="Type"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="zoneManagerId"
+                  name="type"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Type!"
+                    }
+                  ]}
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleZoneManagerChange}
-                      options={zoneManagers}
-                      value={selectedZoneManager}
+                      placeholder="Please select Type"
+                      onChange={handleTypeChange}
+                      options={types}
+                      value={selectedType}
                     />
                   </Space>
                 </Form.Item>
@@ -380,33 +421,12 @@ const CreateSubZoneTagForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
-              >
-                {/* pricingPlanId */}
-                <Form.Item
-                  label="Pricing Plan"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="pricingPlanId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handlePricingPlanChange}
-                      options={pricingPlans}
-                      value={selectedPricingPlan}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+              ></Col>
             </Row>
 
             {/* submit */}

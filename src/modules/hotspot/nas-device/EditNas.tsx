@@ -59,7 +59,7 @@ const EditNas = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/hotspot/nas-device">Nas Device List</Link>
+                <Link href="/admin/hotspot/nas-device">NAS Devices List</Link>
               )
             },
             {
@@ -85,7 +85,7 @@ const EditNas = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Nas Device
+            Edit NAS Device
           </h1>
         </div>
 

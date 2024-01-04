@@ -355,35 +355,35 @@ const ClientTransactionList: React.FC = () => {
     },
 
     {
-      title: "trxFor",
+      title: "Trx For",
       dataIndex: "trxFor",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "trxType",
+      title: "Trx Type",
       dataIndex: "trxType",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "amount",
+      title: "Amount (BDT)",
       dataIndex: "amount",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "trxBy",
+      title: "Trx By",
       dataIndex: "trxBy",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "zoneCommission",
+      title: "ZM Commission",
       dataIndex: "zoneCommission",
 
       width: "20%",

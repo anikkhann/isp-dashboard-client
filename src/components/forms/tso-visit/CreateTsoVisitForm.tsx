@@ -117,7 +117,7 @@ const CreateTsoVisitForm = () => {
   // const [allPricingPlans, setAllPricingPlans] = useState<any[]>([]);
 
   // isCompetitionPresent
-  const [isCompetitionPresent, setIsCompetitionPresent] = useState<any>(null);
+  const [isCompetitionPresent, setIsCompetitionPresent] = useState<any>("no");
 
   // frequentComplains
   const [selectedfrequentComplains, setSelectedFrequentComplains] = useState<
@@ -127,14 +127,14 @@ const CreateTsoVisitForm = () => {
   const [otherProducts, setOtherProducts] = useState<any[]>([]);
 
   // powerBackup
-  const [powerBackup, setPowerBackup] = useState<any>(null);
+  const [powerBackup, setPowerBackup] = useState<any>("no");
 
   // sunShedBannerPresent
-  const [sunShedBannerPresent, setSunShedBannerPresent] = useState<any>(null);
+  const [sunShedBannerPresent, setSunShedBannerPresent] = useState<any>("no");
 
   // rateCardFestoonDisplayed
   const [rateCardFestoonDisplayed, setRateCardFestoonDisplayed] =
-    useState<any>(null);
+    useState<any>("no");
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -473,7 +473,13 @@ const CreateTsoVisitForm = () => {
               autoComplete="off"
               onFinish={onSubmit}
               form={form}
-              initialValues={{}}
+              initialValues={{
+                totalComplainsSinceLastVisit: 0,
+                fiberCut: 0,
+                laserIssues: 0,
+                powerIssues: 0,
+                lavelOneSupportShown: 0
+              }}
               style={{ maxWidth: "100%" }}
               name="wrap"
               colon={false}
@@ -483,10 +489,10 @@ const CreateTsoVisitForm = () => {
                 <Col
                   xs={24}
                   sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
                   className="gutter-row"
                 >
                   {/* retailerId */}
@@ -496,13 +502,19 @@ const CreateTsoVisitForm = () => {
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please Select Retailer"
+                      }
+                    ]}
                     name="retailerId"
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select Retailer"
                         onChange={handleRetailerChange}
                         options={retailers}
                         value={selectedRetailer}
@@ -510,10 +522,8 @@ const CreateTsoVisitForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
                 <Col
+                  xs={24}
                   sm={12}
                   md={8}
                   lg={8}
@@ -523,7 +533,7 @@ const CreateTsoVisitForm = () => {
                 >
                   {/* gpsLocation */}
                   <Form.Item
-                    label="gpsLocation"
+                    label="GPS Location"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -532,12 +542,12 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input gpsLocation!"
+                        message: "Please input GPS Location!"
                       }
                     ]}
                   >
                     <Input
-                      placeholder="gpsLocation"
+                      placeholder="GPS Location"
                       className={`form-control`}
                     />
                   </Form.Item>
@@ -554,7 +564,7 @@ const CreateTsoVisitForm = () => {
                 >
                   {/* isCompetitionPresent */}
                   <Form.Item
-                    label="isCompetitionPresent"
+                    label="Is Competitor Available?"
                     name="isCompetitionPresent"
                     style={{
                       marginBottom: 0,
@@ -563,7 +573,7 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please select!"
+                        message: "Please select Is Competitor Available?!"
                       }
                     ]}
                   >
@@ -571,7 +581,7 @@ const CreateTsoVisitForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select Is Competitor Available?"
                         onChange={handleStatusChange}
                         options={statuses}
                         value={isCompetitionPresent}
@@ -591,10 +601,18 @@ const CreateTsoVisitForm = () => {
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* hotspotFrequency */}
                   <Form.Item
-                    label="hotspotFrequency"
+                    label="Hotspot Frequency"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -603,17 +621,25 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input hotspotFrequency!"
+                        message: "Please input Hotspot Frequency!"
                       }
                     ]}
                   >
-                    <Input placeholder="hotspotFrequency" />
+                    <Input placeholder="Hotspot Frequency" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* internetSpeed */}
                   <Form.Item
-                    label="internetSpeed"
+                    label="Internet Speed"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -622,18 +648,26 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input internetSpeed!"
+                        message: "Please input Internet Speed!"
                       }
                     ]}
                   >
-                    <Input placeholder="internetSpeed" />
+                    <Input placeholder="Internet Speed" />
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* totalComplainsSinceLastVisit */}
                   <Form.Item
-                    label="totalComplainsSinceLastVisit"
+                    label="Total Complains Since Last Visit"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -642,11 +676,12 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input totalComplainsSinceLastVisit!"
+                        message:
+                          "Please input Total Complains Since Last Visit!"
                       }
                     ]}
                   >
-                    <Input placeholder="totalComplainsSinceLastVisit" />
+                    <Input placeholder="Total Complains Since Last Visit" />
                   </Form.Item>
                 </Col>
 
@@ -661,24 +696,24 @@ const CreateTsoVisitForm = () => {
                 >
                   {/* frequentComplains */}
                   <Form.Item
-                    label="frequentComplains"
+                    label="Frequent Complains"
                     name="frequentComplains"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please select!"
+                    //   }
+                    // ]}
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select Frequent Complains"
                         onChange={handleFrequentComplainsChange}
                         options={frequentComplains}
                         value={selectedfrequentComplains}
@@ -698,10 +733,18 @@ const CreateTsoVisitForm = () => {
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* fiberCut */}
                   <Form.Item
-                    label="fiberCut"
+                    label="Fiber Cut"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -717,10 +760,18 @@ const CreateTsoVisitForm = () => {
                     <Input placeholder="fiberCut" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* laserIssues */}
                   <Form.Item
-                    label="laserIssues"
+                    label="Laser Issues"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -729,17 +780,25 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input laserIssues!"
+                        message: "Please input Laser Issues!"
                       }
                     ]}
                   >
-                    <Input placeholder="laserIssues" />
+                    <Input placeholder="Laser Issues" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* powerIssues */}
                   <Form.Item
-                    label="powerIssues"
+                    label="Power Issues"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -748,17 +807,25 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input powerIssues!"
+                        message: "Please input Power Issues!"
                       }
                     ]}
                   >
-                    <Input placeholder="powerIssues" />
+                    <Input placeholder="Power Issues" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* lavelOneSupportShown */}
                   <Form.Item
-                    label="lavelOneSupportShown"
+                    label="Level-1 Support Shown"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -767,11 +834,11 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input lavelOneSupportShown!"
+                        message: "Please input Level-1 Support Shown!"
                       }
                     ]}
                   >
-                    <Input placeholder="lavelOneSupportShown" />
+                    <Input placeholder="Level-1 Support Shown" />
                   </Form.Item>
                 </Col>
 
@@ -786,7 +853,7 @@ const CreateTsoVisitForm = () => {
                 >
                   {/* powerBackup */}
                   <Form.Item
-                    label="powerBackup"
+                    label="Power Backup"
                     name="powerBackup"
                     style={{
                       marginBottom: 0,
@@ -803,7 +870,7 @@ const CreateTsoVisitForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select Power Backup"
                         onChange={handlePowerBackupChange}
                         options={statuses}
                         value={powerBackup}
@@ -833,7 +900,7 @@ const CreateTsoVisitForm = () => {
                 >
                   {/* sunShedBannerPresent */}
                   <Form.Item
-                    label="sunShedBannerPresent"
+                    label="Is Sun Shed Banner Present?"
                     name="sunShedBannerPresent"
                     style={{
                       marginBottom: 0,
@@ -842,7 +909,7 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please select!"
+                        message: "Please select Is Sun Shed Banner Present?!"
                       }
                     ]}
                   >
@@ -850,7 +917,7 @@ const CreateTsoVisitForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select Is Sun Shed Banner Present?"
                         onChange={handleSunShedBannerPresentChange}
                         options={statuses}
                         value={sunShedBannerPresent}
@@ -880,7 +947,7 @@ const CreateTsoVisitForm = () => {
                 >
                   {/* rateCardFestoonDisplayed */}
                   <Form.Item
-                    label="rateCardFestoonDisplayed"
+                    label="Is Rate Card Festoon Displayed"
                     name="rateCardFestoonDisplayed"
                     style={{
                       marginBottom: 0,
@@ -889,7 +956,7 @@ const CreateTsoVisitForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please select!"
+                        message: "Please select Is Rate Card Festoon Displayed!"
                       }
                     ]}
                   >
@@ -897,7 +964,7 @@ const CreateTsoVisitForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select Is Rate Card Festoon Displayed"
                         onChange={handleRateCardFestoonDisplayedChange}
                         options={statuses}
                         value={rateCardFestoonDisplayed}
@@ -916,6 +983,15 @@ const CreateTsoVisitForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                ></Col>
               </Row>
 
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
@@ -931,19 +1007,19 @@ const CreateTsoVisitForm = () => {
                           >
                             <Form.Item
                               {...restField}
-                              label="pricingPlanId"
+                              label="Package"
                               name={[name, "pricingPlanId"]}
                               rules={[
                                 {
                                   required: true,
-                                  message: "Please input"
+                                  message: "Please input Package"
                                 }
                               ]}
                             >
                               <Select
                                 allowClear
                                 style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
+                                placeholder="Please select Package"
                                 onChange={value =>
                                   handlePricingPlanChange(value, key)
                                 }
@@ -963,16 +1039,16 @@ const CreateTsoVisitForm = () => {
                             </Form.Item>
                             <Form.Item
                               {...restField}
-                              label="amount"
+                              label="Amount"
                               name={[name, "amount"]}
                               rules={[
                                 {
                                   required: true,
-                                  message: "Please input"
+                                  message: "Please input Amount"
                                 }
                               ]}
                             >
-                              <Input placeholder="amount" />
+                              <Input placeholder="Amount" />
                             </Form.Item>
 
                             <MinusCircleOutlined onClick={() => remove(name)} />
@@ -1007,7 +1083,7 @@ const CreateTsoVisitForm = () => {
                           >
                             <Form.Item
                               {...restField}
-                              label="otherProductId"
+                              label="Other Product"
                               name={[name, "otherProductId"]}
                               rules={[
                                 {
@@ -1019,7 +1095,7 @@ const CreateTsoVisitForm = () => {
                               <Select
                                 allowClear
                                 style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
+                                placeholder="Please select Other Product"
                                 onChange={value =>
                                   handleOtherProductSaleChange(value, key)
                                 }
@@ -1039,16 +1115,16 @@ const CreateTsoVisitForm = () => {
                             </Form.Item>
                             <Form.Item
                               {...restField}
-                              label="amount"
+                              label="Amount"
                               name={[name, "amount"]}
                               rules={[
                                 {
                                   required: true,
-                                  message: "Please input"
+                                  message: "Please input Amount"
                                 }
                               ]}
                             >
-                              <Input placeholder="amount" />
+                              <Input placeholder="Amount" />
                             </Form.Item>
 
                             <MinusCircleOutlined onClick={() => remove(name)} />
@@ -1083,16 +1159,16 @@ const CreateTsoVisitForm = () => {
                           >
                             <Form.Item
                               {...restField}
-                              label="contactNo"
+                              label="Contact"
                               name={[name, "contactNo"]}
                               rules={[
                                 {
                                   required: true,
-                                  message: "Please input"
+                                  message: "Please input Contact"
                                 }
                               ]}
                             >
-                              <Input placeholder="contactNo" />
+                              <Input placeholder="Contact" />
                             </Form.Item>
                             <Form.Item
                               {...restField}
@@ -1137,16 +1213,18 @@ const CreateTsoVisitForm = () => {
                             <MinusCircleOutlined onClick={() => remove(name)} />
                           </Space>
                         ))}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Add field (Competitor Info)
-                          </Button>
-                        </Form.Item>
+                        {isCompetitionPresent != "no" && (
+                          <Form.Item>
+                            <Button
+                              type="dashed"
+                              onClick={() => add()}
+                              block
+                              icon={<PlusOutlined />}
+                            >
+                              Add field (Competitor Info)
+                            </Button>
+                          </Form.Item>
+                        )}
                       </>
                     )}
                   </Form.List>

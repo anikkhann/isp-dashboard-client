@@ -499,7 +499,7 @@ const ResellerVisitList: React.FC = () => {
           )}
 
           <TableCard
-            title="Reseller visit List"
+            title="Sub Zone Manager Visit List"
             hasLink={true}
             addLink="/admin/hotspot/reseller-visit/create"
             permission="resellerVisit.create"

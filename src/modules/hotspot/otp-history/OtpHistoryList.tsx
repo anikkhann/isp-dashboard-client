@@ -25,6 +25,7 @@ interface TableParams {
 
 const OtpHistoryList: React.FC = () => {
   const [data, setData] = useState<ZoneTagData[]>([]);
+
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
@@ -170,7 +171,6 @@ const OtpHistoryList: React.FC = () => {
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
       const { data } = res;
 
       if (data.status != 200) {
@@ -260,35 +260,78 @@ const OtpHistoryList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "mobile",
+      title: "Client",
+      dataIndex: "partner",
+      sorter: false,
+      render: (partner: any) => {
+        if (!partner) return "-";
+        return <>{partner.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer Name",
+      dataIndex: "name",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Mobile",
       dataIndex: "mobile",
       sorter: true,
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "otpCode",
+      title: "Package",
+      dataIndex: "",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "OTP",
       dataIndex: "otpCode",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "message",
-      dataIndex: "message",
+      title: "Activation Time",
+      dataIndex: "isActive",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "IP",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.ipAddress}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Mac",
+      dataIndex: "mac",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "mac",
-      dataIndex: "mac",
+      title: "Message",
+      dataIndex: "message",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     }
 
-    // insertedBy
     // {
     //   title: "Created By",
     //   dataIndex: "insertedBy",
@@ -299,7 +342,7 @@ const OtpHistoryList: React.FC = () => {
     //   },
     //   width: "20%",
     //   align: "center" as AlignType
-    // },
+    // }
     // createdOn
     // {
     //   title: "Created At",

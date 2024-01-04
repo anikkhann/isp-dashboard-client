@@ -27,7 +27,7 @@ const NewSubZoneTag = () => {
               )
             },
             {
-              title: "New Sub Zone Tag"
+              title: "New Sub Zone Manager Tag/Remove"
             }
           ]}
         />
@@ -49,7 +49,7 @@ const NewSubZoneTag = () => {
               color: "#F15F22"
             }}
           >
-            New Sub Zone Tag
+            New Sub Zone Manager Tag/Remove
           </h1>
         </div>
 

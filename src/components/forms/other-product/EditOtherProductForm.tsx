@@ -129,10 +129,18 @@ const EditOtherProductForm = ({ item }: PropData) => {
               scrollToFirstError
             >
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* name */}
                   <Form.Item
-                    label="name"
+                    label="Product"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -141,18 +149,26 @@ const EditOtherProductForm = ({ item }: PropData) => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input name!"
+                        message: "Please input Product!"
                       }
                     ]}
                   >
-                    <Input placeholder="name" className={`form-control`} />
+                    <Input placeholder="Product" className={`form-control`} />
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* unit */}
                   <Form.Item
-                    label="unit"
+                    label="Unit"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -165,13 +181,21 @@ const EditOtherProductForm = ({ item }: PropData) => {
                       }
                     ]}
                   >
-                    <Input placeholder="unit" />
+                    <Input placeholder="Unit" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* description */}
                   <Form.Item
-                    label="description"
+                    label="Description"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -184,7 +208,7 @@ const EditOtherProductForm = ({ item }: PropData) => {
                       }
                     ]}
                   >
-                    <Input placeholder="description" />
+                    <Input placeholder="Description" />
                   </Form.Item>
                 </Col>
               </Row>

@@ -28,7 +28,7 @@ import {
   EyeOutlined
 } from "@ant-design/icons";
 import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -407,21 +407,35 @@ const RetailerOnboardList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "name",
+      title: "TSO",
+      dataIndex: "tso",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Sub Zone Manager",
+      dataIndex: "subZoneManager",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer Name",
       dataIndex: "name",
       sorter: true,
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "address",
+      title: "Address",
       dataIndex: "address",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "contactPerson",
+      title: "Contact Person",
       dataIndex: "contactPerson",
       sorter: true,
       width: "20%",
@@ -429,44 +443,44 @@ const RetailerOnboardList: React.FC = () => {
     },
 
     {
-      title: "contactNumber",
+      title: "Contact No",
       dataIndex: "contactNumber",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "nidNo",
-      dataIndex: "nidNo",
+      title: "Status",
+      dataIndex: "status",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // editedBy
     // {
     //   title: "Updated By",

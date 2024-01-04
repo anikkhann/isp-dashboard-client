@@ -25,7 +25,7 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { NasDeviceData } from "@/interfaces/NasDeviceData";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -64,6 +64,7 @@ interface TableParams {
 
 const NasDeviceList: React.FC = () => {
   const [data, setData] = useState<NasDeviceData[]>([]);
+
   const { Panel } = Collapse;
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
@@ -255,21 +256,21 @@ const NasDeviceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
+      title: "Device Name",
       dataIndex: "name",
       sorter: true,
       width: 500,
       align: "center" as AlignType
     },
+    // {
+    //   title: "Map Location",
+    //   dataIndex: "mapLocation",
+    //   sorter: true,
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
-      title: "Map Location",
-      dataIndex: "mapLocation",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "ip",
+      title: "IP",
       dataIndex: "ip",
       sorter: true,
       width: "20%",
@@ -294,32 +295,38 @@ const NasDeviceList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-
+    {
+      title: "Location Description",
+      dataIndex: "locationDescription",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // editedBy
     // {
     //   title: "Updated By",
@@ -445,7 +452,7 @@ const NasDeviceList: React.FC = () => {
           )}
 
           <TableCard
-            title="Nas Device  List"
+            title="NAS Devices List"
             hasLink={true}
             addLink="/admin/hotspot/nas-device/create"
             permission="nasDevice.create"
@@ -489,6 +496,50 @@ const NasDeviceList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
+                              <b>Device Name</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="Name"
+                              value={selectedName}
+                              onChange={e => setSelectedName(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>IP</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="IP"
+                              value={selectedIp}
+                              onChange={e => setSelectedIp(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
                               <b>Status</b>
                             </span>
                             <Select
@@ -512,50 +563,7 @@ const NasDeviceList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Device Name</b>
-                            </span>
-                            <Input
-                              type="text"
-                              className="ant-input"
-                              placeholder="Name"
-                              value={selectedName}
-                              onChange={e => setSelectedName(e.target.value)}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Ip</b>
-                            </span>
-                            <Input
-                              type="text"
-                              className="ant-input"
-                              placeholder="Ip"
-                              value={selectedIp}
-                              onChange={e => setSelectedIp(e.target.value)}
-                            />
-                          </Space>
-                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}

@@ -16,7 +16,7 @@ import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
 import ability from "@/services/guard/ability";
 import { DeleteOutlined } from "@ant-design/icons";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -375,7 +375,7 @@ const AreaTaggingList: React.FC = () => {
 
     // displayName
     {
-      title: "displayName",
+      title: "Display Name",
       dataIndex: "displayName",
       sorter: false,
       render: (displayName: any) => {
@@ -388,7 +388,7 @@ const AreaTaggingList: React.FC = () => {
 
     // areaManager
     {
-      title: "areaManager",
+      title: "Area Manager",
       dataIndex: "areaManager",
       sorter: false,
       render: (areaManager: any) => {
@@ -400,7 +400,7 @@ const AreaTaggingList: React.FC = () => {
     },
     // client
     {
-      title: "client",
+      title: "Client",
       dataIndex: "client",
       sorter: false,
       render: (client: any) => {
@@ -412,30 +412,30 @@ const AreaTaggingList: React.FC = () => {
     },
 
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // editedBy
     // {
     //   title: "Updated By",

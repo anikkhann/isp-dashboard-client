@@ -24,7 +24,20 @@ interface FormData {
   snmpPort: string;
   snmpCommunity: string;
 }
-
+const snmpList = [
+  {
+    label: "v1",
+    value: "v1"
+  },
+  {
+    label: "v2c",
+    value: "v2c"
+  },
+  {
+    label: "v3",
+    value: "v3"
+  }
+];
 interface PropData {
   item: ApDeviceData;
 }
@@ -43,6 +56,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
   const [isSnmpActive, setIsSnmpActive] = useState<boolean>(false);
 
   const [nasDevices, setNasDevices] = useState<any[]>([]);
+  const [selectedSnmpVersion, setSelectedSnmpVersion] = useState(null);
   const [selectedNasDevice, setSelectedNasDevice] = useState<any>(null);
 
   const [zones, setZones] = useState<any[]>([]);
@@ -265,7 +279,11 @@ const EditApDeviceForm = ({ item }: PropData) => {
     form.setFieldsValue({ nasDeviceId: value });
     setSelectedNasDevice(value as any);
   };
-
+  const handleSnmpChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ snmpVersion: value });
+    setSelectedSnmpVersion(value as any);
+  };
   useEffect(() => {
     getZoneManagers();
     getSubZoneManagers(null);
@@ -286,7 +304,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
       setSelectedRetailer(item.retailerId);
       setIsActive(item.isActive);
       setIsSnmpActive(item.isSnmpActive);
-
+      // setSelectedSnmpVersion(item.snmpVersion);
       form.setFieldsValue({
         name: item.name,
         mapLocation: item.mapLocation,
@@ -308,7 +326,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
       locationDescription,
       ip,
       macAddress,
-      snmpVersion,
+      // snmpVersion,
       snmpPort,
       snmpCommunity
     } = data;
@@ -322,7 +340,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
       ip: ip,
       macAddress: macAddress,
       isSnmpActive: isSnmpActive,
-      snmpVersion: snmpVersion,
+      snmpVersion: selectedSnmpVersion,
       snmpPort: snmpPort,
       snmpCommunity: snmpCommunity,
       zoneManagerId: selectedZone,
@@ -395,14 +413,105 @@ const EditApDeviceForm = ({ item }: PropData) => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* zoneManagerId */}
+                <Form.Item
+                  label="Zone Manager"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="zoneManagerId"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleZoneChange}
+                      options={zones}
+                      value={selectedZone}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* subZoneManagerId */}
+                <Form.Item
+                  label="SubZone Manager"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="subZoneManagerId"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleSubZoneChange}
+                      options={subZones}
+                      value={selectedSubZone}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* retailerId */}
+                <Form.Item
+                  label="Retailer"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="retailerId"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleRetailerChange}
+                      options={retailers}
+                      value={selectedRetailer}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
               {/* nasDeviceId */}
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* nasDeviceId */}
@@ -618,192 +727,109 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   </Checkbox>
                 </Form.Item>
               </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="snmpVersion"
-                  label="snmpVersion"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your snmpVersion!"
-                    }
-                  ]}
+              {isSnmpActive != false && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="snmpVersion"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="snmpPort"
-                  label="snmpPort"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your snmpPort!"
-                    }
-                  ]}
+                  <Form.Item
+                    label="SNMP Version"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="snmpVersion"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select SNMP Version!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select SNMP Version"
+                        onChange={handleSnmpChange}
+                        options={snmpList}
+                        value={selectedSnmpVersion}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+              {isSnmpActive != false && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="snmpPort"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="snmpCommunity"
-                  label="snmpCommunity"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your snmpCommunity!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="snmpCommunity"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* zoneManagerId */}
-                <Form.Item
-                  label="Zone Manager"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="zoneManagerId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleZoneChange}
-                      options={zones}
-                      value={selectedZone}
+                  <Form.Item
+                    name="snmpPort"
+                    label="snmpPort"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your snmpPort!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="snmpPort"
+                      className={`form-control`}
+                      style={{ padding: "6px" }}
                     />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* subZoneManagerId */}
-                <Form.Item
-                  label="SubZone Manager"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="subZoneManagerId"
+                  </Form.Item>
+                </Col>
+              )}
+              {isSnmpActive != false && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
                 >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleSubZoneChange}
-                      options={subZones}
-                      value={selectedSubZone}
+                  <Form.Item
+                    name="snmpCommunity"
+                    label="snmpCommunity"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your snmpCommunity!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="snmpCommunity"
+                      className={`form-control`}
+                      style={{ padding: "6px" }}
                     />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* retailerId */}
-                <Form.Item
-                  label="Retailer"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="retailerId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleRetailerChange}
-                      options={retailers}
-                      value={selectedRetailer}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                  </Form.Item>
+                </Col>
+              )}
             </Row>
 
             <Form.Item>

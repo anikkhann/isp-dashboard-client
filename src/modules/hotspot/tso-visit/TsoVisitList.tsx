@@ -475,7 +475,7 @@ const TsoVisitList: React.FC = () => {
           )}
 
           <TableCard
-            title="Tso Visit List"
+            title="TSO Visit List"
             hasLink={true}
             addLink="/admin/hotspot/tso-visit/create"
             permission="tsoVisit.create"

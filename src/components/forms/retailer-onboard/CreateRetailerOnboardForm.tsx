@@ -409,147 +409,15 @@ const CreateRetailerOnboardForm = () => {
               autoComplete="off"
               onFinish={onSubmit}
               form={form}
-              initialValues={{}}
+              initialValues={{
+                wsdCommission: 0
+              }}
               style={{ maxWidth: "100%" }}
               name="wrap"
               colon={false}
               scrollToFirstError
             >
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* divisionId */}
-                  <Form.Item
-                    label="Division"
-                    style={{
-                      marginBottom: 0,
-                      marginRight: "10px",
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Division!"
-                      }
-                    ]}
-                    name="divisionId"
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Division"
-                        onChange={handleDivisionChange}
-                        options={divisions}
-                        value={selectedDivision}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* districtId */}
-                  <Form.Item
-                    label="District"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select District!"
-                      }
-                    ]}
-                    name="districtId"
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select District"
-                        onChange={handleDistrictChange}
-                        options={districts}
-                        value={selectedDistrict}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* upazillaId */}
-                  <Form.Item
-                    label="Upazilla"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="upazillaId"
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Upazilla"
-                        onChange={handleUpazillaChange}
-                        options={upazillas}
-                        value={selectedUpazilla}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* unionId */}
-                  <Form.Item
-                    label="Union"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="unionId"
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Union"
-                        onChange={handleUnionChange}
-                        options={unions}
-                        value={selectedUnion}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-
                 <Col
                   xs={24}
                   sm={12}
@@ -561,7 +429,7 @@ const CreateRetailerOnboardForm = () => {
                 >
                   {/* subZoneManagerId */}
                   <Form.Item
-                    label="subZoneManagerId"
+                    label="SubZone Manager"
                     name="subZoneManagerId"
                     style={{
                       marginBottom: 0,
@@ -597,13 +465,18 @@ const CreateRetailerOnboardForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* name */}
                   <Form.Item
-                    label="name"
+                    label="Customer Name"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -612,18 +485,55 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input name!"
+                        message: "Please input customer name!"
                       }
                     ]}
                   >
-                    <Input placeholder="name" className={`form-control`} />
+                    <Input
+                      placeholder="Customer Name"
+                      className={`form-control`}
+                    />
                   </Form.Item>
                 </Col>
-
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* contactPerson */}
+                  <Form.Item
+                    label="Contact Person"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="contactPerson"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Contact Person!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="Contact Person" />
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* address */}
                   <Form.Item
-                    label="address"
+                    label="Address"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -636,33 +546,21 @@ const CreateRetailerOnboardForm = () => {
                       }
                     ]}
                   >
-                    <Input placeholder="address" />
+                    <Input placeholder="Address" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
-                  {/* contactPerson */}
-                  <Form.Item
-                    label="contactPerson"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="contactPerson"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input contactPerson!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="contactPerson" />
-                  </Form.Item>
-                </Col>
-
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* contactNumber */}
                   <Form.Item
-                    label="contactNumber"
+                    label="Contact No"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -671,37 +569,185 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input contactNumber!"
+                        message: "Please input Contact No!"
                       }
                     ]}
                   >
-                    <Input placeholder="contactNumber" />
+                    <Input placeholder="Contact No" />
                   </Form.Item>
                 </Col>
-
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* altContactNumber */}
                   <Form.Item
-                    label="altContactNumber"
+                    label="Alt Contact Number"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
                     name="altContactNumber"
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please input Alt Contact Number!"
+                    //   }
+                    // ]}
+                  >
+                    <Input placeholder="Alt Contact Number" />
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* divisionId */}
+                  <Form.Item
+                    label="Division"
+                    style={{
+                      marginBottom: 0,
+                      marginRight: "10px",
+                      fontWeight: "bold"
+                    }}
                     rules={[
                       {
                         required: true,
-                        message: "Please input altContactNumber!"
+                        message: "Please select Division!"
                       }
                     ]}
+                    name="divisionId"
                   >
-                    <Input placeholder="altContactNumber" />
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Division"
+                        onChange={handleDivisionChange}
+                        options={divisions}
+                        value={selectedDivision}
+                      />
+                    </Space>
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* districtId */}
+                  <Form.Item
+                    label="District"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select District!"
+                      }
+                    ]}
+                    name="districtId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select District"
+                        onChange={handleDistrictChange}
+                        options={districts}
+                        value={selectedDistrict}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* upazillaId */}
+                  <Form.Item
+                    label="Upazilla"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="upazillaId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Upazilla"
+                        onChange={handleUpazillaChange}
+                        options={upazillas}
+                        value={selectedUpazilla}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* unionId */}
+                  <Form.Item
+                    label="Union"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="unionId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Union"
+                        onChange={handleUnionChange}
+                        options={unions}
+                        value={selectedUnion}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* nidNo */}
                   <Form.Item
-                    label="nidNo"
+                    label="NID No"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -710,17 +756,25 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input nidNo!"
+                        message: "Please input NID No!"
                       }
                     ]}
                   >
-                    <Input placeholder="nidNo" />
+                    <Input placeholder="NID No" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* wsdCommission */}
                   <Form.Item
-                    label="wsdCommission"
+                    label="WSD Commission (%)"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -729,17 +783,25 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input wsdCommission!"
+                        message: "Please input WSD Commission (%!"
                       }
                     ]}
                   >
-                    <Input placeholder="wsdCommission" />
+                    <Input placeholder="WSD Commission (%" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* bkashNumber */}
                   <Form.Item
-                    label="bkashNumber"
+                    label="Bkash Number"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -748,17 +810,25 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input bkashNumber!"
+                        message: "Please input Bkash Number!"
                       }
                     ]}
                   >
-                    <Input placeholder="bkashNumber" />
+                    <Input placeholder="Bkash Number" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* nagadNumber */}
                   <Form.Item
-                    label="nagadNumber"
+                    label="Nagad Number"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -767,17 +837,25 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input nagadNumber!"
+                        message: "Please input Nagad Number!"
                       }
                     ]}
                   >
-                    <Input placeholder="nagadNumber" />
+                    <Input placeholder="Nagad Number" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* latitude */}
                   <Form.Item
-                    label="latitude"
+                    label="Latitude"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -786,17 +864,25 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input latitude!"
+                        message: "Please input Latitude!"
                       }
                     ]}
                   >
-                    <Input placeholder="latitude" />
+                    <Input placeholder="Latitude" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* longitude */}
                   <Form.Item
-                    label="longitude"
+                    label="Longitude"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -805,17 +891,25 @@ const CreateRetailerOnboardForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input longitude!"
+                        message: "Please input Longitude!"
                       }
                     ]}
                   >
-                    <Input placeholder="longitude" />
+                    <Input placeholder="Longitude" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* tsoComment */}
                   <Form.Item
-                    label="tsoComment"
+                    label="TSO Comment"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -828,9 +922,46 @@ const CreateRetailerOnboardForm = () => {
                       }
                     ]}
                   >
-                    <Input placeholder="tsoComment" />
+                    <Input placeholder="TSO Comment" />
                   </Form.Item>
                 </Col>
+
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                ></Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                ></Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                ></Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                ></Col>
               </Row>
 
               {/* submit */}

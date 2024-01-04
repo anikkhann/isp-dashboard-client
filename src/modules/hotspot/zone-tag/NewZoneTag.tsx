@@ -25,7 +25,7 @@ const NewZoneTag = () => {
               title: <Link href="/admin/hotspot/zone-tag">Zone Tag</Link>
             },
             {
-              title: "New Zone Tag"
+              title: "New Zone Manager Tag"
             }
           ]}
         />
@@ -47,7 +47,7 @@ const NewZoneTag = () => {
               color: "#F15F22"
             }}
           >
-            New Zone Tag
+            New Zone Manager Tag
           </h1>
         </div>
 

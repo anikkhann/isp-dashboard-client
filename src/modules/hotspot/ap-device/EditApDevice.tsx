@@ -58,10 +58,12 @@ const EditApDevice = ({ id }: any) => {
               title: <Link href="/admin/hotspot">Hotspot Dashboard</Link>
             },
             {
-              title: <Link href="/admin/hotspot/ap-device">ap Device List</Link>
+              title: (
+                <Link href="/admin/hotspot/ap-device">AP Devices List</Link>
+              )
             },
             {
-              title: "Edit ap Device"
+              title: "Edit AP Devices"
             }
           ]}
         />
@@ -83,7 +85,7 @@ const EditApDevice = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit ap Device
+            Edit AP Devices
           </h1>
         </div>
 

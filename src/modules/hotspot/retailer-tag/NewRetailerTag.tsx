@@ -27,7 +27,7 @@ const NewRetailerTag = () => {
               )
             },
             {
-              title: "New Retailer Tag"
+              title: "New Retailer Tag/Remove"
             }
           ]}
         />
@@ -49,7 +49,7 @@ const NewRetailerTag = () => {
               color: "#F15F22"
             }}
           >
-            New Retailer Tag
+            New Retailer Tag/Remove
           </h1>
         </div>
 

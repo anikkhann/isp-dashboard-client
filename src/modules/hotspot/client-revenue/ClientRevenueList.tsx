@@ -217,35 +217,35 @@ const ClientRevenueList: React.FC = () => {
 
   const columns: ColumnsType<ZoneTagData> = [
     {
-      title: "name",
+      title: "Client",
       dataIndex: "name",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "total_voucher_qty",
+      title: "Total Voucher",
       dataIndex: "total_voucher_qty",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "unused_voucher_qty",
+      title: "Unused Voucher",
       dataIndex: "unused_voucher_qty",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "used_voucher_qty",
+      title: "Used Voucher",
       dataIndex: "used_voucher_qty",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "commission",
+      title: "Commission (BDT)",
       dataIndex: "commission",
 
       width: "20%",
@@ -291,7 +291,7 @@ const ClientRevenueList: React.FC = () => {
           )}
 
           <TableCard
-            title="Client Revenue  List"
+            title="Client Revenue"
             hasLink={false}
             addLink=""
             permission=""

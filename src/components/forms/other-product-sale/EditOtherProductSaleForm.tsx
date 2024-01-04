@@ -196,7 +196,7 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
                 >
                   {/* otherProductId */}
                   <Form.Item
-                    label="otherProductId"
+                    label="Product"
                     name="otherProductId"
                     style={{
                       marginBottom: 0,
@@ -232,13 +232,18 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
                     </Space>
                   </Form.Item>
                 </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* quantity */}
                   <Form.Item
-                    label="quantity"
+                    label="Quantity"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -251,14 +256,22 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
                       }
                     ]}
                   >
-                    <Input placeholder="quantity" className={`form-control`} />
+                    <Input placeholder="Quantity" className={`form-control`} />
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* customerName */}
                   <Form.Item
-                    label="customerName"
+                    label="Customer Name"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -271,13 +284,21 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
                       }
                     ]}
                   >
-                    <Input placeholder="customerName" />
+                    <Input placeholder="Customer Name" />
                   </Form.Item>
                 </Col>
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* customerNumber */}
                   <Form.Item
-                    label="customerNumber"
+                    label="Customer Number"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -290,14 +311,22 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
                       }
                     ]}
                   >
-                    <Input placeholder="customerNumber" />
+                    <Input placeholder="Customer Number" />
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* address */}
                   <Form.Item
-                    label="address"
+                    label="Address"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -310,14 +339,22 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
                       }
                     ]}
                   >
-                    <Input placeholder="address" />
+                    <Input placeholder="Address" />
                   </Form.Item>
                 </Col>
 
-                <Col xs={12} className="gutter-row">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* tsoComment */}
                   <Form.Item
-                    label="tsoComment"
+                    label="TSO Comment"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -330,7 +367,7 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
                       }
                     ]}
                   >
-                    <Input placeholder="tsoComment" />
+                    <Input placeholder="TSO Comment" />
                   </Form.Item>
                 </Col>
               </Row>

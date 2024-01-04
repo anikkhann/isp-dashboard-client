@@ -387,9 +387,132 @@ const CreateClientRequisitionForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
+                  <Form.List name="lines">
+                    {(fields, { add, remove }) => (
+                      <>
+                        {fields.map(({ key, name, ...restField }) => (
+                          <Space
+                            key={key}
+                            style={{ display: "flex", marginBottom: 8 }}
+                            align="baseline"
+                          >
+                            <Form.Item
+                              {...restField}
+                              label="Package"
+                              name={[name, "pricingPlanId"]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input Package"
+                                }
+                              ]}
+                            >
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select Package"
+                                onChange={value =>
+                                  handlePricingPlanChange(value, key)
+                                }
+                                options={pricingPlans}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              {...restField}
+                              label="Quantity"
+                              name={[name, "quantity"]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input Quantity"
+                                }
+                              ]}
+                            >
+                              <Input placeholder="Quantity" />
+                            </Form.Item>
+
+                            <MinusCircleOutlined onClick={() => remove(name)} />
+                          </Space>
+                        ))}
+                        <Form.Item>
+                          <Button
+                            type="dashed"
+                            onClick={() => add()}
+                            block
+                            icon={<PlusOutlined />}
+                          >
+                            Set Requirements
+                          </Button>
+                        </Form.Item>
+                        <Form.Item>
+                          <Button
+                            type="primary"
+                            onClick={() => calculateTotal()}
+                          >
+                            Calculate Total
+                          </Button>
+                        </Form.Item>
+                      </>
+                    )}
+                  </Form.List>
+                </Col>
+              </Row>
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+                <Col>
+                  <Form.Item
+                    label="Total Amount"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    <Input
+                      placeholder="Total Amount"
+                      value={totalAmount}
+                      disabled
+                    />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item
+                    label="Payable"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    <Input
+                      placeholder="Payable"
+                      value={wsdCommissionValue}
+                      disabled
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* paymentType */}
                   <Form.Item
-                    label="paymentType"
+                    label="Payment Type"
                     name="paymentType"
                     style={{
                       marginBottom: 0,
@@ -398,7 +521,7 @@ const CreateClientRequisitionForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please select!"
+                        message: "Please select Payment Type!"
                       }
                     ]}
                   >
@@ -406,7 +529,7 @@ const CreateClientRequisitionForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
+                        placeholder="Please select Payment Type"
                         onChange={handlePaymentTypeChange}
                         options={paymentTypes}
                         value={selectedPaymentType}
@@ -429,10 +552,10 @@ const CreateClientRequisitionForm = () => {
                   <Col
                     xs={24}
                     sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
                     className="gutter-row"
                   >
                     {/* paymentGatewayId */}
@@ -463,180 +586,76 @@ const CreateClientRequisitionForm = () => {
                     </Form.Item>
                   </Col>
                 )}
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col xs={24} className="gutter-row">
+                {selectedPaymentType != "online" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      label="Attachment"
+                      style={{
+                        marginBottom: 0,
+                        width: "100%",
+                        textAlign: "center",
+                        fontWeight: "bold"
+                      }}
+                      name="attachment"
+                      rules={[
+                        {
+                          required:
+                            selectedPaymentType === "offline" ? true : false,
+                          message: "Please input attachment!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Upload
+                          customRequest={dummyAction}
+                          onChange={handleFileChange}
+                          maxCount={1}
+                          listType="picture"
+                          fileList={fileList}
+                        >
+                          {fileList.length >= 1 ? null : uploadButton}
+                        </Upload>
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                )}
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
                   {/* remarks */}
                   <Form.Item
-                    label="remarks"
+                    label="Remarks"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
                     name="remarks"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input remarks!"
-                      }
-                    ]}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please input remarks!"
+                    //   }
+                    // ]}
                   >
                     <Input.TextArea
                       rows={4}
                       cols={16}
                       placeholder="remarks"
                       className={`form-control`}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.List name="lines">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
-                            align="baseline"
-                          >
-                            <Form.Item
-                              {...restField}
-                              label="pricingPlanId"
-                              name={[name, "pricingPlanId"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={value =>
-                                  handlePricingPlanChange(value, key)
-                                }
-                                options={pricingPlans}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              label="quantity"
-                              name={[name, "quantity"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="quantity" />
-                            </Form.Item>
-
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Add field
-                          </Button>
-                        </Form.Item>
-                        <Form.Item>
-                          <Button
-                            type="primary"
-                            onClick={() => calculateTotal()}
-                          >
-                            Calculate Total
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.Item
-                    label="Attachment"
-                    style={{
-                      marginBottom: 0,
-                      width: "100%",
-                      textAlign: "center",
-                      fontWeight: "bold"
-                    }}
-                    name="attachment"
-                    rules={[
-                      {
-                        required:
-                          selectedPaymentType === "offline" ? true : false,
-                        message: "Please input attachment!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Upload
-                        customRequest={dummyAction}
-                        onChange={handleFileChange}
-                        maxCount={1}
-                        listType="picture"
-                        fileList={fileList}
-                      >
-                        {fileList.length >= 1 ? null : uploadButton}
-                      </Upload>
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.Item
-                    label="Total Amount"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Input
-                      placeholder="Total Amount"
-                      value={totalAmount}
-                      disabled
-                    />
-                  </Form.Item>
-                </Col>
-                <Col>
-                  <Form.Item
-                    label="WSD Commission"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Input
-                      placeholder="WSD Commission"
-                      value={wsdCommissionValue}
-                      disabled
                     />
                   </Form.Item>
                 </Col>

@@ -125,7 +125,7 @@ const mainRoutes = [
 
   {
     key: "/admin/hotspot",
-    label: "Wifi Hotspot",
+    label: "Wi-Fi Hotspot",
     path: "/admin/hotspot",
     icon: <SettingOutlined />,
     permission: "hotspot.dashboard"

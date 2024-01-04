@@ -494,43 +494,70 @@ const UsedVoucherList: React.FC = () => {
     },
 
     {
-      title: "serialNo",
+      title: "Client",
+      dataIndex: "clientId",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Zone Manager",
+      dataIndex: "zoneManagerId",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Sub Zone Manager",
+      dataIndex: "subZoneManagerId",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Retailer",
+      dataIndex: "retailerId",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "SerialNo",
       dataIndex: "serialNo",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "voucherNumber",
+      title: "Voucher",
       dataIndex: "voucherNumber",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "referenceNumber",
+      title: "Reference",
       dataIndex: "referenceNumber",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "packagePrice",
-      dataIndex: "packagePrice",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
     // pricingPlan
     {
-      title: "pricingPlan",
+      title: "Package",
       dataIndex: "pricingPlan",
       sorter: false,
       render: (pricingPlan: any) => {
         if (!pricingPlan) return "-";
         return <>{pricingPlan.name}</>;
       },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Price",
+      dataIndex: "packagePrice",
+      sorter: true,
       width: "20%",
       align: "center" as AlignType
     },

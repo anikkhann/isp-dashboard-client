@@ -29,7 +29,7 @@ const NewDurjoyRequisition = () => {
               )
             },
             {
-              title: "New Durjoy Requisition"
+              title: "New Client to Durjoy Requisition"
             }
           ]}
         />
@@ -51,7 +51,7 @@ const NewDurjoyRequisition = () => {
               color: "#F15F22"
             }}
           >
-            New Durjoy Requisition
+            New Client to Durjoy Requisition
           </h1>
         </div>
 

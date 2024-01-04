@@ -296,115 +296,13 @@ const CreateRetailerTagForm = () => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
-              {/* type */}
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* type */}
-                <Form.Item
-                  label="type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="type"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleTypeChange}
-                      options={types}
-                      value={selectedType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="serialFrom"
-                  label="serialFrom"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input serialFrom!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="serialFrom"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="serialTo"
-                  label="serialTo"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input serialTo!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="serialTo"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* zoneManagerId */}
@@ -414,13 +312,19 @@ const CreateRetailerTagForm = () => {
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input SubZone Manager!"
+                    }
+                  ]}
                   name="zoneManagerId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
+                      placeholder="Please select Sub Zone Manager"
                       onChange={handleZoneManagerChange}
                       options={zoneManagers}
                       value={selectedZoneManager}
@@ -432,10 +336,10 @@ const CreateRetailerTagForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* retailerId */}
@@ -445,6 +349,12 @@ const CreateRetailerTagForm = () => {
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Retailer!"
+                    }
+                  ]}
                   name="retailerId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
@@ -463,19 +373,25 @@ const CreateRetailerTagForm = () => {
               <Col
                 xs={24}
                 sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
                 className="gutter-row"
               >
                 {/* pricingPlanId */}
                 <Form.Item
-                  label="Pricing Plan"
+                  label="Package"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Package!"
+                    }
+                  ]}
                   name="pricingPlanId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
@@ -486,6 +402,106 @@ const CreateRetailerTagForm = () => {
                       onChange={handlePricingPlanChange}
                       options={pricingPlans}
                       value={selectedPricingPlan}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="serialFrom"
+                  label="Serial From"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Serial From!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Serial From"
+                    className={`form-control`}
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="serialTo"
+                  label="Serial To"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Serial To!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="Serial To"
+                    className={`form-control`}
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+              {/* type */}
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* type */}
+                <Form.Item
+                  label="Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="type"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Type!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Type"
+                      onChange={handleTypeChange}
+                      options={types}
+                      value={selectedType}
                     />
                   </Space>
                 </Form.Item>

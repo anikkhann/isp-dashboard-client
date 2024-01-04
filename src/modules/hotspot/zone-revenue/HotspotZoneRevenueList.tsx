@@ -281,35 +281,35 @@ const HotspotZoneRevenueList: React.FC = () => {
 
   const columns: ColumnsType<ZoneTagData> = [
     {
-      title: "name",
+      title: "Client",
       dataIndex: "name",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "total_voucher_qty",
+      title: "Total Voucher",
       dataIndex: "total_voucher_qty",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "unused_voucher_qty",
+      title: "Unused Voucher",
       dataIndex: "unused_voucher_qty",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "used_voucher_qty",
+      title: "Used Voucher",
       dataIndex: "used_voucher_qty",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "commission",
+      title: "Commission (BDT)",
       dataIndex: "commission",
 
       width: "20%",
@@ -355,7 +355,7 @@ const HotspotZoneRevenueList: React.FC = () => {
           )}
 
           <TableCard
-            title="Zone Revenue  List"
+            title="Zone Manager Revenue"
             hasLink={false}
             addLink=""
             permission=""
@@ -430,10 +430,10 @@ const HotspotZoneRevenueList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">

@@ -343,10 +343,10 @@ const CreateRetailerTaggingForm = () => {
                 <Col
                   xs={24}
                   sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
                   className="gutter-row"
                 >
                   {/* retailerId */}

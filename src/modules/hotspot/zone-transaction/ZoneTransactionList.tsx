@@ -357,35 +357,35 @@ const ZoneTransactionList: React.FC = () => {
     },
 
     {
-      title: "trxFor",
+      title: "Trx For",
       dataIndex: "trxFor",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "trxType",
+      title: "Trx Type",
       dataIndex: "trxType",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "amount",
+      title: "Amount (BDT)",
       dataIndex: "amount",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "trxBy",
+      title: "Trx By",
       dataIndex: "trxBy",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "zoneCommission",
+      title: "ZM Commission",
       dataIndex: "zoneCommission",
 
       width: "20%",
@@ -455,7 +455,7 @@ const ZoneTransactionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Zone Transaction List"
+            title="Zone Manager Transactions"
             hasLink={false}
             addLink=""
             permission=""
@@ -491,11 +491,11 @@ const ZoneTransactionList: React.FC = () => {
                         {authUser && authUser.userType == "client" && (
                           <Col
                             xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            sm={8}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
                             className="gutter-row"
                           >
                             {/* zoneManagerId */}
@@ -503,6 +503,9 @@ const ZoneTransactionList: React.FC = () => {
                               style={{ width: "100%" }}
                               direction="vertical"
                             >
+                              <span>
+                                <b>Zone Manager</b>
+                              </span>
                               <Select
                                 showSearch
                                 allowClear
@@ -635,6 +638,15 @@ const ZoneTransactionList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>

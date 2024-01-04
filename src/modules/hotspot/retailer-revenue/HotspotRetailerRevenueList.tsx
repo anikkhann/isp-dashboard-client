@@ -398,35 +398,35 @@ const HotspotRetailerRevenueList: React.FC = () => {
 
   const columns: ColumnsType<ZoneTagData> = [
     {
-      title: "name",
+      title: "Client",
       dataIndex: "name",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "total_voucher_qty",
+      title: "Total Voucher",
       dataIndex: "total_voucher_qty",
 
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "unused_voucher_qty",
+      title: "Unused Voucher",
       dataIndex: "unused_voucher_qty",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "used_voucher_qty",
+      title: "Used Voucher",
       dataIndex: "used_voucher_qty",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "commission",
+      title: "Commission (BDT)",
       dataIndex: "commission",
 
       width: "20%",
@@ -472,7 +472,7 @@ const HotspotRetailerRevenueList: React.FC = () => {
           )}
 
           <TableCard
-            title="Retailer Revenue  List"
+            title="Retailer Revenue"
             hasLink={false}
             addLink=""
             permission=""
@@ -501,102 +501,135 @@ const HotspotRetailerRevenueList: React.FC = () => {
                     }}
                   >
                     <Panel header="Filters" key="1">
+                      {/* {authUser &&
+                        (authUser.userType === "durjoy" ||
+                          authUser.userType === "duronto") && ( */}
                       <Row
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Client</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleClientChange}
-                              options={clients}
-                              value={selectedClient}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Zone Manager</b>
-                            </span>
-                            <Select
-                              showSearch
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneChange}
-                              options={zones}
-                              value={selectedZone}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>SubZone Manager</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneManagerChange}
-                              options={subzoneManagers}
-                              value={selectedSubZoneManager}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
+                        {authUser &&
+                          authUser.userType != "client" &&
+                          authUser.userType != "zone" &&
+                          authUser.userType != "reseller" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Client</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleClientChange}
+                                  options={clients}
+                                  value={selectedClient}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {authUser &&
+                          authUser.userType != "zone" &&
+                          authUser.userType != "reseller" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Zone Manager</b>
+                                </span>
+                                <Select
+                                  showSearch
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneChange}
+                                  options={zones}
+                                  value={selectedZone}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {authUser && authUser.userType != "reseller" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>SubZone Manager</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select"
+                                onChange={handleZoneManagerChange}
+                                options={subzoneManagers}
+                                value={selectedSubZoneManager}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
                         <Col
                           xs={24}
                           sm={12}
@@ -679,6 +712,7 @@ const HotspotRetailerRevenueList: React.FC = () => {
                           </Button>
                         </Col>
                       </Row>
+                      {/* )} */}
                     </Panel>
                   </Collapse>
                 </div>

@@ -21,10 +21,10 @@ const NewApDevice = () => {
               title: <Link href="/admin/hotspot">Hotspot Dashboard</Link>
             },
             {
-              title: <Link href="/admin/hotspot/ap-device">Ap device</Link>
+              title: <Link href="/admin/hotspot/ap-device">AP Device</Link>
             },
             {
-              title: "New Ap device"
+              title: "New AP Device"
             }
           ]}
         />
@@ -46,7 +46,7 @@ const NewApDevice = () => {
               color: "#F15F22"
             }}
           >
-            New Ap Device
+            New AP Device
           </h1>
         </div>
 

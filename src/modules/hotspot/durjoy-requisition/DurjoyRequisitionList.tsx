@@ -83,6 +83,7 @@ interface TableParams {
 
 const DurjoyRequisitionList: React.FC = () => {
   const [data, setData] = useState<DurjoyRequisitionData[]>([]);
+  console.log(data);
   const { Panel } = Collapse;
 
   const [usedVoucherData, setUsedVoucherData] = useState<any[]>([]);
@@ -410,48 +411,48 @@ const DurjoyRequisitionList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
-    {
-      title: "deliveryAddress",
-      dataIndex: "deliveryAddress",
-      sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-    {
-      title: "deliveryContact",
-      dataIndex: "deliveryContact",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "deliveryName",
-      dataIndex: "deliveryName",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "deliveryAddress",
+    //   dataIndex: "deliveryAddress",
+    //   sorter: true,
+    //   width: 500,
+    //   align: "center" as AlignType
+    // },
+    // {
+    //   title: "deliveryContact",
+    //   dataIndex: "deliveryContact",
+    //   sorter: true,
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
+    // {
+    //   title: "deliveryName",
+    //   dataIndex: "deliveryName",
+    //   sorter: true,
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
 
-    {
-      title: "Status",
-      dataIndex: "status",
-      sorter: true,
-      render: (status: any) => {
-        return <>{status}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "totalAmount",
-      dataIndex: "totalAmount",
-      sorter: true,
-      render: (totalAmount: any) => {
-        return <>{totalAmount}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Status",
+    //   dataIndex: "status",
+    //   sorter: true,
+    //   render: (status: any) => {
+    //     return <>{status}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
+    // {
+    //   title: "totalAmount",
+    //   dataIndex: "totalAmount",
+    //   sorter: true,
+    //   render: (totalAmount: any) => {
+    //     return <>{totalAmount}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
 
     // insertedBy
     // {
@@ -816,7 +817,7 @@ const DurjoyRequisitionList: React.FC = () => {
           )}
 
           <TableCard
-            title="Durjoy Requisition List"
+            title="Client to Durjoy Requisition List"
             hasLink={true}
             addLink="/admin/hotspot/durjoy-requisition/create"
             permission="durjoyRequisition.create"

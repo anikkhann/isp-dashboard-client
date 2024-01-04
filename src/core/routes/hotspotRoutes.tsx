@@ -19,7 +19,7 @@ const hotspotRoutes = [
 
   {
     key: "/admin/hotspot/nas-device",
-    label: "Nas Device",
+    label: "NAS Devices",
     path: "/admin/hotspot/nas-device",
     icon: <SettingOutlined />,
     permission: "nasDevice.list"
@@ -27,7 +27,7 @@ const hotspotRoutes = [
 
   {
     key: "/admin/hotspot/ap-device",
-    label: "Ap Device",
+    label: "AP Devices",
     path: "/admin/hotspot/ap-device",
     icon: <SettingOutlined />,
     permission: "apDevice.list"
@@ -42,21 +42,21 @@ const hotspotRoutes = [
   },
   {
     key: "/admin/hotspot/client-requisition",
-    label: "Zone Manager to Client Requisition",
+    label: "Zone Manager Requisition",
     path: "/admin/hotspot/client-requisition",
     icon: <SettingOutlined />,
     permission: "clientRequisition.list"
   },
   {
     key: "/admin/hotspot/zone-tag",
-    label: "Zone Manager Tag/Remove",
+    label: "ZM Tag/Remove",
     path: "/admin/hotspot/zone-tag",
     icon: <SettingOutlined />,
     permission: "zoneTag.list"
   },
   {
     key: "/admin/hotspot/sub-zone-tag",
-    label: "Sub Zone Manager Tag/Remove",
+    label: "SZM Tag/Remove",
     path: "/admin/hotspot/sub-zone-tag",
     icon: <SettingOutlined />,
     permission: "subzoneTag.list"
@@ -70,21 +70,21 @@ const hotspotRoutes = [
   },
   {
     key: "/admin/hotspot/client-revenue",
-    label: "Client revenue",
+    label: "Client Revenue",
     path: "/admin/hotspot/client-revenue",
     icon: <SettingOutlined />,
     permission: "clientRevenue.list"
   },
   {
     key: "/admin/hotspot/zone-revenue",
-    label: "Zone Revenue",
+    label: "ZM Revenue",
     path: "/admin/hotspot/zone-revenue",
     icon: <SettingOutlined />,
     permission: "zoneRevenue.list"
   },
   {
     key: "/admin/hotspot/sub-zone-revenue",
-    label: "Sub Zone Revenue",
+    label: "SZM Revenue",
     path: "/admin/hotspot/sub-zone-revenue",
     icon: <SettingOutlined />,
     permission: "subzoneRevenue.list"
@@ -140,35 +140,35 @@ const hotspotRoutes = [
   },
   {
     key: "/admin/hotspot/zone-transaction",
-    label: "Zone Transaction",
+    label: "ZM Transaction",
     path: "/admin/hotspot/zone-transaction",
     icon: <SettingOutlined />,
     permission: "zoneTransaction.list"
   },
   {
     key: "/admin/hotspot/tso-visit",
-    label: "TSO visit",
+    label: "TSO Visit",
     path: "/admin/hotspot/tso-visit",
     icon: <SettingOutlined />,
     permission: "zone.list"
   },
   {
     key: "/admin/hotspot/reseller-visit",
-    label: "Reseller visit",
+    label: "SZM Visit",
     path: "/admin/hotspot/reseller-visit",
     icon: <SettingOutlined />,
     permission: "zone.list"
   },
   {
     key: "/admin/hotspot/area-tagging",
-    label: "Area tagging",
+    label: "Area Tagging",
     path: "/admin/hotspot/area-tagging",
     icon: <SettingOutlined />,
     permission: "zone.list"
   },
   {
     key: "/admin/hotspot/retailer-tagging",
-    label: "Retailer tagging",
+    label: "Retailer Tagging",
     path: "/admin/hotspot/retailer-tagging",
     icon: <SettingOutlined />,
     permission: "zone.list"

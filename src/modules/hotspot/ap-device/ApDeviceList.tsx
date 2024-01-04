@@ -24,7 +24,7 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { ApDeviceData } from "@/interfaces/ApDeviceData";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -50,6 +50,7 @@ interface TableParams {
 
 const ApDeviceList: React.FC = () => {
   const [data, setData] = useState<ApDeviceData[]>([]);
+  console.table(data);
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
@@ -388,14 +389,21 @@ const ApDeviceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Name",
+      title: "AP Name",
       dataIndex: "name",
       sorter: true,
       width: 500,
       align: "center" as AlignType
     },
     {
-      title: "ip",
+      title: "NAS Device",
+      dataIndex: "nasDevice",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "IP",
       dataIndex: "ip",
       sorter: true,
       width: "20%",
@@ -403,7 +411,7 @@ const ApDeviceList: React.FC = () => {
     },
 
     {
-      title: "macAddress",
+      title: "Mac Address",
       dataIndex: "macAddress",
       sorter: true,
       width: "20%",
@@ -411,7 +419,7 @@ const ApDeviceList: React.FC = () => {
     },
     // zoneManager
     {
-      title: "zoneManager",
+      title: "Zone Manager",
       dataIndex: "zoneManager",
       sorter: false,
       render: (zoneManager: any) => {
@@ -440,32 +448,38 @@ const ApDeviceList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-
+    {
+      title: "Location Description",
+      dataIndex: "locationDescription",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // editedBy
     // {
     //   title: "Updated By",
@@ -525,6 +539,24 @@ const ApDeviceList: React.FC = () => {
           </div>
         );
       },
+      align: "center" as AlignType
+    },
+    {
+      title: "Is SNMP Active?",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
+        return (
+          <>
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
       align: "center" as AlignType
     }
   ];
@@ -591,7 +623,7 @@ const ApDeviceList: React.FC = () => {
           )}
 
           <TableCard
-            title="Ap Device  List"
+            title="AP Devices List"
             hasLink={true}
             addLink="/admin/hotspot/ap-device/create"
             permission="apDevice.create"
@@ -772,7 +804,7 @@ const ApDeviceList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Ap Name</b>
+                              <b>AP Name</b>
                             </span>
                             <Input
                               type="text"
@@ -794,12 +826,12 @@ const ApDeviceList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Ip</b>
+                              <b>IP</b>
                             </span>
                             <Input
                               type="text"
                               className="ant-input"
-                              placeholder="Ip"
+                              placeholder="IP"
                               value={selectedIp}
                               onChange={e => setSelectedIp(e.target.value)}
                             />

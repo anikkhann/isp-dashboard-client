@@ -1,6 +1,9 @@
 export interface TsoRetailerTagData {
   createdOn: number;
+  insertedBy: string;
+  editedBy: string;
   updatedOn: number;
+  updateBy: string;
   id: string;
   tsoId: string;
   tso: TsoRetailerTagTso;
