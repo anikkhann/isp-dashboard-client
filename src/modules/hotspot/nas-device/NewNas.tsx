@@ -29,13 +29,13 @@ const NewNas = () => {
             }
           ]}
         />
-        <div
+        {/* <div
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             margin: "0 auto",
-            // border: "1px solid #F15F22",
+           
             textAlign: "center"
           }}
         >
@@ -49,7 +49,7 @@ const NewNas = () => {
           >
             New NAS Device
           </h1>
-        </div>
+        </div> */}
 
         <Card
           // title="New Client"

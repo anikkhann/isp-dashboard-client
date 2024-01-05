@@ -67,7 +67,7 @@ const EditNas = ({ id }: any) => {
             }
           ]}
         />
-        <div
+        {/* <div
           style={{
             width: "90%",
             backgroundColor: "#ffffff",
@@ -87,7 +87,7 @@ const EditNas = ({ id }: any) => {
           >
             Edit NAS Device
           </h1>
-        </div>
+        </div> */}
 
         <Card
           hoverable

@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { Alert, Button, Checkbox, Form, Input, Card } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
@@ -165,316 +165,397 @@ const EditNasDeviceForm = ({ item }: PropData) => {
               gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
               justify="space-between"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+              <div
+                style={{
+                  margin: "0 auto",
+                  // border: "1px solid #F15F22",
+                  textAlign: "center"
+                }}
               >
-                <Form.Item
-                  name="name"
-                  label="Device Name"
+                <h1
                   style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
+                    fontSize: "1.5rem",
+                    marginTop: "1rem",
+                    marginBottom: "1rem",
+                    color: "#F15F22"
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Device Name!"
-                    }
-                  ]}
                 >
-                  <Input
-                    type="text"
-                    placeholder="Device Name"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+                  Edit NAS Device
+                </h1>
+              </div>
+              <Card
+                style={{
+                  // width: "90%",
+                  // backgroundColor: "#ffffff",
+                  // borderRadius: "10px",
+                  // margin: "0 auto",
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  // textAlign: "center"
+                  width: "90%",
+                  backgroundColor: "#F0F2F5",
+                  borderRadius: "10px",
+                  margin: "0 auto",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  textAlign: "center",
+                  padding: "20px"
+                }}
               >
-                <Form.Item
-                  name="mapLocation"
-                  label="Map Location"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Map Location!"
-                    }
-                  ]}
+                <Row
+                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  justify="space-between"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Map Location"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="locationDescription"
-                  label="Location Description"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Location Description!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Location Description"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="ip"
-                  label="IP"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input IP!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="IP"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="secret"
-                  label="Secret"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Secret!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Secret"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="radiusIncomingPort"
-                  label="Radius Incoming Port"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Radius Incoming Port!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Radius Incoming Port"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="apiSsl"
-                  label="API SSL"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                >
-                  <Checkbox
-                    onChange={handleApiSslActive}
-                    checked={isApiSslActive}
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
                     className="gutter-row"
                   >
-                    API SSL
-                  </Checkbox>
-                </Form.Item>
-              </Col>
+                    <Form.Item
+                      name="name"
+                      label="Device Name"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Device Name!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Device Name"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="mapLocation"
+                      label="Map Location"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Map Location!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Map Location"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="locationDescription"
+                      label="Location Description"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Location Description!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Location Description"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="ip"
+                      label="IP"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input IP!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="IP"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="secret"
+                      label="Secret"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Secret!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Secret"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="radiusIncomingPort"
+                      label="Radius Incoming Port"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Radius Incoming Port!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Radius Incoming Port"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Card>
+              <div
+                style={{
+                  margin: "0 auto",
+                  // border: "1px solid #F15F22",
+                  textAlign: "center"
+                }}
               >
-                <Form.Item
-                  name="apiPort"
-                  label="API Port"
+                <h1
                   style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
+                    fontSize: "1.5rem",
+                    marginTop: "1rem",
+                    marginBottom: "1rem",
+                    color: "#F15F22"
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your API Port!"
-                    }
-                  ]}
                 >
-                  <Input
-                    type="text"
-                    placeholder="API Port"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  API Information
+                </h1>
+              </div>
+              <Card
+                style={{
+                  // width: "90%",
+                  // backgroundColor: "#ffffff",
+                  // borderRadius: "10px",
+                  // margin: "0 auto",
+
+                  // textAlign: "center"
+                  width: "90%",
+                  backgroundColor: "#F0F2F5",
+                  borderRadius: "10px",
+                  margin: "0 auto",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  textAlign: "center",
+                  padding: "20px"
+                }}
               >
-                <Form.Item
-                  name="apiUsername"
-                  label="API Username"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your API Username!"
-                    }
-                  ]}
+                <Row
+                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  justify="space-between"
                 >
-                  <Input
-                    type="text"
-                    placeholder="API Username"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="apiPassword"
-                  label="API Password"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your API Password!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="API Password"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="apiSsl"
+                      label="API SSL"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                    >
+                      <Checkbox
+                        onChange={handleApiSslActive}
+                        checked={isApiSslActive}
+                        className="gutter-row"
+                      >
+                        API SSL
+                      </Checkbox>
+                    </Form.Item>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="apiPort"
+                      label="API Port"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your API Port!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="API Port"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="apiUsername"
+                      label="API Username"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your API Username!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="API Username"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      name="apiPassword"
+                      label="API Password"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your API Password!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        placeholder="API Password"
+                        className={`form-control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Card>
             </Row>
 
             <Form.Item>
