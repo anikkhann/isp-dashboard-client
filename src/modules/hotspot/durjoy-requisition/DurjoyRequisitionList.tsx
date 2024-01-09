@@ -13,7 +13,7 @@ import {
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table, Collapse } from "antd";
+import { Table, Collapse, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -23,14 +23,16 @@ import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
 import {
-  AlertOutlined,
-  CheckOutlined,
+  // AlertOutlined,
+  // CheckOutlined,
   CloseOutlined,
   DownloadOutlined,
-  EyeOutlined
+  EyeOutlined,
+  CheckSquareOutlined,
+  CloseSquareOutlined
 } from "@ant-design/icons";
 import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -411,75 +413,136 @@ const DurjoyRequisitionList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
-    // {
-    //   title: "deliveryAddress",
-    //   dataIndex: "deliveryAddress",
-    //   sorter: true,
-    //   width: 500,
-    //   align: "center" as AlignType
-    // },
-    // {
-    //   title: "deliveryContact",
-    //   dataIndex: "deliveryContact",
-    //   sorter: true,
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // {
-    //   title: "deliveryName",
-    //   dataIndex: "deliveryName",
-    //   sorter: true,
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Requisition No",
+      dataIndex: "requisitionNo",
+      sorter: true,
+      width: 500,
+      align: "center" as AlignType
+    },
+    {
+      title: "Request For",
+      dataIndex: "client",
+      sorter: true,
+      render: (client: any) => {
+        return <>{client.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Payment Type",
+      dataIndex: "paymentType",
+      sorter: true,
+      render: (paymentType: any) => {
+        return (
+          <>
+            {paymentType === "offline" ? (
+              <Tag color="red">{paymentType}</Tag>
+            ) : (
+              <Tag color="green">{paymentType}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
 
-    // {
-    //   title: "Status",
-    //   dataIndex: "status",
-    //   sorter: true,
-    //   render: (status: any) => {
-    //     return <>{status}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // {
-    //   title: "totalAmount",
-    //   dataIndex: "totalAmount",
-    //   sorter: true,
-    //   render: (totalAmount: any) => {
-    //     return <>{totalAmount}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-
+    {
+      title: "Payment Status",
+      dataIndex: "paymentStatus",
+      sorter: true,
+      render: (paymentStatus: any) => {
+        return (
+          <>
+            {paymentStatus === "Due" ? (
+              <Tag color="red">{paymentStatus}</Tag>
+            ) : (
+              <Tag color="green">{paymentStatus}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Delivery Type",
+      dataIndex: "deliveryType",
+      sorter: true,
+      render: (deliveryType: any) => {
+        return <>{deliveryType}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Total Amount (BDT)",
+      dataIndex: "totalAmount",
+      sorter: true,
+      render: (totalAmount: any) => {
+        return <>{totalAmount}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Payable Amount (BDT)",
+      dataIndex: "payableAmount",
+      sorter: true,
+      render: (payableAmount: any) => {
+        return <>{payableAmount}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      sorter: true,
+      render: (status: any) => {
+        return (
+          <>
+            {status === "Rejected" ? (
+              <Tag color="red">{status}</Tag>
+            ) : status === "Approved" ? (
+              <Tag color="green">{status}</Tag>
+            ) : (
+              <Tag color="blue">{status}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Requested By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // editedBy
+    {
+      title: "Requested At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
     // {
     //   title: "Updated By",
     //   dataIndex: "editedBy",
@@ -518,11 +581,11 @@ const DurjoyRequisitionList: React.FC = () => {
                 <Tooltip title="Approve" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Button
-                      icon={<CheckOutlined />}
+                      type="primary"
+                      icon={<CheckSquareOutlined />}
                       style={{
-                        color: "#FFFFFF",
-                        backgroundColor: "#570DF8",
-                        borderColor: "#570DF8"
+                        backgroundColor: "#0B666A",
+                        color: "#ffffff"
                       }}
                       onClick={() => handleApprove(record.id)}
                     />
@@ -553,12 +616,11 @@ const DurjoyRequisitionList: React.FC = () => {
                     >
                       <Button
                         type="primary"
+                        icon={<CloseSquareOutlined />}
                         style={{
-                          color: "#FFFFFF",
-                          backgroundColor: "#FF5630",
-                          borderColor: "#FF5630"
+                          backgroundColor: "#EA1179",
+                          color: "#ffffff"
                         }}
-                        icon={<AlertOutlined />}
                       />
                     </Link>
                   </Space>

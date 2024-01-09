@@ -8,23 +8,23 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import DetailsDurjoyRequisitionData from "@/components/details/durjoy-requisition/DetailsDurjoyRequisitionData";
-import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
+import DetailsClientRequisitionData from "@/components/details/client-requisition/DetailsClientRequisitionData";
+import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
 
 const DetailsClientRequisition = ({ id }: any) => {
-  const [item, SetItem] = useState<DurjoyRequisitionData | null>(null);
+  const [item, SetItem] = useState<ClientRequisitionData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const response = await axios.get(
-      `/api-hotspot/client-card-requisition/get-by-id/${id}`
+      `/api-hotspot/zone-card-requisition/get-by-id/${id}`
     );
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["client-card-requisition-list", id],
+    queryKey: ["zone-card-requisition-list", id],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -62,13 +62,13 @@ const DetailsClientRequisition = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/hotspot/durjoy-requisition">
-                  Durjoy Requisition
+                <Link href="/admin/hotspot/client-requisition">
+                  Client Requisition
                 </Link>
               )
             },
             {
-              title: "Details "
+              title: "Client Requisition Details "
             }
           ]}
         />
@@ -111,7 +111,7 @@ const DetailsClientRequisition = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <DetailsDurjoyRequisitionData item={item} />}
+          {!isLoading && item && <DetailsClientRequisitionData item={item} />}
         </Card>
       </AppRowContainer>
     </>

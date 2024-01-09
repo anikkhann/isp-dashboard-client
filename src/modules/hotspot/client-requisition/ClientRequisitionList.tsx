@@ -13,7 +13,7 @@ import {
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table, Collapse } from "antd";
+import { Table, Collapse, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ import {
   CloseOutlined,
   EyeOutlined
 } from "@ant-design/icons";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -407,8 +407,73 @@ const ClientRequisitionList: React.FC = () => {
       width: 140,
       align: "center" as AlignType
     },
+
     {
-      title: "totalAmount",
+      title: "Requisition No",
+      dataIndex: "requisitionNo",
+      sorter: true,
+      width: 500,
+      align: "center" as AlignType
+    },
+    {
+      title: "Request For",
+      dataIndex: "partner",
+      sorter: true,
+      render: (partner: any) => {
+        return <>{partner.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Payment Type",
+      dataIndex: "paymentType",
+      sorter: true,
+      render: (paymentType: any) => {
+        return (
+          <>
+            {paymentType === "offline" ? (
+              <Tag color="red">{paymentType}</Tag>
+            ) : (
+              <Tag color="green">{paymentType}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Payment Status",
+      dataIndex: "paymentStatus",
+      sorter: true,
+      render: (paymentStatus: any) => {
+        return (
+          <>
+            {paymentStatus === "Due" ? (
+              <Tag color="red">{paymentStatus}</Tag>
+            ) : (
+              <Tag color="green">{paymentStatus}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Delivery Type",
+      dataIndex: "deliveryType",
+      sorter: true,
+      render: (deliveryType: any) => {
+        return <>{deliveryType}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Total Amount (BDT)",
       dataIndex: "totalAmount",
       sorter: true,
       render: (totalAmount: any) => {
@@ -418,40 +483,56 @@ const ClientRequisitionList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "payableAmount",
+      title: "Payable Amount (BDT)",
       dataIndex: "payableAmount",
       sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-    {
-      title: "paymentStatus",
-      dataIndex: "paymentStatus",
-      sorter: true,
+      render: (payableAmount: any) => {
+        return <>{payableAmount}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "paymentType",
-      dataIndex: "paymentType",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "requisitionNo",
-      dataIndex: "requisitionNo",
-      sorter: true,
-      width: "20%",
-      align: "center" as AlignType
-    },
-
     {
       title: "Status",
       dataIndex: "status",
       sorter: true,
       render: (status: any) => {
-        return <>{status}</>;
+        return (
+          <>
+            {status === "Rejected" ? (
+              <Tag color="red">{status}</Tag>
+            ) : status === "Approved" ? (
+              <Tag color="green">{status}</Tag>
+            ) : (
+              <Tag color="blue">{status}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // insertedBy
+    {
+      title: "Requested By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Requested At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
       align: "center" as AlignType

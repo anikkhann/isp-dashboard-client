@@ -469,23 +469,67 @@ const OtherProductSaleList: React.FC = () => {
     },
     {
       title: "Product",
-      dataIndex: "name",
-      sorter: true,
-      width: 500,
-      align: "center" as AlignType
-    },
-
-    {
-      title: "Unit",
-      dataIndex: "unit",
-      sorter: true,
+      dataIndex: "otherProduct",
+      sorter: false,
+      render: (otherProduct: any) => {
+        if (!otherProduct) return "-";
+        return <>{otherProduct.name}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      sorter: true,
+      title: "Quantity",
+      dataIndex: "quantity",
+      sorter: false,
+      render: (quantity: any) => {
+        if (!quantity) return "-";
+        return <>{quantity}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer Name",
+      dataIndex: "customerName",
+      sorter: false,
+      render: (customerName: any) => {
+        if (!customerName) return "-";
+        return <>{customerName}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer Number",
+      dataIndex: "customerNumber",
+      sorter: false,
+      render: (customerNumber: any) => {
+        if (!customerNumber) return "-";
+        return <>{customerNumber}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      sorter: false,
+      render: (address: any) => {
+        if (!address) return "-";
+        return <>{address}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "TSO Comment",
+      dataIndex: "tsoComment",
+      sorter: false,
+      render: (tsoComment: any) => {
+        if (!tsoComment) return "-";
+        return <>{tsoComment}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },

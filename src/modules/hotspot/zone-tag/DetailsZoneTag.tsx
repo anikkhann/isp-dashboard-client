@@ -64,7 +64,7 @@ const DetailsZoneTag = ({ id }: any) => {
               title: <Link href="/admin/hotspot/zone-tag">Zone Tag</Link>
             },
             {
-              title: "Details Zone Tag"
+              title: "Details Zone Manager Tag"
             }
           ]}
         />
@@ -86,7 +86,7 @@ const DetailsZoneTag = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details Zone Tag
+            Details Zone Manager Tag
           </h1>
         </div>
         <Card

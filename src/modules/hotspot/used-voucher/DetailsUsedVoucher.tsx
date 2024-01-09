@@ -8,11 +8,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import DetailsNasDeviceData from "@Components/details/nas-device/DetailsNasDeviceData";
-import { NasDeviceData } from "@/interfaces/NasDeviceData";
+import DetailsUsedVoucherData from "@Components/details/used-voucher/DetailsUsedVoucherData";
+import { UsedVoucherData } from "@/interfaces/UsedVoucherData";
 
 const DetailsUsedVoucher = ({ id }: any) => {
-  const [item, SetItem] = useState<NasDeviceData | null>(null);
+  const [item, SetItem] = useState<UsedVoucherData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -68,7 +68,7 @@ const DetailsUsedVoucher = ({ id }: any) => {
               )
             },
             {
-              title: "used Voucher  Details "
+              title: "Used Voucher  Details "
             }
           ]}
         />
@@ -90,7 +90,7 @@ const DetailsUsedVoucher = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Unused Voucher Details
+            Used Voucher Details
           </h1>
         </div>
         <Card
@@ -111,7 +111,7 @@ const DetailsUsedVoucher = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <DetailsNasDeviceData item={item} />}
+          {!isLoading && item && <DetailsUsedVoucherData item={item} />}
         </Card>
       </AppRowContainer>
     </>

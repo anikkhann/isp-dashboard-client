@@ -59,10 +59,10 @@ const DetailsApDevice = ({ id }: any) => {
               title: <Link href="/admin/hotspot">Hotspot Dashboard</Link>
             },
             {
-              title: <Link href="/admin/hotspot/ap-device">ap Device</Link>
+              title: <Link href="/admin/hotspot/ap-device">AP Device</Link>
             },
             {
-              title: "ap Device Details "
+              title: "AP Device Details "
             }
           ]}
         />
@@ -84,7 +84,7 @@ const DetailsApDevice = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            ap Device Details
+            AP Device Details
           </h1>
         </div>
         <Card

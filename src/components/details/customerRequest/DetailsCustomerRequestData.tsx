@@ -503,7 +503,6 @@ const DetailsCustomerRequestData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {" "}
                   {item.editedBy ? item.editedBy.username : null}
                 </span>
               </Col>

@@ -61,10 +61,10 @@ const DetailsSubZoneTag = ({ id }: any) => {
               title: <Link href="/admin/hotspot">Hotspot Dashboard</Link>
             },
             {
-              title: <Link href="/admin/hotspot/nas-device">Nas Device</Link>
+              title: <Link href="/admin/hotspot/sub-zone-tag">SubZone Tag</Link>
             },
             {
-              title: "Nas Device Details "
+              title: "SZM Tag/Remove Details "
             }
           ]}
         />
@@ -86,7 +86,7 @@ const DetailsSubZoneTag = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Nas Device Details
+            Sub Zone Manager Tag Details
           </h1>
         </div>
         <Card

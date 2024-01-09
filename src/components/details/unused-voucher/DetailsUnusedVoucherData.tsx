@@ -1,13 +1,13 @@
+import { UnusedVoucherData } from "@/interfaces/UnusedVoucherData";
 import React from "react";
 import { Row, Col, Card } from "antd";
-import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import { format } from "date-fns";
 // const { Meta } = Card;
 interface PropData {
-  item: ZoneTagData;
+  item: UnusedVoucherData;
 }
 
-const DetailsZoneTagData = ({ item }: PropData) => {
+const DetailsUnusedVoucherData = ({ item }: PropData) => {
   console.log("item", item);
   // convert to string
   // const data = JSON.stringify(item);
@@ -45,10 +45,10 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Type :</span>
+                <span className="font-bold text-base">Client :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.type}</span>
+                <span className="mx-1 text-base">{item.client?.username}</span>
               </Col>
             </Row>
             <Row
@@ -72,7 +72,101 @@ const DetailsZoneTagData = ({ item }: PropData) => {
               </Col>
             </Row>
 
+            {/* <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">SubZone Manager :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.subZoneManager}
+                </span>
+              </Col>
+            </Row> */}
+
+            {/* <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Retailer :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.retailer}</span>
+              </Col>
+            </Row> */}
+
             <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Serial No :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.serialNo}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Voucher :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.voucherNumber}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Reference :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.referenceNumber}</span>
+              </Col>
+            </Row>
+            {/* <Row
               style={{
                 marginTop: "2px"
               }}
@@ -87,9 +181,9 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Package :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.pricingPlan?.name}</span>
+                <span className="mx-1 text-base">{item.package}</span>
               </Col>
-            </Row>
+            </Row> */}
             <Row
               style={{
                 marginTop: "2px"
@@ -102,40 +196,18 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Serial Form :</span>
+                <span className="font-bold text-base">Price :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.serialFrom}</span>
+                <span className="mx-1 text-base">
+                  {item.pricingPlan?.price}
+                </span>
               </Col>
             </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Serial To :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.serialTo}</span>
-              </Col>
-            </Row>
-
-            {/* <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Address</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">{item.address}</span>
-            </p> */}
           </div>
         </Card>
       </Col>
+
       <Col
         xs={24}
         sm={24}
@@ -172,7 +244,9 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Created By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.insertedBy}</span>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
               </Col>
             </Row>
 
@@ -214,7 +288,9 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Updated By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.editedBy}</span>
+                <span className="mx-1 text-base">
+                  {item.editedBy?.username}
+                </span>
               </Col>
             </Row>
 
@@ -247,4 +323,4 @@ const DetailsZoneTagData = ({ item }: PropData) => {
   );
 };
 
-export default DetailsZoneTagData;
+export default DetailsUnusedVoucherData;

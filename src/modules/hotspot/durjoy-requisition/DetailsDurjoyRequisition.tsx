@@ -63,12 +63,12 @@ const DetailsDurjoyRequisition = ({ id }: any) => {
             {
               title: (
                 <Link href="/admin/hotspot/durjoy-requisition">
-                  Durjoy Requisition
+                  Client to Durjoy Requisition
                 </Link>
               )
             },
             {
-              title: "Details "
+              title: "Client to Durjoy Requisition Details"
             }
           ]}
         />
@@ -90,7 +90,7 @@ const DetailsDurjoyRequisition = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details
+            Client to Durjoy Requisition Details
           </h1>
         </div>
         <Card

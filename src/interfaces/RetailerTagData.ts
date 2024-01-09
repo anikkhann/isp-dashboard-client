@@ -1,5 +1,9 @@
 export interface RetailerTagData {
   createdOn: number;
+  username: string;
+  insertedBy: string;
+  editedBy: string;
+  updatedOn: number;
   id: string;
   pricingPlanId: string;
   pricingPlan: RetailerTagDataPricingPlan;
@@ -18,6 +22,39 @@ export interface RetailerTagData {
   partnerId: string;
   partner: RetailerTagDataPartner;
 }
+// export interface InsertedBy {
+//   createdOn: number;
+//   updatedOn: number;
+//   id: string;
+//   name: string;
+//   username: string;
+//   phone: string;
+//   email: string;
+//   isActive: boolean;
+//   isMasterUser: boolean;
+//   partnerId: string;
+//   partner: Partner;
+//   parentPartnerId: string;
+//   parentPartner: ParentPartner;
+//   userType: string;
+//   credits: number;
+//   lastLoginTime: number;
+//   ipAddress: string;
+// }
+// export interface RetailerTagDataEditedBy {
+//   createdOn: number;
+//   updatedOn: number;
+//   id: string;
+//   name: string;
+//   username: string;
+//   phone: string;
+//   email: string;
+//   isActive: boolean;
+//   userType: string;
+//   credits: number;
+//   lastLoginTime: number;
+//   ipAddress: string;
+// }
 export interface RetailerTagDataPricingPlan {
   createdOn: number;
   id: string;

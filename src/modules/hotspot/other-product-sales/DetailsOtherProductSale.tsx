@@ -8,11 +8,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
+import { OtherProductSaleData } from "@/interfaces/OtherProductSaleData";
 import DetailsOtherProductSaleData from "@/components/details/other-product-sale/DetailsOtherProductSaleData";
 
 const DetailsOtherProductSale = ({ id }: any) => {
-  const [item, SetItem] = useState<DurjoyRequisitionData | null>(null);
+  const [item, SetItem] = useState<OtherProductSaleData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -90,7 +90,7 @@ const DetailsOtherProductSale = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details
+            Other Product Sale Details
           </h1>
         </div>
         <Card

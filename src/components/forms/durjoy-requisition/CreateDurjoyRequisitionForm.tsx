@@ -93,7 +93,7 @@ const CreateDurjoyRequisitionForm = () => {
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [selectedPaymentType, setSelectedPaymentType] = useState<any>(null);
+  const [selectedPaymentType, setSelectedPaymentType] = useState<any>("online");
   const [selectedTagVoucherType, setSelectedTagVoucherType] =
     useState<any>(null);
   const [selectedDeliveryType, setSelectedDeliveryType] =
@@ -630,7 +630,7 @@ const CreateDurjoyRequisitionForm = () => {
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
                 <Col>
                   <Form.Item
-                    label="Total Amount"
+                    label="Total Amount (BDT)"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -645,14 +645,14 @@ const CreateDurjoyRequisitionForm = () => {
                 </Col>
                 <Col>
                   <Form.Item
-                    label="Payable"
+                    label="Payable Amount (BDT)"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
                   >
                     <Input
-                      placeholder="Payable"
+                      placeholder="Payable Amount (BDT)10px"
                       value={wsdCommissionValue}
                       disabled
                     />
@@ -708,6 +708,105 @@ const CreateDurjoyRequisitionForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
+                {selectedTagVoucherType === "zone" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* zoneManagerId */}
+                    <Form.Item
+                      label="Zone Manager"
+                      name="zoneManagerId"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleZoneManagerChange}
+                          options={zoneManagers}
+                          value={selectedZoneManager}
+                          showSearch
+                          filterOption={(input, option) => {
+                            if (typeof option?.label === "string") {
+                              return (
+                                option.label
+                                  .toLowerCase()
+                                  .indexOf(input.toLowerCase()) >= 0
+                              );
+                            }
+                            return false;
+                          }}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                )}
+
+                {selectedTagVoucherType === "subZone" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    {/* subZoneManagerId */}
+                    <Form.Item
+                      label="SubZone"
+                      name="subZoneManagerId"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleSubZoneChange}
+                          options={subZones}
+                          value={selectedSubZone}
+                          showSearch
+                          filterOption={(input, option) => {
+                            if (typeof option?.label === "string") {
+                              return (
+                                option.label
+                                  .toLowerCase()
+                                  .indexOf(input.toLowerCase()) >= 0
+                              );
+                            }
+                            return false;
+                          }}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                )}
                 <Col
                   xs={24}
                   sm={12}
@@ -793,11 +892,8 @@ const CreateDurjoyRequisitionForm = () => {
                     </Form.Item>
                   </Col>
                 )}
-                {/* <Row
-                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                  justify="center"
-                > */}
-                {selectedPaymentType != "online" && (
+
+                {selectedPaymentType === "offline" && (
                   <Col
                     xs={24}
                     sm={12}
@@ -812,6 +908,8 @@ const CreateDurjoyRequisitionForm = () => {
                       style={{
                         marginBottom: 0,
                         width: "100%",
+                        display: "flex",
+                        // justify:"center",
                         textAlign: "center",
                         fontWeight: "bold"
                       }}
@@ -820,7 +918,7 @@ const CreateDurjoyRequisitionForm = () => {
                         {
                           required:
                             selectedPaymentType === "offline" ? true : false,
-                          message: "Please input attachment!"
+                          message: "Please upload attachment!"
                         }
                       ]}
                     >
@@ -838,6 +936,7 @@ const CreateDurjoyRequisitionForm = () => {
                     </Form.Item>
                   </Col>
                 )}
+
                 {/* </Row> */}
                 <Col
                   xs={24}
@@ -848,23 +947,6 @@ const CreateDurjoyRequisitionForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* deliveryType */}
-                  {/* <Form.Item
-                    label="deliveryType"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="deliveryType"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input deliveryType!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="deliveryType" />
-                  </Form.Item> */}
                   <Form.Item
                     label="Delivery Type"
                     style={{
@@ -985,105 +1067,6 @@ const CreateDurjoyRequisitionForm = () => {
                 )}
                 {/* </Row> */}
 
-                {selectedTagVoucherType === "zone" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* zoneManagerId */}
-                    <Form.Item
-                      label="zoneManagerId"
-                      name="zoneManagerId"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select"
-                          onChange={handleZoneManagerChange}
-                          options={zoneManagers}
-                          value={selectedZoneManager}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-
-                {selectedTagVoucherType === "subZone" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* subZoneManagerId */}
-                    <Form.Item
-                      label="subZoneManagerId"
-                      name="subZoneManagerId"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select"
-                          onChange={handleSubZoneChange}
-                          options={subZones}
-                          value={selectedSubZone}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
                 <Col
                   xs={24}
                   sm={12}

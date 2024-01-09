@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Card } from "antd";
 import { RetailerTagData } from "@/interfaces/RetailerTagData";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 // const { Meta } = Card;
 interface PropData {
   item: RetailerTagData;
@@ -45,10 +45,10 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">TSO</span>
+                <span className="font-bold text-base">Type :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base"></span>
+                <span className="mx-1 text-base">{item.type}</span>
               </Col>
             </Row>
             <Row
@@ -63,14 +63,15 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Area :</span>
+                <span className="font-bold text-base">SubZone Manager :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base"></span>
+                <span className="mx-1 text-base">
+                  {item.subZoneManager?.username}
+                </span>
               </Col>
             </Row>
-
-            {/* <Row
+            <Row
               style={{
                 marginTop: "2px"
               }}
@@ -79,18 +80,54 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  alignItems: "end",
-               
+                  alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Email :</span>
+                <span className="font-bold text-base">Retailer :</span>
               </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.retailer?.username}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
               <Col
-               
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
               >
-                <span className="mx-1 text-base">{item.email}</span>
+                <span className="font-bold text-base">Package :</span>
               </Col>
-            </Row> */}
+              <Col>
+                <span className="mx-1 text-base">{item.pricingPlan?.name}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Serial Form :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.serialFrom}</span>
+              </Col>
+            </Row>
 
             {/* <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">Address</span>
@@ -109,42 +146,33 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Delivery Name :</span>
+                <span className="font-bold text-base">Serial To :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base"></span>
+                <span className="mx-1 text-base">{item.serialTo}</span>
               </Col>
             </Row>
-            {/*
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.contactNumber}</span>
-              </Col>
-            </Row> */}
           </div>
         </Card>
-        {/* <Card
+      </Col>
+      <Col
+        xs={24}
+        sm={24}
+        md={12}
+        lg={12}
+        xl={12}
+        xxl={12}
+        className="gutter-row"
+      >
+        <Card
           hoverable
           bordered={false}
           style={{
             textAlign: "start",
             backgroundColor: "white",
             borderRadius: "10px",
-            border: "1px solid #F15F22",
-            marginTop: "1rem"
+            border: "1px solid #F15F22"
+            // marginTop: "1rem"
           }}
         >
           <div>
@@ -163,9 +191,7 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Created By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">
-                  {item.insertedBy?.username}
-                </span>
+                <span className="mx-1 text-base">{item.insertedBy}</span>
               </Col>
             </Row>
 
@@ -207,9 +233,7 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Updated By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">
-                  {item.editedBy ? item.editedBy.username : null}
-                </span>
+                <span className="mx-1 text-base">{item.editedBy}</span>
               </Col>
             </Row>
 
@@ -236,7 +260,7 @@ const DetailsRetailerTagData = ({ item }: PropData) => {
               </Col>
             </Row>
           </div>
-        </Card> */}
+        </Card>
       </Col>
     </Row>
   );

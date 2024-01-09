@@ -1,5 +1,9 @@
 export interface ZoneTagData {
   createdOn: number;
+  username: string;
+  insertedBy: string;
+  editedBy: string;
+  updatedOn: number;
   id: string;
   pricingPlanId: string;
   pricingPlan: ZoneTagDataPricingPlan;

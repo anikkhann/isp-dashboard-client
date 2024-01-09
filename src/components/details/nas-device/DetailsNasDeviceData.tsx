@@ -1,7 +1,7 @@
 import { NasDeviceData } from "@/interfaces/NasDeviceData";
 import React from "react";
 import { Row, Col, Card } from "antd";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 // const { Meta } = Card;
 interface PropData {
   item: NasDeviceData;
@@ -45,58 +45,12 @@ const DetailsNasDeviceData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Name :</span>
+                <span className="font-bold text-base">Device Name :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.name}</span>
               </Col>
             </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Ip :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.ip}</span>
-              </Col>
-            </Row>
-
-            {/* <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end",
-               
-                }}
-              >
-                <span className="font-bold text-base">Email :</span>
-              </Col>
-              <Col
-               
-              >
-                <span className="mx-1 text-base">{item.email}</span>
-              </Col>
-            </Row> */}
-
-            {/* <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Address</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">{item.address}</span>
-            </p> */}
             <Row
               style={{
                 marginTop: "2px"
@@ -115,7 +69,7 @@ const DetailsNasDeviceData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.mapLocation}</span>
               </Col>
             </Row>
-            {/*
+
             <Row
               style={{
                 marginTop: "2px"
@@ -128,15 +82,179 @@ const DetailsNasDeviceData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Contact Number :</span>
+                <span className="font-bold text-base">
+                  Location Description :
+                </span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.contactNumber}</span>
+                <span className="mx-1 text-base">
+                  {item.locationDescription}
+                </span>
               </Col>
-            </Row> */}
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">IP :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.ip}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Secret :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.secret}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">
+                  Radius Incoming Port :
+                </span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.radiusIncomingPort}
+                </span>
+              </Col>
+            </Row>
           </div>
         </Card>
-        {/* <Card
+      </Col>
+
+      <Col
+        xs={24}
+        sm={24}
+        md={12}
+        lg={12}
+        xl={12}
+        xxl={12}
+        className="gutter-row"
+      >
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">API SSL :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.apiSsl === true ? "Yes" : "No"}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">API Port :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.apiPort}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">API Username :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.apiUsername}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">AIP Password :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.apiPassword}</span>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+        <Card
           hoverable
           bordered={false}
           style={{
@@ -208,7 +326,7 @@ const DetailsNasDeviceData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {item.editedBy ? item.editedBy.username : null}
+                  {item.editedBy?.username}
                 </span>
               </Col>
             </Row>
@@ -236,7 +354,7 @@ const DetailsNasDeviceData = ({ item }: PropData) => {
               </Col>
             </Row>
           </div>
-        </Card> */}
+        </Card>
       </Col>
     </Row>
   );

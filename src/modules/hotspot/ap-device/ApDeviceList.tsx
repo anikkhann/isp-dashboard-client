@@ -389,6 +389,17 @@ const ApDeviceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Client",
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "AP Name",
       dataIndex: "name",
       sorter: true,
@@ -398,7 +409,11 @@ const ApDeviceList: React.FC = () => {
     {
       title: "NAS Device",
       dataIndex: "nasDevice",
-      sorter: true,
+      sorter: false,
+      render: (nasDevice: any) => {
+        if (!nasDevice) return "-";
+        return <>{nasDevice.name}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -414,6 +429,24 @@ const ApDeviceList: React.FC = () => {
       title: "Mac Address",
       dataIndex: "macAddress",
       sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Is SNMP Active?",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
+        return (
+          <>
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
+          </>
+        );
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -539,24 +572,6 @@ const ApDeviceList: React.FC = () => {
           </div>
         );
       },
-      align: "center" as AlignType
-    },
-    {
-      title: "Is SNMP Active?",
-      dataIndex: "isActive",
-      sorter: true,
-      render: (isActive: any) => {
-        return (
-          <>
-            {isActive ? (
-              <Tag color="blue">Active</Tag>
-            ) : (
-              <Tag color="red">Inactive</Tag>
-            )}
-          </>
-        );
-      },
-      width: "20%",
       align: "center" as AlignType
     }
   ];

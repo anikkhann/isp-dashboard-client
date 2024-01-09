@@ -479,7 +479,7 @@ const SubZoneTagList: React.FC = () => {
               {ability.can("subzoneTag.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
-                    <Link href={`/admin/hotspot/zone-tag/${record.id}`}>
+                    <Link href={`/admin/hotspot/sub-zone-tag/${record.id}`}>
                       <Button type="primary" icon={<EyeOutlined />} />
                     </Link>
                   </Space>

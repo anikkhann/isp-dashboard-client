@@ -170,7 +170,6 @@ const CreateNasDeviceForm = () => {
                   // backgroundColor: "#ffffff",
                   // borderRadius: "10px",
                   // margin: "0 auto",
-
                   // textAlign: "center"
                   width: "90%",
                   backgroundColor: "#F0F2F5",
@@ -428,7 +427,7 @@ const CreateNasDeviceForm = () => {
                   >
                     <Form.Item
                       name="apiSsl"
-                      label="API SSL"
+                      // label="API SSL"
                       style={{
                         marginBottom: 0,
                         fontWeight: "bold"

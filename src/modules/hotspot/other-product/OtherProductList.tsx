@@ -154,8 +154,12 @@ const OtherProductList: React.FC = () => {
     },
     {
       title: "Status",
-      dataIndex: "status",
-      sorter: true,
+      dataIndex: "isActive",
+      sorter: false,
+      render: (isActive: any) => {
+        if (!isActive) return "-";
+        return <>{isActive === true ? "Active" : "Inactive"}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },

@@ -1552,6 +1552,9 @@ export interface Retailer {
 
 export interface ApDeviceData {
   createdOn: number;
+  insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  updatedOn: number;
   id: string;
   nasDeviceId: string;
   nasDevice: NasDevice;

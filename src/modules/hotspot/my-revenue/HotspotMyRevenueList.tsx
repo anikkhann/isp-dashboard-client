@@ -448,7 +448,7 @@ const HotspotMyRevenueList: React.FC = () => {
 
   const columns: ColumnsType<ZoneTagData> = [
     {
-      title: "Client",
+      title: "Package",
       dataIndex: "pkg_name",
 
       width: 500,

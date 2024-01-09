@@ -488,7 +488,17 @@ const MonthlyTargetList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
-
+    {
+      title: "Status",
+      dataIndex: "status",
+      sorter: false,
+      render: (status: any) => {
+        if (!status) return "-";
+        return <>{status}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",

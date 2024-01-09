@@ -72,7 +72,7 @@ const CreateClientRequisitionForm = () => {
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [selectedPaymentType, setSelectedPaymentType] = useState<any>(null);
+  const [selectedPaymentType, setSelectedPaymentType] = useState<any>("online");
 
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
 
@@ -586,7 +586,7 @@ const CreateClientRequisitionForm = () => {
                     </Form.Item>
                   </Col>
                 )}
-                {selectedPaymentType != "online" && (
+                {selectedPaymentType === "online" && (
                   <Col
                     xs={24}
                     sm={12}

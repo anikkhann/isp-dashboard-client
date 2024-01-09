@@ -1,13 +1,13 @@
+import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
 import React from "react";
 import { Row, Col, Card } from "antd";
-import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import { format } from "date-fns";
 // const { Meta } = Card;
 interface PropData {
-  item: ZoneTagData;
+  item: ClientRequisitionData;
 }
 
-const DetailsZoneTagData = ({ item }: PropData) => {
+const DetailsClientRequisitionData = ({ item }: PropData) => {
   console.log("item", item);
   // convert to string
   // const data = JSON.stringify(item);
@@ -45,33 +45,94 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Type :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.type}</span>
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Zone Manager :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">
-                  {item.zoneManager?.username}
+                <span className="font-bold text-base">
+                  Requisition Number :
                 </span>
               </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.requisitionNo}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Request For :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.partner?.username}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">
+                  Total Amount (BDT) :
+                </span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.totalAmount}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">
+                  Payable Amount (BDT) :
+                </span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.payableAmount}</span>
+              </Col>
             </Row>
 
+            {/* <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end",
+               
+                }}
+              >
+                <span className="font-bold text-base">Tag Voucer :</span>
+              </Col>
+              <Col
+               
+              >
+                <span className="mx-1 text-base">{}</span>
+              </Col>
+            </Row> */}
             <Row
               style={{
                 marginTop: "2px"
@@ -84,10 +145,10 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Package :</span>
+                <span className="font-bold text-base">Payment Type :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.pricingPlan?.name}</span>
+                <span className="mx-1 text-base">{item.paymentType}</span>
               </Col>
             </Row>
             <Row
@@ -102,29 +163,10 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Serial Form :</span>
+                <span className="font-bold text-base">Payment Status :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.serialFrom}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Serial To :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.serialTo}</span>
+                <span className="mx-1 text-base">{item.paymentStatus}</span>
               </Col>
             </Row>
 
@@ -133,6 +175,61 @@ const DetailsZoneTagData = ({ item }: PropData) => {
               <span className="mx-1">:</span>
               <span className="mx-1">{item.address}</span>
             </p> */}
+            {/* <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Delivery Type :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.deliveryType}</span>
+              </Col>
+            </Row> */}
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Client Note :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.clientNote}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Zone Manager Note :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.zoneNote}</span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>
@@ -172,7 +269,9 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Created By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.insertedBy}</span>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
               </Col>
             </Row>
 
@@ -214,7 +313,9 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Updated By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.editedBy}</span>
+                <span className="mx-1 text-base">
+                  {item.editedBy?.username}
+                </span>
               </Col>
             </Row>
 
@@ -247,4 +348,4 @@ const DetailsZoneTagData = ({ item }: PropData) => {
   );
 };
 
-export default DetailsZoneTagData;
+export default DetailsClientRequisitionData;

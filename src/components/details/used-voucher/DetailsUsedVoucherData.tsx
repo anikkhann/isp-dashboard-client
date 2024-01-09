@@ -1,13 +1,13 @@
-import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
+import { UsedVoucherData } from "@/interfaces/UsedVoucherData";
 import React from "react";
 import { Row, Col, Card } from "antd";
 import { format } from "date-fns";
 // const { Meta } = Card;
 interface PropData {
-  item: DurjoyRequisitionData;
+  item: UsedVoucherData;
 }
 
-const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
+const DetailsUsedVoucherData = ({ item }: PropData) => {
   console.log("item", item);
   // convert to string
   // const data = JSON.stringify(item);
@@ -45,26 +45,6 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">
-                  Requisition Number :
-                </span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.requisitionNo}</span>
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
                 <span className="font-bold text-base">Client :</span>
               </Col>
               <Col>
@@ -83,32 +63,12 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">
-                  Total Amount (BDT) :
-                </span>
+                <span className="font-bold text-base">Zone Manager :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.totalAmount}</span>
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">
-                  Payable Amount (BDT) :
+                <span className="mx-1 text-base">
+                  {item.zoneManager?.username}
                 </span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.payableAmount}</span>
               </Col>
             </Row>
 
@@ -124,54 +84,15 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Tag Voucer :</span>
+                <span className="font-bold text-base">SubZone Manager :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.tagVoucher}</span>
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Payment Type :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.paymentType}</span>
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Payment Status :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.paymentStatus}</span>
+                <span className="mx-1 text-base">
+                  {item.subZoneManager?.username}
+                </span>
               </Col>
             </Row>
 
-            {/* <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Address</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">{item.address}</span>
-            </p> */}
             <Row
               style={{
                 marginTop: "2px"
@@ -184,10 +105,29 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Delivery Type :</span>
+                <span className="font-bold text-base">Retailer :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.deliveryType}</span>
+                <span className="mx-1 text-base">{item.retailer}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Serial No :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.serialNo}</span>
               </Col>
             </Row>
             <Row
@@ -202,10 +142,10 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Admin Note :</span>
+                <span className="font-bold text-base">Voucher :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.adminNote}</span>
+                <span className="mx-1 text-base">{item.voucherNumber}</span>
               </Col>
             </Row>
             <Row
@@ -220,10 +160,10 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Client Note :</span>
+                <span className="font-bold text-base">Reference :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.clientNote}</span>
+                <span className="mx-1 text-base">{item.referenceNumber}</span>
               </Col>
             </Row>
             <Row
@@ -238,10 +178,10 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Delivery Name :</span>
+                <span className="font-bold text-base">Package :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.deliveryName}</span>
+                <span className="mx-1 text-base">{item.pricingPlan?.name}</span>
               </Col>
             </Row>
             <Row
@@ -256,52 +196,18 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Delivery Contact :</span>
+                <span className="font-bold text-base">Price (BDT) :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.deliveryContact}</span>
+                <span className="mx-1 text-base">
+                  {item.pricingPlan?.price}
+                </span>
               </Col>
             </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Delivery Address :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.deliveryAddress}</span>
-              </Col>
-            </Row>
-            {/*
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.contactNumber}</span>
-              </Col>
-            </Row> */}
           </div>
         </Card>
       </Col>
+
       <Col
         xs={24}
         sm={24}
@@ -320,6 +226,165 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
             borderRadius: "10px",
             border: "1px solid #F15F22"
             // marginTop: "1rem"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Customer Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.usedBy?.customer?.name}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Mobile :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.usedBy?.customer?.phone}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Gender :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.usedBy?.customer?.gender}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Date of Birth :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.createdOn
+                    ? format(
+                        new Date(item.usedBy?.customer?.dateOfBirth),
+                        "yyyy-MM-dd "
+                      )
+                    : null}
+                  {/* {item.usedBy?.customer?.dateOfBirth} */}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Used IP :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.usedIp}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Used MAC :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.usedMac}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Used Time :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.createdOn
+                    ? format(new Date(item.usedTime), "yyyy-MM-dd pp")
+                    : null}
+                  {/* {item.usedBy?.customer?.dateOfBirth} */}
+                </span>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
           }}
         >
           <div>
@@ -417,4 +482,4 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
   );
 };
 
-export default DetailsDurjoyRequisitionData;
+export default DetailsUsedVoucherData;

@@ -219,7 +219,7 @@ const RetailerTagList: React.FC = () => {
     }
   }, [data]);
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneManager: string) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -232,6 +232,7 @@ const RetailerTagList: React.FC = () => {
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneManager },
         isActive: true
       }
     };
@@ -350,7 +351,7 @@ const RetailerTagList: React.FC = () => {
   useEffect(() => {
     getSubZoneManagers();
     getPricingPlan();
-    getRetailers();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -386,8 +387,10 @@ const RetailerTagList: React.FC = () => {
     setSelectedStatus(value);
   };
 
-  const handleZoneManagerChange = (value: any) => {
+  const handleSubZoneManagerChange = (value: any) => {
     setSelectedSubZoneManager(value);
+    // Fetch retailers for the selected subzone
+    // getRetailers(value);
   };
 
   const handlePricingPlanChange = (value: any) => {
@@ -399,8 +402,11 @@ const RetailerTagList: React.FC = () => {
   };
 
   useEffect(() => {
+    if (selectedSubZoneManager) {
+      getRetailers(selectedSubZoneManager);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedSubZoneManager]);
 
   const columns: ColumnsType<RetailerTagData> = [
     {
@@ -431,11 +437,11 @@ const RetailerTagList: React.FC = () => {
     },
     {
       title: "Retailer",
-      dataIndex: "retailerId",
+      dataIndex: "retailer",
       sorter: false,
-      render: (retailerId: any) => {
-        if (!retailerId) return "-";
-        return <>{retailerId.name}</>;
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -670,7 +676,7 @@ const RetailerTagList: React.FC = () => {
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleZoneManagerChange}
+                              onChange={handleSubZoneManagerChange}
                               options={subzoneManagers}
                               value={selectedSubZoneManager}
                               showSearch

@@ -1,5 +1,9 @@
 export interface SubZoneTagData {
   createdOn: number;
+
+  insertedBy: SubZoneTagDataClientInsertedBy;
+  editedBy: SubZoneTagDataClientEditedBy;
+  updatedOn: number;
   id: string;
   pricingPlanId: string;
   pricingPlan: SubZoneTagDataPricingPlan;

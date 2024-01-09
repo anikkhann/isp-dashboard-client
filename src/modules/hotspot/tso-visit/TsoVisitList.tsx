@@ -13,7 +13,7 @@ import axios from "axios";
 import { TsoRetailerTagData } from "@/interfaces/TsoRetailerTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -320,22 +320,30 @@ const TsoVisitList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    // displayName
     {
-      title: "displayName",
-      dataIndex: "displayName",
+      title: "Zone Manager",
+      dataIndex: "zoneManagerName",
       sorter: false,
-      render: (displayName: any) => {
-        if (!displayName) return "-";
-        return <>{displayName}</>;
+      render: (zoneManagerName: any) => {
+        if (!zoneManagerName) return "-";
+        return <>{zoneManagerName}</>;
       },
       width: "20%",
       align: "center" as AlignType
     },
-
-    // areaManager
     {
-      title: "areaManager",
+      title: "TSO",
+      dataIndex: "tso",
+      sorter: false,
+      render: (tso: any) => {
+        if (!tso) return "-";
+        return <>{tso.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Area Manager",
       dataIndex: "areaManager",
       sorter: false,
       render: (areaManager: any) => {
@@ -345,44 +353,177 @@ const TsoVisitList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    // client
     {
-      title: "client",
-      dataIndex: "client",
+      title: "Retailer",
+      dataIndex: "retailer",
       sorter: false,
-      render: (client: any) => {
-        if (!client) return "-";
-        return <>{client.username}</>;
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // {
+    //   title: "Reseller",
+    //   dataIndex: "reseller",
+    //   sorter: false,
+    //   render: (reseller: any) => {
+    //     if (!reseller) return "-";
+    //     return <>{reseller.username}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
+    {
+      title: "Shop Name",
+      dataIndex: "shopName",
+      sorter: false,
+      render: (shopName: any) => {
+        if (!shopName) return "-";
+        return <>{shopName}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "GPS Location",
+      dataIndex: "gpsLocation",
+      sorter: false,
+      render: (gpsLocation: any) => {
+        if (!gpsLocation) return "-";
+        return <>{gpsLocation}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Is Competitor Availabe",
+      dataIndex: "isCompetitionPresent",
+      sorter: false,
+      render: (isCompetitionPresent: any) => {
+        if (!isCompetitionPresent) return "-";
+        return (
+          <>{isCompetitionPresent === true ? "Availabe" : "Not Available"}</>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Hotspot Frequency",
+      dataIndex: "hotspotFrequency",
+      sorter: false,
+      render: (hotspotFrequency: any) => {
+        if (!hotspotFrequency) return "-";
+        return <>{hotspotFrequency}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Internet Speed",
+      dataIndex: "internetSpeed",
+      sorter: false,
+      render: (internetSpeed: any) => {
+        if (!internetSpeed) return "-";
+        return <>{internetSpeed}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Frequent Complains",
+      dataIndex: "frequentComplains",
+      sorter: false,
+      render: (frequentComplains: any) => {
+        if (!frequentComplains) return "-";
+        return <>{frequentComplains}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Fiber Cut",
+      dataIndex: "fiberCut",
+      sorter: false,
+      render: (fiberCut: any) => {
+        if (!fiberCut) return "-";
+        return <>{fiberCut}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Laser Issues",
+      dataIndex: "laserIssues",
+      sorter: false,
+      render: (laserIssues: any) => {
+        if (!laserIssues) return "-";
+        return <>{laserIssues}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Power Issues",
+      dataIndex: "powerIssues",
+      sorter: false,
+      render: (powerIssues: any) => {
+        if (!powerIssues) return "-";
+        return <>{powerIssues}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Sun Shed Banner Present",
+      dataIndex: "sunShedBannerPresent",
+      sorter: false,
+      render: (sunShedBannerPresent: any) => {
+        if (!sunShedBannerPresent) return "-";
+        return <>{sunShedBannerPresent === true ? "Yes" : "No"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Total Sales Amount",
+      dataIndex: "totalSalesAmount",
+      sorter: false,
+      render: (totalSalesAmount: any) => {
+        if (!totalSalesAmount) return "-";
+        return <>{totalSalesAmount}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
       align: "center" as AlignType
     }
-
-    // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
     // editedBy
     // {
     //   title: "Updated By",

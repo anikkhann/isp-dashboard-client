@@ -256,6 +256,17 @@ const NasDeviceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Client",
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Device Name",
       dataIndex: "name",
       sorter: true,

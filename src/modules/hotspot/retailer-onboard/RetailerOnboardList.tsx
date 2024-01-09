@@ -409,14 +409,22 @@ const RetailerOnboardList: React.FC = () => {
     {
       title: "TSO",
       dataIndex: "tso",
-      sorter: true,
+      sorter: false,
+      render: (tso: any) => {
+        if (!tso) return "-";
+        return <>{tso.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Sub Zone Manager",
+      title: "SubZone Manager",
       dataIndex: "subZoneManager",
-      sorter: true,
+      sorter: false,
+      render: (subZoneManager: any) => {
+        if (!subZoneManager) return "-";
+        return <>{subZoneManager.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },

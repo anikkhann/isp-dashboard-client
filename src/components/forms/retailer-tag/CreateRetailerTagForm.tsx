@@ -41,8 +41,9 @@ const CreateRetailerTagForm = () => {
 
   const [selectedType, setSelectedType] = useState<any>(null);
 
-  const [zoneManagers, setZoneManagers] = useState<any[]>([]);
-  const [selectedZoneManager, setSelectedZoneManager] = useState<any>(null);
+  const [subZoneManagers, setSubZoneManagers] = useState<any[]>([]);
+  const [selectedSubZoneManager, setSelectedSubZoneManager] =
+    useState<any>(null);
 
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
   const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
@@ -57,7 +58,7 @@ const CreateRetailerTagForm = () => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   //functions for getting zone manger list data using POST request
-  function getZoneManagers() {
+  function getSubZoneManagers() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -97,10 +98,10 @@ const CreateRetailerTagForm = () => {
         };
       });
 
-      setZoneManagers(list);
+      setSubZoneManagers(list);
     });
   }
-  function getRetailers() {
+  function getRetailers(selectedSubZoneManager?: string) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -113,7 +114,7 @@ const CreateRetailerTagForm = () => {
       },
       body: {
         partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
+        subZoneManager: { id: selectedSubZoneManager },
         isActive: true
       }
     };
@@ -184,22 +185,28 @@ const CreateRetailerTagForm = () => {
   }
 
   useEffect(() => {
-    getZoneManagers();
+    getSubZoneManagers();
     getPricingPlan();
-    getRetailers();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  useEffect(() => {
+    if (selectedSubZoneManager) {
+      getRetailers(selectedSubZoneManager);
+    }
+  }, [selectedSubZoneManager]);
   const handleTypeChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ type: value });
     setSelectedType(value as any);
   };
 
-  const handleZoneManagerChange = (value: any) => {
+  const handleSubZoneManagerChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ zoneManagerId: value });
-    setSelectedZoneManager(value as any);
+    setSelectedSubZoneManager(value as any);
+    // Fetch retailers for the selected subzone
+    // getRetailers(value);
   };
 
   const handlePricingPlanChange = (value: any) => {
@@ -215,7 +222,7 @@ const CreateRetailerTagForm = () => {
   };
 
   useEffect(() => {
-    getZoneManagers();
+    getSubZoneManagers();
     getPricingPlan();
   }, []);
 
@@ -228,7 +235,7 @@ const CreateRetailerTagForm = () => {
       serialFrom: serialFrom,
       serialTo: serialTo,
       retailerId: selectedRetailer,
-      subZoneManagerId: selectedZoneManager,
+      subZoneManagerId: selectedSubZoneManager,
       pricingPlanId: selectedPricingPlan
     };
 
@@ -325,9 +332,9 @@ const CreateRetailerTagForm = () => {
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select Sub Zone Manager"
-                      onChange={handleZoneManagerChange}
-                      options={zoneManagers}
-                      value={selectedZoneManager}
+                      onChange={handleSubZoneManagerChange}
+                      options={subZoneManagers}
+                      value={selectedSubZoneManager}
                     />
                   </Space>
                 </Form.Item>

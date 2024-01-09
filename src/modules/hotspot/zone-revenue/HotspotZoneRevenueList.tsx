@@ -281,7 +281,7 @@ const HotspotZoneRevenueList: React.FC = () => {
 
   const columns: ColumnsType<ZoneTagData> = [
     {
-      title: "Client",
+      title: "Zone Manger",
       dataIndex: "name",
 
       width: 500,

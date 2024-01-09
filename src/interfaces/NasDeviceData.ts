@@ -95,6 +95,9 @@ export interface Client {
 
 export interface NasDeviceData {
   createdOn: number;
+  insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  updatedOn: number;
   id: string;
   clientId: string;
   client: Client;

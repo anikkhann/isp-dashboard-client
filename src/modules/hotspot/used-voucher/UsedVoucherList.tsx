@@ -16,7 +16,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import { CSVLink } from "react-csv";
 
@@ -495,29 +495,45 @@ const UsedVoucherList: React.FC = () => {
 
     {
       title: "Client",
-      dataIndex: "clientId",
-      sorter: true,
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Zone Manager",
-      dataIndex: "zoneManagerId",
-      sorter: true,
+      dataIndex: "zoneManager",
+      sorter: false,
+      render: (zoneManager: any) => {
+        if (!zoneManager) return "-";
+        return <>{zoneManager.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Sub Zone Manager",
-      dataIndex: "subZoneManagerId",
-      sorter: true,
+      title: "SubZone Manager",
+      dataIndex: "subZoneManager",
+      sorter: false,
+      render: (subZoneManager: any) => {
+        if (!subZoneManager) return "-";
+        return <>{subZoneManager.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Retailer",
-      dataIndex: "retailerId",
-      sorter: true,
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -532,6 +548,62 @@ const UsedVoucherList: React.FC = () => {
       title: "Voucher",
       dataIndex: "voucherNumber",
       sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Customer Name",
+      dataIndex: "usedBy",
+      sorter: false,
+      render: (usedBy: any) => {
+        if (!usedBy) return "-";
+        return <>{usedBy?.customer?.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Mobile",
+      dataIndex: "usedBy",
+      sorter: false,
+      render: (usedBy: any) => {
+        if (!usedBy) return "-";
+        return <>{usedBy?.customer?.phone}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Used IP",
+      dataIndex: "usedIp",
+      sorter: false,
+      render: (usedIp: any) => {
+        if (!usedIp) return "-";
+        return <>{usedIp}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Used MAC",
+      dataIndex: "usedMac",
+      sorter: false,
+      render: (usedMac: any) => {
+        if (!usedMac) return "-";
+        return <>{usedMac}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Used Time",
+      dataIndex: "usedTime",
+      sorter: false,
+      render: (usedTime: any) => {
+        if (!usedTime) return "-";
+        const date = new Date(usedTime);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -555,7 +627,7 @@ const UsedVoucherList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Price",
+      title: "Price (BDT)",
       dataIndex: "packagePrice",
       sorter: true,
       width: "20%",
@@ -563,30 +635,30 @@ const UsedVoucherList: React.FC = () => {
     },
 
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // editedBy
     // {
     //   title: "Updated By",

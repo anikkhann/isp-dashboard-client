@@ -8,11 +8,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
+import { RetailerOnboardData } from "@/interfaces/RetailerOnboardData";
 import DetailsRetailerOnboardData from "@/components/details/retailer-onboard/DetailsRetailerOnboardData";
 
 const DetailsRetailerOnboard = ({ id }: any) => {
-  const [item, SetItem] = useState<DurjoyRequisitionData | null>(null);
+  const [item, SetItem] = useState<RetailerOnboardData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -62,8 +62,8 @@ const DetailsRetailerOnboard = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/hotspot/durjoy-requisition">
-                  Durjoy Requisition
+                <Link href="/admin/hotspot/reatiler-onboard">
+                  Retailer Onboard
                 </Link>
               )
             },
@@ -90,7 +90,7 @@ const DetailsRetailerOnboard = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details
+            Retailer Onboard Details
           </h1>
         </div>
         <Card

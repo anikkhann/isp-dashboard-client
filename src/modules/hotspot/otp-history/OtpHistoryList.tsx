@@ -4,7 +4,7 @@ import { Button, Card, Col, Select, Space, Row, Input } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table, Collapse } from "antd";
+import { Table, Collapse, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import axios from "axios";
 import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -271,9 +271,13 @@ const OtpHistoryList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Customer Name",
-      dataIndex: "name",
-      sorter: true,
+      title: "Customer",
+      dataIndex: "customer",
+      sorter: false,
+      render: (customer: any) => {
+        if (!customer) return "-";
+        return <>{customer.name}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -286,8 +290,23 @@ const OtpHistoryList: React.FC = () => {
     },
     {
       title: "Package",
-      dataIndex: "",
-      sorter: true,
+      dataIndex: "pricingPlan",
+      sorter: false,
+      render: (pricingPlan: any) => {
+        if (!pricingPlan) return "-";
+        return <>{pricingPlan.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Voucher",
+      dataIndex: "voucherNumber",
+      sorter: false,
+      render: (voucherNumber: any) => {
+        if (!voucherNumber) return "-";
+        return <>{voucherNumber}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -299,20 +318,57 @@ const OtpHistoryList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Status",
+      dataIndex: "status",
+      sorter: false,
+      render: (status: any) => {
+        if (!status) return "-";
+        return (
+          <>
+            {status === "SUCCESS" ? (
+              <Tag color="green">{status}</Tag>
+            ) : (
+              <Tag color="red">{status}</Tag>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Sent Time",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
       title: "Activation Time",
-      dataIndex: "isActive",
-      sorter: true,
+      dataIndex: "activationTime",
+      sorter: false,
+      render: (activationTime: any) => {
+        if (!activationTime) return "-";
+        const date = new Date(activationTime);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
 
     {
       title: "IP",
-      dataIndex: "insertedBy",
+      dataIndex: "ipAddress",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.ipAddress}</>;
+      render: (ipAddress: any) => {
+        if (!ipAddress) return "-";
+        return <>{ipAddress}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -330,32 +386,20 @@ const OtpHistoryList: React.FC = () => {
       sorter: true,
       width: "20%",
       align: "center" as AlignType
+    },
+    {
+      title: "Gateway Response",
+      dataIndex: "smsGatewayResponse",
+      sorter: false,
+      render: (smsGatewayResponse: any) => {
+        if (!smsGatewayResponse) return "-";
+        return <>{smsGatewayResponse}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
     }
-
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // }
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+
     // editedBy
     // {
     //   title: "Updated By",

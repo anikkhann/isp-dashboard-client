@@ -8,11 +8,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import DetailsNasDeviceData from "@Components/details/nas-device/DetailsNasDeviceData";
-import { NasDeviceData } from "@/interfaces/NasDeviceData";
+import DetailsUnusedVoucherData from "@Components/details/unused-voucher/DetailsUnusedVoucherData";
+import { UnusedVoucherData } from "@/interfaces/UnusedVoucherData";
 
 const DetailsUnusedVoucher = ({ id }: any) => {
-  const [item, SetItem] = useState<NasDeviceData | null>(null);
+  const [item, SetItem] = useState<UnusedVoucherData | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -66,7 +66,7 @@ const DetailsUnusedVoucher = ({ id }: any) => {
               )
             },
             {
-              title: "Unused Voucher  Details "
+              title: "Unused Voucher Details"
             }
           ]}
         />
@@ -109,7 +109,8 @@ const DetailsUnusedVoucher = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <DetailsNasDeviceData item={item} />}
+          {/* {!isLoading && item && <DetailsNasDeviceData item={item} />} */}
+          {!isLoading && item && <DetailsUnusedVoucherData item={item} />}
         </Card>
       </AppRowContainer>
     </>

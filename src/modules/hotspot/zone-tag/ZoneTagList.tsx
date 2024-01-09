@@ -395,31 +395,7 @@ const ZoneTagList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
-    // createdOn
-    {
-      title: "Created At",
-      dataIndex: "createdOn",
-      sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Quantity",
       dataIndex: "quantity",
@@ -467,7 +443,31 @@ const ZoneTagList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
-
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     {
       title: "Action",
       dataIndex: "action",

@@ -176,7 +176,7 @@ const MainDashboard = () => {
                 bgColor="#216583"
                 color="#fff"
                 icon="/assets/images/icons/computer.png"
-                title="Hotspot"
+                title="Wi-Fi Hotspot"
                 link="/admin/hotspot"
               />
             </Col>

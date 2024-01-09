@@ -89,7 +89,7 @@ const DetailsRetailerTag = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details
+            Retailer Tag/Remove Details
           </h1>
         </div>
         <Card

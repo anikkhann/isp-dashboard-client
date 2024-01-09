@@ -238,7 +238,6 @@ const DetailsSubscriptionData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {" "}
                   {item.createdOn
                     ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
                     : null}
@@ -262,7 +261,6 @@ const DetailsSubscriptionData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {" "}
                   {item.editedBy ? item.editedBy.username : null}
                 </span>
               </Col>

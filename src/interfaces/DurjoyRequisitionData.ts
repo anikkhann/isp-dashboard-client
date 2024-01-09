@@ -1,6 +1,11 @@
 export interface DurjoyRequisitionData {
   createdOn: number;
   updatedOn: number;
+  tagVoucher: string;
+  adminNote: string;
+  clientNote: string;
+  insertedBy: DurjoyRequisitionDataClientInsertedBy;
+  editedBy: DurjoyRequisitionDataClientEditedBy;
   id: string;
   requisitionNo: string;
   date: number;

@@ -489,43 +489,63 @@ const UnusedVoucherList: React.FC = () => {
     },
     {
       title: "Client",
-      dataIndex: "clientId",
-      sorter: true,
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Zone Manager",
-      dataIndex: "zoneManagerId",
-      sorter: true,
+      dataIndex: "zoneManager",
+      sorter: false,
+      render: (zoneManager: any) => {
+        if (!zoneManager) return "-";
+        return <>{zoneManager.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Sub Zone Manager",
-      dataIndex: "subZoneManagerId",
-      sorter: true,
+      title: "SubZone Manager",
+      dataIndex: "subZoneManager",
+      sorter: false,
+      render: (subZoneManager: any) => {
+        if (!subZoneManager) return "-";
+        return <>{subZoneManager.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Retailer",
-      dataIndex: "retailerId",
-      sorter: true,
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "SerialNo",
+      title: "Serial No",
       dataIndex: "serialNo",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Voucher",
-      dataIndex: "voucherNumber",
-      sorter: true,
+      title: "Retailer",
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
       width: "20%",
       align: "center" as AlignType
     },

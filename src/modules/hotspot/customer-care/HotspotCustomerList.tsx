@@ -157,7 +157,7 @@ const HotspotCustomerList: React.FC = () => {
     },
 
     {
-      title: "client",
+      title: "Client",
       dataIndex: "client",
       sorter: false,
       render: (client: any) => {
@@ -168,7 +168,7 @@ const HotspotCustomerList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "customer",
+      title: "Customer",
       dataIndex: "customer",
       sorter: false,
       render: (customer: any) => {
@@ -179,7 +179,7 @@ const HotspotCustomerList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "activePricingPlan",
+      title: "Active Pricing Plan",
       dataIndex: "activePricingPlan",
       sorter: false,
       render: (activePricingPlan: any) => {
@@ -190,35 +190,35 @@ const HotspotCustomerList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "lastActivatedBy",
+      title: "Last Activated By",
       dataIndex: "lastActivatedBy",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "lastIpAddress",
+      title: "Last Ip Address",
       dataIndex: "lastIpAddress",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "otp",
+      title: "OTP",
       dataIndex: "otp",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "mac",
+      title: "MAC",
       dataIndex: "mac",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "expirationTime",
+      title: "Expiration Time",
       dataIndex: "expirationTime",
       sorter: false,
       render: (expirationTime: any) => {
@@ -231,30 +231,30 @@ const HotspotCustomerList: React.FC = () => {
     },
 
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createdOn",
-    //   sorter: false,
-    //   render: (createdOn: any) => {
-    //     if (!createdOn) return "-";
-    //     const date = new Date(createdOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // editedBy
     // {
     //   title: "Updated By",

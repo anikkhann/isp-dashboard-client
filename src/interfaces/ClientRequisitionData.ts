@@ -717,6 +717,10 @@ export interface Partner {
 export interface ClientRequisitionData {
   createdOn: number;
   updatedOn: number;
+  clientNote: string;
+  zoneNote: string;
+  insertedBy: InsertedBy;
+  editedBy: EditedBy;
   id: string;
   requisitionNo: string;
   date: number;

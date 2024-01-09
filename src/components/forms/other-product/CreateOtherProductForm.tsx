@@ -190,7 +190,13 @@ const CreateOtherProductForm = () => {
                       }
                     ]}
                   >
-                    <Input placeholder="Description" />
+                    <Input.TextArea
+                      rows={4}
+                      cols={16}
+                      className={`form-control`}
+                      name="description"
+                      placeholder="Description"
+                    />
                   </Form.Item>
                 </Col>
               </Row>
