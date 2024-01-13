@@ -9,12 +9,12 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
+import { RetailerRevenueDisbursement } from "@/interfaces/RetailerRevenueDisbursement";
 
 import DetailsRetailerRevenueDisbursementData from "@/components/details/retailer-revenue-disbursement/DetailsRetailerRevenueDisbursementData";
 
 const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
-  const [item, SetItem] = useState<ZoneRevenueDisbursement | null>(null);
+  const [item, SetItem] = useState<RetailerRevenueDisbursement | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -65,12 +65,12 @@ const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
             {
               title: (
                 <Link href="/admin/accounting/retailer-revenue-disbursement">
-                  retailer Revenue Disbursement
+                  Retailer Revenue Disbursement
                 </Link>
               )
             },
             {
-              title: "retailer Revenue Disbursement"
+              title: "Retailer Revenue Disbursement"
             }
           ]}
         />
@@ -92,7 +92,7 @@ const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            retailer Revenue Disbursement
+            Retailer Revenue Disbursement
           </h1>
         </div>
         <Card
@@ -105,8 +105,8 @@ const DetailsRetailerRevenueDisbursement = ({ id }: any) => {
             margin: "0 auto",
             textAlign: "center",
             marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginBottom: "1rem"
+            // border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

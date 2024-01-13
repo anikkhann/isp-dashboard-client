@@ -14,7 +14,6 @@ interface Data {
 }
 const CurrentMonthRevenue = () => {
   const [item, SetItem] = useState<Data | null>(null);
-  console.log(item);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

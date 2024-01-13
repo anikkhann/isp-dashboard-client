@@ -13,7 +13,7 @@ import ability from "@/services/guard/ability";
 
 const LatestComplainData = () => {
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

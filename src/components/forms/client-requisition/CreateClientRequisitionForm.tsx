@@ -627,6 +627,48 @@ const CreateClientRequisitionForm = () => {
                     </Form.Item>
                   </Col>
                 )}
+                {selectedPaymentType === "offline" && (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      label="Attachment"
+                      style={{
+                        marginBottom: 0,
+                        width: "100%",
+                        textAlign: "center",
+                        fontWeight: "bold"
+                      }}
+                      name="attachment"
+                      rules={[
+                        {
+                          required:
+                            selectedPaymentType === "offline" ? true : false,
+                          message: "Please input attachment!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Upload
+                          customRequest={dummyAction}
+                          onChange={handleFileChange}
+                          maxCount={1}
+                          listType="picture"
+                          fileList={fileList}
+                        >
+                          {fileList.length >= 1 ? null : uploadButton}
+                        </Upload>
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                )}
+
                 <Col
                   xs={24}
                   sm={12}

@@ -8,7 +8,7 @@ interface PropData {
 }
 
 const DetailsSurveyData = ({ item }: PropData) => {
-  // console.log("item", item);
+  // ;
   // const data = JSON.stringify(item);
   // convert options to array
   // const options = item.options

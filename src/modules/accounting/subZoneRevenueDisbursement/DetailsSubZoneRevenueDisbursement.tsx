@@ -9,11 +9,11 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import { ZoneRevenueDisbursement } from "@/interfaces/ZoneRevenueDisbursement";
+import { SubZoneRevenueDisbursement } from "@/interfaces/SubZoneRevenueDisbursement";
 import DetailsSubZoneRevenueDisbursementData from "@/components/details/sub-zone-revenue-disbursement/DetailsSubZoneRevenueDisbursementData";
 
 const DetailsSubZoneRevenueDisbursement = ({ id }: any) => {
-  const [item, SetItem] = useState<ZoneRevenueDisbursement | null>(null);
+  const [item, SetItem] = useState<SubZoneRevenueDisbursement | null>(null);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -64,12 +64,12 @@ const DetailsSubZoneRevenueDisbursement = ({ id }: any) => {
             {
               title: (
                 <Link href="/admin/accounting/subZone-revenue-disbursement">
-                  subZone Revenue Disbursement
+                  SubZone Revenue Disbursement
                 </Link>
               )
             },
             {
-              title: "subZone Revenue Disbursement"
+              title: "SubZone Revenue Disbursement"
             }
           ]}
         />
@@ -91,7 +91,7 @@ const DetailsSubZoneRevenueDisbursement = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            subZone Revenue Disbursement
+            SubZone Revenue Disbursement
           </h1>
         </div>
         <Card
@@ -104,8 +104,8 @@ const DetailsSubZoneRevenueDisbursement = ({ id }: any) => {
             margin: "0 auto",
             textAlign: "center",
             marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginBottom: "1rem"
+            // border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}

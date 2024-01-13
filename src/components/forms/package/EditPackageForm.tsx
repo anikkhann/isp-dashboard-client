@@ -62,7 +62,6 @@ interface PropData {
 }
 
 const EditPackageForm = ({ item }: PropData) => {
-  console.log(item);
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);

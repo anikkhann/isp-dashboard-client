@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const ZoneWiseCardData = () => {
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
+
   const MySwal = withReactContent(Swal);
   const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState<any>(null);

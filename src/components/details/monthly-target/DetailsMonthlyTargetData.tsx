@@ -9,7 +9,6 @@ interface PropData {
 }
 
 const DetailsMonthlyTargetData = ({ item }: PropData) => {
-  console.log("item", item);
   // convert to string
   // const data = JSON.stringify(item);
   return (

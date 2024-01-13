@@ -129,7 +129,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
     });
     setRootCauseList(list);
   };
-  // console.log(item);
+  // ;
   const getAssignedTo = async () => {
     // console.log("selectedCustomer", selectedCustomer)
     const res = await axios.get(
@@ -373,7 +373,6 @@ const DetailsCustomerTicket = ({ id }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
-  console.log(item);
   return (
     <>
       <AppRowContainer>

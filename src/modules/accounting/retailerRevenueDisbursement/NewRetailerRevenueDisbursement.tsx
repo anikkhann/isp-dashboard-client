@@ -64,8 +64,8 @@ const NewRetailerRevenueDisbursement = () => {
             margin: "0 auto",
             textAlign: "center",
             marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginBottom: "1rem"
+            // border: "1px solid #F15F22"
           }}
         >
           <CreateRetailerRevenueDisbursementForm />
