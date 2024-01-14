@@ -19,7 +19,8 @@ import {
   Row,
   Col,
   Radio,
-  DatePicker
+  DatePicker,
+  Steps
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -102,6 +103,22 @@ const occupations = [
   }
 ];
 
+const steps = [
+  {
+    title: "Step1",
+    content: "step1"
+  },
+  {
+    title: "Step2",
+    content: "step2"
+  },
+
+  {
+    title: "Step3",
+    content: "step3"
+  }
+];
+
 interface PropData {
   item: CustomerData;
 }
@@ -168,6 +185,80 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  const [formValues, setFormValues] = useState<FormData>({
+    subscriberName: "",
+    contactPerson: "",
+    identificationNo: "",
+    dateOfBirth: "",
+    gender: "",
+    fatherName: "",
+    motherName: "",
+    spouseName: "",
+    connectionAddress: "",
+    flatNo: "",
+    houseNo: "",
+    roadNo: "",
+    area: "",
+    connectionAddressDivisionId: "",
+    connectionAddressDistrictId: "",
+    connectionAddressUpazillaId: "",
+    connectionAddressPostCode: "",
+    permanentAddress: "",
+    permanentAddressDivisionId: "",
+    permanentAddressDistrictId: "",
+    permanentAddressUpazillaId: "",
+    permanentAddressPostCode: "",
+    mobileNumber: "",
+    phoneNumber: "",
+    altMobileNo: "",
+    email: "",
+    occupation: ""
+  });
+
+  // steps
+  const items = steps.map(item => ({ key: item.title, title: item.title }));
+  // steps
+  const [current, setCurrent] = useState(0);
+
+  const next = async () => {
+    try {
+      if (current === 0) {
+        await form.validateFields([
+          "typeOfCustomer",
+          "subscriberName",
+          "contactPerson",
+          "identificationNo"
+        ]);
+
+        setFormValues({
+          ...formValues,
+          subscriberName: form.getFieldValue("subscriberName"),
+          contactPerson: form.getFieldValue("contactPerson")
+        });
+      } else if (current === 1) {
+        await form.validateFields([""]);
+
+        setFormValues({
+          ...formValues
+        });
+      } else if (current === 2) {
+        await form.validateFields([""]);
+
+        setFormValues({
+          ...formValues
+        });
+      }
+
+      setCurrent(current + 1);
+    } catch {
+      //return some msg...
+    }
+  };
+
+  const prev = () => {
+    setCurrent(current - 1);
+  };
 
   const onTypeOfCustomerChange = (e: RadioChangeEvent) => {
     // console.log('radio checked', e.target.value);
@@ -538,7 +629,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     }
   }, [selectedParmanentAddressDistrict]);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = () => {
     setLoading(true);
     const {
       subscriberName,
@@ -568,7 +659,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       altMobileNo,
       email,
       occupation
-    } = data;
+    } = formValues;
     //
     const formData = {
       id: previous.id,
@@ -650,1032 +741,1078 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
       {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{}}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
-          >
-            <Row
-              gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}
-              justify="space-between"
+        <>
+          <div>
+            <div className="flex justify-content-between mb-10 ">
+              <Steps
+                size="small"
+                current={current}
+                items={items}
+                direction="horizontal"
+              />
+            </div>
+          </div>
+          <div className="mt-3">
+            <Form
+              // {...layout}
+              layout="vertical"
+              autoComplete="off"
+              onFinish={onSubmit}
+              form={form}
+              initialValues={{}}
+              style={{ maxWidth: "100%" }}
+              name="wrap"
+              colon={false}
+              scrollToFirstError
             >
-              <Col
-                xs={24}
-                sm={24}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              <Row
+                gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}
+                justify="space-between"
               >
-                <Card
-                  hoverable
-                  style={{
-                    width: "90%",
-                    backgroundColor: "white",
-                    borderRadius: "10px",
-                    margin: "0 auto",
-                    textAlign: "center",
-                    marginTop: "1rem",
-                    marginBottom: "1rem",
-                    border: "1px solid #F15F22"
-                  }}
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
                 >
-                  <Row
-                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                    justify="space-between"
-                  >
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* typeOfCustomer */}
-                      <Form.Item
-                        label="typeOfCustomer"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold",
-                          alignItems: "flex-start"
-                        }}
-                        name="typeOfCustomer"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your typeOfCustomer!"
-                          }
-                        ]}
-                      >
-                        <Radio.Group
-                          onChange={onTypeOfCustomerChange}
-                          value={typeOfCustomer}
-                          style={{
-                            alignItems: "flex-start"
-                          }}
-                        >
-                          <Radio value="individual">individual</Radio>
-                          <Radio value="organization">organization</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* subscriberName */}
-                      <Form.Item
-                        name="subscriberName"
-                        label="subscriberName"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your subscriberName!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="subscriberName"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* contactPerson */}
-                      <Form.Item
-                        name="contactPerson"
-                        label="contactPerson"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        // rules={[
-                        //   {
-                        //     required: true,
-                        //     message: "Please input your contactPerson!"
-                        //   }
-                        // ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="contactPerson"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* identificationNo */}
-                      <Form.Item
-                        name="identificationNo"
-                        label="identificationNo"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your identificationNo!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="identificationNo"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* dateOfBirth */}
-                      <Form.Item
-                        name="dateOfBirth"
-                        label="dateOfBirth"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your dateOfBirth!"
-                          }
-                        ]}
-                      >
-                        <DatePicker
-                          style={{ width: "100%", padding: "6px" }}
-                          className={`form-control`}
-                          placeholder="dateOfBirth"
-                          onChange={handleDateChange}
-                          format={dateFormat}
-                          value={selectedDateOfBirth}
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* gender */}
-                      <Form.Item
-                        label="gender"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="gender"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your gender!"
-                          }
-                        ]}
-                      >
-                        <Radio.Group onChange={onGenderChange} value={gender}>
-                          <Radio value="male">Male</Radio>
-                          <Radio value="female">Female</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* contactNumber */}
-                      <Form.Item
-                        name="fatherName"
-                        label="fatherName"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your fatherName!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="fatherName"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* motherName */}
-                      <Form.Item
-                        name="motherName"
-                        label="motherName"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your motherName!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="motherName"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* spouseName */}
-                      <Form.Item
-                        name="spouseName"
-                        label="spouseName"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="spouseName"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* connectionAddress */}
-                      <Form.Item
-                        name="connectionAddress"
-                        label="connectionAddress"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your connectionAddress!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="connectionAddress"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* flatNo */}
-                      <Form.Item
-                        name="flatNo"
-                        label="Flat No"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Flat No"
-                          className={`form-control`}
-                          name="flatNo"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* houseNo */}
-                      <Form.Item
-                        name="houseNo"
-                        label="House No"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your House No!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="House No"
-                          className={`form-control`}
-                          name="houseNo"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* roadNo */}
-                      <Form.Item
-                        name="roadNo"
-                        label="Road No"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Road No"
-                          className={`form-control`}
-                          name="roadNo"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* area */}
-                      <Form.Item
-                        name="area"
-                        label="Area"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Area!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Area"
-                          className={`form-control`}
-                          name="area"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-              <Col
-                xs={24}
-                sm={24}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                <Card
-                  hoverable
-                  style={{
-                    width: "90%",
-                    backgroundColor: "white",
-                    borderRadius: "10px",
-                    margin: "0 auto",
-                    textAlign: "center",
-                    marginTop: "1rem",
-                    marginBottom: "1rem",
-                    border: "1px solid #F15F22"
-                  }}
-                >
-                  <Row
-                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                    justify="space-between"
-                  >
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* connectionAddressDivisionId */}
-                      <Form.Item
-                        label="connectionAddressDivisionId"
-                        style={{
-                          marginBottom: 0,
-                          marginRight: lg ? "10px" : "0px",
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select Division!"
-                          }
-                        ]}
-                        name="connectionAddressDivisionId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Division"
-                            onChange={handleDivisionChange}
-                            options={divisions}
-                            value={selectedDivision}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* connectionAddressDistrictId */}
-                      <Form.Item
-                        label="connectionAddressDistrictId"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select District!"
-                          }
-                        ]}
-                        name="connectionAddressDistrictId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select District"
-                            onChange={handleDistrictChange}
-                            options={districts}
-                            value={selectedDistrict}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* connectionAddressUpazillaId */}
-                      <Form.Item
-                        label="connectionAddressUpazillaId"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="connectionAddressUpazillaId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Upazilla"
-                            onChange={handleUpazillaChange}
-                            options={upazillas}
-                            value={selectedUpazilla}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* connectionAddressPostCode */}
-                      <Form.Item
-                        name="connectionAddressPostCode"
-                        label="connectionAddressPostCode"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message:
-                              "Please input your connectionAddressPostCode!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="connectionAddressPostCode"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-
-                  <Row
-                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                    justify="space-between"
-                  >
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* permanentAddress */}
-                      <Form.Item
-                        name="permanentAddress"
-                        label="permanentAddress"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your permanentAddress!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="permanentAddress"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* permanentAddressDivisionId */}
-                      <Form.Item
-                        label="permanentAddressDivisionId"
-                        style={{
-                          marginBottom: 0,
-                          marginRight: lg ? "10px" : "0px",
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select Division!"
-                          }
-                        ]}
-                        name="permanentAddressDivisionId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Division"
-                            onChange={handleParmanentAddressDivisionChange}
-                            options={parmanentAddressDivisions}
-                            value={selectedParmanentAddressDivision}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* permanentAddressDistrictId */}
-                      <Form.Item
-                        label="permanentAddressDistrictId"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select District!"
-                          }
-                        ]}
-                        name="permanentAddressDistrictId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select District"
-                            onChange={handleParmanentAddressDistrictChange}
-                            options={parmanentAddressDistricts}
-                            value={selectedParmanentAddressDistrict}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* permanentAddressUpazillaId */}
-                      <Form.Item
-                        label="permanentAddressUpazillaId"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="permanentAddressUpazillaId"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Upazilla"
-                            onChange={handleParmanentAddressUpazillaChange}
-                            options={parmanentAddressUpazillas}
-                            value={selectedParmanentAddressUpazilla}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* permanentAddressPostCode */}
-                      <Form.Item
-                        name="permanentAddressPostCode"
-                        label="permanentAddressPostCode"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message:
-                              "Please input your permanentAddressPostCode!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="permanentAddressPostCode"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* mobileNumber */}
-                      <Form.Item
-                        name="mobileNumber"
-                        label="mobileNumber"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your mobileNumber!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="mobileNumber"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* phoneNumber */}
-                      <Form.Item
-                        name="phoneNumber"
-                        label="phoneNumber"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your phoneNumber!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="phoneNumber"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* altMobileNo */}
-                      <Form.Item
-                        name="altMobileNo"
-                        label="altMobileNo"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your altMobileNo!"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="altMobileNo"
-                          className={`form-control`}
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    {/* email */}
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      <Form.Item
-                        label="Email"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="email"
-                        rules={[
-                          {
-                            type: "email",
-                            message: "The input is not valid E-mail!"
-                          },
-                          {
-                            required: true,
-                            message: "Please input your E-mail!"
-                          },
-                          {
-                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                            message:
-                              "Only letters, numbers, underscores and hyphens allowed"
-                          }
-                        ]}
-                      >
-                        <Input
-                          type="email"
-                          placeholder="Email"
-                          className={`form-control`}
-                          name="email"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    {/* occupation */}
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* occupation */}
-                      <Form.Item
-                        label="occupation"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="occupation"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select"
-                            onChange={handleOccupationChange}
-                            options={occupations}
-                            value={selectedOccupation}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-            </Row>
-
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
+                  <Card
+                    hoverable
                     style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold",
-                      marginTop: "2rem"
+                      width: "90%",
+                      backgroundColor: "white",
+                      borderRadius: "10px",
+                      margin: "0 auto",
+                      textAlign: "center",
+                      marginTop: "1rem",
+                      marginBottom: "1rem",
+                      border: "1px solid #F15F22"
                     }}
                   >
-                    Submit
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* typeOfCustomer */}
+                        <Form.Item
+                          label="typeOfCustomer"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold",
+                            alignItems: "flex-start"
+                          }}
+                          name="typeOfCustomer"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your typeOfCustomer!"
+                            }
+                          ]}
+                        >
+                          <Radio.Group
+                            onChange={onTypeOfCustomerChange}
+                            value={typeOfCustomer}
+                            style={{
+                              alignItems: "flex-start"
+                            }}
+                          >
+                            <Radio value="individual">individual</Radio>
+                            <Radio value="organization">organization</Radio>
+                          </Radio.Group>
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* subscriberName */}
+                        <Form.Item
+                          name="subscriberName"
+                          label="subscriberName"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your subscriberName!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="subscriberName"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* contactPerson */}
+                        <Form.Item
+                          name="contactPerson"
+                          label="contactPerson"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          // rules={[
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your contactPerson!"
+                          //   }
+                          // ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="contactPerson"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* identificationNo */}
+                        <Form.Item
+                          name="identificationNo"
+                          label="identificationNo"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your identificationNo!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="identificationNo"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* dateOfBirth */}
+                        <Form.Item
+                          name="dateOfBirth"
+                          label="dateOfBirth"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your dateOfBirth!"
+                            }
+                          ]}
+                        >
+                          <DatePicker
+                            style={{ width: "100%", padding: "6px" }}
+                            className={`form-control`}
+                            placeholder="dateOfBirth"
+                            onChange={handleDateChange}
+                            format={dateFormat}
+                            value={selectedDateOfBirth}
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* gender */}
+                        <Form.Item
+                          label="gender"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="gender"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your gender!"
+                            }
+                          ]}
+                        >
+                          <Radio.Group onChange={onGenderChange} value={gender}>
+                            <Radio value="male">Male</Radio>
+                            <Radio value="female">Female</Radio>
+                          </Radio.Group>
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* contactNumber */}
+                        <Form.Item
+                          name="fatherName"
+                          label="fatherName"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your fatherName!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="fatherName"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* motherName */}
+                        <Form.Item
+                          name="motherName"
+                          label="motherName"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your motherName!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="motherName"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* spouseName */}
+                        <Form.Item
+                          name="spouseName"
+                          label="spouseName"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="spouseName"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* connectionAddress */}
+                        <Form.Item
+                          name="connectionAddress"
+                          label="connectionAddress"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your connectionAddress!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="connectionAddress"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* flatNo */}
+                        <Form.Item
+                          name="flatNo"
+                          label="Flat No"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="Flat No"
+                            className={`form-control`}
+                            name="flatNo"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* houseNo */}
+                        <Form.Item
+                          name="houseNo"
+                          label="House No"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your House No!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="House No"
+                            className={`form-control`}
+                            name="houseNo"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* roadNo */}
+                        <Form.Item
+                          name="roadNo"
+                          label="Road No"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="Road No"
+                            className={`form-control`}
+                            name="roadNo"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* area */}
+                        <Form.Item
+                          name="area"
+                          label="Area"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your Area!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="Area"
+                            className={`form-control`}
+                            name="area"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Card>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  <Card
+                    hoverable
+                    style={{
+                      width: "90%",
+                      backgroundColor: "white",
+                      borderRadius: "10px",
+                      margin: "0 auto",
+                      textAlign: "center",
+                      marginTop: "1rem",
+                      marginBottom: "1rem",
+                      border: "1px solid #F15F22"
+                    }}
+                  >
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* connectionAddressDivisionId */}
+                        <Form.Item
+                          label="connectionAddressDivisionId"
+                          style={{
+                            marginBottom: 0,
+                            marginRight: lg ? "10px" : "0px",
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select Division!"
+                            }
+                          ]}
+                          name="connectionAddressDivisionId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Division"
+                              onChange={handleDivisionChange}
+                              options={divisions}
+                              value={selectedDivision}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* connectionAddressDistrictId */}
+                        <Form.Item
+                          label="connectionAddressDistrictId"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select District!"
+                            }
+                          ]}
+                          name="connectionAddressDistrictId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select District"
+                              onChange={handleDistrictChange}
+                              options={districts}
+                              value={selectedDistrict}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* connectionAddressUpazillaId */}
+                        <Form.Item
+                          label="connectionAddressUpazillaId"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="connectionAddressUpazillaId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Upazilla"
+                              onChange={handleUpazillaChange}
+                              options={upazillas}
+                              value={selectedUpazilla}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* connectionAddressPostCode */}
+                        <Form.Item
+                          name="connectionAddressPostCode"
+                          label="connectionAddressPostCode"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                "Please input your connectionAddressPostCode!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="connectionAddressPostCode"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* permanentAddress */}
+                        <Form.Item
+                          name="permanentAddress"
+                          label="permanentAddress"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your permanentAddress!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="permanentAddress"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* permanentAddressDivisionId */}
+                        <Form.Item
+                          label="permanentAddressDivisionId"
+                          style={{
+                            marginBottom: 0,
+                            marginRight: lg ? "10px" : "0px",
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select Division!"
+                            }
+                          ]}
+                          name="permanentAddressDivisionId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Division"
+                              onChange={handleParmanentAddressDivisionChange}
+                              options={parmanentAddressDivisions}
+                              value={selectedParmanentAddressDivision}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* permanentAddressDistrictId */}
+                        <Form.Item
+                          label="permanentAddressDistrictId"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select District!"
+                            }
+                          ]}
+                          name="permanentAddressDistrictId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select District"
+                              onChange={handleParmanentAddressDistrictChange}
+                              options={parmanentAddressDistricts}
+                              value={selectedParmanentAddressDistrict}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* permanentAddressUpazillaId */}
+                        <Form.Item
+                          label="permanentAddressUpazillaId"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="permanentAddressUpazillaId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Upazilla"
+                              onChange={handleParmanentAddressUpazillaChange}
+                              options={parmanentAddressUpazillas}
+                              value={selectedParmanentAddressUpazilla}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* permanentAddressPostCode */}
+                        <Form.Item
+                          name="permanentAddressPostCode"
+                          label="permanentAddressPostCode"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message:
+                                "Please input your permanentAddressPostCode!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="permanentAddressPostCode"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* mobileNumber */}
+                        <Form.Item
+                          name="mobileNumber"
+                          label="mobileNumber"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your mobileNumber!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="mobileNumber"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* phoneNumber */}
+                        <Form.Item
+                          name="phoneNumber"
+                          label="phoneNumber"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your phoneNumber!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="phoneNumber"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* altMobileNo */}
+                        <Form.Item
+                          name="altMobileNo"
+                          label="altMobileNo"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your altMobileNo!"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="altMobileNo"
+                            className={`form-control`}
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      {/* email */}
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Form.Item
+                          label="Email"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="email"
+                          rules={[
+                            {
+                              type: "email",
+                              message: "The input is not valid E-mail!"
+                            },
+                            {
+                              required: true,
+                              message: "Please input your E-mail!"
+                            },
+                            {
+                              pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                              message:
+                                "Only letters, numbers, underscores and hyphens allowed"
+                            }
+                          ]}
+                        >
+                          <Input
+                            type="email"
+                            placeholder="Email"
+                            className={`form-control`}
+                            name="email"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      {/* occupation */}
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* occupation */}
+                        <Form.Item
+                          label="occupation"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="occupation"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleOccupationChange}
+                              options={occupations}
+                              value={selectedOccupation}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Card>
+                </Col>
+              </Row>
+
+              {/* submit */}
+              <Row justify="center">
+                <Col>
+                  <div style={{ marginTop: 24 }}>
+                    {current > 0 && (
+                      <Button
+                        style={{
+                          margin: "0 8px",
+                          fontWeight: "bold",
+                          color: "#FFFFFF"
+                        }}
+                        onClick={() => prev()}
+                        shape="round"
+                        type="primary"
+                      >
+                        Previous
+                      </Button>
+                    )}
+                    {current < steps.length - 1 && (
+                      <Button
+                        // type="primary"
+                        shape="round"
+                        onClick={() => next()}
+                        style={{
+                          backgroundColor: "#F15F22",
+                          color: "#FFFFFF",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        Next
+                      </Button>
+                    )}
+                  </div>
+
+                  <Form.Item style={{ margin: "0 8px" }}>
+                    <div style={{ marginTop: 24 }}>
+                      {current === steps.length - 1 && (
+                        <Button
+                          // type="primary"
+                          htmlType="submit"
+                          shape="round"
+                          style={{
+                            backgroundColor: "#F15F22",
+                            color: "#FFFFFF",
+                            fontWeight: "bold"
+                          }}
+                          disabled={loading}
+                        >
+                          Submit
+                        </Button>
+                      )}
+                    </div>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </>
       )}
     </>
   );

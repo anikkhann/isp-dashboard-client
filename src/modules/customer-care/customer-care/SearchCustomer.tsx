@@ -502,7 +502,7 @@ const SearchCustomer = () => {
               <Space size="middle" align="center">
                 {ability.can("customerCare.update", "") ? (
                   <Space size="middle" align="center" wrap>
-                    <Tooltip title="Verify SAF OTP">
+                    <Tooltip title="Edit">
                       <Link href={`/admin/customer-care/${record.id}/edit`}>
                         <Button type="primary" icon={<EditOutlined />} />
                       </Link>
