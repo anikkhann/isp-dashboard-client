@@ -415,12 +415,12 @@ const HotspotCustomerList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Radius Username</b>
+                              <b>Customer Mobile No</b>
                             </span>
                             <Input
                               type="text"
                               className="ant-input"
-                              placeholder="Radius Username"
+                              placeholder="Customer Mobile No"
                               value={selectedRadiusUsername}
                               onChange={e =>
                                 setSelectedRadiusUsername(e.target.value)

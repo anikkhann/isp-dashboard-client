@@ -586,7 +586,7 @@ const CreateClientRequisitionForm = () => {
                     </Form.Item>
                   </Col>
                 )}
-                {selectedPaymentType === "online" && (
+                {/* {selectedPaymentType === "online" && (
                   <Col
                     xs={24}
                     sm={12}
@@ -626,7 +626,7 @@ const CreateClientRequisitionForm = () => {
                       </Space>
                     </Form.Item>
                   </Col>
-                )}
+                )} */}
                 {selectedPaymentType === "offline" && (
                   <Col
                     xs={24}
