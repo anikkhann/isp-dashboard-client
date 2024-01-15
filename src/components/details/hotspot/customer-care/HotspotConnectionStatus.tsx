@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Row, Space } from "antd";
+import { Button, Card, Col, Row, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -7,12 +7,54 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import axios from "axios";
 
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { useRouter } from "next/router";
 interface PropData {
   item: any | null;
 }
 
 const HotspotConnectionStatus = ({ item }: PropData) => {
   const [data, setData] = useState<any>(null);
+
+  const MySwal = withReactContent(Swal);
+  const router = useRouter();
+
+  async function handleDisconnect(username: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Disconnect customer!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.get(
+          `/api-hotspot/partner-customer/disconnect-user/${username}`
+        );
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
 
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -38,7 +80,6 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
     onSuccess(data: any) {
       if (data) {
         // console.log("data.data", data);
-
         if (data.body) {
           setData(data.body);
         } else {
@@ -148,6 +189,17 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                       {data?.connection_status}
                     </span>
                   </Col>
+                  <Button
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "20px",
+                      backgroundColor: "#F94A29",
+                      color: "#ffffff"
+                    }}
+                    onClick={() => handleDisconnect(item?.radiusUsername)}
+                  >
+                    Disconnect
+                  </Button>
                 </Row>
                 <Row
                   style={{

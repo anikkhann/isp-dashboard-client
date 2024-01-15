@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, MacCommandFilled } from "@ant-design/icons";
 import { format } from "date-fns";
 
 import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
@@ -295,6 +295,28 @@ const HotspotCustomerList: React.FC = () => {
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/hotspot/customer-care/${record.id}`}>
                       <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+            </Space>
+            <Space size="middle" align="center" className="mx-1">
+              {ability.can("HotspotCustomerCare.macBinding", "") ? (
+                <Tooltip title="View" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/hotspot/customer-care/${record.id}/mac-binding`}
+                    >
+                      <Button
+                        type="primary"
+                        icon={<MacCommandFilled />}
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: "20px",
+                          backgroundColor: "#35A29F",
+                          color: "#ffffff"
+                        }}
+                      />
                     </Link>
                   </Space>
                 </Tooltip>

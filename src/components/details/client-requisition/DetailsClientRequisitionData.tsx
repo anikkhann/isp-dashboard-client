@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
 import React from "react";
 import { Row, Col, Card, Button, Modal } from "antd";
@@ -14,25 +15,25 @@ const DetailsClientRequisitionData = ({ item }: PropData) => {
   // const data = JSON.stringify(item);
   const [previewOpen, setPreviewOpen] = useState(false);
   const handleCancel = () => setPreviewOpen(false);
-  const [attachmentUrl, setAttachmentUrl] = useState("");
-  const [attachmentName, setAttachmentName] = useState("");
+  // const [attachmentUrl, setAttachmentUrl] = useState("");
+  // const [attachmentName, setAttachmentName] = useState("");
 
-  // const url = process.env.NEXT_PUBLIC_HOTSPOT_URL;
+  const url = process.env.NEXT_PUBLIC_HOTSPOT_URL;
   useEffect(() => {
-    console.log(item.attachment);
-    if (item.attachment) {
-      const url = process.env.NEXT_PUBLIC_HOTSPOT_URL;
-      setAttachmentUrl(
-        `${url}/public/downloadFile/${item.attachment}/client-card-requisition`
-      );
-      setAttachmentName(item.attachment);
-    }
-
+    // console.log(item.attachment);
+    // if (item.attachment) {
+    //   const url = process.env.NEXT_PUBLIC_HOTSPOT_URL;
+    //   setAttachmentUrl(
+    //     `${url}/public/downloadFile/${item.attachment}/client-card-requisition`
+    //   );
+    //   setAttachmentName(item.attachment);
+    // }
     // if (item.createdOn) {
     //   setCreatedDate(new Date(item.createdOn));
     //   timeDifference(item.createdOn);
     // }
   }, [item]);
+
   return (
     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between">
       <Col
@@ -263,14 +264,14 @@ const DetailsClientRequisitionData = ({ item }: PropData) => {
 
               <Modal
                 open={previewOpen}
-                title={attachmentName}
+                title={item.attachment}
                 footer={null}
                 onCancel={handleCancel}
               >
                 <img
-                  alt={attachmentName}
+                  alt={item.attachment}
                   style={{ width: "100%" }}
-                  src={attachmentUrl}
+                  src={`${url}/public/downloadFile/${item.attachment}/client-card-requisition`}
                 />
               </Modal>
 
