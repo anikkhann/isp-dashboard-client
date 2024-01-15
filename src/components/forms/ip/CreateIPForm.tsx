@@ -38,7 +38,7 @@ const CreateIPForm = () => {
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    // console.log(data);
+    // ;
     const { networkName, networkAddress, subnetMask } = data;
 
     const formData = {

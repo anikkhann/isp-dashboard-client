@@ -85,7 +85,6 @@ interface TableParams {
 
 const DurjoyRequisitionList: React.FC = () => {
   const [data, setData] = useState<DurjoyRequisitionData[]>([]);
-  console.log(data);
   const { Panel } = Collapse;
 
   const [usedVoucherData, setUsedVoucherData] = useState<any[]>([]);

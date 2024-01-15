@@ -1,7 +1,9 @@
 import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
 import React from "react";
-import { Row, Col, Card } from "antd";
+import { Row, Col, Card, Button, Modal } from "antd";
 import { format } from "date-fns";
+import { FileImageOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 // const { Meta } = Card;
 interface PropData {
   item: DurjoyRequisitionData;
@@ -10,6 +12,27 @@ interface PropData {
 const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
   // convert to string
   // const data = JSON.stringify(item);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const handleCancel = () => setPreviewOpen(false);
+  const [attachmentUrl, setAttachmentUrl] = useState("");
+  const [attachmentName, setAttachmentName] = useState("");
+
+  // const url = process.env.NEXT_PUBLIC_HOTSPOT_URL;
+  useEffect(() => {
+    console.log(item.attachment);
+    if (item.attachment) {
+      const url = process.env.NEXT_PUBLIC_HOTSPOT_URL;
+      setAttachmentUrl(
+        `${url}/public/downloadFile/${item.attachment}/zone-card-requisition`
+      );
+      setAttachmentName(item.attachment);
+    }
+
+    // if (item.createdOn) {
+    //   setCreatedDate(new Date(item.createdOn));
+    //   timeDifference(item.createdOn);
+    // }
+  }, [item]);
   return (
     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between">
       <Col
@@ -298,6 +321,29 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.contactNumber}</span>
               </Col>
             </Row> */}
+            <div>
+              <h1 className="font-bold text-lg">Attachment :</h1>
+              {/* {item.attachment && (  */}
+              <Button onClick={() => setPreviewOpen(true)}>
+                <FileImageOutlined /> {item.attachment}
+              </Button>
+              {/* )} */}
+
+              <Modal
+                open={previewOpen}
+                title={attachmentName}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt={attachmentName}
+                  style={{ width: "100%" }}
+                  src={attachmentUrl}
+                />
+              </Modal>
+
+              {/* <p className="text-justify">{item.complainDetails}</p> */}
+            </div>
           </div>
         </Card>
       </Col>

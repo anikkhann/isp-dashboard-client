@@ -150,7 +150,7 @@ const CreateBulkSmsForm = () => {
       }
 
       if (!data.body) return;
-      // console.log(data.body)
+      //
 
       setTemplateData(data.body);
 

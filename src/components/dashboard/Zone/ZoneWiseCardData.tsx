@@ -23,7 +23,7 @@ const ZoneWiseCardData = () => {
   const authUser = useAppSelector(state => state.auth.user);
 
   const { Panel } = Collapse;
-  // console.log(data);
+  // ;
   const fetchData = async (zoneManagerParam: string | null) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

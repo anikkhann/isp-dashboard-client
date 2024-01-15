@@ -730,10 +730,9 @@ const DetailsCustomerTicket = ({ id }: any) => {
             replayQuery.isLoading &&
             replayQuery.isFetching && <AppLoader />}
 
-          {!ticketQuery.isLoading &&
-            !replayQuery.isLoading &&
-            item &&
-            replys && <DetailsTicket item={item} replys={replys} />}
+          {!ticketQuery.isLoading && !replayQuery.isLoading && item && (
+            <DetailsTicket item={item} replys={replys} />
+          )}
         </Card>
       </AppRowContainer>
     </>

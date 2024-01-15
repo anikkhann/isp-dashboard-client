@@ -195,56 +195,57 @@ const DetailsTicket = ({ item, replys }: PropData) => {
           <div style={{ textAlign: "start" }}>
             <h1 className="font-bold text-xl text-[#4361ee]">Reply History</h1>
 
-            {replys.map((replyData: any, index: number) => (
-              <div key={index}>
-                {/* <Divider type="vertical" orientation="left" plain> */}
-                <p>
-                  <span className="font-bold text-base capitalize">
-                    {replyData.insertedBy.username}
-                  </span>
-                  <span className="mx-2">-</span>
-                  <span className="mx-2">
-                    {/* createdOn */}
-                    {formatDistanceToNow(new Date(replyData.createdOn), {
-                      addSuffix: true
-                    })}
-                    - {new Date(replyData.createdOn).toDateString()}
-                  </span>
-                  <span className="mx-2">
-                    {new Date(replyData.createdOn).toLocaleTimeString()}
-                  </span>
+            {replys &&
+              replys.map((replyData: any, index: number) => (
+                <div key={index}>
+                  {/* <Divider type="vertical" orientation="left" plain> */}
+                  <p>
+                    <span className="font-bold text-base capitalize">
+                      {replyData.insertedBy.username}
+                    </span>
+                    <span className="mx-2">-</span>
+                    <span className="mx-2">
+                      {/* createdOn */}
+                      {formatDistanceToNow(new Date(replyData.createdOn), {
+                        addSuffix: true
+                      })}
+                      - {new Date(replyData.createdOn).toDateString()}
+                    </span>
+                    <span className="mx-2">
+                      {new Date(replyData.createdOn).toLocaleTimeString()}
+                    </span>
 
-                  {replyData.attachment && (
-                    <Button
-                      onClick={() => {
-                        setReplyAttachmentUrl(
-                          `${url}/ticket/public/downloadFile/${replyData.attachment}`
-                        );
-                        setReplyAttachmentName(replyData.attachment);
-                        setReplyPreviewOpen(true);
-                      }}
+                    {replyData.attachment && (
+                      <Button
+                        onClick={() => {
+                          setReplyAttachmentUrl(
+                            `${url}/ticket/public/downloadFile/${replyData.attachment}`
+                          );
+                          setReplyAttachmentName(replyData.attachment);
+                          setReplyPreviewOpen(true);
+                        }}
+                      >
+                        <FileImageOutlined /> {replyData.attachment}
+                      </Button>
+                    )}
+
+                    <Modal
+                      open={replyPreviewOpen}
+                      title={replyAttachmentName}
+                      footer={null}
+                      onCancel={handleReplyCancel}
                     >
-                      <FileImageOutlined /> {replyData.attachment}
-                    </Button>
-                  )}
-
-                  <Modal
-                    open={replyPreviewOpen}
-                    title={replyAttachmentName}
-                    footer={null}
-                    onCancel={handleReplyCancel}
-                  >
-                    <img
-                      alt={replyAttachmentName}
-                      style={{ width: "100%" }}
-                      src={replyAttachmentUrl}
-                    />
-                  </Modal>
-                </p>
-                <p className="ml-10 font-semibold">{replyData.note}</p>
-                {/* </Divider> */}
-              </div>
-            ))}
+                      <img
+                        alt={replyAttachmentName}
+                        style={{ width: "100%" }}
+                        src={replyAttachmentUrl}
+                      />
+                    </Modal>
+                  </p>
+                  <p className="ml-10 font-semibold">{replyData.note}</p>
+                  {/* </Divider> */}
+                </div>
+              ))}
           </div>
         </Card>
       </Col>

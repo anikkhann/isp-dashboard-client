@@ -171,7 +171,9 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Created By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.insertedBy}</span>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
               </Col>
             </Row>
 
@@ -213,7 +215,9 @@ const DetailsZoneTagData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Updated By :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.editedBy}</span>
+                <span className="mx-1 text-base">
+                  {item.editedBy?.username}
+                </span>
               </Col>
             </Row>
 

@@ -715,6 +715,7 @@ export interface Partner {
 }
 
 export interface ClientRequisitionData {
+  attachment: string;
   createdOn: number;
   updatedOn: number;
   clientNote: string;

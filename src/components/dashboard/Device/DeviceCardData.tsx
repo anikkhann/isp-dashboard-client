@@ -11,7 +11,6 @@ import type { ColumnsType } from "antd/es/table";
 
 const DeviceCardData = () => {
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

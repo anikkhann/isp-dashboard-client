@@ -60,7 +60,7 @@ interface TableParams {
 
 const ZoneRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
-  // console.log(data);
+  // ;
   const MySwal = withReactContent(Swal);
 
   const router = useRouter();

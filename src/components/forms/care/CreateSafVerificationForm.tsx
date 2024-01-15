@@ -228,25 +228,69 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           "typeOfCustomer",
           "subscriberName",
           "contactPerson",
-          "identificationNo"
+          "identificationNo",
+          "dateOfBirth",
+          "gender",
+          "fatherName",
+          "motherName",
+          "connectionAddress"
         ]);
 
         setFormValues({
           ...formValues,
           subscriberName: form.getFieldValue("subscriberName"),
-          contactPerson: form.getFieldValue("contactPerson")
+          contactPerson: form.getFieldValue("contactPerson"),
+          identificationNo: form.getFieldValue("identificationNo"),
+          fatherName: form.getFieldValue("fatherName"),
+          motherName: form.getFieldValue("motherName"),
+          connectionAddress: form.getFieldValue("connectionAddress")
         });
       } else if (current === 1) {
-        await form.validateFields([""]);
+        await form.validateFields([
+          "houseNo",
+          "area",
+          "connectionAddressDivisionId",
+          "connectionAddressDistrictId",
+          "connectionAddressUpazillaId",
+          "connectionAddressPostCode",
+          "permanentAddress",
+          "permanentAddressDivisionId"
+        ]);
 
         setFormValues({
-          ...formValues
+          ...formValues,
+          flatNo: form.getFieldValue("flatNo"),
+          houseNo: form.getFieldValue("houseNo"),
+          roadNo: form.getFieldValue("roadNo"),
+          area: form.getFieldValue("area"),
+
+          connectionAddressPostCode: form.getFieldValue(
+            "connectionAddressPostCode"
+          ),
+          permanentAddress: form.getFieldValue("permanentAddress")
         });
       } else if (current === 2) {
-        await form.validateFields([""]);
+        await form.validateFields([
+          "permanentAddressDivisionId",
+          "permanentAddressDistrictId",
+          "permanentAddressUpazillaId",
+          "permanentAddressPostCode",
+          "mobileNumber",
+          "phoneNumber",
+          "email"
+        ]);
 
         setFormValues({
-          ...formValues
+          ...formValues,
+
+          permanentAddressPostCode: form.getFieldValue(
+            "permanentAddressPostCode"
+          ),
+          mobileNumber: form.getFieldValue("mobileNumber"),
+          phoneNumber: form.getFieldValue("phoneNumber"),
+          altMobileNo: form.getFieldValue("altMobileNo"),
+          email: form.getFieldValue("email"),
+          occupation: form.getFieldValue("occupation")
         });
       }
 
@@ -755,7 +799,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           <div className="mt-3">
             <Form
               // {...layout}
-              layout="vertical"
+              // layout="vertical"
               autoComplete="off"
               onFinish={onSubmit}
               form={form}
@@ -764,20 +808,14 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
               name="wrap"
               colon={false}
               scrollToFirstError
+              // labelCol={{ span: 8 }}
+              // wrapperCol={{ span: 12 }}
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 14 }}
+              layout="horizontal"
             >
-              <Row
-                gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}
-                justify="space-between"
-              >
-                <Col
-                  xs={24}
-                  sm={24}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
+              {current === 0 && (
+                <>
                   <Card
                     hoverable
                     style={{
@@ -797,16 +835,16 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                     >
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* typeOfCustomer */}
                         <Form.Item
-                          label="typeOfCustomer"
+                          label="Type Of Customer"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold",
@@ -816,7 +854,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your typeOfCustomer!"
+                              message: "Please input your Type Of Customer!"
                             }
                           ]}
                         >
@@ -827,24 +865,24 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                               alignItems: "flex-start"
                             }}
                           >
-                            <Radio value="individual">individual</Radio>
-                            <Radio value="organization">organization</Radio>
+                            <Radio value="individual">Individual</Radio>
+                            <Radio value="organization">Organization</Radio>
                           </Radio.Group>
                         </Form.Item>
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* subscriberName */}
                         <Form.Item
                           name="subscriberName"
-                          label="subscriberName"
+                          label="Subscriber Name"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -852,13 +890,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your subscriberName!"
+                              message: "Please input your Subscriber Name!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="subscriberName"
+                            placeholder="Subscriber Name"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -867,17 +905,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* contactPerson */}
                         <Form.Item
                           name="contactPerson"
-                          label="contactPerson"
+                          label="Contact Person"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -891,7 +929,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         >
                           <Input
                             type="text"
-                            placeholder="contactPerson"
+                            placeholder="Contact Person"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -899,17 +937,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* identificationNo */}
                         <Form.Item
                           name="identificationNo"
-                          label="identificationNo"
+                          label="Identification No"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -917,13 +955,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your identificationNo!"
+                              message: "Please input your Identification No!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="identificationNo"
+                            placeholder="Identification No"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -931,17 +969,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* dateOfBirth */}
                         <Form.Item
                           name="dateOfBirth"
-                          label="dateOfBirth"
+                          label="Date Of Birth"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -949,14 +987,14 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your dateOfBirth!"
+                              message: "Please input your Date Of Birth!"
                             }
                           ]}
                         >
                           <DatePicker
                             style={{ width: "100%", padding: "6px" }}
                             className={`form-control`}
-                            placeholder="dateOfBirth"
+                            placeholder="Date Of Birth"
                             onChange={handleDateChange}
                             format={dateFormat}
                             value={selectedDateOfBirth}
@@ -966,16 +1004,16 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* gender */}
                         <Form.Item
-                          label="gender"
+                          label="Gender"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -984,7 +1022,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your gender!"
+                              message: "Please input your Gender!"
                             }
                           ]}
                         >
@@ -997,17 +1035,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* contactNumber */}
                         <Form.Item
                           name="fatherName"
-                          label="fatherName"
+                          label="Father Name"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1015,13 +1053,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your fatherName!"
+                              message: "Please input your Father Name!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="fatherName"
+                            placeholder="Father Name"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1029,17 +1067,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* motherName */}
                         <Form.Item
                           name="motherName"
-                          label="motherName"
+                          label="Mother Name"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1047,13 +1085,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your motherName!"
+                              message: "Please input your Mother Name!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="motherName"
+                            placeholder="Mother Name"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1062,17 +1100,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* spouseName */}
                         <Form.Item
                           name="spouseName"
-                          label="spouseName"
+                          label="Spouse Name"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1080,7 +1118,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         >
                           <Input
                             type="text"
-                            placeholder="spouseName"
+                            placeholder="Spouse Name"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1088,17 +1126,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* connectionAddress */}
                         <Form.Item
                           name="connectionAddress"
-                          label="connectionAddress"
+                          label="Connection Address"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1106,26 +1144,49 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your connectionAddress!"
+                              message: "Please input your Connection Address!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="connectionAddress"
+                            placeholder="Connection Address"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
                         </Form.Item>
                       </Col>
+                    </Row>
+                  </Card>
+                </>
+              )}
 
+              {current === 1 && (
+                <>
+                  <Card
+                    hoverable
+                    style={{
+                      width: "90%",
+                      backgroundColor: "white",
+                      borderRadius: "10px",
+                      margin: "0 auto",
+                      textAlign: "center",
+                      marginTop: "1rem",
+                      marginBottom: "1rem",
+                      border: "1px solid #F15F22"
+                    }}
+                  >
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* flatNo */}
@@ -1148,11 +1209,11 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* houseNo */}
@@ -1182,11 +1243,11 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* roadNo */}
@@ -1209,11 +1270,11 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* area */}
@@ -1240,47 +1301,18 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           />
                         </Form.Item>
                       </Col>
-                    </Row>
-                  </Card>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={24}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  <Card
-                    hoverable
-                    style={{
-                      width: "90%",
-                      backgroundColor: "white",
-                      borderRadius: "10px",
-                      margin: "0 auto",
-                      textAlign: "center",
-                      marginTop: "1rem",
-                      marginBottom: "1rem",
-                      border: "1px solid #F15F22"
-                    }}
-                  >
-                    <Row
-                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                      justify="space-between"
-                    >
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* connectionAddressDivisionId */}
                         <Form.Item
-                          label="connectionAddressDivisionId"
+                          label="Connection Address (Division)"
                           style={{
                             marginBottom: 0,
                             marginRight: lg ? "10px" : "0px",
@@ -1308,16 +1340,16 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* connectionAddressDistrictId */}
                         <Form.Item
-                          label="connectionAddressDistrictId"
+                          label="Connection Address (District)"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1344,16 +1376,22 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* connectionAddressUpazillaId */}
                         <Form.Item
-                          label="connectionAddressUpazillaId"
+                          label="Connection Address (Upazilla)"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select Upazilla!"
+                            }
+                          ]}
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1375,17 +1413,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* connectionAddressPostCode */}
                         <Form.Item
                           name="connectionAddressPostCode"
-                          label="connectionAddressPostCode"
+                          label="Connection Address (PostCode)"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1400,31 +1438,25 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         >
                           <Input
                             type="text"
-                            placeholder="connectionAddressPostCode"
+                            placeholder="Connection Address (PostCode)"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
                         </Form.Item>
                       </Col>
-                    </Row>
-
-                    <Row
-                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                      justify="space-between"
-                    >
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* permanentAddress */}
                         <Form.Item
                           name="permanentAddress"
-                          label="permanentAddress"
+                          label="Permanent Address"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1432,13 +1464,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your permanentAddress!"
+                              message: "Please input your Permanent Address!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="permanentAddress"
+                            placeholder="Permanent Address"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1446,16 +1478,16 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* permanentAddressDivisionId */}
                         <Form.Item
-                          label="permanentAddressDivisionId"
+                          label="Permanent Address (Division)"
                           style={{
                             marginBottom: 0,
                             marginRight: lg ? "10px" : "0px",
@@ -1481,18 +1513,42 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           </Space>
                         </Form.Item>
                       </Col>
+                    </Row>
+                  </Card>
+                </>
+              )}
+
+              {current === 2 && (
+                <>
+                  <Card
+                    hoverable
+                    style={{
+                      width: "90%",
+                      backgroundColor: "white",
+                      borderRadius: "10px",
+                      margin: "0 auto",
+                      textAlign: "center",
+                      marginTop: "1rem",
+                      marginBottom: "1rem",
+                      border: "1px solid #F15F22"
+                    }}
+                  >
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* permanentAddressDistrictId */}
                         <Form.Item
-                          label="permanentAddressDistrictId"
+                          label="Permanent Address (District)"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1519,20 +1575,26 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* permanentAddressUpazillaId */}
                         <Form.Item
-                          label="permanentAddressUpazillaId"
+                          label="Permanent Address (Upazilla)"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
                           }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select Upazilla!"
+                            }
+                          ]}
                           name="permanentAddressUpazillaId"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -1549,17 +1611,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* permanentAddressPostCode */}
                         <Form.Item
                           name="permanentAddressPostCode"
-                          label="permanentAddressPostCode"
+                          label="Permanent Address (PostCode)"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1568,13 +1630,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                             {
                               required: true,
                               message:
-                                "Please input your permanentAddressPostCode!"
+                                "Please input your Permanent Address PostCode!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="permanentAddressPostCode"
+                            placeholder="Permanent Address (PostCode)"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1583,17 +1645,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* mobileNumber */}
                         <Form.Item
                           name="mobileNumber"
-                          label="mobileNumber"
+                          label="Mobile Number"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1601,13 +1663,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your mobileNumber!"
+                              message: "Please input your Mobile Number!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="mobileNumber"
+                            placeholder="Mobile Number"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1615,17 +1677,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* phoneNumber */}
                         <Form.Item
                           name="phoneNumber"
-                          label="phoneNumber"
+                          label="Phone Number"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1633,13 +1695,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your phoneNumber!"
+                              message: "Please input your Phone Number!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="phoneNumber"
+                            placeholder="Phone Number"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1647,31 +1709,31 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* altMobileNo */}
                         <Form.Item
                           name="altMobileNo"
-                          label="altMobileNo"
+                          label="Alt Mobile No"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
                           }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your altMobileNo!"
-                            }
-                          ]}
+                          // rules={[
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your Alt Mobile No!"
+                          //   }
+                          // ]}
                         >
                           <Input
                             type="text"
-                            placeholder="altMobileNo"
+                            placeholder="Alt Mobile No"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1680,11 +1742,11 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       {/* email */}
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         <Form.Item
@@ -1722,16 +1784,16 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       {/* occupation */}
                       <Col
                         xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
                         className="gutter-row"
                       >
                         {/* occupation */}
                         <Form.Item
-                          label="occupation"
+                          label="Occupation"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1742,7 +1804,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                             <Select
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
+                              placeholder="Please select Occupation"
                               onChange={handleOccupationChange}
                               options={occupations}
                               value={selectedOccupation}
@@ -1752,8 +1814,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       </Col>
                     </Row>
                   </Card>
-                </Col>
-              </Row>
+                </>
+              )}
 
               {/* submit */}
               <Row justify="center">

@@ -26,7 +26,6 @@ interface TableParams {
 
 const SmsAlertConfigList: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
-  console.log(data);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
