@@ -11,7 +11,7 @@ import {
   Tabs
 } from "antd";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ability from "@/services/guard/ability";
 import Customer from "@/components/details/customerCare/Customer";
 import SessionHistory from "@/components/details/customerCare/SessionHistory";
@@ -26,6 +26,8 @@ import AppLoader from "@/lib/AppLoader";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { useRouter } from "next/router";
+import { useReactToPrint } from "react-to-print";
+import SafPrintData from "@/components/details/customerCare/SafPrintData";
 
 interface TabData {
   key: string;
@@ -37,8 +39,15 @@ interface TabData {
 const DetailsCustomerCare = ({ id }: any) => {
   const [item, SetItem] = useState<CustomerData | null>(null);
 
+  const [safData, setSafData] = useState<any>(null);
+
   const MySwal = withReactContent(Swal);
   // const router = useRouter();
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current as any
+  });
 
   async function handleDisconnect(username: string) {
     try {
@@ -110,6 +119,22 @@ const DetailsCustomerCare = ({ id }: any) => {
     }
   }
 
+  const fetchSafData = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const { data } = await axios.get(
+      `/api/saf-verification/get-by-customer-id/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    console.log("data", data);
+    setSafData(data);
+  };
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -133,6 +158,12 @@ const DetailsCustomerCare = ({ id }: any) => {
       console.log("error", error);
     }
   });
+
+  useEffect(() => {
+    if (id) {
+      fetchSafData();
+    }
+  }, [id]);
 
   useEffect(() => {
     if (item) {
@@ -265,9 +296,22 @@ const DetailsCustomerCare = ({ id }: any) => {
                   backgroundColor: "#241468",
                   color: "#ffffff"
                 }}
+                onClick={handlePrint}
               >
                 SAF Verification
               </Button>
+
+              <div>
+                <div style={{ display: "none" }}>
+                  {safData && (
+                    <SafPrintData
+                      item={item}
+                      componentRef={componentRef}
+                      safData={safData}
+                    />
+                  )}
+                </div>
+              </div>
 
               <Button
                 style={{
