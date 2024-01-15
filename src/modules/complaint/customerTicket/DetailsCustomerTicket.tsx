@@ -52,6 +52,11 @@ const DetailsCustomerTicket = ({ id }: any) => {
   const [item, setItem] = useState<TicketData | null>(null);
   const [replys, setReplys] = useState<any | []>([]);
 
+  const [completeFetchReplayData, setCompleteFetchReplayData] =
+    useState<boolean>(false);
+
+  const [completeFetchData, setCompleteFetchData] = useState<boolean>(false);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [statusModal, setStatusModal] = useState(false);
@@ -315,6 +320,8 @@ const DetailsCustomerTicket = ({ id }: any) => {
         },
         onSuccess(data: any) {
           if (data) {
+            console.log("data.body", data.body);
+            setCompleteFetchData(true);
             setItem(data.body);
           }
         },
@@ -333,6 +340,8 @@ const DetailsCustomerTicket = ({ id }: any) => {
             /*  const filters = data.body.filter(
               (item: any) => item.ticketId === id
              ); */
+            console.log("data.body", data.body);
+            setCompleteFetchReplayData(true);
             setReplys(data.body);
             // setReplys(filters);
           }
@@ -730,7 +739,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
             replayQuery.isLoading &&
             replayQuery.isFetching && <AppLoader />}
 
-          {!ticketQuery.isLoading && !replayQuery.isLoading && item && (
+          {completeFetchData && completeFetchReplayData && item && (
             <DetailsTicket item={item} replys={replys} />
           )}
         </Card>
