@@ -147,6 +147,12 @@ const HotspotDetailsCustomer = ({ id }: any) => {
     setData(filterItems);
   }, [router]);
 
+  useEffect(() => {
+    if (data) {
+      // console.log("data", data);
+    }
+  }, [data]);
+
   return (
     <>
       {isLoading && isFetching && <AppLoader />}
@@ -254,8 +260,8 @@ const HotspotDetailsCustomer = ({ id }: any) => {
           <Tabs
             // onChange={onChange}
             type="card"
-            defaultActiveKey={data[0]?.key}
-            items={data}
+            defaultActiveKey={items[0]?.key}
+            items={items}
           />
         </Card>
       </AppRowContainer>
