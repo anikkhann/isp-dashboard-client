@@ -5,7 +5,7 @@ import AppRowContainer from "@/lib/AppRowContainer";
 import {
   // Alert,
   Breadcrumb,
-  Button,
+  // Button,
   Card,
   Space,
   Tabs
@@ -18,8 +18,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppLoader from "@/lib/AppLoader";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
 import HotspotUsedVoucherList from "@/components/details/hotspot/customer-care/HotspotUsedVoucherList";
 import HotspotSessionHistory from "@/components/details/hotspot/customer-care/HotspotSessionHistory";
 import { useRouter } from "next/router";
@@ -35,44 +35,46 @@ interface TabData {
 const HotspotDetailsCustomer = ({ id }: any) => {
   const [item, SetItem] = useState<any>(null);
 
-  const MySwal = withReactContent(Swal);
+  const [data, setData] = useState<any[]>([]);
+
+  // const MySwal = withReactContent(Swal);
   const router = useRouter();
 
-  async function handleDisconnect(username: string) {
-    try {
-      const result = await MySwal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#570DF8",
-        cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, Disconnect customer!"
-      });
+  // async function handleDisconnect(username: string) {
+  //   try {
+  //     const result = await MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#570DF8",
+  //       cancelButtonColor: "#EB0808",
+  //       confirmButtonText: "Yes, Disconnect customer!"
+  //     });
 
-      if (result.isConfirmed) {
-        const { data } = await axios.get(
-          `/api-hotspot/partner-customer/disconnect-user/${username}`
-        );
-        if (data.status === 200) {
-          MySwal.fire("Success!", data.message, "success").then(() => {
-            router.reload();
-          });
-        } else {
-          MySwal.fire("Error!", data.message, "error");
-        }
-      } else if (result.isDismissed) {
-        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
-      }
-    } catch (error: any) {
-      // console.log(error);
-      if (error.response) {
-        MySwal.fire("Error!", error.response.data.message, "error");
-      } else {
-        MySwal.fire("Error!", "Something went wrong", "error");
-      }
-    }
-  }
+  //     if (result.isConfirmed) {
+  //       const { data } = await axios.get(
+  //         `/api-hotspot/partner-customer/disconnect-user/${username}`
+  //       );
+  //       if (data.status === 200) {
+  //         MySwal.fire("Success!", data.message, "success").then(() => {
+  //           router.reload();
+  //         });
+  //       } else {
+  //         MySwal.fire("Error!", data.message, "error");
+  //       }
+  //     } else if (result.isDismissed) {
+  //       MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+  //     }
+  //   } catch (error: any) {
+  //     // console.log(error);
+  //     if (error.response) {
+  //       MySwal.fire("Error!", error.response.data.message, "error");
+  //     } else {
+  //       MySwal.fire("Error!", "Something went wrong", "error");
+  //     }
+  //   }
+  // }
 
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -109,7 +111,7 @@ const HotspotDetailsCustomer = ({ id }: any) => {
   const items: TabData[] = [
     {
       key: "1",
-      label: `Connection Status`,
+      label: `Customer`,
       children: <>{item && <HotspotConnectionStatus item={item} />}</>,
       permission: "HotspotCustomerCare.list"
     },
@@ -134,12 +136,22 @@ const HotspotDetailsCustomer = ({ id }: any) => {
     }
   ];
 
-  const filterItems = items.filter((item: any) => {
-    if (item.permission) {
-      return ability.can(item.permission, "");
+  useEffect(() => {
+    const filterItems = items.filter((item: any) => {
+      if (item.permission) {
+        return ability.can(item.permission, "");
+      }
+      return true;
+    });
+
+    setData(filterItems);
+  }, [router]);
+
+  useEffect(() => {
+    if (data) {
+      // console.log("data", data);
     }
-    return true;
-  });
+  }, [data]);
 
   return (
     <>
@@ -202,7 +214,7 @@ const HotspotDetailsCustomer = ({ id }: any) => {
         >
           {item && (
             <Space wrap>
-              <Button
+              {/* <Button
                 style={{
                   marginLeft: "auto",
                   marginRight: "20px",
@@ -212,9 +224,9 @@ const HotspotDetailsCustomer = ({ id }: any) => {
                 onClick={() => handleDisconnect(item?.radiusUsername)}
               >
                 Disconnect
-              </Button>
+              </Button> */}
 
-              {ability.can("HotspotCustomerCare.macBinding", "") && (
+              {/* {ability.can("HotspotCustomerCare.macBinding", "") && (
                 <Button
                   style={{
                     marginLeft: "auto",
@@ -227,7 +239,7 @@ const HotspotDetailsCustomer = ({ id }: any) => {
                     Mac Binding
                   </Link>
                 </Button>
-              )}
+              )} */}
             </Space>
           )}
         </Space>
@@ -248,8 +260,8 @@ const HotspotDetailsCustomer = ({ id }: any) => {
           <Tabs
             // onChange={onChange}
             type="card"
-            defaultActiveKey={filterItems[0].key}
-            items={filterItems}
+            defaultActiveKey={items[0]?.key}
+            items={items}
           />
         </Card>
       </AppRowContainer>

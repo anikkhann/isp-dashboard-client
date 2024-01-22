@@ -12,7 +12,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, MacCommandFilled } from "@ant-design/icons";
 import { format } from "date-fns";
 
 import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
@@ -300,6 +300,32 @@ const HotspotCustomerList: React.FC = () => {
                 </Tooltip>
               ) : null}
             </Space>
+            <Space size="middle" align="center" className="mx-1">
+              {ability.can("HotspotCustomerCare.macBinding", "") ? (
+                <Tooltip
+                  title="Mac Binding"
+                  placement="bottomRight"
+                  color="purple"
+                >
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/hotspot/customer-care/${record.id}/mac-binding`}
+                    >
+                      <Button
+                        type="primary"
+                        icon={<MacCommandFilled />}
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: "20px",
+                          backgroundColor: "#35A29F",
+                          color: "#ffffff"
+                        }}
+                      />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+            </Space>
           </div>
         );
       },
@@ -362,8 +388,8 @@ const HotspotCustomerList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

@@ -108,8 +108,8 @@ const DurjoyRequisitionList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const router = useRouter();
 
@@ -657,9 +657,8 @@ const DurjoyRequisitionList: React.FC = () => {
                             asyncOnClick={true}
                             onClick={(event, done) => {
                               const token = Cookies.get("token");
-                              axios.defaults.headers.common[
-                                "Authorization"
-                              ] = `Bearer ${token}`;
+                              axios.defaults.headers.common["Authorization"] =
+                                `Bearer ${token}`;
 
                               const body = {
                                 meta: {
@@ -739,9 +738,8 @@ const DurjoyRequisitionList: React.FC = () => {
                             asyncOnClick={true}
                             onClick={(event, done) => {
                               const token = Cookies.get("token");
-                              axios.defaults.headers.common[
-                                "Authorization"
-                              ] = `Bearer ${token}`;
+                              axios.defaults.headers.common["Authorization"] =
+                                `Bearer ${token}`;
 
                               const body = {
                                 meta: {
@@ -869,8 +867,8 @@ const DurjoyRequisitionList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

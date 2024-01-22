@@ -11,7 +11,7 @@ import {
   Tabs
 } from "antd";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ability from "@/services/guard/ability";
 import Customer from "@/components/details/customerCare/Customer";
 import SessionHistory from "@/components/details/customerCare/SessionHistory";
@@ -23,9 +23,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-// import { useRouter } from "next/router";
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
+// // import { useRouter } from "next/router";
+import { useReactToPrint } from "react-to-print";
+import SafPrintData from "@/components/details/customerCare/SafPrintData";
 
 interface TabData {
   key: string;
@@ -37,78 +39,101 @@ interface TabData {
 const DetailsCustomerCare = ({ id }: any) => {
   const [item, SetItem] = useState<CustomerData | null>(null);
 
-  const MySwal = withReactContent(Swal);
+  const [safData, setSafData] = useState<any>(null);
+
+  // const MySwal = withReactContent(Swal);
   // const router = useRouter();
 
-  async function handleDisconnect(username: string) {
-    try {
-      const result = await MySwal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#570DF8",
-        cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, Disconnect customer!"
-      });
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current as any
+  });
 
-      if (result.isConfirmed) {
-        const { data } = await axios.get(
-          `/api/customer/disconnect/${username}`
-        );
-        if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
-            // router.reload();
-          });
-        } else {
-          MySwal.fire("Error!", data.message, "error");
+  // async function handleDisconnect(username: string) {
+  //   try {
+  //     const result = await MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#570DF8",
+  //       cancelButtonColor: "#EB0808",
+  //       confirmButtonText: "Yes, Disconnect customer!"
+  //     });
+
+  //     if (result.isConfirmed) {
+  //       const { data } = await axios.get(
+  //         `/api/customer/disconnect/${username}`
+  //       );
+  //       if (data.status === 200) {
+  //         MySwal.fire("Success!", data.body.message, "success").then(() => {
+  //           // router.reload();
+  //         });
+  //       } else {
+  //         MySwal.fire("Error!", data.message, "error");
+  //       }
+  //     } else if (result.isDismissed) {
+  //       MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+  //     }
+  //   } catch (error: any) {
+  //     // console.log(error);
+  //     if (error.response) {
+  //       MySwal.fire("Error!", error.response.data.message, "error");
+  //     } else {
+  //       MySwal.fire("Error!", "Something went wrong", "error");
+  //     }
+  //   }
+  // }
+
+  // async function handleRenew(id: string) {
+  //   try {
+  //     const result = await MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#570DF8",
+  //       cancelButtonColor: "#EB0808",
+  //       confirmButtonText: "Yes, Renew customer!"
+  //     });
+
+  //     if (result.isConfirmed) {
+  //       const { data } = await axios.get(`/api/customer/renew/${id}`);
+  //       if (data.status === 200) {
+  //         MySwal.fire("Success!", data.body.message, "success").then(() => {
+  //           // router.reload();
+  //         });
+  //       } else {
+  //         MySwal.fire("Error!", data.message, "error");
+  //       }
+  //     } else if (result.isDismissed) {
+  //       MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+  //     }
+  //   } catch (error: any) {
+  //     // console.log(error);
+  //     if (error.response) {
+  //       MySwal.fire("Error!", error.response.data.message, "error");
+  //     } else {
+  //       MySwal.fire("Error!", "Something went wrong", "error");
+  //     }
+  //   }
+  // }
+
+  const fetchSafData = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const { data } = await axios.get(
+      `/api/saf-verification/get-by-customer-id/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json"
         }
-      } else if (result.isDismissed) {
-        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
       }
-    } catch (error: any) {
-      // console.log(error);
-      if (error.response) {
-        MySwal.fire("Error!", error.response.data.message, "error");
-      } else {
-        MySwal.fire("Error!", "Something went wrong", "error");
-      }
-    }
-  }
-
-  async function handleRenew(id: string) {
-    try {
-      const result = await MySwal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#570DF8",
-        cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, Renew customer!"
-      });
-
-      if (result.isConfirmed) {
-        const { data } = await axios.get(`/api/customer/renew/${id}`);
-        if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
-            // router.reload();
-          });
-        } else {
-          MySwal.fire("Error!", data.message, "error");
-        }
-      } else if (result.isDismissed) {
-        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
-      }
-    } catch (error: any) {
-      // console.log(error);
-      if (error.response) {
-        MySwal.fire("Error!", error.response.data.message, "error");
-      } else {
-        MySwal.fire("Error!", "Something went wrong", "error");
-      }
-    }
-  }
+    );
+    console.log("data", data);
+    setSafData(data);
+  };
 
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -133,6 +158,12 @@ const DetailsCustomerCare = ({ id }: any) => {
       console.log("error", error);
     }
   });
+
+  useEffect(() => {
+    if (id) {
+      fetchSafData();
+    }
+  }, [id]);
 
   useEffect(() => {
     if (item) {
@@ -265,9 +296,22 @@ const DetailsCustomerCare = ({ id }: any) => {
                   backgroundColor: "#241468",
                   color: "#ffffff"
                 }}
+                onClick={handlePrint}
               >
                 SAF Verification
               </Button>
+
+              <div>
+                <div style={{ display: "none" }}>
+                  {safData && (
+                    <SafPrintData
+                      item={item}
+                      componentRef={componentRef}
+                      safData={safData}
+                    />
+                  )}
+                </div>
+              </div>
 
               <Button
                 style={{
@@ -280,7 +324,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                 Live Bandwidth
               </Button>
 
-              <Button
+              {/* <Button
                 style={{
                   marginLeft: "auto",
                   marginRight: "20px",
@@ -290,7 +334,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                 onClick={() => handleDisconnect(item?.username)}
               >
                 Disconnect
-              </Button>
+              </Button> */}
 
               <Button
                 style={{
@@ -302,7 +346,7 @@ const DetailsCustomerCare = ({ id }: any) => {
               >
                 <Link href={`/admin/customer-care/${id}/topup`}>Top Up</Link>
               </Button>
-
+              {/* 
               <Button
                 style={{
                   marginLeft: "auto",
@@ -313,7 +357,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                 onClick={() => handleRenew(item?.id)}
               >
                 Renew
-              </Button>
+              </Button> */}
             </Space>
           )}
         </Space>
