@@ -302,7 +302,11 @@ const HotspotCustomerList: React.FC = () => {
             </Space>
             <Space size="middle" align="center" className="mx-1">
               {ability.can("HotspotCustomerCare.macBinding", "") ? (
-                <Tooltip title="View" placement="bottomRight" color="green">
+                <Tooltip
+                  title="Mac Binding"
+                  placement="bottomRight"
+                  color="purple"
+                >
                   <Space size="middle" align="center" wrap>
                     <Link
                       href={`/admin/hotspot/customer-care/${record.id}/mac-binding`}
@@ -384,8 +388,8 @@ const HotspotCustomerList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

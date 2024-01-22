@@ -127,8 +127,8 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -136,7 +136,7 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
           )}
 
           <TableCard
-            title="Connection Status"
+            title=""
             hasLink={false}
             addLink=""
             permission=""
@@ -148,99 +148,298 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
               backgroundColor: "#ffffff"
             }}
           >
-            <Space direction="vertical" style={{ width: "100%" }}>
-              <div>
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">assigned ip :</span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">{data?.assigned_ip}</span>
-                  </Col>
-                </Row>
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">
-                      connection_status :
-                    </span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">
-                      {data?.connection_status}
-                    </span>
-                  </Col>
-                  <Button
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: "20px",
-                      backgroundColor: "#F94A29",
-                      color: "#ffffff"
-                    }}
-                    onClick={() => handleDisconnect(item?.radiusUsername)}
-                  >
-                    Disconnect
-                  </Button>
-                </Row>
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">
-                      nas ip address :
-                    </span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">{data?.nasipaddress}</span>
-                  </Col>
-                </Row>
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">router mac :</span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">{data?.router_mac}</span>
-                  </Col>
-                </Row>
-              </div>
-            </Space>
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+              justify="space-between"
+            >
+              <Col
+                xs={24}
+                sm={24}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                <Space direction="vertical" style={{ width: "100%" }}>
+                  <div className="flex justify-center items-center">
+                    <h1 className="text-lg font-semibold">Basic Information</h1>
+                  </div>
+                  <div>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">Name :</span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item?.radiusUsername}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Client Name :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.client?.username}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Client Address :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.client?.address}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Client Number :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.client?.contactNumber}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Client Level :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.client?.clientLevel}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Registered Customer :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.client?.registeredCustomer}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Total Customer :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.client?.totalCustomer}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                </Space>
+              </Col>
+              <Col
+                xs={24}
+                sm={24}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row "
+              >
+                <div className="flex justify-center items-center">
+                  <h1 className="text-lg font-semibold"> Connection Status</h1>
+                </div>
+                <Space direction="vertical" style={{ width: "100%" }}>
+                  <div>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Assigned IP :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {data?.assigned_ip}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Connection Status :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {data?.connection_status}
+                        </span>
+                      </Col>
+                      {data?.connection_status === "online" && (
+                        <Button
+                          style={{
+                            marginLeft: "auto",
+                            marginRight: "20px",
+                            backgroundColor: "#F94A29",
+                            color: "#ffffff"
+                          }}
+                          onClick={() => handleDisconnect(item?.radiusUsername)}
+                        >
+                          Disconnect
+                        </Button>
+                      )}
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          NAS IP Address :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {data?.nasipaddress}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Router MAC :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {data?.router_mac}
+                        </span>
+                      </Col>
+                    </Row>
+                  </div>
+                </Space>
+              </Col>
+            </Row>
           </TableCard>
         </Col>
       </AppRowContainer>

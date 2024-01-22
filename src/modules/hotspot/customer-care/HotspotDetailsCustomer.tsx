@@ -111,7 +111,7 @@ const HotspotDetailsCustomer = ({ id }: any) => {
   const items: TabData[] = [
     {
       key: "1",
-      label: `Connection Status`,
+      label: `Customer`,
       children: <>{item && <HotspotConnectionStatus item={item} />}</>,
       permission: "HotspotCustomerCare.list"
     },
@@ -146,6 +146,12 @@ const HotspotDetailsCustomer = ({ id }: any) => {
 
     setData(filterItems);
   }, [router]);
+
+  useEffect(() => {
+    if (data) {
+      // console.log("data", data);
+    }
+  }, [data]);
 
   return (
     <>
@@ -254,8 +260,8 @@ const HotspotDetailsCustomer = ({ id }: any) => {
           <Tabs
             // onChange={onChange}
             type="card"
-            defaultActiveKey={data[0]?.key}
-            items={data}
+            defaultActiveKey={items[0]?.key}
+            items={items}
           />
         </Card>
       </AppRowContainer>
