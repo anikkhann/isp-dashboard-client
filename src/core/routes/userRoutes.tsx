@@ -1,8 +1,10 @@
 import {
   DashboardOutlined,
-  SettingOutlined,
-  SlidersOutlined,
-  UserOutlined
+  LineChartOutlined,
+  UserOutlined,
+  TeamOutlined,
+  KeyOutlined,
+  WifiOutlined
 } from "@ant-design/icons";
 
 const userRoutes = [
@@ -18,7 +20,7 @@ const userRoutes = [
     key: "/admin/user",
     label: "User Dashboard",
     path: "/admin/user",
-    icon: <SettingOutlined />,
+    icon: <LineChartOutlined />,
     permission: "user.dashboard"
   },
   {
@@ -32,7 +34,7 @@ const userRoutes = [
     key: "/admin/user/role",
     label: "Roles",
     path: "/admin/user/role",
-    icon: <SlidersOutlined />,
+    icon: <TeamOutlined />,
     permission: "role.list"
   },
 
@@ -40,7 +42,7 @@ const userRoutes = [
     key: "/admin/user/permission",
     label: "Permissions",
     path: "/admin/user/permission",
-    icon: <SlidersOutlined />,
+    icon: <KeyOutlined />,
     permission: "permission.list"
   },
 
@@ -48,7 +50,7 @@ const userRoutes = [
     key: "/admin/user/bw-nttn-provider",
     label: "BW NTTN Providers",
     path: "/admin/user/bw-nttn-provider",
-    icon: <SlidersOutlined />,
+    icon: <WifiOutlined />,
     permission: "bwNttnProvider.list"
   }
 ];

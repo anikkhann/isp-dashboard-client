@@ -157,12 +157,23 @@ const HotspotCustomerList: React.FC = () => {
     },
 
     {
-      title: "Client",
+      title: "Client/ISP",
       dataIndex: "client",
       sorter: false,
       render: (client: any) => {
         if (!client) return "-";
         return <>{client.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Mobile",
+      dataIndex: "customer",
+      sorter: false,
+      render: (customer: any) => {
+        if (!customer) return "-";
+        return <>{customer.phone}</>;
       },
       width: "20%",
       align: "center" as AlignType

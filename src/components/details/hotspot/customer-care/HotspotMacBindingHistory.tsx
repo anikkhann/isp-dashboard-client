@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, List, Space } from "antd";
+import { Card, Col, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -137,7 +137,7 @@ const HotspotMacBindingHistory = ({ item }: PropData) => {
     },
     // subject
     {
-      title: "Subject",
+      title: "Changed On",
       dataIndex: "subject",
       sorter: false,
       render: (subject: any) => {
@@ -149,7 +149,7 @@ const HotspotMacBindingHistory = ({ item }: PropData) => {
     },
     // remarks
     {
-      title: "Remarks",
+      title: "Changed By",
       dataIndex: "remarks",
       sorter: false,
       render: (remarks: any) => {
@@ -160,71 +160,83 @@ const HotspotMacBindingHistory = ({ item }: PropData) => {
       /* width: "20%", */
       align: "center" as AlignType
     },
-    // changedData
     {
-      title: "Changed Data",
-      dataIndex: "changedData",
+      title: "MAC",
+      dataIndex: "remarks",
       sorter: false,
-      render: (changedData: any) => {
-        if (!changedData) return "-";
-
-        if (changedData == "{}") return "-";
-
-        if (changedData) {
-          const jsonObject = JSON.parse(changedData) as Array<any>;
-
-          const array = [];
-
-          for (const object of jsonObject) {
-            array.push(object);
-          }
-
-          return (
-            <>
-              <List>
-                {array.map((checklist: any, index: number) => {
-                  return (
-                    <List.Item key={index}>
-                      {checklist.key} : {checklist.oldValue} {"-> "}
-                      {checklist.currentValue},
-                    </List.Item>
-                  );
-                })}
-              </List>
-            </>
-          );
-        }
-
-        return <>{changedData}</>;
+      render: (remarks: any) => {
+        if (!remarks) return "-";
+        return <>{remarks}</>;
       },
 
       /* width: "20%", */
       align: "center" as AlignType
-    },
-    // actionBy
-    {
-      title: "Action By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      //   width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Action Date",
-      dataIndex: "createdOn",
-      sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
     }
+    // changedData
+    // {
+    //   title: "Changed Data",
+    //   dataIndex: "changedData",
+    //   sorter: false,
+    //   render: (changedData: any) => {
+    //     if (!changedData) return "-";
+
+    //     if (changedData == "{}") return "-";
+
+    //     if (changedData) {
+    //       const jsonObject = JSON.parse(changedData) as Array<any>;
+
+    //       const array = [];
+
+    //       for (const object of jsonObject) {
+    //         array.push(object);
+    //       }
+
+    //       return (
+    //         <>
+    //           <List>
+    //             {array.map((checklist: any, index: number) => {
+    //               return (
+    //                 <List.Item key={index}>
+    //                   {checklist.key} : {checklist.oldValue} {"-> "}
+    //                   {checklist.currentValue},
+    //                 </List.Item>
+    //               );
+    //             })}
+    //           </List>
+    //         </>
+    //       );
+    //     }
+
+    //     return <>{changedData}</>;
+    //   },
+
+    //   /* width: "20%", */
+    //   align: "center" as AlignType
+    // },
+    // actionBy
+    // {
+    //   title: "Action By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   //   width: "20%",
+    //   align: "center" as AlignType
+    // },
+    // {
+    //   title: "Action Date",
+    //   dataIndex: "createdOn",
+    //   sorter: false,
+    //   render: (createdOn: any) => {
+    //     if (!createdOn) return "-";
+    //     const date = new Date(createdOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // }
   ];
 
   const handleTableChange = (

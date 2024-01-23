@@ -1,4 +1,11 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  SettingOutlined,
+  MailOutlined,
+  MessageOutlined,
+  FileTextOutlined,
+  BellOutlined
+} from "@ant-design/icons";
 
 const notificationRoutes = [
   {
@@ -34,7 +41,7 @@ const notificationRoutes = [
         key: "/admin/notification/email/email-template",
         label: "Email Template",
         path: "/admin/notification/email/email-template",
-        icon: <SettingOutlined />,
+        icon: <MailOutlined />,
         permission: "emailTemplate.list"
       }
     ]
@@ -58,21 +65,21 @@ const notificationRoutes = [
         key: "/admin/notification/sms/send-sms-single",
         label: "Send SMS Single",
         path: "/admin/notification/sms/send-sms-single",
-        icon: <SettingOutlined />,
+        icon: <MessageOutlined />,
         permission: "smsSingle.list"
       },
       {
         key: "/admin/notification/sms/send-sms-bulk",
         label: "Send SMS Bulk",
         path: "/admin/notification/sms/send-sms-bulk",
-        icon: <SettingOutlined />,
+        icon: <MessageOutlined />,
         permission: "smsBulk.list"
       },
       {
         key: "/admin/notification/sms/system-sms-template",
         label: "System SMS Template",
         path: "/admin/notification/sms/system-sms-template",
-        icon: <SettingOutlined />,
+        icon: <FileTextOutlined />,
         permission: "systemSmsTemplate.list"
       },
       {
@@ -86,14 +93,14 @@ const notificationRoutes = [
         key: "/admin/notification/sms/client-sms-alert",
         label: "Client SMS Alert",
         path: "/admin/notification/sms/client-sms-alert",
-        icon: <SettingOutlined />,
+        icon: <BellOutlined />,
         permission: "clientSmsAlert.list"
       },
       {
         key: "/admin/notification/sms/client-sms-template",
         label: "Client SMS Template",
         path: "/admin/notification/sms/client-sms-template",
-        icon: <SettingOutlined />,
+        icon: <FileTextOutlined />,
         permission: "clientSmsTemplate.list"
       }
     ]

@@ -511,9 +511,10 @@ const SearchCustomer = () => {
                 ) : null}
 
                 {ability.can("customerCare.update", "") &&
-                record.isSafOtpSend == false ? (
+                record.isSafOtpSend == false &&
+                record.isSafVerified == false ? (
                   <Space size="middle" align="center" wrap>
-                    <Tooltip title="Send SAF OTP">
+                    <Tooltip title="Send SAF Verification Code">
                       <Button
                         style={{
                           backgroundColor: "#F15F22",
@@ -529,9 +530,10 @@ const SearchCustomer = () => {
                 ) : null}
 
                 {ability.can("customerCare.update", "") &&
-                record.isSafOtpVerified == false ? (
+                record.isSafOtpVerified == false &&
+                record.isSafOtpSend == true ? (
                   <Space size="middle" align="center" wrap>
-                    <Tooltip title="Verify SAF OTP">
+                    <Tooltip title="Verify SAF">
                       <Link href={`/admin/customer-care/${record.id}/saf-otp`}>
                         <Button
                           style={{
@@ -549,7 +551,7 @@ const SearchCustomer = () => {
                 {ability.can("customerCare.update", "") &&
                 record.isSafVerified == false ? (
                   <Space size="middle" align="center" wrap>
-                    <Tooltip title="Verify SAF">
+                    <Tooltip title="SAF Form">
                       <Link href={`/admin/customer-care/${record.id}/saf`}>
                         <Button
                           style={{
@@ -691,38 +693,6 @@ const SearchCustomer = () => {
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <span>
-                            <b>Customer Id</b>
-                          </span>
-                          <Select
-                            allowClear
-                            style={{
-                              width: "100%",
-                              textAlign: "start"
-                            }}
-                            placeholder="Please select"
-                            onChange={handleCustomerIDChange}
-                            options={customerIds}
-                            value={selectedCustomerId}
-                            showSearch
-                            filterOption={(input, option) =>
-                              option?.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          />
-                        </Space>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={8}
-                        xl={8}
-                        xxl={8}
-                        className="gutter-row"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <span>
                             <b>Username</b>
                           </span>
                           <Select
@@ -785,6 +755,38 @@ const SearchCustomer = () => {
                           </Space>
                         </Col>
                       )}
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={8}
+                        lg={8}
+                        xl={8}
+                        xxl={8}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Customer Id</b>
+                          </span>
+                          <Select
+                            allowClear
+                            style={{
+                              width: "100%",
+                              textAlign: "start"
+                            }}
+                            placeholder="Please select"
+                            onChange={handleCustomerIDChange}
+                            options={customerIds}
+                            value={selectedCustomerId}
+                            showSearch
+                            filterOption={(input, option) =>
+                              option?.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                          />
+                        </Space>
+                      </Col>
                       {ability.can("CustomerCareSearch.dateRange", "") && (
                         <Col
                           xs={24}

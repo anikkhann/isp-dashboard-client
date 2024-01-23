@@ -11,7 +11,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import AppImageLoader from "@/components/loader/AppImageLoader";
 import { CustomerData } from "@/interfaces/CustomerData";
-
+import { RightSquareOutlined } from "@ant-design/icons";
 interface FormData {
   otpNo: string;
 }
@@ -33,6 +33,47 @@ const CreateSafOtpVerifyForm = ({ item }: PropData) => {
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  // async function handleSendSafOtp(id: string) {
+  //   try {
+  //     const result = await MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#570DF8",
+  //       cancelButtonColor: "#EB0808",
+  //       confirmButtonText: "Yes, Send Otp!"
+  //     });
+
+  //     if (result.isConfirmed) {
+  //       const body = {
+  //         customerId: id
+  //       };
+
+  //       const { data } = await axios.post(
+  //         `/api/saf-verification/send-otp`,
+  //         body
+  //       );
+  //       if (data.status === 200) {
+  //         MySwal.fire("Success!", data.message, "success").then(() => {
+  //           // router.reload();
+  //         });
+  //       } else {
+  //         MySwal.fire("Error!", data.message, "error");
+  //       }
+  //     } else if (result.isDismissed) {
+  //       MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+  //     }
+  //   } catch (error: any) {
+  //     // console.log(error);
+  //     if (error.response) {
+  //       MySwal.fire("Error!", error.response.data.message, "error");
+  //     } else {
+  //       MySwal.fire("Error!", "Something went wrong", "error");
+  //     }
+  //   }
+  // }
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
@@ -118,7 +159,7 @@ const CreateSafOtpVerifyForm = ({ item }: PropData) => {
               >
                 {/* otpNo */}
                 <Form.Item
-                  label="otpNo"
+                  label="SAF Verification Code"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -127,12 +168,12 @@ const CreateSafOtpVerifyForm = ({ item }: PropData) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your otpNo!"
+                      message: "Please input your SAF Verification Code!"
                     }
                   ]}
                 >
                   <Input
-                    placeholder="otpNo"
+                    placeholder="SAF Verification Code"
                     className={`form - control`}
                     style={{ padding: "6px" }}
                   />
@@ -157,6 +198,20 @@ const CreateSafOtpVerifyForm = ({ item }: PropData) => {
                     Submit
                   </Button>
                 </Form.Item>
+              </Col>
+              <Col>
+                <Button
+                  style={{
+                    backgroundColor: "#F15F22",
+                    border: "1px solid #F15F22",
+                    color: "#ffffff"
+                  }}
+                  // Resend
+                  // Verification
+                  icon={<RightSquareOutlined />}
+                  // onClick={() => handleSendSafOtp(record.customerId)}
+                  // onClick={() => handleSendSafOtp(record.id)}
+                />
               </Col>
             </Row>
           </Form>

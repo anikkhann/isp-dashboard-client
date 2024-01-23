@@ -1,4 +1,8 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  LineChartOutlined,
+  BoxPlotOutlined
+} from "@ant-design/icons";
 
 const packageRoutes = [
   {
@@ -13,14 +17,14 @@ const packageRoutes = [
     key: "/admin/package",
     label: "Package Dashboard",
     path: "/admin/package",
-    icon: <SettingOutlined />,
+    icon: <LineChartOutlined />,
     permission: "dashboard.view"
   },
   {
     key: "/admin/package/package",
     label: "Package",
     path: "/admin/package/package",
-    icon: <SettingOutlined />,
+    icon: <BoxPlotOutlined />,
     permission: "dashboard.view"
   }
 ];
