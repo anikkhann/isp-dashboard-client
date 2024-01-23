@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import axios from "axios";
-
+import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
@@ -162,8 +162,10 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                 className="gutter-row"
               >
                 <Space direction="vertical" style={{ width: "100%" }}>
-                  <div className="flex justify-center items-center">
-                    <h1 className="text-lg font-semibold">Basic Information</h1>
+                  <div className="flex justify-center items-center bg-[#F15F22]">
+                    <h1 className="text-lg font-semibold my-2">
+                      Basic Information
+                    </h1>
                   </div>
                   <div>
                     <Row
@@ -178,29 +180,7 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                           alignItems: "end"
                         }}
                       >
-                        <span className="font-bold text-base">Name :</span>
-                      </Col>
-                      <Col>
-                        <span className="mx-1 text-base">
-                          {item?.radiusUsername}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row
-                      style={{
-                        marginTop: "2px"
-                      }}
-                    >
-                      <Col
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          alignItems: "end"
-                        }}
-                      >
-                        <span className="font-bold text-base">
-                          Client Name :
-                        </span>
+                        <span className="font-bold text-base">ISP :</span>
                       </Col>
                       <Col>
                         <span className="mx-1 text-base">
@@ -220,13 +200,11 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                           alignItems: "end"
                         }}
                       >
-                        <span className="font-bold text-base">
-                          Client Address :
-                        </span>
+                        <span className="font-bold text-base">Name :</span>
                       </Col>
                       <Col>
                         <span className="mx-1 text-base">
-                          {item.client?.address}
+                          {item.customer?.name}
                         </span>
                       </Col>
                     </Row>
@@ -243,12 +221,57 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                         }}
                       >
                         <span className="font-bold text-base">
-                          Client Number :
+                          Date of Birth :
                         </span>
                       </Col>
                       <Col>
                         <span className="mx-1 text-base">
-                          {item.client?.contactNumber}
+                          {item.customer?.dateOfBirth
+                            ? format(
+                                new Date(item.customer?.dateOfBirth),
+                                "yyyy-MM-dd"
+                              )
+                            : null}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">Gender :</span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.customer?.gender}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">Mobile :</span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.customer?.phone}
                         </span>
                       </Col>
                     </Row>
@@ -265,12 +288,115 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                         }}
                       >
                         <span className="font-bold text-base">
-                          Client Level :
+                          Expiration Time :
                         </span>
                       </Col>
                       <Col>
                         <span className="mx-1 text-base">
-                          {item.client?.clientLevel}
+                          {item.expirationTime
+                            ? format(
+                                new Date(item.expirationTime),
+                                "yyyy-MM-dd pp"
+                              )
+                            : null}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">Package :</span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.activePricingPlan?.name}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">Speed :</span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {`${item.activePricingPlan?.dataRate} ${item.activePricingPlan?.dataRateUnit}`}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">MAC :</span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">{item.mac}</span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">OTP :</span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">{item.otp}</span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Last IP Address :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.lastIpAddress}
                         </span>
                       </Col>
                     </Row>
@@ -287,12 +413,12 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                         }}
                       >
                         <span className="font-bold text-base">
-                          Registered Customer :
+                          Last Activated By :
                         </span>
                       </Col>
                       <Col>
                         <span className="mx-1 text-base">
-                          {item.client?.registeredCustomer}
+                          {item.lastActivatedBy}
                         </span>
                       </Col>
                     </Row>
@@ -309,12 +435,41 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                         }}
                       >
                         <span className="font-bold text-base">
-                          Total Customer :
+                          Is Bonus Availed? :
                         </span>
                       </Col>
                       <Col>
                         <span className="mx-1 text-base">
-                          {item.client?.totalCustomer}
+                          {item.customer?.isBonusRedeemed === true
+                            ? "Yes"
+                            : "No"}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Last Active Time :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item.customer?.lastActive
+                            ? format(
+                                new Date(item.customer?.lastActive),
+                                "yyyy-MM-dd pp"
+                              )
+                            : null}
                         </span>
                       </Col>
                     </Row>
@@ -330,14 +485,16 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row "
               >
-                <div className="flex justify-center items-center">
-                  <h1 className="text-lg font-semibold"> Connection Status</h1>
+                <div className="flex justify-center items-center bg-[#F15F22]">
+                  <h1 className="text-lg font-semibold my-2">
+                    Connection Status
+                  </h1>
                 </div>
                 <Space direction="vertical" style={{ width: "100%" }}>
                   <div>
                     <Row
                       style={{
-                        marginTop: "2px"
+                        marginTop: "10px"
                       }}
                     >
                       <Col
@@ -374,11 +531,23 @@ const HotspotConnectionStatus = ({ item }: PropData) => {
                         </span>
                       </Col>
                       <Col>
-                        <span className="mx-1 text-base">
+                        {/* <span className="mx-1 text-base"> */}
+
+                        <span
+                          className="mx-1 text-base"
+                          style={{
+                            color:
+                              data && data?.connection_status == "Online"
+                                ? "green"
+                                : "red"
+                          }}
+                          // className={`mx-1 text-base ${data?.connection_status === "Online" ? "text-[green]" : "text-[red]"}`}
+                        >
                           {data?.connection_status}
                         </span>
+                        {/* </span> */}
                       </Col>
-                      {data?.connection_status === "online" && (
+                      {data?.connection_status === "Online" && (
                         <Button
                           style={{
                             marginLeft: "auto",

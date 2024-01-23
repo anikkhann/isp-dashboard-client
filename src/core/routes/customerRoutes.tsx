@@ -1,4 +1,13 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  LineChartOutlined,
+  TeamOutlined,
+  EnvironmentOutlined,
+  ShopOutlined,
+  UserAddOutlined,
+  UserSwitchOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 
 const customerRoutes = [
   {
@@ -13,7 +22,7 @@ const customerRoutes = [
     key: "/admin/customer",
     label: "Customer Dashboard",
     path: "/admin/customer",
-    icon: <SettingOutlined />,
+    icon: <LineChartOutlined />,
     permission: "customer.dashboard"
   },
 
@@ -21,42 +30,42 @@ const customerRoutes = [
     key: "/admin/customer/customer-type",
     label: "Customer Type",
     path: "/admin/customer/customer-type",
-    icon: <SettingOutlined />,
+    icon: <TeamOutlined />,
     permission: "customerType.view"
   },
   {
     key: "/admin/customer/distribution-zone",
     label: "Distribution Zone",
     path: "/admin/customer/distribution-type",
-    icon: <SettingOutlined />,
+    icon: <EnvironmentOutlined />,
     permission: "distributionZone.view"
   },
   {
     key: "/admin/customer/distribution-pop",
     label: "Distribution POP",
     path: "/admin/customer/distribution-pop",
-    icon: <SettingOutlined />,
+    icon: <ShopOutlined />,
     permission: "distributionPop.view"
   },
   {
     key: "/admin/customer/customer-onboarding-req",
     label: "Customer Onboarding Req",
     path: "/admin/customer/customer-onboarding-req",
-    icon: <SettingOutlined />,
+    icon: <UserAddOutlined />,
     permission: "customerOnboardingReq.view"
   },
   {
     key: "/admin/customer/approved-customer-onboarding-req",
     label: "Approved Customer Req",
     path: "/admin/customer/approved-customer-onboarding-req",
-    icon: <SettingOutlined />,
+    icon: <UserSwitchOutlined />,
     permission: "approvedCustomerOnboardingReq.view"
   },
   {
     key: "/admin/customer/customer",
     label: "Customer",
     path: "/admin/customer/customer",
-    icon: <SettingOutlined />,
+    icon: <UserOutlined />,
     permission: "customer.view"
   }
 ];

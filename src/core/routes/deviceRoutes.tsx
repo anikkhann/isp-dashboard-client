@@ -1,4 +1,10 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  AreaChartOutlined,
+  MobileOutlined,
+  GlobalOutlined,
+  CloudServerOutlined
+} from "@ant-design/icons";
 
 const deviceRoutes = [
   {
@@ -13,7 +19,7 @@ const deviceRoutes = [
     key: "/admin/device",
     label: "Device Dashboard",
     path: "/admin/device",
-    icon: <SettingOutlined />,
+    icon: <AreaChartOutlined />,
     permission: "device.dashboard"
   },
 
@@ -21,7 +27,7 @@ const deviceRoutes = [
     key: "/admin/device/device",
     label: "Device",
     path: "/admin/device/device",
-    icon: <SettingOutlined />,
+    icon: <MobileOutlined />,
     permission: "device.list"
   },
 
@@ -29,7 +35,7 @@ const deviceRoutes = [
     key: "/admin/device/network",
     label: "Network",
     path: "/admin/device/network",
-    icon: <SettingOutlined />,
+    icon: <GlobalOutlined />,
     permission: "network.list"
   },
 
@@ -37,7 +43,7 @@ const deviceRoutes = [
     key: "/admin/device/ip-management",
     label: "IP Management",
     path: "/admin/device/ip-management",
-    icon: <SettingOutlined />,
+    icon: <CloudServerOutlined />,
     permission: "ip.list"
   }
 ];

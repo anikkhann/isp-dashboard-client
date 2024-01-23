@@ -298,7 +298,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                 }}
                 onClick={handlePrint}
               >
-                SAF Verification
+                Download SAF Form
               </Button>
 
               <div>
@@ -336,7 +336,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                 Disconnect
               </Button> */}
 
-              <Button
+              {/* <Button
                 style={{
                   marginLeft: "auto",
                   marginRight: "20px",
@@ -345,7 +345,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                 }}
               >
                 <Link href={`/admin/customer-care/${id}/topup`}>Top Up</Link>
-              </Button>
+              </Button> */}
               {/* 
               <Button
                 style={{

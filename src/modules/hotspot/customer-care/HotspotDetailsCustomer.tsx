@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ability from "@/services/guard/ability";
-import TransactionHistory from "@/components/details/customerCare/TransactionHistory";
+// import TransactionHistory from "@/components/details/customerCare/TransactionHistory";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -24,6 +24,7 @@ import HotspotUsedVoucherList from "@/components/details/hotspot/customer-care/H
 import HotspotSessionHistory from "@/components/details/hotspot/customer-care/HotspotSessionHistory";
 import { useRouter } from "next/router";
 import HotspotConnectionStatus from "@/components/details/hotspot/customer-care/HotspotConnectionStatus";
+import HotspotMacBindingHistory from "@/components/details/hotspot/customer-care/HotspotMacBindingHistory";
 
 interface TabData {
   key: string;
@@ -131,9 +132,15 @@ const HotspotDetailsCustomer = ({ id }: any) => {
     {
       key: "4",
       label: `Mac Binding History`,
-      children: <>{item && <TransactionHistory item={item} />}</>,
+      children: <>{item && <HotspotMacBindingHistory item={item} />}</>,
       permission: "HotspotCustomerCare.list"
     }
+    // {
+    //   key: "4",
+    //   label: `Mac Binding History`,
+    //   children: <>{item && <TransactionHistory item={item} />}</>,
+    //   permission: "HotspotCustomerCare.list"
+    // }
   ];
 
   useEffect(() => {

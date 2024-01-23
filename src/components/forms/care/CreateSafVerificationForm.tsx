@@ -221,6 +221,22 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
   // steps
   const [current, setCurrent] = useState(0);
 
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 24 },
+      md: { span: 24 },
+      lg: { span: 24 },
+      xl: { span: 8 }
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 24 },
+      md: { span: 24 },
+      lg: { span: 24 },
+      xl: { span: 16 }
+    }
+  };
   const next = async () => {
     try {
       if (current === 0) {
@@ -233,6 +249,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           "gender",
           "fatherName",
           "motherName",
+          "houseNo",
+          // "area",
           "connectionAddress"
         ]);
 
@@ -243,49 +261,44 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           identificationNo: form.getFieldValue("identificationNo"),
           fatherName: form.getFieldValue("fatherName"),
           motherName: form.getFieldValue("motherName"),
+          flatNo: form.getFieldValue("flatNo"),
+          houseNo: form.getFieldValue("houseNo"),
+          roadNo: form.getFieldValue("roadNo"),
+          area: form.getFieldValue("area"),
           connectionAddress: form.getFieldValue("connectionAddress")
         });
       } else if (current === 1) {
         await form.validateFields([
-          "houseNo",
-          "area",
+          "connectionAddress",
           "connectionAddressDivisionId",
           "connectionAddressDistrictId",
           "connectionAddressUpazillaId",
           "connectionAddressPostCode",
           "permanentAddress",
-          "permanentAddressDivisionId"
-        ]);
-
-        setFormValues({
-          ...formValues,
-          flatNo: form.getFieldValue("flatNo"),
-          houseNo: form.getFieldValue("houseNo"),
-          roadNo: form.getFieldValue("roadNo"),
-          area: form.getFieldValue("area"),
-
-          connectionAddressPostCode: form.getFieldValue(
-            "connectionAddressPostCode"
-          ),
-          permanentAddress: form.getFieldValue("permanentAddress")
-        });
-      } else if (current === 2) {
-        await form.validateFields([
+          "permanentAddressDivisionId",
           "permanentAddressDivisionId",
           "permanentAddressDistrictId",
           "permanentAddressUpazillaId",
-          "permanentAddressPostCode",
-          "mobileNumber",
-          "phoneNumber",
-          "email"
+          "permanentAddressPostCode"
         ]);
 
         setFormValues({
           ...formValues,
-
+          connectionAddress: form.getFieldValue("connectionAddress"),
+          connectionAddressPostCode: form.getFieldValue(
+            "connectionAddressPostCode"
+          ),
+          permanentAddress: form.getFieldValue("permanentAddress"),
           permanentAddressPostCode: form.getFieldValue(
             "permanentAddressPostCode"
-          ),
+          )
+        });
+      } else if (current === 2) {
+        await form.validateFields(["mobileNumber", "phoneNumber", "email"]);
+
+        setFormValues({
+          ...formValues,
+
           mobileNumber: form.getFieldValue("mobileNumber"),
           phoneNumber: form.getFieldValue("phoneNumber"),
           altMobileNo: form.getFieldValue("altMobileNo"),
@@ -369,9 +382,9 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     // console.log(response);
 
     const { data } = response;
-
     if (data.body) {
       setPrevious(data.body);
+      // If data.body contains an id property
     }
   };
 
@@ -622,7 +635,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       getPreviousData(item.id);
 
       form.setFieldsValue({
-        area: item.area
+        subscriberName: item.name,
+        contactPerson: item.contactPerson,
+        identificationNo: item.identityNo,
+        connectionAddress: item.connectionAddress,
+        area: item.area,
+        roadNo: item.roadNo,
+        flatNo: item.flatNo,
+        houseNo: item.houseNo,
+        mobileNo: item.mobileNo,
+        altMobileNo: item.altMobileNo,
+        email: item.email
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -810,8 +833,9 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
               scrollToFirstError
               // labelCol={{ span: 8 }}
               // wrapperCol={{ span: 12 }}
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 14 }}
+              // labelCol={{ span: 8 }}
+              // wrapperCol={{ span: 12 }}
+              {...formItemLayout}
               layout="horizontal"
             >
               {current === 0 && (
@@ -840,23 +864,22 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         lg={24}
                         xl={24}
                         xxl={24}
-                        className="gutter-row"
+                        className="gutter-row border"
                       >
-                        {/* typeOfCustomer */}
                         <Form.Item
-                          label="Type Of Customer"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold",
-                            alignItems: "flex-start"
-                          }}
                           name="typeOfCustomer"
+                          label="গ্রাহকের ধরণ / Type Of Customer :"
                           rules={[
                             {
                               required: true,
                               message: "Please input your Type Of Customer!"
                             }
                           ]}
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold",
+                            alignItems: "flex-start"
+                          }}
                         >
                           <Radio.Group
                             onChange={onTypeOfCustomerChange}
@@ -865,11 +888,16 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                               alignItems: "flex-start"
                             }}
                           >
-                            <Radio value="individual">Individual</Radio>
-                            <Radio value="organization">Organization</Radio>
+                            <Radio value="individual">
+                              ব্যক্তি / Individual
+                            </Radio>
+                            <Radio value="organization">
+                              প্রতিষ্ঠান / Organization
+                            </Radio>
                           </Radio.Group>
                         </Form.Item>
                       </Col>
+
                       <Col
                         xs={24}
                         sm={24}
@@ -878,11 +906,26 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         xl={24}
                         xxl={24}
                         className="gutter-row"
+                        style={{
+                          display: ""
+                        }}
                       >
                         {/* subscriberName */}
                         <Form.Item
                           name="subscriberName"
-                          label="Subscriber Name"
+                          label={
+                            <div
+                              style={{
+                                textAlign: "left",
+                                marginLeft: "0",
+                                paddingLeft: "0"
+                              }}
+                            >
+                              গ্রাহকের নাম (ব্যক্তি / প্রতিষ্ঠান)
+                              <br />
+                              Subscriber Name (Individual / Organization)
+                            </div>
+                          }
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -915,7 +958,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         {/* contactPerson */}
                         <Form.Item
                           name="contactPerson"
-                          label="Contact Person"
+                          label="অনুমোদিত প্রতিনিধির নাম / Contact Person"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -947,7 +990,19 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         {/* identificationNo */}
                         <Form.Item
                           name="identificationNo"
-                          label="Identification No"
+                          label={
+                            <div
+                              style={{
+                                textAlign: "left",
+                                marginLeft: "0",
+                                paddingLeft: "0"
+                              }}
+                            >
+                              জাতীয় পরিচয়পত্র নম্বর / National ID No
+                              <br />
+                              অথবা / OR পাসপোর্ট নম্বর / Passport No
+                            </div>
+                          }
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -976,60 +1031,69 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         xxl={24}
                         className="gutter-row"
                       >
-                        {/* dateOfBirth */}
                         <Form.Item
-                          name="dateOfBirth"
-                          label="Date Of Birth"
+                          label="জন্ম তারিখ / Date of Birth"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
                           }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your Date Of Birth!"
-                            }
-                          ]}
                         >
-                          <DatePicker
-                            style={{ width: "100%", padding: "6px" }}
-                            className={`form-control`}
-                            placeholder="Date Of Birth"
-                            onChange={handleDateChange}
-                            format={dateFormat}
-                            value={selectedDateOfBirth}
-                          />
-                        </Form.Item>
-                      </Col>
-
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* gender */}
-                        <Form.Item
-                          label="Gender"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="gender"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your Gender!"
-                            }
-                          ]}
-                        >
-                          <Radio.Group onChange={onGenderChange} value={gender}>
-                            <Radio value="male">Male</Radio>
-                            <Radio value="female">Female</Radio>
-                          </Radio.Group>
+                          <Row
+                            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                            justify="space-between"
+                          >
+                            <Col span={12}>
+                              {/* dateOfBirth */}
+                              <Form.Item
+                                name="dateOfBirth"
+                                // label="জন্ম তারিখ / Date of Birth"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please input your Date Of Birth!"
+                                  }
+                                ]}
+                              >
+                                <DatePicker
+                                  style={{ width: "100%", padding: "6px" }}
+                                  className={`form-control`}
+                                  placeholder="Date Of Birth"
+                                  onChange={handleDateChange}
+                                  format={dateFormat}
+                                  value={selectedDateOfBirth}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* gender */}
+                              <Form.Item
+                                // label="লিঙ্গ / Gender"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                name="gender"
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please input your Gender!"
+                                  }
+                                ]}
+                              >
+                                <Radio.Group
+                                  onChange={onGenderChange}
+                                  value={gender}
+                                >
+                                  <Radio value="male">পুরুষ / Male</Radio>
+                                  <Radio value="female">মহিলা / Female</Radio>
+                                </Radio.Group>
+                              </Form.Item>
+                            </Col>
+                          </Row>
                         </Form.Item>
                       </Col>
 
@@ -1045,7 +1109,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         {/* contactNumber */}
                         <Form.Item
                           name="fatherName"
-                          label="Father Name"
+                          label="পিতার নাম / Father's Name"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1053,13 +1117,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your Father Name!"
+                              message: "Please input your Father's Name!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="Father Name"
+                            placeholder="Father's Name"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1077,7 +1141,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         {/* motherName */}
                         <Form.Item
                           name="motherName"
-                          label="Mother Name"
+                          label="মাতার নাম / Mother's Name"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1085,13 +1149,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your Mother Name!"
+                              message: "Please input your Mother's Name!"
                             }
                           ]}
                         >
                           <Input
                             type="text"
-                            placeholder="Mother Name"
+                            placeholder="Mother's Name"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
@@ -1110,7 +1174,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         {/* spouseName */}
                         <Form.Item
                           name="spouseName"
-                          label="Spouse Name"
+                          label="স্বামী/স্ত্রীর নাম / Spouse's Name"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1118,12 +1182,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         >
                           <Input
                             type="text"
-                            placeholder="Spouse Name"
+                            placeholder="Spouse's Name"
                             className={`form-control`}
                             style={{ padding: "6px" }}
                           />
                         </Form.Item>
                       </Col>
+
                       <Col
                         xs={24}
                         sm={24}
@@ -1133,10 +1198,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         xxl={24}
                         className="gutter-row"
                       >
-                        {/* connectionAddress */}
                         <Form.Item
-                          name="connectionAddress"
-                          label="Connection Address"
+                          label="সংযোগ স্থানের ঠিকানা / Connectivity Address :"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1144,16 +1207,99 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your Connection Address!"
+                              message: "Please input your Connectivity Address!"
                             }
                           ]}
                         >
-                          <Input
-                            type="text"
-                            placeholder="Connection Address"
-                            className={`form-control`}
-                            style={{ padding: "6px" }}
-                          />
+                          <Row
+                            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                            justify="space-between"
+                          >
+                            <Col span={12}>
+                              <Form.Item
+                                name="flatNo"
+                                label="Flat/Level:"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="Flat/Level"
+                                  className="form-control"
+                                  name="flatNo"
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                name="houseNo"
+                                label="House No:"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please input your House No!"
+                                  }
+                                ]}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="House No"
+                                  className="form-control"
+                                  name="houseNo"
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                name="roadNo"
+                                label="Road No:"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="Road No"
+                                  className="form-control"
+                                  name="roadNo"
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                name="area"
+                                label="Area:"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                // rules={[
+                                //   {
+                                //     required: true,
+                                //     message: "Please input your Area!"
+                                //   }
+                                // ]}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="Area"
+                                  className="form-control"
+                                  name="area"
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
                         </Form.Item>
                       </Col>
                     </Row>
@@ -1189,37 +1335,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         xxl={24}
                         className="gutter-row"
                       >
-                        {/* flatNo */}
                         <Form.Item
-                          name="flatNo"
-                          label="Flat No"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Flat No"
-                            className={`form-control`}
-                            name="flatNo"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* houseNo */}
-                        <Form.Item
-                          name="houseNo"
-                          label="House No"
+                          label="Connection Address"
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
@@ -1227,17 +1344,167 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please input your House No!"
+                              message: "Please input your Connection Address!"
                             }
                           ]}
                         >
-                          <Input
-                            type="text"
-                            placeholder="House No"
-                            className={`form-control`}
-                            name="houseNo"
-                            style={{ padding: "6px" }}
-                          />
+                          <Row
+                            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                            justify="space-between"
+                          >
+                            <Col span={12}>
+                              {/* permanentAddress */}
+                              <Form.Item
+                                name="connectionAddress"
+                                label="Detail Address"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please input your Detail Address!"
+                                  }
+                                ]}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="Detail Address"
+                                  className={`form-control`}
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* connectionAddressDivisionId */}
+                              <Form.Item
+                                label="বিভাগ / Division"
+                                style={{
+                                  marginBottom: 0,
+                                  marginRight: lg ? "10px" : "0px",
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please select Division!"
+                                  }
+                                ]}
+                                name="connectionAddressDivisionId"
+                              >
+                                <Space
+                                  style={{ width: "100%" }}
+                                  direction="vertical"
+                                >
+                                  <Select
+                                    allowClear
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "start"
+                                    }}
+                                    placeholder="Division"
+                                    onChange={handleDivisionChange}
+                                    options={divisions}
+                                    value={selectedDivision}
+                                  />
+                                </Space>
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* connectionAddressDistrictId */}
+                              <Form.Item
+                                label="জেলা / District"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please select District!"
+                                  }
+                                ]}
+                                name="connectionAddressDistrictId"
+                              >
+                                <Space
+                                  style={{ width: "100%" }}
+                                  direction="vertical"
+                                >
+                                  <Select
+                                    allowClear
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "start"
+                                    }}
+                                    placeholder="District"
+                                    onChange={handleDistrictChange}
+                                    options={districts}
+                                    value={selectedDistrict}
+                                  />
+                                </Space>
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* connectionAddressUpazillaId */}
+                              <Form.Item
+                                label="উপজেলা / Upazilla"
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please select Upazilla!"
+                                  }
+                                ]}
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                name="connectionAddressUpazillaId"
+                              >
+                                <Space
+                                  style={{ width: "100%" }}
+                                  direction="vertical"
+                                >
+                                  <Select
+                                    allowClear
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "start"
+                                    }}
+                                    placeholder="Upazilla"
+                                    onChange={handleUpazillaChange}
+                                    options={upazillas}
+                                    value={selectedUpazilla}
+                                  />
+                                </Space>
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* connectionAddressPostCode */}
+                              <Form.Item
+                                name="connectionAddressPostCode"
+                                label="পোস্ট কোড / Post Code"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      "Please input your connectionAddressPostCode!"
+                                  }
+                                ]}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="Post Code"
+                                  className={`form-control`}
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
                         </Form.Item>
                       </Col>
 
@@ -1250,212 +1517,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         xxl={24}
                         className="gutter-row"
                       >
-                        {/* roadNo */}
                         <Form.Item
-                          name="roadNo"
-                          label="Road No"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Road No"
-                            className={`form-control`}
-                            name="roadNo"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* area */}
-                        <Form.Item
-                          name="area"
-                          label="Area"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your Area!"
-                            }
-                          ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Area"
-                            className={`form-control`}
-                            name="area"
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* connectionAddressDivisionId */}
-                        <Form.Item
-                          label="Connection Address (Division)"
-                          style={{
-                            marginBottom: 0,
-                            marginRight: lg ? "10px" : "0px",
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please select Division!"
-                            }
-                          ]}
-                          name="connectionAddressDivisionId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select Division"
-                              onChange={handleDivisionChange}
-                              options={divisions}
-                              value={selectedDivision}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* connectionAddressDistrictId */}
-                        <Form.Item
-                          label="Connection Address (District)"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please select District!"
-                            }
-                          ]}
-                          name="connectionAddressDistrictId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select District"
-                              onChange={handleDistrictChange}
-                              options={districts}
-                              value={selectedDistrict}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* connectionAddressUpazillaId */}
-                        <Form.Item
-                          label="Connection Address (Upazilla)"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please select Upazilla!"
-                            }
-                          ]}
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          name="connectionAddressUpazillaId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select Upazilla"
-                              onChange={handleUpazillaChange}
-                              options={upazillas}
-                              value={selectedUpazilla}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* connectionAddressPostCode */}
-                        <Form.Item
-                          name="connectionAddressPostCode"
-                          label="Connection Address (PostCode)"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                "Please input your connectionAddressPostCode!"
-                            }
-                          ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Connection Address (PostCode)"
-                            className={`form-control`}
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* permanentAddress */}
-                        <Form.Item
-                          name="permanentAddress"
                           label="Permanent Address"
                           style={{
                             marginBottom: 0,
@@ -1468,49 +1530,169 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                             }
                           ]}
                         >
-                          <Input
-                            type="text"
-                            placeholder="Permanent Address"
-                            className={`form-control`}
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* permanentAddressDivisionId */}
-                        <Form.Item
-                          label="Permanent Address (Division)"
-                          style={{
-                            marginBottom: 0,
-                            marginRight: lg ? "10px" : "0px",
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please select Division!"
-                            }
-                          ]}
-                          name="permanentAddressDivisionId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select Division"
-                              onChange={handleParmanentAddressDivisionChange}
-                              options={parmanentAddressDivisions}
-                              value={selectedParmanentAddressDivision}
-                            />
-                          </Space>
+                          <Row
+                            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                            justify="space-between"
+                          >
+                            <Col span={12}>
+                              {/* permanentAddress */}
+                              <Form.Item
+                                name="permanentAddress"
+                                label="Detail Address"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please input your Detail Address!"
+                                  }
+                                ]}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="Detail Address"
+                                  className={`form-control`}
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* permanentAddressDivisionId */}
+                              <Form.Item
+                                label="বিভাগ / Division"
+                                style={{
+                                  marginBottom: 0,
+                                  marginRight: lg ? "10px" : "0px",
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please select Division!"
+                                  }
+                                ]}
+                                name="permanentAddressDivisionId"
+                              >
+                                <Space
+                                  style={{ width: "100%" }}
+                                  direction="vertical"
+                                >
+                                  <Select
+                                    allowClear
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "start"
+                                    }}
+                                    placeholder="Division"
+                                    onChange={
+                                      handleParmanentAddressDivisionChange
+                                    }
+                                    options={parmanentAddressDivisions}
+                                    value={selectedParmanentAddressDivision}
+                                  />
+                                </Space>
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* permanentAddressDistrictId */}
+                              <Form.Item
+                                label="জেলা / District"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please select District!"
+                                  }
+                                ]}
+                                name="permanentAddressDistrictId"
+                              >
+                                <Space
+                                  style={{ width: "100%" }}
+                                  direction="vertical"
+                                >
+                                  <Select
+                                    allowClear
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "start"
+                                    }}
+                                    placeholder="District"
+                                    onChange={
+                                      handleParmanentAddressDistrictChange
+                                    }
+                                    options={parmanentAddressDistricts}
+                                    value={selectedParmanentAddressDistrict}
+                                  />
+                                </Space>
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* permanentAddressUpazillaId */}
+                              <Form.Item
+                                label="উপজেলা / Upazilla"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please select Upazilla!"
+                                  }
+                                ]}
+                                name="permanentAddressUpazillaId"
+                              >
+                                <Space
+                                  style={{ width: "100%" }}
+                                  direction="vertical"
+                                >
+                                  <Select
+                                    allowClear
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "start"
+                                    }}
+                                    placeholder="Please select Upazilla"
+                                    onChange={
+                                      handleParmanentAddressUpazillaChange
+                                    }
+                                    options={parmanentAddressUpazillas}
+                                    value={selectedParmanentAddressUpazilla}
+                                  />
+                                </Space>
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              {/* permanentAddressPostCode */}
+                              <Form.Item
+                                name="permanentAddressPostCode"
+                                label="পোস্ট কোড / Post Code"
+                                style={{
+                                  marginBottom: 0,
+                                  fontWeight: "bold"
+                                }}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      "Please input your Permanent Address PostCode!"
+                                  }
+                                ]}
+                              >
+                                <Input
+                                  type="text"
+                                  placeholder="PostCode"
+                                  className={`form-control`}
+                                  style={{ padding: "6px" }}
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
                         </Form.Item>
                       </Col>
                     </Row>
@@ -1537,112 +1719,6 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                       gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                       justify="space-between"
                     >
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* permanentAddressDistrictId */}
-                        <Form.Item
-                          label="Permanent Address (District)"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please select District!"
-                            }
-                          ]}
-                          name="permanentAddressDistrictId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select District"
-                              onChange={handleParmanentAddressDistrictChange}
-                              options={parmanentAddressDistricts}
-                              value={selectedParmanentAddressDistrict}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* permanentAddressUpazillaId */}
-                        <Form.Item
-                          label="Permanent Address (Upazilla)"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please select Upazilla!"
-                            }
-                          ]}
-                          name="permanentAddressUpazillaId"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select Upazilla"
-                              onChange={handleParmanentAddressUpazillaChange}
-                              options={parmanentAddressUpazillas}
-                              value={selectedParmanentAddressUpazilla}
-                            />
-                          </Space>
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
-                        className="gutter-row"
-                      >
-                        {/* permanentAddressPostCode */}
-                        <Form.Item
-                          name="permanentAddressPostCode"
-                          label="Permanent Address (PostCode)"
-                          style={{
-                            marginBottom: 0,
-                            fontWeight: "bold"
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message:
-                                "Please input your Permanent Address PostCode!"
-                            }
-                          ]}
-                        >
-                          <Input
-                            type="text"
-                            placeholder="Permanent Address (PostCode)"
-                            className={`form-control`}
-                            style={{ padding: "6px" }}
-                          />
-                        </Form.Item>
-                      </Col>
-
                       <Col
                         xs={24}
                         sm={24}

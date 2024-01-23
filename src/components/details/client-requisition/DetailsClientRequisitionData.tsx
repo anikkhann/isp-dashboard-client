@@ -271,7 +271,7 @@ const DetailsClientRequisitionData = ({ item }: PropData) => {
                 <img
                   alt={item.attachment}
                   style={{ width: "100%" }}
-                  src={`${url}/public/downloadFile/${item.attachment}/client-card-requisition`}
+                  src={`${url}/public/downloadFile/${item.attachment}/zone-card-requisition`}
                 />
               </Modal>
 

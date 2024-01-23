@@ -1,4 +1,10 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  BarChartOutlined,
+  CreditCardOutlined,
+  BankOutlined,
+  FormOutlined
+} from "@ant-design/icons";
 
 const topUpRoutes = [
   {
@@ -13,7 +19,7 @@ const topUpRoutes = [
     key: "/admin/top-up",
     label: "Top Up Dashboard",
     path: "/admin/top-up",
-    icon: <SettingOutlined />,
+    icon: <BarChartOutlined />,
     permission: "topUp.dashboard"
   },
 
@@ -21,21 +27,21 @@ const topUpRoutes = [
     key: "/admin/top-up/agent-top-up",
     label: "Agent Topup",
     path: "/admin/top-up/agent-top-up",
-    icon: <SettingOutlined />,
+    icon: <CreditCardOutlined />,
     permission: "agentTopUp.list"
   },
   {
     key: "/admin/top-up/zone-top-up",
     label: "Zone Topup",
     path: "/admin/top-up/zone-top-up",
-    icon: <SettingOutlined />,
+    icon: <BankOutlined />,
     permission: "zoneTopUp.list"
   },
   {
     key: "/admin/top-up/zone-top-up-request",
     label: "Zone Topup Request",
     path: "/admin/top-up/zone-top-up-request",
-    icon: <SettingOutlined />,
+    icon: <FormOutlined />,
     permission: "zoneTopUpRequest.list"
   }
 ];

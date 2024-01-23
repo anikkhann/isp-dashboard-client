@@ -1,4 +1,13 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  SettingOutlined,
+  BarChartOutlined,
+  ExclamationCircleOutlined,
+  CheckSquareOutlined,
+  BranchesOutlined,
+  MessageOutlined
+  // UserWarningOutlined
+} from "@ant-design/icons";
 
 const complaintRoutes = [
   {
@@ -13,7 +22,7 @@ const complaintRoutes = [
     key: "/admin/complaint",
     label: "Complaint Dashboard",
     path: "/admin/complaint",
-    icon: <SettingOutlined />,
+    icon: <BarChartOutlined />,
     permission: "complaint.dashboard"
   },
 
@@ -21,7 +30,7 @@ const complaintRoutes = [
     key: "/admin/complaint/complain-type",
     label: "Complain Type",
     path: "/admin/complaint/complain-type",
-    icon: <SettingOutlined />,
+    icon: <ExclamationCircleOutlined />,
     permission: "complainType.list"
   },
 
@@ -29,21 +38,21 @@ const complaintRoutes = [
     key: "/admin/complaint/checklist",
     label: "Check List",
     path: "/admin/complaint/checklist",
-    icon: <SettingOutlined />,
+    icon: <CheckSquareOutlined />,
     permission: "checklist.list"
   },
   {
     key: "/admin/complaint/root-cause",
     label: "Root Cause",
     path: "/admin/complaint/root-cause",
-    icon: <SettingOutlined />,
+    icon: <BranchesOutlined />,
     permission: "rootCause.list"
   },
   {
     key: "/admin/complaint/customer-ticket",
     label: "Customer Ticket",
     path: "/admin/complaint/customer-ticket",
-    icon: <SettingOutlined />,
+    icon: <MessageOutlined />,
     permission: "customerTicket.list"
   },
   {

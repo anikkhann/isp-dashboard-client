@@ -58,7 +58,7 @@ const NewCareCustomerSafOtp = ({ id }: any) => {
               title: <Link href="/admin/customer-care">Customer Care</Link>
             },
             {
-              title: "Customer SAF OTP Verification"
+              title: "Customer SAF Verification"
             }
           ]}
         />
@@ -80,7 +80,7 @@ const NewCareCustomerSafOtp = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Customer SAF OTP Verification
+            Customer SAF Verification
           </h1>
         </div>
 
