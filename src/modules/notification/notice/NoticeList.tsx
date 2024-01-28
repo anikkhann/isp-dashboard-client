@@ -692,14 +692,14 @@ const NoticeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "noticeType",
+      title: "Notice Type",
       dataIndex: "noticeType",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "message",
+      title: "Message",
       dataIndex: "message",
       sorter: true,
       width: "20%",
@@ -731,7 +731,7 @@ const NoticeList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("smsGateway.update", "") ? (
+              {ability.can("notice.update", "") ? (
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/notification/notice/${record.id}/edit`}>
@@ -741,7 +741,7 @@ const NoticeList: React.FC = () => {
                 </Tooltip>
               ) : null}
 
-              {ability.can("smsGateway.view", "") ? (
+              {ability.can("notice.view", "") ? (
                 <Tooltip title="view" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/notification/notice/${record.id}`}>
@@ -823,7 +823,7 @@ const NoticeList: React.FC = () => {
             title="Notice Board List"
             hasLink={true}
             addLink="/admin/notification/notice/create"
-            permission="smsGateway.create"
+            permission="notice.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

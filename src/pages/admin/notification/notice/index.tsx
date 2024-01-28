@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("subscription.list", "") ? <NoticeList /> : <Forbidden />}
+      {ability.can("notice.list", "") ? <NoticeList /> : <Forbidden />}
     </>
   );
 };

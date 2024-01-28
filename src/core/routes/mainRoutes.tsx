@@ -1,4 +1,20 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  UsergroupAddOutlined,
+  EnvironmentOutlined,
+  ShopOutlined,
+  MobileOutlined,
+  BoxPlotOutlined,
+  UserOutlined,
+  ExclamationCircleOutlined,
+  TeamOutlined,
+  DollarOutlined,
+  CustomerServiceOutlined,
+  NotificationOutlined,
+  CreditCardOutlined,
+  AccountBookOutlined,
+  WifiOutlined
+} from "@ant-design/icons";
 // import { GrUserSettings } from "react-icons/all";
 
 const mainRoutes = [
@@ -14,7 +30,7 @@ const mainRoutes = [
     key: "/admin/client",
     label: "Client Management",
     path: "/admin/client",
-    icon: <SettingOutlined />,
+    icon: <UsergroupAddOutlined />,
 
     permission: "client.dashboard"
   },
@@ -23,7 +39,7 @@ const mainRoutes = [
     key: "/admin/zone",
     label: "Zone In Charge",
     path: "/admin/zone",
-    icon: <SettingOutlined />,
+    icon: <EnvironmentOutlined />,
     permission: "zone.dashboard"
   },
 
@@ -31,7 +47,7 @@ const mainRoutes = [
     key: "/admin/sub-zone",
     label: "Sub Zone In Charge",
     path: "/admin/sub-zone",
-    icon: <SettingOutlined />,
+    icon: <EnvironmentOutlined />,
     permission: "subZone.dashboard"
   },
 
@@ -39,7 +55,7 @@ const mainRoutes = [
     key: "/admin/retail",
     label: "Retail In Charge",
     path: "/admin/retail",
-    icon: <SettingOutlined />,
+    icon: <ShopOutlined />,
     permission: "retail.dashboard"
   },
 
@@ -47,7 +63,7 @@ const mainRoutes = [
     key: "/admin/device",
     label: "Device Management",
     path: "/admin/device",
-    icon: <SettingOutlined />,
+    icon: <MobileOutlined />,
     permission: "device.dashboard"
   },
 
@@ -55,7 +71,7 @@ const mainRoutes = [
     key: "/admin/package",
     label: "Package Management",
     path: "/admin/package",
-    icon: <SettingOutlined />,
+    icon: <BoxPlotOutlined />,
     permission: "package.dashboard"
   },
 
@@ -63,7 +79,7 @@ const mainRoutes = [
     key: "/admin/customer",
     label: "Customer Management",
     path: "/admin/customer",
-    icon: <SettingOutlined />,
+    icon: <UserOutlined />,
     permission: "customer.dashboard"
   },
 
@@ -71,7 +87,7 @@ const mainRoutes = [
     key: "/admin/complaint",
     label: "Complaint Management",
     path: "/admin/complaint",
-    icon: <SettingOutlined />,
+    icon: <ExclamationCircleOutlined />,
     permission: "complaint.dashboard"
   },
 
@@ -79,7 +95,7 @@ const mainRoutes = [
     key: "/admin/user",
     label: "Users Management",
     path: "/admin/user",
-    icon: <SettingOutlined />,
+    icon: <TeamOutlined />,
     permission: "user.dashboard"
   },
 
@@ -87,7 +103,7 @@ const mainRoutes = [
     key: "/admin/top-up",
     label: "Top-Up Management",
     path: "/admin/top-up",
-    icon: <SettingOutlined />,
+    icon: <DollarOutlined />,
     permission: "topUp.dashboard"
   },
 
@@ -95,7 +111,7 @@ const mainRoutes = [
     key: "/admin/customer-care",
     label: "Customer Care",
     path: "/admin/customer-care",
-    icon: <SettingOutlined />,
+    icon: <CustomerServiceOutlined />,
     permission: "customerCare.dashboard"
   },
 
@@ -103,7 +119,7 @@ const mainRoutes = [
     key: "/admin/notification",
     label: "Notification Management",
     path: "/admin/notification",
-    icon: <SettingOutlined />,
+    icon: <NotificationOutlined />,
     permission: "notification.dashboard"
   },
 
@@ -111,7 +127,7 @@ const mainRoutes = [
     key: "/admin/payment",
     label: "Payment Gateway",
     path: "/admin/payment",
-    icon: <SettingOutlined />,
+    icon: <CreditCardOutlined />,
     permission: "payment.dashboard"
   },
 
@@ -119,7 +135,7 @@ const mainRoutes = [
     key: "/admin/accounting",
     label: "Accounting & Billing",
     path: "/admin/accounting",
-    icon: <SettingOutlined />,
+    icon: <AccountBookOutlined />,
     permission: "accounting.dashboard"
   },
 
@@ -127,7 +143,7 @@ const mainRoutes = [
     key: "/admin/hotspot",
     label: "Wi-Fi Hotspot",
     path: "/admin/hotspot",
-    icon: <SettingOutlined />,
+    icon: <WifiOutlined />,
     permission: "hotspot.dashboard"
   }
 ];

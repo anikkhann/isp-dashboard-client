@@ -131,7 +131,7 @@ const DetailsCustomerCare = ({ id }: any) => {
         }
       }
     );
-    console.log("data", data);
+
     setSafData(data);
   };
 
@@ -275,31 +275,35 @@ const DetailsCustomerCare = ({ id }: any) => {
         >
           {item && (
             <Space wrap>
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#EA1179",
-                  color: "#ffffff"
-                }}
-                className="btn btn-primary hover:bg-accent"
-              >
-                <Link href={`/admin/customer-care/${id}/ticket`}>
-                  Create Ticket
-                </Link>
-              </Button>
+              {ability.can("customerCare.createTicket", "") ? (
+                <Button
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "20px",
+                    backgroundColor: "#EA1179",
+                    color: "#ffffff"
+                  }}
+                  className="btn btn-primary hover:bg-accent"
+                >
+                  <Link href={`/admin/customer-care/${id}/ticket`}>
+                    Create Ticket
+                  </Link>
+                </Button>
+              ) : null}
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#241468",
-                  color: "#ffffff"
-                }}
-                onClick={handlePrint}
-              >
-                Download SAF Form
-              </Button>
+              {ability.can("customerCare.downloadSafForm", "") ? (
+                <Button
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "20px",
+                    backgroundColor: "#241468",
+                    color: "#ffffff"
+                  }}
+                  onClick={handlePrint}
+                >
+                  Download SAF Form
+                </Button>
+              ) : null}
 
               <div>
                 <div style={{ display: "none" }}>
@@ -312,17 +316,18 @@ const DetailsCustomerCare = ({ id }: any) => {
                   )}
                 </div>
               </div>
-
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#0B666A",
-                  color: "#ffffff"
-                }}
-              >
-                Live Bandwidth
-              </Button>
+              {ability.can("customerCare.downloadSafForm", "") ? (
+                <Button
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "20px",
+                    backgroundColor: "#0B666A",
+                    color: "#ffffff"
+                  }}
+                >
+                  Live Bandwidth
+                </Button>
+              ) : null}
 
               {/* <Button
                 style={{

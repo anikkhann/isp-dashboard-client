@@ -226,6 +226,18 @@ const tagsList = [
   {
     label: "Package Migration",
     value: "packageMigration"
+  },
+  {
+    label: "createTicket",
+    value: "createTicket"
+  },
+  {
+    label: "downloadSafForm",
+    value: "downloadSafForm"
+  },
+  {
+    label: "liveBandwidth",
+    value: "liveBandwidth"
   }
 ];
 

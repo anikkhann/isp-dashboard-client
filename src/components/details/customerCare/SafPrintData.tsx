@@ -14,23 +14,23 @@ const SafPrintData = ({ componentRef, item, safData }: PropData) => {
   return (
     <>
       <div ref={componentRef}>
-        <h1
+        {/* <h1
           style={{
             color: "#F15F22"
           }}
         >
-          {safData.body.message}
-        </h1>
+          {safData.body.timestamp}
+        </h1> */}
 
         <div className="bg-gray-100 p-4">
           <div className="max-w-4xl mx-auto bg-white shadow-lg p-4">
             {/* <!-- Company Name --> */}
             <div className="text-center border-b-4 pb-2">
-              <h1 className="text-2xl font-bold">Maestro Solutions Ltd.</h1>
+              <h1 className="text-2xl font-bold">{item.client?.name}</h1>
               <div className="text-center">
                 <Divider plain style={{ borderTopColor: "black" }}></Divider>
                 {/* <p>_</p> */}
-                <p>27/1/B, Alamin Apon Heights, Road No. 3, Dhaka 1207</p>
+                <p>{item.client?.address}</p>
                 <Divider plain style={{ borderTopColor: "black" }}></Divider>
                 <h1 className="text-xl font-bold">User Registration Form</h1>
                 <Divider plain style={{ borderTopColor: "black" }}></Divider>
@@ -40,10 +40,12 @@ const SafPrintData = ({ componentRef, item, safData }: PropData) => {
             {/* <!-- Company Info and Logo --> */}
             <div className="flex justify-between items-center py-2">
               <div>
-                <p>Habiba Jahan</p>
-                <p>Customer ID: 123-456-7890</p>
-                <p>Customer Number: 123-456-7890</p>
-                <p>NID/PP.No/IdNo: 123456</p>
+                <p>{safData.body.body.customer?.name}</p>
+                <p>Customer ID: {safData.body.body.customer?.customerId}</p>
+                <p>
+                  Customer Number: {safData.body.body.customer?.contactNumber}
+                </p>
+                <p>NID/PP.No/IdNo: {safData.body.body.customer?.identityNo}</p>
               </div>
               <img src="path_to_logo.png" alt="NO PHOTO" className="h-20" />
             </div>
@@ -54,18 +56,18 @@ const SafPrintData = ({ componentRef, item, safData }: PropData) => {
             {/* <!-- Owner Information --> */}
             <div className="text-center py-2">
               <p>Type Of Customer: Individual</p>
-              <p>Fathers Name: aaaaa</p>
-              <p>Mothers Name: a</p>
-              <p>Spouses Name: a</p>
-              <p>Email: a</p>
-              <p>Contact Person: a</p>
-              <p>Contact Number: a</p>
-              <p>Alternate Mobile No: a</p>
-              <p>Date of Birth: a</p>
+              <p>Fathers Name: {safData.body.body.fatherName}</p>
+              <p>Mothers Name: {safData.body.body.motherName}</p>
+              <p>Spouses Name: {safData.body.body.spouseName}</p>
+              <p>Email: {safData.body.body.email}</p>
+              <p>Contact Person: {safData.body.body.contactPerson}</p>
+              <p>Contact Number: {safData.body.body.mobileNumber}</p>
+              <p>Alternate Mobile No: {safData.body.body.phoneNumber}</p>
+              <p>Date of Birth: {safData.body.body.dateOfBirth}</p>
               <p>Gender: a</p>
-              <p>Occupation: a</p>
-              <p>Connectivity Address: a</p>
-              <p>Permanent Address: a</p>
+              <p>Occupation: {safData.body.body.occupation}</p>
+              <p>Connectivity Address: {safData.body.body.connectionAddress}</p>
+              <p>Permanent Address: {safData.body.body.permanentAddress}</p>
             </div>
 
             {/* <!-- Signature Lines --> */}
