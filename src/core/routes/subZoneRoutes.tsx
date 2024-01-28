@@ -35,14 +35,14 @@ const subZoneRoutes = [
     label: "Daily Task Assign to Reseller",
     path: "/admin/sub-zone/daily-task",
     icon: <ScheduleOutlined />,
-    permission: "dashboard.view"
+    permission: "dailyTask.list"
   },
   {
     key: "/admin/sub-zone/daily-task-report",
     label: "Daily Task Report to Reseller",
     path: "/admin/sub-zone/daily-task-report",
     icon: <FileTextOutlined />,
-    permission: "dashboard.view"
+    permission: "dailyTaskReport.list"
   }
 ];
 

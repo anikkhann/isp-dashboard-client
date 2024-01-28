@@ -201,18 +201,17 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                   {/* <Divider type="vertical" orientation="left" plain> */}
                   <p>
                     <span className="font-bold text-base capitalize">
-                      {replyData.insertedBy.username}
+                      {replyData.created_by}
                     </span>
                     <span className="mx-2">-</span>
                     <span className="mx-2">
-                      {/* createdOn */}
-                      {formatDistanceToNow(new Date(replyData.createdOn), {
+                      {formatDistanceToNow(new Date(replyData.created_on), {
                         addSuffix: true
                       })}
-                      - {new Date(replyData.createdOn).toDateString()}
+                      - {new Date(replyData.created_on).toDateString()}
                     </span>
                     <span className="mx-2">
-                      {new Date(replyData.createdOn).toLocaleTimeString()}
+                      {new Date(replyData.created_on).toLocaleTimeString()}
                     </span>
 
                     {replyData.attachment && (

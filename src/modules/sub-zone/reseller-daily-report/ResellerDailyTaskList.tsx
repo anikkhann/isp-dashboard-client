@@ -341,35 +341,35 @@ const ResellerDailyTaskList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "oltPower",
+      title: "OLT Power",
       dataIndex: "oltPower",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "bwCongestionFrom",
+      title: "BW Congestion From",
       dataIndex: "bwCongestionFrom",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "bwCongestionTo",
+      title: "BW Congestion To",
       dataIndex: "bwCongestionTo",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "gamingLatency",
+      title: "Gaming Latency",
       dataIndex: "gamingLatency",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "illegalHotspotDetails",
+      title: "Illegal Hotspot Details",
       dataIndex: "illegalHotspotDetails",
       sorter: true,
       width: "20%",
@@ -377,7 +377,7 @@ const ResellerDailyTaskList: React.FC = () => {
     },
 
     {
-      title: "illegalHotspot",
+      title: "Illegal Hotspot",
       dataIndex: "illegalHotspot",
       sorter: true,
       render: (illegalHotspot: any) => {
@@ -547,7 +547,7 @@ const ResellerDailyTaskList: React.FC = () => {
             title="Daily Task List"
             hasLink={true}
             addLink="/admin/sub-zone/daily-task/create"
-            permission="subZone.create"
+            permission="dailyTask.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

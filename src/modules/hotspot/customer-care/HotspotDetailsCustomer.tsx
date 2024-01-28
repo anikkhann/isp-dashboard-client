@@ -156,7 +156,7 @@ const HotspotDetailsCustomer = ({ id }: any) => {
 
   useEffect(() => {
     if (data) {
-      // console.log("data", data);
+      //
     }
   }, [data]);
 

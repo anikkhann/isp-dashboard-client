@@ -110,7 +110,7 @@ const notificationRoutes = [
     label: "Notice Borard",
     path: "/admin/notification/notice",
     icon: <SettingOutlined />,
-    permission: "dashboard.view"
+    permission: "notice.list"
   }
 ];
 

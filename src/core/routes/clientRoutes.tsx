@@ -47,7 +47,7 @@ const accountRoutes = [
     label: "Troubleshoot & Survey",
     path: "/admin/client/survey",
     icon: <ToolOutlined />,
-    permission: "subscription.list"
+    permission: "survey.list"
   },
 
   {
@@ -55,7 +55,7 @@ const accountRoutes = [
     label: "Survey Report",
     path: "/admin/client/survey-report",
     icon: <FileDoneOutlined />,
-    permission: "subscription.list"
+    permission: "surveyReport.list"
   }
 ];
 
