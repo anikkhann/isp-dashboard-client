@@ -576,7 +576,8 @@ const DurjoyRequisitionList: React.FC = () => {
         return (
           <div className="flex flex-row">
             <Space size="middle" align="center">
-              {ability.can("durjoyRequisition.approve", "") ? (
+              {ability.can("durjoyRequisition.approve", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Approve" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -592,7 +593,8 @@ const DurjoyRequisitionList: React.FC = () => {
                 </Tooltip>
               ) : null}
 
-              {ability.can("durjoyRequisition.cancel", "") ? (
+              {ability.can("durjoyRequisition.cancel", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -607,7 +609,8 @@ const DurjoyRequisitionList: React.FC = () => {
                   </Space>
                 </Tooltip>
               ) : null}
-              {ability.can("durjoyRequisition.reject", "") ? (
+              {ability.can("durjoyRequisition.reject", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Reject" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link
@@ -645,7 +648,10 @@ const DurjoyRequisitionList: React.FC = () => {
               record.status === "Approved" ? (
                 <>
                   <Space size="middle" align="center" className="mx-1">
-                    {ability.can("durjoyRequisition.view", "") ? (
+                    {ability.can(
+                      "durjoyRequisition.usedVoucherDownload",
+                      ""
+                    ) ? (
                       <Tooltip
                         title="used Voucher Download"
                         placement="bottomRight"
@@ -726,7 +732,10 @@ const DurjoyRequisitionList: React.FC = () => {
                     ) : null}
                   </Space>
                   <Space size="middle" align="center" className="mx-1">
-                    {ability.can("durjoyRequisition.view", "") ? (
+                    {ability.can(
+                      "durjoyRequisition.unUsedVoucherDownload",
+                      ""
+                    ) ? (
                       <Tooltip
                         title="unused Voucher Download"
                         placement="bottomRight"

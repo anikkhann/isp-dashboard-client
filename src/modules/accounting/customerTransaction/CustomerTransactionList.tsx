@@ -71,8 +71,8 @@ const CustomerTransactionList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("trxDate");
 
   const [users, setUsers] = useState<any[]>([]);
   const [selectUser, setSelectUser] = useState<any>(null);
