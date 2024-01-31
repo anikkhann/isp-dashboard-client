@@ -249,6 +249,14 @@ const tagsList = [
   {
     label: "liveBandwidth",
     value: "liveBandwidth"
+  },
+  {
+    label: "Used Voucher Download",
+    value: "usedVoucherDownload"
+  },
+  {
+    label: "Unused Voucher Download",
+    value: "unUsedVoucherDownload"
   }
 ];
 

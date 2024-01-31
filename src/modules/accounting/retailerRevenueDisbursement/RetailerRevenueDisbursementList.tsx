@@ -13,7 +13,7 @@ import {
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -537,7 +537,17 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       dataIndex: "status",
       sorter: true,
       render: (status: any) => {
-        return <>{status}</>;
+        return (
+          <>
+            {status === "Rejected" ? (
+              <Tag color="red">{status}</Tag>
+            ) : status === "Approved" ? (
+              <Tag color="green">{status}</Tag>
+            ) : (
+              <Tag color="blue">{status}</Tag>
+            )}
+          </>
+        );
       },
       width: "20%",
       align: "center" as AlignType
@@ -605,7 +615,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
             {/* approve */}
             <Space size="middle" align="center" className="mx-1">
               {ability.can("retailerRevenueDisbursement.reject", "") &&
-              authUser?.userType == "retailer" ? (
+              authUser?.userType == "retailer" &&
+              record.status === "Pending" ? (
                 <Tooltip title="Reject" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Link
@@ -626,7 +637,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
               ) : null}
 
               {ability.can("retailerRevenueDisbursement.approve", "") &&
-              authUser?.userType == "retailer" ? (
+              authUser?.userType == "retailer" &&
+              record.status === "Pending" ? (
                 <Tooltip title="Approve" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -644,7 +656,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
 
               {/* cancel */}
               {ability.can("retailerRevenueDisbursement.cancel", "") &&
-              authUser?.userType == "reseller" ? (
+              authUser?.userType == "reseller" &&
+              record.status === "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Button

@@ -598,7 +598,8 @@ const ClientRequisitionList: React.FC = () => {
         return (
           <div className="flex flex-row">
             <Space size="middle" align="center">
-              {ability.can("clientRequisition.approve", "") ? (
+              {ability.can("clientRequisition.approve", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Approve" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -614,7 +615,8 @@ const ClientRequisitionList: React.FC = () => {
                 </Tooltip>
               ) : null}
 
-              {ability.can("clientRequisition.cancel", "") ? (
+              {ability.can("clientRequisition.cancel", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -629,7 +631,8 @@ const ClientRequisitionList: React.FC = () => {
                   </Space>
                 </Tooltip>
               ) : null}
-              {ability.can("clientRequisition.reject", "") ? (
+              {ability.can("clientRequisition.reject", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Reject" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link

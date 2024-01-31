@@ -62,7 +62,7 @@ const HotspotMacUpdateForm = ({ item }: PropData) => {
               text: data.message || "Added successfully",
               icon: "success"
             }).then(() => {
-              router.replace(`/admin/customer-mac-bind-or-remove`);
+              router.replace(`/admin/hotspot/customer-care`);
             });
           }
         })

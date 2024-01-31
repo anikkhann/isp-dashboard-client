@@ -51,8 +51,9 @@ const DetailsAdminTicket = ({ id }: any) => {
 
   const [form] = Form.useForm();
   const [item, setItem] = useState<TicketData | null>(null);
+  console.log(item);
   const [replys, setReplys] = useState<any | []>([]);
-  console.log(replys);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [statusModal, setStatusModal] = useState(false);
@@ -138,7 +139,7 @@ const DetailsAdminTicket = ({ id }: any) => {
   const getAssignedTo = async () => {
     // console.log("selectedCustomer", selectedCustomer)
     const res = await axios.get(
-      `/api/ticket/get-assigned-to/${item?.customerId}`
+      `/api/ticket/get-assigned-to/${item?.partnerId}`
     );
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {

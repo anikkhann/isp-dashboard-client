@@ -232,12 +232,20 @@ const tagsList = [
     value: "createTicket"
   },
   {
-    label: "downloadSafForm",
+    label: "Download SAF Form",
     value: "downloadSafForm"
   },
   {
-    label: "liveBandwidth",
+    label: "Live Bandwidth",
     value: "liveBandwidth"
+  },
+  {
+    label: "Used Voucher Download",
+    value: "usedVoucherDownload"
+  },
+  {
+    label: "Unused Voucher Download",
+    value: "unUsedVoucherDownload"
   }
 ];
 
