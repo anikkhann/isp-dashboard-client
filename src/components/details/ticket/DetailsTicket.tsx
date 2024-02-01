@@ -91,22 +91,32 @@ const DetailsTicket = ({ item, replys }: PropData) => {
             </p>
           </div>
           <div style={{ textAlign: "start" }}>
-            <p>
-              <span className="font-bold">Customer ID:</span>
-              <span className="mx-2">{item.customer?.customerId}</span>
-            </p>
+            {item.ticketCategory === "parent" && (
+              <>
+                <p>
+                  <span className="font-bold">Client Name:</span>
+                  <span className="mx-2">{item.client?.name}</span>
+                </p>
+                <p>
+                  <span className="font-bold">Client Username:</span>
+                  <span className="mx-2">{item.client?.username}</span>
+                </p>
+              </>
+            )}
+
             <p>
               <span className="font-bold">Customer Name:</span>
-              <span className="mx-2">{item.customer.name}</span>
+              <span className="mx-2">{item.customer?.name}</span>
             </p>
             <p>
               <span className="font-bold">Customer Username:</span>
-              <span className="mx-2">{item.customer.username}</span>
+              <span className="mx-2">{item.customer?.username}</span>
             </p>
             <p>
               <span className="font-bold">Owner:</span>
               <span className="mx-2">{item.assignedTo?.name}</span>
             </p>
+
             {item.status == "closed" && (
               <>
                 <p>
@@ -197,22 +207,32 @@ const DetailsTicket = ({ item, replys }: PropData) => {
 
             {replys &&
               replys.map((replyData: any, index: number) => (
-                <div key={index}>
+                <div
+                  key={index}
+                  style={{
+                    borderRadius: "10px",
+                    padding: "5px 5px",
+                    margin: "8px",
+                    border: "1px solid #F15F22"
+                  }}
+                >
                   {/* <Divider type="vertical" orientation="left" plain> */}
                   <p>
                     <span className="font-bold text-base capitalize">
-                      {replyData.insertedBy.username}
+                      {replyData.created_by}
                     </span>
                     <span className="mx-2">-</span>
-                    <span className="mx-2">
-                      {/* createdOn */}
-                      {formatDistanceToNow(new Date(replyData.createdOn), {
-                        addSuffix: true
-                      })}
-                      - {new Date(replyData.createdOn).toDateString()}
+                    <span className="mx-2 font-bold text-base capitalize">
+                      {replyData.subject}
                     </span>
                     <span className="mx-2">
-                      {new Date(replyData.createdOn).toLocaleTimeString()}
+                      {formatDistanceToNow(new Date(replyData.created_on), {
+                        addSuffix: true
+                      })}
+                      - {new Date(replyData.created_on).toDateString()}
+                    </span>
+                    <span className="mx-2">
+                      {new Date(replyData.created_on).toLocaleTimeString()}
                     </span>
 
                     {replyData.attachment && (

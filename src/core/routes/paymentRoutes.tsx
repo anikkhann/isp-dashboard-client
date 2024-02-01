@@ -1,4 +1,9 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  SettingOutlined,
+  BarChartOutlined,
+  CreditCardOutlined
+} from "@ant-design/icons";
 
 const paymentRoutes = [
   {
@@ -13,14 +18,14 @@ const paymentRoutes = [
     key: "/admin/payment",
     label: "Payment Dashboard",
     path: "/admin/payment",
-    icon: <SettingOutlined />,
+    icon: <BarChartOutlined />,
     permission: "payment.dashboard"
   },
   {
     key: "/admin/payment/payment-gateway",
     label: "Payment Gateway",
     path: "/admin/payment/payment-gateway",
-    icon: <SettingOutlined />,
+    icon: <CreditCardOutlined />,
     permission: "paymentGateway.list"
   },
   {

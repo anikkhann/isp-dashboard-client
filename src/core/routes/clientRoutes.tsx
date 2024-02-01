@@ -1,5 +1,12 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
-import { FaUsersCog } from "react-icons/fa";
+import {
+  DashboardOutlined,
+  ToolOutlined,
+  BarChartOutlined,
+  UserOutlined,
+  SolutionOutlined,
+  FileDoneOutlined
+} from "@ant-design/icons";
+// import { FaUsersCog } from "react-icons/fa";
 
 const accountRoutes = [
   {
@@ -14,7 +21,8 @@ const accountRoutes = [
     key: "/admin/client",
     label: "Client Dashboard",
     path: "/admin/client",
-    icon: <FaUsersCog />,
+    // icon: <FaUsersCog />,
+    icon: <BarChartOutlined />,
     permission: "client.dashboard"
   },
 
@@ -22,7 +30,7 @@ const accountRoutes = [
     key: "/admin/client/client",
     label: "Client",
     path: "/admin/client/client",
-    icon: <SettingOutlined />,
+    icon: <UserOutlined />,
     permission: "client.list"
   },
 
@@ -30,7 +38,7 @@ const accountRoutes = [
     key: "/admin/client/subscription",
     label: "Subscription",
     path: "/admin/client/subscription",
-    icon: <SettingOutlined />,
+    icon: <SolutionOutlined />,
     permission: "subscription.list"
   },
 
@@ -38,16 +46,16 @@ const accountRoutes = [
     key: "/admin/client/survey",
     label: "Troubleshoot & Survey",
     path: "/admin/client/survey",
-    icon: <SettingOutlined />,
-    permission: "subscription.list"
+    icon: <ToolOutlined />,
+    permission: "survey.list"
   },
 
   {
     key: "/admin/client/survey-report",
     label: "Survey Report",
     path: "/admin/client/survey-report",
-    icon: <SettingOutlined />,
-    permission: "subscription.list"
+    icon: <FileDoneOutlined />,
+    permission: "surveyReport.list"
   }
 ];
 

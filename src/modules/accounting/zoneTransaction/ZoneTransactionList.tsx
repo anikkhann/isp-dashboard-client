@@ -24,7 +24,7 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { CSVLink } from "react-csv";
-
+import ability from "@/services/guard/ability";
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
 dayjs.extend(weekday);
@@ -72,8 +72,8 @@ const PackageList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("trxDate");
 
   const [users, setUsers] = useState<any[]>([]);
 
@@ -587,8 +587,8 @@ const PackageList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -801,36 +801,38 @@ const PackageList: React.FC = () => {
               </Space>
 
               {/* {ability.can("accountingMyRevenue.download", "") && ( */}
-              <Row justify={"end"}>
-                <Col span={3}>
-                  <CSVLink
-                    data={data}
-                    asyncOnClick={true}
-                    onClick={(event, done) => {
-                      setDownloadLoading(true);
-                      setTimeout(() => {
-                        setDownloadLoading(false);
-                      }, 2000);
-                      done();
-                    }}
-                    className="ant-btn ant-btn-lg"
-                    target="_blank"
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                      marginTop: "25px",
-                      backgroundColor: "#F15F22",
-                      color: "#ffffff",
-                      padding: "10px"
-                    }}
-                    filename={`zone-transaction-${dayjs().format(
-                      "YYYY-MM-DD"
-                    )}.csv`}
-                  >
-                    {downloadLoading ? "Loading..." : "Download"}
-                  </CSVLink>
-                </Col>
-              </Row>
+              {ability.can("zoneTransaction.download", "") && (
+                <Row justify={"end"}>
+                  <Col span={3}>
+                    <CSVLink
+                      data={data}
+                      asyncOnClick={true}
+                      onClick={(event, done) => {
+                        setDownloadLoading(true);
+                        setTimeout(() => {
+                          setDownloadLoading(false);
+                        }, 2000);
+                        done();
+                      }}
+                      className="ant-btn ant-btn-lg"
+                      target="_blank"
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff",
+                        padding: "10px"
+                      }}
+                      filename={`zone-transaction-${dayjs().format(
+                        "YYYY-MM-DD"
+                      )}.csv`}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                    </CSVLink>
+                  </Col>
+                </Row>
+              )}
 
               <Table
                 className={"table-striped-rows"}

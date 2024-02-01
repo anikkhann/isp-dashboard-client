@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -137,51 +137,80 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
     },
     // subject
     {
-      title: "Subject",
-      dataIndex: "subject",
-      sorter: false,
-      render: (subject: any) => {
-        if (!subject) return "-";
-        return <>{subject}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // remarks
-    {
-      title: "Remarks",
-      dataIndex: "remarks",
-      sorter: false,
-      render: (remarks: any) => {
-        if (!remarks) return "-";
-        return <>{remarks}</>;
-      },
-
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // actionBy
-    {
-      title: "Action By",
+      title: "PIN",
       dataIndex: "insertedBy",
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      //   width: "20%",
+      /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Action Date",
-      dataIndex: "createdOn",
+      title: "Package",
+      dataIndex: "insertedBy",
       sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Retailer",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Reference Number",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Used Device",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Used Mac",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Used Time",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      /* width: "20%", */
       align: "center" as AlignType
     }
   ];
@@ -233,8 +262,8 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -242,7 +271,7 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
           )}
 
           <TableCard
-            title="Activity Log List"
+            title=""
             hasLink={false}
             addLink="/admin/device/ip-management/create"
             permission="ip.create"

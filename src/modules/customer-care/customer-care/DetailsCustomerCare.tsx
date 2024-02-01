@@ -23,9 +23,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
 import AppLoader from "@/lib/AppLoader";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-// import { useRouter } from "next/router";
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
+// // import { useRouter } from "next/router";
 import { useReactToPrint } from "react-to-print";
 import SafPrintData from "@/components/details/customerCare/SafPrintData";
 
@@ -41,7 +41,7 @@ const DetailsCustomerCare = ({ id }: any) => {
 
   const [safData, setSafData] = useState<any>(null);
 
-  const MySwal = withReactContent(Swal);
+  // const MySwal = withReactContent(Swal);
   // const router = useRouter();
 
   const componentRef = useRef();
@@ -49,75 +49,75 @@ const DetailsCustomerCare = ({ id }: any) => {
     content: () => componentRef.current as any
   });
 
-  async function handleDisconnect(username: string) {
-    try {
-      const result = await MySwal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#570DF8",
-        cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, Disconnect customer!"
-      });
+  // async function handleDisconnect(username: string) {
+  //   try {
+  //     const result = await MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#570DF8",
+  //       cancelButtonColor: "#EB0808",
+  //       confirmButtonText: "Yes, Disconnect customer!"
+  //     });
 
-      if (result.isConfirmed) {
-        const { data } = await axios.get(
-          `/api/customer/disconnect/${username}`
-        );
-        if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
-            // router.reload();
-          });
-        } else {
-          MySwal.fire("Error!", data.message, "error");
-        }
-      } else if (result.isDismissed) {
-        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
-      }
-    } catch (error: any) {
-      // console.log(error);
-      if (error.response) {
-        MySwal.fire("Error!", error.response.data.message, "error");
-      } else {
-        MySwal.fire("Error!", "Something went wrong", "error");
-      }
-    }
-  }
+  //     if (result.isConfirmed) {
+  //       const { data } = await axios.get(
+  //         `/api/customer/disconnect/${username}`
+  //       );
+  //       if (data.status === 200) {
+  //         MySwal.fire("Success!", data.body.message, "success").then(() => {
+  //           // router.reload();
+  //         });
+  //       } else {
+  //         MySwal.fire("Error!", data.message, "error");
+  //       }
+  //     } else if (result.isDismissed) {
+  //       MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+  //     }
+  //   } catch (error: any) {
+  //     // console.log(error);
+  //     if (error.response) {
+  //       MySwal.fire("Error!", error.response.data.message, "error");
+  //     } else {
+  //       MySwal.fire("Error!", "Something went wrong", "error");
+  //     }
+  //   }
+  // }
 
-  async function handleRenew(id: string) {
-    try {
-      const result = await MySwal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#570DF8",
-        cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, Renew customer!"
-      });
+  // async function handleRenew(id: string) {
+  //   try {
+  //     const result = await MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#570DF8",
+  //       cancelButtonColor: "#EB0808",
+  //       confirmButtonText: "Yes, Renew customer!"
+  //     });
 
-      if (result.isConfirmed) {
-        const { data } = await axios.get(`/api/customer/renew/${id}`);
-        if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
-            // router.reload();
-          });
-        } else {
-          MySwal.fire("Error!", data.message, "error");
-        }
-      } else if (result.isDismissed) {
-        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
-      }
-    } catch (error: any) {
-      // console.log(error);
-      if (error.response) {
-        MySwal.fire("Error!", error.response.data.message, "error");
-      } else {
-        MySwal.fire("Error!", "Something went wrong", "error");
-      }
-    }
-  }
+  //     if (result.isConfirmed) {
+  //       const { data } = await axios.get(`/api/customer/renew/${id}`);
+  //       if (data.status === 200) {
+  //         MySwal.fire("Success!", data.body.message, "success").then(() => {
+  //           // router.reload();
+  //         });
+  //       } else {
+  //         MySwal.fire("Error!", data.message, "error");
+  //       }
+  //     } else if (result.isDismissed) {
+  //       MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+  //     }
+  //   } catch (error: any) {
+  //     // console.log(error);
+  //     if (error.response) {
+  //       MySwal.fire("Error!", error.response.data.message, "error");
+  //     } else {
+  //       MySwal.fire("Error!", "Something went wrong", "error");
+  //     }
+  //   }
+  // }
 
   const fetchSafData = async () => {
     const token = Cookies.get("token");
@@ -131,7 +131,7 @@ const DetailsCustomerCare = ({ id }: any) => {
         }
       }
     );
-    console.log("data", data);
+
     setSafData(data);
   };
 
@@ -275,31 +275,35 @@ const DetailsCustomerCare = ({ id }: any) => {
         >
           {item && (
             <Space wrap>
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#EA1179",
-                  color: "#ffffff"
-                }}
-                className="btn btn-primary hover:bg-accent"
-              >
-                <Link href={`/admin/customer-care/${id}/ticket`}>
-                  Create Ticket
-                </Link>
-              </Button>
+              {ability.can("customerCare.createTicket", "") ? (
+                <Button
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "20px",
+                    backgroundColor: "#EA1179",
+                    color: "#ffffff"
+                  }}
+                  className="btn btn-primary hover:bg-accent"
+                >
+                  <Link href={`/admin/customer-care/${id}/ticket`}>
+                    Create Ticket
+                  </Link>
+                </Button>
+              ) : null}
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#241468",
-                  color: "#ffffff"
-                }}
-                onClick={handlePrint}
-              >
-                SAF Verification
-              </Button>
+              {ability.can("customerCare.downloadSafForm", "") ? (
+                <Button
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "20px",
+                    backgroundColor: "#241468",
+                    color: "#ffffff"
+                  }}
+                  onClick={handlePrint}
+                >
+                  Download SAF Form
+                </Button>
+              ) : null}
 
               <div>
                 <div style={{ display: "none" }}>
@@ -312,19 +316,20 @@ const DetailsCustomerCare = ({ id }: any) => {
                   )}
                 </div>
               </div>
+              {ability.can("customerCare.downloadSafForm", "") ? (
+                <Button
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "20px",
+                    backgroundColor: "#0B666A",
+                    color: "#ffffff"
+                  }}
+                >
+                  Live Bandwidth
+                </Button>
+              ) : null}
 
-              <Button
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "20px",
-                  backgroundColor: "#0B666A",
-                  color: "#ffffff"
-                }}
-              >
-                Live Bandwidth
-              </Button>
-
-              <Button
+              {/* <Button
                 style={{
                   marginLeft: "auto",
                   marginRight: "20px",
@@ -334,9 +339,9 @@ const DetailsCustomerCare = ({ id }: any) => {
                 onClick={() => handleDisconnect(item?.username)}
               >
                 Disconnect
-              </Button>
+              </Button> */}
 
-              <Button
+              {/* <Button
                 style={{
                   marginLeft: "auto",
                   marginRight: "20px",
@@ -345,8 +350,8 @@ const DetailsCustomerCare = ({ id }: any) => {
                 }}
               >
                 <Link href={`/admin/customer-care/${id}/topup`}>Top Up</Link>
-              </Button>
-
+              </Button> */}
+              {/* 
               <Button
                 style={{
                   marginLeft: "auto",
@@ -357,7 +362,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                 onClick={() => handleRenew(item?.id)}
               >
                 Renew
-              </Button>
+              </Button> */}
             </Space>
           )}
         </Space>

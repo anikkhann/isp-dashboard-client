@@ -174,11 +174,11 @@ const CreateAdminTicketForm = () => {
     setLoading(true);
 
     const bodyData = {
-      body: {
-        ticketCategory: "parent",
-        complainTypeId: selectedComplainType,
-        complainDetails: data.complainDetails
-      }
+      // body: {
+      ticketCategory: "parent",
+      complainTypeId: selectedComplainType,
+      complainDetails: data.complainDetails
+      // }
     };
 
     const formData = new FormData();

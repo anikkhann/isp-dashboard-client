@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <>
-      {auth.isLoading && <AppLoader />}
+      {auth?.isLoading && <AppLoader />}
       {ability.can("customerTicket.view", "") ? (
         <DetailsCustomerTicket id={id} />
       ) : (

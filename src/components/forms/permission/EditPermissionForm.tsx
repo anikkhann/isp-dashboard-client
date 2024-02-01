@@ -237,6 +237,26 @@ const tagsList = [
   {
     label: "Package Migration",
     value: "packageMigration"
+  },
+  {
+    label: "createTicket",
+    value: "createTicket"
+  },
+  {
+    label: "downloadSafForm",
+    value: "downloadSafForm"
+  },
+  {
+    label: "liveBandwidth",
+    value: "liveBandwidth"
+  },
+  {
+    label: "Used Voucher Download",
+    value: "usedVoucherDownload"
+  },
+  {
+    label: "Unused Voucher Download",
+    value: "unUsedVoucherDownload"
   }
 ];
 

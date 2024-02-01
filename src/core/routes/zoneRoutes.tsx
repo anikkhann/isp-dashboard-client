@@ -1,4 +1,8 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  AreaChartOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 
 const zoneRoutes = [
   {
@@ -13,7 +17,7 @@ const zoneRoutes = [
     key: "/admin/zone",
     label: "Zone Dashboard",
     path: "/admin/zone",
-    icon: <SettingOutlined />,
+    icon: <AreaChartOutlined />,
     permission: "zone.dashboard"
   },
 
@@ -21,7 +25,7 @@ const zoneRoutes = [
     key: "/admin/zone/zone-in-charge",
     label: "Zone In Charge",
     path: "/admin/zone/zone-in-charge",
-    icon: <SettingOutlined />,
+    icon: <UserOutlined />,
     permission: "zone.list"
   }
 ];

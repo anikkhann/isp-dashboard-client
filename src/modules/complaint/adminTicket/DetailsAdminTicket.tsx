@@ -51,6 +51,7 @@ const DetailsAdminTicket = ({ id }: any) => {
 
   const [form] = Form.useForm();
   const [item, setItem] = useState<TicketData | null>(null);
+  console.log(item);
   const [replys, setReplys] = useState<any | []>([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -138,7 +139,7 @@ const DetailsAdminTicket = ({ id }: any) => {
   const getAssignedTo = async () => {
     // console.log("selectedCustomer", selectedCustomer)
     const res = await axios.get(
-      `/api/ticket/get-assigned-to/${item?.customerId}`
+      `/api/ticket/get-assigned-to/${item?.partnerId}`
     );
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {
@@ -289,24 +290,25 @@ const DetailsAdminTicket = ({ id }: any) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const body = {
-      meta: {
-        /*  "page": 0,
-          "limit": 10, */
-        sort: [
-          {
-            order: "desc",
-            field: "createdOn"
-          }
-        ]
-      },
-      body: {
-        ticket: {
-          id: id
-        }
-      }
-    };
-    const response = await axios.post(`/api/ticket-details/get-list`, body);
+    // const body = {
+    //   meta: {
+
+    //     sort: [
+    //       {
+    //         order: "desc",
+    //         field: "createdOn"
+    //       }
+    //     ]
+    //   },
+    //   body: {
+    //     ticket: {
+    //       id: id
+    //     }
+    //   }
+    // };
+    const response = await axios.get(
+      `/api/ticket-details/get-all-replies/${id}`
+    );
     return response;
   };
 

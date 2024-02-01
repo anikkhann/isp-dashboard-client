@@ -3,7 +3,7 @@ import { Button, Card, Row, Col, Collapse, Space, Select } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table, Tooltip, DatePicker } from "antd";
+import { Table, Tooltip, DatePicker, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -353,10 +353,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
       },
       body: {
         partnerType: "reseller",
-        zoneManager: { id: selectedZoneId }
-        // client: {
-        //   id: authUser?.partnerId
-        // },
+        zoneManager: { id: selectedZoneId },
+        client: {
+          id: authUser?.partnerId
+        }
         // isActive: true
       }
     };
@@ -469,7 +469,17 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
       dataIndex: "status",
       sorter: true,
       render: (status: any) => {
-        return <>{status}</>;
+        return (
+          <>
+            {status === "Rejected" ? (
+              <Tag color="red">{status}</Tag>
+            ) : status === "Approved" ? (
+              <Tag color="green">{status}</Tag>
+            ) : (
+              <Tag color="blue">{status}</Tag>
+            )}
+          </>
+        );
       },
       width: "20%",
       align: "center" as AlignType
@@ -537,7 +547,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
             {/* approve */}
             <Space size="middle" align="center" className="mx-1">
               {ability.can("subZoneRevenueDisbursement.reject", "") &&
-              authUser?.userType == "reseller" ? (
+              authUser?.userType == "reseller" &&
+              record.status === "Pending" ? (
                 <Tooltip title="Reject" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Link
@@ -558,7 +569,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
               ) : null}
 
               {ability.can("subZoneRevenueDisbursement.approve", "") &&
-              authUser?.userType == "reseller" ? (
+              authUser?.userType == "reseller" &&
+              record.status === "Pending" ? (
                 <Tooltip title="Approve" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -576,7 +588,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
 
               {/* cancel */}
               {ability.can("subZoneRevenueDisbursement.cancel", "") &&
-              authUser?.partnerId == record.partnerId ? (
+              authUser?.partnerId == record.partnerId &&
+              record.status === "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -668,8 +681,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

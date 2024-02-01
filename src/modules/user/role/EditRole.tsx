@@ -30,7 +30,7 @@ const EditRole = ({ id }: any) => {
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data", data);
+        //
         SetItem(data.body);
       }
     },

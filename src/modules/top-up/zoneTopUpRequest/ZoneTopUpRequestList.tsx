@@ -3,7 +3,7 @@ import { Button, Card, Col, Space, Tooltip } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -269,7 +269,17 @@ const ZoneTopUpRequestList: React.FC = () => {
       dataIndex: "status",
       sorter: false,
       render: (status: any) => {
-        return <>{status}</>;
+        return (
+          <>
+            {status === "Rejected" ? (
+              <Tag color="red">{status}</Tag>
+            ) : status === "Approved" ? (
+              <Tag color="green">{status}</Tag>
+            ) : (
+              <Tag color="blue">{status}</Tag>
+            )}
+          </>
+        );
       },
       width: "20%",
       align: "center" as AlignType
@@ -359,7 +369,8 @@ const ZoneTopUpRequestList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center" className="mx-1">
               {/* reject */}
-              {ability.can("zoneRevenueDisbursement.reject", "") ? (
+              {ability.can("zoneTopUpRequest.reject", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Reject" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Link
@@ -379,7 +390,8 @@ const ZoneTopUpRequestList: React.FC = () => {
                 </Tooltip>
               ) : null}
 
-              {ability.can("zoneRevenueDisbursement.approve", "") ? (
+              {ability.can("zoneTopUpRequest.approve", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Approve" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -396,7 +408,8 @@ const ZoneTopUpRequestList: React.FC = () => {
               ) : null}
 
               {/* cancel */}
-              {ability.can("zoneRevenueDisbursement.cancel", "") ? (
+              {ability.can("zoneTopUpRequest.cancel", "") &&
+              record.status === "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -474,8 +487,8 @@ const ZoneTopUpRequestList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

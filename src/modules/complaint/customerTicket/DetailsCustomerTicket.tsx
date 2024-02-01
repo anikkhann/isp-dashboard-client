@@ -51,7 +51,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
   const [form] = Form.useForm();
   const [item, setItem] = useState<TicketData | null>(null);
   const [replys, setReplys] = useState<any | []>([]);
-
+  console.log(replys);
   const [completeFetchReplayData, setCompleteFetchReplayData] =
     useState<boolean>(false);
 
@@ -289,24 +289,25 @@ const DetailsCustomerTicket = ({ id }: any) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const body = {
-      meta: {
-        /*  "page": 0,
-          "limit": 10, */
-        sort: [
-          {
-            order: "desc",
-            field: "createdOn"
-          }
-        ]
-      },
-      body: {
-        ticket: {
-          id: id
-        }
-      }
-    };
-    const response = await axios.post(`/api/ticket-details/get-list`, body);
+    // const body = {
+    //   meta: {
+
+    //     sort: [
+    //       {
+    //         order: "desc",
+    //         field: "createdOn"
+    //       }
+    //     ]
+    //   },
+    //   body: {
+    //     ticket: {
+    //       id: id
+    //     }
+    //   }
+    // };
+    const response = await axios.get(
+      `/api/ticket-details/get-all-replies/${id}`
+    );
     return response;
   };
 
@@ -738,7 +739,6 @@ const DetailsCustomerTicket = ({ id }: any) => {
             ticketQuery.isFetching &&
             replayQuery.isLoading &&
             replayQuery.isFetching && <AppLoader />}
-
           {completeFetchData && completeFetchReplayData && item && (
             <DetailsTicket item={item} replys={replys} />
           )}

@@ -62,7 +62,7 @@ const DetailsCustomer = ({ id }: any) => {
               title: <Link href="/admin/customer/customer">customers</Link>
             },
             {
-              title: " customer Details"
+              title: "Customer Details"
             }
           ]}
         />

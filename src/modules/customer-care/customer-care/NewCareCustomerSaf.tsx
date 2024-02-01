@@ -80,7 +80,7 @@ const NewCareCustomerSaf = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            New Customer Saf Verification
+            Customer SAF Form
           </h1>
         </div>
 

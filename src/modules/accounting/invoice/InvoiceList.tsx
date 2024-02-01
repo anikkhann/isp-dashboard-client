@@ -49,8 +49,8 @@ const InvoiceList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [customerIds, setCustomerIds] = useState<any>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<any>(null);
@@ -492,6 +492,7 @@ const InvoiceList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+  // TopUpTransactionData
 
   const columns: ColumnsType<TopUpTransactionData> = [
     {
@@ -509,6 +510,103 @@ const InvoiceList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Customer",
+      dataIndex: "customer",
+      sorter: false,
+      render: (customer: any) => {
+        if (!customer) return "-";
+        return <>{customer.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Package",
+      dataIndex: "displayName",
+      sorter: false,
+      render: (displayName: any) => {
+        if (!displayName) return "-";
+        return <>{displayName}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      sorter: false,
+      render: (email: any) => {
+        if (!email) return "-";
+        return <>{email}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Invoice Id",
+      dataIndex: "invoiceId",
+      sorter: false,
+      render: (invoiceId: any) => {
+        if (!invoiceId) return "-";
+        return <>{invoiceId}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Invoice Month",
+      dataIndex: "invoiceMonth",
+      sorter: false,
+      render: (invoiceMonth: any) => {
+        if (!invoiceMonth) return "-";
+        return <>{invoiceMonth}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Invoice Year",
+      dataIndex: "invoiceYear",
+      sorter: false,
+      render: (invoiceYear: any) => {
+        if (!invoiceYear) return "-";
+        return <>{invoiceYear}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Is Sent?",
+      dataIndex: "isSend",
+      sorter: false,
+      render: (isSend: any) => {
+        // if (!isSend) return "-";
+        return (
+          <>
+            {isSend == true ? (
+              <span style={{ color: "#00ff00" }}>Yes</span>
+            ) : (
+              <span style={{ color: "#ff0000" }}>No</span>
+            )}
+          </>
+        );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Billing Period",
+      dataIndex: "billingPeriod",
+      sorter: false,
+      render: (billingPeriod: any) => {
+        if (!billingPeriod) return "-";
+        return <>{billingPeriod}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Total Price",
       dataIndex: "totalPrice",
       sorter: true,
@@ -523,17 +621,17 @@ const InvoiceList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
       title: "Created Date",
@@ -630,8 +728,8 @@ const InvoiceList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -683,6 +781,40 @@ const InvoiceList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
+                              <b>Username</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleUsernameChange}
+                              options={customers}
+                              value={selectedCustomername}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
                               <b>Customer Id</b>
                             </span>
                             <Select
@@ -709,40 +841,7 @@ const InvoiceList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Username</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleUsernameChange}
-                              options={customers}
-                              value={selectedCustomername}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}

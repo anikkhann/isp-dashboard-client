@@ -73,10 +73,10 @@ const AgentTransactionList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("trxDate");
 
-  const [users, setUsers] = useState<any[]>([]);
+  // const [users, setUsers] = useState<any[]>([]);
   const [selectUser, setSelectUser] = useState<any>(null);
 
   const [transactionId, setTransactionId] = useState<any>(null);
@@ -223,47 +223,47 @@ const AgentTransactionList: React.FC = () => {
     }
   });
 
-  function getUsers() {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
-      },
-      // FOR SEARCHING DATA - OPTIONAL
-      body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        isActive: true
-      }
-    };
+  // function getUsers() {
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
 
-    axios.post("/api/users/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
+  //     body: {
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
+  //       isActive: true
+  //     }
+  //   };
 
-      if (!data.body) return;
+  //   axios.post("/api/users/get-list", body).then(res => {
 
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.username,
-          value: item.id
-        };
-      });
+  //     const { data } = res;
 
-      setUsers(list);
-    });
-  }
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
+
+  //     if (!data.body) return;
+
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.username,
+  //         value: item.id
+  //       };
+  //     });
+
+  //     setUsers(list);
+  //   });
+  // }
 
   function getTransactionByList() {
     axios
@@ -295,15 +295,14 @@ const AgentTransactionList: React.FC = () => {
       });
   }
 
-  const handleUserChange = (value: any) => {
-    // console.log("checked = ", value);
-    // setSelectUser(value);
-    if (value) {
-      setSelectUser(value);
-    } else {
-      setSelectUser(null);
-    }
-  };
+  // const handleUserChange = (value: any) => {
+
+  //   if (value) {
+  //     setSelectUser(value);
+  //   } else {
+  //     setSelectUser(null);
+  //   }
+  // };
 
   const handleTransactionModeChange = (value: any) => {
     // console.log("checked = ", value);
@@ -357,7 +356,7 @@ const AgentTransactionList: React.FC = () => {
   };
 
   useEffect(() => {
-    getUsers();
+    // getUsers();
     getTransactionByList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -578,8 +577,8 @@ const AgentTransactionList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -620,7 +619,7 @@ const AgentTransactionList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
-                        <Col
+                        {/* <Col
                           xs={24}
                           sm={12}
                           md={8}
@@ -641,6 +640,30 @@ const AgentTransactionList: React.FC = () => {
                               onChange={handleUserChange}
                               options={users}
                               value={selectUser}
+                            />
+                          </Space>
+                        </Col> */}
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Transaction By</b>
+                            </span>
+                            <Select
+                              showSearch
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleTransactionByChange}
+                              options={transactionByList}
+                              value={selectedTransactionBy}
                             />
                           </Space>
                         </Col>
@@ -692,30 +715,7 @@ const AgentTransactionList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Transaction By</b>
-                            </span>
-                            <Select
-                              showSearch
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleTransactionByChange}
-                              options={transactionByList}
-                              value={selectedTransactionBy}
-                            />
-                          </Space>
-                        </Col>
+
                         <Col
                           xs={24}
                           sm={12}

@@ -1,4 +1,8 @@
-import { DashboardOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  BarChartOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 
 const retailRoutes = [
   {
@@ -13,14 +17,14 @@ const retailRoutes = [
     key: "/admin/retail",
     label: "Retail Dashboard",
     path: "/admin/retail",
-    icon: <SettingOutlined />,
+    icon: <BarChartOutlined />,
     permission: "dashboard.view"
   },
   {
     key: "/admin/retail/retail",
     label: "Retail",
     path: "/admin/retail/retail",
-    icon: <SettingOutlined />,
+    icon: <UserOutlined />,
     permission: "dashboard.view"
   }
 ];

@@ -241,7 +241,7 @@ const SurveyList: React.FC = () => {
         return (
           <div className="flex flex-row">
             <Space size="middle" align="center">
-              {ability.can("client.update", "") ? (
+              {ability.can("survey.edit", "") ? (
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/client/survey/${record.id}/edit`}>
@@ -252,7 +252,7 @@ const SurveyList: React.FC = () => {
               ) : null}
             </Space>
             <Space size="middle" align="center" className="mx-1">
-              {ability.can("client.view", "") ? (
+              {ability.can("survey.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/client/survey/${record.id}`}>
@@ -320,8 +320,8 @@ const SurveyList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -332,7 +332,7 @@ const SurveyList: React.FC = () => {
             title="Troubleshoot & Survey List"
             hasLink={true}
             addLink="/admin/client/survey/create"
-            permission="client.create"
+            permission="survey.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
