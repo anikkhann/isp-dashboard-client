@@ -787,6 +787,7 @@ const DurjoyRequisitionList: React.FC = () => {
                                   }
 
                                   if (!data.body) return;
+
                                   setUnusedVoucherData(data.body);
                                   done();
                                 });

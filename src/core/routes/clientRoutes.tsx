@@ -56,6 +56,13 @@ const accountRoutes = [
     path: "/admin/client/survey-report",
     icon: <FileDoneOutlined />,
     permission: "surveyReport.list"
+  },
+  {
+    key: "/admin/client/radius-ip",
+    label: "Radius IP",
+    path: "/admin/client/radius-ip",
+    icon: <FileDoneOutlined />,
+    permission: "radiusIp.list"
   }
 ];
 
