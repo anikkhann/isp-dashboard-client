@@ -1,7 +1,7 @@
-import ClientLayout from "@/core/layouts/ClientLayout";
+import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import DetailsRadiusIp from "@/modules/client/radiusIp/DetailsRadiusIp";
+import EditCustomer from "@/modules/customer/customer/EditCustomer";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("radiusIp.view", "") ? (
-        <DetailsRadiusIp id={id} />
+      {ability.can("customerImportCsv.update", "") ? (
+        <EditCustomer id={id} />
       ) : (
         <Forbidden />
       )}
@@ -27,6 +27,6 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page: ReactNode) => <ClientLayout>{page}</ClientLayout>;
+Home.getLayout = (page: ReactNode) => <CustomerLayout>{page}</CustomerLayout>;
 
 export default Home;

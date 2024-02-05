@@ -67,6 +67,14 @@ const customerRoutes = [
     path: "/admin/customer/customer",
     icon: <UserOutlined />,
     permission: "customer.view"
+  },
+  // Import CSV
+  {
+    key: "/admin/customer/import-csv",
+    label: "Import CSV",
+    path: "/admin/customer/import-csv",
+    icon: <UserOutlined />,
+    permission: "customerImportCsv.view"
   }
 ];
 
