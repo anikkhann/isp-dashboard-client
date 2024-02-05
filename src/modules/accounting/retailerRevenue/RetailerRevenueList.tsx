@@ -66,7 +66,7 @@ const RetailerRevenueList: React.FC = () => {
 
   const [users, setUsers] = useState<any>([]);
   const [selectUser, setSelectUser] = useState<any>(null);
-
+  const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<any>("current_month");
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
@@ -540,7 +540,7 @@ const RetailerRevenueList: React.FC = () => {
               {ability.can("accountingRetailerRevenue.download", "") && (
                 <Row justify={"end"}>
                   <Col span={3}>
-                    <CSVLink
+                    {/* <CSVLink
                       data={data}
                       asyncOnClick={true}
                       onClick={(event, done) => {
@@ -565,6 +565,99 @@ const RetailerRevenueList: React.FC = () => {
                       )}.csv`}
                     >
                       {downloadLoading ? "Loading..." : "Download"}
+                    </CSVLink> */}
+                    <CSVLink
+                      data={downloadRow}
+                      asyncOnClick={true}
+                      onClick={(event, done) => {
+                        setDownloadLoading(true);
+                        setTimeout(() => {
+                          setDownloadLoading(false);
+                        }, 2000);
+                        const token = Cookies.get("token");
+                        axios.defaults.headers.common["Authorization"] =
+                          `Bearer ${token}`;
+
+                        // const body = {
+                        //   meta: {
+                        //     sort: [
+                        //       {
+                        //         order: "asc",
+                        //         field: "id"
+                        //       }
+                        //     ]
+                        //   },
+                        //   body: {
+
+                        //     userType: "zone",
+                        //     userId: selectUser,
+                        //     transactionId: transactionId,
+                        //     trxMode: selectedTransactionMode,
+                        //     trxType: selectedTransactionType,
+                        //     trxBy: selectedTransactionBy,
+                        //     dateRangeFilter: {
+                        //       field: "trxDate",
+                        //       startDate: selectedStartDate,
+                        //       endDate: selectedEndDate
+                        //     }
+                        //   }
+                        // };
+                        let date = null;
+                        if (selectedStartDate && selectedEndDate) {
+                          date = `${selectedStartDate} to ${selectedEndDate}`;
+                        }
+                        axios
+                          .get(
+                            `/api/revenue/get-retailer-commission-list?filterType=${selectedMonth}&dateRange=${date}&retailerId=${selectUser}`,
+                            {
+                              headers: {
+                                "Content-Type": "application/json"
+                              }
+                            }
+                          )
+                          .then(res => {
+                            // console.log(res);
+                            const { data } = res;
+                            console.log(data.body);
+                            if (data.status != 200) {
+                              MySwal.fire({
+                                title: "Error",
+                                text: data.message || "Something went wrong",
+                                icon: "error"
+                              });
+                            }
+
+                            if (!data.body) return;
+
+                            const list = data.body.map((item: any) => {
+                              return {
+                                Retailer: item.retailer,
+                                Total: item.total_commission,
+                                Offline: item.offline_commission,
+                                Online: item.online_commission
+                              };
+                            });
+                            setDownloadRow(list);
+                            console.log(list);
+                            done();
+                          });
+                      }}
+                      className="ant-btn ant-btn-lg"
+                      target="_blank"
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff",
+                        padding: "10px"
+                      }}
+                      filename={`retailer-revenue-${dayjs().format(
+                        "YYYY-MM-DD"
+                      )}.csv`}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                      {/* <DownloadOutlined /> */}
                     </CSVLink>
                   </Col>
                 </Row>

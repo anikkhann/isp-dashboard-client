@@ -215,37 +215,20 @@ const EditRoleForm = ({ item }: PropData) => {
         <div className="mt-3 flex justify-center items-center">
           <Form
             form={form}
-            // {...layout}
             layout="vertical"
             autoComplete="off"
             onFinish={onSubmit}
-            style={{ maxWidth: 800 }}
+            className="max-w-screen-lg w-full"
             name="wrap"
             colon={false}
           >
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row px-5"
-              >
+            <Row gutter={[8, 16]} justify="center">
+              <Col xs={24} sm={12} md={12} lg={12} xl={12} className="px-5">
                 <Form.Item
                   label="Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                  style={{ marginBottom: 0, fontWeight: "bold" }}
                   name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input name!"
-                    }
-                  ]}
+                  rules={[{ required: true, message: "Please input name!" }]}
                 >
                   <Input
                     type="text"
@@ -258,12 +241,7 @@ const EditRoleForm = ({ item }: PropData) => {
               </Col>
             </Row>
 
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
+            <Form.Item label="">
               <Checkbox onChange={handleActive} checked={isActive}>
                 Status
               </Checkbox>
@@ -293,98 +271,83 @@ const EditRoleForm = ({ item }: PropData) => {
               </Checkbox>
             </Space>
 
-            <Form.Item
-              // label="Permissions"
-              name="permissions"
-              valuePropName="permissions"
-            >
+            <Form.Item name="permissions" valuePropName="permissions">
               <Checkbox.Group onChange={onChange} value={checkedList}>
-                <Row
-                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                  justify="space-between"
-                >
+                <Row gutter={[8, 16]} justify="space-between">
                   {permissions &&
                     permissions.length > 0 &&
-                    permissions.map((permission: any) => {
-                      return (
-                        <Col
-                          xs={24}
-                          sm={24}
-                          md={24}
-                          lg={24}
-                          xl={24}
-                          xxl={24}
-                          className="gutter-row"
-                          key={permission.id}
-                        >
-                          <Card className="hover:shadow-md transition duration-300 ease-in-out">
-                            <Divider orientation="left">
-                              <h5
-                                style={{
-                                  fontWeight: "bold",
-                                  marginBottom: 10,
-                                  marginLeft: 10,
-                                  fontSize: 14,
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  color: "#0e8fdc"
-                                }}
-                              >
-                                {permission.displayName}
-                              </h5>
-                            </Divider>
+                    permissions.map((permission: any) => (
+                      <Col
+                        span={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        key={permission.id}
+                      >
+                        <Card className="hover:shadow-md transition duration-300 ease-in-out">
+                          <Divider orientation="left">
+                            <h5
+                              style={{
+                                fontWeight: "bold",
+                                marginBottom: 10,
+                                marginLeft: 10,
+                                fontSize: 14,
+                                textTransform: "uppercase",
+                                textAlign: "left",
+                                color: "#0e8fdc"
+                              }}
+                            >
+                              {permission.displayName}
+                            </h5>
+                          </Divider>
 
-                            <Row gutter={16}>
-                              {permission.children &&
-                                permission.children.length > 0 &&
-                                permission.children.map((item: any) => {
-                                  return (
-                                    <Col
-                                      span={24}
-                                      sm={12}
-                                      md={8}
-                                      lg={8}
-                                      className="gutter-row "
-                                      key={item.value}
+                          <Row gutter={[8, 16]}>
+                            {permission.children &&
+                              permission.children.length > 0 &&
+                              permission.children.map((item: any) => (
+                                <Col
+                                  span={24}
+                                  sm={12}
+                                  md={8}
+                                  lg={8}
+                                  className="gutter-row"
+                                  key={item.value}
+                                >
+                                  <Card
+                                    hoverable
+                                    style={{
+                                      backgroundColor: "#F15F22",
+                                      overflowX: "hidden"
+                                    }}
+                                  >
+                                    <Checkbox
+                                      value={item.value}
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "left",
+                                        fontSize: "15px",
+                                        color: "#FFFFFF",
+                                        fontWeight: "bold"
+                                      }}
                                     >
-                                      <Card
-                                        hoverable
+                                      <span
                                         style={{
-                                          // backgroundColor: "#FFC857",
-                                          // fontWeight: "bold",
-                                          // fontSize: "10px"
-                                          backgroundColor: "#F15F22"
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                          whiteSpace: "nowrap"
                                         }}
                                       >
-                                        <Checkbox
-                                          value={item.value}
-                                          style={{
-                                            display: "flex",
-                                            justifyContent: "left",
-                                            fontSize: "15px",
-                                            color: "#FFFFFF",
-                                            fontWeight: "bold"
-                                          }}
-                                        >
-                                          <span
-                                            style={{
-                                              overflow: "hidden",
-                                              textOverflow: "ellipsis",
-                                              whiteSpace: "nowrap"
-                                            }}
-                                          >
-                                            {item.label}
-                                          </span>
-                                        </Checkbox>
-                                      </Card>
-                                    </Col>
-                                  );
-                                })}
-                            </Row>
-                          </Card>
-                        </Col>
-                      );
-                    })}
+                                        {item.label}
+                                      </span>
+                                    </Checkbox>
+                                  </Card>
+                                </Col>
+                              ))}
+                          </Row>
+                        </Card>
+                      </Col>
+                    ))}
                 </Row>
               </Checkbox.Group>
             </Form.Item>
@@ -392,9 +355,7 @@ const EditRoleForm = ({ item }: PropData) => {
             <Row justify="center">
               <Col>
                 <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
                   <Button
-                    // type="primary"
                     htmlType="submit"
                     shape="round"
                     style={{

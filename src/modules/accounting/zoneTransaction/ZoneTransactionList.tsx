@@ -80,7 +80,7 @@ const PackageList: React.FC = () => {
   const [selectUser, setSelectUser] = useState<any>(null);
 
   const [transactionId, setTransactionId] = useState<any>(null);
-
+  const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [selectedTransactionMode, setSelectedTransactionMode] =
     useState<any>(null);
   const [selectedTransactionType, setSelectedTransactionType] =
@@ -482,7 +482,7 @@ const PackageList: React.FC = () => {
     // insertedBy
     {
       title: "Trx By",
-      dataIndex: "insertedBy",
+      dataIndex: "trxBy",
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
@@ -494,11 +494,11 @@ const PackageList: React.FC = () => {
     // createdOn
     {
       title: "Trx Date",
-      dataIndex: "createdOn",
+      dataIndex: "trxDate",
       sorter: false,
-      render: (createdOn: any) => {
-        if (!createdOn) return "-";
-        const date = new Date(createdOn);
+      render: (trxDate: any) => {
+        if (!trxDate) return "-";
+        const date = new Date(trxDate);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
@@ -804,7 +804,7 @@ const PackageList: React.FC = () => {
               {ability.can("zoneTransaction.download", "") && (
                 <Row justify={"end"}>
                   <Col span={3}>
-                    <CSVLink
+                    {/* <CSVLink
                       data={data}
                       asyncOnClick={true}
                       onClick={(event, done) => {
@@ -829,6 +829,100 @@ const PackageList: React.FC = () => {
                       )}.csv`}
                     >
                       {downloadLoading ? "Loading..." : "Download"}
+                    </CSVLink> */}
+
+                    <CSVLink
+                      data={downloadRow}
+                      asyncOnClick={true}
+                      onClick={(event, done) => {
+                        setDownloadLoading(true);
+                        setTimeout(() => {
+                          setDownloadLoading(false);
+                        }, 2000);
+                        const token = Cookies.get("token");
+                        axios.defaults.headers.common["Authorization"] =
+                          `Bearer ${token}`;
+
+                        const body = {
+                          meta: {
+                            sort: [
+                              {
+                                order: "desc",
+                                field: "trxDate"
+                              }
+                            ]
+                          },
+                          body: {
+                            // SEND FIELD NAME WITH DATA TO SEARCH
+                            userType: "zone",
+                            userId: selectUser,
+                            transactionId: transactionId,
+                            trxMode: selectedTransactionMode,
+                            trxType: selectedTransactionType,
+                            trxBy: selectedTransactionBy,
+                            dateRangeFilter: {
+                              field: "trxDate",
+                              startDate: selectedStartDate,
+                              endDate: selectedEndDate
+                            }
+                          }
+                        };
+
+                        axios
+                          .post(`/api/topup-transaction/get-list`, body, {
+                            headers: {
+                              "Content-Type": "application/json"
+                            }
+                          })
+                          .then(res => {
+                            // console.log(res);
+                            const { data } = res;
+                            console.log(data.body);
+                            if (data.status != 200) {
+                              MySwal.fire({
+                                title: "Error",
+                                text: data.message || "Something went wrong",
+                                icon: "error"
+                              });
+                            }
+
+                            if (!data.body) return;
+
+                            const list = data.body.map((item: any) => {
+                              const date = new Date(item.trxDate);
+                              return {
+                                ZoneManager: item.trxFor,
+                                TRXType: item.trxType,
+                                TrxMode: item.trxMode,
+                                TransactionId: item.transactionId,
+                                Amount: item.amount,
+                                Balance: item.balance,
+                                Remarks: item.remarks,
+                                TrxBy: item.trxBy,
+                                TrxDate: format(date, "yyyy-MM-dd pp")
+                              };
+                            });
+                            setDownloadRow(list);
+                            console.log(list);
+                            done();
+                          });
+                      }}
+                      className="ant-btn ant-btn-lg"
+                      target="_blank"
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff",
+                        padding: "10px"
+                      }}
+                      filename={`zone-transaction-${dayjs().format(
+                        "YYYY-MM-DD"
+                      )}.csv`}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                      {/* <DownloadOutlined /> */}
                     </CSVLink>
                   </Col>
                 </Row>

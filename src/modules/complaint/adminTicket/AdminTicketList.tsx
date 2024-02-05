@@ -15,7 +15,8 @@ import Link from "next/link";
 import { EyeOutlined } from "@ant-design/icons";
 import { differenceInDays, format } from "date-fns";
 import { TicketData } from "@/interfaces/TicketData";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -44,13 +45,14 @@ interface TableParams {
 const AdminTicketList: React.FC = () => {
   const [data, setData] = useState<TicketData[]>([]);
   const { Panel } = Collapse;
+  const MySwal = withReactContent(Swal);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
 
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
-
+  const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [complainTypeList, setComplainTypes] = useState<any>([]);
   const [selectedComplainType, setSelectedComplainType] = useState<any>(null);
 
@@ -789,8 +791,8 @@ const AdminTicketList: React.FC = () => {
 
               {ability.can("adminTicket.download", "") && (
                 <Row justify={"end"}>
-                  <Col span={3}>
-                    <CSVLink
+                  <Col>
+                    {/* <CSVLink
                       data={data}
                       asyncOnClick={true}
                       onClick={(event, done) => {
@@ -815,6 +817,109 @@ const AdminTicketList: React.FC = () => {
                       )}.csv`}
                     >
                       {downloadLoading ? "Loading..." : "Download"}
+                    </CSVLink> */}
+                    <CSVLink
+                      data={downloadRow}
+                      asyncOnClick={true}
+                      onClick={(event, done) => {
+                        setDownloadLoading(true);
+                        setTimeout(() => {
+                          setDownloadLoading(false);
+                        }, 2000);
+                        const token = Cookies.get("token");
+                        axios.defaults.headers.common["Authorization"] =
+                          `Bearer ${token}`;
+
+                        const body = {
+                          meta: {
+                            sort: [
+                              {
+                                order: "asc",
+                                field: "id"
+                              }
+                            ]
+                          },
+                          body: {
+                            // SEND FIELD NAME WITH DATA TO SEARCH
+                            ticketCategory: "parent",
+                            rootCauseCategory: "parent",
+
+                            complainType: {
+                              id: selectedComplainType
+                            },
+                            status: selectedStatus,
+                            ticketNo: selectedTicketNumber,
+                            closedBy: {
+                              id: selectedClosedBy
+                            },
+                            insertedBy: {
+                              id: selectedCreatedBy
+                            },
+                            assignTo: {
+                              id: selectedAssignTo
+                            }
+                          }
+                        };
+
+                        axios
+                          .post(`//api/ticket/get-list`, body, {
+                            headers: {
+                              "Content-Type": "application/json"
+                            }
+                          })
+                          .then(res => {
+                            // console.log(res);
+                            const { data } = res;
+                            console.log(data.body);
+                            if (data.status != 200) {
+                              MySwal.fire({
+                                title: "Error",
+                                text: data.message || "Something went wrong",
+                                icon: "error"
+                              });
+                            }
+
+                            if (!data.body) return;
+
+                            const list = data.body.map((item: any) => {
+                              const date = new Date(item.createdOn);
+                              const dateTwo = new Date(item.updatedOn);
+                              return {
+                                TicketNo: item.ticketNo,
+                                Client: item.openedBy.partner.username,
+                                ComplaintType: item.complainType.name,
+                                ComplaintDetails: item.complainDetails,
+                                AssignedTo: item.assignedTo.username,
+                                TicketStatus: item.status,
+                                RootCause: item.rootCause.title,
+                                CreatedBy: item.openedBy.username,
+                                CreatedAt: format(date, "yyyy-MM-dd pp"),
+                                LastUpdatedBy: item.editedBy.username,
+                                LastUpdatedAt: format(dateTwo, "yyyy-MM-dd pp")
+                                // TrxDate: format(date, "yyyy-MM-dd pp")
+                              };
+                            });
+                            setDownloadRow(list);
+                            console.log(list);
+                            done();
+                          });
+                      }}
+                      className="ant-btn ant-btn-lg"
+                      target="_blank"
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff",
+                        padding: "10px"
+                      }}
+                      filename={`admin-ticket-${dayjs().format(
+                        "YYYY-MM-DD"
+                      )}.csv`}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                      {/* <DownloadOutlined /> */}
                     </CSVLink>
                   </Col>
                 </Row>

@@ -84,7 +84,7 @@ const CustomerList: React.FC = () => {
   const [distributionPops, setDistributionPops] = useState<any[]>([]);
   const [selectedDistributionPop, setSelectedDistributionPop] =
     useState<any>(null);
-
+  const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<any>(null);
   const [selectedMobile, setSelectedMobile] = useState<any>(null);
 
@@ -1404,7 +1404,7 @@ const CustomerList: React.FC = () => {
               {ability.can("customer.download", "") && (
                 <Row justify={"end"}>
                   <Col span={3}>
-                    <CSVLink
+                    {/* <CSVLink
                       data={data}
                       asyncOnClick={true}
                       onClick={(event, done) => {
@@ -1427,6 +1427,139 @@ const CustomerList: React.FC = () => {
                       filename={`customer-${dayjs().format("YYYY-MM-DD")}.csv`}
                     >
                       {downloadLoading ? "Loading..." : "Download"}
+                    </CSVLink> */}
+                    <CSVLink
+                      data={downloadRow}
+                      asyncOnClick={true}
+                      onClick={(event, done) => {
+                        setDownloadLoading(true);
+                        setTimeout(() => {
+                          setDownloadLoading(false);
+                        }, 2000);
+                        const token = Cookies.get("token");
+                        axios.defaults.headers.common["Authorization"] =
+                          `Bearer ${token}`;
+
+                        const body = {
+                          meta: {
+                            sort: [
+                              {
+                                order: "asc",
+                                field: "id"
+                              }
+                            ]
+                          },
+                          body: {
+                            customerId: selectedCustomerId,
+                            username: selectedCustomer,
+                            email: selectedEmail,
+                            mobile: selectedMobile,
+                            distributionZone: {
+                              id: selectedDistributionZone
+                            },
+                            distributionPop: {
+                              id: selectedDistributionPop
+                            },
+                            customerPackage: {
+                              id: selectedPackage
+                            },
+                            zoneManager: {
+                              id: selectedZone
+                            },
+                            subZoneManager: {
+                              id: selectedSubZone
+                            },
+                            retailer: {
+                              id: selectedRetailer
+                            },
+                            dateRangeFilter: {
+                              field: "expirationTime",
+                              startDate: selectedStartDate,
+                              endDate: selectedEndDate
+                            }
+                          }
+                        };
+
+                        axios
+                          .post(`/api/customer/get-list`, body, {
+                            headers: {
+                              "Content-Type": "application/json"
+                            }
+                          })
+                          .then(res => {
+                            // console.log(res);
+                            const { data } = res;
+                            console.log(data.body);
+                            if (data.status != 200) {
+                              MySwal.fire({
+                                title: "Error",
+                                text: data.message || "Something went wrong",
+                                icon: "error"
+                              });
+                            }
+
+                            if (!data.body) return;
+
+                            const list = data.body.map((item: any) => {
+                              const date = new Date(item.expirationTime);
+                              return {
+                                CustomerID: item.customerId,
+                                UserName: item.username,
+                                MobileNo: item.mobileNo,
+                                Email: item.email,
+                                ContactPerson: item.contactPerson,
+                                ContactNumber: item.contactNumber,
+                                ConnectionAddress: item.connectionAddress,
+                                HouseNo: item.houseNo,
+                                Area: item.area,
+                                IdentityType: item.identityType,
+                                IdentityNo: item.identityNo,
+                                IsMacBound: item.isMacBound,
+                                MAC: item.mac,
+                                SimultaneousUser: item.simultaneousUser,
+                                IPMode: item.ipMode,
+                                StaticIP: item.staticIp,
+                                ExpirationTime: format(date, "yyyy-MM-dd pp"),
+                                Credits: item.simultaneousUser,
+                                AutoRenew: item.autoRenew,
+                                Discount: item.discount,
+                                SMSAlert: item.smsAlert,
+                                EmailAlert: item.emailAlert,
+                                ClientId: item.clientId,
+                                isActive: item.isActive,
+                                isSafOtpSend: item.isSafOtpSend,
+                                isSafVerified: item.isSafVerified,
+                                isSafOtpVerified: item.isSafOtpVerified,
+                                adjustmentDay: item.adjustmentDay,
+                                altMobileNo: item.altMobileNo,
+                                flatNo: item.flatNo,
+                                roadNo: item.roadNo,
+                                remarks: item.remarks,
+                                referrerName: item.referrerName,
+                                connectionType: item.connectionType
+                              };
+                            });
+                            setDownloadRow(list);
+                            console.log(list);
+                            done();
+                          });
+                      }}
+                      className="ant-btn ant-btn-lg"
+                      target="_blank"
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff",
+                        padding: "10px"
+                      }}
+                      filename={`customer-list-${dayjs().format(
+                        "YYYY-MM-DD"
+                      )}.csv`}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                      {/* <DownloadOutlined /> */}
                     </CSVLink>
                   </Col>
                 </Row>
