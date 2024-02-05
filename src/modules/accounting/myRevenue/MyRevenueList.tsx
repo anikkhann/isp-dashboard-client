@@ -332,8 +332,8 @@ const MyRevenueList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                        ? error.message
-                        : "Something went wrong"}
+                      ? error.message
+                      : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -490,8 +490,9 @@ const MyRevenueList: React.FC = () => {
                           setDownloadLoading(false);
                         }, 2000);
                         const token = Cookies.get("token");
-                        axios.defaults.headers.common["Authorization"] =
-                          `Bearer ${token}`;
+                        axios.defaults.headers.common[
+                          "Authorization"
+                        ] = `Bearer ${token}`;
 
                         // const body = {
                         //   meta: {

@@ -1,4 +1,3 @@
-
 export interface RadiusIpData {
   createdOn: number;
   id: string;
