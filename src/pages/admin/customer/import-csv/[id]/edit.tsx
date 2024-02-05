@@ -1,7 +1,6 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
-
 import AppLoader from "@/lib/AppLoader";
-import EditCustomer from "@/modules/customer/customer/EditCustomer";
+import EditCustomerImportCSV from "@/modules/customer/import-csv/EditCustomerImportCSV";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -19,7 +18,7 @@ const Home = () => {
     <>
       {auth.isLoading && <AppLoader />}
       {ability.can("customerImportCsv.update", "") ? (
-        <EditCustomer id={id} />
+        <EditCustomerImportCSV id={id} />
       ) : (
         <Forbidden />
       )}

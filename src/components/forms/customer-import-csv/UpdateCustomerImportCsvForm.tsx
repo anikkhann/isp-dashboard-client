@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useEffect, useState } from "react";
@@ -7,7 +6,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Space, Row, Col, Upload, Input } from "antd";
+import { Alert, Button, Form, Space, Row, Col, Upload, Select } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 // import { useAppSelector } from "@/store/hooks";
@@ -16,22 +15,21 @@ import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 import AppImageLoader from "@/components/loader/AppImageLoader";
-import { CustomerImportCsvData } from "@/interfaces/CustomerImportCsvData";
 import { useAppSelector } from "@/store/hooks";
 
 interface PropData {
-  item: CustomerImportCsvData;
+  item: string;
 }
 
 const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
   const [loading, setLoading] = useState(false);
 
-  const authUser = useAppSelector(state => state.auth.user);
-
   const [form] = Form.useForm();
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
+
+  const authUser = useAppSelector(state => state.auth.user);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -53,11 +51,6 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-  useEffect(() => {
-    if (item) {
-    }
-  }, [item]);
 
   const handleFileChange: UploadProps["onChange"] = ({
     fileList: newFileList
@@ -177,7 +170,7 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -190,6 +183,7 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -221,43 +215,66 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
 
   const handleZoneChange = (value: any) => {
     // setSelectedZone(value);
-    // form.setFieldsValue({ zoneManagerId: value });
+    form.setFieldsValue({ zoneManagerId: value });
     setSelectedZone(value as any);
   };
 
   const handleSubZoneChange = (value: any) => {
     // setSelectedSubZone(value);
-    // form.setFieldsValue({ subZoneManagerId: value });
+    form.setFieldsValue({ subZoneManagerId: value });
     setSelectedSubZone(value as any);
   };
 
   const handleRetailerChange = (value: any) => {
+    form.setFieldsValue({ retailerId: value });
     setSelectedRetailer(value);
   };
 
   useEffect(() => {
     getZoneManagers();
-    getRetailers();
+    getRetailers(null);
     getSubZoneManagers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     if (selectedZone) {
+      setSelectedSubZone(null);
+      form.setFieldsValue({ subZoneManagerId: null });
+      setSelectedRetailer(null);
+      form.setFieldsValue({ retailerId: null });
       getSubZoneManagers(selectedZone);
+    } else {
+      setSelectedSubZone(null);
+      form.setFieldsValue({ subZoneManagerId: null });
+      setSelectedRetailer(null);
+      form.setFieldsValue({ retailerId: null });
+      getSubZoneManagers(null);
+      getRetailers(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedZone]);
+
+  useEffect(() => {
+    if (selectedSubZone) {
+      setSelectedRetailer(null);
+      form.setFieldsValue({ retailerId: null });
+      getRetailers(selectedSubZone);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubZone]);
 
   const onSubmit = () => {
     setLoading(true);
 
     const bodyData = {
-      zoneManagerId: item.id,
+      zoneManagerId: selectedZone,
       subZoneManagerId: selectedSubZone,
       retailerId: selectedRetailer
     };
 
     const formData = new FormData();
+    formData.append("id", item);
     if (file) {
       formData.append("csvFile", file);
     }
@@ -265,7 +282,7 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
 
     try {
       axios
-        .post("/api/customer-import-csv/upload", formData)
+        .put("/api/customer-import-csv/update", formData)
         .then(res => {
           const { data } = res;
 
@@ -311,6 +328,30 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
       {loading && <AppImageLoader />}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
+      <div>
+        <p
+          style={{
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: "1rem"
+          }}
+        >
+          <strong>Sample CSV :</strong>
+          <a href="/csv/Customer_Upload_Sample.csv" download>
+            <Button
+              type="link"
+              style={{
+                padding: 0,
+                fontWeight: "bold",
+                paddingLeft: "10px"
+              }}
+            >
+              Download
+            </Button>
+          </a>
+        </p>
+      </div>
+
       <div className="mt-3">
         <Form
           // {...layout}
@@ -327,30 +368,92 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
           scrollToFirstError
         >
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-            <Col xs={24} className="gutter-row">
-              {/* note */}
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
               <Form.Item
-                label="Note"
+                label="Zone Manager"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="note"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your note!"
-                  }
-                ]}
+                name="zoneManagerId"
               >
-                <Input.TextArea
-                  rows={4}
-                  cols={16}
-                  placeholder="note"
-                  className={`form-control`}
-                  name="note"
-                  style={{ padding: "6px" }}
-                />
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleZoneChange}
+                    options={zones}
+                    value={selectedZone}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="SubZone Manager"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="subZoneManagerId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleSubZoneChange}
+                    options={subZones}
+                    value={selectedSubZone}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* retailerId */}
+              <Form.Item
+                label="Retailer"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="retailerId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleRetailerChange}
+                    options={retailers}
+                    value={selectedRetailer}
+                  />
+                </Space>
               </Form.Item>
             </Col>
           </Row>
@@ -358,7 +461,7 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
             <Col>
               <Form.Item
-                label="Attachment"
+                label="csvFile"
                 style={{
                   marginBottom: 0,
                   width: "100%",
@@ -385,7 +488,6 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
           <Row justify="center">
             <Col>
               <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
                 <Button
                   // type="primary"
                   htmlType="submit"

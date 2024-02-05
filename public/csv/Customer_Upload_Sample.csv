@@ -1,0 +1,4 @@
+name,username,email,password,customerType,mobileNo,altMobileNo,contactPerson,contactPersonNumber,connectionAddress,flatNo,houseNo,roadNo,area,identityType,identityNo,customerPackage,distributionZone,distributionPop
+Talib,talib,talib@mail.com,12345,prepaid,1521495891,,Mainul,1866193233,Dhaka,,84,,Kazipara,NID,55114,10 Mbps,Gulshan,Nadda
+Nasir,nasir,nasir@mail.com,123456,prepaid,21876356,,Khalek,12584556,CTG,,84,,60 feet,NID,55114,5 Mbps,Baridhara,Baridhara
+Monir,monir,monir@mail.com,12345,prepaid,1875656454,,Abdul,1215212,Dhaka,,84,,Kazipara,NID,55114,10 Mbps,Vatara,Notunbazar

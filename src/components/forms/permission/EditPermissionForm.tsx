@@ -257,6 +257,18 @@ const tagsList = [
   {
     label: "Unused Voucher Download",
     value: "unUsedVoucherDownload"
+  },
+  {
+    label: "Success List",
+    value: "successList"
+  },
+  {
+    label: "Failed List",
+    value: "failedList"
+  },
+  {
+    label: "process",
+    value: "process"
   }
 ];
 

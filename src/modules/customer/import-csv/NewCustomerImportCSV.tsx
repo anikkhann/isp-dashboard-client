@@ -1,6 +1,6 @@
 import CreateCustomerImportCsvForm from "@/components/forms/customer-import-csv/CreateCustomerImportCsvForm";
 import AppRowContainer from "@/lib/AppRowContainer";
-import { Breadcrumb } from "antd";
+import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
@@ -54,7 +54,21 @@ const NewCustomerImportCSV = () => {
             New Customer Import CSV
           </h1>
         </div>
-        <CreateCustomerImportCsvForm />
+        <Card
+          hoverable
+          style={{
+            width: "90%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            textAlign: "center",
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            border: "1px solid #F15F22"
+          }}
+        >
+          <CreateCustomerImportCsvForm />
+        </Card>
       </AppRowContainer>
     </>
   );

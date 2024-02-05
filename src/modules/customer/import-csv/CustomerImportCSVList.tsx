@@ -20,7 +20,7 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { CustomerData } from "@/interfaces/CustomerData";
@@ -36,6 +36,8 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { FaListAlt } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -58,6 +60,8 @@ const CustomerImportCSVList: React.FC = () => {
   // const [form] = Form.useForm();
   const { Panel } = Collapse;
   const [data, setData] = useState<CustomerData[]>([]);
+
+  const router = useRouter();
 
   const MySwal = withReactContent(Swal);
 
@@ -207,6 +211,78 @@ const CustomerImportCSVList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  async function handleProcess(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Disconnect customer!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.put(
+          `/api/customer-import-csv/process/${id}`
+        );
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.body.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
+
+  async function handleCancel(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Disconnect customer!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.put(
+          `/api/customer-import-csv/cancel/${id}`
+        );
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.body.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
 
   const handleDateChange = (value: any) => {
     // console.log(value);
@@ -537,15 +613,95 @@ const CustomerImportCSVList: React.FC = () => {
                   </Space>
                 </Tooltip>
               ) : null}
-              {ability.can("customerImportCsv.view", "") ? (
-                <Tooltip title="View" placement="bottomRight" color="green">
-                  <Space size="middle" align="center" wrap className="mx-1">
-                    <Link href={`/admin/customer/import-csv/${record.id}`}>
-                      <Button type="primary" icon={<EyeOutlined />} />
+
+              {/* process */}
+
+              {ability.can("customerImportCsv.process", "") ? (
+                <Tooltip
+                  title="Process"
+                  placement="bottomRight"
+                  color="magenta"
+                >
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      type="primary"
+                      icon={<CheckOutlined />}
+                      style={{
+                        backgroundColor: "#FF5630",
+                        borderColor: "#FF5630",
+                        color: "#ffffff"
+                      }}
+                      onClick={() => handleProcess(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {/* cancel */}
+              {ability.can("customerImportCsv.cancel", "") ? (
+                <Tooltip title="Cancel" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      type="primary"
+                      icon={<CloseOutlined />}
+                      style={{
+                        backgroundColor: "#FF5630",
+                        borderColor: "#FF5630",
+                        color: "#ffffff"
+                      }}
+                      onClick={() => handleCancel(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {ability.can("customerImportCsv.successList", "") ? (
+                <Tooltip
+                  title="Success List"
+                  placement="bottomRight"
+                  color="magenta"
+                >
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/customer/import-csv/${record.id}/success`}
+                    >
+                      <Button
+                        type="primary"
+                        icon={<FaListAlt />}
+                        style={{
+                          backgroundColor: "#52c41a",
+                          borderColor: "#52c41a",
+                          color: "#ffffff"
+                        }}
+                      />
                     </Link>
                   </Space>
                 </Tooltip>
               ) : null}
+              {ability.can("customerImportCsv.failedList", "") ? (
+                <Tooltip
+                  title="Failed List"
+                  placement="bottomRight"
+                  color="magenta"
+                >
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/customer/import-csv/${record.id}/failed`}
+                    >
+                      <Button
+                        type="primary"
+                        icon={<FaListAlt />}
+                        style={{
+                          backgroundColor: "#FF5630",
+                          borderColor: "#FF5630",
+                          color: "#ffffff"
+                        }}
+                      />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+              {/* process */}
             </Space>
           </div>
         );

@@ -1,7 +1,7 @@
 import CustomerLayout from "@/core/layouts/CustomerLayout";
 
 import AppLoader from "@/lib/AppLoader";
-import DetailsCustomer from "@/modules/customer/customer/DetailsCustomer";
+import CustomerImportSuccessList from "@/modules/customer/import-csv/CustomerImportSuccessList";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("customerImportCsv.view", "") ? (
-        <DetailsCustomer id={id} />
+      {ability.can("customerImportCsv.successList", "") ? (
+        <CustomerImportSuccessList id={id} />
       ) : (
         <Forbidden />
       )}
