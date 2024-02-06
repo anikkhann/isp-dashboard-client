@@ -687,8 +687,8 @@ const UnusedVoucherList: React.FC = () => {
 
     const body = {
       meta: {
-        // limit: 10,
-        // page: 1,
+        limit: 10,
+        page: 1,
         sort: [
           {
             order: "asc",
@@ -768,15 +768,16 @@ const UnusedVoucherList: React.FC = () => {
           },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+      // console.log(downloadRow);
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
     }
   }, [downloadRow]);
 
