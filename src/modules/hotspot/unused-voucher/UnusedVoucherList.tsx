@@ -689,8 +689,8 @@ const UnusedVoucherList: React.FC = () => {
 
     const body = {
       meta: {
-        // limit: 10,
-        // page: 1,
+        limit: 10,
+        page: 1,
         sort: [
           {
             order: "asc",
@@ -738,16 +738,16 @@ const UnusedVoucherList: React.FC = () => {
           return {
             Voucher: item.voucherNumber,
             Reference: item.referenceNumber,
-            SerialNo: item.serialNo,
-            ExpirationDate: format(date, "yyyy-MM-dd pp"),
+            "Serial No": item.serialNo,
+            "Expiration Date": format(date, "yyyy-MM-dd pp"),
             Client: item.client.username,
             Package: item.pricingPlan.name,
-            PackagePrice: item.pricingPlan.price,
-            PackageCategory: item.pricingPlan.packageCategory,
-            OTPLimit: item.pricingPlan.otpLimit,
-            StartTime: item.pricingPlan.startTime,
-            EndTime: item.pricingPlan.endTime,
-            CreatedAt: item.createdOn
+            "Package Price": item.pricingPlan.price,
+            "Package Category": item.pricingPlan.packageCategory,
+            "OTP Limit": item.pricingPlan.otpLimit,
+            "Start Time": item.pricingPlan.startTime,
+            "End Time": item.pricingPlan.endTime,
+            "Created At": item.createdOn
 
             // TrxDate: format(date, "yyyy-MM-dd pp")
           };
