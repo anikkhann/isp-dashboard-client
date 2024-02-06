@@ -2,7 +2,7 @@
 import { Button, Card, Col, Input, Select, Space, Tag, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -55,7 +55,7 @@ const AdminTicketList: React.FC = () => {
   const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [complainTypeList, setComplainTypes] = useState<any>([]);
   const [selectedComplainType, setSelectedComplainType] = useState<any>(null);
-
+  const downloadRef = useRef<any>(null);
   const [statusList, setStatusList] = useState<any>([]);
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
@@ -521,6 +521,110 @@ const AdminTicketList: React.FC = () => {
     }
   };
 
+  const handleDownload = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const body = {
+      meta: {
+        // limit: 10,
+        // page: 1,
+        sort: [
+          {
+            order: "asc",
+            field: "id"
+          }
+        ]
+      },
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        ticketCategory: "parent",
+        rootCauseCategory: "parent",
+
+        complainType: {
+          id: selectedComplainType
+        },
+        status: selectedStatus,
+        ticketNo: selectedTicketNumber,
+        closedBy: {
+          id: selectedClosedBy
+        },
+        insertedBy: {
+          id: selectedCreatedBy
+        },
+        assignTo: {
+          id: selectedAssignTo
+        }
+      }
+    };
+
+    await axios
+      .post(`/api/ticket/get-list`, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        // console.log(res);
+        const { data } = res;
+        console.log(data.body);
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
+
+        const list = data.body.map((item: any) => {
+          const date = new Date(item.createdOn);
+          const dateTwo = new Date(item.updatedOn);
+          return {
+            TicketNo: item.ticketNo,
+            Client: item.openedBy.partner.username,
+            ComplaintType: item.complainType.name,
+            ComplaintDetails: item.complainDetails,
+            AssignedTo: item.assignedTo.username,
+            TicketStatus: item.status,
+            RootCause: item.rootCause.title,
+            CreatedBy: item.openedBy.username,
+            CreatedAt: format(date, "yyyy-MM-dd pp"),
+            LastUpdatedBy: item.editedBy.username,
+            LastUpdatedAt: format(dateTwo, "yyyy-MM-dd pp")
+            // TrxDate: format(date, "yyyy-MM-dd pp")
+          };
+        });
+
+        setDownloadRow([
+          {
+            TicketNo: "Ticket No",
+            Client: "Client",
+            ComplaintType: "Complain Type",
+            ComplaintDetails: "Complain Details",
+            AssignedTo: "Assigned To",
+            TicketStatus: "Ticket Status",
+            RootCause: "Root Cause",
+            CreatedBy: "Created By",
+            CreatedAt: "Created At",
+            LastUpdatedBy: "Last Updated By",
+            LastUpdatedAt: "Last Updated At"
+          },
+          ...list
+        ]);
+        if (downloadRef.current) {
+          downloadRef.current.link.click();
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (downloadRow) {
+      setDownloadRow(downloadRow);
+    }
+  }, [downloadRow]);
+
   return (
     <>
       <AppRowContainer>
@@ -550,8 +654,8 @@ const AdminTicketList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -792,136 +896,34 @@ const AdminTicketList: React.FC = () => {
               {ability.can("adminTicket.download", "") && (
                 <Row justify={"end"}>
                   <Col>
-                    {/* <CSVLink
-                      data={data}
-                      asyncOnClick={true}
-                      onClick={(event, done) => {
+                    <Button
+                      type="primary"
+                      onClick={() => {
                         setDownloadLoading(true);
-                        setTimeout(() => {
-                          setDownloadLoading(false);
-                        }, 2000);
-                        done();
+                        handleDownload();
                       }}
-                      className="ant-btn ant-btn-lg"
-                      target="_blank"
                       style={{
                         width: "100%",
                         textAlign: "center",
                         marginTop: "25px",
                         backgroundColor: "#F15F22",
-                        color: "#ffffff",
-                        padding: "10px"
+                        color: "#ffffff"
                       }}
-                      filename={`admin-ticket-${dayjs().format(
-                        "YYYY-MM-DD"
-                      )}.csv`}
                     >
                       {downloadLoading ? "Loading..." : "Download"}
-                    </CSVLink> */}
+                    </Button>
+
                     <CSVLink
                       data={downloadRow}
-                      asyncOnClick={true}
-                      onClick={(event, done) => {
-                        setDownloadLoading(true);
-                        setTimeout(() => {
-                          setDownloadLoading(false);
-                        }, 2000);
-                        const token = Cookies.get("token");
-                        axios.defaults.headers.common[
-                          "Authorization"
-                        ] = `Bearer ${token}`;
-
-                        const body = {
-                          meta: {
-                            sort: [
-                              {
-                                order: "asc",
-                                field: "id"
-                              }
-                            ]
-                          },
-                          body: {
-                            // SEND FIELD NAME WITH DATA TO SEARCH
-                            ticketCategory: "parent",
-                            rootCauseCategory: "parent",
-
-                            complainType: {
-                              id: selectedComplainType
-                            },
-                            status: selectedStatus,
-                            ticketNo: selectedTicketNumber,
-                            closedBy: {
-                              id: selectedClosedBy
-                            },
-                            insertedBy: {
-                              id: selectedCreatedBy
-                            },
-                            assignTo: {
-                              id: selectedAssignTo
-                            }
-                          }
-                        };
-
-                        axios
-                          .post(`//api/ticket/get-list`, body, {
-                            headers: {
-                              "Content-Type": "application/json"
-                            }
-                          })
-                          .then(res => {
-                            // console.log(res);
-                            const { data } = res;
-                            console.log(data.body);
-                            if (data.status != 200) {
-                              MySwal.fire({
-                                title: "Error",
-                                text: data.message || "Something went wrong",
-                                icon: "error"
-                              });
-                            }
-
-                            if (!data.body) return;
-
-                            const list = data.body.map((item: any) => {
-                              const date = new Date(item.createdOn);
-                              const dateTwo = new Date(item.updatedOn);
-                              return {
-                                TicketNo: item.ticketNo,
-                                Client: item.openedBy.partner.username,
-                                ComplaintType: item.complainType.name,
-                                ComplaintDetails: item.complainDetails,
-                                AssignedTo: item.assignedTo.username,
-                                TicketStatus: item.status,
-                                RootCause: item.rootCause.title,
-                                CreatedBy: item.openedBy.username,
-                                CreatedAt: format(date, "yyyy-MM-dd pp"),
-                                LastUpdatedBy: item.editedBy.username,
-                                LastUpdatedAt: format(dateTwo, "yyyy-MM-dd pp")
-                                // TrxDate: format(date, "yyyy-MM-dd pp")
-                              };
-                            });
-                            setDownloadRow(list);
-                            console.log(list);
-                            done();
-                          });
-                      }}
-                      className="ant-btn ant-btn-lg"
+                      ref={downloadRef}
                       target="_blank"
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        marginTop: "25px",
-                        backgroundColor: "#F15F22",
-                        color: "#ffffff",
-                        padding: "10px"
-                      }}
                       filename={`admin-ticket-${dayjs().format(
                         "YYYY-MM-DD"
                       )}.csv`}
-                    >
-                      {downloadLoading ? "Loading..." : "Download"}
-                      {/* <DownloadOutlined /> */}
-                    </CSVLink>
+                      style={{
+                        display: "none"
+                      }}
+                    ></CSVLink>
                   </Col>
                 </Row>
               )}

@@ -2,7 +2,7 @@
 import { Button, Card, Col, Select, Space, Row, Tooltip, Input } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -49,6 +49,7 @@ const UsedVoucherList: React.FC = () => {
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
+  const downloadRef = useRef<any>(null);
 
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
@@ -737,6 +738,109 @@ const UsedVoucherList: React.FC = () => {
     }
   };
 
+  const handleDownload = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const body = {
+      meta: {
+        // limit: 10,
+        // page: 1,
+        sort: [
+          {
+            order: "asc",
+            field: "id"
+          }
+        ]
+      },
+      body: {
+        voucherNumber: selectedVoucherNumber,
+        serialNo: selectedSerialNo,
+        referenceNumber: selectedReferenceNumber,
+        pricingPlan: {
+          id: selectedPricingPlan
+        },
+        subZoneManagerId: selectedSubZoneManager,
+        zoneManagerId: selectedZone,
+        retailerId: selectedRetailer,
+        clientId: selectedClient
+      }
+    };
+
+    await axios
+      .post(`/api-hotspot/voucher-archive/get-list`, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        // console.log(res);
+        const { data } = res;
+        console.log(data.body);
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
+
+        const list = data.body.map((item: any) => {
+          const date = new Date(item.expireDate);
+          return {
+            UsedBy: item.usedBy.customer.name,
+            UsedFrom: item.usedBy.customer.phone,
+            UsedIP: item.usedIp,
+            UsedMAC: item.usedMac,
+            Voucher: item.voucherNumber,
+            Reference: item.referenceNumber,
+            SerialNo: item.serialNo,
+            ExpirationDate: format(date, "yyyy-MM-dd pp"),
+            Client: item.client.username,
+            Package: item.pricingPlan.name,
+            PackagePrice: item.pricingPlan.price,
+            PackageCategory: item.pricingPlan.packageCategory,
+            OTPLimit: item.pricingPlan.otpLimit,
+            StartTime: item.pricingPlan.startTime,
+            EndTime: item.pricingPlan.endTime,
+            CreatedAt: item.createdOn
+          };
+        });
+        setDownloadRow([
+          {
+            UsedBy: "Used By",
+            UsedFrom: "Used From",
+            UsedIP: "Used IP",
+            UsedMAC: "Used MAC",
+            Voucher: "Voucher",
+            Reference: "Reference",
+            SerialNo: "Serial No",
+            ExpirationDate: "Expiration Date",
+            Client: "Client",
+            Package: "Package",
+            PackagePrice: "Package Price",
+            PackageCategory: "Package Category",
+            OTPLimit: "OTP Limit",
+            StartTime: "Start Time",
+            EndTime: "End Time",
+            CreatedAt: "Created At"
+          },
+          ...list
+        ]);
+        if (downloadRef.current) {
+          downloadRef.current.link.click();
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (downloadRow) {
+      setDownloadRow(downloadRow);
+    }
+  }, [downloadRow]);
+
   return (
     <>
       <AppRowContainer>
@@ -766,8 +870,8 @@ const UsedVoucherList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -1110,32 +1214,6 @@ const UsedVoucherList: React.FC = () => {
                 <Row justify={"end"}>
                   <Col span={3}>
                     {/* <CSVLink
-                      data={data}
-                      asyncOnClick={true}
-                      onClick={(event, done) => {
-                        setDownloadLoading(true);
-                        setTimeout(() => {
-                          setDownloadLoading(false);
-                        }, 2000);
-                        done();
-                      }}
-                      className="ant-btn ant-btn-lg"
-                      target="_blank"
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        marginTop: "25px",
-                        backgroundColor: "#F15F22",
-                        color: "#ffffff",
-                        padding: "10px"
-                      }}
-                      filename={`used-voucher-${dayjs().format(
-                        "YYYY-MM-DD"
-                      )}.csv`}
-                    >
-                      {downloadLoading ? "Loading..." : "Download"}
-                    </CSVLink> */}
-                    <CSVLink
                       data={downloadRow}
                       asyncOnClick={true}
                       onClick={(event, done) => {
@@ -1144,9 +1222,8 @@ const UsedVoucherList: React.FC = () => {
                           setDownloadLoading(false);
                         }, 2000);
                         const token = Cookies.get("token");
-                        axios.defaults.headers.common[
-                          "Authorization"
-                        ] = `Bearer ${token}`;
+                        axios.defaults.headers.common["Authorization"] =
+                          `Bearer ${token}`;
 
                         const body = {
                           meta: {
@@ -1158,7 +1235,6 @@ const UsedVoucherList: React.FC = () => {
                             ]
                           },
                           body: {
-                            // SEND FIELD NAME WITH DATA TO SEARCH
                             voucherNumber: selectedVoucherNumber,
                             serialNo: selectedSerialNo,
                             referenceNumber: selectedReferenceNumber,
@@ -1212,8 +1288,6 @@ const UsedVoucherList: React.FC = () => {
                                 StartTime: item.pricingPlan.startTime,
                                 EndTime: item.pricingPlan.endTime,
                                 CreatedAt: item.createdOn
-
-                                // TrxDate: format(date, "yyyy-MM-dd pp")
                               };
                             });
                             setDownloadRow(list);
@@ -1236,8 +1310,36 @@ const UsedVoucherList: React.FC = () => {
                       )}.csv`}
                     >
                       {downloadLoading ? "Loading..." : "Download"}
-                      {/* <DownloadOutlined /> */}
-                    </CSVLink>
+                    </CSVLink> */}
+
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setDownloadLoading(true);
+                        handleDownload();
+                      }}
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff"
+                      }}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                    </Button>
+
+                    <CSVLink
+                      data={downloadRow}
+                      ref={downloadRef}
+                      target="_blank"
+                      filename={`used-voucher-${dayjs().format(
+                        "YYYY-MM-DD"
+                      )}.csv`}
+                      style={{
+                        display: "none"
+                      }}
+                    ></CSVLink>
                   </Col>
                 </Row>
               )}
