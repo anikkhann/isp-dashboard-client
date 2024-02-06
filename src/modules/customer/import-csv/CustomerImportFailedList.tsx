@@ -184,8 +184,8 @@ const CustomerImportFailedList = ({ id }: any) => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

@@ -483,8 +483,8 @@ const PaymentGatewayConfigList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
