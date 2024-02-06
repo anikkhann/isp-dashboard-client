@@ -664,7 +664,9 @@ const CustomerList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            <Space>
+              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
+            </Space>
           </>
         );
       },
@@ -967,91 +969,93 @@ const CustomerList: React.FC = () => {
         const list = data.body.map((item: any) => {
           const date = new Date(item.expirationTime);
           return {
-            CustomerID: item.customerId,
-            UserName: item.username,
-            MobileNo: item.mobileNo,
+            "Customer ID": item.customerId,
+            "User Name": item.username,
+            "Mobile No": item.mobileNo,
             Email: item.email,
-            ContactPerson: item.contactPerson,
-            ContactNumber: item.contactNumber,
-            ConnectionAddress: item.connectionAddress,
-            HouseNo: item.houseNo,
+            "Contact Person": item.contactPerson,
+            "Contact Number": item.contactNumber,
+            "Connection Address": item.connectionAddress,
+            "House No": item.houseNo,
             Area: item.area,
-            IdentityType: item.identityType,
-            IdentityNo: item.identityNo,
-            IsMacBound: item.isMacBound,
+            "Identity Type": item.identityType,
+            "Identity No": item.identityNo,
+            "Is Mac Bound": item.isMacBound,
             MAC: item.mac,
-            SimultaneousUser: item.simultaneousUser,
-            IPMode: item.ipMode,
-            StaticIP: item.staticIp,
-            ExpirationTime: format(date, "yyyy-MM-dd pp"),
+            "Simultaneous User": item.simultaneousUser,
+            "IP Mode": item.ipMode,
+            "Static IP": item.staticIp,
+            "Expiration Time": format(date, "yyyy-MM-dd pp"),
             Credits: item.simultaneousUser,
-            AutoRenew: item.autoRenew,
+            "Auto Renew": item.autoRenew,
             Discount: item.discount,
-            SMSAlert: item.smsAlert,
-            EmailAlert: item.emailAlert,
-            ClientId: item.clientId,
-            isActive: item.isActive,
-            isSafOtpSend: item.isSafOtpSend,
-            isSafVerified: item.isSafVerified,
-            isSafOtpVerified: item.isSafOtpVerified,
-            adjustmentDay: item.adjustmentDay,
-            altMobileNo: item.altMobileNo,
-            flatNo: item.flatNo,
-            roadNo: item.roadNo,
-            remarks: item.remarks,
-            referrerName: item.referrerName,
-            connectionType: item.connectionType
+            "SMS Alert": item.smsAlert,
+            "Email Alert": item.emailAlert,
+            "Client Id": item.clientId,
+            "Is Active": item.isActive,
+            "Is SafOtp Send": item.isSafOtpSend,
+            "Is Saf Verified": item.isSafVerified,
+            "Is SafOtp Verified": item.isSafOtpVerified,
+            "Adjustment Day": item.adjustmentDay,
+            "Alt Mobile No": item.altMobileNo,
+            "Flat No": item.flatNo,
+            "Road No": item.roadNo,
+            Remarks: item.remarks,
+            "Referrer Name": item.referrerName,
+            "Connection Type": item.connectionType
           };
         });
 
         setDownloadRow([
-          {
-            CustomerID: "Customer",
-            UserName: "User Name",
-            MobileNo: "Mobile No",
-            Email: "Email",
-            ContactPerson: "Contact Person",
-            ContactNumber: "Contact Number",
-            ConnectionAddress: "Connection Address",
-            HouseNo: "House No",
-            Area: "Area",
-            IdentityType: "Identity Type",
-            IdentityNo: "Identity No",
-            IsMacBound: "Is Mac Bound",
-            MAC: "MAC",
-            SimultaneousUser: "Simultaneous User",
-            IPMode: "IP Mode",
-            StaticIP: "Static IP",
-            ExpirationTime: "Expiration Time",
-            Credits: "Simultaneous User",
-            AutoRenew: "Auto Renew",
-            Discount: "Discount",
-            SMSAlert: "SMS Alert",
-            EmailAlert: "Email Alert",
-            ClientId: "Client Id",
-            isActive: "Is Active",
-            isSafOtpSend: "Is SafOtp Send",
-            isSafVerified: "Is Saf Verified",
-            isSafOtpVerified: "Is SafOtp Verified",
-            adjustmentDay: "Adjustment Day",
-            altMobileNo: "Alt Mobile No",
-            flatNo: "Flat No",
-            roadNo: "Road No",
-            remarks: "Remarks",
-            referrerName: "Referrer Name",
-            connectionType: "Connection Type"
-          },
+          // {
+          //   CustomerID: "Customer",
+          //   UserName: "User Name",
+          //   MobileNo: "Mobile No",
+          //   Email: "Email",
+          //   ContactPerson: "Contact Person",
+          //   ContactNumber: "Contact Number",
+          //   ConnectionAddress: "Connection Address",
+          //   HouseNo: "House No",
+          //   Area: "Area",
+          //   IdentityType: "Identity Type",
+          //   IdentityNo: "Identity No",
+          //   IsMacBound: "Is Mac Bound",
+          //   MAC: "MAC",
+          //   SimultaneousUser: "Simultaneous User",
+          //   IPMode: "IP Mode",
+          //   StaticIP: "Static IP",
+          //   ExpirationTime: "Expiration Time",
+          //   Credits: "Simultaneous User",
+          //   AutoRenew: "Auto Renew",
+          //   Discount: "Discount",
+          //   SMSAlert: "SMS Alert",
+          //   EmailAlert: "Email Alert",
+          //   ClientId: "Client Id",
+          //   isActive: "Is Active",
+          //   isSafOtpSend: "Is SafOtp Send",
+          //   isSafVerified: "Is Saf Verified",
+          //   isSafOtpVerified: "Is SafOtp Verified",
+          //   adjustmentDay: "Adjustment Day",
+          //   altMobileNo: "Alt Mobile No",
+          //   flatNo: "Flat No",
+          //   roadNo: "Road No",
+          //   remarks: "Remarks",
+          //   referrerName: "Referrer Name",
+          //   connectionType: "Connection Type"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

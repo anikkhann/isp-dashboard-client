@@ -369,22 +369,27 @@ const MyRevenueList: React.FC = () => {
         });
 
         setDownloadRow([
-          {
-            Total: "Total",
-            Offline: "Offline",
-            Online: "Online"
-          },
+          // {
+          //   Total: "Total",
+          //   Offline: "Offline",
+          //   Online: "Online"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
+        // if (downloadRef.current) {
+        //   downloadRef.current.link.click();
+        // }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

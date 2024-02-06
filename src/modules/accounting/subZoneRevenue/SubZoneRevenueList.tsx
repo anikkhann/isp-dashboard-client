@@ -426,7 +426,7 @@ const SubZoneRevenueList: React.FC = () => {
 
         const list = data.body.map((item: any) => {
           return {
-            SubZoneManager: item.sub_zone_manager,
+            "SubZone Manager": item.sub_zone_manager,
             Total: item.total_commission,
             Offline: item.offline_commission,
             Online: item.online_commission
@@ -434,23 +434,25 @@ const SubZoneRevenueList: React.FC = () => {
         });
 
         setDownloadRow([
-          {
-            SubZoneManager: "Sub Zone Manager",
-            Total: "Total",
-            Offline: "Offline",
-            Online: "Online"
-          },
+          // {
+          //   SubZoneManager: "Sub Zone Manager",
+          //   Total: "Total",
+          //   Offline: "Offline",
+          //   Online: "Online"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

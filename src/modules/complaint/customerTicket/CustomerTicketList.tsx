@@ -326,7 +326,9 @@ const CustomerTicketList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            <Space>
+              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
+            </Space>
           </>
         );
       },
@@ -575,46 +577,48 @@ const CustomerTicketList: React.FC = () => {
           const date = new Date(item.createdOn);
           const dateTwo = new Date(item.updatedOn);
           return {
-            TicketNo: item.ticketNo,
+            "Ticket No": item.ticketNo,
             Customer: item.customer.username,
-            ComplaintType: item.complainType.name,
-            ComplaintDetails: item.complainDetails,
-            AssignedTo: item.assignedTo.username,
-            TicketStatus: item.status,
-            RootCause: item.rootCause.title,
-            CreatedBy: item.openedBy.username,
-            CreatedAt: format(date, "yyyy-MM-dd pp"),
-            LastUpdatedBy: item.editedBy.username,
-            LastUpdatedAt: format(dateTwo, "yyyy-MM-dd pp")
+            "Complaint Type": item.complainType.name,
+            "Complaint Details": item.complainDetails,
+            "Assigned To": item.assignedTo.username,
+            "Ticket Status": item.status,
+            "Root Cause": item.rootCause.title,
+            "Created By": item.openedBy.username,
+            "Created At": format(date, "yyyy-MM-dd pp"),
+            "Last Updated By": item.editedBy.username,
+            "Last Updated At": format(dateTwo, "yyyy-MM-dd pp")
             // TrxDate: format(date, "yyyy-MM-dd pp")
           };
         });
 
         setDownloadRow([
-          {
-            TicketNo: "Ticket No",
-            Customer: "Customer",
-            ComplaintType: "Complain Type",
-            ComplaintDetails: "Complain Details",
-            AssignedTo: "Assigned To",
-            TicketStatus: "Ticket Status",
-            RootCause: "Root Cause",
-            CreatedBy: "Created By",
-            CreatedAt: "Created At",
-            LastUpdatedBy: "Last Updated By",
-            LastUpdatedAt: "Last Updated At"
-          },
+          // {
+          //   TicketNo: "Ticket No",
+          //   Customer: "Customer",
+          //   ComplaintType: "Complain Type",
+          //   ComplaintDetails: "Complain Details",
+          //   AssignedTo: "Assigned To",
+          //   TicketStatus: "Ticket Status",
+          //   RootCause: "Root Cause",
+          //   CreatedBy: "Created By",
+          //   CreatedAt: "Created At",
+          //   LastUpdatedBy: "Last Updated By",
+          //   LastUpdatedAt: "Last Updated At"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

@@ -483,7 +483,9 @@ const UnusedVoucherList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            <Space>
+              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
+            </Space>
           </>
         );
       },
@@ -752,31 +754,33 @@ const UnusedVoucherList: React.FC = () => {
         });
 
         setDownloadRow([
-          {
-            Voucher: "Voucher",
-            Reference: "Reference",
-            SerialNo: "Serial No",
-            ExpirationDate: "Expiration Date",
-            Client: "Client",
-            Package: "Package",
-            PackagePrice: "Package Price",
-            PackageCategory: "Package Category",
-            OTPLimit: "OTP Limit",
-            StartTime: "Start Time",
-            EndTime: "End Time",
-            CreatedAt: "Created At"
-          },
+          // {
+          //   Voucher: "Voucher",
+          //   Reference: "Reference",
+          //   SerialNo: "Serial No",
+          //   ExpirationDate: "Expiration Date",
+          //   Client: "Client",
+          //   Package: "Package",
+          //   PackagePrice: "Package Price",
+          //   PackageCategory: "Package Category",
+          //   OTPLimit: "OTP Limit",
+          //   StartTime: "Start Time",
+          //   EndTime: "End Time",
+          //   CreatedAt: "Created At"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

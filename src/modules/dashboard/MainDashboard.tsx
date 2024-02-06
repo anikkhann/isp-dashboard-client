@@ -109,7 +109,7 @@ const MainDashboard = () => {
               <MainCard
                 bgColor="#216583"
                 color="#fff"
-                icon="/assets/images/icons/computer.png"
+                icon="/assets/images/icons/users-management.png"
                 title="Users Management"
                 link="/admin/user"
               />

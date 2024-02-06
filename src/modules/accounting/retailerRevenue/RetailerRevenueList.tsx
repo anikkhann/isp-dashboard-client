@@ -432,23 +432,25 @@ const RetailerRevenueList: React.FC = () => {
         });
 
         setDownloadRow([
-          {
-            Retailer: "Retailer",
-            Total: "Total",
-            Offline: "Offline",
-            Online: "Online"
-          },
+          // {
+          //   Retailer: "Retailer",
+          //   Total: "Total",
+          //   Offline: "Offline",
+          //   Online: "Online"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

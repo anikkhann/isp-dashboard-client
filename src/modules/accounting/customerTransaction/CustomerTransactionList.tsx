@@ -380,7 +380,9 @@ const CustomerTransactionList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            <Space>
+              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
+            </Space>
           </>
         );
       },
@@ -609,40 +611,42 @@ const CustomerTransactionList: React.FC = () => {
           const date = new Date(item.trxDate);
           return {
             Customer: item.trxFor,
-            TRXType: item.trxType,
-            TrxMode: item.trxMode,
-            TransactionId: item.transactionId,
+            "Trx Type": item.trxType,
+            "Trx Mode": item.trxMode,
+            "Transaction Id": item.transactionId,
             Amount: item.amount,
             Balance: item.balance,
             Remarks: item.remarks,
-            TrxBy: item.trxBy,
-            TrxDate: format(date, "yyyy-MM-dd pp")
+            "Trx By": item.trxBy,
+            "Trx Date": format(date, "yyyy-MM-dd pp")
           };
         });
 
         setDownloadRow([
-          {
-            Customer: "Customer",
-            TRXType: "TRX Type",
-            TrxMode: "Trx Mode",
-            TransactionId: "Transaction Id",
-            Amount: "Amount",
-            Balance: "Balance",
-            Remarks: "Remarks",
-            TrxBy: "Trx By",
-            TrxDate: "Trx Date"
-          },
+          // {
+          //   Customer: "Customer",
+          //   TRXType: "TRX Type",
+          //   TrxMode: "Trx Mode",
+          //   TransactionId: "Transaction Id",
+          //   Amount: "Amount",
+          //   Balance: "Balance",
+          //   Remarks: "Remarks",
+          //   TrxBy: "Trx By",
+          //   TrxDate: "Trx Date"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

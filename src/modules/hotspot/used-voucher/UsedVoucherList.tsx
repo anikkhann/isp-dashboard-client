@@ -487,7 +487,9 @@ const UsedVoucherList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            <Space>
+              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
+            </Space>
           </>
         );
       },
@@ -790,54 +792,59 @@ const UsedVoucherList: React.FC = () => {
         const list = data.body.map((item: any) => {
           const date = new Date(item.expireDate);
           return {
-            UsedBy: item.usedBy.customer.name,
-            UsedFrom: item.usedBy.customer.phone,
-            UsedIP: item.usedIp,
-            UsedMAC: item.usedMac,
+            "Used By": item.usedBy.customer.name,
+            "Used From": item.usedBy.customer.phone,
+            "Used IP": item.usedIp,
+            "Used MAC": item.usedMac,
             Voucher: item.voucherNumber,
             Reference: item.referenceNumber,
-            SerialNo: item.serialNo,
-            ExpirationDate: format(date, "yyyy-MM-dd pp"),
+            "Serial No": item.serialNo,
+            "Expiration Date": format(date, "yyyy-MM-dd pp"),
             Client: item.client.username,
             Package: item.pricingPlan.name,
-            PackagePrice: item.pricingPlan.price,
-            PackageCategory: item.pricingPlan.packageCategory,
-            OTPLimit: item.pricingPlan.otpLimit,
-            StartTime: item.pricingPlan.startTime,
-            EndTime: item.pricingPlan.endTime,
-            CreatedAt: item.createdOn
+            "Package Price": item.pricingPlan.price,
+            "Package Category": item.pricingPlan.packageCategory,
+            "OTP Limit": item.pricingPlan.otpLimit,
+            "Start Time": item.pricingPlan.startTime,
+            "End Time": item.pricingPlan.endTime,
+            "Created At": item.createdOn
           };
         });
         setDownloadRow([
-          {
-            UsedBy: "Used By",
-            UsedFrom: "Used From",
-            UsedIP: "Used IP",
-            UsedMAC: "Used MAC",
-            Voucher: "Voucher",
-            Reference: "Reference",
-            SerialNo: "Serial No",
-            ExpirationDate: "Expiration Date",
-            Client: "Client",
-            Package: "Package",
-            PackagePrice: "Package Price",
-            PackageCategory: "Package Category",
-            OTPLimit: "OTP Limit",
-            StartTime: "Start Time",
-            EndTime: "End Time",
-            CreatedAt: "Created At"
-          },
+          // {
+          //   UsedBy: "Used By",
+          //   UsedFrom: "Used From",
+          //   UsedIP: "Used IP",
+          //   UsedMAC: "Used MAC",
+          //   Voucher: "Voucher",
+          //   Reference: "Reference",
+          //   SerialNo: "Serial No",
+          //   ExpirationDate: "Expiration Date",
+          //   Client: "Client",
+          //   Package: "Package",
+          //   PackagePrice: "Package Price",
+          //   PackageCategory: "Package Category",
+          //   OTPLimit: "OTP Limit",
+          //   StartTime: "Start Time",
+          //   EndTime: "End Time",
+          //   CreatedAt: "Created At"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
+        // if (downloadRef.current) {
+        //   downloadRef.current.link.click();
+        // }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 

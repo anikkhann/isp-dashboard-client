@@ -378,7 +378,9 @@ const AgentTransactionList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            <Space>
+              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
+            </Space>
           </>
         );
       },
@@ -558,8 +560,8 @@ const AgentTransactionList: React.FC = () => {
 
     const body = {
       meta: {
-        // limit: 10,
-        // page: 1,
+        limit: 10,
+        page: 1,
         sort: [
           {
             order: "desc",
@@ -592,7 +594,7 @@ const AgentTransactionList: React.FC = () => {
       .then(res => {
         // console.log(res);
         const { data } = res;
-        console.log(data.body);
+
         if (data.status != 200) {
           MySwal.fire({
             title: "Error",
@@ -605,42 +607,45 @@ const AgentTransactionList: React.FC = () => {
 
         const list = data.body.map((item: any) => {
           const date = new Date(item.trxDate);
+
           return {
             Agent: item.trxFor,
-            TRXType: item.trxType,
-            TrxMode: item.trxMode,
-            TransactionId: item.transactionId,
+            "TRX Type": item.trxType,
+            "Trx Mode": item.trxMode,
+            "Transaction Id": item.transactionId,
             Amount: item.amount,
             Balance: item.balance,
             Remarks: item.remarks,
-            TrxBy: item.trxBy,
-            TrxDate: format(date, "yyyy-MM-dd pp")
+            "Trx By": item.trxBy,
+            "Trx Date": format(date, "yyyy-MM-dd pp")
           };
         });
 
         setDownloadRow([
-          {
-            Agent: "Agent",
-            TRXType: "TRX Type",
-            TrxMode: "Trx Mode",
-            TransactionId: "Transaction Id",
-            Amount: "Amount",
-            Balance: "Balance",
-            Remarks: "Remarks",
-            TrxBy: "Trx By",
-            TrxDate: "Trx Date"
-          },
+          // {
+          //   Agent: "Agent",
+          //   TRXType: "TRX Type",
+          //   TrxMode: "Trx Mode",
+          //   TransactionId: "Transaction Id",
+          //   Amount: "Amount",
+          //   Balance: "Balance",
+          //   Remarks: "Remarks",
+          //   TrxBy: "Trx By",
+          //   TrxDate: "Trx Date"
+          // },
           ...list
         ]);
-        if (downloadRef.current) {
-          downloadRef.current.link.click();
-        }
       });
   };
 
   useEffect(() => {
-    if (downloadRow) {
+    if (downloadRow && downloadRow.length > 0) {
       setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
     }
   }, [downloadRow]);
 
@@ -900,97 +905,6 @@ const AgentTransactionList: React.FC = () => {
               {ability.can("agentTransaction.download", "") && (
                 <Row justify={"end"}>
                   <Col span={3}>
-                    {/* <CSVLink
-                      data={downloadRow}
-                      asyncOnClick={true}
-                      onClick={(event, done) => {
-                        setDownloadLoading(true);
-                        setTimeout(() => {
-                          setDownloadLoading(false);
-                        }, 2000);
-                        const token = Cookies.get("token");
-                        axios.defaults.headers.common["Authorization"] =
-                          `Bearer ${token}`;
-
-                        const body = {
-                          meta: {
-                            sort: [
-                              {
-                                order: "desc",
-                                field: "trxDate"
-                              }
-                            ]
-                          },
-                          body: {
-                            userType: "agent",
-                            userId: selectUser,
-                            transactionId: transactionId,
-                            trxMode: selectedTransactionMode,
-                            trxType: selectedTransactionType,
-                            trxBy: selectedTransactionBy,
-                            dateRangeFilter: {
-                              field: "trxDate",
-                              startDate: selectedStartDate,
-                              endDate: selectedEndDate
-                            }
-                          }
-                        };
-
-                        axios
-                          .post(`/api/topup-transaction/get-list`, body, {
-                            headers: {
-                              "Content-Type": "application/json"
-                            }
-                          })
-                          .then(res => {
-                            const { data } = res;
-                            console.log(data.body);
-                            if (data.status != 200) {
-                              MySwal.fire({
-                                title: "Error",
-                                text: data.message || "Something went wrong",
-                                icon: "error"
-                              });
-                            }
-
-                            if (!data.body) return;
-
-                            const list = data.body.map((item: any) => {
-                              const date = new Date(item.trxDate);
-                              return {
-                                Agent: item.trxFor,
-                                TRXType: item.trxType,
-                                TrxMode: item.trxMode,
-                                TransactionId: item.transactionId,
-                                Amount: item.amount,
-                                Balance: item.balance,
-                                Remarks: item.remarks,
-                                TrxBy: item.trxBy,
-                                TrxDate: format(date, "yyyy-MM-dd pp")
-                              };
-                            });
-                            setDownloadRow(list);
-                            console.log(list);
-                            done();
-                          });
-                      }}
-                      className="ant-btn ant-btn-lg"
-                      target="_blank"
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        marginTop: "25px",
-                        backgroundColor: "#F15F22",
-                        color: "#ffffff",
-                        padding: "10px"
-                      }}
-                      filename={`agent-transaction-${dayjs().format(
-                        "YYYY-MM-DD"
-                      )}.csv`}
-                    >
-                      {downloadLoading ? "Loading..." : "Download"}
-                    </CSVLink> */}
-
                     <Button
                       type="primary"
                       onClick={() => {
