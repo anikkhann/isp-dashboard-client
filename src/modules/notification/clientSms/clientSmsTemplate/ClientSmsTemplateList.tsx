@@ -218,7 +218,7 @@ const ClientSmsTemplateList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("clientsms.update", "") ? (
+              {ability.can("clientSmsTemplate.update", "") ? (
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link
@@ -302,8 +302,8 @@ const ClientSmsTemplateList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                        ? error.message
-                        : "Something went wrong"}
+                      ? error.message
+                      : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -314,7 +314,7 @@ const ClientSmsTemplateList: React.FC = () => {
             title="Client Sms Template List"
             hasLink={true}
             addLink="/admin/notification/sms/client-sms-template/create"
-            permission="clientsms.create"
+            permission="clientSmsTemplate.create"
             style={{
               borderRadius: "10px",
               padding: "10px",

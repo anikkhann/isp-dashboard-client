@@ -73,8 +73,8 @@ const ClientDashboard = () => {
                   {selectedClientDataType === "monthly"
                     ? "Monthly New Clients"
                     : selectedClientDataType === "yearly"
-                      ? "Yearly New Clients"
-                      : "Quarterly New Clients"}
+                    ? "Yearly New Clients"
+                    : "Quarterly New Clients"}
                 </>
               }
               style={{
@@ -112,8 +112,8 @@ const ClientDashboard = () => {
                   {selectedCustomerDataType === "monthly"
                     ? "Monthly New Customers"
                     : selectedCustomerDataType === "yearly"
-                      ? "Yearly New Customers"
-                      : "Quarterly New Customers"}
+                    ? "Yearly New Customers"
+                    : "Quarterly New Customers"}
                 </>
               }
               style={{
