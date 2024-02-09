@@ -6,12 +6,14 @@ import {
   SolutionOutlined,
   FileDoneOutlined
 } from "@ant-design/icons";
+import Link from "next/link";
 // import { FaUsersCog } from "react-icons/fa";
 
 const accountRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    // label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
