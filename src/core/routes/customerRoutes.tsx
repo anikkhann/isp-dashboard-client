@@ -8,11 +8,11 @@ import {
   UserSwitchOutlined,
   UserOutlined
 } from "@ant-design/icons";
-
+import Link from "next/link";
 const customerRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -20,7 +20,7 @@ const customerRoutes = [
 
   {
     key: "/admin/customer",
-    label: "Customer Dashboard",
+    label: <Link href="/admin/customer">Customer Dashboard</Link>,
     path: "/admin/customer",
     icon: <LineChartOutlined />,
     permission: "customer.dashboard"
@@ -28,42 +28,54 @@ const customerRoutes = [
 
   {
     key: "/admin/customer/customer-type",
-    label: "Customer Type",
+    label: <Link href="/admin/customer/customer-type">Customer Type</Link>,
     path: "/admin/customer/customer-type",
     icon: <TeamOutlined />,
     permission: "customerType.list"
   },
   {
     key: "/admin/customer/distribution-zone",
-    label: "Distribution Zone",
+    label: (
+      <Link href="/admin/customer/distribution-zone">Distribution Zone</Link>
+    ),
     path: "/admin/customer/distribution-type",
     icon: <EnvironmentOutlined />,
     permission: "distributionZone.list"
   },
   {
     key: "/admin/customer/distribution-pop",
-    label: "Distribution POP",
+    label: (
+      <Link href="/admin/customer/distribution-pop">Distribution POP</Link>
+    ),
     path: "/admin/customer/distribution-pop",
     icon: <ShopOutlined />,
     permission: "distributionPop.list"
   },
   {
     key: "/admin/customer/customer-onboarding-req",
-    label: "Customer Onboarding Req",
+    label: (
+      <Link href="/admin/customer/customer-onboarding-req">
+        Customer Onboarding Req
+      </Link>
+    ),
     path: "/admin/customer/customer-onboarding-req",
     icon: <UserAddOutlined />,
     permission: "customerOnboardingReq.list"
   },
   {
     key: "/admin/customer/approved-customer-onboarding-req",
-    label: "Approved Customer Req",
+    label: (
+      <Link href="/admin/customer/approved-customer-onboarding-req">
+        Approved Customer Req
+      </Link>
+    ),
     path: "/admin/customer/approved-customer-onboarding-req",
     icon: <UserSwitchOutlined />,
     permission: "approvedCustomerOnboardingReq.list"
   },
   {
     key: "/admin/customer/customer",
-    label: "Customer",
+    label: <Link href="/admin/customer/customer">Customer</Link>,
     path: "/admin/customer/customer",
     icon: <UserOutlined />,
     permission: "customer.list"
@@ -71,7 +83,7 @@ const customerRoutes = [
   // Import CSV
   {
     key: "/admin/customer/import-csv",
-    label: "Import CSV",
+    label: <Link href="/admin/customer/import-csv">Import CSV</Link>,
     path: "/admin/customer/import-csv",
     icon: <UserOutlined />,
     permission: "customerImportCsv.list"

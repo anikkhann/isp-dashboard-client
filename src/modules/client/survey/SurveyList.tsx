@@ -28,11 +28,11 @@ const types = [
 
 const statusList = [
   {
-    label: "True",
+    label: "Active",
     value: "true"
   },
   {
-    label: "False",
+    label: "Inactive",
     value: "false"
   }
 ];
@@ -241,7 +241,7 @@ const SurveyList: React.FC = () => {
         return (
           <div className="flex flex-row">
             <Space size="middle" align="center">
-              {ability.can("survey.edit", "") ? (
+              {ability.can("survey.update", "") ? (
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/client/survey/${record.id}/edit`}>
@@ -320,8 +320,8 @@ const SurveyList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -365,10 +365,10 @@ const SurveyList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -402,10 +402,10 @@ const SurveyList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={1}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -439,10 +439,10 @@ const SurveyList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Button

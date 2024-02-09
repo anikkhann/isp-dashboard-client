@@ -256,12 +256,15 @@ const CreateSurveyForm = () => {
                         >
                           <Form.Item
                             {...restField}
+                            label="Options"
                             name={[name, "option"]}
                             rules={[
                               { required: true, message: "Missing option" }
                             ]}
                             style={{
-                              width: "90%"
+                              width: "90%",
+                              marginBottom: 0,
+                              fontWeight: "bold"
                             }}
                           >
                             <Input placeholder="Option" />

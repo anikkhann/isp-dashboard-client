@@ -251,7 +251,7 @@ const ZoneInChargeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "username",
+      title: "Username",
       dataIndex: "username",
       sorter: true,
       width: "20%",
@@ -474,8 +474,8 @@ const ZoneInChargeList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

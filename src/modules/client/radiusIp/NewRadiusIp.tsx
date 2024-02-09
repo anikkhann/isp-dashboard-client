@@ -22,10 +22,10 @@ const NewRadiusIp = () => {
               title: <Link href="/admin/client">CLient</Link>
             },
             {
-              title: <Link href="/admin/client/radius-ip">radius-ip</Link>
+              title: <Link href="/admin/client/radius-ip">Radius IP</Link>
             },
             {
-              title: "New radius-ip"
+              title: "New Radius IP"
             }
           ]}
         />
@@ -47,7 +47,7 @@ const NewRadiusIp = () => {
               color: "#F15F22"
             }}
           >
-            New radius-ip
+            New Radius IP
           </h1>
         </div>
 

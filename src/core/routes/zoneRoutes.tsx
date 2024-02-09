@@ -3,11 +3,11 @@ import {
   AreaChartOutlined,
   UserOutlined
 } from "@ant-design/icons";
-
+import Link from "next/link";
 const zoneRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -15,7 +15,7 @@ const zoneRoutes = [
 
   {
     key: "/admin/zone",
-    label: "Zone Dashboard",
+    label: <Link href="/admin/zone">Zone Dashboard</Link>,
     path: "/admin/zone",
     icon: <AreaChartOutlined />,
     permission: "zone.dashboard"
@@ -23,7 +23,7 @@ const zoneRoutes = [
 
   {
     key: "/admin/zone/zone-in-charge",
-    label: "Zone In Charge",
+    label: <Link href="/admin/zone/zone-in-charge">Zone In Charge</Link>,
     path: "/admin/zone/zone-in-charge",
     icon: <UserOutlined />,
     permission: "zone.list"

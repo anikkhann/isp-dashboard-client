@@ -21,7 +21,7 @@ const accountRoutes = [
 
   {
     key: "/admin/client",
-    label: "Client Dashboard",
+    label: <Link href="/admin/client">Client Dashboard</Link>,
     path: "/admin/client",
     // icon: <FaUsersCog />,
     icon: <BarChartOutlined />,
@@ -30,7 +30,7 @@ const accountRoutes = [
 
   {
     key: "/admin/client/client",
-    label: "Client",
+    label: <Link href="/admin/client/client">Client</Link>,
     path: "/admin/client/client",
     icon: <UserOutlined />,
     permission: "client.list"
@@ -38,7 +38,7 @@ const accountRoutes = [
 
   {
     key: "/admin/client/subscription",
-    label: "Subscription",
+    label: <Link href="/admin/client/subscription">Subscription</Link>,
     path: "/admin/client/subscription",
     icon: <SolutionOutlined />,
     permission: "subscription.list"
@@ -46,7 +46,7 @@ const accountRoutes = [
 
   {
     key: "/admin/client/survey",
-    label: "Troubleshoot & Survey",
+    label: <Link href="/admin/client/survey">Troubleshoot & Survey</Link>,
     path: "/admin/client/survey",
     icon: <ToolOutlined />,
     permission: "survey.list"
@@ -54,14 +54,14 @@ const accountRoutes = [
 
   {
     key: "/admin/client/survey-report",
-    label: "Survey Report",
+    label: <Link href="/admin/client/survey-report">Survey Report</Link>,
     path: "/admin/client/survey-report",
     icon: <FileDoneOutlined />,
     permission: "surveyReport.list"
   },
   {
     key: "/admin/client/radius-ip",
-    label: "Radius IP",
+    label: <Link href="/admin/client/radius-ip">Radius IP</Link>,
     path: "/admin/client/radius-ip",
     icon: <FileDoneOutlined />,
     permission: "radiusIp.list"

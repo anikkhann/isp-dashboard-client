@@ -547,7 +547,7 @@ const CreateDailyTaskForm = () => {
                 >
                   {/* oltPower */}
                   <Form.Item
-                    label="oltPower"
+                    label="OLT Power"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -560,7 +560,7 @@ const CreateDailyTaskForm = () => {
                     //   }
                     // ]}
                   >
-                    <Input placeholder="oltPower" className={`form-control`} />
+                    <Input placeholder="OLT Power" className={`form-control`} />
                   </Form.Item>
                 </Col>
 
@@ -575,7 +575,7 @@ const CreateDailyTaskForm = () => {
                 >
                   {/* illegalHotspot */}
                   <Form.Item
-                    label="illegalHotspot"
+                    label="Illegal Hotspot"
                     name="illegalHotspot"
                     style={{
                       marginBottom: 0,
@@ -616,7 +616,7 @@ const CreateDailyTaskForm = () => {
                   <Col xs={12} className="gutter-row">
                     {/* illegalHotspotDetails */}
                     <Form.Item
-                      label="illegalHotspotDetails"
+                      label="Illegal Hotspot Details"
                       style={{
                         marginBottom: 0,
                         fontWeight: "bold"
@@ -625,11 +625,11 @@ const CreateDailyTaskForm = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input illegalHotspotDetails!"
+                          message: "Please input Illegal Hotspot Details!"
                         }
                       ]}
                     >
-                      <Input placeholder="illegalHotspotDetails" />
+                      <Input placeholder="Illegal Hotspot Details" />
                     </Form.Item>
                   </Col>
                 )}
@@ -645,7 +645,7 @@ const CreateDailyTaskForm = () => {
                 >
                   {/* bwCongestion */}
                   <Form.Item
-                    label="bwCongestion"
+                    label="BW Congestion"
                     name="bwCongestion"
                     style={{
                       marginBottom: 0,
@@ -687,7 +687,7 @@ const CreateDailyTaskForm = () => {
                     <Col xs={12} className="gutter-row">
                       {/* bwCongestionFrom */}
                       <Form.Item
-                        label="bwCongestionFrom"
+                        label="BW CongestionFrom"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -696,7 +696,7 @@ const CreateDailyTaskForm = () => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input bwCongestionFrom!"
+                            message: "Please input BW Congestion From!"
                           }
                         ]}
                       >
@@ -711,7 +711,7 @@ const CreateDailyTaskForm = () => {
                     <Col xs={12} className="gutter-row">
                       {/* bwCongestionTo */}
                       <Form.Item
-                        label="bwCongestionTo"
+                        label="BW Congestion To"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -720,7 +720,7 @@ const CreateDailyTaskForm = () => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input bwCongestionTo!"
+                            message: "Please input BW Congestion To!"
                           }
                         ]}
                       >
@@ -737,7 +737,7 @@ const CreateDailyTaskForm = () => {
                 <Col xs={12} className="gutter-row">
                   {/* gamingLatency */}
                   <Form.Item
-                    label="gamingLatency"
+                    label="Gaming Latency"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -746,17 +746,17 @@ const CreateDailyTaskForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input gamingLatency!"
+                        message: "Please input Gaming Latency!"
                       }
                     ]}
                   >
-                    <Input placeholder="gamingLatency" />
+                    <Input placeholder="Gaming Latency" />
                   </Form.Item>
                 </Col>
                 <Col xs={12} className="gutter-row">
                   {/* tiktokLatency */}
                   <Form.Item
-                    label="tiktokLatency"
+                    label="Tiktok Latency"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -765,17 +765,17 @@ const CreateDailyTaskForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input tiktokLatency!"
+                        message: "Please input Tiktok Latency!"
                       }
                     ]}
                   >
-                    <Input placeholder="tiktokLatency" />
+                    <Input placeholder="Tiktok Latency" />
                   </Form.Item>
                 </Col>
                 <Col xs={12} className="gutter-row">
                   {/* youtubeLatency */}
                   <Form.Item
-                    label="youtubeLatency"
+                    label="Youtube Latency"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -784,17 +784,17 @@ const CreateDailyTaskForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input youtubeLatency!"
+                        message: "Please input Youtube Latency!"
                       }
                     ]}
                   >
-                    <Input placeholder="youtubeLatency" />
+                    <Input placeholder="Youtube Latency" />
                   </Form.Item>
                 </Col>
                 <Col xs={12} className="gutter-row">
                   {/* facebookLatency */}
                   <Form.Item
-                    label="facebookLatency"
+                    label="Facebook Latency"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -803,17 +803,17 @@ const CreateDailyTaskForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input facebookLatency!"
+                        message: "Please input Facebook Latency!"
                       }
                     ]}
                   >
-                    <Input placeholder="facebookLatency" />
+                    <Input placeholder="Facebook Latency" />
                   </Form.Item>
                 </Col>
                 <Col xs={12} className="gutter-row">
                   {/* totalComplaints */}
                   <Form.Item
-                    label="totalComplaints"
+                    label="Total Complaints"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -822,11 +822,11 @@ const CreateDailyTaskForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input totalComplaints!"
+                        message: "Please input Total Complaints!"
                       }
                     ]}
                   >
-                    <Input placeholder="totalComplaints" />
+                    <Input placeholder="Total Complaints" />
                   </Form.Item>
                 </Col>
               </Row>
@@ -876,7 +876,7 @@ const CreateDailyTaskForm = () => {
 
                             <Form.Item
                               {...restField}
-                              label="status"
+                              label="Status"
                               name={[name, "status"]}
                               rules={[
                                 {
@@ -884,6 +884,7 @@ const CreateDailyTaskForm = () => {
                                   message: "Please input"
                                 }
                               ]}
+                              style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
                               <Select
                                 allowClear
@@ -910,7 +911,7 @@ const CreateDailyTaskForm = () => {
                             {/* note */}
                             <Form.Item
                               {...restField}
-                              label="note"
+                              label="Note"
                               name={[name, "note"]}
                               rules={[
                                 {
@@ -918,8 +919,9 @@ const CreateDailyTaskForm = () => {
                                   message: "Please input"
                                 }
                               ]}
+                              style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
-                              <Input placeholder="note" />
+                              <Input placeholder="Note" />
                             </Form.Item>
 
                             <MinusCircleOutlined onClick={() => remove(name)} />
@@ -1083,7 +1085,7 @@ const CreateDailyTaskForm = () => {
                             {/* village */}
                             <Form.Item
                               {...restField}
-                              label="village"
+                              label="Village"
                               name={[name, "village"]}
                               rules={[
                                 {
@@ -1091,14 +1093,15 @@ const CreateDailyTaskForm = () => {
                                   message: "Please input"
                                 }
                               ]}
+                              style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
-                              <Input placeholder="village" />
+                              <Input placeholder="Village" />
                             </Form.Item>
 
                             {/* provider */}
                             <Form.Item
                               {...restField}
-                              label="provider"
+                              label="Provider"
                               name={[name, "provider"]}
                               rules={[
                                 {
@@ -1106,14 +1109,15 @@ const CreateDailyTaskForm = () => {
                                   message: "Please input"
                                 }
                               ]}
+                              style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
-                              <Input placeholder="provider" />
+                              <Input placeholder="Provider" />
                             </Form.Item>
 
                             {/* totalCustomer */}
                             <Form.Item
                               {...restField}
-                              label="totalCustomer"
+                              label="Total Customer"
                               name={[name, "totalCustomer"]}
                               rules={[
                                 {
@@ -1121,14 +1125,15 @@ const CreateDailyTaskForm = () => {
                                   message: "Please input"
                                 }
                               ]}
+                              style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
-                              <Input placeholder="totalCustomer" />
+                              <Input placeholder="Total Customer" />
                             </Form.Item>
 
                             {/* totalHotspot */}
                             <Form.Item
                               {...restField}
-                              label="totalHotspot"
+                              label="Total Hotspot"
                               name={[name, "totalHotspot"]}
                               rules={[
                                 {
@@ -1136,8 +1141,9 @@ const CreateDailyTaskForm = () => {
                                   message: "Please input"
                                 }
                               ]}
+                              style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
-                              <Input placeholder="totalHotspot" />
+                              <Input placeholder="Total Hotspot" />
                             </Form.Item>
 
                             <MinusCircleOutlined onClick={() => remove(name)} />

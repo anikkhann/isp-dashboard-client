@@ -350,7 +350,7 @@ const ClientList: React.FC = () => {
   }
 
   // function getDistricts(selectedDivision: string) {
-  function getDistricts() {
+  function getDistricts(selectedDivision: string) {
     const body = {
       meta: {
         sort: [
@@ -392,7 +392,7 @@ const ClientList: React.FC = () => {
   }
 
   // function getUpazillas(selectedDistrict: string) {
-  function getUpazillas() {
+  function getUpazillas(selectedDistrict: string) {
     const body = {
       meta: {
         sort: [
@@ -435,7 +435,7 @@ const ClientList: React.FC = () => {
   }
 
   // function getUnions(selectedUpazilla: string) {
-  function getUnions() {
+  function getUnions(selectedUpazilla: string) {
     const body = {
       meta: {
         sort: [
@@ -504,13 +504,25 @@ const ClientList: React.FC = () => {
   useEffect(() => {
     getClients();
     getDivisions();
-    getDistricts();
-    getUpazillas();
-    getUnions();
+    // getDistricts(selectedDivision);
+    // getUpazillas(selectedDistrict);
+    // getUnions(selectedUpazilla);
+    // getDistricts();
+    // getUpazillas();
+    // getUnions();
     getLicenseTypes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    getDistricts(selectedDivision);
+  }, [selectedDivision]);
+  useEffect(() => {
+    getUpazillas(selectedDistrict);
+  }, [selectedDistrict]);
 
+  useEffect(() => {
+    getUnions(selectedUpazilla);
+  }, [selectedUpazilla]);
   const columns: ColumnsType<ClientData> = [
     {
       title: "Serial",
@@ -758,8 +770,8 @@ const ClientList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

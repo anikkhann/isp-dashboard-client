@@ -4,11 +4,11 @@ import {
   BarChartOutlined,
   CreditCardOutlined
 } from "@ant-design/icons";
-
+import Link from "next/link";
 const paymentRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -16,21 +16,25 @@ const paymentRoutes = [
 
   {
     key: "/admin/payment",
-    label: "Payment Dashboard",
+    label: <Link href="/admin/payment">Payment Dashboard</Link>,
     path: "/admin/payment",
     icon: <BarChartOutlined />,
     permission: "payment.dashboard"
   },
   {
     key: "/admin/payment/payment-gateway",
-    label: "Payment Gateway",
+    label: <Link href="/admin/payment/payment-gateway">Payment Gateway</Link>,
     path: "/admin/payment/payment-gateway",
     icon: <CreditCardOutlined />,
     permission: "paymentGateway.list"
   },
   {
     key: "/admin/payment/payment-gateway-config",
-    label: "Payment Gateway Config",
+    label: (
+      <Link href="/admin/payment/payment-gateway-config">
+        Payment Gateway Config
+      </Link>
+    ),
     path: "/admin/payment/payment-gateway-config",
     icon: <SettingOutlined />,
     permission: "paymentGatewayConfig.list"

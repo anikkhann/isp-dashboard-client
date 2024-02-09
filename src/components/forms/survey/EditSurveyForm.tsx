@@ -289,25 +289,32 @@ const EditSurveyForm = ({ item }: PropData) => {
                             style={{
                               display: "flex",
                               marginBottom: 8,
-                              width: "100%"
+                              width: "90%"
                             }}
                             align="baseline"
                           >
                             <Form.Item
                               {...restField}
+                              label="Options"
                               name={[name, "option"]}
                               rules={[
                                 { required: true, message: "Missing option" }
                               ]}
                               style={{
-                                width: "90%"
+                                // width: "90%",
+                                width: "100%",
+                                marginBottom: 0,
+                                fontWeight: "bold"
                               }}
                             >
                               <Input placeholder="Option" />
                             </Form.Item>
+
+                            {/* Add a line break after every third option */}
                             <MinusCircleOutlined onClick={() => remove(name)} />
                           </Space>
                         ))}
+
                         <Form.Item>
                           <Button
                             type="dashed"

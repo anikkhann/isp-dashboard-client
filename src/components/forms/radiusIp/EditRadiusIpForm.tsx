@@ -172,7 +172,7 @@ const EditRadiusIpForm = ({ item }: PropData) => {
               >
                 {/* authProtocol*/}
                 <Form.Item
-                  label="authProtocol"
+                  label="Auth Protocol"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -181,7 +181,7 @@ const EditRadiusIpForm = ({ item }: PropData) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please select authProtocol!"
+                      message: "Please select Auth Protocol!"
                     }
                   ]}
                 >
@@ -208,7 +208,7 @@ const EditRadiusIpForm = ({ item }: PropData) => {
               >
                 {/* name */}
                 <Form.Item
-                  label="Name"
+                  label="IP"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -217,13 +217,13 @@ const EditRadiusIpForm = ({ item }: PropData) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Name!"
+                      message: "Please input your IP!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="Name"
+                    placeholder="IP"
                     className={`form-control`}
                     name="name"
                     style={{ padding: "6px" }}

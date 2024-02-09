@@ -59,10 +59,10 @@ const EditRadiusIp = ({ id }: any) => {
               title: <Link href="/admin/client">Client</Link>
             },
             {
-              title: <Link href="/admin/client/radius-ip">radius-ip</Link>
+              title: <Link href="/admin/client/radius-ip">Radius IP</Link>
             },
             {
-              title: "Edit radius-ip"
+              title: "Edit Radius IP"
             }
           ]}
         />
@@ -84,7 +84,7 @@ const EditRadiusIp = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit radius-ip
+            Edit Radius IP
           </h1>
         </div>
         <Card

@@ -3,11 +3,11 @@ import {
   LineChartOutlined,
   BoxPlotOutlined
 } from "@ant-design/icons";
-
+import Link from "next/link";
 const packageRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -15,14 +15,14 @@ const packageRoutes = [
 
   {
     key: "/admin/package",
-    label: "Package Dashboard",
+    label: <Link href="/admin/package">Package Dashboard</Link>,
     path: "/admin/package",
     icon: <LineChartOutlined />,
     permission: "dashboard.view"
   },
   {
     key: "/admin/package/package",
-    label: "Package",
+    label: <Link href="/admin/package/package">Package</Link>,
     path: "/admin/package/package",
     icon: <BoxPlotOutlined />,
     permission: "dashboard.view"

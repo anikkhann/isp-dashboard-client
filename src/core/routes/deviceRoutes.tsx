@@ -5,11 +5,11 @@ import {
   GlobalOutlined,
   CloudServerOutlined
 } from "@ant-design/icons";
-
+import Link from "next/link";
 const deviceRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -17,7 +17,7 @@ const deviceRoutes = [
 
   {
     key: "/admin/device",
-    label: "Device Dashboard",
+    label: <Link href="/admin/device">Device Dashboard</Link>,
     path: "/admin/device",
     icon: <AreaChartOutlined />,
     permission: "device.dashboard"
@@ -25,7 +25,7 @@ const deviceRoutes = [
 
   {
     key: "/admin/device/device",
-    label: "Device",
+    label: <Link href="/admin/device/device">Device</Link>,
     path: "/admin/device/device",
     icon: <MobileOutlined />,
     permission: "device.list"
@@ -33,7 +33,7 @@ const deviceRoutes = [
 
   {
     key: "/admin/device/network",
-    label: "Network",
+    label: <Link href="/admin/device/network">Network</Link>,
     path: "/admin/device/network",
     icon: <GlobalOutlined />,
     permission: "network.list"
@@ -41,7 +41,7 @@ const deviceRoutes = [
 
   {
     key: "/admin/device/ip-management",
-    label: "IP Management",
+    label: <Link href="/admin/device/ip-management">IP Management</Link>,
     path: "/admin/device/ip-management",
     icon: <CloudServerOutlined />,
     permission: "ip.list"

@@ -192,14 +192,14 @@ const RadiusIpList: React.FC = () => {
     },
 
     {
-      title: "authProtocol",
+      title: "Auth Protocol",
       dataIndex: "authProtocol",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "name",
+      title: "IP",
       dataIndex: "name",
       sorter: true,
       width: "20%",
@@ -379,8 +379,8 @@ const RadiusIpList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>
@@ -388,7 +388,7 @@ const RadiusIpList: React.FC = () => {
           )}
 
           <TableCard
-            title="Radius Ip List"
+            title="Radius IP List"
             hasLink={true}
             addLink="/admin/client/radius-ip/create"
             permission="radiusIp.create"
@@ -467,7 +467,7 @@ const RadiusIpList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>authProtocol</b>
+                              <b>Auth Protocol</b>
                             </span>
                             <Select
                               allowClear

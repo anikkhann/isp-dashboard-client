@@ -6,11 +6,11 @@ import {
   KeyOutlined,
   WifiOutlined
 } from "@ant-design/icons";
-
+import Link from "next/link";
 const userRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -18,21 +18,21 @@ const userRoutes = [
 
   {
     key: "/admin/user",
-    label: "User Dashboard",
+    label: <Link href="/admin/user">User Dashboard</Link>,
     path: "/admin/user",
     icon: <LineChartOutlined />,
     permission: "user.dashboard"
   },
   {
     key: "/admin/user/user",
-    label: "Users",
+    label: <Link href="/admin/user/user">Users</Link>,
     path: "/admin/user/user",
     icon: <UserOutlined />,
     permission: "user.list"
   },
   {
     key: "/admin/user/role",
-    label: "Roles",
+    label: <Link href="/admin/user/role">Roles</Link>,
     path: "/admin/user/role",
     icon: <TeamOutlined />,
     permission: "role.list"
@@ -40,7 +40,7 @@ const userRoutes = [
 
   {
     key: "/admin/user/permission",
-    label: "Permissions",
+    label: <Link href="/admin/user/permission">Permissions</Link>,
     path: "/admin/user/permission",
     icon: <KeyOutlined />,
     permission: "permission.list"
@@ -48,7 +48,7 @@ const userRoutes = [
 
   {
     key: "/admin/user/bw-nttn-provider",
-    label: "BW NTTN Providers",
+    label: <Link href="/admin/user/bw-nttn-provider">BW NTTN Providers</Link>,
     path: "/admin/user/bw-nttn-provider",
     icon: <WifiOutlined />,
     permission: "bwNttnProvider.list"

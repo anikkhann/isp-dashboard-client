@@ -16,11 +16,11 @@ import {
   WifiOutlined
 } from "@ant-design/icons";
 // import { GrUserSettings } from "react-icons/all";
-
+import Link from "next/link";
 const mainRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -28,7 +28,7 @@ const mainRoutes = [
 
   {
     key: "/admin/client",
-    label: "Client Management",
+    label: <Link href="/admin/client">Client Management</Link>,
     path: "/admin/client",
     icon: <UsergroupAddOutlined />,
 
@@ -37,7 +37,7 @@ const mainRoutes = [
 
   {
     key: "/admin/zone",
-    label: "Zone In Charge",
+    label: <Link href="/admin/zone">Zone In Charge</Link>,
     path: "/admin/zone",
     icon: <EnvironmentOutlined />,
     permission: "zone.dashboard"
@@ -45,7 +45,7 @@ const mainRoutes = [
 
   {
     key: "/admin/sub-zone",
-    label: "Sub Zone In Charge",
+    label: <Link href="/admin/sub-zone">Sub Zone In Charge</Link>,
     path: "/admin/sub-zone",
     icon: <EnvironmentOutlined />,
     permission: "subZone.dashboard"
@@ -53,7 +53,7 @@ const mainRoutes = [
 
   {
     key: "/admin/retail",
-    label: "Retail In Charge",
+    label: <Link href="/admin/retail">Retail In Charge</Link>,
     path: "/admin/retail",
     icon: <ShopOutlined />,
     permission: "retail.dashboard"
@@ -61,7 +61,7 @@ const mainRoutes = [
 
   {
     key: "/admin/device",
-    label: "Device Management",
+    label: <Link href="/admin/device">Device Management</Link>,
     path: "/admin/device",
     icon: <MobileOutlined />,
     permission: "device.dashboard"
@@ -69,7 +69,7 @@ const mainRoutes = [
 
   {
     key: "/admin/package",
-    label: "Package Management",
+    label: <Link href="/admin/package">Package Management</Link>,
     path: "/admin/package",
     icon: <BoxPlotOutlined />,
     permission: "package.dashboard"
@@ -77,7 +77,7 @@ const mainRoutes = [
 
   {
     key: "/admin/customer",
-    label: "Customer Management",
+    label: <Link href="/admin/customer">Customer Management</Link>,
     path: "/admin/customer",
     icon: <UserOutlined />,
     permission: "customer.dashboard"
@@ -85,7 +85,7 @@ const mainRoutes = [
 
   {
     key: "/admin/complaint",
-    label: "Complaint Management",
+    label: <Link href="/admin/complaint">Complaint Management</Link>,
     path: "/admin/complaint",
     icon: <ExclamationCircleOutlined />,
     permission: "complaint.dashboard"
@@ -93,7 +93,7 @@ const mainRoutes = [
 
   {
     key: "/admin/user",
-    label: "Users Management",
+    label: <Link href="/admin/user">Users Management</Link>,
     path: "/admin/user",
     icon: <TeamOutlined />,
     permission: "user.dashboard"
@@ -101,7 +101,7 @@ const mainRoutes = [
 
   {
     key: "/admin/top-up",
-    label: "Top-Up Management",
+    label: <Link href="/admin/top-up">Top-Up Management</Link>,
     path: "/admin/top-up",
     icon: <DollarOutlined />,
     permission: "topUp.dashboard"
@@ -109,7 +109,7 @@ const mainRoutes = [
 
   {
     key: "/admin/customer-care",
-    label: "Customer Care",
+    label: <Link href="/admin/customer-care">Customer Care</Link>,
     path: "/admin/customer-care",
     icon: <CustomerServiceOutlined />,
     permission: "customerCare.dashboard"
@@ -117,7 +117,7 @@ const mainRoutes = [
 
   {
     key: "/admin/notification",
-    label: "Notification Management",
+    label: <Link href="/admin/notification">Notification Management</Link>,
     path: "/admin/notification",
     icon: <NotificationOutlined />,
     permission: "notification.dashboard"
@@ -125,7 +125,7 @@ const mainRoutes = [
 
   {
     key: "/admin/payment",
-    label: "Payment Gateway",
+    label: <Link href="/admin/payment">Payment Gateway</Link>,
     path: "/admin/payment",
     icon: <CreditCardOutlined />,
     permission: "payment.dashboard"
@@ -133,7 +133,7 @@ const mainRoutes = [
 
   {
     key: "/admin/accounting",
-    label: "Accounting & Billing",
+    label: <Link href="/admin/accounting">Accounting & Billing</Link>,
     path: "/admin/accounting",
     icon: <AccountBookOutlined />,
     permission: "accounting.dashboard"
@@ -141,7 +141,7 @@ const mainRoutes = [
 
   {
     key: "/admin/hotspot",
-    label: "Wi-Fi Hotspot",
+    label: <Link href="/admin/hotspot">Wi-Fi Hotspot</Link>,
     path: "/admin/hotspot",
     icon: <WifiOutlined />,
     permission: "hotspot.dashboard"

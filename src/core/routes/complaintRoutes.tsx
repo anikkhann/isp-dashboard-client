@@ -8,11 +8,11 @@ import {
   MessageOutlined
   // UserWarningOutlined
 } from "@ant-design/icons";
-
+import Link from "next/link";
 const complaintRoutes = [
   {
     key: "/admin",
-    label: "Main Dashboard",
+    label: <Link href="/admin">Main Dashboard</Link>,
     path: "/admin",
     icon: <DashboardOutlined />,
     permission: "dashboard.view"
@@ -20,7 +20,7 @@ const complaintRoutes = [
 
   {
     key: "/admin/complaint",
-    label: "Complaint Dashboard",
+    label: <Link href="/admin/complaint">Complaint Dashboard</Link>,
     path: "/admin/complaint",
     icon: <BarChartOutlined />,
     permission: "complaint.dashboard"
@@ -28,7 +28,7 @@ const complaintRoutes = [
 
   {
     key: "/admin/complaint/complain-type",
-    label: "Complain Type",
+    label: <Link href="/admin/complaint/complain-type">Complain Type</Link>,
     path: "/admin/complaint/complain-type",
     icon: <ExclamationCircleOutlined />,
     permission: "complainType.list"
@@ -36,28 +36,28 @@ const complaintRoutes = [
 
   {
     key: "/admin/complaint/checklist",
-    label: "Check List",
+    label: <Link href="/admin/complaint/checklist">Check List</Link>,
     path: "/admin/complaint/checklist",
     icon: <CheckSquareOutlined />,
     permission: "checklist.list"
   },
   {
     key: "/admin/complaint/root-cause",
-    label: "Root Cause",
+    label: <Link href="/admin/complaint/root-cause">Root Cause</Link>,
     path: "/admin/complaint/root-cause",
     icon: <BranchesOutlined />,
     permission: "rootCause.list"
   },
   {
     key: "/admin/complaint/customer-ticket",
-    label: "Customer Ticket",
+    label: <Link href="/admin/complaint/customer-ticket">Customer Ticket</Link>,
     path: "/admin/complaint/customer-ticket",
     icon: <MessageOutlined />,
     permission: "customerTicket.list"
   },
   {
     key: "/admin/complaint/admin-ticket",
-    label: "Admin Ticket",
+    label: <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>,
     path: "/admin/complaint/admin-ticket",
     icon: <SettingOutlined />,
     permission: "adminTicket.list"
