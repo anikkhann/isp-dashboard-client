@@ -51,7 +51,7 @@ const NewDistributionPop = () => {
               color: "#F15F22"
             }}
           >
-            New Distribution Pop
+            New Distribution POP
           </h1>
         </div>
         <Card

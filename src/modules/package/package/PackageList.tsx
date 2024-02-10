@@ -202,6 +202,13 @@ const PackageList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+    {
+      title: "Package Name",
+      dataIndex: "name",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
     // {
     //   title: "Partner",
     //   dataIndex: "partner",
@@ -217,7 +224,7 @@ const PackageList: React.FC = () => {
     //   align: "center" as AlignType
     // },
     {
-      title: "Package Name",
+      title: "Display Name",
       dataIndex: "displayName",
       sorter: true,
       width: "20%",
@@ -428,8 +435,8 @@ const PackageList: React.FC = () => {
                     error.response.data.message
                       ? error.response.data.message
                       : error.message
-                      ? error.message
-                      : "Something went wrong"}
+                        ? error.message
+                        : "Something went wrong"}
                   </p>
                 </Card>
               </div>

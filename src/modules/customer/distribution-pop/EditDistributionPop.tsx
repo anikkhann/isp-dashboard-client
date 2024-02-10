@@ -92,7 +92,7 @@ const EditDistributionPop = ({ id }: any) => {
           </h1>
         </div>
         <Card
-          title="Edit Distribution Pop"
+          // title="Edit Distribution Pop"
           hoverable
           style={{
             width: "90%",

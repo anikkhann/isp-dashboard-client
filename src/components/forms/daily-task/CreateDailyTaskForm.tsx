@@ -963,12 +963,12 @@ const CreateDailyTaskForm = () => {
                                 fontWeight: "bold"
                               }}
                               name="divisionId"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please select Division!"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please select Division!"
+                              //   }
+                              // ]}
                             >
                               <Space
                                 style={{ width: "100%" }}
@@ -995,12 +995,12 @@ const CreateDailyTaskForm = () => {
                                 fontWeight: "bold"
                               }}
                               name="districtId"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please select District!"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please select District!"
+                              //   }
+                              // ]}
                             >
                               <Space
                                 style={{ width: "100%" }}
@@ -1027,12 +1027,12 @@ const CreateDailyTaskForm = () => {
                                 fontWeight: "bold"
                               }}
                               name="upazillaId"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please select Upazilla!"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please select Upazilla!"
+                              //   }
+                              // ]}
                             >
                               <Space
                                 style={{ width: "100%" }}
@@ -1059,12 +1059,12 @@ const CreateDailyTaskForm = () => {
                                 fontWeight: "bold"
                               }}
                               name="unionId"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please select Union!"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please select Union!"
+                              //   }
+                              // ]}
                             >
                               <Space
                                 style={{ width: "100%" }}
@@ -1087,12 +1087,12 @@ const CreateDailyTaskForm = () => {
                               {...restField}
                               label="Village"
                               name={[name, "village"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please input"
+                              //   }
+                              // ]}
                               style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
                               <Input placeholder="Village" />
@@ -1103,12 +1103,12 @@ const CreateDailyTaskForm = () => {
                               {...restField}
                               label="Provider"
                               name={[name, "provider"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please input"
+                              //   }
+                              // ]}
                               style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
                               <Input placeholder="Provider" />
@@ -1119,12 +1119,12 @@ const CreateDailyTaskForm = () => {
                               {...restField}
                               label="Total Customer"
                               name={[name, "totalCustomer"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please input"
+                              //   }
+                              // ]}
                               style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
                               <Input placeholder="Total Customer" />
@@ -1135,12 +1135,12 @@ const CreateDailyTaskForm = () => {
                               {...restField}
                               label="Total Hotspot"
                               name={[name, "totalHotspot"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
+                              // rules={[
+                              //   {
+                              //     required: true,
+                              //     message: "Please input"
+                              //   }
+                              // ]}
                               style={{ marginBottom: 0, fontWeight: "bold" }}
                             >
                               <Input placeholder="Total Hotspot" />

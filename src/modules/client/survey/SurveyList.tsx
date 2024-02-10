@@ -204,7 +204,7 @@ const SurveyList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "options",
+      title: "Options",
       dataIndex: "options",
       sorter: true,
       render: (_, row) => {

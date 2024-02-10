@@ -269,17 +269,11 @@ const EditSurveyForm = ({ item }: PropData) => {
                   />
                 </Form.Item>
               </Col>
+            </Row>
 
-              <Col
-                xs={24}
-                sm={24}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {!loading && (
+            {!loading && (
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                <Col>
                   <Form.List name="options" initialValue={optionsValue}>
                     {(fields, { add, remove }) => (
                       <>
@@ -288,6 +282,7 @@ const EditSurveyForm = ({ item }: PropData) => {
                             key={key}
                             style={{
                               display: "flex",
+
                               marginBottom: 8,
                               width: "90%"
                             }}
@@ -301,7 +296,6 @@ const EditSurveyForm = ({ item }: PropData) => {
                                 { required: true, message: "Missing option" }
                               ]}
                               style={{
-                                // width: "90%",
                                 width: "100%",
                                 marginBottom: 0,
                                 fontWeight: "bold"
@@ -310,7 +304,6 @@ const EditSurveyForm = ({ item }: PropData) => {
                               <Input placeholder="Option" />
                             </Form.Item>
 
-                            {/* Add a line break after every third option */}
                             <MinusCircleOutlined onClick={() => remove(name)} />
                           </Space>
                         ))}
@@ -328,9 +321,9 @@ const EditSurveyForm = ({ item }: PropData) => {
                       </>
                     )}
                   </Form.List>
-                )}
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            )}
 
             {/* status */}
             <Form.Item

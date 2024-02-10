@@ -163,17 +163,37 @@ const SubscriptionList: React.FC = () => {
       title: "Charge Amount",
       dataIndex: "chargeAmount",
       sorter: true,
-      render: (chargeAmount: number) => {
+      render: (chargeAmount: number, record: any) => {
+        const { packageType } = record; // Assuming packageType is a property in your data record
         return (
           <>
-            <Space>{chargeAmount} Tk/Month</Space>
+            <Space>
+              {packageType === "Per Customer"
+                ? `${chargeAmount} Tk/Customer/Month`
+                : `${chargeAmount} Tk/Month`}
+            </Space>
           </>
         );
       },
-
       width: "20%",
       align: "center" as AlignType
     },
+
+    // {
+    //   title: "Charge Amount",
+    //   dataIndex: "chargeAmount",
+    //   sorter: true,
+    //   render: (chargeAmount: number) => {
+    //     return (
+    //       <>
+    //         <Space>{chargeAmount} Tk/Month</Space>
+    //       </>
+    //     );
+    //   },
+
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
 
     {
       title: "Status",
