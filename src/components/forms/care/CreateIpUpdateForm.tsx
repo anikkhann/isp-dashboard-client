@@ -280,7 +280,7 @@ const CreateIpUpdateForm = () => {
                 >
                   {/* staticIp */}
                   <Form.Item
-                    label="staticIp"
+                    label="Static Ip"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -289,13 +289,13 @@ const CreateIpUpdateForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please input your staticIp!"
+                        message: "Please input Static Ip!"
                       }
                     ]}
                   >
                     <Input
                       type="text"
-                      placeholder="staticIp"
+                      placeholder="Static Ip"
                       className={`form - control`}
                       name="staticIp"
                       style={{ padding: "6px" }}

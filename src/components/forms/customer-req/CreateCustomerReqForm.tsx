@@ -165,13 +165,13 @@ const CreateCustomerReqForm = () => {
 
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ referrerCustomer: value });
+    form.setFieldsValue({ referrerCustomerId: value });
     setSelectedCustomer(value as any);
   };
 
   const handleUserChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ referrerUser: value });
+    form.setFieldsValue({ referrerUserId: value });
     setSelectedUser(value as any);
   };
 
@@ -222,12 +222,12 @@ const CreateCustomerReqForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
     axios.post("/api/customer/get-list", body).then(res => {
@@ -245,7 +245,7 @@ const CreateCustomerReqForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -261,15 +261,15 @@ const CreateCustomerReqForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
-    axios.post("/api/users/get-list", body).then(res => {
+    axios.post("/api/users/get-list-for-table", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -285,7 +285,7 @@ const CreateCustomerReqForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -559,8 +559,8 @@ const CreateCustomerReqForm = () => {
       identityNo: identityNo,
       remarks: remarks,
       referenceType: selectedReferenceType,
-      referrerCustomer: selectedCustomer,
-      referrerUser: selectedUser,
+      referrerCustomerId: selectedCustomer,
+      referrerUserId: selectedUser,
       referrerName: referrerName,
       divisionId: selectedDivision,
       districtId: selectedDistrict,
@@ -641,8 +641,8 @@ const CreateCustomerReqForm = () => {
               identityNo: "",
               remarks: "",
               referenceType: "",
-              referrerCustomer: "",
-              referrerUser: "",
+              referrerCustomerId: "",
+              referrerUserId: "",
               referrerName: ""
             }}
             style={{ maxWidth: "100%" }}
@@ -1450,7 +1450,7 @@ const CreateCustomerReqForm = () => {
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="referrerUser"
+                    name="referrerUserId"
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
                       <Select
@@ -1517,7 +1517,7 @@ const CreateCustomerReqForm = () => {
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="referrerCustomer"
+                    name="referrerCustomerId"
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
                       <Select

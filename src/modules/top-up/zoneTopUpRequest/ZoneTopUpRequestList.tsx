@@ -302,7 +302,7 @@ const ZoneTopUpRequestList: React.FC = () => {
       sorter: false,
       render: (requestedBy: any) => {
         if (!requestedBy) return "-";
-        return <>{requestedBy.name}</>;
+        return <>{requestedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType

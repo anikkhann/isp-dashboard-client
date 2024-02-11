@@ -113,7 +113,9 @@ const EditDistributionPopForm = ({ item }: PropData) => {
       setZoneId(item.zoneId);
       form.setFieldsValue({
         name: item.name,
-        zoneId: item.zoneId
+        zoneId: item.zoneId,
+        latitude: item.latitude,
+        longitude: item.longitude
       });
       setIsActive(item.isActive);
     }

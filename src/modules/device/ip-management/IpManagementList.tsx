@@ -131,18 +131,44 @@ const IpManagementList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+
     {
-      title: "ip",
+      title: "IP",
       dataIndex: "ip",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
+      title: "Assigned Type",
+      dataIndex: "assignedType",
+      render: (assignedType: any) => {
+        if (!assignedType) return "-";
+        return <>{assignedType}</>;
+      },
+      sorter: false,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Assigned To",
+      dataIndex: "assignedTo",
+      render: (assignedTo: any) => {
+        if (!assignedTo) return "-";
+        return <>{assignedTo}</>;
+      },
+      sorter: false,
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Customer",
-      dataIndex: "ipSubnet",
-      render: (ipSubnet: any) => {
-        return <>{ipSubnet.partner ? ipSubnet.partner.name : "N/A"}</>;
+      dataIndex: "customer",
+      render: (customer: any, record: any) => {
+        const { assignedType } = record;
+        if (assignedType !== "customer") return "-";
+
+        return <>{customer?.customer.username}</>;
       },
       sorter: false,
       width: "20%",

@@ -66,7 +66,7 @@ const CreateAgentTopForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -75,7 +75,7 @@ const CreateAgentTopForm = () => {
         isActive: true
       }
     };
-    axios.post("/api/users/get-list", body).then(res => {
+    axios.post("/api/users/get-list-for-table", body).then(res => {
       const { data } = res;
       if (data.status != 200) {
         MySwal.fire({
@@ -89,7 +89,7 @@ const CreateAgentTopForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });

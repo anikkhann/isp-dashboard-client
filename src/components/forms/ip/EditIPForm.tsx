@@ -42,6 +42,7 @@ const assignTypes = [
 ];
 
 const EditIPForm = ({ item }: PropData) => {
+  console.log(item);
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -70,7 +71,9 @@ const EditIPForm = ({ item }: PropData) => {
   const handleAssignTypeChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ assignedType: value });
+
     setSelectedAssignType(value as any);
+
     if (value === "customer") {
       setRequiredCustomer(true);
     } else {
@@ -78,7 +81,47 @@ const EditIPForm = ({ item }: PropData) => {
     }
   };
 
-  function getCustomers() {
+  // function getCustomers() {
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "name"
+  //         }
+  //       ]
+  //     },
+
+  //     body: {
+
+  //       partnerType: "client",
+  //       isActive: true
+  //     }
+  //   };
+
+  //   axios.post("/api/partner/get-list", body).then(res => {
+
+  //     const { data } = res;
+
+  //     if (data.status != 200) {
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
+
+  //     if (!data.body) return;
+  //     const list = data.body.map((item: any) => {
+  //       return {
+  //         label: item.name,
+  //         value: item.id
+  //       };
+  //     });
+  //     setCustomers(list);
+  //   });
+  // }
+  const getCustomers = async () => {
     const body = {
       meta: {
         sort: [
@@ -88,37 +131,23 @@ const EditIPForm = ({ item }: PropData) => {
           }
         ]
       },
-      // FOR SEARCHING DATA - OPTIONAL
       body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client",
-        isActive: true
+        // isActive: true
       }
     };
 
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-      const list = data.body.map((item: any) => {
+    const res = await axios.post("/api/customer/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
-      setCustomers(list);
-    });
-  }
 
+      setCustomers(items);
+    }
+  };
   useEffect(() => {
     getCustomers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,9 +157,9 @@ const EditIPForm = ({ item }: PropData) => {
     if (item) {
       form.setFieldsValue({
         ip: item.ip,
-        customerId: item.ipSubnet.partner.id
+        customerId: item.customer?.id
       });
-      setSelectedCustomer(item.ipSubnet.partner.id as any);
+      setSelectedCustomer(item.customer?.id as any);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
@@ -282,71 +311,74 @@ const EditIPForm = ({ item }: PropData) => {
                   </Space>
                 </Form.Item>
               </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* customerId */}
-                <Form.Item
-                  label="Customers"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="customerId"
-                  rules={[
-                    {
-                      required: requiredCustomer ? true : false,
-                      message: "Please select Customers!"
-                    }
-                  ]}
+              {selectedAssignType?.includes("customer") && ( // corrected comparison from '===' to 'includes'
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
                 >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Customers"
-                      onChange={handleCustomerChange}
-                      options={customers}
-                      value={selectedCustomer}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                  {/* customerId */}
+                  <Form.Item
+                    label="Customer"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="customerId"
+                    rules={[
+                      {
+                        required: requiredCustomer ? true : false,
+                        message: "Please select Customers!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Customers"
+                        onChange={handleCustomerChange}
+                        options={customers}
+                        value={selectedCustomer}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
 
               {/* assignedTo */}
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Assigned To"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="assignedTo"
+              {selectedAssignType?.includes("others") && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
                 >
-                  <Input
-                    type="text"
-                    placeholder="Assigned To"
-                    className={`form-control`}
+                  <Form.Item
+                    label="Assigned To"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
                     name="assignedTo"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Assigned To"
+                      className={`form-control`}
+                      name="assignedTo"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
             </Row>
 
             {/* submit */}

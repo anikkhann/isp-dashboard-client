@@ -168,19 +168,19 @@ const TransactionHistory = ({ item }: PropData) => {
       },
       /* width: "20%", */
       align: "center" as AlignType
-    },
+    }
 
     // transction_by
-    {
-      title: "Transaction By",
-      dataIndex: "transction_by",
-      sorter: false,
-      render: (transction_by: any) => {
-        return <>{transction_by}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    }
+    // {
+    //   title: "Transaction By",
+    //   dataIndex: "transction_by",
+    //   sorter: false,
+    //   render: (transction_by: any) => {
+    //     return <>{transction_by}</>;
+    //   },
+
+    //   align: "center" as AlignType
+    // }
   ];
 
   return (
@@ -221,7 +221,7 @@ const TransactionHistory = ({ item }: PropData) => {
           )}
 
           <TableCard
-            title="Transaction List"
+            title=""
             hasLink={false}
             addLink="/admin/device/ip-management/create"
             permission="ip.create"

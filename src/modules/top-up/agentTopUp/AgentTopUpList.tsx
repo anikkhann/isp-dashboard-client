@@ -133,17 +133,17 @@ const AgentTopUpList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {}
     };
-    const res = await axios.post("/api/users/get-list", body);
+    const res = await axios.post("/api/users/get-list-for-table", body);
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -232,7 +232,7 @@ const AgentTopUpList: React.FC = () => {
       sorter: false,
       render: (rechargedBy: any) => {
         if (!rechargedBy) return "-";
-        return <>{rechargedBy.name}</>;
+        return <>{rechargedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType

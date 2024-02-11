@@ -605,12 +605,12 @@ const CreateCustomerForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
-        isActive: true
+        // isActive: true
       }
     };
     axios.post("/api/customer/get-list", body).then(res => {
@@ -629,7 +629,7 @@ const CreateCustomerForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -645,15 +645,16 @@ const CreateCustomerForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
-        isActive: true
+        // isActive: true,
+        // userType: "client"
       }
     };
-    axios.post("/api/users/get-list", body).then(res => {
+    axios.post("/api/users/get-list-for-table", body).then(res => {
       // console.log(res);
       const { data } = res;
       if (data.status != 200) {
@@ -668,7 +669,7 @@ const CreateCustomerForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -1331,6 +1332,12 @@ const CreateCustomerForm = () => {
                           fontWeight: "bold"
                         }}
                         name="customerTypeId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Customer Type!"
+                          }
+                        ]}
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
@@ -2120,6 +2127,12 @@ const CreateCustomerForm = () => {
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Distribution Zone!"
+                          }
+                        ]}
                         name="distributionZoneId"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
@@ -2146,11 +2159,17 @@ const CreateCustomerForm = () => {
                     >
                       {/* distributionPopId */}
                       <Form.Item
-                        label="Distribution Pop"
+                        label="Distribution POP"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Distribution POP!"
+                          }
+                        ]}
                         name="distributionPopId"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">

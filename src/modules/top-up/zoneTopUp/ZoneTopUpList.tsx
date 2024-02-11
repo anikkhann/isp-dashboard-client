@@ -184,7 +184,7 @@ const ZoneTopUpList: React.FC = () => {
       dataIndex: "zoneManager",
       sorter: false,
       render: (zoneManager: any) => {
-        return <>{zoneManager ? zoneManager.name : "N/A"}</>;
+        return <>{zoneManager ? zoneManager.username : "-"}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -234,7 +234,7 @@ const ZoneTopUpList: React.FC = () => {
       sorter: false,
       render: (rechargedBy: any) => {
         if (!rechargedBy) return "-";
-        return <>{rechargedBy.name}</>;
+        return <>{rechargedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType

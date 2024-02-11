@@ -10,6 +10,8 @@ export interface DistributionPopData {
   isActive: boolean;
   insertedBy: InsertedBy;
   editedBy: EditedBy;
+  latitude: string;
+  longitude: string;
   // updatedOn?: string;
 }
 

@@ -1,9 +1,9 @@
-import { AgentTopUpData } from "@/interfaces/AgentTopUpData";
+import { ZoneTopUpData } from "@/interfaces/ZoneTopUpData";
 import React from "react";
 import { Row, Col, Card } from "antd";
 import { format } from "date-fns";
 interface PropData {
-  item: AgentTopUpData;
+  item: ZoneTopUpData;
 }
 
 const DetailsZoneTopData = ({ item }: PropData) => {
@@ -42,10 +42,12 @@ const DetailsZoneTopData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Agent :</span>
+                <span className="font-bold text-base">Zone Manager :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.agent?.name}</span>
+                <span className="mx-1 text-base">
+                  {item.zoneManager?.username}
+                </span>
               </Col>
             </Row>
             <Row

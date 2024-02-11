@@ -312,39 +312,47 @@ const CreateZoneTopUpRequestForm = () => {
                 />
               </Form.Item>
             </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* paymentGatewayId */}
-              <Form.Item
-                label="Payment Gateway"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="paymentGatewayId"
+            {paymentType == "online" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handlePaymentGatewayChange}
-                    options={paymentGateways}
-                    value={selectedPaymentGateway}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+                {/* paymentGatewayId */}
+                <Form.Item
+                  label="Payment Gateway"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      // required: paymentType ? paymentType === "offline" : false,
+                      required: true,
+                      message: "Please upload file!"
+                    }
+                  ]}
+                  name="paymentGatewayId"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handlePaymentGatewayChange}
+                      options={paymentGateways}
+                      value={selectedPaymentGateway}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            )}
           </Row>
-          {paymentType == "online" && (
+          {paymentType == "offline" && (
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
               <Col>
                 <Form.Item
@@ -358,7 +366,8 @@ const CreateZoneTopUpRequestForm = () => {
                   name="file"
                   rules={[
                     {
-                      required: paymentType ? paymentType === "offline" : false,
+                      // required: paymentType ? paymentType === "offline" : false,
+                      required: true,
                       message: "Please upload file!"
                     }
                   ]}

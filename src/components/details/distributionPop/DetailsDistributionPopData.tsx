@@ -104,7 +104,6 @@ const DetailsDistributionPopData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {" "}
                   {item.createdOn
                     ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
                     : null}
@@ -153,6 +152,42 @@ const DetailsDistributionPopData = ({ item }: PropData) => {
                     ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
                     : null}
                 </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Latitude :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.latitude}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Longtitude :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.longitude}</span>
               </Col>
             </Row>
           </div>

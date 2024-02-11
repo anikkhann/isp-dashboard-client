@@ -395,6 +395,13 @@ const CustomerOnboardingReqList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+    {
+      title: "Username",
+      dataIndex: "username",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
 
     {
       title: "Name",
@@ -446,11 +453,11 @@ const CustomerOnboardingReqList: React.FC = () => {
     // Requested By
     {
       title: "Requested By",
-      dataIndex: "partner.name",
+      dataIndex: "partner.username",
       sorter: false,
       render: (_, row: any) => {
         if (!row.partner) return "-";
-        return <>{row.partner.name}</>;
+        return <>{row.partner.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -553,7 +560,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                     placement="bottomRight"
                     color="green"
                   >
-                    {authUser && authUser.userType == "client" ? (
+                    {authUser && authUser.userType == "zone" ? (
                       <Space size="middle" align="center" wrap>
                         <Button
                           type="primary"
