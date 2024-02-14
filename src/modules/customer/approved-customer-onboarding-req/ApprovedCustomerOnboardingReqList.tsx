@@ -153,6 +153,13 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+    {
+      title: "Username",
+      dataIndex: "username",
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
 
     {
       title: "Name",

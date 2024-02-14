@@ -881,10 +881,14 @@ const CreateZoneForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      showSearch
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
                       onChange={handleDivisionChange}
                       options={divisions}
+                      //   filterOption={(input, option) =>
+                      //     option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      // }
                       value={selectedDivision}
                     />
                   </Space>
@@ -918,6 +922,7 @@ const CreateZoneForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      showSearch
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
                       onChange={handleDistrictChange}
@@ -949,6 +954,7 @@ const CreateZoneForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      showSearch
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
                       onChange={handleUpazillaChange}
@@ -980,6 +986,7 @@ const CreateZoneForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
+                      showSearch
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
                       onChange={handleUnionChange}

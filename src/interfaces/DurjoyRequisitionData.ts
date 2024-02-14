@@ -23,6 +23,7 @@ export interface DurjoyRequisitionData {
   deliveryAddress: string;
   deliveryContact: string;
   clientId: string;
+
   client: DurjoyRequisitionDataClient;
   attachment: string;
 }

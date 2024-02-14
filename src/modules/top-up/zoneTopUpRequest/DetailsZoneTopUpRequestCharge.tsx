@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import RejectZoneTopUpRequestForm from "@/components/forms/zoneTopUpRequest/RejectZoneTopUpRequestForm";
+import DetailsZoneTopUpData from "@/components/details/zoneTopUpRequest/DetailsZoneTopUpRequestData";
 import { ZoneTopUpRequestData } from "@/interfaces/ZoneTopUpRequestData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 
 const DetailsZoneTopUpRequestCharge = ({ id }: any) => {
   const [item, SetItem] = useState<ZoneTopUpRequestData | null>(null);
+  console.log(item);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -66,7 +67,7 @@ const DetailsZoneTopUpRequestCharge = ({ id }: any) => {
               )
             },
             {
-              title: "Reject Zone Top Up Request"
+              title: "Details Zone Top Up Request"
             }
           ]}
         />
@@ -88,28 +89,28 @@ const DetailsZoneTopUpRequestCharge = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Reject Zone Top Up Request
+            Details Zone Top Up Request
           </h1>
         </div>
         <Card
-          // title="Edit Sub Zone In Charge"
           hoverable
           style={{
             width: "90%",
-            backgroundColor: "#ffffff",
+            // backgroundColor: "#ffffff",
+            backgroundColor: "#ECF0F1",
             borderRadius: "10px",
             margin: "0 auto",
             textAlign: "center",
-            marginTop: "1rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
+            marginTop: "2rem",
+            marginBottom: "2rem"
+            // border: "1px solid #F15F22"
           }}
         >
           {isLoading && isFetching && <AppLoader />}
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <RejectZoneTopUpRequestForm item={item} />}
+          {!isLoading && item && <DetailsZoneTopUpData item={item} />}
         </Card>
       </AppRowContainer>
     </>

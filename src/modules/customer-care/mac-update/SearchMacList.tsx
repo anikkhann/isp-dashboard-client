@@ -333,7 +333,7 @@ const SearchMacList = () => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       //   width: "20%",
       align: "center" as AlignType

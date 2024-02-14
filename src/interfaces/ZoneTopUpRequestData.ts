@@ -691,5 +691,8 @@ export interface ZoneTopUpRequestData {
   partnerId: string;
   client: Client;
   clientId: string;
+  fileName: string;
+  parentNote: string;
+  requestNote: string;
   insertedBy: InsertedBy;
 }

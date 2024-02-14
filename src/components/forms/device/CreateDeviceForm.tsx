@@ -186,6 +186,10 @@ const CreateDeviceForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ distributionZoneId: value });
     setSelectedDistributionZone(value as any);
+    if (!value) {
+      setSelectedDistributionPop(null);
+      setDistributionPops([]);
+    }
   };
 
   const handleDistributionPopChange = (value: any) => {

@@ -70,6 +70,9 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
 
+  const [status, setStatus] = useState<any>([]);
+  const [statusChanged, setStatusChanged] = useState<any>(null);
+
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       total: 0,
@@ -386,17 +389,41 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
     });
   }
 
+  function getStatus() {
+    const status = [
+      {
+        label: "Pending",
+        value: "Pending"
+      },
+      {
+        label: "Approved",
+        value: "Approved"
+      },
+      {
+        label: "Rejected",
+        value: "Rejected"
+      },
+      {
+        label: "Cancelled",
+        value: "Cancelled"
+      }
+    ];
+    setStatus(status);
+  }
+
   const handleClear = () => {
     setSelectedZone(null);
     setSelectedSubZone(null);
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setStatusChanged(null);
   };
 
   useEffect(() => {
     getZoneManagers();
-    getSubZoneManagers(null);
+    // getSubZoneManagers(selectedZone);
+    getStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -411,6 +438,9 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
   };
   const handleSubZoneChange = (value: any) => {
     setSelectedSubZone(value as any);
+  };
+  const handleStatusChange = (value: any) => {
+    setStatusChanged(value);
   };
 
   // // console.log(error, isLoading, isError)
@@ -491,7 +521,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -732,10 +762,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                           <Col
                             xs={24}
                             sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
                             className="gutter-row"
                           >
                             <Space
@@ -765,10 +795,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                           <Col
                             xs={24}
                             sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
                             className="gutter-row"
                           >
                             <Space
@@ -797,10 +827,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                           <Col
                             xs={24}
                             sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
                             className="gutter-row"
                           >
                             <Space
@@ -825,19 +855,56 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                             </Space>
                           </Col>
                         )}
-
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Date Range By (Expiration Date)</b>
+                              <b>Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleStatusChange}
+                              options={status}
+                              value={statusChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range By (Created On)</b>
                             </span>
                             <RangePicker
                               style={{ width: "100%" }}
@@ -850,10 +917,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -875,10 +942,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         ></Col>
                       </Row>

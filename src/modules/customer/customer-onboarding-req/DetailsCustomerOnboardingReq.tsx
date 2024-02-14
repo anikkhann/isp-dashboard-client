@@ -61,12 +61,12 @@ const DetailsCustomerOnboardingReq = ({ id }: any) => {
             {
               title: (
                 <Link href="/admin/customer/customer-onboarding-req">
-                  Customer Request
+                  Details Customer Request
                 </Link>
               )
             },
             {
-              title: "Details Customer Request"
+              title: "Details Customer Onboarding Request"
             }
           ]}
         />
@@ -88,7 +88,7 @@ const DetailsCustomerOnboardingReq = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Details Customer Request
+            Details Customer Onboarding Request
           </h1>
         </div>
         <Card

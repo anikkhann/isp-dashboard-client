@@ -182,7 +182,7 @@ const AgentTopUpList: React.FC = () => {
       dataIndex: "agent",
       sorter: false,
       render: (agent: any) => {
-        return <>{agent ? agent.name : "N/A"}</>;
+        return <>{agent ? agent.username : "N/A"}</>;
       },
       width: "20%",
       align: "center" as AlignType

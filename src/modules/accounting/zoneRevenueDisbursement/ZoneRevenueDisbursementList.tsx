@@ -61,6 +61,7 @@ interface TableParams {
 const ZoneRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
   // ;
+
   const MySwal = withReactContent(Swal);
 
   const router = useRouter();
@@ -69,6 +70,9 @@ const ZoneRevenueDisbursementList: React.FC = () => {
 
   const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const [status, setStatus] = useState<any>([]);
+  const [statusChanged, setStatusChanged] = useState<any>(null);
 
   const authUser = useAppSelector(state => state.auth.user);
 
@@ -384,7 +388,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -587,20 +591,46 @@ const ZoneRevenueDisbursementList: React.FC = () => {
     });
   }
 
+  function getStatus() {
+    const status = [
+      {
+        label: "Pending",
+        value: "Pending"
+      },
+      {
+        label: "Approved",
+        value: "Approved"
+      },
+      {
+        label: "Rejected",
+        value: "Rejected"
+      },
+      {
+        label: "Cancelled",
+        value: "Cancelled"
+      }
+    ];
+    setStatus(status);
+  }
   const handleClear = () => {
     setSelectedZone(null);
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setStatusChanged(null);
   };
 
   useEffect(() => {
     getZoneManagers();
+    getStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleZoneChange = (value: any) => {
     setSelectedZone(value);
+  };
+  const handleStatusChange = (value: any) => {
+    setStatusChanged(value);
   };
 
   return (
@@ -676,42 +706,85 @@ const ZoneRevenueDisbursementList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser && authUser.userType == "client" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Zone Manager</b>
+                              </span>
+                              <Select
+                                showSearch
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleZoneChange}
+                                options={zones}
+                                value={selectedZone}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Zone Manager</b>
+                              <b>Status</b>
                             </span>
                             <Select
-                              showSearch
                               allowClear
-                              style={{ width: "100%", textAlign: "start" }}
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
                               placeholder="Please select"
-                              onChange={handleZoneChange}
-                              options={zones}
-                              value={selectedZone}
+                              onChange={handleStatusChange}
+                              options={status}
+                              value={statusChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Col>
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Date Range By (Expiration Date)</b>
+                              <b>Date Range By (Created On)</b>
                             </span>
                             <RangePicker
                               style={{ width: "100%" }}
@@ -724,10 +797,10 @@ const ZoneRevenueDisbursementList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -749,10 +822,10 @@ const ZoneRevenueDisbursementList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         ></Col>
                       </Row>

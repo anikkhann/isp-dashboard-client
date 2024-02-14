@@ -660,7 +660,7 @@ const CustomerTicketList: React.FC = () => {
           )}
 
           <TableCard
-            title="Customer Tickets List"
+            title="Customer Tickets"
             hasLink={true}
             addLink="/admin/complaint/customer-ticket/create"
             permission="customerTicket.create"

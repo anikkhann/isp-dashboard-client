@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 
 const RejectZoneTopUpRequest = ({ id }: any) => {
   const [item, SetItem] = useState<ZoneTopUpRequestData | null>(null);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

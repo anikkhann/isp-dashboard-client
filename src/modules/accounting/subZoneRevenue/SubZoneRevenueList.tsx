@@ -272,6 +272,7 @@ const SubZoneRevenueList: React.FC = () => {
 
   useEffect(() => {
     getUsers();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -551,6 +552,7 @@ const SubZoneRevenueList: React.FC = () => {
                             />
                           </Space>
                         </Col>
+
                         <Col
                           xs={24}
                           sm={12}

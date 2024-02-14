@@ -168,7 +168,7 @@ const IpManagementList: React.FC = () => {
         const { assignedType } = record;
         if (assignedType !== "customer") return "-";
 
-        return <>{customer?.customer.username}</>;
+        return <>{customer.username}</>;
       },
       sorter: false,
       width: "20%",

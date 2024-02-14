@@ -29,6 +29,7 @@ import { PaymentGatewayConfigData } from "@/interfaces/PaymentGatewayConfigData"
 
 interface FormData {
   paidAmount: string;
+  requestNote: string;
 }
 
 const paymentTypes = [
@@ -159,11 +160,12 @@ const CreateZoneTopUpRequestForm = () => {
 
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    const { paidAmount } = data;
+    const { paidAmount, requestNote } = data;
 
     const bodyData = {
       paymentType: paymentType,
       paidAmount: paidAmount,
+      requestNote: requestNote,
       paymentGatewayId: selectedPaymentGateway
     };
 
@@ -235,6 +237,7 @@ const CreateZoneTopUpRequestForm = () => {
           form={form}
           initialValues={{
             paidAmount: "",
+            requestNote: "",
             paymentType: "",
             paymentGatewayId: ""
           }}
@@ -308,6 +311,39 @@ const CreateZoneTopUpRequestForm = () => {
                   placeholder="paidAmount"
                   className={`form-control`}
                   name="paidAmount"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* requestNote */}
+              <Form.Item
+                label="Note"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="requestNote"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input Note!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Note"
+                  className={`form-control`}
+                  name="requestNote"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>

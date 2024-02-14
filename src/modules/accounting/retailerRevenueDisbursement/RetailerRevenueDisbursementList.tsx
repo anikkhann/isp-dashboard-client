@@ -74,6 +74,9 @@ const RetailerRevenueDisbursementList: React.FC = () => {
   const [retailers, setRetailers] = useState([]);
   const [selectedRetailer, setSelectedRetailer] = useState(null);
 
+  const [status, setStatus] = useState<any>([]);
+  const [statusChanged, setStatusChanged] = useState<any>(null);
+
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -447,6 +450,28 @@ const RetailerRevenueDisbursementList: React.FC = () => {
     });
   }
 
+  function getStatus() {
+    const status = [
+      {
+        label: "Pending",
+        value: "Pending"
+      },
+      {
+        label: "Approved",
+        value: "Approved"
+      },
+      {
+        label: "Rejected",
+        value: "Rejected"
+      },
+      {
+        label: "Cancelled",
+        value: "Cancelled"
+      }
+    ];
+    setStatus(status);
+  }
+
   const handleClear = () => {
     setSelectedZone(null);
     setSelectedSubZone(null);
@@ -454,11 +479,13 @@ const RetailerRevenueDisbursementList: React.FC = () => {
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setStatusChanged(null);
   };
 
   useEffect(() => {
     getZoneManagers();
     getRetailers();
+    getStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -480,6 +507,10 @@ const RetailerRevenueDisbursementList: React.FC = () => {
   };
   const handleRetailerChange = (value: any) => {
     setSelectedRetailer(value as any);
+  };
+
+  const handleStatusChange = (value: any) => {
+    setStatusChanged(value);
   };
 
   // // console.log(error, isLoading, isError)
@@ -548,6 +579,17 @@ const RetailerRevenueDisbursementList: React.FC = () => {
             )}
           </>
         );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Requested By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -800,10 +842,10 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                           <Col
                             xs={24}
                             sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
                             className="gutter-row"
                           >
                             <Space
@@ -829,46 +871,48 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                           </Col>
                         )}
 
-                        {authUser && authUser.userType == "client" && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
-                            className="gutter-row"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
+                        {authUser &&
+                          (authUser.userType == "client" ||
+                            authUser.userType == "zone") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
                             >
-                              <span>
-                                <b>Sub Zone Manager</b>
-                              </span>
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Sub Zone Manager</b>
+                                </span>
 
-                              <Select
-                                allowClear
-                                style={{
-                                  width: "100%",
-                                  textAlign: "start"
-                                }}
-                                placeholder="Please select"
-                                onChange={handleSubZoneChange}
-                                options={subZones}
-                                value={selectedSubZone}
-                              />
-                            </Space>
-                          </Col>
-                        )}
+                                <Select
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleSubZoneChange}
+                                  options={subZones}
+                                  value={selectedSubZone}
+                                />
+                              </Space>
+                            </Col>
+                          )}
 
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -886,19 +930,56 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Date Range By (Expiration Date)</b>
+                              <b>Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleStatusChange}
+                              options={status}
+                              value={statusChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range By (Created On)</b>
                             </span>
                             <RangePicker
                               style={{ width: "100%" }}
@@ -911,10 +992,10 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -936,10 +1017,10 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         ></Col>
                       </Row>

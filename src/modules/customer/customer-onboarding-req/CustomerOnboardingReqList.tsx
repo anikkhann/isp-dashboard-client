@@ -65,7 +65,7 @@ const CustomerOnboardingReqList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
   const { Panel } = Collapse;
   const { RangePicker } = DatePicker;
-
+  // const [form] = Form.useForm();
   const MySwal = withReactContent(Swal);
 
   const [data, setData] = useState<CustomerData[]>([]);
@@ -85,6 +85,12 @@ const CustomerOnboardingReqList: React.FC = () => {
 
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+
+  const [zoneStatus, setZoneStatus] = useState<any>([]);
+  const [zoneStatusChanged, setZoneStatusChanged] = useState<any>(null);
+
+  const [clientStatus, setClientStatus] = useState<any>([]);
+  const [clientStatusChanged, setClientStatusChanged] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -113,11 +119,11 @@ const CustomerOnboardingReqList: React.FC = () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const zoneStatus =
-      authUser && authUser.userType == "client" ? `Approved` : null;
+    // const zoneStatus =
+    //   authUser && authUser.userType == "client" ? `Approved` : null;
 
-    const clientStatus =
-      authUser && authUser.userType == "client" ? `Pending` : null;
+    // const clientStatus =
+    //   authUser && authUser.userType == "client" ? `Pending` : null;
 
     const body = {
       meta: {
@@ -133,8 +139,9 @@ const CustomerOnboardingReqList: React.FC = () => {
       body: {
         // clientStatus: "Pending"
         // zoneStatus : "Pending"
-        zoneStatus,
-        clientStatus,
+        zoneStatus: zoneStatusChanged,
+        clientStatus: clientStatusChanged,
+
         customerType: {
           id: customerTypeParam
         },
@@ -169,7 +176,9 @@ const CustomerOnboardingReqList: React.FC = () => {
       selectedCustomerPackage,
       selectedUsername,
       selectedStartDate,
-      selectedEndDate
+      selectedEndDate,
+      zoneStatusChanged,
+      clientStatusChanged
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -338,6 +347,8 @@ const CustomerOnboardingReqList: React.FC = () => {
   useEffect(() => {
     getCustomerPackages();
     getCustomerTypes();
+    getZoneStatus();
+    getClientStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -347,15 +358,6 @@ const CustomerOnboardingReqList: React.FC = () => {
 
   const handleCustomerPackageChange = (value: any) => {
     setSelectedCustomerPackage(value);
-  };
-
-  const handleClear = () => {
-    setSelectedCustomerType(null);
-    setSelectedCustomerPackage(null);
-    setSelectedUsername(null);
-    setSelectedDateRange(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
   };
 
   const handleDateChange = (value: any) => {
@@ -378,6 +380,64 @@ const CustomerOnboardingReqList: React.FC = () => {
     }
   };
 
+  function getZoneStatus() {
+    const zoneStatus = [
+      {
+        label: "Pending",
+        value: "Pending"
+      },
+      {
+        label: "Approved",
+        value: "Approved"
+      },
+      {
+        label: "Rejected",
+        value: "Rejected"
+      },
+      {
+        label: "Cancelled",
+        value: "Cancelled"
+      }
+    ];
+    setZoneStatus(zoneStatus);
+  }
+  function getClientStatus() {
+    const clientStatus = [
+      {
+        label: "Pending",
+        value: "Pending"
+      },
+      {
+        label: "Approved",
+        value: "Approved"
+      },
+      {
+        label: "Rejected",
+        value: "Rejected"
+      },
+      {
+        label: "Cancelled",
+        value: "Cancelled"
+      }
+    ];
+    setClientStatus(clientStatus);
+  }
+  const handleZoneStatusChange = (value: any) => {
+    setZoneStatusChanged(value);
+  };
+  const handleClientStatusChange = (value: any) => {
+    setClientStatusChanged(value);
+  };
+  const handleClear = () => {
+    setSelectedCustomerType(null);
+    setSelectedCustomerPackage(null);
+    setSelectedUsername(null);
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+    setZoneStatusChanged(null);
+    setClientStatusChanged(null);
+  };
   // console.log(error, isLoading, isError)
 
   const columns: ColumnsType<CustomerData> = [
@@ -884,6 +944,80 @@ const CustomerOnboardingReqList: React.FC = () => {
                           xxl={8}
                           className="gutter-row"
                         >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Zone Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleZoneStatusChange}
+                              options={zoneStatus}
+                              value={zoneStatusChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Client Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleClientStatusChange}
+                              options={clientStatus}
+                              value={clientStatusChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
                           <Button
                             style={{
                               width: "100%",
@@ -900,6 +1034,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
+
                         <Col
                           xs={24}
                           sm={12}

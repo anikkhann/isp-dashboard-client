@@ -12,7 +12,12 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { AlertOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  AlertOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  EyeOutlined
+} from "@ant-design/icons";
 // import { format } from "date-fns";
 import { ZoneTopUpRequestData } from "@/interfaces/ZoneTopUpRequestData";
 
@@ -421,6 +426,20 @@ const ZoneTopUpRequestList: React.FC = () => {
                       }}
                       onClick={() => handleCancel(record.id)}
                     />
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {/* cancel */}
+              {ability.can("zoneTopUpRequest.view", "") &&
+              record.status === "Pending" ? (
+                <Tooltip title="View" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap className="mx-1">
+                    <Link
+                      href={`/admin/top-up/zone-top-up-request/${record.id}`}
+                    >
+                      <Button type="primary" icon={<EyeOutlined />} />
+                    </Link>
                   </Space>
                 </Tooltip>
               ) : null}

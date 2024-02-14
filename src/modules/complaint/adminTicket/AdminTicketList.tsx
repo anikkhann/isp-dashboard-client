@@ -667,7 +667,7 @@ const AdminTicketList: React.FC = () => {
           )}
 
           <TableCard
-            title="Admin Tickets List"
+            title="Admin Tickets"
             hasLink={true}
             addLink="/admin/complaint/admin-ticket/create"
             permission="adminTicket.create"
