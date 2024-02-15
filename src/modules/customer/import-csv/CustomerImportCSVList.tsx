@@ -604,7 +604,8 @@ const CustomerImportCSVList: React.FC = () => {
         return (
           <div className="flex flex-row">
             <Space size="middle" align="center">
-              {ability.can("customerImportCsv.update", "") ? (
+              {ability.can("customerImportCsv.update", "") &&
+              record.status != "Completed" ? (
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/customer/import-csv/${record.id}/edit`}>

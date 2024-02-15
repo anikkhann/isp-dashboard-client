@@ -114,7 +114,9 @@ const CustomerOnboardingReqList: React.FC = () => {
     customerPackageParam: string,
     usernameParam: string,
     startDateParam: string,
-    endDateParam: string
+    endDateParam: string,
+    zoneStatusParam: string,
+    clientStatusParam: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -139,8 +141,8 @@ const CustomerOnboardingReqList: React.FC = () => {
       body: {
         // clientStatus: "Pending"
         // zoneStatus : "Pending"
-        zoneStatus: zoneStatusChanged,
-        clientStatus: clientStatusChanged,
+        zoneStatus: zoneStatusParam,
+        clientStatus: clientStatusParam,
 
         customerType: {
           id: customerTypeParam
@@ -190,7 +192,9 @@ const CustomerOnboardingReqList: React.FC = () => {
         selectedCustomerPackage,
         selectedUsername,
         selectedStartDate,
-        selectedEndDate
+        selectedEndDate,
+        zoneStatusChanged,
+        clientStatusChanged
       );
       return response;
     },

@@ -268,13 +268,14 @@ const UpdateCustomerImportCsvForm = ({ item }: PropData) => {
     setLoading(true);
 
     const bodyData = {
+      id: item,
       zoneManagerId: selectedZone,
       subZoneManagerId: selectedSubZone,
       retailerId: selectedRetailer
     };
 
     const formData = new FormData();
-    formData.append("id", item);
+    // formData.append("id", item);
     if (file) {
       formData.append("csvFile", file);
     }
