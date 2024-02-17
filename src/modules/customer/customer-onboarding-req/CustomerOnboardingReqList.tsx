@@ -614,10 +614,12 @@ const CustomerOnboardingReqList: React.FC = () => {
                   </Tooltip>
                 ) : null)}
               {/* approve */}
-              {((authUser &&
+              {authUser &&
                 authUser.partnerId != record.partnerId &&
-                record.zoneStatus == "Approved") ||
-                record.zoneStatus == "Pending") &&
+                ((record.zoneStatus == "Approved" &&
+                  authUser.userType == "client") ||
+                  (record.zoneStatus == "Pending" &&
+                    authUser.userType == "zone")) &&
                 (ability.can("customerOnboardingReq.approve", "") ? (
                   <Tooltip
                     title="Approve"
@@ -657,8 +659,11 @@ const CustomerOnboardingReqList: React.FC = () => {
                   </Tooltip>
                 ) : null)}
               {/* reject */}
-              {(record.clientStatus == "Pending" ||
-                record.zoneStatus == "Pending") &&
+              {authUser &&
+                ((record.clientStatus == "Pending" &&
+                  authUser.userType == "client") ||
+                  (record.zoneStatus == "Pending" &&
+                    authUser.userType == "zone")) &&
                 (ability.can("customerOnboardingReq.reject", "") ? (
                   <Tooltip title="Reject" placement="bottomRight" color="red">
                     <Space size="middle" align="center" wrap>

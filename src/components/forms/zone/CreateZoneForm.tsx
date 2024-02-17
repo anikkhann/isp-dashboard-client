@@ -53,7 +53,8 @@ const CreateZoneForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
-
+  // const [order, SetOrder] = useState("desc");
+  // const [sort, SetSort] = useState("createdOn");
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -95,6 +96,7 @@ const CreateZoneForm = () => {
 
   const handleDistrictChange = (value: any) => {
     // console.log("checked = ", value);
+
     form.setFieldsValue({ districtId: value });
     setSelectedDistrict(value as any);
     setSelectedUpazilla(null);
@@ -109,7 +111,6 @@ const CreateZoneForm = () => {
   };
 
   const handleUnionChange = (value: any) => {
-    // console.log("checked = ", value);
     form.setFieldsValue({ unionId: value });
     setSelectedUnion(value as any);
   };
@@ -246,9 +247,8 @@ const CreateZoneForm = () => {
           }
         ]
       },
-      // FOR SEARCHING DATA - OPTIONAL
+
       body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
         upazilla: { id: selectedUpazilla },
         isActive: true
       }

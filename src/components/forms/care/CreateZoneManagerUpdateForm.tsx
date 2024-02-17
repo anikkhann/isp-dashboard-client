@@ -115,7 +115,7 @@ const CreateZoneManagerUpdateForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },

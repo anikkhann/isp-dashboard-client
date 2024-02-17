@@ -186,6 +186,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
     zoneManagerParam: string | null,
     subZoneManagerParam: string | null,
     retailerParam: string | null,
+    statusParam: string | null,
     startDateParam: string | null,
     endDateParam: string | null
   ) => {
@@ -214,6 +215,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         retailer: {
           id: retailerParam
         },
+        status: statusChanged,
         dateRangeFilter: {
           field: "createdOn",
           startDate: startDateParam,
@@ -244,6 +246,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       selectedZone,
       selectedSubZone,
       selectedRetailer,
+      statusChanged,
       selectedStartDate,
       selectedEndDate
     ],
@@ -256,6 +259,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         selectedZone,
         selectedSubZone,
         selectedRetailer,
+        statusChanged,
         selectedStartDate,
         selectedEndDate
       );
@@ -326,7 +330,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -354,7 +358,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -369,7 +373,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -399,7 +403,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -407,20 +411,20 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       setSubZones(list);
     });
   }
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -441,7 +445,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -484,7 +488,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
 
   useEffect(() => {
     getZoneManagers();
-    getRetailers();
+    // getRetailers();
     getStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -499,6 +503,14 @@ const RetailerRevenueDisbursementList: React.FC = () => {
     getSubZoneManagers(null);
   }, []);
 
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+  }, [selectedSubZone]);
+  useEffect(() => {
+    getRetailers(null);
+  }, []);
   const handleZoneChange = (value: any) => {
     setSelectedZone(value as any);
   };
@@ -905,31 +917,36 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                               </Space>
                             </Col>
                           )}
+                        {authUser && authUser.userType != "retailer" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Retailer</b>
+                              </span>
 
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Retailer</b>
-                            </span>
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleRetailerChange}
+                                options={retailers}
+                                value={selectedRetailer}
+                              />
+                            </Space>
+                          </Col>
+                        )}
 
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleRetailerChange}
-                              options={retailers}
-                              value={selectedRetailer}
-                            />
-                          </Space>
-                        </Col>
                         <Col
                           xs={24}
                           sm={12}

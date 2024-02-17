@@ -133,7 +133,7 @@ const ZoneTopUpList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -145,7 +145,7 @@ const ZoneTopUpList: React.FC = () => {
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });

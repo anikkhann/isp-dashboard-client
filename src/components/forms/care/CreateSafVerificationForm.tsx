@@ -130,6 +130,11 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
   const [previous, setPrevious] = useState<any>(null);
 
+  if (previous && previous.area) {
+    console.log(previous.area);
+  } else {
+    console.log("Previous is null or doesn't have an area property.");
+  }
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -384,6 +389,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     const { data } = response;
     if (data.body) {
       setPrevious(data.body);
+
       // If data.body contains an id property
     }
   };

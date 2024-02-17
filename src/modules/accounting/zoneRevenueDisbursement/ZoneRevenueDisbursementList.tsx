@@ -185,6 +185,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
     order: string,
     sort: string,
     zoneManagerParam: string | null,
+    statusParam: string | null,
     startDateParam: string | null,
     endDateParam: string | null
   ) => {
@@ -210,6 +211,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
         zoneManager: {
           id: zoneManagerParam
         },
+        status: statusChanged,
         dateRangeFilter: {
           field: "createdOn",
           startDate: startDateParam,
@@ -238,6 +240,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
       order,
       sort,
       selectedZone,
+      statusChanged,
       selectedStartDate,
       selectedEndDate
     ],
@@ -248,6 +251,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
         order,
         sort,
         selectedZone,
+        statusChanged,
         selectedStartDate,
         selectedEndDate
       );
@@ -554,7 +558,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -582,7 +586,7 @@ const ZoneRevenueDisbursementList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });

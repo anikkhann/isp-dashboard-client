@@ -112,7 +112,7 @@ const CreateSubZoneManagerUpdateForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },

@@ -431,8 +431,7 @@ const ZoneTopUpRequestList: React.FC = () => {
               ) : null}
 
               {/* cancel */}
-              {ability.can("zoneTopUpRequest.view", "") &&
-              record.status === "Pending" ? (
+              {ability.can("zoneTopUpRequest.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap className="mx-1">
                     <Link

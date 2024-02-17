@@ -45,7 +45,7 @@ const CreateRetailerRevenueDisbursementForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -70,7 +70,7 @@ const CreateRetailerRevenueDisbursementForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });

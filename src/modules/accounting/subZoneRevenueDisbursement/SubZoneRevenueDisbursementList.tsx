@@ -172,6 +172,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
     sort: string,
     zoneManagerParam: string | null,
     subZoneManagerParam: string | null,
+    statusParam: string | null,
     startDateParam: string | null,
     endDateParam: string | null
   ) => {
@@ -197,6 +198,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
         subZoneManager: {
           id: subZoneManagerParam
         },
+        status: statusChanged,
         dateRangeFilter: {
           field: "createdOn",
           startDate: startDateParam,
@@ -226,6 +228,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
       sort,
       selectedZone,
       selectedSubZone,
+      statusChanged,
       selectedStartDate,
       selectedEndDate
     ],
@@ -237,6 +240,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
         sort,
         selectedZone,
         selectedSubZone,
+        statusChanged,
         selectedStartDate,
         selectedEndDate
       );
@@ -307,7 +311,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -335,7 +339,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -350,7 +354,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -380,7 +384,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -791,7 +795,41 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                           </Col>
                         )}
 
-                        {authUser && authUser.userType == "client" && (
+                        {authUser &&
+                          (authUser.userType == "client" ||
+                            authUser.userType == "zone") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Sub Zone Manager</b>
+                                </span>
+
+                                <Select
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleSubZoneChange}
+                                  options={subZones}
+                                  value={selectedSubZone}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {/* {authUser && (
                           <Col
                             xs={24}
                             sm={12}
@@ -822,39 +860,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                               />
                             </Space>
                           </Col>
-                        )}
-                        {authUser && authUser.userType != "client" && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={8}
-                            lg={8}
-                            xl={8}
-                            xxl={8}
-                            className="gutter-row"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <span>
-                                <b>Sub Zone Manager</b>
-                              </span>
-
-                              <Select
-                                allowClear
-                                style={{
-                                  width: "100%",
-                                  textAlign: "start"
-                                }}
-                                placeholder="Please select"
-                                onChange={handleSubZoneChange}
-                                options={subZones}
-                                value={selectedSubZone}
-                              />
-                            </Space>
-                          </Col>
-                        )}
+                        )} */}
                         <Col
                           xs={24}
                           sm={12}

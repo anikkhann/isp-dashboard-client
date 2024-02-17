@@ -112,7 +112,7 @@ const CreateRetailerUpdateForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
