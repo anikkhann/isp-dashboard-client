@@ -423,7 +423,7 @@ const CreateAdminTicketForm = () => {
                           }}
                           disabled={loading}
                         >
-                          Submit
+                          {loading ? "Submitting..." : "Submit"}
                         </Button>
                       )}
                     </div>

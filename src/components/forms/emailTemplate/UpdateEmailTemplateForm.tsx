@@ -906,7 +906,7 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   }}
                   disabled={loading}
                 >
-                  Submit
+                  {loading ? "Submitting..." : "Submit"}
                 </Button>
               </Form.Item>
             </Col>

@@ -68,7 +68,7 @@ const ActiveAndTotalRetailer = () => {
             }}
           >
             <Statistic
-              title="Total Clients"
+              title="Total Retailers"
               value={item?.retailer}
               // precision={2}
               valueStyle={{ color: "#0e8fdc" }}
@@ -94,7 +94,7 @@ const ActiveAndTotalRetailer = () => {
           >
             <Statistic
               style={{ backgroundColor: "#ffffff !important" }}
-              title="Active Clients"
+              title="Active Retailers"
               value={item?.active_retailer}
               // precision={2}
               valueStyle={{ color: "#3f8600" }}

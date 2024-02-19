@@ -353,8 +353,11 @@ const CreateCustomerTopUpForm = () => {
                       color: "#FFFFFF",
                       fontWeight: "bold"
                     }}
+                    loading={loading}
+                    disabled={loading}
+                    // Set loading state to true when button is clicked
                   >
-                    Submit
+                    {loading ? "Submitting..." : "Submit"}
                   </Button>
                 </Form.Item>
               </Col>

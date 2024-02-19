@@ -427,7 +427,7 @@ const EditBwNttnProviderForm = ({ item }: PropData) => {
                     loading={loading}
                     disabled={loading}
                   >
-                    Submit
+                    {loading ? "Submitting..." : "Submit"}
                   </Button>
                 </Form.Item>
               </Col>

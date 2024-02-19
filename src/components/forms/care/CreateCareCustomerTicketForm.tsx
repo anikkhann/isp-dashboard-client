@@ -631,8 +631,9 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                             color: "#FFFFFF",
                             fontWeight: "bold"
                           }}
+                          disabled={loading}
                         >
-                          Submit
+                          {loading ? "Submitting..." : "Submit"}
                         </Button>
                       )}
                     </div>

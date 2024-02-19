@@ -918,8 +918,9 @@ const CreateResellerVisitForm = () => {
                           color: "#FFFFFF",
                           fontWeight: "bold"
                         }}
+                        disabled={loading}
                       >
-                        Submit
+                        {loading ? "Submitting..." : "Submit"}
                       </Button>
                     </div>
                   </Form.Item>

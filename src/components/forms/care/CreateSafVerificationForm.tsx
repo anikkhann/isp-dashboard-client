@@ -2031,7 +2031,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           }}
                           disabled={loading}
                         >
-                          Submit
+                          {loading ? "Submitting..." : "Submit"}
                         </Button>
                       )}
                     </div>

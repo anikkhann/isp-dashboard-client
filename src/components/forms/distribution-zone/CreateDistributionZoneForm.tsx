@@ -170,6 +170,7 @@ const CreateDistributionZoneForm = () => {
                       color: "#FFFFFF",
                       fontWeight: "bold"
                     }}
+                    disabled={loading}
                   >
                     Submit
                   </Button>

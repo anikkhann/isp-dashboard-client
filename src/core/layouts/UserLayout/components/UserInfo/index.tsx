@@ -77,9 +77,10 @@ const UserInfo = () => {
                   <FaChevronDown />
                 </StyledUserArrow>
               </StyledUsernameInfo>
-              {user?.userType == "client" || user?.userType == "zone" ? (
+              {user?.userType == "client" ||
+              (user?.userType == "zone" && user?.isMasterUser == true) ? (
                 <StyledCrUserDesignation className="text-truncate">
-                  Rem. bal. : {user?.credit}.00
+                  Rem. bal. : {user?.credit}
                 </StyledCrUserDesignation>
               ) : null}
             </StyledCrUserInfoContent>

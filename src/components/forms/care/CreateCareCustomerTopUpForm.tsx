@@ -98,7 +98,6 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
           }
         })
         .catch(err => {
-          // console.log(err);
           MySwal.fire({
             title: "Error",
             text: err.response.data.message || "Something went wrong",
@@ -112,7 +111,10 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
       setShowError(true);
       setErrorMessages(err.message);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false); // Simulating a delay
+      }, 1000);
+      // setLoading(false);
     }
   };
 
@@ -123,7 +125,6 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
       {!loading && (
         <div className="mt-3">
           <Form
-            // {...layout}
             layout="vertical"
             autoComplete="off"
             onFinish={onSubmit}
@@ -151,7 +152,6 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* type */}
                 <Form.Item
                   label="Type"
                   name="type"
@@ -261,8 +261,10 @@ const CreateCareCustomerTopUpForm = ({ item }: PropData) => {
                       color: "#FFFFFF",
                       fontWeight: "bold"
                     }}
+                    disabled={loading}
+                    // onClick={handleClick}
                   >
-                    Submit
+                    {loading ? "Submitting..." : "Submiting"}
                   </Button>
                 </Form.Item>
               </Col>

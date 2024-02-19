@@ -33,6 +33,7 @@ export interface UserLoggedInData {
   lastLoginTime: number;
   lastLoginIp: string;
   token: string;
+  isMasterUser: boolean;
 }
 
 const initialState: AuthState = {

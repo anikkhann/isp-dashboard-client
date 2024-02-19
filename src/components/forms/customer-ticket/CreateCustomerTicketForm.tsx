@@ -767,8 +767,9 @@ const CreateCustomerTicketForm = () => {
                             color: "#FFFFFF",
                             fontWeight: "bold"
                           }}
+                          disabled={loading}
                         >
-                          Submit
+                          {loading ? "Submitting..." : "Submit"}
                         </Button>
                       )}
                     </div>

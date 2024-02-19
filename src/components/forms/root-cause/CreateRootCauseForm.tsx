@@ -260,8 +260,9 @@ const CreateRootCauseForm = () => {
                       color: "#FFFFFF",
                       fontWeight: "bold"
                     }}
+                    disabled={loading}
                   >
-                    Submit
+                    {loading ? "Submitting..." : "Submit"}
                   </Button>
                 </Form.Item>
               </Col>

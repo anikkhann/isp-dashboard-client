@@ -12,7 +12,7 @@ const DetailsZoneTopUpData = ({ item }: PropData) => {
   // const data = JSON.stringify(item);
   const [previewOpen, setPreviewOpen] = useState(false);
   const handleCancel = () => setPreviewOpen(false);
-  const url = process.env.NEXT_PUBLIC_HOTSPOT_URL;
+  const url = process.env.NEXT_PUBLIC_BACKEND_URL;
   useEffect(() => {}, [item]);
   return (
     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between">

@@ -392,8 +392,9 @@ const CreateRetailerTaggingForm = () => {
                           color: "#FFFFFF",
                           fontWeight: "bold"
                         }}
+                        disabled={loading}
                       >
-                        Submit
+                        {loading ? "Submitting..." : "Submit"}
                       </Button>
                     </div>
                   </Form.Item>

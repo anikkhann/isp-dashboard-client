@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tooltip } from "antd";
+import { Button, Card, Row, Select, Col, Space, Tooltip } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table, Tag } from "antd";
+import { Table, Tag, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
@@ -18,7 +18,7 @@ import {
   CloseOutlined,
   EyeOutlined
 } from "@ant-design/icons";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 import { ZoneTopUpRequestData } from "@/interfaces/ZoneTopUpRequestData";
 
 import Swal from "sweetalert2";
@@ -35,13 +35,25 @@ interface TableParams {
 const ZoneTopUpRequestList: React.FC = () => {
   const [data, setData] = useState<ZoneTopUpRequestData[]>([]);
   const MySwal = withReactContent(Swal);
-
+  const { Panel } = Collapse;
   const router = useRouter();
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const [status, setStatus] = useState<any>([]);
+  const [statusChanged, setStatusChanged] = useState<any>(null);
+
+  const [paymentStatus, setPaymentStatus] = useState<any>([]);
+  const [paymentStatusChanged, setPaymentStatusChanged] = useState<any>(null);
+
+  const [paymentTypeStatus, setPaymentTypeStatus] = useState<any>([]);
+  const [paymentTypeChanged, setPaymentTypeChanged] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -139,7 +151,11 @@ const ZoneTopUpRequestList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    agentId?: string | null,
+    statusParam?: string | null,
+    paymentStatusParam?: string | null,
+    paymentTypeParam?: string | null
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -157,6 +173,12 @@ const ZoneTopUpRequestList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        partner: {
+          id: agentId
+        },
+        status: statusParam,
+        paymentStatus: paymentStatusParam,
+        paymentType: paymentTypeParam
       }
     };
 
@@ -173,9 +195,28 @@ const ZoneTopUpRequestList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["zone-topup-request-list", page, limit, order, sort],
+    queryKey: [
+      "zone-topup-request-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedZone,
+      statusChanged,
+      paymentStatusChanged,
+      paymentTypeChanged
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedZone,
+        statusChanged,
+        paymentStatusChanged,
+        paymentTypeChanged
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -209,6 +250,115 @@ const ZoneTopUpRequestList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedZone(value as any);
+  };
+
+  const handleStatusChange = (value: any) => {
+    setStatusChanged(value);
+  };
+
+  const handlePaymentStatusChange = (value: any) => {
+    setPaymentStatusChanged(value);
+  };
+  const handlePaymentTypeChange = (value: any) => {
+    setPaymentTypeChanged(value);
+  };
+
+  const handleClear = () => {
+    setSelectedZone(null);
+    setStatusChanged(null);
+    setPaymentStatusChanged(null);
+    setPaymentTypeChanged(null);
+  };
+
+  async function getZones() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone"
+      }
+    };
+    const res = await axios.post("/api/partner/get-list", body);
+    if (res.data.status == 200) {
+      const items = res.data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setZones(items);
+    }
+  }
+
+  function getStatus() {
+    const status = [
+      {
+        label: "Pending",
+        value: "Pending"
+      },
+      {
+        label: "Approved",
+        value: "Approved"
+      },
+      {
+        label: "Rejected",
+        value: "Rejected"
+      },
+      {
+        label: "Cancelled",
+        value: "Cancelled"
+      }
+    ];
+    setStatus(status);
+  }
+
+  function getPaymentStatus() {
+    const status = [
+      {
+        label: "Online",
+        value: "Online"
+      },
+      {
+        label: "Offline",
+        value: "Offline"
+      }
+    ];
+    setPaymentStatus(status);
+  }
+
+  function getPaymentTypeStatus() {
+    const status = [
+      {
+        label: "Paid",
+        value: "Paid"
+      },
+      {
+        label: "Unpaid",
+        value: "Unpaid"
+      }
+    ];
+    setPaymentTypeStatus(status);
+  }
+
+  useEffect(() => {
+    getZones();
+    getStatus();
+    getPaymentStatus();
+    getPaymentTypeStatus();
+    // setStatusChanged(null);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -308,6 +458,18 @@ const ZoneTopUpRequestList: React.FC = () => {
       render: (requestedBy: any) => {
         if (!requestedBy) return "-";
         return <>{requestedBy.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Requested At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -528,7 +690,222 @@ const ZoneTopUpRequestList: React.FC = () => {
           >
             <Space direction="vertical" style={{ width: "100%" }}>
               {/* search */}
-              <Space style={{ marginBottom: 16 }}></Space>
+              <Space style={{ marginBottom: 16 }}>
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Partner</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleChange}
+                              options={zones}
+                              value={selectedZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleStatusChange}
+                              options={status}
+                              value={statusChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Payment Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handlePaymentStatusChange}
+                              options={paymentStatus}
+                              value={paymentStatusChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Payment Type</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handlePaymentTypeChange}
+                              options={paymentTypeStatus}
+                              value={paymentTypeChanged}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
+              </Space>
 
               <Table
                 className={"table-striped-rows"}

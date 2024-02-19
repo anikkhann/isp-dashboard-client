@@ -3305,8 +3305,9 @@ const CreateCustomerForm = () => {
                       fontWeight: "bold",
                       marginTop: "2rem"
                     }}
+                    disabled={loading}
                   >
-                    Submit
+                    {loading ? "Submitting..." : "Submit"}
                   </Button>
                 </Form.Item>
               </Col>
