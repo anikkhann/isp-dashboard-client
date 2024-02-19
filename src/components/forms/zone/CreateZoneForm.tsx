@@ -64,9 +64,9 @@ const CreateZoneForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazillas, setUpazillas] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
   const [unions, setUnions] = useState([]);
 
   const [selectedDivision, setSelectedDivision] = useState(null);
@@ -886,10 +886,17 @@ const CreateZoneForm = () => {
                       placeholder="Please select"
                       onChange={handleDivisionChange}
                       options={divisions}
-                      //   filterOption={(input, option) =>
-                      //     option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      // }
                       value={selectedDivision}
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -922,12 +929,22 @@ const CreateZoneForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      showSearch
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
                       onChange={handleDistrictChange}
                       options={districts}
                       value={selectedDistrict}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -954,12 +971,22 @@ const CreateZoneForm = () => {
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
                       allowClear
-                      showSearch
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
                       onChange={handleUpazillaChange}
                       options={upazillas}
                       value={selectedUpazilla}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>

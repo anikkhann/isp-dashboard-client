@@ -50,8 +50,8 @@ interface FormData {
   subscriberName: string;
   contactPerson: string;
   identificationNo: string;
-  dateOfBirth: string;
-  gender: string;
+  // dateOfBirth: string;
+  // gender: string;
   fatherName: string;
   motherName: string;
   spouseName: string;
@@ -60,20 +60,20 @@ interface FormData {
   houseNo: string;
   roadNo: string;
   area: string;
-  connectionAddressDivisionId: string;
-  connectionAddressDistrictId: string;
-  connectionAddressUpazillaId: string;
+  // connectionAddressDivisionId: string;
+  // connectionAddressDistrictId: string;
+  // connectionAddressUpazillaId: string;
   connectionAddressPostCode: string;
   permanentAddress: string;
-  permanentAddressDivisionId: string;
-  permanentAddressDistrictId: string;
-  permanentAddressUpazillaId: string;
+  // permanentAddressDivisionId: string;
+  // permanentAddressDistrictId: string;
+  // permanentAddressUpazillaId: string;
   permanentAddressPostCode: string;
-  mobileNumber: string;
-  phoneNumber: string;
-  altMobileNo: string;
+  mobileNumber: number | null;
+  phoneNumber: number | null;
+  altMobileNo: number | null;
   email: string;
-  occupation: string;
+  // occupation: string;
 }
 
 const occupations = [
@@ -128,13 +128,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
   const [loading, setLoading] = useState(false);
 
-  const [previous, setPrevious] = useState<any>(null);
-
-  if (previous && previous.area) {
-    console.log(previous.area);
-  } else {
-    console.log("Previous is null or doesn't have an area property.");
-  }
+  const [previous, setPrevious] = useState<any>("");
+  console.log(previous.id);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
@@ -144,23 +139,23 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
   const [selectedOccupation, setSelectedOccupation] = useState(null);
 
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazillas, setUpazillas] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
 
   const [selectedDivision, setSelectedDivision] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [selectedUpazilla, setSelectedUpazilla] = useState(null);
 
-  const [parmanentAddressDivisions, setParmanentAddressDivisions] = useState(
-    []
-  );
-  const [parmanentAddressDistricts, setParmanentAddressDistricts] = useState(
-    []
-  );
-  const [parmanentAddressUpazillas, setParmanentAddressUpazillas] = useState(
-    []
-  );
+  const [parmanentAddressDivisions, setParmanentAddressDivisions] = useState<
+    any[]
+  >([]);
+  const [parmanentAddressDistricts, setParmanentAddressDistricts] = useState<
+    any[]
+  >([]);
+  const [parmanentAddressUpazillas, setParmanentAddressUpazillas] = useState<
+    any[]
+  >([]);
 
   const [
     selectedParmanentAddressDivision,
@@ -195,8 +190,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     subscriberName: "",
     contactPerson: "",
     identificationNo: "",
-    dateOfBirth: "",
-    gender: "",
+    // dateOfBirth: "",
+    // gender: "",
     fatherName: "",
     motherName: "",
     spouseName: "",
@@ -205,20 +200,20 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     houseNo: "",
     roadNo: "",
     area: "",
-    connectionAddressDivisionId: "",
-    connectionAddressDistrictId: "",
-    connectionAddressUpazillaId: "",
+    // connectionAddressDivisionId: "",
+    // connectionAddressDistrictId: "",
+    // connectionAddressUpazillaId: "",
     connectionAddressPostCode: "",
     permanentAddress: "",
-    permanentAddressDivisionId: "",
-    permanentAddressDistrictId: "",
-    permanentAddressUpazillaId: "",
+    // permanentAddressDivisionId: "",
+    // permanentAddressDistrictId: "",
+    // permanentAddressUpazillaId: "",
     permanentAddressPostCode: "",
-    mobileNumber: "",
-    phoneNumber: "",
-    altMobileNo: "",
-    email: "",
-    occupation: ""
+    mobileNumber: null,
+    phoneNumber: null,
+    altMobileNo: null,
+    email: ""
+    // occupation: ""
   });
 
   // steps
@@ -255,7 +250,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           "fatherName",
           "motherName",
           "houseNo",
-          // "area",
+          "area",
           "connectionAddress"
         ]);
 
@@ -281,7 +276,6 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           "connectionAddressPostCode",
           "permanentAddress",
           "permanentAddressDivisionId",
-          "permanentAddressDivisionId",
           "permanentAddressDistrictId",
           "permanentAddressUpazillaId",
           "permanentAddressPostCode"
@@ -299,7 +293,15 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           )
         });
       } else if (current === 2) {
-        await form.validateFields(["mobileNumber", "phoneNumber", "email"]);
+        console.log(form.getFieldValue("email"));
+        return;
+        await form.validateFields([
+          "mobileNumber",
+          "phoneNumber",
+          "altMobileNo",
+          "email",
+          "occupation"
+        ]);
 
         setFormValues({
           ...formValues,
@@ -307,8 +309,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           mobileNumber: form.getFieldValue("mobileNumber"),
           phoneNumber: form.getFieldValue("phoneNumber"),
           altMobileNo: form.getFieldValue("altMobileNo"),
-          email: form.getFieldValue("email"),
-          occupation: form.getFieldValue("occupation")
+          email: form.getFieldValue("email")
+          // occupation: form.getFieldValue("occupation")
         });
       }
 
@@ -387,8 +389,10 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     // console.log(response);
 
     const { data } = response;
+
     if (data.body) {
-      setPrevious(data.body);
+      console.log("api", data.body.body);
+      setPrevious(data.body.body);
 
       // If data.body contains an id property
     }
@@ -400,7 +404,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -439,7 +443,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -479,7 +483,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -521,7 +525,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -560,7 +564,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -600,7 +604,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -703,13 +707,15 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
   }, [selectedParmanentAddressDistrict]);
 
   const onSubmit = () => {
+    console.log(formValues);
+    return;
     setLoading(true);
     const {
       subscriberName,
       contactPerson,
       identificationNo,
-      dateOfBirth,
-      gender,
+      // dateOfBirth,
+      // gender,
       fatherName,
       motherName,
       spouseName,
@@ -718,20 +724,20 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       houseNo,
       roadNo,
       area,
-      connectionAddressDivisionId,
-      connectionAddressDistrictId,
-      connectionAddressUpazillaId,
+      // connectionAddressDivisionId,
+      // connectionAddressDistrictId,
+      // connectionAddressUpazillaId,
       connectionAddressPostCode,
       permanentAddress,
-      permanentAddressDivisionId,
-      permanentAddressDistrictId,
-      permanentAddressUpazillaId,
+      // permanentAddressDivisionId,
+      // permanentAddressDistrictId,
+      // permanentAddressUpazillaId,
       permanentAddressPostCode,
       mobileNumber,
       phoneNumber,
       altMobileNo,
-      email,
-      occupation
+      email
+      // occupation
     } = formValues;
     //
     const formData = {
@@ -741,7 +747,9 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       subscriberName: subscriberName,
       contactPerson: contactPerson,
       identificationNo: identificationNo,
-      dateOfBirth: dateOfBirth ? dayjs(dateOfBirth).format("YYYY-MM-DD") : null,
+      dateOfBirth: selectedDateOfBirth
+        ? dayjs(selectedDateOfBirth).format("YYYY-MM-DD")
+        : null,
       gender: gender,
       fatherName: fatherName,
       motherName: motherName,
@@ -751,20 +759,20 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
       houseNo: houseNo,
       roadNo: roadNo,
       area: area,
-      connectionAddressDivisionId: connectionAddressDivisionId,
-      connectionAddressDistrictId: connectionAddressDistrictId,
-      connectionAddressUpazillaId: connectionAddressUpazillaId,
+      connectionAddressDivisionId: selectedDivision,
+      connectionAddressDistrictId: selectedDistrict,
+      connectionAddressUpazillaId: selectedUpazilla,
       connectionAddressPostCode: connectionAddressPostCode,
       permanentAddress: permanentAddress,
-      permanentAddressDivisionId: permanentAddressDivisionId,
-      permanentAddressDistrictId: permanentAddressDistrictId,
-      permanentAddressUpazillaId: permanentAddressUpazillaId,
+      permanentAddressDivisionId: selectedParmanentAddressDivision,
+      permanentAddressDistrictId: selectedParmanentAddressDistrict,
+      permanentAddressUpazillaId: selectedParmanentAddressUpazilla,
       permanentAddressPostCode: permanentAddressPostCode,
       mobileNumber: mobileNumber,
       phoneNumber: phoneNumber,
       altMobileNo: altMobileNo,
       email: email,
-      occupation: occupation
+      occupation: selectedOccupation
     };
 
     try {
@@ -1413,6 +1421,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                                     onChange={handleDivisionChange}
                                     options={divisions}
                                     value={selectedDivision}
+                                    showSearch
+                                    filterOption={(input, option) => {
+                                      if (typeof option?.label === "string") {
+                                        return (
+                                          option.label
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                        );
+                                      }
+                                      return false;
+                                    }}
                                   />
                                 </Space>
                               </Form.Item>
@@ -1447,6 +1466,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                                     onChange={handleDistrictChange}
                                     options={districts}
                                     value={selectedDistrict}
+                                    showSearch
+                                    filterOption={(input, option) => {
+                                      if (typeof option?.label === "string") {
+                                        return (
+                                          option.label
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                        );
+                                      }
+                                      return false;
+                                    }}
                                   />
                                 </Space>
                               </Form.Item>
@@ -1481,6 +1511,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                                     onChange={handleUpazillaChange}
                                     options={upazillas}
                                     value={selectedUpazilla}
+                                    showSearch
+                                    filterOption={(input, option) => {
+                                      if (typeof option?.label === "string") {
+                                        return (
+                                          option.label
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                        );
+                                      }
+                                      return false;
+                                    }}
                                   />
                                 </Space>
                               </Form.Item>
@@ -1597,6 +1638,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                                     }
                                     options={parmanentAddressDivisions}
                                     value={selectedParmanentAddressDivision}
+                                    showSearch
+                                    filterOption={(input, option) => {
+                                      if (typeof option?.label === "string") {
+                                        return (
+                                          option.label
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                        );
+                                      }
+                                      return false;
+                                    }}
                                   />
                                 </Space>
                               </Form.Item>
@@ -1633,6 +1685,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                                     }
                                     options={parmanentAddressDistricts}
                                     value={selectedParmanentAddressDistrict}
+                                    showSearch
+                                    filterOption={(input, option) => {
+                                      if (typeof option?.label === "string") {
+                                        return (
+                                          option.label
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                        );
+                                      }
+                                      return false;
+                                    }}
                                   />
                                 </Space>
                               </Form.Item>
@@ -1669,6 +1732,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                                     }
                                     options={parmanentAddressUpazillas}
                                     value={selectedParmanentAddressUpazilla}
+                                    showSearch
+                                    filterOption={(input, option) => {
+                                      if (typeof option?.label === "string") {
+                                        return (
+                                          option.label
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                        );
+                                      }
+                                      return false;
+                                    }}
                                   />
                                 </Space>
                               </Form.Item>
@@ -1750,7 +1824,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           ]}
                         >
                           <Input
-                            type="text"
+                            type="number"
                             placeholder="Mobile Number"
                             className={`form-control`}
                             style={{ padding: "6px" }}
@@ -1782,7 +1856,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           ]}
                         >
                           <Input
-                            type="text"
+                            type="number"
                             placeholder="Phone Number"
                             className={`form-control`}
                             style={{ padding: "6px" }}
@@ -1814,7 +1888,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           // ]}
                         >
                           <Input
-                            type="text"
+                            type="number"
                             placeholder="Alt Mobile No"
                             className={`form-control`}
                             style={{ padding: "6px" }}
@@ -1890,6 +1964,16 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                               onChange={handleOccupationChange}
                               options={occupations}
                               value={selectedOccupation}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Form.Item>

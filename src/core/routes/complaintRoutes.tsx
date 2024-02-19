@@ -5,7 +5,9 @@ import {
   ExclamationCircleOutlined,
   CheckSquareOutlined,
   BranchesOutlined,
-  MessageOutlined
+  MessageOutlined,
+  FileTextOutlined,
+  ScheduleOutlined
   // UserWarningOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
@@ -61,6 +63,28 @@ const complaintRoutes = [
     path: "/admin/complaint/admin-ticket",
     icon: <SettingOutlined />,
     permission: "adminTicket.list"
+  },
+  {
+    key: "/admin/complaint/daily-task",
+    label: (
+      <Link href="/admin/complaint/daily-task">
+        Daily Task Assign to Reseller
+      </Link>
+    ),
+    path: "/admin/complaint/daily-task",
+    icon: <ScheduleOutlined />,
+    permission: "dailyTask.list"
+  },
+  {
+    key: "/admin/complaint/daily-task-report",
+    label: (
+      <Link href="/admin/complaint/daily-task-report">
+        Daily Task Report to Reseller
+      </Link>
+    ),
+    path: "/admin/complaint/daily-task-report",
+    icon: <FileTextOutlined />,
+    permission: "dailyTaskReport.list"
   }
 ];
 

@@ -39,7 +39,7 @@ const RejectZoneTopUpRequestForm = ({ item }: PropData) => {
     const formData = {
       id: item.id,
       action: "reject",
-      childNote: note
+      parentNote: note
     };
 
     try {

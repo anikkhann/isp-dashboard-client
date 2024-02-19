@@ -12,9 +12,12 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined, DeleteOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { IpSubnetData } from "@/interfaces/IpSubnetData";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { useRouter } from "next/router";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -25,7 +28,8 @@ interface TableParams {
 
 const NetworkList: React.FC = () => {
   const [data, setData] = useState<IpSubnetData[]>([]);
-
+  const router = useRouter();
+  const MySwal = withReactContent(Swal);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -113,7 +117,40 @@ const NetworkList: React.FC = () => {
       setData(data);
     }
   }, [data]);
+  async function handleDelete(id: number) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, delete it!"
+      });
 
+      if (result.isConfirmed) {
+        const { data } = await axios.delete(`/api/ip-subnet/delete/${id}`);
+        if (data.status == 200) {
+          MySwal.fire("Deleted!", data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          console.log(data.message);
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log("error", error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
   const columns: ColumnsType<IpSubnetData> = [
     {
       title: "Serial",
@@ -244,6 +281,21 @@ const NetworkList: React.FC = () => {
                     <Link href={`/admin/device/network/${record.id}`}>
                       <Button type="primary" icon={<EyeOutlined />} />
                     </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+              {ability.can("network.view", "") ? (
+                <Tooltip title="Delete" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      type="primary"
+                      icon={<DeleteOutlined />}
+                      style={{
+                        backgroundColor: "#EA1179",
+                        color: "#ffffff"
+                      }}
+                      onClick={() => handleDelete(record.id)}
+                    />
                   </Space>
                 </Tooltip>
               ) : null}

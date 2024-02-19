@@ -85,7 +85,7 @@ const CreateCustomerImportCsvForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -110,7 +110,7 @@ const CreateCustomerImportCsvForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -126,7 +126,7 @@ const CreateCustomerImportCsvForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -157,7 +157,7 @@ const CreateCustomerImportCsvForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -173,7 +173,7 @@ const CreateCustomerImportCsvForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -200,7 +200,7 @@ const CreateCustomerImportCsvForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -392,6 +392,17 @@ const CreateCustomerImportCsvForm = () => {
                     onChange={handleZoneChange}
                     options={zones}
                     value={selectedZone}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -421,6 +432,17 @@ const CreateCustomerImportCsvForm = () => {
                     onChange={handleSubZoneChange}
                     options={subZones}
                     value={selectedSubZone}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -451,6 +473,17 @@ const CreateCustomerImportCsvForm = () => {
                     onChange={handleRetailerChange}
                     options={retailers}
                     value={selectedRetailer}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>

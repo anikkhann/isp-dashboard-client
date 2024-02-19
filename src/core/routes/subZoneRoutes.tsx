@@ -1,9 +1,8 @@
 import {
   DashboardOutlined,
   LineChartOutlined,
-  UserOutlined,
-  ScheduleOutlined,
-  FileTextOutlined
+  UserOutlined
+  // ScheduleOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
 const subZoneRoutes = [
@@ -31,29 +30,29 @@ const subZoneRoutes = [
     path: "/admin/sub-zone/sub-zone-in-charge",
     icon: <UserOutlined />,
     permission: "dashboard.view"
-  },
-  {
-    key: "/admin/sub-zone/daily-task",
-    label: (
-      <Link href="/admin/sub-zone/daily-task">
-        Daily Task Assign to Reseller
-      </Link>
-    ),
-    path: "/admin/sub-zone/daily-task",
-    icon: <ScheduleOutlined />,
-    permission: "dailyTask.list"
-  },
-  {
-    key: "/admin/sub-zone/daily-task-report",
-    label: (
-      <Link href="/admin/sub-zone/daily-task-report">
-        Daily Task Report to Reseller
-      </Link>
-    ),
-    path: "/admin/sub-zone/daily-task-report",
-    icon: <FileTextOutlined />,
-    permission: "dailyTaskReport.list"
   }
+  // {
+  //   key: "/admin/sub-zone/daily-task",
+  //   label: (
+  //     <Link href="/admin/sub-zone/daily-task">
+  //       Daily Task Assign to Reseller
+  //     </Link>
+  //   ),
+  //   path: "/admin/sub-zone/daily-task",
+  //   icon: <ScheduleOutlined />,
+  //   permission: "dailyTask.list"
+  // }
+  // {
+  //   key: "/admin/sub-zone/daily-task-report",
+  //   label: (
+  //     <Link href="/admin/sub-zone/daily-task-report">
+  //       Daily Task Report to Reseller
+  //     </Link>
+  //   ),
+  //   path: "/admin/sub-zone/daily-task-report",
+  //   icon: <FileTextOutlined />,
+  //   permission: "dailyTaskReport.list"
+  // }
 ];
 
 export default subZoneRoutes;

@@ -311,7 +311,7 @@ const CustomerImportCSVList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -336,7 +336,7 @@ const CustomerImportCSVList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -352,7 +352,7 @@ const CustomerImportCSVList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -383,7 +383,7 @@ const CustomerImportCSVList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -392,19 +392,20 @@ const CustomerImportCSVList: React.FC = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -425,7 +426,7 @@ const CustomerImportCSVList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -461,7 +462,7 @@ const CustomerImportCSVList: React.FC = () => {
 
   useEffect(() => {
     getZoneManagers();
-    getRetailers();
+    getRetailers(null);
     getSubZoneManagers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -472,6 +473,14 @@ const CustomerImportCSVList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedZone]);
 
+  useEffect(() => {
+    if (selectedSubZone) {
+      setSelectedRetailer(null);
+
+      getRetailers(selectedSubZone);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubZone]);
   useEffect(() => {
     if (data) {
       setData(data);
@@ -497,47 +506,47 @@ const CustomerImportCSVList: React.FC = () => {
     },
 
     {
-      title: "batchNo",
+      title: "Batch No",
       dataIndex: "batchNo",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "status",
+      title: "Status",
       dataIndex: "status",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "client",
-      dataIndex: "client",
-      sorter: false,
-      render: (client: any) => {
-        if (!client) return "-";
-        return <>{client.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Client",
+    //   dataIndex: "client",
+    //   sorter: false,
+    //   render: (client: any) => {
+    //     if (!client) return "-";
+    //     return <>{client.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
 
     {
-      title: "totalUpload",
+      title: "Total Upload",
       dataIndex: "totalUpload",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "totalSuccess",
+      title: "Total Success",
       dataIndex: "totalSuccess",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "totalFailed",
+      title: "Total Failed",
       dataIndex: "totalFailed",
       sorter: true,
       width: "20%",
@@ -545,20 +554,20 @@ const CustomerImportCSVList: React.FC = () => {
     },
 
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
     {
-      title: "Created Date",
+      title: "Created At",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
@@ -775,7 +784,7 @@ const CustomerImportCSVList: React.FC = () => {
           )}
 
           <TableCard
-            title="Import csv List"
+            title="Import CSV List"
             hasLink={true}
             addLink="/admin/customer/import-csv/create"
             permission="customerImportCsv.create"
@@ -809,45 +818,42 @@ const CustomerImportCSVList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
-                        {authUser?.userType == "client" && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={8}
-                            lg={8}
-                            xl={8}
-                            xxl={8}
-                            className="gutter-row"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
-                            >
-                              <span>
-                                <b>Zone Manager</b>
-                              </span>
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleZoneChange}
-                                options={zones}
-                                value={selectedZone}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Space>
-                          </Col>
-                        )}
+                        {/* {authUser?.userType == "client" && ( */}
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Zone Manager</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        {/* )} */}
 
                         <Col
                           xs={24}
@@ -930,7 +936,7 @@ const CustomerImportCSVList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Date Range By (Expiration Date)</b>
+                              <b>Date Range By (Created On)</b>
                             </span>
                             <RangePicker
                               style={{ width: "100%" }}
@@ -966,6 +972,15 @@ const CustomerImportCSVList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>

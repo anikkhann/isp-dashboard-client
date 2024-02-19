@@ -191,11 +191,11 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
     // Requested By
     {
       title: "Requested By",
-      dataIndex: "partner.name",
+      dataIndex: "partner.username",
       sorter: false,
       render: (_, row: any) => {
         if (!row.partner) return "-";
-        return <>{row.partner.name}</>;
+        return <>{row.partner.username}</>;
       },
       width: "20%",
       align: "center" as AlignType

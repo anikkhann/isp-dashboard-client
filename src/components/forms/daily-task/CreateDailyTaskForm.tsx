@@ -84,10 +84,15 @@ const CreateDailyTaskForm = () => {
 
   const [customers, setCustomers] = useState<any[]>([]);
 
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazillas, setUpazillas] = useState([]);
-  const [unions, setUnions] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
+  const [unions, setUnions] = useState<any[]>([]);
+  console.log(unions);
+  const [selectedDivision, setSelectedDivision] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedUpazilla, setSelectedUpazilla] = useState(null);
+  // const [selectedUnions, setSelectedUnions] = useState(null);
 
   const [competitorInfoLineValues, setcompetitorInfoLineValues] = useState<
     CompetitorInfoLineProps[]
@@ -196,12 +201,12 @@ const CreateDailyTaskForm = () => {
     });
   }
 
-  function getDistricts() {
+  function getDistricts(selectedDivision: string) {
     const body = {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -209,7 +214,7 @@ const CreateDailyTaskForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-
+        division: { id: selectedDivision },
         isActive: true
       }
     };
@@ -217,7 +222,6 @@ const CreateDailyTaskForm = () => {
     axios.post("/api/district/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
-
       if (data.status != 200) {
         MySwal.fire({
           title: "Error",
@@ -227,7 +231,6 @@ const CreateDailyTaskForm = () => {
       }
 
       if (!data.body) return;
-
       const list = data.body.map((item: any) => {
         return {
           label: item.name,
@@ -238,12 +241,12 @@ const CreateDailyTaskForm = () => {
     });
   }
 
-  function getUpazillas() {
+  function getUpazillas(selectedDistrict: string) {
     const body = {
       meta: {
         sort: [
           {
-            order: "asc",
+            order: "desc",
             field: "name"
           }
         ]
@@ -251,6 +254,7 @@ const CreateDailyTaskForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        district: { id: selectedDistrict },
         isActive: true
       }
     };
@@ -278,7 +282,7 @@ const CreateDailyTaskForm = () => {
     });
   }
 
-  function getUnions() {
+  function getUnions(selectedUpazilla: string) {
     const body = {
       meta: {
         sort: [
@@ -291,7 +295,7 @@ const CreateDailyTaskForm = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-
+        upazilla: { id: selectedUpazilla },
         isActive: true
       }
     };
@@ -315,6 +319,7 @@ const CreateDailyTaskForm = () => {
           value: item.id
         };
       });
+
       setUnions(list);
     });
   }
@@ -361,7 +366,7 @@ const CreateDailyTaskForm = () => {
     form.setFieldsValue({
       [`competitorInfoLine[${key}].divisionId`]: value
     });
-
+    setSelectedDivision(value as any);
     if (value) {
       const newCompetitorInfoLineValues = [...competitorInfoLineValues];
       newCompetitorInfoLineValues[key] = {
@@ -376,7 +381,7 @@ const CreateDailyTaskForm = () => {
     form.setFieldsValue({
       [`competitorInfoLine[${key}].districtId`]: value
     });
-
+    setSelectedDistrict(value as any);
     if (value) {
       const newCompetitorInfoLineValues = [...competitorInfoLineValues];
       newCompetitorInfoLineValues[key] = {
@@ -391,7 +396,7 @@ const CreateDailyTaskForm = () => {
     form.setFieldsValue({
       [`competitorInfoLine[${key}].upazillaId`]: value
     });
-
+    setSelectedUpazilla(value as any);
     if (value) {
       const newCompetitorInfoLineValues = [...competitorInfoLineValues];
       newCompetitorInfoLineValues[key] = {
@@ -406,7 +411,7 @@ const CreateDailyTaskForm = () => {
     form.setFieldsValue({
       [`competitorInfoLine[${key}].unionId`]: value
     });
-
+    // setSelectedUnions(value as any);
     if (value) {
       const newCompetitorInfoLineValues = [...competitorInfoLineValues];
       newCompetitorInfoLineValues[key] = {
@@ -433,11 +438,29 @@ const CreateDailyTaskForm = () => {
   useEffect(() => {
     getPreviousData();
     getDivisions();
-    getDistricts();
-    getUpazillas();
-    getUnions();
+    // getDistricts();
+    // getUpazillas();
+    // getUnions();
     getCustomers();
   }, []);
+
+  useEffect(() => {
+    if (selectedDivision) {
+      getDistricts(selectedDivision);
+    }
+  }, [selectedDivision]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      getUpazillas(selectedDistrict);
+    }
+  }, [selectedDistrict]);
+
+  useEffect(() => {
+    if (selectedUpazilla) {
+      getUnions(selectedUpazilla);
+    }
+  }, [selectedUpazilla]);
 
   const onSubmit = (data: FromData) => {
     setLoading(true);
@@ -951,7 +974,11 @@ const CreateDailyTaskForm = () => {
                         {fields.map(({ key, name, ...restField }) => (
                           <Space
                             key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
+                            style={{
+                              display: "flex",
+                              marginBottom: 8,
+                              overflowX: "auto"
+                            }}
                             align="baseline"
                           >
                             {/* divisionId */}
@@ -976,12 +1003,26 @@ const CreateDailyTaskForm = () => {
                               >
                                 <Select
                                   allowClear
-                                  style={{ width: "100%", textAlign: "start" }}
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
                                   placeholder="Please select Division"
                                   onChange={value =>
                                     handleDivisionChange(value, key)
                                   }
                                   options={divisions}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
                                 />
                               </Space>
                             </Form.Item>
@@ -1008,12 +1049,26 @@ const CreateDailyTaskForm = () => {
                               >
                                 <Select
                                   allowClear
-                                  style={{ width: "100%", textAlign: "start" }}
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
                                   placeholder="Please select District"
                                   onChange={value =>
                                     handleDistrictChange(value, key)
                                   }
                                   options={districts}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
                                 />
                               </Space>
                             </Form.Item>
@@ -1040,12 +1095,26 @@ const CreateDailyTaskForm = () => {
                               >
                                 <Select
                                   allowClear
-                                  style={{ width: "100%", textAlign: "start" }}
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
                                   placeholder="Please select Upazilla"
                                   onChange={value =>
                                     handleUpazillaChange(value, key)
                                   }
                                   options={upazillas}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
                                 />
                               </Space>
                             </Form.Item>
@@ -1072,12 +1141,26 @@ const CreateDailyTaskForm = () => {
                               >
                                 <Select
                                   allowClear
-                                  style={{ width: "100%", textAlign: "start" }}
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
                                   placeholder="Please select Union"
                                   onChange={value =>
                                     handleUnionChange(value, key)
                                   }
                                   options={unions}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
                                 />
                               </Space>
                             </Form.Item>

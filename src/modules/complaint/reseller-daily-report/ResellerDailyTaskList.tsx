@@ -16,7 +16,7 @@ import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
+import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
@@ -55,17 +55,29 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const ResellerDailyReportList: React.FC = () => {
+const ResellerDailyTaskList: React.FC = () => {
   const [data, setData] = useState<ResellerDailyTaskData[]>([]);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
 
+  const [page, SetPage] = useState(0);
+  const [limit, SetLimit] = useState(10);
+  const [order, SetOrder] = useState("asc");
+  const [sort, SetSort] = useState("createdOn");
+
   const authUser = useAppSelector(state => state.auth.user);
+
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+
+  const { RangePicker } = DatePicker;
+
+  const [retailers, setRetailers] = useState<any>([]);
+  const [selectedRetailer, setSelectedRetailer] = useState<any>(null);
 
   const [subZones, setSubZones] = useState<any>([]);
   const [selectedSubZone, setSelectedSubZone] = useState<any>(null);
-
-  const [selectedDate, setSelectedDate] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -76,17 +88,44 @@ const ResellerDailyReportList: React.FC = () => {
   });
 
   const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string,
     resellerIdParam?: string,
-    dateParam?: string | null
+    retailerIdParam?: string,
+    startDateParam?: string,
+    endDateParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    let date = null;
-    if (dateParam) {
-      date = dayjs(dateParam).format("YYYY-MM-DD");
-    }
-    const { data } = await axios.get(
-      `/api/reseller-daily-report/datewise-report?date=${date}&resellerId=${resellerIdParam}`,
+
+    const body = {
+      meta: {
+        limit: limit,
+        page: page === 0 ? 0 : page - 1,
+        sort: [
+          {
+            order: order,
+            field: sort
+          }
+        ]
+      },
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        resellerId: resellerIdParam,
+        retailerId: retailerIdParam,
+        dateRangeFilter: {
+          field: "createdOn",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
+      }
+    };
+
+    const { data } = await axios.post(
+      "/api/reseller-daily-report/get-list",
+      body,
       {
         headers: {
           "Content-Type": "application/json"
@@ -98,12 +137,26 @@ const ResellerDailyReportList: React.FC = () => {
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
-      "reseller-daily-report-daily-list",
+      "reseller-daily-report-list",
+      page,
+      limit,
+      order,
+      sort,
       selectedSubZone,
-      selectedDate
+      selectedRetailer,
+      selectedStartDate,
+      selectedEndDate
     ],
     queryFn: async () => {
-      const response = await fetchData(selectedSubZone, selectedDate);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedSubZone,
+        selectedRetailer,
+        selectedStartDate
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -146,7 +199,7 @@ const ResellerDailyReportList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -174,7 +227,7 @@ const ResellerDailyReportList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -183,26 +236,93 @@ const ResellerDailyReportList: React.FC = () => {
     });
   }
 
+  function getRetailers(selectedSubZoneId: any) {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      body: {
+        partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setRetailers(list);
+    });
+  }
+
   useEffect(() => {
     getSubZoneManagers();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubZone]);
   const handleZoneManagerChange = (value: any) => {
     setSelectedSubZone(value);
   };
 
+  const handleRetailerChange = (value: any) => {
+    setSelectedRetailer(value);
+  };
+
   const handleClear = () => {
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+    setSelectedRetailer(null);
     setSelectedSubZone(null);
-    setSelectedDate(null);
   };
   const handleDateChange = (value: any) => {
     // console.log(value);
 
     if (value) {
-      setSelectedDate(value);
+      setSelectedDateRange(value);
+
+      const startDate = dayjs(value[0]).format(dateFormat);
+      const endDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedStartDate(startDate);
+      setSelectedEndDate(endDate);
+
+      // console.log(startDate, endDate);
     } else {
-      setSelectedDate(null);
+      setSelectedDateRange(null);
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
     }
   };
 
@@ -213,6 +333,20 @@ const ResellerDailyReportList: React.FC = () => {
   }, [data]);
 
   const columns: ColumnsType<ResellerDailyTaskData> = [
+    {
+      title: "Serial",
+      dataIndex: "id",
+      render: (tableParams, row, index) => {
+        return (
+          <>
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+          </>
+        );
+      },
+      sorter: true,
+      width: "20%",
+      align: "center" as AlignType
+    },
     {
       title: "OLT Power",
       dataIndex: "oltPower",
@@ -353,6 +487,32 @@ const ResellerDailyReportList: React.FC = () => {
     // }
   ];
 
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter:
+      | SorterResult<ResellerDailyTaskData>
+      | SorterResult<ResellerDailyTaskData>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<ResellerDailyTaskData>).order) {
+      // // console.log((sorter as SorterResult<ResellerDailyTaskData>).order)
+
+      SetOrder(
+        (sorter as SorterResult<ResellerDailyTaskData>).order === "ascend"
+          ? "asc"
+          : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<ResellerDailyTaskData>).field) {
+      // // console.log((sorter as SorterResult<ResellerDailyTaskData>).field)
+
+      SetSort((sorter as SorterResult<ResellerDailyTaskData>).field as string);
+    }
+  };
+
   return (
     <>
       <AppRowContainer>
@@ -392,9 +552,9 @@ const ResellerDailyReportList: React.FC = () => {
 
           <TableCard
             title="Daily Task List"
-            hasLink={false}
-            addLink=""
-            permission=""
+            hasLink={true}
+            addLink="/admin/complaint/daily-task/create"
+            permission="dailyTask.create"
             style={{
               borderRadius: "10px",
               padding: "10px",
@@ -459,7 +619,6 @@ const ResellerDailyReportList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-
                         <Col
                           xs={24}
                           sm={12}
@@ -471,14 +630,47 @@ const ResellerDailyReportList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Date </b>
+                              <b>Retailer</b>
                             </span>
-                            <DatePicker
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range </b>
+                            </span>
+                            <RangePicker
                               style={{ width: "100%" }}
                               onChange={handleDateChange}
-                              value={selectedDate}
-                              placeholder={"Date"}
-                              format={dateFormat}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
                             />
                           </Space>
                         </Col>
@@ -521,6 +713,7 @@ const ResellerDailyReportList: React.FC = () => {
                   dataSource={data}
                   pagination={tableParams.pagination}
                   loading={isLoading || isFetching}
+                  onChange={handleTableChange}
                 />
               </div>
             </Space>
@@ -531,4 +724,4 @@ const ResellerDailyReportList: React.FC = () => {
   );
 };
 
-export default ResellerDailyReportList;
+export default ResellerDailyTaskList;

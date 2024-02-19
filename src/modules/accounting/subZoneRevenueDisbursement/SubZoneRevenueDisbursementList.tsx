@@ -58,8 +58,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
   const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState<any>(null);
 
-  const [subZones, setSubZones] = useState([]);
-  const [selectedSubZone, setSelectedSubZone] = useState(null);
+  const [subZones, setSubZones] = useState<any[]>([]);
+  const [selectedSubZone, setSelectedSubZone] = useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -790,6 +790,16 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                                 onChange={handleZoneChange}
                                 options={zones}
                                 value={selectedZone}
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
                               />
                             </Space>
                           </Col>
@@ -825,6 +835,17 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
                                   onChange={handleSubZoneChange}
                                   options={subZones}
                                   value={selectedSubZone}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
                                 />
                               </Space>
                             </Col>

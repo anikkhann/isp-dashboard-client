@@ -64,16 +64,16 @@ const EditZoneForm = ({ item }: any) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [divisions, setDivisions] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
   const [selectedDivision, setSelectedDivision] = useState(null);
 
-  const [districts, setDistricts] = useState([]);
+  const [districts, setDistricts] = useState<any[]>([]);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
 
-  const [upazillas, setUpazillas] = useState([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
   const [selectedUpazilla, setSelectedUpazilla] = useState<any>(null);
 
-  const [unions, setUnions] = useState([]);
+  const [unions, setUnions] = useState<any[]>([]);
   const [selectedUnion, setSelectedUnion] = useState<any>(null);
 
   const { useBreakpoint } = Grid;
@@ -823,6 +823,17 @@ const EditZoneForm = ({ item }: any) => {
                       onChange={handleDivisionChange}
                       options={divisions}
                       value={selectedDivision}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -859,6 +870,17 @@ const EditZoneForm = ({ item }: any) => {
                       onChange={handleDistrictChange}
                       options={districts}
                       value={selectedDistrict}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -890,6 +912,17 @@ const EditZoneForm = ({ item }: any) => {
                       onChange={handleUpazillaChange}
                       options={upazillas}
                       value={selectedUpazilla}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -921,6 +954,17 @@ const EditZoneForm = ({ item }: any) => {
                       onChange={handleUnionChange}
                       options={unions}
                       value={selectedUnion}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>

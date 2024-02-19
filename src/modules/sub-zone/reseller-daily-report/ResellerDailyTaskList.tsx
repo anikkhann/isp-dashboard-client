@@ -199,7 +199,7 @@ const ResellerDailyTaskList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -227,7 +227,7 @@ const ResellerDailyTaskList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -236,19 +236,20 @@ const ResellerDailyTaskList: React.FC = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -269,7 +270,7 @@ const ResellerDailyTaskList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -280,10 +281,16 @@ const ResellerDailyTaskList: React.FC = () => {
 
   useEffect(() => {
     getSubZoneManagers();
-    getRetailers();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubZone]);
   const handleZoneManagerChange = (value: any) => {
     setSelectedSubZone(value);
   };
@@ -552,7 +559,7 @@ const ResellerDailyTaskList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflowX: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >
@@ -698,15 +705,17 @@ const ResellerDailyTaskList: React.FC = () => {
                 </div>
               </Space>
 
-              <Table
-                className={"table-striped-rows"}
-                columns={columns}
-                rowKey={record => record.id}
-                dataSource={data}
-                pagination={tableParams.pagination}
-                loading={isLoading || isFetching}
-                onChange={handleTableChange}
-              />
+              <div style={{ overflowX: "auto" }}>
+                <Table
+                  className={"table-striped-rows"}
+                  columns={columns}
+                  rowKey={record => record.id}
+                  dataSource={data}
+                  pagination={tableParams.pagination}
+                  loading={isLoading || isFetching}
+                  onChange={handleTableChange}
+                />
+              </div>
             </Space>
           </TableCard>
         </Col>
