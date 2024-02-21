@@ -10,7 +10,7 @@ import { Alert, Button, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   remarks: string;
@@ -40,141 +40,147 @@ const RejectClientRequisitionForm = ({ item }: PropData) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const { remarks } = data;
+    setTimeout(async () => {
+      const { remarks } = data;
 
-    const formData = {
-      id: item.id,
-      clientNote: remarks
-    };
+      const formData = {
+        id: item.id,
+        clientNote: remarks
+      };
 
-    try {
-      axios
-        .put("/api-hotspot/zone-card-requisition/reject", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .put("/api-hotspot/zone-card-requisition/reject", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace(`/admin/hotspot/client-requisition`);
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace(`/admin/hotspot/client-requisition`);
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              note: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            note: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={24}
-                md={24}
-                lg={24}
-                xl={24}
-                xxl={24}
-                className="gutter-row"
+              {/* remarks */}
+              <Form.Item
+                label="remarks"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="remarks"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your remarks!"
+                  }
+                ]}
               >
-                {/* remarks */}
-                <Form.Item
-                  label="remarks"
+                <Input.TextArea
+                  placeholder="remarks"
+                  className={`form - control`}
+                  name="remarks"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
                   style={{
-                    marginBottom: 0,
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
                     fontWeight: "bold"
                   }}
-                  name="remarks"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your remarks!"
-                    }
-                  ]}
+                  disabled={loading}
                 >
-                  <Input.TextArea
-                    placeholder="remarks"
-                    className={`form - control`}
-                    name="remarks"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

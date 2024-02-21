@@ -221,7 +221,7 @@ const CustomerImportCSVList: React.FC = () => {
         showCancelButton: true,
         confirmButtonColor: "#570DF8",
         cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, Disconnect customer!"
+        confirmButtonText: "Yes, Proceed"
       });
 
       if (result.isConfirmed) {
@@ -257,7 +257,7 @@ const CustomerImportCSVList: React.FC = () => {
         showCancelButton: true,
         confirmButtonColor: "#570DF8",
         cancelButtonColor: "#EB0808",
-        confirmButtonText: "Yes, Disconnect customer!"
+        confirmButtonText: "Yes, Proceed"
       });
 
       if (result.isConfirmed) {
@@ -462,7 +462,7 @@ const CustomerImportCSVList: React.FC = () => {
 
   useEffect(() => {
     getZoneManagers();
-    getRetailers(null);
+    // getRetailers(null);
     getSubZoneManagers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -475,7 +475,7 @@ const CustomerImportCSVList: React.FC = () => {
 
   useEffect(() => {
     if (selectedSubZone) {
-      setSelectedRetailer(null);
+      // setSelectedRetailer(null);
 
       getRetailers(selectedSubZone);
     }
@@ -614,7 +614,7 @@ const CustomerImportCSVList: React.FC = () => {
           <div className="flex flex-row">
             <Space size="middle" align="center">
               {ability.can("customerImportCsv.update", "") &&
-              record.status != "Completed" ? (
+              record.status == "Pending" ? (
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/customer/import-csv/${record.id}/edit`}>
@@ -626,7 +626,8 @@ const CustomerImportCSVList: React.FC = () => {
 
               {/* process */}
 
-              {ability.can("customerImportCsv.process", "") ? (
+              {ability.can("customerImportCsv.process", "") &&
+              record.status == "Pending" ? (
                 <Tooltip
                   title="Process"
                   placement="bottomRight"
@@ -648,7 +649,8 @@ const CustomerImportCSVList: React.FC = () => {
               ) : null}
 
               {/* cancel */}
-              {ability.can("customerImportCsv.cancel", "") ? (
+              {ability.can("customerImportCsv.cancel", "") &&
+              record.status == "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Button
@@ -665,7 +667,8 @@ const CustomerImportCSVList: React.FC = () => {
                 </Tooltip>
               ) : null}
 
-              {ability.can("customerImportCsv.successList", "") ? (
+              {ability.can("customerImportCsv.successList", "") &&
+              record.status == "Completed" ? (
                 <Tooltip
                   title="Success List"
                   placement="bottomRight"
@@ -688,7 +691,8 @@ const CustomerImportCSVList: React.FC = () => {
                   </Space>
                 </Tooltip>
               ) : null}
-              {ability.can("customerImportCsv.failedList", "") ? (
+              {ability.can("customerImportCsv.failedList", "") &&
+              record.status == "Completed" ? (
                 <Tooltip
                   title="Failed List"
                   placement="bottomRight"

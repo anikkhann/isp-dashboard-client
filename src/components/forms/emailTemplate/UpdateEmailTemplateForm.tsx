@@ -25,7 +25,7 @@ import { EmailTemplateData } from "@/interfaces/EmailTemplateData";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PropData {
   item: EmailTemplateData;
@@ -185,102 +185,106 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
   const uploadButton = (
     <Button icon={<UploadOutlined />}>Click to Upload</Button>
   );
-
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const {
-      brandOf,
-      chequeInFavour,
-      supportNumber,
-      supportEmail,
-      phone,
-      address,
-      mushak,
-      website,
-      cc,
-      bcc,
-      facebook,
-      twitter,
-      instagram,
-      linkedin,
-      aboutUs
-    } = data;
+    setTimeout(async () => {
+      const {
+        brandOf,
+        chequeInFavour,
+        supportNumber,
+        supportEmail,
+        phone,
+        address,
+        mushak,
+        website,
+        cc,
+        bcc,
+        facebook,
+        twitter,
+        instagram,
+        linkedin,
+        aboutUs
+      } = data;
 
-    const bodyData = {
-      id: item.id,
-      brandOf: brandOf,
-      chequeInFavour: chequeInFavour,
-      supportNumber: supportNumber,
-      supportEmail: supportEmail,
-      phone: phone,
-      address: address,
-      mushak: mushak,
-      website: website,
-      emailSettingsId: selectedEmailSettings,
-      cc: cc,
-      bcc: bcc,
-      facebook: facebook,
-      twitter: twitter,
-      instagram: instagram,
-      linkedin: linkedin,
-      aboutUs: aboutUs
-    };
+      const bodyData = {
+        id: item.id,
+        brandOf: brandOf,
+        chequeInFavour: chequeInFavour,
+        supportNumber: supportNumber,
+        supportEmail: supportEmail,
+        phone: phone,
+        address: address,
+        mushak: mushak,
+        website: website,
+        emailSettingsId: selectedEmailSettings,
+        cc: cc,
+        bcc: bcc,
+        facebook: facebook,
+        twitter: twitter,
+        instagram: instagram,
+        linkedin: linkedin,
+        aboutUs: aboutUs
+      };
 
-    const formData = new FormData();
-    formData.append("_method", "put");
-    if (file) {
-      formData.append("logo", file);
-    }
-    formData.append("body", JSON.stringify(bodyData));
+      const formData = new FormData();
+      formData.append("_method", "put");
+      if (file) {
+        formData.append("logo", file);
+      }
+      formData.append("body", JSON.stringify(bodyData));
 
-    try {
-      axios
-        .put("/api/email-template-settings/update", formData, {
-          headers: { "Content-Type": "multipart/form-data" }
-        })
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .put("/api/email-template-settings/update", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+          })
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Updated successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/notification/email/email-template");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Updated successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/notification/email/email-template");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3">

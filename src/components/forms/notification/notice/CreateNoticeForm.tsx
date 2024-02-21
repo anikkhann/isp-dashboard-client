@@ -19,7 +19,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 import "react-quill/dist/quill.snow.css";
 
@@ -527,510 +527,509 @@ const CreateNoticeForm = () => {
     });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setLoading(true);
+    setTimeout(async () => {
+      const formData = {
+        noticeType: selectedNoticeType,
+        clientId: selectedClient,
+        zoneManagerId: selectedZone,
+        subZoneManagerId: selectedSubZone,
+        retailerId: selectedRetailer,
+        customerPackageId: selectedCustomerPackage,
+        customerId: selectedCustomer,
+        message: value,
+        startDate: selectedStartDate
+          ? dayjs(selectedStartDate).format("Y-m-d")
+          : null,
+        endDate: selectedEndDate
+          ? dayjs(selectedEndDate).format("Y-m-d")
+          : null,
+        isActive: isActive
+      };
 
-    const formData = {
-      noticeType: selectedNoticeType,
-      clientId: selectedClient,
-      zoneManagerId: selectedZone,
-      subZoneManagerId: selectedSubZone,
-      retailerId: selectedRetailer,
-      customerPackageId: selectedCustomerPackage,
-      customerId: selectedCustomer,
-      message: value,
-      startDate: selectedStartDate
-        ? dayjs(selectedStartDate).format("Y-m-d")
-        : null,
-      endDate: selectedEndDate ? dayjs(selectedEndDate).format("Y-m-d") : null,
-      isActive: isActive
-    };
+      try {
+        await axios
+          .post("/api/notice-board/create", formData)
+          .then(res => {
+            const { data } = res;
 
-    try {
-      axios
-        .post("/api/notice-board/create", formData)
-        .then(res => {
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/notification/notice");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/notification/notice");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{}}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{}}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            {/* noticeType */}
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              {/* noticeType */}
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              <Form.Item
+                label="Notice Type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="noticeType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Notice Type!"
+                  }
+                ]}
               >
-                <Form.Item
-                  label="Notice Type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="noticeType"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Notice Type!"
-                    }
-                  ]}
-                >
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Notice Type"
-                    onChange={handleNoticeTypeChange}
-                    options={noticeTypes}
-                    value={selectedNoticeType}
-                  />
-                </Form.Item>
-              </Col>
+                <Select
+                  allowClear
+                  style={{ width: "100%", textAlign: "start" }}
+                  placeholder="Please select Notice Type"
+                  onChange={handleNoticeTypeChange}
+                  options={noticeTypes}
+                  value={selectedNoticeType}
+                />
+              </Form.Item>
+            </Col>
 
-              {/* clientId */}
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+            {/* clientId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Client"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="clientId"
+                rules={[
+                  {
+                    required:
+                      selectedNoticeType == "client_specific" ||
+                      selectedNoticeType == "zone_manager_specific" ||
+                      selectedNoticeType == "sub_zone_manager_specific" ||
+                      selectedNoticeType == "retailer_specific" ||
+                      selectedNoticeType == "package_specific" ||
+                      selectedNoticeType == "customer_specific"
+                        ? true
+                        : false,
+                    message: "Please select Client!"
+                  }
+                ]}
               >
-                <Form.Item
-                  label="Client"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="clientId"
-                  rules={[
-                    {
-                      required:
-                        selectedNoticeType == "client_specific" ||
-                        selectedNoticeType == "zone_manager_specific" ||
-                        selectedNoticeType == "sub_zone_manager_specific" ||
-                        selectedNoticeType == "retailer_specific" ||
-                        selectedNoticeType == "package_specific" ||
-                        selectedNoticeType == "customer_specific"
-                          ? true
-                          : false,
-                      message: "Please select Client!"
-                    }
-                  ]}
-                >
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Client"
-                    onChange={handleClientChange}
-                    options={clients}
-                    value={selectedClient}
-                  />
-                </Form.Item>
-              </Col>
+                <Select
+                  allowClear
+                  style={{ width: "100%", textAlign: "start" }}
+                  placeholder="Please select Client"
+                  onChange={handleClientChange}
+                  options={clients}
+                  value={selectedClient}
+                />
+              </Form.Item>
+            </Col>
 
-              {/* zoneManagerId */}
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+            {/* zoneManagerId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Zone Manager"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="zoneManagerId"
+                rules={[
+                  {
+                    required:
+                      selectedNoticeType == "zone_manager_specific" ||
+                      selectedNoticeType == "sub_zone_manager_specific" ||
+                      selectedNoticeType == "retailer_specific"
+                        ? true
+                        : false,
+                    message: "Please select Zone Manager!"
+                  }
+                ]}
               >
-                <Form.Item
-                  label="Zone Manager"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="zoneManagerId"
-                  rules={[
-                    {
-                      required:
-                        selectedNoticeType == "zone_manager_specific" ||
-                        selectedNoticeType == "sub_zone_manager_specific" ||
-                        selectedNoticeType == "retailer_specific"
-                          ? true
-                          : false,
-                      message: "Please select Zone Manager!"
-                    }
-                  ]}
-                >
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Zone Manager"
-                    onChange={handleZoneChange}
-                    options={zones}
-                    value={selectedZone}
-                  />
-                </Form.Item>
-              </Col>
+                <Select
+                  allowClear
+                  style={{ width: "100%", textAlign: "start" }}
+                  placeholder="Please select Zone Manager"
+                  onChange={handleZoneChange}
+                  options={zones}
+                  value={selectedZone}
+                />
+              </Form.Item>
+            </Col>
 
-              {/* subZoneManagerId */}
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+            {/* subZoneManagerId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Sub Zone Manager"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="subZoneManagerId"
+                rules={[
+                  {
+                    required:
+                      selectedNoticeType == "sub_zone_manager_specific" ||
+                      selectedNoticeType == "retailer_specific"
+                        ? true
+                        : false,
+                    message: "Please select Sub Zone Manager!"
+                  }
+                ]}
               >
-                <Form.Item
-                  label="Sub Zone Manager"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="subZoneManagerId"
-                  rules={[
-                    {
-                      required:
-                        selectedNoticeType == "sub_zone_manager_specific" ||
-                        selectedNoticeType == "retailer_specific"
-                          ? true
-                          : false,
-                      message: "Please select Sub Zone Manager!"
-                    }
-                  ]}
-                >
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Sub Zone Manager"
-                    onChange={handleSubZoneChange}
-                    options={subZones}
-                    value={selectedSubZone}
-                  />
-                </Form.Item>
-              </Col>
+                <Select
+                  allowClear
+                  style={{ width: "100%", textAlign: "start" }}
+                  placeholder="Please select Sub Zone Manager"
+                  onChange={handleSubZoneChange}
+                  options={subZones}
+                  value={selectedSubZone}
+                />
+              </Form.Item>
+            </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Retailer"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="retailerId"
+                rules={[
+                  {
+                    required:
+                      selectedNoticeType == "retailer_specific" ? true : false,
+                    message: "Please select Retailer!"
+                  }
+                ]}
               >
-                <Form.Item
-                  label="Retailer"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="retailerId"
-                  rules={[
-                    {
-                      required:
-                        selectedNoticeType == "retailer_specific"
-                          ? true
-                          : false,
-                      message: "Please select Retailer!"
-                    }
-                  ]}
-                >
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Retailer"
-                    onChange={handleRetailerChange}
-                    options={retailers}
-                    value={selectedRetailer}
-                  />
-                </Form.Item>
-              </Col>
+                <Select
+                  allowClear
+                  style={{ width: "100%", textAlign: "start" }}
+                  placeholder="Please select Retailer"
+                  onChange={handleRetailerChange}
+                  options={retailers}
+                  value={selectedRetailer}
+                />
+              </Form.Item>
+            </Col>
 
+            {/* customerPackageId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
               {/* customerPackageId */}
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              <Form.Item
+                label="Customer Package"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required:
+                      selectedNoticeType == "package_specific" ? true : false,
+                    message: "Please select Customer Package!"
+                  }
+                ]}
+                name="customerPackageId"
               >
-                {/* customerPackageId */}
-                <Form.Item
-                  label="Customer Package"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required:
-                        selectedNoticeType == "package_specific" ? true : false,
-                      message: "Please select Customer Package!"
-                    }
-                  ]}
-                  name="customerPackageId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Customer Package"
-                      onChange={handleCustomerPackageChange}
-                      options={customerPackages}
-                      value={selectedCustomerPackage}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Customer Package"
+                    onChange={handleCustomerPackageChange}
+                    options={customerPackages}
+                    value={selectedCustomerPackage}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* customerId */}
-                <Form.Item
-                  label="Customer"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required:
-                        selectedNoticeType == "customer_specific"
-                          ? true
-                          : false,
-                      message: "Please select Customer!"
-                    }
-                  ]}
-                  name="customerId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Customer"
-                      onChange={handleCustomerChange}
-                      options={customers}
-                      value={selectedCustomer}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={24}
-                md={24}
-                lg={24}
-                xl={24}
-                xxl={24}
-                className="gutter-row"
+              {/* customerId */}
+              <Form.Item
+                label="Customer"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required:
+                      selectedNoticeType == "customer_specific" ? true : false,
+                    message: "Please select Customer!"
+                  }
+                ]}
+                name="customerId"
               >
-                {/* message */}
-                <Form.Item
-                  label="message"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="message"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your message!"
-                    }
-                  ]}
-                >
-                  <ReactQuill
-                    theme="snow"
-                    value={value}
-                    onChange={handleMessageChange}
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Customer"
+                    onChange={handleCustomerChange}
+                    options={customers}
+                    value={selectedCustomer}
                   />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* startDate */}
-                <Form.Item
-                  label="startDate"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="startDate"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your startDate!"
-                    }
-                  ]}
-                >
-                  <DatePicker
-                    className={`form-control`}
-                    style={{
-                      padding: "6px",
-                      width: "100%"
-                    }}
-                    format={dateFormat}
-                    onChange={handleStartDateChange}
-                    value={selectedStartDate}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* endDate */}
-                <Form.Item
-                  label="endDate"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="endDate"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your endDate!"
-                    }
-                  ]}
-                >
-                  <DatePicker
-                    className={`form-control`}
-                    style={{
-                      padding: "6px",
-                      width: "100%"
-                    }}
-                    format={dateFormat}
-                    onChange={handleEndDateChange}
-                    value={selectedEndDate}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
 
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
+          >
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
             >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
+              {/* message */}
+              <Form.Item
+                label="message"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="message"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your message!"
+                  }
+                ]}
+              >
+                <ReactQuill
+                  theme="snow"
+                  value={value}
+                  onChange={handleMessageChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* startDate */}
+              <Form.Item
+                label="startDate"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="startDate"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your startDate!"
+                  }
+                ]}
+              >
+                <DatePicker
+                  className={`form-control`}
+                  style={{
+                    padding: "6px",
+                    width: "100%"
+                  }}
+                  format={dateFormat}
+                  onChange={handleStartDateChange}
+                  value={selectedStartDate}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* endDate */}
+              <Form.Item
+                label="endDate"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="endDate"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your endDate!"
+                  }
+                ]}
+              >
+                <DatePicker
+                  className={`form-control`}
+                  style={{
+                    padding: "6px",
+                    width: "100%"
+                  }}
+                  format={dateFormat}
+                  onChange={handleEndDateChange}
+                  value={selectedEndDate}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+          {/* status */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleActive} checked={isActive}>
+              Active
+            </Checkbox>
+          </Form.Item>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

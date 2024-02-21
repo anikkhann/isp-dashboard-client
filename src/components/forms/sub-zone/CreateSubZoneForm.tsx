@@ -20,7 +20,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Row, Col } from "antd";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   clientLevel: string;
@@ -298,1045 +298,1050 @@ const CreateSubZoneForm = () => {
     }
   }, [selectedUpazilla]);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
+    setTimeout(async () => {
+      const {
+        name,
+        username,
+        password,
+        email,
+        address,
+        altContactNumber,
+        contactNumber,
+        districtId,
+        divisionId,
+        upazillaId,
+        unionId,
+        contactPerson,
+        nidNo,
+        salesDistributionCommission,
+        wsdCommission,
+        bankName,
+        bankAccountNumber,
+        bKashNumber,
+        nagadNumber,
+        bankAccountName,
+        bankBranchName,
+        bankRoutingNumber,
+        bankAccountCode
+      } = data;
 
-    const {
-      name,
-      username,
-      password,
-      email,
-      address,
-      altContactNumber,
-      contactNumber,
-      districtId,
-      divisionId,
-      upazillaId,
-      unionId,
-      contactPerson,
-      nidNo,
-      salesDistributionCommission,
-      wsdCommission,
-      bankName,
-      bankAccountNumber,
-      bKashNumber,
-      nagadNumber,
-      bankAccountName,
-      bankBranchName,
-      bankRoutingNumber,
-      bankAccountCode
-    } = data;
+      const formData = {
+        partnerType: "reseller",
+        name: name,
+        username: username,
+        password: password,
+        contactPerson: contactPerson,
+        contactNumber: contactNumber,
+        altContactNumber: altContactNumber,
+        email: email,
+        address: address,
+        divisionId: divisionId,
+        districtId: districtId,
+        upazillaId: upazillaId,
+        unionId: unionId,
+        nidNo: nidNo,
+        salesDistributionCommission: salesDistributionCommission,
+        wsdCommission: wsdCommission,
+        bankName: bankName,
+        bankAccountNumber: bankAccountNumber,
+        bKashNumber: bKashNumber,
+        nagadNumber: nagadNumber,
+        bankAccountName: bankAccountName,
+        bankBranchName: bankBranchName,
+        bankRoutingNumber: bankRoutingNumber,
+        bankAccountCode: bankAccountCode,
+        isActive: isActive
+      };
 
-    const formData = {
-      partnerType: "reseller",
-      name: name,
-      username: username,
-      password: password,
-      contactPerson: contactPerson,
-      contactNumber: contactNumber,
-      altContactNumber: altContactNumber,
-      email: email,
-      address: address,
-      divisionId: divisionId,
-      districtId: districtId,
-      upazillaId: upazillaId,
-      unionId: unionId,
-      nidNo: nidNo,
-      salesDistributionCommission: salesDistributionCommission,
-      wsdCommission: wsdCommission,
-      bankName: bankName,
-      bankAccountNumber: bankAccountNumber,
-      bKashNumber: bKashNumber,
-      nagadNumber: nagadNumber,
-      bankAccountName: bankAccountName,
-      bankBranchName: bankBranchName,
-      bankRoutingNumber: bankRoutingNumber,
-      bankAccountCode: bankAccountCode,
-      isActive: isActive
-    };
+      try {
+        await axios
+          .post("/api/partner/create", formData)
+          .then(res => {
+            // console.log(res);
+            const { data } = res;
 
-    try {
-      axios
-        .post("/api/partner/create", formData)
-        .then(res => {
-          // console.log(res);
-          const { data } = res;
-
-          if (data.status === 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/sub-zone/sub-zone-in-charge");
-            });
-          } else {
+            if (data.status === 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/sub-zone/sub-zone-in-charge");
+              });
+            } else {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Added Failed",
+                icon: "error"
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Added Failed",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="my-6">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              name: "",
-              email: "",
-              password: "",
-              username: "",
-              contactPerson: "",
-              contactNumber: "",
-              altContactNumber: "",
-              divisionId: "",
-              districtId: "",
-              upazillaId: "",
-              unionId: "",
-              address: "",
-              nidNo: "",
-              salesDistributionCommission: 0,
-              wsdCommission: 0,
-              bankName: "",
-              bankAccountNumber: "",
-              bKashNumber: "",
-              nagadNumber: "",
-              bankAccountName: "",
-              bankBranchName: "",
-              bankRoutingNumber: "",
-              bankAccountCode: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="my-6">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+            username: "",
+            contactPerson: "",
+            contactNumber: "",
+            altContactNumber: "",
+            divisionId: "",
+            districtId: "",
+            upazillaId: "",
+            unionId: "",
+            address: "",
+            nidNo: "",
+            salesDistributionCommission: 0,
+            wsdCommission: 0,
+            bankName: "",
+            bankAccountNumber: "",
+            bKashNumber: "",
+            nagadNumber: "",
+            bankAccountName: "",
+            bankBranchName: "",
+            bankRoutingNumber: "",
+            bankAccountCode: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+              {/* username */}
+              <Form.Item
+                name="username"
+                label="Username"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
               >
-                {/* username */}
-                <Form.Item
+                <Input
+                  type="text"
+                  placeholder="Username"
+                  className={`form-control`}
                   name="username"
-                  label="Username"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Username!"
-                    },
-                    {
-                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                      message:
-                        "Only letters, numbers, underscores and hyphens allowed"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Username"
-                    className={`form-control`}
-                    name="username"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* name */}
-                <Form.Item
-                  label="Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Name!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* email */}
-                <Form.Item
-                  label="Email"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="email"
-                  rules={[
-                    {
-                      type: "email",
-                      message: "The input is not valid E-mail!"
-                    },
-                    {
-                      required: true,
-                      message: "Please input your E-mail!"
-                    },
-                    {
-                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                      message:
-                        "Only letters, numbers, underscores and hyphens allowed"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    className={`form-control`}
-                    name="email"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* password */}
-                <Form.Item
-                  name="password"
-                  label="Password"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!"
-                    },
-                    {
-                      min: 6,
-                      message: "Password must be minimum 6 characters."
-                    },
-                    {
-                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                      message:
-                        "Only letters, numbers, underscores and hyphens allowed"
-                    }
-                  ]}
-                  hasFeedback
-                >
-                  <Input.Password
-                    placeholder="Password"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* confirm password */}
-                <Form.Item
-                  name="confirm"
-                  label="Confirm Password"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  dependencies={["password"]}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please confirm your password!"
-                    },
-                    {
-                      pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                      message:
-                        "Only letters, numbers, underscores and hyphens allowed"
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(
-                          new Error(
-                            "confirm password that you entered do not match with password!"
-                          )
-                        );
-                      }
-                    })
-                  ]}
-                >
-                  <Input.Password
-                    placeholder="Confirm Password"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* address */}
-                <Form.Item
-                  name="address"
-                  label="Address"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Address!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Address"
-                    className={`form-control`}
-                    name="address"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* contact Person */}
-                <Form.Item
-                  name="contactPerson"
-                  label="Contact Person"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Contact Person!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Contact Person"
-                    className={`form-control`}
-                    name="contactPerson"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* contactNumber */}
-                <Form.Item
-                  name="contactNumber"
-                  label="Contact Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Contact Number!"
-                    },
-                    {
-                      pattern: new RegExp(/^(01)[0-9]{9}$/),
-                      message: "Please enter correct BD Phone number."
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Contact Number"
-                    className={`form-control`}
-                    name="contactNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* altContactNumber */}
-                <Form.Item
-                  name="altContactNumber"
-                  label="Alt Contact Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      pattern: new RegExp(/^(01)[0-9]{9}$/),
-                      message: "Please enter correct BD Phone number."
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Alt Contact Number"
-                    className={`form-control`}
-                    name="altContactNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* nidNo */}
-                <Form.Item
-                  name="nidNo"
-                  label="NID No"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                >
-                  <Input
-                    type="text"
-                    placeholder="NID No"
-                    className={`form-control`}
-                    name="nidNo"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* salesDistributionCommission */}
-                <Form.Item
-                  name="salesDistributionCommission"
-                  label="S&D Commission (%)"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                >
-                  <Input
-                    type="text"
-                    placeholder="S&D Commission (%)"
-                    className={`form-control`}
-                    name="salesDistributionCommission"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* divisionId */}
-                <Form.Item
-                  label="Division"
-                  style={{
-                    marginBottom: 0,
-                    marginRight: lg ? "10px" : "0px",
-                    fontWeight: "bold"
-                  }}
-                  name="divisionId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Division!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleDivisionChange}
-                      options={divisions}
-                      value={selectedDivision}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* districtId */}
-                <Form.Item
-                  label="District"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="districtId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select District"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleDistrictChange}
-                      options={districts}
-                      value={selectedDistrict}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* upazillaId */}
-                <Form.Item
-                  label="Upazilla"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="upazillaId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleUpazillaChange}
-                      options={upazillas}
-                      value={selectedUpazilla}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* unionId */}
-                <Form.Item
-                  label="Union"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="unionId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleUnionChange}
-                      options={unions}
-                      value={selectedUnion}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="WSD Commission (%)"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="wsdCommission"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="number"
-                    placeholder="WSD Commission"
-                    className={`form-control`}
-                    name="wsdCommission"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Bank Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bankName"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Bank Name"
-                    className={`form-control`}
-                    name="bankName"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Account Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bankAccountNumber"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="number"
-                    placeholder="Account Number"
-                    className={`form-control`}
-                    name="bankAccountNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Account Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bankAccountName"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Account Name"
-                    className={`form-control`}
-                    name="bankAccountName"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Branch Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bankBranchName"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Branch Name"
-                    className={`form-control`}
-                    name="bankBranchName"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Routing Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bankRoutingNumber"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Routing Number"
-                    className={`form-control`}
-                    name="bankRoutingNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Account Code"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bankAccountCode"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Account Code"
-                    className={`form-control`}
-                    name="bankAccountCode"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="BKash Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="bKashNumber"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="number"
-                    placeholder="BKash Number"
-                    className={`form-control`}
-                    name="bKashNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Nagad Number"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="nagadNumber"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="number"
-                    placeholder="Nagad Number"
-                    className={`form-control`}
-                    name="nagadNumber"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-            </Row>
-
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
             >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
 
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* email */}
+              <Form.Item
+                label="Email"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="email"
+                rules={[
+                  {
+                    type: "email",
+                    message: "The input is not valid E-mail!"
+                  },
+                  {
+                    required: true,
+                    message: "Please input your E-mail!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+              >
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  className={`form-control`}
+                  name="email"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* password */}
+              <Form.Item
+                name="password"
+                label="Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  }
+                ]}
+                hasFeedback
+              >
+                <Input.Password
+                  placeholder="Password"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* confirm password */}
+              <Form.Item
+                name="confirm"
+                label="Confirm Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                dependencies={["password"]}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: "Please confirm your password!"
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          "confirm password that you entered do not match with password!"
+                        )
+                      );
+                    }
+                  })
+                ]}
+              >
+                <Input.Password
+                  placeholder="Confirm Password"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* address */}
+              <Form.Item
+                name="address"
+                label="Address"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Address!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Address"
+                  className={`form-control`}
+                  name="address"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* contact Person */}
+              <Form.Item
+                name="contactPerson"
+                label="Contact Person"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Contact Person!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Contact Person"
+                  className={`form-control`}
+                  name="contactPerson"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* contactNumber */}
+              <Form.Item
+                name="contactNumber"
+                label="Contact Number"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Contact Number!"
+                  },
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message: "Please enter correct BD Phone number."
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Contact Number"
+                  className={`form-control`}
+                  name="contactNumber"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* altContactNumber */}
+              <Form.Item
+                name="altContactNumber"
+                label="Alt Contact Number"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message: "Please enter correct BD Phone number."
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Alt Contact Number"
+                  className={`form-control`}
+                  name="altContactNumber"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* nidNo */}
+              <Form.Item
+                name="nidNo"
+                label="NID No"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="NID No"
+                  className={`form-control`}
+                  name="nidNo"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* salesDistributionCommission */}
+              <Form.Item
+                name="salesDistributionCommission"
+                label="S&D Commission (%)"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <Input
+                  type="text"
+                  placeholder="S&D Commission (%)"
+                  className={`form-control`}
+                  name="salesDistributionCommission"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* divisionId */}
+              <Form.Item
+                label="Division"
+                style={{
+                  marginBottom: 0,
+                  marginRight: lg ? "10px" : "0px",
+                  fontWeight: "bold"
+                }}
+                name="divisionId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Division!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleDivisionChange}
+                    options={divisions}
+                    value={selectedDivision}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* districtId */}
+              <Form.Item
+                label="District"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="districtId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select District"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleDistrictChange}
+                    options={districts}
+                    value={selectedDistrict}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* upazillaId */}
+              <Form.Item
+                label="Upazilla"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="upazillaId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleUpazillaChange}
+                    options={upazillas}
+                    value={selectedUpazilla}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* unionId */}
+              <Form.Item
+                label="Union"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="unionId"
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleUnionChange}
+                    options={unions}
+                    value={selectedUnion}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="WSD Commission (%)"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="wsdCommission"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="WSD Commission"
+                  className={`form-control`}
+                  name="wsdCommission"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Bank Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="bankName"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Bank Name"
+                  className={`form-control`}
+                  name="bankName"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Account Number"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="bankAccountNumber"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Account Number"
+                  className={`form-control`}
+                  name="bankAccountNumber"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Account Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="bankAccountName"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Account Name"
+                  className={`form-control`}
+                  name="bankAccountName"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Branch Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="bankBranchName"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Branch Name"
+                  className={`form-control`}
+                  name="bankBranchName"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Routing Number"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="bankRoutingNumber"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Routing Number"
+                  className={`form-control`}
+                  name="bankRoutingNumber"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Account Code"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="bankAccountCode"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Account Code"
+                  className={`form-control`}
+                  name="bankAccountCode"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="BKash Number"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="bKashNumber"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="BKash Number"
+                  className={`form-control`}
+                  name="bKashNumber"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Nagad Number"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="nagadNumber"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Nagad Number"
+                  className={`form-control`}
+                  name="nagadNumber"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
+
+          {/* status */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleActive} checked={isActive}>
+              Active
+            </Checkbox>
+          </Form.Item>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

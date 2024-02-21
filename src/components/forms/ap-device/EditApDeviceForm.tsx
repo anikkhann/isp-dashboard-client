@@ -11,7 +11,7 @@ import { Alert, Button, Checkbox, Form, Input, Select, Space } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 import { useAppSelector } from "@/store/hooks";
 import { ApDeviceData } from "@/interfaces/ApDeviceData";
 interface FormData {
@@ -318,193 +318,422 @@ const EditApDeviceForm = ({ item }: PropData) => {
     }
   }, [item]);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const {
-      name,
-      mapLocation,
-      locationDescription,
-      ip,
-      macAddress,
-      // snmpVersion,
-      snmpPort,
-      snmpCommunity
-    } = data;
+    setTimeout(async () => {
+      const {
+        name,
+        mapLocation,
+        locationDescription,
+        ip,
+        macAddress,
+        // snmpVersion,
+        snmpPort,
+        snmpCommunity
+      } = data;
 
-    const formData = {
-      id: item.id,
-      nasDeviceId: selectedNasDevice,
-      name: name,
-      mapLocation: mapLocation,
-      locationDescription: locationDescription,
-      ip: ip,
-      macAddress: macAddress,
-      isSnmpActive: isSnmpActive,
-      snmpVersion: selectedSnmpVersion,
-      snmpPort: snmpPort,
-      snmpCommunity: snmpCommunity,
-      zoneManagerId: selectedZone,
-      subZoneManagerId: selectedSubZone,
-      retailerId: selectedRetailer,
-      isActive: isActive
-    };
+      const formData = {
+        id: item.id,
+        nasDeviceId: selectedNasDevice,
+        name: name,
+        mapLocation: mapLocation,
+        locationDescription: locationDescription,
+        ip: ip,
+        macAddress: macAddress,
+        isSnmpActive: isSnmpActive,
+        snmpVersion: selectedSnmpVersion,
+        snmpPort: snmpPort,
+        snmpCommunity: snmpCommunity,
+        zoneManagerId: selectedZone,
+        subZoneManagerId: selectedSubZone,
+        retailerId: selectedRetailer,
+        isActive: isActive
+      };
 
-    try {
-      axios
-        .post("/api-hotspot/ap-device/update", formData)
-        .then(res => {
-          // console.log(res);
-          const { data } = res;
+      try {
+        await axios
+          .post("/api-hotspot/ap-device/update", formData)
+          .then(res => {
+            // console.log(res);
+            const { data } = res;
 
-          if (data.status === 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/hotspot/ap-device");
-            });
-          } else {
+            if (data.status === 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/hotspot/ap-device");
+              });
+            } else {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Added Failed",
+                icon: "error"
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Added Failed",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <div className="my-6">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{}}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="my-6">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{}}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+              {/* zoneManagerId */}
+              <Form.Item
+                label="Zone Manager"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="zoneManagerId"
               >
-                {/* zoneManagerId */}
-                <Form.Item
-                  label="Zone Manager"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="zoneManagerId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleZoneChange}
-                      options={zones}
-                      value={selectedZone}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleZoneChange}
+                    options={zones}
+                    value={selectedZone}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* subZoneManagerId */}
+              <Form.Item
+                label="SubZone Manager"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="subZoneManagerId"
               >
-                {/* subZoneManagerId */}
-                <Form.Item
-                  label="SubZone Manager"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="subZoneManagerId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleSubZoneChange}
-                      options={subZones}
-                      value={selectedSubZone}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleSubZoneChange}
+                    options={subZones}
+                    value={selectedSubZone}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* retailerId */}
+              <Form.Item
+                label="Retailer"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="retailerId"
               >
-                {/* retailerId */}
-                <Form.Item
-                  label="Retailer"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="retailerId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleRetailerChange}
-                      options={retailers}
-                      value={selectedRetailer}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleRetailerChange}
+                    options={retailers}
+                    value={selectedRetailer}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            {/* nasDeviceId */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
               {/* nasDeviceId */}
+              <Form.Item
+                label="Nas Device"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="nasDeviceId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select nas device!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleNasDeviceChange}
+                    options={nasDevices}
+                    value={selectedNasDevice}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="name"
+                label="name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="name"
+                  className={`form-control`}
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="mapLocation"
+                label="mapLocation"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input mapLocation!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="mapLocation"
+                  className={`form-control`}
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="locationDescription"
+                label="locationDescription"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input locationDescription!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="locationDescription"
+                  className={`form-control`}
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="ip"
+                label="ip"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input ip!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="ip"
+                  className={`form-control`}
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="macAddress"
+                label="macAddress"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input macAddress!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="macAddress"
+                  className={`form-control`}
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="isSnmpActive"
+                label="isSnmpActive"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <Checkbox
+                  onChange={handleIsSnmpActive}
+                  checked={isSnmpActive}
+                  className="gutter-row"
+                >
+                  isSnmpActive
+                </Checkbox>
+              </Form.Item>
+            </Col>
+            {isSnmpActive != false && (
               <Col
                 xs={24}
                 sm={12}
@@ -514,18 +743,17 @@ const EditApDeviceForm = ({ item }: PropData) => {
                 xxl={8}
                 className="gutter-row"
               >
-                {/* nasDeviceId */}
                 <Form.Item
-                  label="Nas Device"
+                  label="SNMP Version"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="nasDeviceId"
+                  name="snmpVersion"
                   rules={[
                     {
                       required: true,
-                      message: "Please select nas device!"
+                      message: "Please select SNMP Version!"
                     }
                   ]}
                 >
@@ -533,15 +761,16 @@ const EditApDeviceForm = ({ item }: PropData) => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleNasDeviceChange}
-                      options={nasDevices}
-                      value={selectedNasDevice}
+                      placeholder="Please select SNMP Version"
+                      onChange={handleSnmpChange}
+                      options={snmpList}
+                      value={selectedSnmpVersion}
                     />
                   </Space>
                 </Form.Item>
               </Col>
-
+            )}
+            {isSnmpActive != false && (
               <Col
                 xs={24}
                 sm={12}
@@ -552,8 +781,8 @@ const EditApDeviceForm = ({ item }: PropData) => {
                 className="gutter-row"
               >
                 <Form.Item
-                  name="name"
-                  label="name"
+                  name="snmpPort"
+                  label="snmpPort"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -561,19 +790,20 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input name!"
+                      message: "Please input your snmpPort!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="name"
+                    placeholder="snmpPort"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
-
+            )}
+            {isSnmpActive != false && (
               <Col
                 xs={24}
                 sm={12}
@@ -584,8 +814,8 @@ const EditApDeviceForm = ({ item }: PropData) => {
                 className="gutter-row"
               >
                 <Form.Item
-                  name="mapLocation"
-                  label="mapLocation"
+                  name="snmpCommunity"
+                  label="snmpCommunity"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -593,279 +823,55 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input mapLocation!"
+                      message: "Please input your snmpCommunity!"
                     }
                   ]}
                 >
                   <Input
                     type="text"
-                    placeholder="mapLocation"
+                    placeholder="snmpCommunity"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                   />
                 </Form.Item>
               </Col>
+            )}
+          </Row>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="locationDescription"
-                  label="locationDescription"
+          <Form.Item>
+            <Checkbox
+              onChange={handleActive}
+              checked={isActive}
+              className="gutter-row"
+            >
+              Active
+            </Checkbox>
+          </Form.Item>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
                   style={{
-                    marginBottom: 0,
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
                     fontWeight: "bold"
                   }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input locationDescription!"
-                    }
-                  ]}
+                  disabled={loading}
                 >
-                  <Input
-                    type="text"
-                    placeholder="locationDescription"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="ip"
-                  label="ip"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input ip!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="ip"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="macAddress"
-                  label="macAddress"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input macAddress!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="macAddress"
-                    className={`form-control`}
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  name="isSnmpActive"
-                  label="isSnmpActive"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                >
-                  <Checkbox
-                    onChange={handleIsSnmpActive}
-                    checked={isSnmpActive}
-                    className="gutter-row"
-                  >
-                    isSnmpActive
-                  </Checkbox>
-                </Form.Item>
-              </Col>
-              {isSnmpActive != false && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  <Form.Item
-                    label="SNMP Version"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="snmpVersion"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select SNMP Version!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select SNMP Version"
-                        onChange={handleSnmpChange}
-                        options={snmpList}
-                        value={selectedSnmpVersion}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              )}
-              {isSnmpActive != false && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  <Form.Item
-                    name="snmpPort"
-                    label="snmpPort"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your snmpPort!"
-                      }
-                    ]}
-                  >
-                    <Input
-                      type="text"
-                      placeholder="snmpPort"
-                      className={`form-control`}
-                      style={{ padding: "6px" }}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
-              {isSnmpActive != false && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  <Form.Item
-                    name="snmpCommunity"
-                    label="snmpCommunity"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your snmpCommunity!"
-                      }
-                    ]}
-                  >
-                    <Input
-                      type="text"
-                      placeholder="snmpCommunity"
-                      className={`form-control`}
-                      style={{ padding: "6px" }}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
-            </Row>
-
-            <Form.Item>
-              <Checkbox
-                onChange={handleActive}
-                checked={isActive}
-                className="gutter-row"
-              >
-                Active
-              </Checkbox>
-            </Form.Item>
-
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

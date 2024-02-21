@@ -10,7 +10,7 @@ import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PropData {
   item: any;
@@ -197,237 +197,242 @@ const EditRetailerTaggingForm = ({ item }: PropData) => {
     setSelectedAreaManager(value as any);
   };
 
-  const onSubmit = () => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async () => {
     setLoading(true);
+    setTimeout(async () => {
+      const formData = {
+        id: item.id,
+        tsoId: selectedUser,
+        areaManagerTagId: selectedAreaManager,
+        retailerId: selectedRetailer
+      };
+      try {
+        await axios
+          .put("/api/tso-retailer-tag/update", formData)
+          .then(res => {
+            const { data } = res;
 
-    const formData = {
-      id: item.id,
-      tsoId: selectedUser,
-      areaManagerTagId: selectedAreaManager,
-      retailerId: selectedRetailer
-    };
-    try {
-      axios
-        .put("/api/tso-retailer-tag/update", formData)
-        .then(res => {
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Created successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/hotspot/retailer-tagging");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Created successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/hotspot/retailer-tagging");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <>
-          <div className="mt-3">
-            <Form
-              // {...layout}
-              layout="vertical"
-              autoComplete="off"
-              onFinish={onSubmit}
-              form={form}
-              initialValues={{}}
-              style={{ maxWidth: "100%" }}
-              name="wrap"
-              colon={false}
-              scrollToFirstError
-            >
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+      {/* {!loading && ( */}
+      <>
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{}}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* tsoId */}
+                <Form.Item
+                  label="TSO"
+                  name="tsoId"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select!"
+                    }
+                  ]}
                 >
-                  {/* tsoId */}
-                  <Form.Item
-                    label="TSO"
-                    name="tsoId"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleUserChange}
-                        options={users}
-                        value={selectedUser}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleUserChange}
+                      options={users}
+                      value={selectedUser}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* areaManagerTagId */}
+                <Form.Item
+                  label="Area"
+                  name="areaManagerTagId"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select!"
+                    }
+                  ]}
                 >
-                  {/* areaManagerTagId */}
-                  <Form.Item
-                    label="Area"
-                    name="areaManagerTagId"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleAreaManagerChange}
-                        options={areaManagers}
-                        value={selectedAreaManager}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleAreaManagerChange}
+                      options={areaManagers}
+                      value={selectedAreaManager}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* retailerId */}
+                <Form.Item
+                  label="Retailer"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="retailerId"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select!"
+                    }
+                  ]}
                 >
-                  {/* retailerId */}
-                  <Form.Item
-                    label="Retailer"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="retailerId"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleRetailerChange}
-                        options={retailers}
-                        value={selectedRetailer}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleRetailerChange}
+                      options={retailers}
+                      value={selectedRetailer}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            </Row>
 
-              {/* submit */}
-              <Row justify="center">
-                <Col>
-                  <Form.Item style={{ margin: "0 8px" }}>
-                    <div style={{ marginTop: 24 }}>
-                      <Button
-                        // type="primary"
-                        htmlType="submit"
-                        shape="round"
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#FFFFFF",
-                          fontWeight: "bold"
-                        }}
-                        disabled={loading}
-                      >
-                        {loading ? "Submitting..." : "Submit"}
-                      </Button>
-                    </div>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </>
-      )}
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item style={{ margin: "0 8px" }}>
+                  <div style={{ marginTop: 24 }}>
+                    <Button
+                      // type="primary"
+                      htmlType="submit"
+                      shape="round"
+                      style={{
+                        backgroundColor: "#F15F22",
+                        color: "#FFFFFF",
+                        fontWeight: "bold"
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Submit"}
+                    </Button>
+                  </div>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </>
+      {/* )}  */}
     </>
   );
 };

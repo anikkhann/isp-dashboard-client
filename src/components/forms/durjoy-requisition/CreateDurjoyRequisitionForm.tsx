@@ -26,7 +26,7 @@ import {
 } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 import { useAppSelector } from "@/store/hooks";
 import { PaymentGatewayConfigData } from "@/interfaces/PaymentGatewayConfigData";
 
@@ -445,499 +445,459 @@ const CreateDurjoyRequisitionForm = () => {
       deliveryType: selectedDeliveryType
     });
   }, []);
-  const onSubmit = (data: FromData) => {
+
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FromData) => {
     setLoading(true);
-    const {
-      remarks,
-      deliveryAddress,
-      deliveryContact,
-      deliveryName,
-      // deliveryType,
-      lines
-    } = data;
+    setTimeout(async () => {
+      const {
+        remarks,
+        deliveryAddress,
+        deliveryContact,
+        deliveryName,
+        // deliveryType,
+        lines
+      } = data;
 
-    const bodyData = {
-      remarks: remarks,
-      paymentGatewayId: selectedPaymentGateway,
-      paymentType: selectedPaymentType,
-      tagVoucher: selectedTagVoucherType,
-      zoneManagerId: selectedZoneManager,
-      subZoneManagerId: selectedSubZone,
-      deliveryType: selectedDeliveryType,
-      deliveryName: deliveryName,
-      deliveryAddress: deliveryAddress,
-      deliveryContact: deliveryContact,
-      lines: lines
-    };
+      const bodyData = {
+        remarks: remarks,
+        paymentGatewayId: selectedPaymentGateway,
+        paymentType: selectedPaymentType,
+        tagVoucher: selectedTagVoucherType,
+        zoneManagerId: selectedZoneManager,
+        subZoneManagerId: selectedSubZone,
+        deliveryType: selectedDeliveryType,
+        deliveryName: deliveryName,
+        deliveryAddress: deliveryAddress,
+        deliveryContact: deliveryContact,
+        lines: lines
+      };
 
-    const formData = new FormData();
-    if (file) {
-      formData.append("file", file);
-    }
-    formData.append("body", JSON.stringify(bodyData));
+      const formData = new FormData();
+      if (file) {
+        formData.append("file", file);
+      }
+      formData.append("body", JSON.stringify(bodyData));
 
-    try {
-      axios
-        .post("/api-hotspot/client-card-requisition/create", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api-hotspot/client-card-requisition/create", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Created successfully",
+                icon: "success"
+              }).then(() => {
+                if (selectedPaymentType === "online") {
+                  const url = data.body;
+                  window.open(url, "_blank");
+                } else {
+                  router.replace("/admin/hotspot/durjoy-requisition");
+                }
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Created successfully",
-              icon: "success"
-            }).then(() => {
-              if (selectedPaymentType === "online") {
-                const url = data.body;
-                window.open(url, "_blank");
-              } else {
-                router.replace("/admin/hotspot/durjoy-requisition");
-              }
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <>
-          <div className="mt-3">
-            <Form
-              // {...layout}
-              layout="vertical"
-              autoComplete="off"
-              onFinish={onSubmit}
-              form={form}
-              initialValues={{}}
-              style={{ maxWidth: "100%" }}
-              name="wrap"
-              colon={false}
-              scrollToFirstError
-            >
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.List name="lines">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
-                            align="baseline"
-                          >
-                            <Form.Item
-                              {...restField}
-                              label="Package"
-                              name={[name, "pricingPlanId"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={value =>
-                                  handlePricingPlanChange(value, key)
-                                }
-                                options={pricingPlans}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              label="Quantity"
-                              name={[name, "quantity"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input Quantity"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Quantity" type="number" />
-                            </Form.Item>
-
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Set Requirements
-                          </Button>
-                        </Form.Item>
-                        <Form.Item>
-                          <Button
-                            type="primary"
-                            onClick={() => calculateTotal()}
-                          >
-                            Calculate Total
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.Item
-                    label="Total Amount (BDT)"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Input
-                      placeholder="Total Amount"
-                      value={totalAmount}
-                      disabled
-                    />
-                  </Form.Item>
-                </Col>
-                <Col>
-                  <Form.Item
-                    label="Payable Amount (BDT)"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Input
-                      placeholder="Payable Amount (BDT)10px"
-                      value={wsdCommissionValue}
-                      disabled
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* tagVoucher */}
-                  <Form.Item
-                    label="Tag Voucher"
-                    name="tagVoucher"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: "Please select!"
-                    //   }
-                    // ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleTagVoucherTypeChange}
-                        options={tagVoucherTypes}
-                        value={selectedTagVoucherType}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                {selectedTagVoucherType === "zone" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* zoneManagerId */}
-                    <Form.Item
-                      label="Zone Manager"
-                      name="zoneManagerId"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select"
-                          onChange={handleZoneManagerChange}
-                          options={zoneManagers}
-                          value={selectedZoneManager}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-
-                {selectedTagVoucherType === "subZone" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* subZoneManagerId */}
-                    <Form.Item
-                      label="SubZone"
-                      name="subZoneManagerId"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select"
-                          onChange={handleSubZoneChange}
-                          options={subZones}
-                          value={selectedSubZone}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* paymentType */}
-                  <Form.Item
-                    label="Payment Type"
-                    name="paymentType"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Payment Type!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handlePaymentTypeChange}
-                        options={paymentTypes}
-                        value={selectedPaymentType}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                {selectedPaymentType === "online" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* paymentGatewayId */}
-                    <Form.Item
-                      label="Payment Gateway"
-                      name="paymentGatewayId"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select"
-                          onChange={handlePaymentGatewayChange}
-                          options={paymentGateways}
-                          value={selectedPaymentGateway}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-
-                {selectedPaymentType === "offline" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    <Form.Item
-                      label="Attachment"
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        display: "flex",
-                        // justify:"center",
-                        textAlign: "center",
-                        fontWeight: "bold"
-                      }}
-                      name="attachment"
-                      rules={[
-                        {
-                          required:
-                            selectedPaymentType === "offline" ? true : false,
-                          message: "Please upload attachment!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Upload
-                          customRequest={dummyAction}
-                          onChange={handleFileChange}
-                          maxCount={1}
-                          listType="picture"
-                          fileList={fileList}
+      {/* {!loading && ( */}
+      <>
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{}}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.List name="lines">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{ display: "flex", marginBottom: 8 }}
+                          align="baseline"
                         >
-                          {fileList.length >= 1 ? null : uploadButton}
-                        </Upload>
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
+                          <Form.Item
+                            {...restField}
+                            label="Package"
+                            name={[name, "pricingPlanId"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input"
+                              }
+                            ]}
+                          >
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={value =>
+                                handlePricingPlanChange(value, key)
+                              }
+                              options={pricingPlans}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            {...restField}
+                            label="Quantity"
+                            name={[name, "quantity"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input Quantity"
+                              }
+                            ]}
+                          >
+                            <Input placeholder="Quantity" type="number" />
+                          </Form.Item>
 
-                {/* </Row> */}
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Set Requirements
+                        </Button>
+                      </Form.Item>
+                      <Form.Item>
+                        <Button type="primary" onClick={() => calculateTotal()}>
+                          Calculate Total
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+              </Col>
+            </Row>
+
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.Item
+                  label="Total Amount (BDT)"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                >
+                  <Input
+                    placeholder="Total Amount"
+                    value={totalAmount}
+                    disabled
+                  />
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  label="Payable Amount (BDT)"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                >
+                  <Input
+                    placeholder="Payable Amount (BDT)10px"
+                    value={wsdCommissionValue}
+                    disabled
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* tagVoucher */}
+                <Form.Item
+                  label="Tag Voucher"
+                  name="tagVoucher"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please select!"
+                  //   }
+                  // ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleTagVoucherTypeChange}
+                      options={tagVoucherTypes}
+                      value={selectedTagVoucherType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              {selectedTagVoucherType === "zone" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* zoneManagerId */}
+                  <Form.Item
+                    label="Zone Manager"
+                    name="zoneManagerId"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleZoneManagerChange}
+                        options={zoneManagers}
+                        value={selectedZoneManager}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
+              {selectedTagVoucherType === "subZone" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* subZoneManagerId */}
+                  <Form.Item
+                    label="SubZone"
+                    name="subZoneManagerId"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleSubZoneChange}
+                        options={subZones}
+                        value={selectedSubZone}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* paymentType */}
+                <Form.Item
+                  label="Payment Type"
+                  name="paymentType"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Payment Type!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handlePaymentTypeChange}
+                      options={paymentTypes}
+                      value={selectedPaymentType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              {selectedPaymentType === "online" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* paymentGatewayId */}
+                  <Form.Item
+                    label="Payment Gateway"
+                    name="paymentGatewayId"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select!"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handlePaymentGatewayChange}
+                        options={paymentGateways}
+                        value={selectedPaymentGateway}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
+              {selectedPaymentType === "offline" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -948,125 +908,81 @@ const CreateDurjoyRequisitionForm = () => {
                   className="gutter-row"
                 >
                   <Form.Item
-                    label="Delivery Type"
+                    label="Attachment"
                     style={{
                       marginBottom: 0,
+                      width: "100%",
+                      display: "flex",
+                      // justify:"center",
+                      textAlign: "center",
                       fontWeight: "bold"
                     }}
-                    name="deliveryType"
+                    name="attachment"
                     rules={[
                       {
-                        required: true,
-                        message: "Please select Delivery Type!"
+                        required:
+                          selectedPaymentType === "offline" ? true : false,
+                        message: "Please upload attachment!"
                       }
                     ]}
                   >
                     <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Delivery Type"
-                        onChange={handleDeliveryType}
-                        options={deliveryTypes}
-                        value={selectedDeliveryType}
-                      />
+                      <Upload
+                        customRequest={dummyAction}
+                        onChange={handleFileChange}
+                        maxCount={1}
+                        listType="picture"
+                        fileList={fileList}
+                      >
+                        {fileList.length >= 1 ? null : uploadButton}
+                      </Upload>
                     </Space>
                   </Form.Item>
                 </Col>
+              )}
 
-                {/* <Row
+              {/* </Row> */}
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Delivery Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="deliveryType"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Delivery Type!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Delivery Type"
+                      onChange={handleDeliveryType}
+                      options={deliveryTypes}
+                      value={selectedDeliveryType}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+
+              {/* <Row
                   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                   justify="center"
                 > */}
-                {selectedDeliveryType === "Courier" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* deliveryName */}
-                    <Form.Item
-                      label="Deliver To"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="deliveryName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input Deliver To!"
-                        }
-                      ]}
-                    >
-                      <Input placeholder="Deliver To" />
-                    </Form.Item>
-                  </Col>
-                )}
-                {selectedDeliveryType === "Courier" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* deliveryAddress */}
-                    <Form.Item
-                      label="Delivery Address"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="deliveryAddress"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input Delivery Address!"
-                        }
-                      ]}
-                    >
-                      <Input placeholder="Delivery Address" />
-                    </Form.Item>
-                  </Col>
-                )}
-                {selectedDeliveryType === "Courier" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* deliveryContact */}
-                    <Form.Item
-                      label="Contact"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="deliveryContact"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input Contact!"
-                        }
-                      ]}
-                    >
-                      <Input placeholder="deliveryContact" />
-                    </Form.Item>
-                  </Col>
-                )}
-                {/* </Row> */}
-
+              {selectedDeliveryType === "Courier" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -1076,29 +992,26 @@ const CreateDurjoyRequisitionForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* remarks */}
+                  {/* deliveryName */}
                   <Form.Item
-                    label="Remarks"
+                    label="Deliver To"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
-                    name="remarks"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: "Please input remarks!"
-                    //   }
-                    // ]}
+                    name="deliveryName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Deliver To!"
+                      }
+                    ]}
                   >
-                    <Input.TextArea
-                      rows={4}
-                      cols={16}
-                      placeholder="remarks"
-                      className={`form-control`}
-                    />
+                    <Input placeholder="Deliver To" />
                   </Form.Item>
                 </Col>
+              )}
+              {selectedDeliveryType === "Courier" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -1107,7 +1020,27 @@ const CreateDurjoyRequisitionForm = () => {
                   xl={8}
                   xxl={8}
                   className="gutter-row"
-                ></Col>
+                >
+                  {/* deliveryAddress */}
+                  <Form.Item
+                    label="Delivery Address"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="deliveryAddress"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Delivery Address!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="Delivery Address" />
+                  </Form.Item>
+                </Col>
+              )}
+              {selectedDeliveryType === "Courier" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -1116,19 +1049,90 @@ const CreateDurjoyRequisitionForm = () => {
                   xl={8}
                   xxl={8}
                   className="gutter-row"
-                ></Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                ></Col>
-              </Row>
+                >
+                  {/* deliveryContact */}
+                  <Form.Item
+                    label="Contact"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="deliveryContact"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Contact!"
+                      }
+                    ]}
+                  >
+                    <Input placeholder="deliveryContact" />
+                  </Form.Item>
+                </Col>
+              )}
+              {/* </Row> */}
 
-              {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* remarks */}
+                <Form.Item
+                  label="Remarks"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="remarks"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input remarks!"
+                  //   }
+                  // ]}
+                >
+                  <Input.TextArea
+                    rows={4}
+                    cols={16}
+                    placeholder="remarks"
+                    className={`form-control`}
+                  />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              ></Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              ></Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              ></Col>
+            </Row>
+
+            {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
                 <Col xs={24}
                   sm={12}
                   md={8}
@@ -1156,32 +1160,32 @@ const CreateDurjoyRequisitionForm = () => {
                 </Col>
               </Row> */}
 
-              {/* submit */}
-              <Row justify="center">
-                <Col>
-                  <Form.Item style={{ margin: "0 8px" }}>
-                    <div style={{ marginTop: 24 }}>
-                      <Button
-                        // type="primary"
-                        htmlType="submit"
-                        shape="round"
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#FFFFFF",
-                          fontWeight: "bold"
-                        }}
-                        disabled={loading}
-                      >
-                        {loading ? "Submitting..." : "Submit"}
-                      </Button>
-                    </div>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </>
-      )}
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item style={{ margin: "0 8px" }}>
+                  <div style={{ marginTop: 24 }}>
+                    <Button
+                      // type="primary"
+                      htmlType="submit"
+                      shape="round"
+                      style={{
+                        backgroundColor: "#F15F22",
+                        color: "#FFFFFF",
+                        fontWeight: "bold"
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Submit"}
+                    </Button>
+                  </div>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </>
+      {/* )} */}
     </>
   );
 };

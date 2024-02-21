@@ -10,7 +10,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   amount: string;
   type: string;
@@ -103,250 +103,256 @@ const CreateZoneTopForm = () => {
     form.setFieldsValue({ type: selectType });
   }, []);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const { amount, type, remarks } = data;
+    setTimeout(async () => {
+      const { amount, type, remarks } = data;
 
-    const formData = {
-      zoneManagerId: zoneManagerId,
-      amount: amount,
-      type: type,
-      remarks: remarks
-    };
+      const formData = {
+        zoneManagerId: zoneManagerId,
+        amount: amount,
+        type: type,
+        remarks: remarks
+      };
 
-    try {
-      axios
-        .post("/api/zone-topup/create", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/zone-topup/create", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/top-up/zone-top-up");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/top-up/zone-top-up");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              amount: "",
-              zoneManagerId: "",
-              type: "",
-              remarks: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            amount: "",
+            zoneManagerId: "",
+            type: "",
+            remarks: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              {/* zoneManagerId */}
+              <Form.Item
+                label="Zone Manager"
+                name="zoneManagerId"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select!"
+                  }
+                ]}
               >
-                {/* zoneManagerId */}
-                <Form.Item
-                  label="Zone Manager"
-                  name="zoneManagerId"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Zone Manager"
-                      onChange={handleZoneChange}
-                      options={zoneList}
-                      value={zoneManagerId}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* type */}
-                <Form.Item
-                  label="Type"
-                  name="type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Type!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Type"
-                      onChange={handleChange}
-                      options={types}
-                      value={selectType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* amount */}
-                <Form.Item
-                  label="Amount"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="amount"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your amount!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Amount"
-                    className={`form-control`}
-                    name="amount"
-                    style={{ padding: "6px" }}
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Zone Manager"
+                    onChange={handleZoneChange}
+                    options={zoneList}
+                    value={zoneManagerId}
                   />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* remarks */}
-                <Form.Item
-                  label="Remarks"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="remarks"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your remarks!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Remarks"
-                    className={`form-control`}
-                    name="remarks"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            {/* submit */}
-            <Row justify="center">
-              <Form.Item>
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? "Submitting..." : "Submit"}
-                </Button>
+                </Space>
               </Form.Item>
-            </Row>
-          </Form>
-        </div>
-      )}
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* type */}
+              <Form.Item
+                label="Type"
+                name="type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Type"
+                    onChange={handleChange}
+                    options={types}
+                    value={selectType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* amount */}
+              <Form.Item
+                label="Amount"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="amount"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your amount!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Amount"
+                  className={`form-control`}
+                  name="amount"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* remarks */}
+              <Form.Item
+                label="Remarks"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="remarks"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your remarks!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Remarks"
+                  className={`form-control`}
+                  name="remarks"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          {/* submit */}
+          <Row justify="center">
+            <Form.Item>
+              <Button
+                // type="primary"
+                htmlType="submit"
+                shape="round"
+                style={{
+                  backgroundColor: "#F15F22",
+                  color: "#FFFFFF",
+                  fontWeight: "bold"
+                }}
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Submit"}
+              </Button>
+            </Form.Item>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

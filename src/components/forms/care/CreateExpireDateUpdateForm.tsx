@@ -9,7 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   day: string;
@@ -111,233 +111,190 @@ const CreateExpireDateUpdateForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const { day, remarks } = data;
+    setTimeout(async () => {
+      const { day, remarks } = data;
 
-    const formData = {
-      customerId: selectedCustomer,
-      day: day,
-      type: selectType,
-      extensionType: selectExtensionType,
-      remarks: remarks
-    };
+      const formData = {
+        customerId: selectedCustomer,
+        day: day,
+        type: selectType,
+        extensionType: selectExtensionType,
+        remarks: remarks
+      };
 
-    try {
-      axios
-        .post("/api/customer/expiration", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/customer/expiration", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace(`/admin/expire-date-extend-deduction`);
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace(`/admin/expire-date-extend-deduction`);
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              type: "",
-              day: "",
-              remarks: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            type: "",
+            day: "",
+            remarks: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              {/* customerId */}
+              <Form.Item
+                label="Customer"
+                name="customerId"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Customer!"
+                  }
+                ]}
               >
-                {/* customerId */}
-                <Form.Item
-                  label="Customer"
-                  name="customerId"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Customer!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Customer"
-                      onChange={handleCustomerChange}
-                      options={customers}
-                      value={selectedCustomer}
-                      showSearch
-                      filterOption={(input, option) => {
-                        if (typeof option?.label === "string") {
-                          return (
-                            option.label
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          );
-                        }
-                        return false;
-                      }}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* type */}
-                <Form.Item
-                  label="Type"
-                  name="type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Type!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Type"
-                      onChange={handleChange}
-                      options={types}
-                      value={selectType}
-                      showSearch
-                      filterOption={(input, option) => {
-                        if (typeof option?.label === "string") {
-                          return (
-                            option.label
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          );
-                        }
-                        return false;
-                      }}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              {selectType == "Extension" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* extensionType */}
-                  <Form.Item
-                    label="Extension Type"
-                    name="extensionType"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select extensionType!"
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Customer"
+                    onChange={handleCustomerChange}
+                    options={customers}
+                    value={selectedCustomer}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
                       }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Extension Type"
-                        onChange={handleExtensionTypeChange}
-                        options={extensionTypes}
-                        value={selectExtensionType}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              )}
+                      return false;
+                    }}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
 
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* type */}
+              <Form.Item
+                label="Type"
+                name="type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Type"
+                    onChange={handleChange}
+                    options={types}
+                    value={selectType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            {selectType == "Extension" && (
               <Col
                 xs={24}
                 sm={12}
@@ -347,89 +304,138 @@ const CreateExpireDateUpdateForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* day */}
+                {/* extensionType */}
                 <Form.Item
-                  label="Day"
+                  label="Extension Type"
+                  name="extensionType"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="day"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your day!"
+                      message: "Please select extensionType!"
                     }
                   ]}
                 >
-                  <Input
-                    type="number"
-                    placeholder="day"
-                    className={`form - control`}
-                    name="day"
-                    style={{ padding: "6px" }}
-                  />
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Extension Type"
+                      onChange={handleExtensionTypeChange}
+                      options={extensionTypes}
+                      value={selectExtensionType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
                 </Form.Item>
               </Col>
+            )}
 
-              <Col
-                xs={24}
-                sm={24}
-                md={24}
-                lg={24}
-                xl={24}
-                xxl={24}
-                className="gutter-row"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* day */}
+              <Form.Item
+                label="Day"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="day"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your day!"
+                  }
+                ]}
               >
-                {/* remarks */}
-                <Form.Item
-                  label="Remarks"
+                <Input
+                  type="number"
+                  placeholder="day"
+                  className={`form - control`}
+                  name="day"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
+            >
+              {/* remarks */}
+              <Form.Item
+                label="Remarks"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="remarks"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your remarks!"
+                  }
+                ]}
+              >
+                <Input.TextArea
+                  placeholder="remarks"
+                  className={`form - control`}
+                  name="remarks"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
                   style={{
-                    marginBottom: 0,
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
                     fontWeight: "bold"
                   }}
-                  name="remarks"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your remarks!"
-                    }
-                  ]}
+                  disabled={loading}
                 >
-                  <Input.TextArea
-                    placeholder="remarks"
-                    className={`form - control`}
-                    name="remarks"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

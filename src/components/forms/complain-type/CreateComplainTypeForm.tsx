@@ -20,7 +20,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useAppSelector } from "@/store/hooks";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   name: string;
   zoneId: string;
@@ -79,130 +79,88 @@ const CreateComplainTypeForm = () => {
     }
   }, [authUser]);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const { name } = data;
+    setTimeout(async () => {
+      const { name } = data;
 
-    const formData = {
-      complainCategory: selectComplainCategory,
-      name: name,
-      isActive: isActive
-    };
+      const formData = {
+        complainCategory: selectComplainCategory,
+        name: name,
+        isActive: isActive
+      };
 
-    try {
-      axios
-        .post("/api/complain-type/create", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/complain-type/create", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/complaint/complain-type");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/complaint/complain-type");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              complainCategory: "",
-              name: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
-          >
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-              {authUser && authUser.userType != "durjoy" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  <Form.Item
-                    label="Complain Category"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="complainCategory"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Complain Category"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Complain Category"
-                        onChange={handleCategoryChange}
-                        options={complainCategoryList}
-                        value={selectComplainCategory}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              )}
-
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            complainCategory: "",
+            name: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            {authUser && authUser.userType != "durjoy" && (
               <Col
                 xs={24}
                 sm={12}
@@ -212,68 +170,116 @@ const CreateComplainTypeForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* name */}
                 <Form.Item
-                  label="Name"
+                  label="Complain Category"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="name"
+                  name="complainCategory"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your Name!"
+                      message: "Please select Complain Category"
                     }
                   ]}
                 >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
-                    style={{ padding: "6px" }}
-                  />
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Complain Category"
+                      onChange={handleCategoryChange}
+                      options={complainCategoryList}
+                      value={selectComplainCategory}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
                 </Form.Item>
               </Col>
-            </Row>
+            )}
 
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+          {/* status */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleActive} checked={isActive}>
+              Active
+            </Checkbox>
+          </Form.Item>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

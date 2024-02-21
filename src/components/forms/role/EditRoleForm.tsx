@@ -25,7 +25,7 @@ import axios from "axios";
 import { RoleData } from "@/interfaces/RoleData";
 import Cookies from "js-cookie";
 import { Card } from "antd";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface RoleFormData {
   name: string;
@@ -136,243 +136,246 @@ const EditRoleForm = ({ item }: PropData) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
 
-  const onSubmit = (data: RoleFormData) => {
+  const onSubmit = async (data: RoleFormData) => {
     setLoading(true);
+    setTimeout(async () => {
+      const rolePermissions: { permissionId: any; actionTags: any[] }[] = [];
 
-    const rolePermissions: { permissionId: any; actionTags: any[] }[] = [];
+      checkedList.forEach(permission => {
+        const [permissionId, actionTag] = permission.split("__");
+        const existingPermission = rolePermissions.find(
+          perm => perm.permissionId === permissionId
+        );
 
-    checkedList.forEach(permission => {
-      const [permissionId, actionTag] = permission.split("__");
-      const existingPermission = rolePermissions.find(
-        perm => perm.permissionId === permissionId
-      );
+        if (existingPermission) {
+          existingPermission.actionTags.push(actionTag);
+        } else {
+          rolePermissions.push({
+            permissionId,
+            actionTags: [actionTag]
+          });
+        }
+      });
+      const { name } = data;
+      try {
+        await axios
+          .put(`/api/role/update`, {
+            id: item.id,
+            name: name,
+            is_active: isActive,
+            rolePermissions: rolePermissions
+          })
+          .then(res => {
+            // console.log(res);
+            const { data } = res;
 
-      if (existingPermission) {
-        existingPermission.actionTags.push(actionTag);
-      } else {
-        rolePermissions.push({
-          permissionId,
-          actionTags: [actionTag]
-        });
-      }
-    });
-    const { name } = data;
-    try {
-      axios
-        .put(`/api/role/update`, {
-          id: item.id,
-          name: name,
-          is_active: isActive,
-          rolePermissions: rolePermissions
-        })
-        .then(res => {
-          // console.log(res);
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Role created successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/user/role");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Role created successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/user/role");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <div className="mt-3 flex justify-center items-center">
-          <Form
-            form={form}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            className="max-w-screen-lg w-full"
-            name="wrap"
-            colon={false}
-          >
-            <Row gutter={[8, 16]} justify="center">
-              <Col xs={24} sm={12} md={12} lg={12} xl={12} className="px-5">
-                <Form.Item
-                  label="Name"
-                  style={{ marginBottom: 0, fontWeight: "bold" }}
-                  name="name"
-                  rules={[{ required: true, message: "Please input name!" }]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Form.Item label="">
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Status
-              </Checkbox>
-            </Form.Item>
-
-            <Space
-              direction="vertical"
-              style={{
-                display: "flex",
-                justifyContent: "left",
-                textTransform: "capitalize",
-                marginBottom: 10,
-                textAlign: "left",
-                paddingLeft: "15px",
-                paddingRight: "15px"
-              }}
-            >
-              <Checkbox
-                indeterminate={
-                  checkedList.length > 0 &&
-                  checkedList.length < totalPermissions
-                }
-                checked={checkedList.length === totalPermissions}
-                onChange={handleCheckAllChange}
+      {/* {!loading && ( */}
+      <div className="mt-3 flex justify-center items-center">
+        <Form
+          form={form}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          className="max-w-screen-lg w-full"
+          name="wrap"
+          colon={false}
+        >
+          <Row gutter={[8, 16]} justify="center">
+            <Col xs={24} sm={12} md={12} lg={12} xl={12} className="px-5">
+              <Form.Item
+                label="Name"
+                style={{ marginBottom: 0, fontWeight: "bold" }}
+                name="name"
+                rules={[{ required: true, message: "Please input name!" }]}
               >
-                Check All
-              </Checkbox>
-            </Space>
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
-            <Form.Item name="permissions" valuePropName="permissions">
-              <Checkbox.Group onChange={onChange} value={checkedList}>
-                <Row gutter={[8, 16]} justify="space-between">
-                  {permissions &&
-                    permissions.length > 0 &&
-                    permissions.map((permission: any) => (
-                      <Col
-                        span={24}
-                        sm={24}
-                        md={24}
-                        lg={24}
-                        xl={24}
-                        key={permission.id}
-                      >
-                        <Card className="hover:shadow-md transition duration-300 ease-in-out">
-                          <Divider orientation="left">
-                            <h5
-                              style={{
-                                fontWeight: "bold",
-                                marginBottom: 10,
-                                marginLeft: 10,
-                                fontSize: 14,
-                                textTransform: "uppercase",
-                                textAlign: "left",
-                                color: "#0e8fdc"
-                              }}
-                            >
-                              {permission.displayName}
-                            </h5>
-                          </Divider>
+          <Form.Item label="">
+            <Checkbox onChange={handleActive} checked={isActive}>
+              Status
+            </Checkbox>
+          </Form.Item>
 
-                          <Row gutter={[8, 16]}>
-                            {permission.children &&
-                              permission.children.length > 0 &&
-                              permission.children.map((item: any) => (
-                                <Col
-                                  span={24}
-                                  sm={12}
-                                  md={8}
-                                  lg={8}
-                                  className="gutter-row"
-                                  key={item.value}
+          <Space
+            direction="vertical"
+            style={{
+              display: "flex",
+              justifyContent: "left",
+              textTransform: "capitalize",
+              marginBottom: 10,
+              textAlign: "left",
+              paddingLeft: "15px",
+              paddingRight: "15px"
+            }}
+          >
+            <Checkbox
+              indeterminate={
+                checkedList.length > 0 && checkedList.length < totalPermissions
+              }
+              checked={checkedList.length === totalPermissions}
+              onChange={handleCheckAllChange}
+            >
+              Check All
+            </Checkbox>
+          </Space>
+
+          <Form.Item name="permissions" valuePropName="permissions">
+            <Checkbox.Group onChange={onChange} value={checkedList}>
+              <Row gutter={[8, 16]} justify="space-between">
+                {permissions &&
+                  permissions.length > 0 &&
+                  permissions.map((permission: any) => (
+                    <Col
+                      span={24}
+                      sm={24}
+                      md={24}
+                      lg={24}
+                      xl={24}
+                      key={permission.id}
+                    >
+                      <Card className="hover:shadow-md transition duration-300 ease-in-out">
+                        <Divider orientation="left">
+                          <h5
+                            style={{
+                              fontWeight: "bold",
+                              marginBottom: 10,
+                              marginLeft: 10,
+                              fontSize: 14,
+                              textTransform: "uppercase",
+                              textAlign: "left",
+                              color: "#0e8fdc"
+                            }}
+                          >
+                            {permission.displayName}
+                          </h5>
+                        </Divider>
+
+                        <Row gutter={[8, 16]}>
+                          {permission.children &&
+                            permission.children.length > 0 &&
+                            permission.children.map((item: any) => (
+                              <Col
+                                span={24}
+                                sm={12}
+                                md={8}
+                                lg={8}
+                                className="gutter-row"
+                                key={item.value}
+                              >
+                                <Card
+                                  hoverable
+                                  style={{
+                                    backgroundColor: "#F15F22",
+                                    overflowX: "hidden"
+                                  }}
                                 >
-                                  <Card
-                                    hoverable
+                                  <Checkbox
+                                    value={item.value}
                                     style={{
-                                      backgroundColor: "#F15F22",
-                                      overflowX: "hidden"
+                                      display: "flex",
+                                      justifyContent: "left",
+                                      fontSize: "15px",
+                                      color: "#FFFFFF",
+                                      fontWeight: "bold"
                                     }}
                                   >
-                                    <Checkbox
-                                      value={item.value}
+                                    <span
                                       style={{
-                                        display: "flex",
-                                        justifyContent: "left",
-                                        fontSize: "15px",
-                                        color: "#FFFFFF",
-                                        fontWeight: "bold"
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap"
                                       }}
                                     >
-                                      <span
-                                        style={{
-                                          overflow: "hidden",
-                                          textOverflow: "ellipsis",
-                                          whiteSpace: "nowrap"
-                                        }}
-                                      >
-                                        {item.label}
-                                      </span>
-                                    </Checkbox>
-                                  </Card>
-                                </Col>
-                              ))}
-                          </Row>
-                        </Card>
-                      </Col>
-                    ))}
-                </Row>
-              </Checkbox.Group>
-            </Form.Item>
+                                      {item.label}
+                                    </span>
+                                  </Checkbox>
+                                </Card>
+                              </Col>
+                            ))}
+                        </Row>
+                      </Card>
+                    </Col>
+                  ))}
+              </Row>
+            </Checkbox.Group>
+          </Form.Item>
 
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  <Button
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                <Button
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

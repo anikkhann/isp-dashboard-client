@@ -26,7 +26,7 @@ import {
 } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 import { useAppSelector } from "@/store/hooks";
 import { PaymentGatewayConfigData } from "@/interfaces/PaymentGatewayConfigData";
 
@@ -288,219 +288,270 @@ const CreateClientRequisitionForm = () => {
     });
   };
 
-  const onSubmit = (data: FromData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FromData) => {
     setLoading(true);
-    const {
-      remarks,
+    setTimeout(async () => {
+      const {
+        remarks,
 
-      lines
-    } = data;
+        lines
+      } = data;
 
-    const bodyData = {
-      remarks: remarks,
-      paymentType: selectedPaymentType,
-      paymentGatewayId: selectedPaymentGateway,
+      const bodyData = {
+        remarks: remarks,
+        paymentType: selectedPaymentType,
+        paymentGatewayId: selectedPaymentGateway,
 
-      lines: lines
-    };
+        lines: lines
+      };
 
-    const formData = new FormData();
-    if (file) {
-      formData.append("file", file);
-    }
-    formData.append("body", JSON.stringify(bodyData));
+      const formData = new FormData();
+      if (file) {
+        formData.append("file", file);
+      }
+      formData.append("body", JSON.stringify(bodyData));
 
-    try {
-      axios
-        .post("/api-hotspot/zone-card-requisition/create", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api-hotspot/zone-card-requisition/create", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Created successfully",
+                icon: "success"
+              }).then(() => {
+                if (selectedPaymentType === "online") {
+                  const url = data.body;
+                  window.open(url, "_blank");
+                } else {
+                  router.replace("/admin/hotspot/client-requisition");
+                }
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Created successfully",
-              icon: "success"
-            }).then(() => {
-              if (selectedPaymentType === "online") {
-                const url = data.body;
-                window.open(url, "_blank");
-              } else {
-                router.replace("/admin/hotspot/client-requisition");
-              }
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <>
-          <div className="mt-3">
-            <Form
-              // {...layout}
-              layout="vertical"
-              autoComplete="off"
-              onFinish={onSubmit}
-              form={form}
-              initialValues={{}}
-              style={{ maxWidth: "100%" }}
-              name="wrap"
-              colon={false}
-              scrollToFirstError
-            >
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  <Form.List name="lines">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
-                            align="baseline"
+      {/* {!loading && ( */}
+      <>
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{}}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.List name="lines">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{ display: "flex", marginBottom: 8 }}
+                          align="baseline"
+                        >
+                          <Form.Item
+                            {...restField}
+                            label="Package"
+                            name={[name, "pricingPlanId"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input Package"
+                              }
+                            ]}
                           >
-                            <Form.Item
-                              {...restField}
-                              label="Package"
-                              name={[name, "pricingPlanId"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input Package"
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Package"
+                              onChange={value =>
+                                handlePricingPlanChange(value, key)
+                              }
+                              options={pricingPlans}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
                                 }
-                              ]}
-                            >
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select Package"
-                                onChange={value =>
-                                  handlePricingPlanChange(value, key)
-                                }
-                                options={pricingPlans}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              label="Quantity"
-                              name={[name, "quantity"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input Quantity"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Quantity" />
-                            </Form.Item>
+                                return false;
+                              }}
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            {...restField}
+                            label="Quantity"
+                            name={[name, "quantity"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input Quantity"
+                              }
+                            ]}
+                          >
+                            <Input placeholder="Quantity" />
+                          </Form.Item>
 
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Set Requirements
-                          </Button>
-                        </Form.Item>
-                        <Form.Item>
-                          <Button
-                            type="primary"
-                            onClick={() => calculateTotal()}
-                          >
-                            Calculate Total
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.Item
-                    label="Total Amount"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Input
-                      placeholder="Total Amount"
-                      value={totalAmount}
-                      disabled
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Set Requirements
+                        </Button>
+                      </Form.Item>
+                      <Form.Item>
+                        <Button type="primary" onClick={() => calculateTotal()}>
+                          Calculate Total
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+              </Col>
+            </Row>
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.Item
+                  label="Total Amount"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                >
+                  <Input
+                    placeholder="Total Amount"
+                    value={totalAmount}
+                    disabled
+                  />
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item
+                  label="Payable"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                >
+                  <Input
+                    placeholder="Payable"
+                    value={wsdCommissionValue}
+                    disabled
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* paymentType */}
+                <Form.Item
+                  label="Payment Type"
+                  name="paymentType"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Payment Type!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Payment Type"
+                      onChange={handlePaymentTypeChange}
+                      options={paymentTypes}
+                      value={selectedPaymentType}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
-                  </Form.Item>
-                </Col>
-                <Col>
-                  <Form.Item
-                    label="Payable"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    <Input
-                      placeholder="Payable"
-                      value={wsdCommissionValue}
-                      disabled
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+                  </Space>
+                </Form.Item>
+              </Col>
+              {selectedPaymentType === "online" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -510,10 +561,10 @@ const CreateClientRequisitionForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* paymentType */}
+                  {/* paymentGatewayId */}
                   <Form.Item
-                    label="Payment Type"
-                    name="paymentType"
+                    label="Payment Gateway"
+                    name="paymentGatewayId"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -521,7 +572,7 @@ const CreateClientRequisitionForm = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Please select Payment Type!"
+                        message: "Please select!"
                       }
                     ]}
                   >
@@ -529,10 +580,10 @@ const CreateClientRequisitionForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Payment Type"
-                        onChange={handlePaymentTypeChange}
-                        options={paymentTypes}
-                        value={selectedPaymentType}
+                        placeholder="Please select"
+                        onChange={handlePaymentGatewayChange}
+                        options={paymentGateways}
+                        value={selectedPaymentGateway}
                         showSearch
                         filterOption={(input, option) => {
                           if (typeof option?.label === "string") {
@@ -548,56 +599,8 @@ const CreateClientRequisitionForm = () => {
                     </Space>
                   </Form.Item>
                 </Col>
-                {selectedPaymentType === "online" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    {/* paymentGatewayId */}
-                    <Form.Item
-                      label="Payment Gateway"
-                      name="paymentGatewayId"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select"
-                          onChange={handlePaymentGatewayChange}
-                          options={paymentGateways}
-                          value={selectedPaymentGateway}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-                {/* {selectedPaymentType === "online" && (
+              )}
+              {/* {selectedPaymentType === "online" && (
                   <Col
                     xs={24}
                     sm={12}
@@ -638,48 +641,7 @@ const CreateClientRequisitionForm = () => {
                     </Form.Item>
                   </Col>
                 )} */}
-                {selectedPaymentType === "offline" && (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={8}
-                    xl={8}
-                    xxl={8}
-                    className="gutter-row"
-                  >
-                    <Form.Item
-                      label="Attachment"
-                      style={{
-                        marginBottom: 0,
-                        width: "100%",
-                        textAlign: "center",
-                        fontWeight: "bold"
-                      }}
-                      name="attachment"
-                      rules={[
-                        {
-                          required:
-                            selectedPaymentType === "offline" ? true : false,
-                          message: "Please input attachment!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Upload
-                          customRequest={dummyAction}
-                          onChange={handleFileChange}
-                          maxCount={1}
-                          listType="picture"
-                          fileList={fileList}
-                        >
-                          {fileList.length >= 1 ? null : uploadButton}
-                        </Upload>
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                )}
-
+              {selectedPaymentType === "offline" && (
                 <Col
                   xs={24}
                   sm={12}
@@ -689,57 +651,98 @@ const CreateClientRequisitionForm = () => {
                   xxl={8}
                   className="gutter-row"
                 >
-                  {/* remarks */}
                   <Form.Item
-                    label="Remarks"
+                    label="Attachment"
                     style={{
                       marginBottom: 0,
+                      width: "100%",
+                      textAlign: "center",
                       fontWeight: "bold"
                     }}
-                    name="remarks"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: "Please input remarks!"
-                    //   }
-                    // ]}
+                    name="attachment"
+                    rules={[
+                      {
+                        required:
+                          selectedPaymentType === "offline" ? true : false,
+                        message: "Please input attachment!"
+                      }
+                    ]}
                   >
-                    <Input.TextArea
-                      rows={4}
-                      cols={16}
-                      placeholder="remarks"
-                      className={`form-control`}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              {/* submit */}
-              <Row justify="center">
-                <Col>
-                  <Form.Item style={{ margin: "0 8px" }}>
-                    <div style={{ marginTop: 24 }}>
-                      <Button
-                        // type="primary"
-                        htmlType="submit"
-                        shape="round"
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#FFFFFF",
-                          fontWeight: "bold"
-                        }}
-                        disabled={loading}
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Upload
+                        customRequest={dummyAction}
+                        onChange={handleFileChange}
+                        maxCount={1}
+                        listType="picture"
+                        fileList={fileList}
                       >
-                        {loading ? "Submitting..." : "Submit"}
-                      </Button>
-                    </div>
+                        {fileList.length >= 1 ? null : uploadButton}
+                      </Upload>
+                    </Space>
                   </Form.Item>
                 </Col>
-              </Row>
-            </Form>
-          </div>
-        </>
-      )}
+              )}
+
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* remarks */}
+                <Form.Item
+                  label="Remarks"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="remarks"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input remarks!"
+                  //   }
+                  // ]}
+                >
+                  <Input.TextArea
+                    rows={4}
+                    cols={16}
+                    placeholder="remarks"
+                    className={`form-control`}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item style={{ margin: "0 8px" }}>
+                  <div style={{ marginTop: 24 }}>
+                    <Button
+                      // type="primary"
+                      htmlType="submit"
+                      shape="round"
+                      style={{
+                        backgroundColor: "#F15F22",
+                        color: "#FFFFFF",
+                        fontWeight: "bold"
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Submit"}
+                    </Button>
+                  </div>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </>
+      {/* )} */}
     </>
   );
 };

@@ -21,7 +21,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 const statuses = [
   {
@@ -462,461 +462,553 @@ const CreateDailyTaskForm = () => {
     }
   }, [selectedUpazilla]);
 
-  const onSubmit = (data: FromData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FromData) => {
     setLoading(true);
-    const {
-      oltPower,
-      illegalHotspotDetails,
-      bwCongestionFrom,
-      bwCongestionTo,
-      gamingLatency,
-      tiktokLatency,
-      youtubeLatency,
-      facebookLatency,
-      totalComplaints,
+    setTimeout(async () => {
+      const {
+        oltPower,
+        illegalHotspotDetails,
+        bwCongestionFrom,
+        bwCongestionTo,
+        gamingLatency,
+        tiktokLatency,
+        youtubeLatency,
+        facebookLatency,
+        totalComplaints,
 
-      competitorInfoLine,
-      proActiveCallingInfoLine
-    } = data;
+        competitorInfoLine,
+        proActiveCallingInfoLine
+      } = data;
 
-    const formData = {
-      id: previous?.id,
-      oltPower: oltPower,
-      illegalHotspot: illegalHotspot,
-      illegalHotspotDetails: illegalHotspotDetails,
+      const formData = {
+        id: previous?.id,
+        oltPower: oltPower,
+        illegalHotspot: illegalHotspot,
+        illegalHotspotDetails: illegalHotspotDetails,
 
-      bwCongestion: bwCongestion,
-      bwCongestionFrom: bwCongestionFrom,
-      bwCongestionTo: bwCongestionTo,
-      gamingLatency: gamingLatency,
-      tiktokLatency: tiktokLatency,
-      youtubeLatency: youtubeLatency,
-      facebookLatency: facebookLatency,
-      totalComplaints: totalComplaints,
-      competitorInfoLine: competitorInfoLine,
-      proActiveCallingInfoLine: proActiveCallingInfoLine
-    };
+        bwCongestion: bwCongestion,
+        bwCongestionFrom: bwCongestionFrom,
+        bwCongestionTo: bwCongestionTo,
+        gamingLatency: gamingLatency,
+        tiktokLatency: tiktokLatency,
+        youtubeLatency: youtubeLatency,
+        facebookLatency: facebookLatency,
+        totalComplaints: totalComplaints,
+        competitorInfoLine: competitorInfoLine,
+        proActiveCallingInfoLine: proActiveCallingInfoLine
+      };
 
-    try {
-      axios
-        .post("/api/reseller-daily-report/submit-report", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/reseller-daily-report/submit-report", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Created successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/sub-zone/daily-task");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Created successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/sub-zone/daily-task");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <>
-          <div className="mt-3">
-            <Form
-              // {...layout}
-              layout="vertical"
-              autoComplete="off"
-              onFinish={onSubmit}
-              form={form}
-              initialValues={{}}
-              style={{ maxWidth: "100%" }}
-              name="wrap"
-              colon={false}
-              scrollToFirstError
-            >
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+      {/* {!loading && ( */}
+      <>
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{}}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col sm={12} md={8} lg={8} xl={8} xxl={8} className="gutter-row">
+                {/* oltPower */}
+                <Form.Item
+                  label="OLT Power"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="oltPower"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please input oltPower!"
+                  //   }
+                  // ]}
                 >
-                  {/* oltPower */}
-                  <Form.Item
-                    label="OLT Power"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="oltPower"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: "Please input oltPower!"
-                    //   }
-                    // ]}
-                  >
-                    <Input placeholder="OLT Power" className={`form-control`} />
-                  </Form.Item>
-                </Col>
+                  <Input placeholder="OLT Power" className={`form-control`} />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* illegalHotspot */}
+                <Form.Item
+                  label="Illegal Hotspot"
+                  name="illegalHotspot"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select!"
+                    }
+                  ]}
                 >
-                  {/* illegalHotspot */}
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleIllegalHotspotChange}
+                      options={statuses}
+                      value={illegalHotspot}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+
+              {illegalHotspot == true && (
+                <Col xs={12} className="gutter-row">
+                  {/* illegalHotspotDetails */}
                   <Form.Item
-                    label="Illegal Hotspot"
-                    name="illegalHotspot"
+                    label="Illegal Hotspot Details"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
                     }}
+                    name="illegalHotspotDetails"
                     rules={[
                       {
                         required: true,
-                        message: "Please select!"
+                        message: "Please input Illegal Hotspot Details!"
                       }
                     ]}
                   >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleIllegalHotspotChange}
-                        options={statuses}
-                        value={illegalHotspot}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
+                    <Input placeholder="Illegal Hotspot Details" />
                   </Form.Item>
                 </Col>
+              )}
 
-                {illegalHotspot == true && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* bwCongestion */}
+                <Form.Item
+                  label="BW Congestion"
+                  name="bwCongestion"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select!"
+                    }
+                  ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleBwCongestionChange}
+                      options={statuses}
+                      value={bwCongestion}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+
+              {bwCongestion == true && (
+                <>
                   <Col xs={12} className="gutter-row">
-                    {/* illegalHotspotDetails */}
+                    {/* bwCongestionFrom */}
                     <Form.Item
-                      label="Illegal Hotspot Details"
+                      label="BW CongestionFrom"
                       style={{
                         marginBottom: 0,
                         fontWeight: "bold"
                       }}
-                      name="illegalHotspotDetails"
+                      name="bwCongestionFrom"
                       rules={[
                         {
                           required: true,
-                          message: "Please input Illegal Hotspot Details!"
+                          message: "Please input BW Congestion From!"
                         }
                       ]}
                     >
-                      <Input placeholder="Illegal Hotspot Details" />
+                      <TimePicker
+                        style={{ width: "100%" }}
+                        format="HH:mm:ss"
+                        placeholder="Select Time"
+                      />
                     </Form.Item>
                   </Col>
-                )}
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* bwCongestion */}
-                  <Form.Item
-                    label="BW Congestion"
-                    name="bwCongestion"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleBwCongestionChange}
-                        options={statuses}
-                        value={bwCongestion}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
+                  <Col xs={12} className="gutter-row">
+                    {/* bwCongestionTo */}
+                    <Form.Item
+                      label="BW Congestion To"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      name="bwCongestionTo"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input BW Congestion To!"
+                        }
+                      ]}
+                    >
+                      <TimePicker
+                        style={{ width: "100%" }}
+                        format="HH:mm:ss"
+                        placeholder="Select Time"
                       />
-                    </Space>
-                  </Form.Item>
-                </Col>
+                    </Form.Item>
+                  </Col>
+                </>
+              )}
 
-                {bwCongestion == true && (
-                  <>
-                    <Col xs={12} className="gutter-row">
-                      {/* bwCongestionFrom */}
-                      <Form.Item
-                        label="BW CongestionFrom"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="bwCongestionFrom"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input BW Congestion From!"
-                          }
-                        ]}
-                      >
-                        <TimePicker
-                          style={{ width: "100%" }}
-                          format="HH:mm:ss"
-                          placeholder="Select Time"
-                        />
-                      </Form.Item>
-                    </Col>
+              <Col xs={12} className="gutter-row">
+                {/* gamingLatency */}
+                <Form.Item
+                  label="Gaming Latency"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="gamingLatency"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Gaming Latency!"
+                    }
+                  ]}
+                >
+                  <Input placeholder="Gaming Latency" />
+                </Form.Item>
+              </Col>
+              <Col xs={12} className="gutter-row">
+                {/* tiktokLatency */}
+                <Form.Item
+                  label="Tiktok Latency"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="tiktokLatency"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Tiktok Latency!"
+                    }
+                  ]}
+                >
+                  <Input placeholder="Tiktok Latency" />
+                </Form.Item>
+              </Col>
+              <Col xs={12} className="gutter-row">
+                {/* youtubeLatency */}
+                <Form.Item
+                  label="Youtube Latency"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="youtubeLatency"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Youtube Latency!"
+                    }
+                  ]}
+                >
+                  <Input placeholder="Youtube Latency" />
+                </Form.Item>
+              </Col>
+              <Col xs={12} className="gutter-row">
+                {/* facebookLatency */}
+                <Form.Item
+                  label="Facebook Latency"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="facebookLatency"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Facebook Latency!"
+                    }
+                  ]}
+                >
+                  <Input placeholder="Facebook Latency" />
+                </Form.Item>
+              </Col>
+              <Col xs={12} className="gutter-row">
+                {/* totalComplaints */}
+                <Form.Item
+                  label="Total Complaints"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="totalComplaints"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Total Complaints!"
+                    }
+                  ]}
+                >
+                  <Input placeholder="Total Complaints" />
+                </Form.Item>
+              </Col>
+            </Row>
 
-                    <Col xs={12} className="gutter-row">
-                      {/* bwCongestionTo */}
-                      <Form.Item
-                        label="BW Congestion To"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="bwCongestionTo"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input BW Congestion To!"
-                          }
-                        ]}
-                      >
-                        <TimePicker
-                          style={{ width: "100%" }}
-                          format="HH:mm:ss"
-                          placeholder="Select Time"
-                        />
-                      </Form.Item>
-                    </Col>
-                  </>
-                )}
-
-                <Col xs={12} className="gutter-row">
-                  {/* gamingLatency */}
-                  <Form.Item
-                    label="Gaming Latency"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="gamingLatency"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Gaming Latency!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Gaming Latency" />
-                  </Form.Item>
-                </Col>
-                <Col xs={12} className="gutter-row">
-                  {/* tiktokLatency */}
-                  <Form.Item
-                    label="Tiktok Latency"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="tiktokLatency"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Tiktok Latency!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Tiktok Latency" />
-                  </Form.Item>
-                </Col>
-                <Col xs={12} className="gutter-row">
-                  {/* youtubeLatency */}
-                  <Form.Item
-                    label="Youtube Latency"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="youtubeLatency"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Youtube Latency!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Youtube Latency" />
-                  </Form.Item>
-                </Col>
-                <Col xs={12} className="gutter-row">
-                  {/* facebookLatency */}
-                  <Form.Item
-                    label="Facebook Latency"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="facebookLatency"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Facebook Latency!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Facebook Latency" />
-                  </Form.Item>
-                </Col>
-                <Col xs={12} className="gutter-row">
-                  {/* totalComplaints */}
-                  <Form.Item
-                    label="Total Complaints"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="totalComplaints"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Total Complaints!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Total Complaints" />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.List name="proActiveCallingInfoLine">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
-                            align="baseline"
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.List name="proActiveCallingInfoLine">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{ display: "flex", marginBottom: 8 }}
+                          align="baseline"
+                        >
+                          {/* customerId */}
+                          <Form.Item
+                            label="Customer"
+                            style={{
+                              marginBottom: 0,
+                              marginRight: "0px",
+                              fontWeight: "bold"
+                            }}
+                            name="customerId"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select Customer!"
+                              }
+                            ]}
                           >
-                            {/* customerId */}
-                            <Form.Item
-                              label="Customer"
-                              style={{
-                                marginBottom: 0,
-                                marginRight: "0px",
-                                fontWeight: "bold"
-                              }}
-                              name="customerId"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please select Customer!"
-                                }
-                              ]}
-                            >
-                              <Space
-                                style={{ width: "100%" }}
-                                direction="vertical"
-                              >
-                                <Select
-                                  allowClear
-                                  style={{ width: "100%", textAlign: "start" }}
-                                  placeholder="Please select Customer"
-                                  onChange={value =>
-                                    handleCustomerIdChange(value, key)
-                                  }
-                                  options={customers}
-                                />
-                              </Space>
-                            </Form.Item>
-
-                            <Form.Item
-                              {...restField}
-                              label="Status"
-                              name={[name, "status"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                              style={{ marginBottom: 0, fontWeight: "bold" }}
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
                             >
                               <Select
                                 allowClear
                                 style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
+                                placeholder="Please select Customer"
                                 onChange={value =>
-                                  handleStatusChange(value, key)
+                                  handleCustomerIdChange(value, key)
                                 }
-                                options={statuses}
+                                options={customers}
+                              />
+                            </Space>
+                          </Form.Item>
+
+                          <Form.Item
+                            {...restField}
+                            label="Status"
+                            name={[name, "status"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input"
+                              }
+                            ]}
+                            style={{ marginBottom: 0, fontWeight: "bold" }}
+                          >
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={value => handleStatusChange(value, key)}
+                              options={statuses}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Form.Item>
+
+                          {/* note */}
+                          <Form.Item
+                            {...restField}
+                            label="Note"
+                            name={[name, "note"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input"
+                              }
+                            ]}
+                            style={{ marginBottom: 0, fontWeight: "bold" }}
+                          >
+                            <Input placeholder="Note" />
+                          </Form.Item>
+
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Add field (Proactive call list)
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+              </Col>
+            </Row>
+
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.List name="competitorInfoLine">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{
+                            display: "flex",
+                            marginBottom: 8,
+                            overflowX: "auto"
+                          }}
+                          align="baseline"
+                        >
+                          {/* divisionId */}
+                          <Form.Item
+                            label="Division"
+                            style={{
+                              marginBottom: 0,
+                              marginRight: "0px",
+                              fontWeight: "bold"
+                            }}
+                            name="divisionId"
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please select Division!"
+                            //   }
+                            // ]}
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select Division"
+                                onChange={value =>
+                                  handleDivisionChange(value, key)
+                                }
+                                options={divisions}
                                 showSearch
                                 filterOption={(input, option) => {
                                   if (typeof option?.label === "string") {
@@ -929,351 +1021,256 @@ const CreateDailyTaskForm = () => {
                                   return false;
                                 }}
                               />
-                            </Form.Item>
+                            </Space>
+                          </Form.Item>
 
-                            {/* note */}
-                            <Form.Item
-                              {...restField}
-                              label="Note"
-                              name={[name, "note"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                              style={{ marginBottom: 0, fontWeight: "bold" }}
-                            >
-                              <Input placeholder="Note" />
-                            </Form.Item>
-
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Add field (Proactive call list)
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.List name="competitorInfoLine">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
+                          {/* districtId */}
+                          <Form.Item
+                            label="District"
                             style={{
-                              display: "flex",
-                              marginBottom: 8,
-                              overflowX: "auto"
+                              marginBottom: 0,
+                              marginRight: "0px",
+                              fontWeight: "bold"
                             }}
-                            align="baseline"
+                            name="districtId"
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please select District!"
+                            //   }
+                            // ]}
                           >
-                            {/* divisionId */}
-                            <Form.Item
-                              label="Division"
-                              style={{
-                                marginBottom: 0,
-                                marginRight: "0px",
-                                fontWeight: "bold"
-                              }}
-                              name="divisionId"
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please select Division!"
-                              //   }
-                              // ]}
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
                             >
-                              <Space
-                                style={{ width: "100%" }}
-                                direction="vertical"
-                              >
-                                <Select
-                                  allowClear
-                                  style={{
-                                    width: "100%",
-                                    textAlign: "start"
-                                  }}
-                                  placeholder="Please select Division"
-                                  onChange={value =>
-                                    handleDivisionChange(value, key)
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select District"
+                                onChange={value =>
+                                  handleDistrictChange(value, key)
+                                }
+                                options={districts}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
                                   }
-                                  options={divisions}
-                                  showSearch
-                                  filterOption={(input, option) => {
-                                    if (typeof option?.label === "string") {
-                                      return (
-                                        option.label
-                                          .toLowerCase()
-                                          .indexOf(input.toLowerCase()) >= 0
-                                      );
-                                    }
-                                    return false;
-                                  }}
-                                />
-                              </Space>
-                            </Form.Item>
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Form.Item>
 
-                            {/* districtId */}
-                            <Form.Item
-                              label="District"
-                              style={{
-                                marginBottom: 0,
-                                marginRight: "0px",
-                                fontWeight: "bold"
-                              }}
-                              name="districtId"
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please select District!"
-                              //   }
-                              // ]}
-                            >
-                              <Space
-                                style={{ width: "100%" }}
-                                direction="vertical"
-                              >
-                                <Select
-                                  allowClear
-                                  style={{
-                                    width: "100%",
-                                    textAlign: "start"
-                                  }}
-                                  placeholder="Please select District"
-                                  onChange={value =>
-                                    handleDistrictChange(value, key)
-                                  }
-                                  options={districts}
-                                  showSearch
-                                  filterOption={(input, option) => {
-                                    if (typeof option?.label === "string") {
-                                      return (
-                                        option.label
-                                          .toLowerCase()
-                                          .indexOf(input.toLowerCase()) >= 0
-                                      );
-                                    }
-                                    return false;
-                                  }}
-                                />
-                              </Space>
-                            </Form.Item>
-
-                            {/* upazillaId */}
-                            <Form.Item
-                              label="Upazilla"
-                              style={{
-                                marginBottom: 0,
-                                marginRight: "0px",
-                                fontWeight: "bold"
-                              }}
-                              name="upazillaId"
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please select Upazilla!"
-                              //   }
-                              // ]}
-                            >
-                              <Space
-                                style={{ width: "100%" }}
-                                direction="vertical"
-                              >
-                                <Select
-                                  allowClear
-                                  style={{
-                                    width: "100%",
-                                    textAlign: "start"
-                                  }}
-                                  placeholder="Please select Upazilla"
-                                  onChange={value =>
-                                    handleUpazillaChange(value, key)
-                                  }
-                                  options={upazillas}
-                                  showSearch
-                                  filterOption={(input, option) => {
-                                    if (typeof option?.label === "string") {
-                                      return (
-                                        option.label
-                                          .toLowerCase()
-                                          .indexOf(input.toLowerCase()) >= 0
-                                      );
-                                    }
-                                    return false;
-                                  }}
-                                />
-                              </Space>
-                            </Form.Item>
-
-                            {/* unionId */}
-                            <Form.Item
-                              label="Union"
-                              style={{
-                                marginBottom: 0,
-                                marginRight: "0px",
-                                fontWeight: "bold"
-                              }}
-                              name="unionId"
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please select Union!"
-                              //   }
-                              // ]}
-                            >
-                              <Space
-                                style={{ width: "100%" }}
-                                direction="vertical"
-                              >
-                                <Select
-                                  allowClear
-                                  style={{
-                                    width: "100%",
-                                    textAlign: "start"
-                                  }}
-                                  placeholder="Please select Union"
-                                  onChange={value =>
-                                    handleUnionChange(value, key)
-                                  }
-                                  options={unions}
-                                  showSearch
-                                  filterOption={(input, option) => {
-                                    if (typeof option?.label === "string") {
-                                      return (
-                                        option.label
-                                          .toLowerCase()
-                                          .indexOf(input.toLowerCase()) >= 0
-                                      );
-                                    }
-                                    return false;
-                                  }}
-                                />
-                              </Space>
-                            </Form.Item>
-
-                            {/* village */}
-                            <Form.Item
-                              {...restField}
-                              label="Village"
-                              name={[name, "village"]}
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please input"
-                              //   }
-                              // ]}
-                              style={{ marginBottom: 0, fontWeight: "bold" }}
-                            >
-                              <Input placeholder="Village" />
-                            </Form.Item>
-
-                            {/* provider */}
-                            <Form.Item
-                              {...restField}
-                              label="Provider"
-                              name={[name, "provider"]}
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please input"
-                              //   }
-                              // ]}
-                              style={{ marginBottom: 0, fontWeight: "bold" }}
-                            >
-                              <Input placeholder="Provider" />
-                            </Form.Item>
-
-                            {/* totalCustomer */}
-                            <Form.Item
-                              {...restField}
-                              label="Total Customer"
-                              name={[name, "totalCustomer"]}
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please input"
-                              //   }
-                              // ]}
-                              style={{ marginBottom: 0, fontWeight: "bold" }}
-                            >
-                              <Input placeholder="Total Customer" />
-                            </Form.Item>
-
-                            {/* totalHotspot */}
-                            <Form.Item
-                              {...restField}
-                              label="Total Hotspot"
-                              name={[name, "totalHotspot"]}
-                              // rules={[
-                              //   {
-                              //     required: true,
-                              //     message: "Please input"
-                              //   }
-                              // ]}
-                              style={{ marginBottom: 0, fontWeight: "bold" }}
-                            >
-                              <Input placeholder="Total Hotspot" />
-                            </Form.Item>
-
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
+                          {/* upazillaId */}
+                          <Form.Item
+                            label="Upazilla"
+                            style={{
+                              marginBottom: 0,
+                              marginRight: "0px",
+                              fontWeight: "bold"
+                            }}
+                            name="upazillaId"
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please select Upazilla!"
+                            //   }
+                            // ]}
                           >
-                            Add field (Competitor Info)
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select Upazilla"
+                                onChange={value =>
+                                  handleUpazillaChange(value, key)
+                                }
+                                options={upazillas}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Form.Item>
 
-              {/* submit */}
-              <Row justify="center">
-                <Col>
-                  <Form.Item style={{ margin: "0 8px" }}>
-                    <div style={{ marginTop: 24 }}>
-                      <Button
-                        // type="primary"
-                        htmlType="submit"
-                        shape="round"
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#FFFFFF",
-                          fontWeight: "bold"
-                        }}
-                        disabled={loading}
-                      >
-                        {loading ? "Submitting..." : "Submit"}
-                      </Button>
-                    </div>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </>
-      )}
+                          {/* unionId */}
+                          <Form.Item
+                            label="Union"
+                            style={{
+                              marginBottom: 0,
+                              marginRight: "0px",
+                              fontWeight: "bold"
+                            }}
+                            name="unionId"
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please select Union!"
+                            //   }
+                            // ]}
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select Union"
+                                onChange={value =>
+                                  handleUnionChange(value, key)
+                                }
+                                options={unions}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Form.Item>
+
+                          {/* village */}
+                          <Form.Item
+                            {...restField}
+                            label="Village"
+                            name={[name, "village"]}
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please input"
+                            //   }
+                            // ]}
+                            style={{ marginBottom: 0, fontWeight: "bold" }}
+                          >
+                            <Input placeholder="Village" />
+                          </Form.Item>
+
+                          {/* provider */}
+                          <Form.Item
+                            {...restField}
+                            label="Provider"
+                            name={[name, "provider"]}
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please input"
+                            //   }
+                            // ]}
+                            style={{ marginBottom: 0, fontWeight: "bold" }}
+                          >
+                            <Input placeholder="Provider" />
+                          </Form.Item>
+
+                          {/* totalCustomer */}
+                          <Form.Item
+                            {...restField}
+                            label="Total Customer"
+                            name={[name, "totalCustomer"]}
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please input"
+                            //   }
+                            // ]}
+                            style={{ marginBottom: 0, fontWeight: "bold" }}
+                          >
+                            <Input placeholder="Total Customer" />
+                          </Form.Item>
+
+                          {/* totalHotspot */}
+                          <Form.Item
+                            {...restField}
+                            label="Total Hotspot"
+                            name={[name, "totalHotspot"]}
+                            // rules={[
+                            //   {
+                            //     required: true,
+                            //     message: "Please input"
+                            //   }
+                            // ]}
+                            style={{ marginBottom: 0, fontWeight: "bold" }}
+                          >
+                            <Input placeholder="Total Hotspot" />
+                          </Form.Item>
+
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Add field (Competitor Info)
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+              </Col>
+            </Row>
+
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item style={{ margin: "0 8px" }}>
+                  <div style={{ marginTop: 24 }}>
+                    <Button
+                      // type="primary"
+                      htmlType="submit"
+                      shape="round"
+                      style={{
+                        backgroundColor: "#F15F22",
+                        color: "#FFFFFF",
+                        fontWeight: "bold"
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Submit"}
+                    </Button>
+                  </div>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </>
+      {/* )} */}
     </>
   );
 };

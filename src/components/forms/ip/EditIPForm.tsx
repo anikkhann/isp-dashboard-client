@@ -10,7 +10,7 @@ import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { IpData } from "@/interfaces/IpData";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   assignedType: string;
@@ -165,116 +165,157 @@ const EditIPForm = ({ item }: PropData) => {
   }, [item]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
+    setTimeout(async () => {
+      const { assignedTo } = data;
 
-    const { assignedTo } = data;
+      const formData = {
+        id: item.id,
+        assignedType: selectedAssignType,
+        customerId: selectedCustomer,
+        assignedTo: assignedTo
+      };
 
-    const formData = {
-      id: item.id,
-      assignedType: selectedAssignType,
-      customerId: selectedCustomer,
-      assignedTo: assignedTo
-    };
+      try {
+        await axios
+          .put("/api/ip-list/update", formData)
+          .then(res => {
+            const { data } = res;
 
-    try {
-      axios
-        .put("/api/ip-list/update", formData)
-        .then(res => {
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/device/ip-management");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/device/ip-management");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              assignedType: "",
-              customerId: "",
-              assignedTo: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            assignedType: "",
+            customerId: "",
+            assignedTo: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              {/* ip */}
+              <Form.Item
+                label="IP Address"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="ip"
               >
-                {/* ip */}
-                <Form.Item
-                  label="IP Address"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="IP Address"
+                  className={`form-control`}
                   name="ip"
-                >
-                  <Input
-                    type="text"
-                    placeholder="IP Address"
-                    className={`form-control`}
-                    name="ip"
-                    disabled
-                    style={{ padding: "6px" }}
+                  disabled
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* assignedType */}
+              <Form.Item
+                label="Assign Type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="assignedType"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleAssignTypeChange}
+                    options={assignTypes}
+                    value={selectedAssignType}
                   />
-                </Form.Item>
-              </Col>
+                </Space>
+              </Form.Item>
+            </Col>
+            {selectedAssignType?.includes("customer") && ( // corrected comparison from '===' to 'includes'
               <Col
                 xs={24}
                 sm={12}
@@ -284,18 +325,18 @@ const EditIPForm = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* assignedType */}
+                {/* customerId */}
                 <Form.Item
-                  label="Assign Type"
+                  label="Customer"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="assignedType"
+                  name="customerId"
                   rules={[
                     {
-                      required: true,
-                      message: "Please select!"
+                      required: requiredCustomer ? true : false,
+                      message: "Please select Customers!"
                     }
                   ]}
                 >
@@ -303,107 +344,70 @@ const EditIPForm = ({ item }: PropData) => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleAssignTypeChange}
-                      options={assignTypes}
-                      value={selectedAssignType}
+                      placeholder="Please select Customers"
+                      onChange={handleCustomerChange}
+                      options={customers}
+                      value={selectedCustomer}
                     />
                   </Space>
                 </Form.Item>
               </Col>
-              {selectedAssignType?.includes("customer") && ( // corrected comparison from '===' to 'includes'
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* customerId */}
-                  <Form.Item
-                    label="Customer"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="customerId"
-                    rules={[
-                      {
-                        required: requiredCustomer ? true : false,
-                        message: "Please select Customers!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Customers"
-                        onChange={handleCustomerChange}
-                        options={customers}
-                        value={selectedCustomer}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              )}
+            )}
 
-              {/* assignedTo */}
-              {selectedAssignType?.includes("others") && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
+            {/* assignedTo */}
+            {selectedAssignType?.includes("others") && (
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Assigned To"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="assignedTo"
                 >
-                  <Form.Item
-                    label="Assigned To"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
+                  <Input
+                    type="text"
+                    placeholder="Assigned To"
+                    className={`form-control`}
                     name="assignedTo"
-                  >
-                    <Input
-                      type="text"
-                      placeholder="Assigned To"
-                      className={`form-control`}
-                      name="assignedTo"
-                      style={{ padding: "6px" }}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
-            </Row>
-
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
+                    style={{ padding: "6px" }}
+                  />
                 </Form.Item>
               </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+            )}
+          </Row>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

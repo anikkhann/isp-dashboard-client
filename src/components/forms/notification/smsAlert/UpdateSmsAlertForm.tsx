@@ -9,7 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Row, Col, Switch } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 const UpdateSmsAlertForm = () => {
   const [form] = Form.useForm();
@@ -67,209 +67,214 @@ const UpdateSmsAlertForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = () => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async () => {
     setLoading(true);
+    setTimeout(async () => {
+      const formData = dynamicFields.map((item: any) => {
+        return {
+          id: item.id,
+          template: item.template,
+          isActive: item.isActive
+        };
+      });
 
-    const formData = dynamicFields.map((item: any) => {
-      return {
-        id: item.id,
-        template: item.template,
-        isActive: item.isActive
+      const body = {
+        smsAlertConfigs: formData
       };
-    });
 
-    const body = {
-      smsAlertConfigs: formData
-    };
+      try {
+        await axios
+          .put("/api/client-sms-alert-config/update", body)
+          .then(res => {
+            const { data } = res;
 
-    try {
-      axios
-        .put("/api/client-sms-alert-config/update", body)
-        .then(res => {
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/notification/sms/client-sms-alert");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/notification/sms/client-sms-alert");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{}}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
-          >
-            {dynamicFields &&
-              dynamicFields.map((item: any, index: number) => {
-                return (
-                  <>
-                    <Row
-                      justify="space-between"
-                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                      key={index}
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{}}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          {dynamicFields &&
+            dynamicFields.map((item: any, index: number) => {
+              return (
+                <>
+                  <Row
+                    justify="space-between"
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                    key={index}
+                  >
+                    <Col
+                      xs={24}
+                      sm={6}
+                      md={6}
+                      lg={6}
+                      xl={6}
+                      xxl={6}
+                      className="gutter-row"
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        color: "#0e8fdc"
+                      }}
                     >
-                      <Col
-                        xs={24}
-                        sm={6}
-                        md={6}
-                        lg={6}
-                        xl={6}
-                        xxl={6}
-                        className="gutter-row"
+                      {item.subject}
+                    </Col>
+
+                    <Col
+                      xs={24}
+                      sm={18}
+                      md={18}
+                      lg={18}
+                      xl={18}
+                      xxl={18}
+                      className="gutter-row"
+                      style={{ textAlign: "right" }}
+                    >
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         style={{
-                          textAlign: "right",
-                          fontWeight: "bold",
-                          fontSize: "1rem",
-                          color: "#0e8fdc"
+                          flexDirection: "column",
+                          textAlign: "left"
                         }}
                       >
-                        {item.subject}
-                      </Col>
+                        <Col>
+                          <span
+                            style={{ fontWeight: "bold", color: "#F15F22" }}
+                          >
+                            Status &nbsp; &nbsp;
+                          </span>
+                          <Switch
+                            checked={item.isActive}
+                            onChange={() => {
+                              const newDynamicFields = [...dynamicFields];
+                              newDynamicFields[index].isActive =
+                                !dynamicFields[index].isActive;
+                              setDynamicFields(newDynamicFields);
+                            }}
+                          />
+                        </Col>
 
-                      <Col
-                        xs={24}
-                        sm={18}
-                        md={18}
-                        lg={18}
-                        xl={18}
-                        xxl={18}
-                        className="gutter-row"
-                        style={{ textAlign: "right" }}
-                      >
-                        <Row
-                          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                          style={{
-                            flexDirection: "column",
-                            textAlign: "left"
-                          }}
+                        <Col
+                          xs={16}
+                          sm={16}
+                          md={16}
+                          lg={16}
+                          xl={16}
+                          xxl={16}
+                          className="gutter-row"
                         >
-                          <Col>
-                            <span
-                              style={{ fontWeight: "bold", color: "#F15F22" }}
-                            >
-                              Status &nbsp; &nbsp;
-                            </span>
-                            <Switch
-                              checked={item.isActive}
-                              onChange={() => {
+                          {/* message */}
+                          <Form.Item
+                            label="message"
+                            style={{
+                              marginBottom: 0,
+                              fontWeight: "bold"
+                            }}
+                          >
+                            <Input.TextArea
+                              placeholder="message"
+                              className={`form-control`}
+                              name="message"
+                              style={{ padding: "6px" }}
+                              rows={4}
+                              value={item.template}
+                              defaultValue={item.template}
+                              onChange={e => {
+                                const { value } = e.target;
                                 const newDynamicFields = [...dynamicFields];
-                                newDynamicFields[index].isActive =
-                                  !dynamicFields[index].isActive;
+                                newDynamicFields[index].template = value;
                                 setDynamicFields(newDynamicFields);
                               }}
                             />
-                          </Col>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </>
+              );
+            })}
 
-                          <Col
-                            xs={16}
-                            sm={16}
-                            md={16}
-                            lg={16}
-                            xl={16}
-                            xxl={16}
-                            className="gutter-row"
-                          >
-                            {/* message */}
-                            <Form.Item
-                              label="message"
-                              style={{
-                                marginBottom: 0,
-                                fontWeight: "bold"
-                              }}
-                            >
-                              <Input.TextArea
-                                placeholder="message"
-                                className={`form-control`}
-                                name="message"
-                                style={{ padding: "6px" }}
-                                rows={4}
-                                value={item.template}
-                                defaultValue={item.template}
-                                onChange={e => {
-                                  const { value } = e.target;
-                                  const newDynamicFields = [...dynamicFields];
-                                  newDynamicFields[index].template = value;
-                                  setDynamicFields(newDynamicFields);
-                                }}
-                              />
-                            </Form.Item>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </>
-                );
-              })}
-
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

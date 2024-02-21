@@ -11,7 +11,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 const statuses = [
   {
@@ -207,729 +207,732 @@ const CreateResellerVisitForm = () => {
     setRateCardFestoonDisplayed(value);
     form.setFieldsValue({ rateCardFestoonDisplayed: value });
   };
-
-  const onSubmit = (data: FromData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+  const onSubmit = async (data: FromData) => {
     setLoading(true);
-    const {
-      gpsLocation,
-      hotspotFrequency,
-      internetSpeed,
-      totalComplainsSinceLastVisit,
-      fiberCut,
-      laserIssues,
-      powerIssues,
-      lavelOneSupportShown,
-      competitorInfoLine
-    } = data;
+    setTimeout(async () => {
+      const {
+        gpsLocation,
+        hotspotFrequency,
+        internetSpeed,
+        totalComplainsSinceLastVisit,
+        fiberCut,
+        laserIssues,
+        powerIssues,
+        lavelOneSupportShown,
+        competitorInfoLine
+      } = data;
 
-    const formData = {
-      id: previous?.id,
-      retailerId: selectedRetailer,
-      totalSalesInLastWeek: totalSalesInLastWeek,
-      gpsLocation: gpsLocation,
-      isCompetitionPresent: isCompetitionPresent,
-      hotspotFrequency: hotspotFrequency,
-      internetSpeed: internetSpeed,
-      totalComplainsSinceLastVisit: totalComplainsSinceLastVisit,
-      frequentComplains: selectedfrequentComplains,
-      fiberCut: fiberCut,
-      laserIssues: laserIssues,
-      powerIssues: powerIssues,
-      powerBackup: powerBackup,
-      sunShedBannerPresent: sunShedBannerPresent,
-      rateCardFestoonDisplayed: rateCardFestoonDisplayed,
-      lavelOneSupportShown: lavelOneSupportShown,
-      competitorInfoLine: competitorInfoLine
-    };
+      const formData = {
+        id: previous?.id,
+        retailerId: selectedRetailer,
+        totalSalesInLastWeek: totalSalesInLastWeek,
+        gpsLocation: gpsLocation,
+        isCompetitionPresent: isCompetitionPresent,
+        hotspotFrequency: hotspotFrequency,
+        internetSpeed: internetSpeed,
+        totalComplainsSinceLastVisit: totalComplainsSinceLastVisit,
+        frequentComplains: selectedfrequentComplains,
+        fiberCut: fiberCut,
+        laserIssues: laserIssues,
+        powerIssues: powerIssues,
+        powerBackup: powerBackup,
+        sunShedBannerPresent: sunShedBannerPresent,
+        rateCardFestoonDisplayed: rateCardFestoonDisplayed,
+        lavelOneSupportShown: lavelOneSupportShown,
+        competitorInfoLine: competitorInfoLine
+      };
 
-    try {
-      axios
-        .post("/api-hotspot/reseller-visit/submit-report", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api-hotspot/reseller-visit/submit-report", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Created successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/hotspot/reseller-visit");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Created successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/hotspot/reseller-visit");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <>
-          <div className="mt-3">
-            <Form
-              // {...layout}
-              layout="vertical"
-              autoComplete="off"
-              onFinish={onSubmit}
-              form={form}
-              initialValues={{
-                totalComplainsSinceLastVisit: 0,
-                fiberCut: 0,
-                laserIssues: 0,
-                powerIssues: 0,
-                lavelOneSupportShown: 0
-              }}
-              style={{ maxWidth: "100%" }}
-              name="wrap"
-              colon={false}
-              scrollToFirstError
-            >
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+      {/* {!loading && ( */}
+      <>
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{
+              totalComplainsSinceLastVisit: 0,
+              fiberCut: 0,
+              laserIssues: 0,
+              powerIssues: 0,
+              lavelOneSupportShown: 0
+            }}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* retailerId */}
+                <Form.Item
+                  label="Retailer"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Select Retailer"
+                    }
+                  ]}
+                  name="retailerId"
                 >
-                  {/* retailerId */}
-                  <Form.Item
-                    label="Retailer"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please Select Retailer"
-                      }
-                    ]}
-                    name="retailerId"
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Retailer"
-                        onChange={handleRetailerChange}
-                        options={retailers}
-                        value={selectedRetailer}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* gpsLocation */}
-                  <Form.Item
-                    label="GPS Location"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="gpsLocation"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input GPS Location!"
-                      }
-                    ]}
-                  >
-                    <Input
-                      placeholder="GPS Location"
-                      className={`form-control`}
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Retailer"
+                      onChange={handleRetailerChange}
+                      options={retailers}
+                      value={selectedRetailer}
                     />
-                  </Form.Item>
-                </Col>
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* gpsLocation */}
+                <Form.Item
+                  label="GPS Location"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="gpsLocation"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input GPS Location!"
+                    }
+                  ]}
+                >
+                  <Input
+                    placeholder="GPS Location"
+                    className={`form-control`}
+                  />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* isCompetitionPresent */}
+                <Form.Item
+                  label="Is Competitor Available?"
+                  name="isCompetitionPresent"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Is Competitor Available?!"
+                    }
+                  ]}
                 >
-                  {/* isCompetitionPresent */}
-                  <Form.Item
-                    label="Is Competitor Available?"
-                    name="isCompetitionPresent"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Is Competitor Available?!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Is Competitor Available?"
-                        onChange={handleStatusChange}
-                        options={statuses}
-                        value={isCompetitionPresent}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Is Competitor Available?"
+                      onChange={handleStatusChange}
+                      options={statuses}
+                      value={isCompetitionPresent}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* hotspotFrequency */}
+                <Form.Item
+                  label="Hotspot Frequency"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="hotspotFrequency"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Hotspot Frequency!"
+                    }
+                  ]}
                 >
-                  {/* hotspotFrequency */}
-                  <Form.Item
-                    label="Hotspot Frequency"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="hotspotFrequency"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Hotspot Frequency!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Hotspot Frequency" />
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Input placeholder="Hotspot Frequency" />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* internetSpeed */}
+                <Form.Item
+                  label="Internet Speed"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="internetSpeed"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Internet Speed!"
+                    }
+                  ]}
                 >
-                  {/* internetSpeed */}
-                  <Form.Item
-                    label="Internet Speed"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="internetSpeed"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Internet Speed!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Internet Speed" />
-                  </Form.Item>
-                </Col>
+                  <Input placeholder="Internet Speed" />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* totalComplainsSinceLastVisit */}
+                <Form.Item
+                  label="Total Complains Since Last Visit"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="totalComplainsSinceLastVisit"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Total Complains Since Last Visit!"
+                    }
+                  ]}
                 >
-                  {/* totalComplainsSinceLastVisit */}
-                  <Form.Item
-                    label="Total Complains Since Last Visit"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="totalComplainsSinceLastVisit"
-                    rules={[
-                      {
-                        required: true,
-                        message:
-                          "Please input Total Complains Since Last Visit!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Total Complains Since Last Visit" />
-                  </Form.Item>
-                </Col>
+                  <Input placeholder="Total Complains Since Last Visit" />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* frequentComplains */}
+                <Form.Item
+                  label="Frequent Complains"
+                  name="frequentComplains"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please select!"
+                  //   }
+                  // ]}
                 >
-                  {/* frequentComplains */}
-                  <Form.Item
-                    label="Frequent Complains"
-                    name="frequentComplains"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: "Please select!"
-                    //   }
-                    // ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Frequent Complains"
-                        onChange={handleFrequentComplainsChange}
-                        options={frequentComplains}
-                        value={selectedfrequentComplains}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Frequent Complains"
+                      onChange={handleFrequentComplainsChange}
+                      options={frequentComplains}
+                      value={selectedfrequentComplains}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* fiberCut */}
+                <Form.Item
+                  label="Fiber Cut"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="fiberCut"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input fiberCut!"
+                    }
+                  ]}
                 >
-                  {/* fiberCut */}
-                  <Form.Item
-                    label="Fiber Cut"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="fiberCut"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input fiberCut!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="fiberCut" />
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Input placeholder="fiberCut" />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* laserIssues */}
+                <Form.Item
+                  label="Laser Issues"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="laserIssues"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Laser Issues!"
+                    }
+                  ]}
                 >
-                  {/* laserIssues */}
-                  <Form.Item
-                    label="Laser Issues"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="laserIssues"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Laser Issues!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Laser Issues" />
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Input placeholder="Laser Issues" />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* powerIssues */}
+                <Form.Item
+                  label="Power Issues"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="powerIssues"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Power Issues!"
+                    }
+                  ]}
                 >
-                  {/* powerIssues */}
-                  <Form.Item
-                    label="Power Issues"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="powerIssues"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Power Issues!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Power Issues" />
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Input placeholder="Power Issues" />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* lavelOneSupportShown */}
+                <Form.Item
+                  label="Level-1 Support Shown"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="lavelOneSupportShown"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input Level-1 Support Shown!"
+                    }
+                  ]}
                 >
-                  {/* lavelOneSupportShown */}
-                  <Form.Item
-                    label="Level-1 Support Shown"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="lavelOneSupportShown"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Level-1 Support Shown!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Level-1 Support Shown" />
-                  </Form.Item>
-                </Col>
+                  <Input placeholder="Level-1 Support Shown" />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* powerBackup */}
+                <Form.Item
+                  label="Power Backup"
+                  name="powerBackup"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select!"
+                    }
+                  ]}
                 >
-                  {/* powerBackup */}
-                  <Form.Item
-                    label="Power Backup"
-                    name="powerBackup"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Power Backup"
-                        onChange={handlePowerBackupChange}
-                        options={statuses}
-                        value={powerBackup}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Power Backup"
+                      onChange={handlePowerBackupChange}
+                      options={statuses}
+                      value={powerBackup}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* sunShedBannerPresent */}
+                <Form.Item
+                  label="Is Sun Shed Banner Present?"
+                  name="sunShedBannerPresent"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Is Sun Shed Banner Present?!"
+                    }
+                  ]}
                 >
-                  {/* sunShedBannerPresent */}
-                  <Form.Item
-                    label="Is Sun Shed Banner Present?"
-                    name="sunShedBannerPresent"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Is Sun Shed Banner Present?!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Is Sun Shed Banner Present?"
-                        onChange={handleSunShedBannerPresentChange}
-                        options={statuses}
-                        value={sunShedBannerPresent}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Is Sun Shed Banner Present?"
+                      onChange={handleSunShedBannerPresentChange}
+                      options={statuses}
+                      value={sunShedBannerPresent}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* rateCardFestoonDisplayed */}
+                <Form.Item
+                  label="Is Rate Card Festoon Displayed"
+                  name="rateCardFestoonDisplayed"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Is Rate Card Festoon Displayed!"
+                    }
+                  ]}
                 >
-                  {/* rateCardFestoonDisplayed */}
-                  <Form.Item
-                    label="Is Rate Card Festoon Displayed"
-                    name="rateCardFestoonDisplayed"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Is Rate Card Festoon Displayed!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Is Rate Card Festoon Displayed"
-                        onChange={handleRateCardFestoonDisplayedChange}
-                        options={statuses}
-                        value={rateCardFestoonDisplayed}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                ></Col>
-              </Row>
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Is Rate Card Festoon Displayed"
+                      onChange={handleRateCardFestoonDisplayedChange}
+                      options={statuses}
+                      value={rateCardFestoonDisplayed}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              ></Col>
+            </Row>
 
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col>
-                  <Form.List name="competitorInfoLine">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
-                            align="baseline"
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col>
+                <Form.List name="competitorInfoLine">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{ display: "flex", marginBottom: 8 }}
+                          align="baseline"
+                        >
+                          <Form.Item
+                            {...restField}
+                            label="Contact No"
+                            name={[name, "contactNo"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input"
+                              }
+                            ]}
                           >
-                            <Form.Item
-                              {...restField}
-                              label="Contact No"
-                              name={[name, "contactNo"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Contact No" />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              label="Hotspot Frequency"
-                              name={[name, "hotspotFrequency"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Hotspot Frequency" />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              label="Frequent Complains"
-                              name={[name, "frequentComplains"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Frequent Complains" />
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              label="Internet Speed"
-                              name={[name, "internetSpeed"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input"
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Internet Speed" />
-                            </Form.Item>
-
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-                        {isCompetitionPresent != "no" && (
-                          <Form.Item>
-                            <Button
-                              type="dashed"
-                              onClick={() => add()}
-                              block
-                              icon={<PlusOutlined />}
-                            >
-                              Add field (Competitor Info)
-                            </Button>
+                            <Input placeholder="Contact No" />
                           </Form.Item>
-                        )}
-                      </>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
+                          <Form.Item
+                            {...restField}
+                            label="Hotspot Frequency"
+                            name={[name, "hotspotFrequency"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input"
+                              }
+                            ]}
+                          >
+                            <Input placeholder="Hotspot Frequency" />
+                          </Form.Item>
+                          <Form.Item
+                            {...restField}
+                            label="Frequent Complains"
+                            name={[name, "frequentComplains"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input"
+                              }
+                            ]}
+                          >
+                            <Input placeholder="Frequent Complains" />
+                          </Form.Item>
+                          <Form.Item
+                            {...restField}
+                            label="Internet Speed"
+                            name={[name, "internetSpeed"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input"
+                              }
+                            ]}
+                          >
+                            <Input placeholder="Internet Speed" />
+                          </Form.Item>
 
-              {/* submit */}
-              <Row justify="center">
-                <Col>
-                  <Form.Item style={{ margin: "0 8px" }}>
-                    <div style={{ marginTop: 24 }}>
-                      <Button
-                        // type="primary"
-                        htmlType="submit"
-                        shape="round"
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#FFFFFF",
-                          fontWeight: "bold"
-                        }}
-                        disabled={loading}
-                      >
-                        {loading ? "Submitting..." : "Submit"}
-                      </Button>
-                    </div>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </>
-      )}
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+                      {isCompetitionPresent != "no" && (
+                        <Form.Item>
+                          <Button
+                            type="dashed"
+                            onClick={() => add()}
+                            block
+                            icon={<PlusOutlined />}
+                          >
+                            Add field (Competitor Info)
+                          </Button>
+                        </Form.Item>
+                      )}
+                    </>
+                  )}
+                </Form.List>
+              </Col>
+            </Row>
+
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item style={{ margin: "0 8px" }}>
+                  <div style={{ marginTop: 24 }}>
+                    <Button
+                      // type="primary"
+                      htmlType="submit"
+                      shape="round"
+                      style={{
+                        backgroundColor: "#F15F22",
+                        color: "#FFFFFF",
+                        fontWeight: "bold"
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Submit"}
+                    </Button>
+                  </div>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </>
+      {/* )} */}
     </>
   );
 };

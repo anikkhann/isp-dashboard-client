@@ -23,7 +23,7 @@ import {
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface RoleFormData {
   name: string;
@@ -117,295 +117,300 @@ const CreateRoleForm = () => {
     getPermissions();
   }, []);
 
-  const onSubmit = (data: RoleFormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: RoleFormData) => {
     setLoading(true);
 
-    const rolePermissions: { permissionId: any; actionTags: any[] }[] = [];
+    setTimeout(async () => {
+      const rolePermissions: { permissionId: any; actionTags: any[] }[] = [];
 
-    checkedList.forEach(permission => {
-      const [permissionId, actionTag] = permission.split("__");
-      const existingPermission = rolePermissions.find(
-        perm => perm.permissionId === permissionId
-      );
+      checkedList.forEach(permission => {
+        const [permissionId, actionTag] = permission.split("__");
+        const existingPermission = rolePermissions.find(
+          perm => perm.permissionId === permissionId
+        );
 
-      if (existingPermission) {
-        existingPermission.actionTags.push(actionTag);
-      } else {
-        rolePermissions.push({
-          permissionId,
-          actionTags: [actionTag]
-        });
-      }
-    });
+        if (existingPermission) {
+          existingPermission.actionTags.push(actionTag);
+        } else {
+          rolePermissions.push({
+            permissionId,
+            actionTags: [actionTag]
+          });
+        }
+      });
 
-    const { name } = data;
-    try {
-      axios
-        .post("/api/role/create", {
-          name: name,
-          is_active: isActive,
-          rolePermissions: rolePermissions
-        })
-        .then(res => {
-          // console.log(res);
-          const { data } = res;
+      const { name } = data;
+      try {
+        await axios
+          .post("/api/role/create", {
+            name: name,
+            is_active: isActive,
+            rolePermissions: rolePermissions
+          })
+          .then(res => {
+            // console.log(res);
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Role created successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/user/role");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Role created successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/user/role");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3 flex justify-center items-center">
-          <Form
-            // {...layout}
-            form={form}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            style={{ maxWidth: 800 }}
-            name="wrap"
-            colon={false}
-          >
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row px-5"
-              >
-                <Form.Item
-                  label="Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Name is required"
-                    },
-                    {
-                      validator: async (rule, value) => {
-                        // convert checkNameList to lowercase
-                        const convertCheckNameList = checkNameList.map(item =>
-                          item.toLowerCase()
+      {/* {!loading && ( */}
+      <div className="mt-3 flex justify-center items-center">
+        <Form
+          // {...layout}
+          form={form}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          style={{ maxWidth: 800 }}
+          name="wrap"
+          colon={false}
+        >
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row px-5"
+            >
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Name is required"
+                  },
+                  {
+                    validator: async (rule, value) => {
+                      // convert checkNameList to lowercase
+                      const convertCheckNameList = checkNameList.map(item =>
+                        item.toLowerCase()
+                      );
+                      // convert value to lowercase
+                      const convertValue = value.toLowerCase();
+                      if (convertCheckNameList.includes(convertValue)) {
+                        throw new Error(
+                          "This name is already taken. Please try another name."
                         );
-                        // convert value to lowercase
-                        const convertValue = value.toLowerCase();
-                        if (convertCheckNameList.includes(convertValue)) {
-                          throw new Error(
-                            "This name is already taken. Please try another name."
-                          );
-                        }
                       }
                     }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Status
-              </Checkbox>
-            </Form.Item>
-
-            <Space
-              direction="vertical"
-              style={{
-                display: "flex",
-                justifyContent: "left",
-                textTransform: "capitalize",
-                marginBottom: 10,
-                textAlign: "left",
-                paddingLeft: "15px",
-                paddingRight: "15px"
-              }}
-            >
-              <Checkbox
-                indeterminate={
-                  checkedList.length > 0 &&
-                  checkedList.length < totalPermissions
-                }
-                checked={checkedList.length === totalPermissions}
-                onChange={handleCheckAllChange}
+                  }
+                ]}
               >
-                Check All
-              </Checkbox>
-            </Space>
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
-            <Form.Item label="" name="permissions" valuePropName="permissions">
-              <Checkbox.Group onChange={onChange} value={checkedList}>
-                <Row
-                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                  justify="space-between"
-                >
-                  {permissions &&
-                    permissions.length > 0 &&
-                    permissions.map((permission: any) => {
-                      return (
-                        <Col
-                          xs={24}
-                          sm={24}
-                          md={24}
-                          lg={24}
-                          xl={24}
-                          xxl={24}
-                          className="gutter-row"
-                          key={permission.id}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleActive} checked={isActive}>
+              Status
+            </Checkbox>
+          </Form.Item>
+
+          <Space
+            direction="vertical"
+            style={{
+              display: "flex",
+              justifyContent: "left",
+              textTransform: "capitalize",
+              marginBottom: 10,
+              textAlign: "left",
+              paddingLeft: "15px",
+              paddingRight: "15px"
+            }}
+          >
+            <Checkbox
+              indeterminate={
+                checkedList.length > 0 && checkedList.length < totalPermissions
+              }
+              checked={checkedList.length === totalPermissions}
+              onChange={handleCheckAllChange}
+            >
+              Check All
+            </Checkbox>
+          </Space>
+
+          <Form.Item label="" name="permissions" valuePropName="permissions">
+            <Checkbox.Group onChange={onChange} value={checkedList}>
+              <Row
+                gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                justify="space-between"
+              >
+                {permissions &&
+                  permissions.length > 0 &&
+                  permissions.map((permission: any) => {
+                    return (
+                      <Col
+                        xs={24}
+                        sm={24}
+                        md={24}
+                        lg={24}
+                        xl={24}
+                        xxl={24}
+                        className="gutter-row"
+                        key={permission.id}
+                      >
+                        <Card
+                          style={{ width: "100%" }}
+                          className="hover:shadow-md transition duration-300 ease-in-out"
                         >
-                          <Card
-                            style={{ width: "100%" }}
-                            className="hover:shadow-md transition duration-300 ease-in-out"
-                          >
-                            <Divider orientation="left">
-                              <h5
-                                style={{
-                                  fontWeight: "bold",
-                                  marginBottom: 10,
-                                  marginLeft: 10,
-                                  fontSize: 14,
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  color: "#0e8fdc"
-                                }}
-                              >
-                                {permission.displayName}
-                              </h5>
-                            </Divider>
+                          <Divider orientation="left">
+                            <h5
+                              style={{
+                                fontWeight: "bold",
+                                marginBottom: 10,
+                                marginLeft: 10,
+                                fontSize: 14,
+                                textTransform: "uppercase",
+                                textAlign: "left",
+                                color: "#0e8fdc"
+                              }}
+                            >
+                              {permission.displayName}
+                            </h5>
+                          </Divider>
 
-                            <Row gutter={16}>
-                              {permission.children &&
-                                permission.children.length > 0 &&
-                                permission.children.map((item: any) => {
-                                  return (
-                                    <>
-                                      <Col
-                                        span={24}
-                                        sm={12}
-                                        md={8}
-                                        lg={8}
-                                        className="gutter-row "
-                                        key={item.value}
+                          <Row gutter={16}>
+                            {permission.children &&
+                              permission.children.length > 0 &&
+                              permission.children.map((item: any) => {
+                                return (
+                                  <>
+                                    <Col
+                                      span={24}
+                                      sm={12}
+                                      md={8}
+                                      lg={8}
+                                      className="gutter-row "
+                                      key={item.value}
+                                    >
+                                      <Card
+                                        hoverable
+                                        style={{
+                                          backgroundColor: "#F15F22"
+                                        }}
+                                        className="hover:shadow-xl transition duration-300 ease-in-out"
                                       >
-                                        <Card
-                                          hoverable
+                                        <Checkbox
+                                          value={item.value}
                                           style={{
-                                            backgroundColor: "#F15F22"
+                                            display: "flex",
+                                            justifyContent: "left",
+                                            fontSize: "15px",
+                                            color: "#FFFFFF",
+                                            fontWeight: "bold"
                                           }}
-                                          className="hover:shadow-xl transition duration-300 ease-in-out"
                                         >
-                                          <Checkbox
-                                            value={item.value}
+                                          <span
                                             style={{
-                                              display: "flex",
-                                              justifyContent: "left",
-                                              fontSize: "15px",
-                                              color: "#FFFFFF",
-                                              fontWeight: "bold"
+                                              overflow: "hidden",
+                                              textOverflow: "ellipsis",
+                                              whiteSpace: "nowrap"
                                             }}
                                           >
-                                            <span
-                                              style={{
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                whiteSpace: "nowrap"
-                                              }}
-                                            >
-                                              {item.label}
-                                            </span>
-                                          </Checkbox>
-                                        </Card>
-                                      </Col>
-                                    </>
-                                  );
-                                })}
-                            </Row>
-                          </Card>
-                        </Col>
-                      );
-                    })}
-                </Row>
-              </Checkbox.Group>
-            </Form.Item>
+                                            {item.label}
+                                          </span>
+                                        </Checkbox>
+                                      </Card>
+                                    </Col>
+                                  </>
+                                );
+                              })}
+                          </Row>
+                        </Card>
+                      </Col>
+                    );
+                  })}
+              </Row>
+            </Checkbox.Group>
+          </Form.Item>
 
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

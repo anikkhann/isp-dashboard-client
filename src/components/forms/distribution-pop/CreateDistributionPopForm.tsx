@@ -21,7 +21,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useAppSelector } from "@/store/hooks";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   name: string;
   zoneId: string;
@@ -110,269 +110,275 @@ const CreateDistributionPopForm = () => {
     getZoneList();
   }, []);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const { name, latitude, longitude } = data;
+    setTimeout(async () => {
+      const { name, latitude, longitude } = data;
 
-    const formData = {
-      zoneId: zoneId,
-      name: name,
-      isActive: isActive,
-      latitude: latitude,
-      longitude: longitude
-    };
+      const formData = {
+        zoneId: zoneId,
+        name: name,
+        isActive: isActive,
+        latitude: latitude,
+        longitude: longitude
+      };
 
-    try {
-      axios
-        .post("/api/distribution-pop/create", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/distribution-pop/create", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/customer/distribution-pop");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/customer/distribution-pop");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              zoneId: "",
-              name: "",
-              latitude: "",
-              longitude: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            zoneId: "",
+            name: "",
+            latitude: "",
+            longitude: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+              {/* zoneId */}
+              <Form.Item
+                label="Zone"
+                name="zoneId"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Zone!"
+                  }
+                ]}
               >
-                {/* zoneId */}
-                <Form.Item
-                  label="Zone"
-                  name="zoneId"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Zone!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Zone"
-                      onChange={handleZoneChange}
-                      options={zoneList}
-                      value={zoneId}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* name */}
-                <Form.Item
-                  label="Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Name!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
-                    style={{ padding: "6px" }}
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Zone"
+                    onChange={handleZoneChange}
+                    options={zoneList}
+                    value={zoneId}
                   />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* latitude */}
-                <Form.Item
-                  label="Latitude"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="latitude"
-                >
-                  <Input
-                    type="text"
-                    placeholder="Latitude"
-                    className={`form-control`}
-                    name="latitude"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* longitude */}
-                <Form.Item
-                  label="Longitude"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="longitude"
-                >
-                  <Input
-                    type="text"
-                    placeholder="Longitude"
-                    className={`form-control`}
-                    name="longitude"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-            </Row>
-
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
-
-            {/* submit */}
-            <Row justify="center">
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? "Submitting..." : "Submit"}
-                </Button>
+                </Space>
               </Form.Item>
-            </Row>
-          </Form>
-        </div>
-      )}
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
+                  name="name"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* latitude */}
+              <Form.Item
+                label="Latitude"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="latitude"
+              >
+                <Input
+                  type="text"
+                  placeholder="Latitude"
+                  className={`form-control`}
+                  name="latitude"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* longitude */}
+              <Form.Item
+                label="Longitude"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="longitude"
+              >
+                <Input
+                  type="text"
+                  placeholder="Longitude"
+                  className={`form-control`}
+                  name="longitude"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
+
+          {/* status */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleActive} checked={isActive}>
+              Active
+            </Checkbox>
+          </Form.Item>
+
+          {/* submit */}
+          <Row justify="center">
+            <Form.Item>
+              {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+              <Button
+                // type="primary"
+                htmlType="submit"
+                shape="round"
+                style={{
+                  backgroundColor: "#F15F22",
+                  color: "#FFFFFF",
+                  fontWeight: "bold"
+                }}
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Submit"}
+              </Button>
+            </Form.Item>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

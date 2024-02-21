@@ -19,7 +19,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
   comment: string;
@@ -158,309 +158,315 @@ const CreateRetailerUpdateForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const { comment } = data;
+    setTimeout(async () => {
+      const { comment } = data;
 
-    const formData = {
-      customerIds: selectedCustomer,
-      action: selectType,
-      retailerId: selectedRetailer,
-      isRemoveChildTag: isRemoveChildTag,
-      comment: comment
-    };
+      const formData = {
+        customerIds: selectedCustomer,
+        action: selectType,
+        retailerId: selectedRetailer,
+        isRemoveChildTag: isRemoveChildTag,
+        comment: comment
+      };
 
-    try {
-      axios
-        .post("/api/customer/retailer-assign", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/customer/retailer-assign", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace(`/admin/retailer-tag-or-remove`);
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace(`/admin/retailer-tag-or-remove`);
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              type: "",
-              comment: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            type: "",
+            comment: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              {/* customerIds */}
+              <Form.Item
+                label="Customer"
+                name="customerIds"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Customer!"
+                  }
+                ]}
               >
-                {/* customerIds */}
-                <Form.Item
-                  label="Customer"
-                  name="customerIds"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Customer!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      mode="multiple"
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Customer"
-                      onChange={handleCustomerChange}
-                      options={customers}
-                      value={selectedCustomer}
-                      showSearch
-                      filterOption={(input, option) => {
-                        if (typeof option?.label === "string") {
-                          return (
-                            option.label
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          );
-                        }
-                        return false;
-                      }}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* type */}
-                <Form.Item
-                  label="Type"
-                  name="type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Type!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Type"
-                      onChange={handleChange}
-                      options={types}
-                      value={selectType}
-                      showSearch
-                      filterOption={(input, option) => {
-                        if (typeof option?.label === "string") {
-                          return (
-                            option.label
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          );
-                        }
-                        return false;
-                      }}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-
-              {selectType == "tag" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* retailerId */}
-                  <Form.Item
-                    label="Retailer"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select Retailer!"
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    mode="multiple"
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Customer"
+                    onChange={handleCustomerChange}
+                    options={customers}
+                    value={selectedCustomer}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
                       }
-                    ]}
-                    name="retailerId"
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select retailer"
-                        onChange={handleZoneChange}
-                        options={zones}
-                        value={selectedRetailer}
-                        showSearch
-                        // filterOption={(input, option) => {
-                        //   if (typeof option?.label === 'string') {
-                        //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-                        //   }
-                        //   return false;
-                        // }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              )}
+                      return false;
+                    }}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
 
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* type */}
+              <Form.Item
+                label="Type"
+                name="type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Type"
+                    onChange={handleChange}
+                    options={types}
+                    value={selectType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            {selectType == "tag" && (
               <Col
                 xs={24}
-                sm={24}
-                md={24}
-                lg={24}
-                xl={24}
-                xxl={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
                 className="gutter-row"
               >
-                {/* comment */}
+                {/* retailerId */}
                 <Form.Item
-                  label="Remarks"
+                  label="Retailer"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="comment"
-                  /*  rules={[
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select Retailer!"
+                    }
+                  ]}
+                  name="retailerId"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select retailer"
+                      onChange={handleZoneChange}
+                      options={zones}
+                      value={selectedRetailer}
+                      showSearch
+                      // filterOption={(input, option) => {
+                      //   if (typeof option?.label === 'string') {
+                      //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                      //   }
+                      //   return false;
+                      // }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            )}
+
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
+            >
+              {/* comment */}
+              <Form.Item
+                label="Remarks"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="comment"
+                /*  rules={[
                  {
                    required: true,
                    message: "Please input your comment!"
                  }
                ]} */
-                >
-                  <Input.TextArea
-                    placeholder="Remarks"
-                    className={`form - control`}
-                    name="comment"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Space
-              size={[8, 8]}
-              wrap
-              style={{ marginTop: "2rem", marginBottom: "2rem" }}
-            >
-              {/* isRemoveChildTag */}
-              <Form.Item
-                label=""
-                style={{
-                  marginBottom: 0,
-                  visibility: "hidden"
-                }}
               >
-                <Checkbox
-                  onChange={handleRemoveChildTag}
-                  checked={isRemoveChildTag}
-                >
-                  Remove Child Tag
-                </Checkbox>
+                <Input.TextArea
+                  placeholder="Remarks"
+                  className={`form - control`}
+                  name="comment"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
-            </Space>
+            </Col>
+          </Row>
 
-            {/* submit */}
-            <Row justify="center">
-              <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-      )}
+          <Space
+            size={[8, 8]}
+            wrap
+            style={{ marginTop: "2rem", marginBottom: "2rem" }}
+          >
+            {/* isRemoveChildTag */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0,
+                visibility: "hidden"
+              }}
+            >
+              <Checkbox
+                onChange={handleRemoveChildTag}
+                checked={isRemoveChildTag}
+              >
+                Remove Child Tag
+              </Checkbox>
+            </Form.Item>
+          </Space>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

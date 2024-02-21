@@ -10,7 +10,7 @@ import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CustomerData } from "@/interfaces/CustomerData";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PropData {
   item: CustomerData;
@@ -141,62 +141,65 @@ const ApproveCustomerReqForm = ({ item }: PropData) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
-
-  const onSubmit = () => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+  const onSubmit = async () => {
     setLoading(true);
+    setTimeout(async () => {
+      const formData = {
+        id: item.id,
+        distributionZoneId: selectedDistributionZone,
+        distributionPopId: selectedDistributionPop
+      };
 
-    const formData = {
-      id: item.id,
-      distributionZoneId: selectedDistributionZone,
-      distributionPopId: selectedDistributionPop
-    };
+      try {
+        await axios
+          .put("/api/customer-request/approve", formData)
+          .then(res => {
+            const { data } = res;
 
-    try {
-      axios
-        .put("/api/customer-request/approve", formData)
-        .then(res => {
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace(`/admin/customer/customer-onboarding-req`);
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace(`/admin/customer/customer-onboarding-req`);
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3">

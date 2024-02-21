@@ -19,7 +19,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { SurveyData } from "@/interfaces/SurveyData";
 interface FormData {
@@ -106,261 +106,266 @@ const EditSurveyForm = ({ item }: PropData) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
+    setTimeout(async () => {
+      const { title, type, options } = data;
 
-    const { title, type, options } = data;
+      // Extract values from the array of objects
+      const values = options.map((obj: { option: any }) => obj.option);
+      // Create a string by joining the values with commas and formatting
+      const resultString = `{${values
+        .map((value: any) => `'${value}'`)
+        .join(",")}}`;
 
-    // Extract values from the array of objects
-    const values = options.map((obj: { option: any }) => obj.option);
-    // Create a string by joining the values with commas and formatting
-    const resultString = `{${values
-      .map((value: any) => `'${value}'`)
-      .join(",")}}`;
+      const formData = {
+        id: item.id,
+        type: type,
+        title: title,
+        options: resultString,
+        isActive: isActive
+      };
 
-    const formData = {
-      id: item.id,
-      type: type,
-      title: title,
-      options: resultString,
-      isActive: isActive
-    };
+      try {
+        await axios
+          .put("/api/troubleshoot-survey/update", formData)
+          .then(res => {
+            // console.log(res);
+            const { data } = res;
 
-    try {
-      axios
-        .put("/api/troubleshoot-survey/update", formData)
-        .then(res => {
-          // console.log(res);
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "subscription Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/client/survey");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "subscription Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/client/survey");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              type: "",
-              title: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            // labelCol={{ flex: "110px" }}
-            // labelAlign="left"
-            // labelWrap
-            // wrapperCol={{ flex: 1 }}
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            type: "",
+            title: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
-              >
-                {/* type*/}
+              {/* type*/}
 
-                <Form.Item
-                  label="Type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="type"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select type!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handleChange}
-                      options={types}
-                      value={type}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                xxl={12}
-                className="gutter-row"
+              <Form.Item
+                label="Type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="type"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select type!"
+                  }
+                ]}
               >
-                {/* title */}
-                <Form.Item
-                  label="Title"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="title"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your title!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="title"
-                    className={`form-control`}
-                    name="title"
-                    style={{ padding: "6px" }}
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handleChange}
+                    options={types}
+                    value={type}
                   />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            {!loading && (
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col>
-                  <Form.List name="options" initialValue={optionsValue}>
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <Space
-                            key={key}
-                            style={{
-                              display: "flex",
-
-                              marginBottom: 8,
-                              width: "90%"
-                            }}
-                            align="baseline"
-                          >
-                            <Form.Item
-                              {...restField}
-                              label="Options"
-                              name={[name, "option"]}
-                              rules={[
-                                { required: true, message: "Missing option" }
-                              ]}
-                              style={{
-                                width: "100%",
-                                marginBottom: 0,
-                                fontWeight: "bold"
-                              }}
-                            >
-                              <Input placeholder="Option" />
-                            </Form.Item>
-
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          </Space>
-                        ))}
-
-                        <Form.Item>
-                          <Button
-                            type="dashed"
-                            onClick={() => add()}
-                            block
-                            icon={<PlusOutlined />}
-                          >
-                            Add field
-                          </Button>
-                        </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-            )}
-
-            {/* status */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
             >
-              <Checkbox onChange={handleActive} checked={isActive}>
-                Active
-              </Checkbox>
-            </Form.Item>
+              {/* title */}
+              <Form.Item
+                label="Title"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="title"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your title!"
+                  }
+                ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="title"
+                  className={`form-control`}
+                  name="title"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
-            {/* submit */}
-            <Row justify="center">
+          {!loading && (
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
               <Col>
-                <Form.Item>
-                  {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                  <Button
-                    // type="primary"
-                    htmlType="submit"
-                    shape="round"
-                    style={{
-                      backgroundColor: "#F15F22",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? "Submitting..." : "Submit"}
-                  </Button>
-                </Form.Item>
+                <Form.List name="options" initialValue={optionsValue}>
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{
+                            display: "flex",
+
+                            marginBottom: 8,
+                            width: "90%"
+                          }}
+                          align="baseline"
+                        >
+                          <Form.Item
+                            {...restField}
+                            label="Options"
+                            name={[name, "option"]}
+                            rules={[
+                              { required: true, message: "Missing option" }
+                            ]}
+                            style={{
+                              width: "100%",
+                              marginBottom: 0,
+                              fontWeight: "bold"
+                            }}
+                          >
+                            <Input placeholder="Option" />
+                          </Form.Item>
+
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Add field
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
               </Col>
             </Row>
-          </Form>
-        </div>
-      )}
+          )}
+
+          {/* status */}
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleActive} checked={isActive}>
+              Active
+            </Checkbox>
+          </Form.Item>
+
+          {/* submit */}
+          <Row justify="center">
+            <Col>
+              <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+                <Button
+                  // type="primary"
+                  htmlType="submit"
+                  shape="round"
+                  style={{
+                    backgroundColor: "#F15F22",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

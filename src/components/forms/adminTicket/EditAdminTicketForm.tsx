@@ -15,7 +15,7 @@ import { TicketData } from "@/interfaces/TicketData";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface PropData {
   item: TicketData;
@@ -75,68 +75,73 @@ const EditAdminTicketForm = ({ item }: PropData) => {
   const uploadButton = (
     <Button icon={<UploadOutlined />}>Click to Upload</Button>
   );
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setLoading(true);
-    const { note } = data;
+    setTimeout(async () => {
+      const { note } = data;
 
-    const bodyData = {
-      ticketId: item.id,
-      note: note
-    };
+      const bodyData = {
+        ticketId: item.id,
+        note: note
+      };
 
-    const formData = new FormData();
-    if (file) {
-      formData.append("attachment", file);
-    }
-    formData.append("body", JSON.stringify(bodyData));
+      const formData = new FormData();
+      if (file) {
+        formData.append("attachment", file);
+      }
+      formData.append("body", JSON.stringify(bodyData));
 
-    try {
-      axios
-        .post("/api/ticket-details/reply", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/ticket-details/reply", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Updated successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/complaint/admin-ticket");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Updated successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/complaint/admin-ticket");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div className="mt-3">

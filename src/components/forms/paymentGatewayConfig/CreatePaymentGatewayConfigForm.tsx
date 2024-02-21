@@ -21,7 +21,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   credential: string;
 }
@@ -161,128 +161,96 @@ const CreatePaymentGatewayConfigForm = () => {
     getPaymentGateway();
   }, []);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
-    const { credential } = data;
+    setTimeout(async () => {
+      const { credential } = data;
 
-    const formData = {
-      isForSystem: isActiveForSystem,
-      clientId: selectedClient,
-      paymentGatewayId: selectedPaymentGateway,
-      credential: credential,
-      isActive: isActive
-    };
+      const formData = {
+        isForSystem: isActiveForSystem,
+        clientId: selectedClient,
+        paymentGatewayId: selectedPaymentGateway,
+        credential: credential,
+        isActive: isActive
+      };
 
-    try {
-      axios
-        .post("/api/payment-gateway-config/create", formData)
-        .then(res => {
-          const { data } = res;
+      try {
+        await axios
+          .post("/api/payment-gateway-config/create", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/payment/payment-gateway-config");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/payment/payment-gateway-config");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              zoneId: "",
-              name: "",
-              latitude: "",
-              longitude: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            zoneId: "",
+            name: "",
+            latitude: "",
+            longitude: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
-            >
-              {isActiveForSystem === false && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  xxl={12}
-                  className="gutter-row"
-                >
-                  {/* clientId */}
-                  <Form.Item
-                    label="Client"
-                    name="clientId"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleClientChange}
-                        options={clients}
-                        value={selectedClient}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              )}
-
+            {isActiveForSystem === false && (
               <Col
                 xs={24}
                 sm={12}
@@ -292,10 +260,10 @@ const CreatePaymentGatewayConfigForm = () => {
                 xxl={12}
                 className="gutter-row"
               >
-                {/* paymentGatewayId */}
+                {/* clientId */}
                 <Form.Item
-                  label="Payment Gateway"
-                  name="paymentGatewayId"
+                  label="Client"
+                  name="clientId"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -312,113 +280,151 @@ const CreatePaymentGatewayConfigForm = () => {
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
                       placeholder="Please select"
-                      onChange={handlePaymentGatewayChange}
-                      options={paymentGateways}
-                      value={selectedPaymentGateway}
+                      onChange={handleClientChange}
+                      options={clients}
+                      value={selectedClient}
                     />
                   </Space>
                 </Form.Item>
               </Col>
+            )}
 
-              <Col
-                xs={24}
-                sm={24}
-                md={24}
-                lg={24}
-                xl={24}
-                xxl={24}
-                className="gutter-row"
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              {/* paymentGatewayId */}
+              <Form.Item
+                label="Payment Gateway"
+                name="paymentGatewayId"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select!"
+                  }
+                ]}
               >
-                {/* credential */}
-                <Form.Item
-                  label="Credential"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="credential"
-                >
-                  <Input.TextArea
-                    rows={4}
-                    placeholder="credential"
-                    className={`form-control`}
-                    name="credential"
-                    style={{ padding: "6px" }}
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select"
+                    onChange={handlePaymentGatewayChange}
+                    options={paymentGateways}
+                    value={selectedPaymentGateway}
                   />
-                </Form.Item>
-              </Col>
+                </Space>
+              </Form.Item>
+            </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-            </Row>
-
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              {/* isForSystem */}
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
+            >
+              {/* credential */}
               <Form.Item
-                label=""
+                label="Credential"
                 style={{
-                  marginBottom: 0
+                  marginBottom: 0,
+                  fontWeight: "bold"
                 }}
+                name="credential"
               >
-                <Checkbox
-                  onChange={handleActiveForSystem}
-                  checked={isActiveForSystem}
-                >
-                  System
-                </Checkbox>
+                <Input.TextArea
+                  rows={4}
+                  placeholder="credential"
+                  className={`form-control`}
+                  name="credential"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
+            </Col>
 
-              {/* status */}
-              <Form.Item
-                label=""
-                style={{
-                  marginBottom: 0
-                }}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {/* isForSystem */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox
+                onChange={handleActiveForSystem}
+                checked={isActiveForSystem}
               >
-                <Checkbox onChange={handleActive} checked={isActive}>
-                  Active
-                </Checkbox>
-              </Form.Item>
-            </div>
-            {/* submit */}
-            <Row justify="center">
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? "Submitting..." : "Submit"}
-                </Button>
-              </Form.Item>
-            </Row>
-          </Form>
-        </div>
-      )}
+                System
+              </Checkbox>
+            </Form.Item>
+
+            {/* status */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox onChange={handleActive} checked={isActive}>
+                Active
+              </Checkbox>
+            </Form.Item>
+          </div>
+          {/* submit */}
+          <Row justify="center">
+            <Form.Item>
+              {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+              <Button
+                // type="primary"
+                htmlType="submit"
+                shape="round"
+                style={{
+                  backgroundColor: "#F15F22",
+                  color: "#FFFFFF",
+                  fontWeight: "bold"
+                }}
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Submit"}
+              </Button>
+            </Form.Item>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };

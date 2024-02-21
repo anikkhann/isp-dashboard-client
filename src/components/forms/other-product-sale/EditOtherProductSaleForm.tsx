@@ -10,7 +10,7 @@ import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FromData {
   otherProductId: number;
@@ -108,296 +108,302 @@ const EditOtherProductSaleForm = ({ item }: PropData) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
-  const onSubmit = (data: FromData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FromData) => {
     setLoading(true);
-    const { quantity, customerName, customerNumber, address, tsoComment } =
-      data;
+    setTimeout(async () => {
+      const { quantity, customerName, customerNumber, address, tsoComment } =
+        data;
 
-    const formData = {
-      id: item.id,
-      otherProductId: selectedOtherProduct,
-      quantity: quantity,
-      customerName: customerName,
-      customerNumber: customerNumber,
-      address: address,
-      tsoComment: tsoComment
-    };
-    try {
-      axios
-        .put("/api-hotspot/other-product-sales/update", formData)
-        .then(res => {
-          const { data } = res;
+      const formData = {
+        id: item.id,
+        otherProductId: selectedOtherProduct,
+        quantity: quantity,
+        customerName: customerName,
+        customerNumber: customerNumber,
+        address: address,
+        tsoComment: tsoComment
+      };
+      try {
+        await axios
+          .put("/api-hotspot/other-product-sales/update", formData)
+          .then(res => {
+            const { data } = res;
 
-          if (data.status != 200) {
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
+
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Created successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/hotspot/other-product-sale");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Created successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/hotspot/other-product-sale");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
-      {!loading && (
-        <>
-          <div className="mt-3">
-            <Form
-              // {...layout}
-              layout="vertical"
-              autoComplete="off"
-              onFinish={onSubmit}
-              form={form}
-              initialValues={{}}
-              style={{ maxWidth: "100%" }}
-              name="wrap"
-              colon={false}
-              scrollToFirstError
-            >
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+      {/* {!loading && ( */}
+      <>
+        <div className="mt-3">
+          <Form
+            // {...layout}
+            layout="vertical"
+            autoComplete="off"
+            onFinish={onSubmit}
+            form={form}
+            initialValues={{}}
+            style={{ maxWidth: "100%" }}
+            name="wrap"
+            colon={false}
+            scrollToFirstError
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* otherProductId */}
+                <Form.Item
+                  label="Product"
+                  name="otherProductId"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select!"
+                    }
+                  ]}
                 >
-                  {/* otherProductId */}
-                  <Form.Item
-                    label="Product"
-                    name="otherProductId"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select!"
-                      }
-                    ]}
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select"
-                        onChange={handleOtherProductChange}
-                        options={otherProducts}
-                        value={selectedOtherProduct}
-                        showSearch
-                        filterOption={(input, option) => {
-                          if (typeof option?.label === "string") {
-                            return (
-                              option.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            );
-                          }
-                          return false;
-                        }}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handleOtherProductChange}
+                      options={otherProducts}
+                      value={selectedOtherProduct}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* quantity */}
+                <Form.Item
+                  label="Quantity"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="quantity"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input quantity!"
+                    }
+                  ]}
                 >
-                  {/* quantity */}
-                  <Form.Item
-                    label="Quantity"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="quantity"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input quantity!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Quantity" className={`form-control`} />
-                  </Form.Item>
-                </Col>
+                  <Input placeholder="Quantity" className={`form-control`} />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* customerName */}
+                <Form.Item
+                  label="Customer Name"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="customerName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input customerName!"
+                    }
+                  ]}
                 >
-                  {/* customerName */}
-                  <Form.Item
-                    label="Customer Name"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="customerName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input customerName!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Customer Name" />
-                  </Form.Item>
-                </Col>
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+                  <Input placeholder="Customer Name" />
+                </Form.Item>
+              </Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* customerNumber */}
+                <Form.Item
+                  label="Customer Number"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="customerNumber"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input customerNumber!"
+                    }
+                  ]}
                 >
-                  {/* customerNumber */}
-                  <Form.Item
-                    label="Customer Number"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="customerNumber"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input customerNumber!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Customer Number" />
-                  </Form.Item>
-                </Col>
+                  <Input placeholder="Customer Number" />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* address */}
+                <Form.Item
+                  label="Address"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="address"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input address!"
+                    }
+                  ]}
                 >
-                  {/* address */}
-                  <Form.Item
-                    label="Address"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="address"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input address!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="Address" />
-                  </Form.Item>
-                </Col>
+                  <Input placeholder="Address" />
+                </Form.Item>
+              </Col>
 
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* tsoComment */}
+                <Form.Item
+                  label="TSO Comment"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="tsoComment"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input tsoComment!"
+                    }
+                  ]}
                 >
-                  {/* tsoComment */}
-                  <Form.Item
-                    label="TSO Comment"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="tsoComment"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input tsoComment!"
-                      }
-                    ]}
-                  >
-                    <Input placeholder="TSO Comment" />
-                  </Form.Item>
-                </Col>
-              </Row>
+                  <Input placeholder="TSO Comment" />
+                </Form.Item>
+              </Col>
+            </Row>
 
-              {/* submit */}
-              <Row justify="center">
-                <Col>
-                  <Form.Item style={{ margin: "0 8px" }}>
-                    <div style={{ marginTop: 24 }}>
-                      <Button
-                        // type="primary"
-                        htmlType="submit"
-                        shape="round"
-                        style={{
-                          backgroundColor: "#F15F22",
-                          color: "#FFFFFF",
-                          fontWeight: "bold"
-                        }}
-                        disabled={loading}
-                      >
-                        {loading ? "Submitting..." : "Submit"}
-                      </Button>
-                    </div>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </>
-      )}
+            {/* submit */}
+            <Row justify="center">
+              <Col>
+                <Form.Item style={{ margin: "0 8px" }}>
+                  <div style={{ marginTop: 24 }}>
+                    <Button
+                      // type="primary"
+                      htmlType="submit"
+                      shape="round"
+                      style={{
+                        backgroundColor: "#F15F22",
+                        color: "#FFFFFF",
+                        fontWeight: "bold"
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Submit"}
+                    </Button>
+                  </div>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      </>
+      {/* )} */}
     </>
   );
 };

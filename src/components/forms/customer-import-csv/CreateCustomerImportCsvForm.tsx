@@ -14,7 +14,7 @@ import Cookies from "js-cookie";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 import { useAppSelector } from "@/store/hooks";
 
 const CreateCustomerImportCsvForm = () => {
@@ -259,68 +259,71 @@ const CreateCustomerImportCsvForm = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSubZone]);
-
-  const onSubmit = () => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+  const onSubmit = async () => {
     setLoading(true);
+    setTimeout(async () => {
+      const bodyData = {
+        zoneManagerId: selectedZone,
+        subZoneManagerId: selectedSubZone,
+        retailerId: selectedRetailer
+      };
 
-    const bodyData = {
-      zoneManagerId: selectedZone,
-      subZoneManagerId: selectedSubZone,
-      retailerId: selectedRetailer
-    };
+      const formData = new FormData();
+      if (file) {
+        formData.append("csvFile", file);
+      }
+      formData.append("body", JSON.stringify(bodyData));
 
-    const formData = new FormData();
-    if (file) {
-      formData.append("csvFile", file);
-    }
-    formData.append("body", JSON.stringify(bodyData));
+      try {
+        await axios
+          .post("/api/customer-import-csv/upload", formData)
+          .then(res => {
+            const { data } = res;
 
-    try {
-      axios
-        .post("/api/customer-import-csv/upload", formData)
-        .then(res => {
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Updated successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/customer/import-csv");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Updated successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/customer/import-csv");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       <div>

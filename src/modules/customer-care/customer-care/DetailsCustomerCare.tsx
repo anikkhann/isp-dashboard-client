@@ -58,7 +58,7 @@ const DetailsCustomerCare = ({ id }: any) => {
   //       showCancelButton: true,
   //       confirmButtonColor: "#570DF8",
   //       cancelButtonColor: "#EB0808",
-  //       confirmButtonText: "Yes, Disconnect customer!"
+  //       confirmButtonText: "Yes, Proceed"
   //     });
 
   //     if (result.isConfirmed) {

@@ -20,7 +20,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import AppImageLoader from "@/components/loader/AppImageLoader";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   name: string;
   displayName: string;
@@ -184,513 +184,552 @@ const CreatePackageForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: FormData) => {
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
+    setTimeout(async () => {
+      const {
+        name,
+        displayName,
+        uploadLimit,
+        uploadLimitUnit,
+        downloadLimit,
+        downloadLimitUnit,
+        ipPoolName,
+        nextExpiredPackageId,
+        validity,
+        vat,
+        totalPrice,
+        unitPrice
+      } = data;
 
-    const {
-      name,
-      displayName,
-      uploadLimit,
-      uploadLimitUnit,
-      downloadLimit,
-      downloadLimitUnit,
-      ipPoolName,
-      nextExpiredPackageId,
-      validity,
-      vat,
-      totalPrice,
-      unitPrice
-    } = data;
+      const formData = {
+        // zoneIds: selectedZone,
+        name: name,
+        displayName: displayName,
+        uploadLimit: uploadLimit,
+        uploadLimitUnit: uploadLimitUnit,
+        downloadLimit: downloadLimit,
+        downloadLimitUnit: downloadLimitUnit,
+        ipPoolName: ipPoolName,
+        nextExpiredPackageId: nextExpiredPackageId,
+        validityUnit: selectedUnit,
+        validity: validity,
+        vat: vat,
+        totalPrice: totalPrice,
+        unitPrice: unitPrice,
+        autoRenew: autoRenew,
+        isAssignedToZone: isAssignedToZone,
+        isAssignedToSubZone: isAssignedToSubZone,
+        isActive: isActive
+      };
 
-    const formData = {
-      // zoneIds: selectedZone,
-      name: name,
-      displayName: displayName,
-      uploadLimit: uploadLimit,
-      uploadLimitUnit: uploadLimitUnit,
-      downloadLimit: downloadLimit,
-      downloadLimitUnit: downloadLimitUnit,
-      ipPoolName: ipPoolName,
-      nextExpiredPackageId: nextExpiredPackageId,
-      validityUnit: selectedUnit,
-      validity: validity,
-      vat: vat,
-      totalPrice: totalPrice,
-      unitPrice: unitPrice,
-      autoRenew: autoRenew,
-      isAssignedToZone: isAssignedToZone,
-      isAssignedToSubZone: isAssignedToSubZone,
-      isActive: isActive
-    };
+      try {
+        await axios
+          .post("/api/customer-package/create", formData)
+          .then(res => {
+            // console.log(res);
+            const { data } = res;
 
-    try {
-      axios
-        .post("/api/customer-package/create", formData)
-        .then(res => {
-          // console.log(res);
-          const { data } = res;
+            if (data.status != 200) {
+              MySwal.fire({
+                title: "Error",
+                text: data.message || "Something went wrong",
+                icon: "error"
+              });
+            }
 
-          if (data.status != 200) {
+            if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Added successfully",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/package/package");
+              });
+            }
+          })
+          .catch(err => {
+            // console.log(err);
             MySwal.fire({
               title: "Error",
-              text: data.message || "Something went wrong",
+              text: err.response.data.message || "Something went wrong",
               icon: "error"
             });
-          }
-
-          if (data.status == 200) {
-            MySwal.fire({
-              title: "Success",
-              text: data.message || "Added successfully",
-              icon: "success"
-            }).then(() => {
-              router.replace("/admin/package/package");
-            });
-          }
-        })
-        .catch(err => {
-          // console.log(err);
-          MySwal.fire({
-            title: "Error",
-            text: err.response.data.message || "Something went wrong",
-            icon: "error"
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      setShowError(true);
-      setErrorMessages(err.message);
-    } finally {
-      setLoading(false);
-    }
+      } catch (err: any) {
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 2000);
   };
 
   return (
     <>
-      {loading && <AppImageLoader />}
+      {/* {loading && <AppImageLoader />} */}
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
-      {!loading && (
-        <div className="mt-3">
-          <Form
-            // {...layout}
-            layout="vertical"
-            autoComplete="off"
-            onFinish={onSubmit}
-            form={form}
-            initialValues={{
-              name: "",
-              displayName: "",
-              uploadLimit: "0",
-              uploadLimitUnit: "Mbps",
-              downloadLimit: "0",
-              downloadLimitUnit: "Mbps",
-              ipPoolName: "",
-              nextExpiredPackageId: "",
-              validityUnit: "",
-              validity: "0",
-              vat: "5",
-              totalPrice: "0.00",
-              unitPrice: ""
-            }}
-            style={{ maxWidth: "100%" }}
-            name="wrap"
-            // labelCol={{ flex: "110px" }}
-            // labelAlign="left"
-            // labelWrap
-            // wrapperCol={{ flex: 1 }}
-            colon={false}
-            scrollToFirstError
+      {/* {!loading && ( */}
+      <div className="mt-3">
+        <Form
+          // {...layout}
+          layout="vertical"
+          autoComplete="off"
+          onFinish={onSubmit}
+          form={form}
+          initialValues={{
+            name: "",
+            displayName: "",
+            uploadLimit: "0",
+            uploadLimitUnit: "Mbps",
+            downloadLimit: "0",
+            downloadLimitUnit: "Mbps",
+            ipPoolName: "",
+            nextExpiredPackageId: "",
+            validityUnit: "",
+            validity: "0",
+            vat: "5",
+            totalPrice: "0.00",
+            unitPrice: ""
+          }}
+          style={{ maxWidth: "100%" }}
+          name="wrap"
+          // labelCol={{ flex: "110px" }}
+          // labelAlign="left"
+          // labelWrap
+          // wrapperCol={{ flex: 1 }}
+          colon={false}
+          scrollToFirstError
+        >
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
           >
-            <Row
-              gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-              justify="space-between"
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
             >
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+              {/* name */}
+              <Form.Item
+                label="Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Name!"
+                  }
+                ]}
               >
-                {/* name */}
-                <Form.Item
-                  label="Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  className={`form-control`}
                   name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Name!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Name"
-                    className={`form-control`}
-                    name="name"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* displayName */}
+              <Form.Item
+                label="Display Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="displayName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Display Name!"
+                  }
+                ]}
               >
-                {/* displayName */}
-                <Form.Item
-                  label="Display Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="Display Name"
+                  className={`form-control`}
                   name="displayName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Display Name!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Display Name"
-                    className={`form-control`}
-                    name="displayName"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* uploadLimit */}
+              <Form.Item
+                label="Upload Limit"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="uploadLimit"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Upload Limit!"
+                  }
+                ]}
               >
-                {/* uploadLimit */}
-                <Form.Item
-                  label="Upload Limit"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="Upload Limit"
+                  className={`form-control`}
                   name="uploadLimit"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Upload Limit!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Upload Limit"
-                    className={`form-control`}
-                    name="uploadLimit"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* uploadLimitUnit */}
+              <Form.Item
+                label="Upload Limit Unit"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="uploadLimitUnit"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Upload Limit Unit!"
+                  }
+                ]}
               >
-                {/* uploadLimitUnit */}
-                <Form.Item
-                  label="Upload Limit Unit"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="uploadLimitUnit"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Upload Limit Unit!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      // placeholder="Please select Upload Limit Unit"
-                      onChange={handleUploadUnitChange}
-                      options={uploadUnits}
-                      value={selectedUploadUnit}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    // placeholder="Please select Upload Limit Unit"
+                    onChange={handleUploadUnitChange}
+                    options={uploadUnits}
+                    value={selectedUploadUnit}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* downloadLimit */}
+              <Form.Item
+                label="Download Limit"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="downloadLimit"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Download Limit!"
+                  }
+                ]}
               >
-                {/* downloadLimit */}
-                <Form.Item
-                  label="Download Limit"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="Download Limit"
+                  className={`form-control`}
                   name="downloadLimit"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Download Limit!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Download Limit"
-                    className={`form-control`}
-                    name="downloadLimit"
-                    style={{ padding: "6px" }}
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* downloadLimitUnit */}
+              <Form.Item
+                label="Download Limit Unit"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="downloadLimitUnit"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Download Limit Unit!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Download Limit Unit"
+                    onChange={handleDownloadUnitChange}
+                    options={uploadUnits}
+                    value={selectedDownloadUnit}
                   />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* validity */}
+              <Form.Item
+                label="Validity"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="validity"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Validity!"
+                  }
+                ]}
               >
-                {/* downloadLimitUnit */}
-                <Form.Item
-                  label="Download Limit Unit"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="downloadLimitUnit"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Download Limit Unit!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Download Limit Unit"
-                      onChange={handleDownloadUnitChange}
-                      options={uploadUnits}
-                      value={selectedDownloadUnit}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* validity */}
-                <Form.Item
-                  label="Validity"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="Validity"
+                  className={`form-control`}
                   name="validity"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Validity!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Validity"
-                    className={`form-control`}
-                    name="validity"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* validityUnit */}
+              <Form.Item
+                label="Validity Unit"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="validityUnit"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Validity Unit!"
+                  }
+                ]}
               >
-                {/* validityUnit */}
-                <Form.Item
-                  label="Validity Unit"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="validityUnit"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Validity Unit!"
-                    }
-                  ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Validity Unit"
-                      onChange={handleUnitChange}
-                      options={validityUnits}
-                      value={selectedUnit}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Validity Unit"
+                    onChange={handleUnitChange}
+                    options={validityUnits}
+                    value={selectedUnit}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
 
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* vat */}
+              <Form.Item
+                label="Vat (%)"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="vat"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Vat (%)!"
+                  }
+                ]}
               >
-                {/* vat */}
-                <Form.Item
-                  label="Vat (%)"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="Vat (%)"
+                  className={`form-control`}
                   name="vat"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Vat (%)!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Vat (%)"
-                    className={`form-control`}
-                    name="vat"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* totalPrice */}
+              <Form.Item
+                label="Total Price"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="totalPrice"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Total Price!"
+                  }
+                ]}
               >
-                {/* totalPrice */}
-                <Form.Item
-                  label="Total Price"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
+                <Input
+                  type="text"
+                  placeholder="Total Price"
+                  className={`form-control`}
                   name="totalPrice"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Total Price!"
-                    }
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Total Price"
-                    className={`form-control`}
-                    name="totalPrice"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* nextExpiredPackageId */}
+              <Form.Item
+                label="Next Expired Package"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="nextExpiredPackageId"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Next Expired Package!"
+                //   }
+                // ]}
               >
-                {/* nextExpiredPackageId */}
-                <Form.Item
-                  label="Next Expired Package"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="nextExpiredPackageId"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your Next Expired Package!"
-                  //   }
-                  // ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Zone"
-                      onChange={handleNextExpiredPackageId}
-                      options={nextExpired}
-                      value={nextExpiredId}
-                    />
-                  </Space>
-                  {/* <Input
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Zone"
+                    onChange={handleNextExpiredPackageId}
+                    options={nextExpired}
+                    value={nextExpiredId}
+                  />
+                </Space>
+                {/* <Input
                     type="text"
                     placeholder="Next Expired Package"
                     className={`form-control`}
                     name="nextExpiredPackageId"
                     style={{ padding: "6px" }}
                   /> */}
-                </Form.Item>
-              </Col>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* ipPoolName */}
+              <Form.Item
+                label="IP Pool Name"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="ipPoolName"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your IP Pool Name!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="IP Pool Name"
+                  className={`form-control`}
+                  name="ipPoolName"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            {isAssignedToZone && (
               <Col
                 xs={24}
                 sm={12}
@@ -700,41 +739,7 @@ const CreatePackageForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
-                {/* ipPoolName */}
-                <Form.Item
-                  label="IP Pool Name"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="ipPoolName"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please input your IP Pool Name!"
-                  //   }
-                  // ]}
-                >
-                  <Input
-                    type="text"
-                    placeholder="IP Pool Name"
-                    className={`form-control`}
-                    name="ipPoolName"
-                    style={{ padding: "6px" }}
-                  />
-                </Form.Item>
-              </Col>
-              {isAssignedToZone && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/*               
+                {/*               
                 <Form.Item
                   label="Zone"
                   style={{
@@ -761,11 +766,11 @@ const CreatePackageForm = () => {
                     />
                   </Space>
                 </Form.Item> */}
-                </Col>
-              )}
+              </Col>
+            )}
 
-              {/* unitPrice */}
-              {/* <Col
+            {/* unitPrice */}
+            {/* <Col
               xs={24}
               sm={12}
               md={8}
@@ -795,118 +800,118 @@ const CreatePackageForm = () => {
                 />
               </Form.Item>
             </Col> */}
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              ></Col>
-            </Row>
-            <Space
-              size={[8, 8]}
-              wrap
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
+          <Space
+            size={[8, 8]}
+            wrap
+            style={{
+              marginTop: "2rem",
+              marginBottom: "2rem"
+            }}
+          >
+            {/* autoRenew */}
+            <Form.Item
+              label=""
               style={{
-                marginTop: "2rem",
-                marginBottom: "2rem"
+                marginBottom: 0
               }}
             >
-              {/* autoRenew */}
-              <Form.Item
-                label=""
-                style={{
-                  marginBottom: 0
-                }}
-              >
-                <Checkbox onChange={handleAutoRenew} checked={autoRenew}>
-                  Auto Renew
-                </Checkbox>
-              </Form.Item>
+              <Checkbox onChange={handleAutoRenew} checked={autoRenew}>
+                Auto Renew
+              </Checkbox>
+            </Form.Item>
 
-              {/* isAssignedToZone */}
-              <Form.Item
-                label=""
-                style={{
-                  marginBottom: 0
-                }}
+            {/* isAssignedToZone */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox
+                onChange={handleIsAssignedToZone}
+                checked={isAssignedToZone}
               >
-                <Checkbox
-                  onChange={handleIsAssignedToZone}
-                  checked={isAssignedToZone}
-                >
-                  Assigned To Zone
-                </Checkbox>
-              </Form.Item>
+                Assigned To Zone
+              </Checkbox>
+            </Form.Item>
 
-              {/* isAssignedToSubZone */}
-              <Form.Item
-                label=""
-                style={{
-                  marginBottom: 0
-                }}
+            {/* isAssignedToSubZone */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox
+                onChange={handleIsAssignedToSubZone}
+                checked={isAssignedToSubZone}
               >
-                <Checkbox
-                  onChange={handleIsAssignedToSubZone}
-                  checked={isAssignedToSubZone}
-                >
-                  Assigned To SubZone
-                </Checkbox>
-              </Form.Item>
+                Assigned To SubZone
+              </Checkbox>
+            </Form.Item>
 
-              {/* status */}
-              <Form.Item
-                label=""
+            {/* status */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox onChange={handleActive} checked={isActive}>
+                Active
+              </Checkbox>
+            </Form.Item>
+          </Space>
+          {/* submit */}
+          <Row justify="center">
+            <Form.Item>
+              {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
+              <Button
+                // type="primary"
+                htmlType="submit"
+                shape="round"
                 style={{
-                  marginBottom: 0
+                  backgroundColor: "#F15F22",
+                  color: "#FFFFFF",
+                  fontWeight: "bold"
                 }}
+                disabled={loading}
               >
-                <Checkbox onChange={handleActive} checked={isActive}>
-                  Active
-                </Checkbox>
-              </Form.Item>
-            </Space>
-            {/* submit */}
-            <Row justify="center">
-              <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
-                <Button
-                  // type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{
-                    backgroundColor: "#F15F22",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? "Submitting..." : "Submit"}
-                </Button>
-              </Form.Item>
-            </Row>
-          </Form>
-        </div>
-      )}
+                {loading ? "Submitting..." : "Submit"}
+              </Button>
+            </Form.Item>
+          </Row>
+        </Form>
+      </div>
+      {/* )} */}
     </>
   );
 };
