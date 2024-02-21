@@ -5,7 +5,7 @@ import { RoleData } from "@/interfaces/RoleData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Card } from "antd";
+import { Breadcrumb } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -89,8 +89,8 @@ const EditRole = ({ id }: any) => {
             Edit Role
           </h1>
         </div>
-        <Card
-          // title="Edit Role"
+        {/* <Card
+         
           hoverable
           style={{
             width: "90%",
@@ -108,7 +108,22 @@ const EditRole = ({ id }: any) => {
           {isError && <div>{error.message}</div>}
 
           {!isLoading && item && <EditRoleForm item={item} />}
-        </Card>
+        </Card> */}
+        <div
+          style={{
+            width: "90%",
+            overflow: "hidden",
+            margin: "0 auto",
+            marginTop: "1rem",
+            backgroundColor: "FEECE2"
+          }}
+        >
+          {isLoading && isFetching && <AppLoader />}
+
+          {isError && <div>{error.message}</div>}
+
+          {!isLoading && item && <EditRoleForm item={item} />}
+        </div>
       </AppRowContainer>
     </>
   );

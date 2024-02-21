@@ -382,7 +382,7 @@ const PermissionList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflowX: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >
@@ -491,6 +491,7 @@ const PermissionList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{ overflowX: "auto" }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

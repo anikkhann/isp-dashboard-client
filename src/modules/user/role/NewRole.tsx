@@ -1,6 +1,6 @@
 import CreateRoleForm from "@/components/forms/role/CreateRoleForm";
 import AppRowContainer from "@/lib/AppRowContainer";
-import { Breadcrumb, Card } from "antd";
+import { Breadcrumb } from "antd";
 import Link from "next/link";
 
 import React from "react";
@@ -50,8 +50,7 @@ const NewRole = () => {
             New Role
           </h1>
         </div>
-        <Card
-          // title="New Role"
+        {/* <Card
           hoverable
           style={{
             width: "90%",
@@ -65,7 +64,19 @@ const NewRole = () => {
           }}
         >
           <CreateRoleForm />
-        </Card>
+        </Card> */}
+        <div
+          // className="md:bg-violet"
+          style={{
+            width: "90%",
+            overflow: "hidden",
+            margin: "0 auto",
+            marginTop: "1rem",
+            backgroundColor: "FEECE2"
+          }}
+        >
+          <CreateRoleForm />
+        </div>
       </AppRowContainer>
     </>
   );

@@ -80,8 +80,8 @@ const ZoneRevenueDisbursementList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);

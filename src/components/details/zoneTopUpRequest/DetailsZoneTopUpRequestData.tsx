@@ -36,7 +36,7 @@ const DetailsZoneTopUpData = ({ item }: PropData) => {
           }}
         >
           <div>
-            <Row
+            {/* <Row
               style={{
                 marginTop: "2px"
               }}
@@ -129,6 +129,24 @@ const DetailsZoneTopUpData = ({ item }: PropData) => {
                   {item.client?.altContactNumber}
                 </span>
               </Col>
+            </Row> */}
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Zone Manager :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.partner?.username}</span>
+              </Col>
             </Row>
             <Row
               style={{
@@ -142,13 +160,11 @@ const DetailsZoneTopUpData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">
-                  WSD Commission (BDT) :
-                </span>
+                <span className="font-bold text-base">SD Commission (%) :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {item.client?.wsdCommission}
+                  {item.partner?.salesDistributionCommission}
                 </span>
               </Col>
             </Row>
@@ -273,7 +289,7 @@ const DetailsZoneTopUpData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Created By :</span>
+                <span className="font-bold text-base">Requested By :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">
@@ -294,7 +310,7 @@ const DetailsZoneTopUpData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Created At :</span>
+                <span className="font-bold text-base">Requested At :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">

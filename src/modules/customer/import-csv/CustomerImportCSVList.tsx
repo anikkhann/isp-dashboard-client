@@ -530,7 +530,39 @@ const CustomerImportCSVList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
-
+    {
+      title: "Zone Manager",
+      dataIndex: "zoneManager",
+      sorter: false,
+      render: (zoneManager: any) => {
+        if (!zoneManager) return "-";
+        return <>{zoneManager.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Sub Zone Manager",
+      dataIndex: "subZoneManager",
+      sorter: false,
+      render: (subZoneManager: any) => {
+        if (!subZoneManager) return "-";
+        return <>{subZoneManager.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Retailer",
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     {
       title: "Total Upload",
       dataIndex: "totalUpload",
@@ -538,6 +570,7 @@ const CustomerImportCSVList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+
     {
       title: "Total Success",
       dataIndex: "totalSuccess",
@@ -638,8 +671,8 @@ const CustomerImportCSVList: React.FC = () => {
                       type="primary"
                       icon={<CheckOutlined />}
                       style={{
-                        backgroundColor: "#FF5630",
-                        borderColor: "#FF5630",
+                        backgroundColor: "9195F6",
+                        borderColor: "9195F6",
                         color: "#ffffff"
                       }}
                       onClick={() => handleProcess(record.id)}
@@ -657,8 +690,8 @@ const CustomerImportCSVList: React.FC = () => {
                       type="primary"
                       icon={<CloseOutlined />}
                       style={{
-                        backgroundColor: "#FF5630",
-                        borderColor: "#FF5630",
+                        backgroundColor: "#FF407D",
+                        borderColor: "#FF407D",
                         color: "#ffffff"
                       }}
                       onClick={() => handleCancel(record.id)}

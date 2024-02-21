@@ -327,12 +327,12 @@ const ZoneTopUpRequestList: React.FC = () => {
   function getPaymentStatus() {
     const status = [
       {
-        label: "Online",
-        value: "Online"
+        label: "Paid",
+        value: "online"
       },
       {
-        label: "Offline",
-        value: "Offline"
+        label: "Due",
+        value: "offline"
       }
     ];
     setPaymentStatus(status);
@@ -341,12 +341,12 @@ const ZoneTopUpRequestList: React.FC = () => {
   function getPaymentTypeStatus() {
     const status = [
       {
-        label: "Paid",
-        value: "Paid"
+        label: "Online",
+        value: "online"
       },
       {
-        label: "Unpaid",
-        value: "Unpaid"
+        label: "Offline",
+        value: "offline"
       }
     ];
     setPaymentTypeStatus(status);
@@ -381,13 +381,33 @@ const ZoneTopUpRequestList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-
     {
-      title: "Credit Amount",
-      dataIndex: "creditAmount",
-      sorter: true,
-      render: (creditAmount: any) => {
-        return <>{creditAmount}</>;
+      title: "Request No",
+      dataIndex: "requestNo",
+      sorter: false,
+      render: (requestNo: any) => {
+        return <>{requestNo ? requestNo : "N/A"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Zone Manager",
+      dataIndex: "partner",
+      sorter: false,
+      render: (partner: any) => {
+        return <>{partner ? partner.username : "-"}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Requested By",
+      dataIndex: "requestedBy",
+      sorter: false,
+      render: (requestedBy: any) => {
+        if (!requestedBy) return "-";
+        return <>{requestedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -402,6 +422,18 @@ const ZoneTopUpRequestList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+
+    {
+      title: "Credit Amount",
+      dataIndex: "creditAmount",
+      sorter: true,
+      render: (creditAmount: any) => {
+        return <>{creditAmount}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
     {
       title: "Payment Type",
       dataIndex: "paymentType",
@@ -439,29 +471,9 @@ const ZoneTopUpRequestList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
-    {
-      title: "Request No",
-      dataIndex: "requestNo",
-      sorter: false,
-      render: (requestNo: any) => {
-        return <>{requestNo ? requestNo : "N/A"}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
 
     // requestedBy
-    {
-      title: "Requested By",
-      dataIndex: "requestedBy",
-      sorter: false,
-      render: (requestedBy: any) => {
-        if (!requestedBy) return "-";
-        return <>{requestedBy.username}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+
     {
       title: "Requested At",
       dataIndex: "createdOn",
@@ -721,7 +733,7 @@ const ZoneTopUpRequestList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Partner</b>
+                              <b>Zone Manager</b>
                             </span>
                             <Select
                               allowClear

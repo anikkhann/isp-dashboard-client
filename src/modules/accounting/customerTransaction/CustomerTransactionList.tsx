@@ -480,11 +480,11 @@ const CustomerTransactionList: React.FC = () => {
     // insertedBy
     {
       title: "Trx By",
-      dataIndex: "insertedBy",
+      dataIndex: "trxBy",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (trxBy: any) => {
+        if (!trxBy) return "-";
+        return <>{trxBy}</>;
       },
       width: "20%",
       align: "center" as AlignType

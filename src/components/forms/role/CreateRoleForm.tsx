@@ -198,7 +198,7 @@ const CreateRoleForm = () => {
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       {/* {!loading && ( */}
-      <div className="mt-3 flex justify-center items-center">
+      <div className="mt-3 flex justify-center items-center ">
         <Form
           // {...layout}
           form={form}
@@ -209,15 +209,15 @@ const CreateRoleForm = () => {
           name="wrap"
           colon={false}
         >
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+          <Row justify="center">
             <Col
-              xs={24}
-              sm={12}
-              md={12}
+              xs={10}
+              sm={16}
+              md={16}
               lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row px-5"
+              xl={10}
+              xxl={8}
+              className="gutter-row"
             >
               <Form.Item
                 label="Name"
@@ -233,11 +233,9 @@ const CreateRoleForm = () => {
                   },
                   {
                     validator: async (rule, value) => {
-                      // convert checkNameList to lowercase
                       const convertCheckNameList = checkNameList.map(item =>
                         item.toLowerCase()
                       );
-                      // convert value to lowercase
                       const convertValue = value.toLowerCase();
                       if (convertCheckNameList.includes(convertValue)) {
                         throw new Error(
@@ -253,45 +251,56 @@ const CreateRoleForm = () => {
                   placeholder="Name"
                   className={`form-control`}
                   name="name"
-                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
           </Row>
-
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleActive} checked={isActive}>
-              Status
-            </Checkbox>
-          </Form.Item>
-
-          <Space
-            direction="vertical"
-            style={{
-              display: "flex",
-              justifyContent: "left",
-              textTransform: "capitalize",
-              marginBottom: 10,
-              textAlign: "left",
-              paddingLeft: "15px",
-              paddingRight: "15px"
-            }}
-          >
-            <Checkbox
-              indeterminate={
-                checkedList.length > 0 && checkedList.length < totalPermissions
-              }
-              checked={checkedList.length === totalPermissions}
-              onChange={handleCheckAllChange}
+          <Row justify="center">
+            <Col
+              xs={10}
+              sm={16}
+              md={16}
+              lg={12}
+              xl={10}
+              xxl={8}
+              className="gutter-row"
             >
-              Check All
-            </Checkbox>
-          </Space>
+              <Form.Item label="" style={{ marginBottom: 0, padding: "6px" }}>
+                <Checkbox onChange={handleActive} checked={isActive}>
+                  Status
+                </Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row justify="center">
+            <Col
+              xs={10}
+              sm={16}
+              md={16}
+              lg={12}
+              xl={10}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Space
+                direction="vertical"
+                className="flex justify-start text-capitalize mb-10 text-left"
+              >
+                <Checkbox
+                  indeterminate={
+                    checkedList.length > 0 &&
+                    checkedList.length < totalPermissions
+                  }
+                  checked={checkedList.length === totalPermissions}
+                  onChange={handleCheckAllChange}
+                >
+                  Check All
+                </Checkbox>
+              </Space>
+            </Col>
+          </Row>
+
+          {/* </Col> */}
 
           <Form.Item label="" name="permissions" valuePropName="permissions">
             <Checkbox.Group onChange={onChange} value={checkedList}>
@@ -307,33 +316,34 @@ const CreateRoleForm = () => {
                         xs={24}
                         sm={24}
                         md={24}
-                        lg={24}
-                        xl={24}
-                        xxl={24}
                         className="gutter-row"
                         key={permission.id}
                       >
                         <Card
-                          style={{ width: "100%" }}
-                          className="hover:shadow-md transition duration-300 ease-in-out"
+                          style={{ width: "100%", overflow: "auto" }}
+                          className="bg-white  hover:shadow-md transition duration-300 ease-in-out"
                         >
                           <Divider orientation="left">
                             <h5
                               style={{
                                 fontWeight: "bold",
-                                marginBottom: 10,
-                                marginLeft: 10,
-                                fontSize: 14,
+                                marginBottom: "10px",
+                                marginLeft: "50px",
+                                // margin: "0 auto",
+                                // fontSize: 14,
                                 textTransform: "uppercase",
-                                textAlign: "left",
-                                color: "#0e8fdc"
+                                textAlign: "center",
+                                color: "#0e8fdc",
+                                // fontSize: "0.875rem",
+                                lineHeight: "1.25rem"
                               }}
+                              // className="text-sm"
                             >
                               {permission.displayName}
                             </h5>
                           </Divider>
 
-                          <Row gutter={16}>
+                          <Row gutter={[8, 16]}>
                             {permission.children &&
                               permission.children.length > 0 &&
                               permission.children.map((item: any) => {
@@ -342,10 +352,11 @@ const CreateRoleForm = () => {
                                     <Col
                                       span={24}
                                       sm={12}
-                                      md={8}
-                                      lg={8}
-                                      className="gutter-row "
+                                      md={12}
+                                      lg={12}
+                                      className="gutter-row"
                                       key={item.value}
+                                      style={{ padding: "0 5rem" }}
                                     >
                                       <Card
                                         hoverable
