@@ -31,7 +31,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -52,6 +52,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
   const MySwal = withReactContent(Swal);
+  const router = useRouter();
   const { Panel } = Collapse;
   const { RangePicker } = DatePicker;
 
@@ -105,7 +106,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
         );
         if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
-            // router.reload();
+            router.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
@@ -147,7 +148,7 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
         );
         if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
-            // router.reload();
+            router.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
@@ -360,10 +361,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
       },
       body: {
         partnerType: "reseller",
-        zoneManager: { id: selectedZoneId },
-        client: {
-          id: authUser?.partnerId
-        }
+        zoneManager: { id: selectedZoneId }
+        // client: {
+        //   id: authUser?.partnerId
+        // }
         // isActive: true
       }
     };
@@ -437,6 +438,10 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
     }
   }, [selectedZone]);
 
+  useEffect(() => {
+    getSubZoneManagers(null);
+  }, []);
+
   const handleZoneChange = (value: any) => {
     setSelectedZone(value as any);
   };
@@ -509,6 +514,8 @@ const SubZoneRevenueDisbursementList: React.FC = () => {
               <Tag color="red">{status}</Tag>
             ) : status === "Approved" ? (
               <Tag color="green">{status}</Tag>
+            ) : status === "Cancelled" ? (
+              <Tag color="orange">{status}</Tag>
             ) : (
               <Tag color="blue">{status}</Tag>
             )}

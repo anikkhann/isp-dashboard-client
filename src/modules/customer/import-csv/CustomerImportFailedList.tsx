@@ -134,6 +134,13 @@ const CustomerImportFailedList = ({ id }: any) => {
     // },
     // createdOn
     {
+      title: "Error Message",
+      dataIndex: "errorMessage",
+
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
       title: "Created At",
       dataIndex: "createdOn",
 
@@ -233,6 +240,7 @@ const CustomerImportFailedList = ({ id }: any) => {
 
             "Customer Type": item.customerType,
             "Mobile No": item.mobileNo,
+            "Error Message": item.errorMessage,
             "Created At": format(date, "yyyy-MM-dd pp")
           };
         });

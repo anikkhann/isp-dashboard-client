@@ -376,6 +376,8 @@ const ZoneRevenueDisbursementList: React.FC = () => {
               <Tag color="red">{status}</Tag>
             ) : status === "Approved" ? (
               <Tag color="green">{status}</Tag>
+            ) : status === "Cancelled" ? (
+              <Tag color="orange">{status}</Tag>
             ) : (
               <Tag color="blue">{status}</Tag>
             )}

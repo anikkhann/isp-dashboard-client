@@ -347,7 +347,7 @@ const CustomerTicketList: React.FC = () => {
       title: "Customer",
       dataIndex: "customer",
       render: (customer, row) => {
-        return <>{row.customer.username}</>;
+        return <>{row.customer?.username}</>;
       },
       sorter: false,
       width: 400,

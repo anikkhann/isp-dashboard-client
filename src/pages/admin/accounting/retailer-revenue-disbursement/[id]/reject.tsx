@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("retailerRevenueDisbursement.update", "") ? (
+      {ability.can("retailerRevenueDisbursement.reject", "") ? (
         <RejectRetailerRevenueDisbursement id={id} />
       ) : (
         <Forbidden />

@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("subZoneRevenueDisbursement.update", "") ? (
+      {ability.can("subZoneRevenueDisbursement.reject", "") ? (
         <RejectSubZoneRevenueDisbursement id={id} />
       ) : (
         <Forbidden />

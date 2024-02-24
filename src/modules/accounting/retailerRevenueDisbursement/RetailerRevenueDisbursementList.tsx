@@ -41,7 +41,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -62,16 +62,17 @@ const RetailerRevenueDisbursementList: React.FC = () => {
   const [data, setData] = useState<ZoneRevenueDisbursement[]>([]);
   const authUser = useAppSelector(state => state.auth.user);
   const MySwal = withReactContent(Swal);
+  const router = useRouter();
   const { Panel } = Collapse;
   const { RangePicker } = DatePicker;
 
   const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState<any>(null);
 
-  const [subZones, setSubZones] = useState([]);
+  const [subZones, setSubZones] = useState<any[]>([]);
   const [selectedSubZone, setSelectedSubZone] = useState(null);
 
-  const [retailers, setRetailers] = useState([]);
+  const [retailers, setRetailers] = useState<any[]>([]);
   const [selectedRetailer, setSelectedRetailer] = useState(null);
 
   const [status, setStatus] = useState<any>([]);
@@ -118,7 +119,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         );
         if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
-            // router.reload();
+            router.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
@@ -160,7 +161,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         );
         if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
-            // router.reload();
+            router.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
@@ -508,9 +509,9 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       getRetailers(selectedSubZone);
     }
   }, [selectedSubZone]);
-  useEffect(() => {
-    getRetailers(selectedSubZone);
-  }, []);
+  // useEffect(() => {
+  //   getRetailers(selectedSubZone);
+  // }, []);
   const handleZoneChange = (value: any) => {
     setSelectedZone(value as any);
   };
@@ -586,6 +587,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
               <Tag color="red">{status}</Tag>
             ) : status === "Approved" ? (
               <Tag color="green">{status}</Tag>
+            ) : status === "Cancelled" ? (
+              <Tag color="orange">{status}</Tag>
             ) : (
               <Tag color="blue">{status}</Tag>
             )}
