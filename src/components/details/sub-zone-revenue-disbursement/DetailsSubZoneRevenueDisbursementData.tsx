@@ -42,10 +42,12 @@ const DetailsSubZoneRevenueDisbursementData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Requested To :</span>
+                <span className="font-bold text-base">Requested Form :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.client?.username}</span>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
               </Col>
             </Row>
             <Row

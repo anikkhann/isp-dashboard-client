@@ -291,7 +291,7 @@ const CustomerList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -316,7 +316,7 @@ const CustomerList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -332,7 +332,7 @@ const CustomerList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -363,7 +363,7 @@ const CustomerList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -372,19 +372,20 @@ const CustomerList: React.FC = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -405,7 +406,7 @@ const CustomerList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -625,7 +626,7 @@ const CustomerList: React.FC = () => {
   useEffect(() => {
     getZoneManagers();
     // getSubZoneManagers();
-    getRetailers();
+
     getDistributionZones();
     // getDistributionPops();
     // getDistributionPops(selectedDistributionZone);
@@ -633,14 +634,23 @@ const CustomerList: React.FC = () => {
     getCustomerPackages();
     getCustomers();
     getSubZoneManagers(null);
+    getRetailers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (selectedZone) {
       getSubZoneManagers(selectedZone);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedZone]);
+
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubZone]);
 
   useEffect(() => {
     if (selectedDistributionZone) {
@@ -1329,6 +1339,7 @@ const CustomerList: React.FC = () => {
                             </Space>
                           </Col>
                         )}
+                        {/* authUser?.userType == "client" && */}
                         {authUser?.userType == "client" &&
                           ability.can("CustomerSearch.zone", "") && (
                             <Col

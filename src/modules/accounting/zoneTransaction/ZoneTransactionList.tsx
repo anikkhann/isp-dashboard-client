@@ -70,6 +70,7 @@ const PackageList: React.FC = () => {
 
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const downloadRef = useRef<any>(null);
+
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("desc");
@@ -486,9 +487,9 @@ const PackageList: React.FC = () => {
       title: "Trx By",
       dataIndex: "trxBy",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (trxBy: any) => {
+        if (!trxBy) return "-";
+        return <>{trxBy}</>;
       },
       width: "20%",
       align: "center" as AlignType

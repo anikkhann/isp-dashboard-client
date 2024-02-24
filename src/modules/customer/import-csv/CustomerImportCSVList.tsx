@@ -7,7 +7,8 @@ import {
   Space,
   Row,
   DatePicker,
-  Tooltip
+  Tooltip,
+  Tag
 } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
@@ -20,7 +21,13 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import Link from "next/link";
-import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  EditOutlined,
+  SmileOutlined,
+  FrownOutlined
+} from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { CustomerData } from "@/interfaces/CustomerData";
@@ -36,8 +43,9 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-import { FaListAlt } from "react-icons/fa";
+// import { FaListAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
+// import CustomerImportSuccessList from "./CustomerImportSuccessList";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -516,6 +524,19 @@ const CustomerImportCSVList: React.FC = () => {
       title: "Status",
       dataIndex: "status",
       sorter: true,
+      render: (status: any) => {
+        return (
+          <>
+            {status === "Cancelled" ? (
+              <Tag color="red">{status}</Tag>
+            ) : status === "Completed" ? (
+              <Tag color="green">{status}</Tag>
+            ) : (
+              <Tag color="blue">{status}</Tag>
+            )}
+          </>
+        );
+      },
       width: "20%",
       align: "center" as AlignType
     },
@@ -711,15 +732,20 @@ const CustomerImportCSVList: React.FC = () => {
                     <Link
                       href={`/admin/customer/import-csv/${record.id}/success`}
                     >
+                      {/* <Button
+                        
+                      /> */}
                       <Button
                         type="primary"
-                        icon={<FaListAlt />}
+                        icon={<SmileOutlined />}
                         style={{
                           backgroundColor: "#52c41a",
                           borderColor: "#52c41a",
                           color: "#ffffff"
                         }}
-                      />
+                      >
+                        {/* <CustomerImportSuccessList customerId={record.id} /> */}
+                      </Button>
                     </Link>
                   </Space>
                 </Tooltip>
@@ -737,7 +763,7 @@ const CustomerImportCSVList: React.FC = () => {
                     >
                       <Button
                         type="primary"
-                        icon={<FaListAlt />}
+                        icon={<FrownOutlined />}
                         style={{
                           backgroundColor: "#FF5630",
                           borderColor: "#FF5630",

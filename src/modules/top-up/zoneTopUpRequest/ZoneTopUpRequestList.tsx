@@ -328,11 +328,11 @@ const ZoneTopUpRequestList: React.FC = () => {
     const status = [
       {
         label: "Paid",
-        value: "online"
+        value: "paid"
       },
       {
         label: "Due",
-        value: "offline"
+        value: "due"
       }
     ];
     setPaymentStatus(status);

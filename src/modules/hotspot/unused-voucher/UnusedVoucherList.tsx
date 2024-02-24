@@ -689,8 +689,8 @@ const UnusedVoucherList: React.FC = () => {
 
     const body = {
       meta: {
-        limit: 10,
-        page: 1,
+        // limit: 10,
+        // page: 1,
         sort: [
           {
             order: "asc",

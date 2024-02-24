@@ -509,7 +509,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
     }
   }, [selectedSubZone]);
   useEffect(() => {
-    getRetailers(null);
+    getRetailers(selectedSubZone);
   }, []);
   const handleZoneChange = (value: any) => {
     setSelectedZone(value as any);
@@ -607,20 +607,20 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       align: "center" as AlignType
     },
     // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
-      },
-      width: "20%",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
-      title: "Created At",
+      title: "Requested At",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {

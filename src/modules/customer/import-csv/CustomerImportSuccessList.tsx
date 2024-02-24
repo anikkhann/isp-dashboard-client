@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Table } from "antd";
+import { Button, Card, Col, Row, Space, Table } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { ColumnsType } from "antd/es/table";
 
 import { useQuery } from "@tanstack/react-query";
@@ -11,12 +11,33 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import { CustomerData } from "@/interfaces/CustomerData";
 import { format } from "date-fns";
+import { CSVLink } from "react-csv";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+// import ability from "@/services/guard/ability";
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
 
+// const dateFormat = "YYYY-MM-DD";
 const CustomerImportSuccessList = ({ id }: any) => {
   // const [form] = Form.useForm();
 
   const [data, setData] = useState<CustomerData[]>([]);
-
+  const MySwal = withReactContent(Swal);
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
+  const downloadRef = useRef<any>(null);
+  const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -64,14 +85,14 @@ const CustomerImportSuccessList = ({ id }: any) => {
 
   const columns: ColumnsType<CustomerData> = [
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "username",
+      title: "Username",
       dataIndex: "username",
 
       width: "20%",
@@ -79,21 +100,21 @@ const CustomerImportSuccessList = ({ id }: any) => {
     },
 
     {
-      title: "email",
+      title: "Email",
       dataIndex: "email",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "customerType",
+      title: "Customer Type",
       dataIndex: "customerType",
 
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "mobileNo",
+      title: "Mobile No",
       dataIndex: "mobileNo",
 
       width: "20%",
@@ -114,7 +135,7 @@ const CustomerImportSuccessList = ({ id }: any) => {
     // },
     // createdOn
     {
-      title: "Created Date",
+      title: "Created At",
       dataIndex: "createdOn",
 
       render: (createdOn: any) => {
@@ -153,6 +174,98 @@ const CustomerImportSuccessList = ({ id }: any) => {
     //   align: "center" as AlignType
     // },
   ];
+
+  const handleDownload = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    // const body = {
+    //   meta: {
+    //     // limit: 10,
+    //     // page: 1,
+    //     sort: [
+    //       {
+    //         order: "desc",
+    //         field: "trxDate"
+    //       }
+    //     ]
+    //   },
+    //   body: {
+    //     userType: "zone",
+    //     userId: selectUser,
+    //     transactionId: transactionId,
+    //     trxMode: selectedTransactionMode,
+    //     trxType: selectedTransactionType,
+    //     trxBy: selectedTransactionBy,
+    //     dateRangeFilter: {
+    //       field: "trxDate",
+    //       startDate: selectedStartDate,
+    //       endDate: selectedEndDate
+    //     }
+    //   }
+    // };
+
+    await axios
+      .get(`/api/customer-import-csv/get-success-list/${id}`, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        // console.log(res);
+        const { data } = res;
+        console.log(data.body);
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
+
+        const list = data.body.map((item: any) => {
+          const date = new Date(item.createdOn);
+          return {
+            Name: item.name,
+            "User Name": item.username,
+            Email: item.email,
+
+            "Customer Type": item.customerType,
+            "Mobile No": item.mobileNo,
+            "Created At": format(date, "yyyy-MM-dd pp")
+          };
+        });
+
+        setDownloadRow([
+          // {
+          //   ZoneManager: "Zone Manager",
+          //   TRXType: "TRX Type",
+          //   TrxMode: "Trx Mode",
+          //   TransactionId: "Transaction Id",
+          //   Amount: "Amount",
+          //   Balance: "Balance",
+          //   Remarks: "Remarks",
+          //   TrxBy: "Trx By",
+          //   TrxDate: "Trx Date"
+          // },
+          ...list
+        ]);
+      });
+  };
+
+  useEffect(() => {
+    if (downloadRow && downloadRow.length > 0) {
+      setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
+    }
+  }, [downloadRow]);
+
   return (
     <>
       <AppRowContainer>
@@ -193,7 +306,7 @@ const CustomerImportSuccessList = ({ id }: any) => {
           )}
 
           <TableCard
-            title="Import csv Success List"
+            title="Import CSV Success List"
             hasLink={false}
             addLink=""
             permission=""
@@ -206,6 +319,40 @@ const CustomerImportSuccessList = ({ id }: any) => {
               backgroundColor: "#d5dfe6"
             }}
           >
+            {/* {ability.can("customerImportCsv.download", "") && ( */}
+            <Row justify={"end"}>
+              <Col span={3}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setDownloadLoading(true);
+                    handleDownload();
+                  }}
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    marginTop: "25px",
+                    backgroundColor: "#F15F22",
+                    color: "#ffffff"
+                  }}
+                >
+                  {downloadLoading ? "Loading..." : "Download"}
+                </Button>
+
+                <CSVLink
+                  data={downloadRow}
+                  ref={downloadRef}
+                  target="_blank"
+                  filename={`customer-import-success-list-${dayjs().format(
+                    "YYYY-MM-DD"
+                  )}.csv`}
+                  style={{
+                    display: "none"
+                  }}
+                ></CSVLink>
+              </Col>
+            </Row>
+            {/* )} */}
             <Space direction="vertical" style={{ width: "100%" }}>
               <Table
                 className={"table-striped-rows"}

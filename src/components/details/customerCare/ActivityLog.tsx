@@ -204,7 +204,7 @@ const ActivityLog = ({ item }: PropData) => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       //   width: "20%",
       align: "center" as AlignType
@@ -279,7 +279,7 @@ const ActivityLog = ({ item }: PropData) => {
           )}
 
           <TableCard
-            title="Activity Log List"
+            title=""
             hasLink={false}
             addLink="/admin/device/ip-management/create"
             permission="ip.create"
