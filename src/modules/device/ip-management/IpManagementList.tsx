@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Collapse,
+  Input,
+  Row,
+  Select,
+  Space,
+  Tag
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -16,6 +26,21 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { IpData } from "@/interfaces/IpData";
 import { format } from "date-fns";
 
+const assignedTypeList = [
+  {
+    label: "Customer",
+    value: "customer"
+  },
+  {
+    label: "Free",
+    value: "free"
+  },
+  {
+    label: "Others",
+    value: "others"
+  }
+];
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -25,12 +50,13 @@ interface TableParams {
 
 const IpManagementList: React.FC = () => {
   const [data, setData] = useState<IpData[]>([]);
-  // const { Panel } = Collapse;
+  const { Panel } = Collapse;
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
-
+  const [selectedAssignedType, setSelectedAssignedType] = useState<any>(null);
+  const [ip, setIp] = useState<any>(null);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       total: 0,
@@ -43,7 +69,9 @@ const IpManagementList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    ipParam?: string,
+    assignedTypeParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -61,6 +89,8 @@ const IpManagementList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        ip: ipParam,
+        selectedAssignedType: assignedTypeParam
       }
     };
 
@@ -73,9 +103,16 @@ const IpManagementList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["ip-list", page, limit, order, sort],
+    queryKey: ["ip-list", page, limit, order, sort, ip, selectedAssignedType],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        ip,
+        selectedAssignedType
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -109,6 +146,16 @@ const IpManagementList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedAssignedType(value as any);
+  };
+
+  const handleClear = () => {
+    setIp(null);
+    setSelectedAssignedType(null);
+  };
 
   useEffect(() => {
     if (data) {
@@ -348,11 +395,118 @@ const IpManagementList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
+              <Space style={{ marginBottom: 16 }}>
+                {/* <Button >Sort age</Button>
                 <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+                <Button >Clear filters and sorters</Button> */}
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>IP</b>
+                            </span>
+                            <Input
+                              type="text"
+                              className="ant-input"
+                              placeholder="IP"
+                              value={ip}
+                              onChange={e => setIp(e.target.value)}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Assigned Type</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleChange}
+                              options={assignedTypeList}
+                              value={selectedAssignedType}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
+              </Space>
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

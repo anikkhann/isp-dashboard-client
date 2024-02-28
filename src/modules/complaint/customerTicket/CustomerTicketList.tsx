@@ -391,7 +391,7 @@ const CustomerTicketList: React.FC = () => {
       sorter: false,
       render: (assignedTo: any) => {
         if (!assignedTo) return "-";
-        return <>{assignedTo.name}</>;
+        return <>{assignedTo.username}</>;
       },
       width: 200,
       align: "center" as AlignType
@@ -404,7 +404,7 @@ const CustomerTicketList: React.FC = () => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       width: 200,
       align: "center" as AlignType

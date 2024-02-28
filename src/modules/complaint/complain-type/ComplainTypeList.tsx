@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Collapse, Row, Select, Space, Tag } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -12,15 +12,16 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import ability from "@/services/guard/ability";
 import Link from "next/link";
+import { ComplainTypeData } from "@/interfaces/ComplainTypeData";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { useAppSelector } from "@/store/hooks";
-interface DataType {
-  id: number;
-  name: string;
-  slug: string;
-  group: string;
-}
+// interface DataType {
+//   id: number;
+//   name: string;
+//   slug: string;
+//   group: string;
+// }
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -30,12 +31,16 @@ interface TableParams {
 }
 
 const ComplainTypeList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<ComplainTypeData[]>([]);
+  const { Panel } = Collapse;
   const authUser = useAppSelector(state => state.auth.user);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+
+  const [status, setStatus] = useState<any>([]);
+  const [statusChanged, setStatusChanged] = useState<any>(null);
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -49,7 +54,8 @@ const ComplainTypeList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    statusChanged: string | null
   ) => {
     const token = Cookies.get("token");
     // // console.log('token', token)
@@ -68,6 +74,7 @@ const ComplainTypeList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        complainCategory: statusChanged
       }
     };
 
@@ -80,9 +87,9 @@ const ComplainTypeList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["complain-type-list", page, limit, order, sort],
+    queryKey: ["complain-type-list", page, limit, order, sort, statusChanged],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(page, limit, order, sort, statusChanged);
       return response;
     },
     onSuccess(data: any) {
@@ -123,7 +130,33 @@ const ComplainTypeList: React.FC = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<DataType> = [
+  function getStatus() {
+    const status = [
+      {
+        label: "Customer",
+        value: "customer"
+      },
+      {
+        label: "Parent",
+        value: "parent"
+      }
+    ];
+    setStatus(status);
+  }
+  const handleClear = () => {
+    setStatusChanged(null);
+  };
+  useEffect(() => {
+    // getSubZoneManagers(selectedZone);
+    getStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleStatusChange = (value: any) => {
+    setStatusChanged(value as any);
+  };
+
+  const columns: ColumnsType<ComplainTypeData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -140,7 +173,7 @@ const ComplainTypeList: React.FC = () => {
     },
 
     {
-      title: "Complain Category",
+      title: "Complaint Category",
       dataIndex: "complainCategory",
       sorter: true,
       render: (complainCategory: any) => {
@@ -154,7 +187,7 @@ const ComplainTypeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Complain Type",
+      title: "Complaint Type",
       dataIndex: "name",
       sorter: true,
       width: "20%",
@@ -269,18 +302,20 @@ const ComplainTypeList: React.FC = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<DataType>[]
+    sorter: SorterResult<ComplainTypeData> | SorterResult<ComplainTypeData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<DataType>).order) {
+    if (sorter && (sorter as SorterResult<ComplainTypeData>).order) {
       SetOrder(
-        (sorter as SorterResult<DataType>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<ComplainTypeData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<DataType>).field) {
-      SetSort((sorter as SorterResult<DataType>).field as string);
+    if (sorter && (sorter as SorterResult<ComplainTypeData>).field) {
+      SetSort((sorter as SorterResult<ComplainTypeData>).field as string);
     }
   };
 
@@ -322,7 +357,7 @@ const ComplainTypeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Complain Types List"
+            title="Complaint Types List"
             hasLink={true}
             addLink="/admin/complaint/complain-type/create"
             permission="complainType.create"
@@ -335,11 +370,103 @@ const ComplainTypeList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+              {authUser?.userType == "client" && (
+                <Space style={{ marginBottom: 16 }}>
+                  {/* <Button >Sort age</Button>
+                   <Button >Clear filters</Button>
+                   <Button >Clear filters and sorters</Button> */}
+                  <div style={{ padding: "20px", backgroundColor: "white" }}>
+                    <Collapse
+                      accordion
+                      style={{
+                        backgroundColor: "#FFC857",
+                        color: "white",
+                        borderRadius: 4,
+                        // marginBottom: 24,
+                        // border: 0,
+                        overflow: "hidden",
+                        fontWeight: "bold",
+                        font: "1rem"
+                      }}
+                    >
+                      <Panel header="Filters" key="1">
+                        <Row
+                          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                          justify="space-between"
+                        >
+                          <Col
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Complaint Category</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select"
+                                onChange={handleStatusChange}
+                                options={status}
+                                value={statusChanged}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+
+                          <Col
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
+                            className="gutter-row"
+                          >
+                            <Button
+                              style={{
+                                width: "100%",
+                                textAlign: "center",
+                                marginTop: "25px",
+                                backgroundColor: "#F15F22",
+                                color: "#ffffff"
+                              }}
+                              onClick={() => {
+                                handleClear();
+                              }}
+                              className="ant-btn  ant-btn-lg"
+                            >
+                              Clear filters
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Panel>
+                    </Collapse>
+                  </div>
+                </Space>
+              )}
+
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

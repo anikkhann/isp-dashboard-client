@@ -114,14 +114,14 @@ const DetailsTicket = ({ item, replys }: PropData) => {
             </p>
             <p>
               <span className="font-bold">Owner:</span>
-              <span className="mx-2">{item.assignedTo?.name}</span>
+              <span className="mx-2">{item.assignedTo?.username}</span>
             </p>
 
             {item.status == "closed" && (
               <>
                 <p>
                   <span className="font-bold">Closed By:</span>
-                  <span className="mx-2">{item.closedBy?.name}</span>
+                  <span className="mx-2">{item.closedBy?.username}</span>
                 </p>
 
                 <p>

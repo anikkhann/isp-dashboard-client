@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space, Tag, Tooltip } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Collapse,
+  Input,
+  Row,
+  Space,
+  Tag,
+  Tooltip
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -28,8 +38,11 @@ interface TableParams {
 
 const NetworkList: React.FC = () => {
   const [data, setData] = useState<IpSubnetData[]>([]);
+  const { Panel } = Collapse;
   const router = useRouter();
   const MySwal = withReactContent(Swal);
+  const [networkName, setNetworkName] = useState<any>(null);
+  const [networkAddress, setNetworkAddress] = useState<any>(null);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -47,7 +60,9 @@ const NetworkList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    networkNameParam?: string,
+    networkAddressParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -64,6 +79,8 @@ const NetworkList: React.FC = () => {
         ]
       },
       body: {
+        networkName: networkNameParam,
+        networkAddress: networkAddressParam
         // SEND FIELD NAME WITH DATA TO SEARCH
       }
     };
@@ -77,9 +94,24 @@ const NetworkList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["ip-subnet-list", page, limit, order, sort],
+    queryKey: [
+      "ip-subnet-list",
+      page,
+      limit,
+      order,
+      sort,
+      networkName,
+      networkAddress
+    ],
     queryFn: async () => {
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        networkName,
+        networkAddress
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -111,6 +143,11 @@ const NetworkList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  const handleClear = () => {
+    setNetworkName(null);
+    setNetworkAddress(null);
+  };
 
   useEffect(() => {
     if (data) {
@@ -382,11 +419,101 @@ const NetworkList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
+              <Space style={{ marginBottom: 16 }}>
+                {/* <Button >Sort age</Button>
                 <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
-              </Space> */}
+                <Button >Clear filters and sorters</Button> */}
+                <Collapse
+                  accordion
+                  style={{
+                    backgroundColor: "#FFC857",
+                    color: "white",
+                    borderRadius: 4,
+                    // marginBottom: 24,
+                    // border: 0,
+                    overflow: "hidden",
+                    fontWeight: "bold",
+                    font: "1rem"
+                  }}
+                >
+                  <Panel header="Filters" key="1">
+                    <Row
+                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                      justify="space-between"
+                    >
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Network Name</b>
+                          </span>
+                          <Input
+                            type="text"
+                            className="ant-input"
+                            placeholder="Network Name"
+                            value={networkName}
+                            onChange={e => setNetworkName(e.target.value)}
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <span>
+                            <b>Network Address</b>
+                          </span>
+                          <Input
+                            type="text"
+                            className="ant-input"
+                            placeholder="Network Address"
+                            value={networkAddress}
+                            onChange={e => setNetworkAddress(e.target.value)}
+                          />
+                        </Space>
+                      </Col>
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        <Button
+                          style={{
+                            width: "100%",
+                            textAlign: "center",
+                            marginTop: "25px",
+                            backgroundColor: "#F15F22",
+                            color: "#ffffff"
+                          }}
+                          onClick={() => {
+                            handleClear();
+                          }}
+                          className="ant-btn  ant-btn-lg"
+                        >
+                          Clear filters
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Panel>
+                </Collapse>
+              </Space>
               <Table
                 className={"table-striped-rows"}
                 columns={columns}

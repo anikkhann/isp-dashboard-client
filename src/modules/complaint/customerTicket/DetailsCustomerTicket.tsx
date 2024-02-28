@@ -49,6 +49,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
   const MySwal = withReactContent(Swal);
 
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const [item, setItem] = useState<TicketData | null>(null);
   const [replys, setReplys] = useState<any | []>([]);
   console.log(replys);
@@ -126,6 +127,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
       }
     };
     const response = await axios.post(`/api/root-cause/get-list`, body);
+
     const list = response.data.body.map((item: any) => {
       return {
         label: item.title,
@@ -222,44 +224,51 @@ const DetailsCustomerTicket = ({ id }: any) => {
     }
   };
 
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
   const handleOwnerSubmit = async () => {
-    await form.validateFields(["assignedToId", "remarks"]);
+    setLoading(true);
+    setTimeout(async () => {
+      await form.validateFields(["assignedToId", "remarks"]);
 
-    const assignedToId = form.getFieldValue("assignedToId");
-    const remarks = form.getFieldValue("remarks");
+      const assignedToId = form.getFieldValue("assignedToId");
+      const remarks = form.getFieldValue("remarks");
 
-    const formData = {
-      id: id,
-      action: "owner_change",
-      assignedToId: assignedToId,
-      remarks: remarks
-    };
+      const formData = {
+        id: id,
+        action: "owner_change",
+        assignedToId: assignedToId,
+        remarks: remarks
+      };
 
-    try {
-      axios
-        .put("/api/ticket/update", formData)
-        .then(res => {
-          const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            form.resetFields();
-            router.reload();
-            setOwnerModal(false);
+      try {
+        await axios
+          .put("/api/ticket/update", formData)
+          .then(res => {
+            const { data } = res;
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              form.resetFields();
+              router.reload();
+              setOwnerModal(false);
+            });
+          })
+          .catch(err => {
+            // console.log(err);
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
           });
-        })
-        .catch(err => {
-          // console.log(err);
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
-    }
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      }
+    }, 2000);
   };
 
   const items: MenuProps["items"] = [
@@ -610,8 +619,13 @@ const DetailsCustomerTicket = ({ id }: any) => {
             <Button key="cancel" onClick={() => setOwnerModal(false)}>
               Cancel
             </Button>,
-            <Button key="submit" type="primary" onClick={handleOwnerSubmit}>
-              Submit
+            <Button
+              key="submit"
+              type="primary"
+              onClick={handleOwnerSubmit}
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Submit"}
             </Button>
           ]}
         >

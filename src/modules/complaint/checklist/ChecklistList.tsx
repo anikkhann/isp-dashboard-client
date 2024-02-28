@@ -20,6 +20,16 @@ import { useAppSelector } from "@/store/hooks";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
+const complaintCategoryList = [
+  {
+    label: "Customer",
+    value: "customer"
+  },
+  {
+    label: "Parent",
+    value: "parent"
+  }
+];
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -30,16 +40,20 @@ interface TableParams {
 const ChecklistList: React.FC = () => {
   const [data, setData] = useState<ChecklistData[]>([]);
   const authUser = useAppSelector(state => state.auth.user);
+  const MySwal = withReactContent(Swal);
   const { Panel } = Collapse;
+
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
+
+  // const [status, setStatus] = useState<any>([]);
+  const [selectedComplaintCategory, setSelectedComplaintCategory] =
+    useState<any>(null);
 
   const [complainTypes, setComplainTypes] = useState<any>([]);
   const [selectedComplainType, setSelectComplainType] = useState<any>(null);
-
-  const MySwal = withReactContent(Swal);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -54,6 +68,7 @@ const ChecklistList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
+    complaintCategoryParam?: string | null,
     complainTypeParam?: string
   ) => {
     const token = Cookies.get("token");
@@ -72,6 +87,7 @@ const ChecklistList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        selectedComplaintCategory: complaintCategoryParam,
         complainType: {
           id: complainTypeParam
         }
@@ -93,6 +109,7 @@ const ChecklistList: React.FC = () => {
       limit,
       order,
       sort,
+      selectedComplaintCategory,
       selectedComplainType
     ],
     queryFn: async () => {
@@ -101,6 +118,7 @@ const ChecklistList: React.FC = () => {
         limit,
         order,
         sort,
+        selectedComplaintCategory,
         selectedComplainType
       );
       return response;
@@ -137,16 +155,34 @@ const ChecklistList: React.FC = () => {
     }
   });
 
+  const handleComplaintCategoryChange = (value: any) => {
+    setSelectedComplaintCategory(value as any);
+  };
+
   const handleComplainTypeChange = (value: any) => {
     // console.log("checked = ", value);
     setSelectComplainType(value as any);
   };
 
   const handleClear = () => {
+    setSelectedComplaintCategory(null);
     setSelectComplainType(null);
   };
 
-  function getComplainTypes() {
+  // function getStatus() {
+  //   const status = [
+  //     {
+  //       label: "Customer",
+  //       value: "customer"
+  //     },
+  //     {
+  //       label: "Parent",
+  //       value: "parent"
+  //     }
+  //   ];
+  //   setStatus(status);
+  // }
+  function getComplainTypes(selectedComplaintCategory: string | null) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -158,6 +194,7 @@ const ChecklistList: React.FC = () => {
         ]
       },
       body: {
+        complainCategory: selectedComplaintCategory,
         isActive: true
       }
     };
@@ -187,8 +224,10 @@ const ChecklistList: React.FC = () => {
   }
 
   useEffect(() => {
-    getComplainTypes();
-  }, []);
+    if (selectedComplaintCategory) {
+      getComplainTypes(selectedComplaintCategory);
+    }
+  }, [selectedComplaintCategory]);
 
   useEffect(() => {
     if (data) {
@@ -211,19 +250,8 @@ const ChecklistList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
-
     {
-      title: "Complain Type",
-      dataIndex: "complainType",
-      render: (complainType, row) => {
-        return <>{row.complainType.name}</>;
-      },
-      sorter: false,
-      width: "20%",
-      align: "center" as AlignType
-    },
-    {
-      title: "Complain Category",
+      title: "Complaint Category",
       dataIndex: "complainCategory",
 
       render: (complainCategory, row) => {
@@ -239,6 +267,18 @@ const ChecklistList: React.FC = () => {
       width: "20%",
       align: "center" as AlignType
     },
+
+    {
+      title: "Complaint Type",
+      dataIndex: "complainType",
+      render: (complainType, row) => {
+        return <>{row.complainType.name}</>;
+      },
+      sorter: false,
+      width: "20%",
+      align: "center" as AlignType
+    },
+
     {
       title: "Check List",
       dataIndex: "title",
@@ -442,6 +482,49 @@ const ChecklistList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser?.userType == "client" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                            xxl={12}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Complaint Category</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select"
+                                onChange={handleComplaintCategoryChange}
+                                options={complaintCategoryList}
+                                value={selectedComplaintCategory}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
                         <Col
                           xs={24}
                           sm={12}

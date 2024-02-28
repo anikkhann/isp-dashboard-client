@@ -10,7 +10,14 @@ import { AlignType } from "rc-table/lib/interface";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import ability from "@/services/guard/ability";
-
+import { format } from "date-fns";
+// import dayjs from "dayjs";
+// import advancedFormat from "dayjs/plugin/advancedFormat";
+// import customParseFormat from "dayjs/plugin/customParseFormat";
+// import localeData from "dayjs/plugin/localeData";
+// import weekday from "dayjs/plugin/weekday";
+// import weekOfYear from "dayjs/plugin/weekOfYear";
+// import weekYear from "dayjs/plugin/weekYear";
 const LatestComplainData = () => {
   const [data, setData] = useState<any[]>([]);
 
@@ -138,9 +145,12 @@ const LatestComplainData = () => {
       dataIndex: "created_on",
       sorter: false,
       render: (created_on: any) => {
-        if (created_on == 0) return <>{created_on}</>;
+        // if (created_on == 0) return <>{created_on}</>;
+        // if (!created_on) return "-";
+        // return <>{created_on}</>;
         if (!created_on) return "-";
-        return <>{created_on}</>;
+        const date = new Date(created_on);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType

@@ -236,8 +236,8 @@ const CustomerImportCSVList: React.FC = () => {
         const { data } = await axios.put(
           `/api/customer-import-csv/process/${id}`
         );
-        if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
+        if (data.status == 200) {
+          MySwal.fire("Success!", data.message, "success").then(() => {
             router.reload();
           });
         } else {
@@ -247,11 +247,10 @@ const CustomerImportCSVList: React.FC = () => {
         MySwal.fire("Cancelled", "Your Data is safe :)", "error");
       }
     } catch (error: any) {
-      // console.log(error);
       if (error.response) {
         MySwal.fire("Error!", error.response.data.message, "error");
       } else {
-        MySwal.fire("Error!", "Something went wrong", "error");
+        MySwal.fire("Error!", "Something Went Wrong", "error");
       }
     }
   }

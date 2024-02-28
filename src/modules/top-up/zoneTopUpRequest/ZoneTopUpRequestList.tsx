@@ -24,6 +24,7 @@ import { ZoneTopUpRequestData } from "@/interfaces/ZoneTopUpRequestData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
+import { useAppSelector } from "@/store/hooks";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -34,6 +35,7 @@ interface TableParams {
 
 const ZoneTopUpRequestList: React.FC = () => {
   const [data, setData] = useState<ZoneTopUpRequestData[]>([]);
+  const authUser = useAppSelector(state => state.auth.user);
   const MySwal = withReactContent(Swal);
   const { Panel } = Collapse;
   const router = useRouter();
@@ -722,43 +724,49 @@ const ZoneTopUpRequestList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Zone Manager</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{
-                                width: "100%",
-                                textAlign: "start"
-                              }}
-                              placeholder="Please select"
-                              onChange={handleChange}
-                              options={zones}
-                              value={selectedZone}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
+                        {authUser && authUser.userType == "client" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                            xxl={12}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Zone Manager</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select"
+                                onChange={handleChange}
+                                options={zones}
+                                value={selectedZone}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
                         <Col
                           xs={24}
                           sm={12}

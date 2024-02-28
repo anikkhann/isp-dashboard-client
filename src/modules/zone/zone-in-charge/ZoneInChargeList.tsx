@@ -512,7 +512,7 @@ const ZoneInChargeList: React.FC = () => {
                       font: "1rem"
                     }}
                   >
-                    <Panel header="Zone In Charges Filters" key="1">
+                    <Panel header="Filters" key="1">
                       <Row
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"

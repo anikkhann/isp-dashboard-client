@@ -122,7 +122,7 @@ const CreateChecklistForm = () => {
 
   useEffect(() => {
     if (authUser) {
-      if (authUser.userType == "durjoy") {
+      if (authUser.userType == "durjoy" || authUser.userType == "duronto") {
         setSelectComplainCategory("parent");
       }
       // else {
@@ -222,52 +222,63 @@ const CreateChecklistForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Complain Category"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="complainCategory"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Complain Category"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Complain Category"
-                    onChange={handleCategoryChange}
-                    options={complainCategoryList}
-                    value={selectComplainCategory}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
+            {authUser &&
+              authUser?.userType != "durjoy" &&
+              authUser?.userType != "duronto" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Complaint Category"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+                    name="complainCategory"
+                    // initialValue={
+                    //   authUser && authUser.userType === "durjoy"
+                    //     ? "parent"
+                    //     : undefined
+                    // }
+                    rules={[
+                      {
+                        required: selectComplainCategory === null, // Only required if null
+                        // required: true,
+                        message: "Please select Complaint Category"
+                      }
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Complaint Category"
+                        onChange={handleCategoryChange}
+                        options={complainCategoryList}
+                        value={selectComplainCategory}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
             {/* {authUser && authUser.userType != "durjoy" && (
                 
               )} */}
@@ -282,7 +293,7 @@ const CreateChecklistForm = () => {
             >
               {/* complainTypeId */}
               <Form.Item
-                label="Complain Type"
+                label="Complaint Type"
                 name="complainTypeId"
                 style={{
                   marginBottom: 0,

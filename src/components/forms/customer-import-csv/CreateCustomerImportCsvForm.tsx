@@ -496,23 +496,21 @@ const CreateCustomerImportCsvForm = () => {
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
             <Col>
               <Form.Item
-                label={
-                  <span>
-                    <span style={{ color: "red" }}>*</span> CSV File
-                  </span>
-                }
+                label={<span>CSV File</span>}
                 style={{
                   marginBottom: 0,
                   width: "100%",
                   textAlign: "center",
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please upload CSV File!"
-                  }
-                ]}
+                name="csvFile"
+                rules={[{ required: true, message: "Please upload CSV File!" }]} // Move rules here
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please upload CSV File!"
+                //   }
+                // ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Upload
