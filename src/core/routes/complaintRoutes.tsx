@@ -59,7 +59,7 @@ const complaintRoutes = [
   },
   {
     key: "/admin/complaint/admin-ticket",
-    label: <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>,
+    label: <Link href="/admin/complaint/admin-ticket">Service Ticket</Link>,
     path: "/admin/complaint/admin-ticket",
     icon: <SettingOutlined />,
     permission: "adminTicket.list"

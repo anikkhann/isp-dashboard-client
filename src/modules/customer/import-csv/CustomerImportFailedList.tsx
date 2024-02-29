@@ -133,13 +133,13 @@ const CustomerImportFailedList = ({ id }: any) => {
     //   align: "center" as AlignType
     // },
     // createdOn
-    {
-      title: "Error Message",
-      dataIndex: "errorMessage",
+    // {
+    //   title: "Error Message",
+    //   dataIndex: "errorMessage",
 
-      width: "20%",
-      align: "center" as AlignType
-    },
+    //   width: "20%",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Created At",
       dataIndex: "createdOn",

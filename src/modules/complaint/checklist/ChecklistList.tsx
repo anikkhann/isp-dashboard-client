@@ -224,6 +224,10 @@ const ChecklistList: React.FC = () => {
   }
 
   useEffect(() => {
+    getComplainTypes(null);
+  }, [selectedComplaintCategory]);
+
+  useEffect(() => {
     if (selectedComplaintCategory) {
       getComplainTypes(selectedComplaintCategory);
     }

@@ -49,8 +49,8 @@ const CustomerTicketList: React.FC = () => {
   const MySwal = withReactContent(Swal);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const [downloadRow, setDownloadRow] = useState<any[]>([]);
@@ -690,7 +690,7 @@ const CustomerTicketList: React.FC = () => {
                       font: "1rem"
                     }}
                   >
-                    <Panel header="Customer Tickets Filters" key="1">
+                    <Panel header="Filters" key="1">
                       <Row
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"

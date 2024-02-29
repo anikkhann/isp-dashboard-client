@@ -291,7 +291,7 @@ const CreateCustomerTicketForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "title"
           }
         ]
       },
@@ -564,7 +564,7 @@ const CreateCustomerTicketForm = () => {
                           rules={[
                             {
                               required: true,
-                              message: "Please select!"
+                              message: "Please select an option!"
                             }
                           ]}
                         >

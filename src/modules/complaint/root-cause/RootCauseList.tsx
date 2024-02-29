@@ -76,7 +76,7 @@ const RootCauseList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         // "field": "search_text"
-        selectedComplaintCategory: complaintCategoryParam
+        rootCauseCategory: complaintCategoryParam
       }
     };
 

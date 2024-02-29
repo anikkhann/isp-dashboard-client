@@ -75,8 +75,8 @@ const CustomerImportCSVList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState<any>(null);
@@ -613,7 +613,7 @@ const CustomerImportCSVList: React.FC = () => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -639,7 +639,7 @@ const CustomerImportCSVList: React.FC = () => {
       sorter: false,
       render: (editedBy: any) => {
         if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
+        return <>{editedBy.username}</>;
       },
 
       width: "20%",

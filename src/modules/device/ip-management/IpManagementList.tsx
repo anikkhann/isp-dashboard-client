@@ -90,7 +90,7 @@ const IpManagementList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         ip: ipParam,
-        selectedAssignedType: assignedTypeParam
+        assignedType: assignedTypeParam
       }
     };
 
