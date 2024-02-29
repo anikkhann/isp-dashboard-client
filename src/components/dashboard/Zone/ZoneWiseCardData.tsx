@@ -18,6 +18,7 @@ const ZoneWiseCardData = () => {
   const MySwal = withReactContent(Swal);
 
   const [zones, setZones] = useState<any[]>([]);
+  console.log(zones);
   const [selectedZone, setSelectedZone] = useState<any>(null);
 
   const authUser = useAppSelector(state => state.auth.user);
@@ -129,7 +130,7 @@ const ZoneWiseCardData = () => {
       render: (active_customer: any) => {
         if (active_customer == 0) return <>{active_customer}</>;
 
-        if (!active_customer) return "-";
+        if (!active_customer) return "0";
 
         return <>{active_customer}</>;
       },
@@ -171,7 +172,7 @@ const ZoneWiseCardData = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -179,8 +180,8 @@ const ZoneWiseCardData = () => {
         partnerType: "zone",
         client: {
           id: authUser?.partnerId
-        }
-        // isActive: true
+        },
+        isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
@@ -199,7 +200,7 @@ const ZoneWiseCardData = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -295,11 +296,11 @@ const ZoneWiseCardData = () => {
                         >
                           <Col
                             xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
                             className="gutter-row"
                           >
                             <Space
@@ -317,16 +318,26 @@ const ZoneWiseCardData = () => {
                                 onChange={handleZoneChange}
                                 options={zones}
                                 value={selectedZone}
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
                               />
                             </Space>
                           </Col>
                           <Col
                             xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
                             className="gutter-row"
                           >
                             <Button
@@ -345,15 +356,6 @@ const ZoneWiseCardData = () => {
                               Clear filters
                             </Button>
                           </Col>
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
-                            className="gutter-row"
-                          ></Col>
                         </Row>
                       </Panel>
                     </Collapse>

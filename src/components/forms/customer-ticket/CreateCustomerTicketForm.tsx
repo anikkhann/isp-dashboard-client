@@ -430,6 +430,7 @@ const CreateCustomerTicketForm = () => {
               ticketCategory: "",
               customerId: "",
               complainTypeId: "",
+
               complainDetails: "",
               assignedTo: ""
             }}
@@ -564,6 +565,7 @@ const CreateCustomerTicketForm = () => {
                           rules={[
                             {
                               required: true,
+
                               message: "Please select an option!"
                             }
                           ]}
@@ -587,6 +589,9 @@ const CreateCustomerTicketForm = () => {
                               }}
                             >
                               {itemData.title}
+                              <span style={{ color: "red", marginLeft: "5px" }}>
+                                *
+                              </span>
                             </span>
                             <Radio.Group
                               style={{

@@ -100,7 +100,7 @@ const CustomerCardData = () => {
       dataIndex: "active_customer",
       sorter: false,
       render: (active_customer: any) => {
-        if (!active_customer) return "-";
+        if (!active_customer) return "0";
         return <>{active_customer}</>;
       },
       /* width: "20%", */

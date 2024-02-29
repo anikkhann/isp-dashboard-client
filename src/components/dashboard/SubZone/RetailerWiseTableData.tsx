@@ -2,15 +2,23 @@
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Col, Space, Table } from "antd";
+import { Button, Card, Col, Collapse, Row, Select, Space, Table } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { AlignType } from "rc-table/lib/interface";
 import type { ColumnsType } from "antd/es/table";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { useAppSelector } from "@/store/hooks";
 
 const RetailerWiseCardData = () => {
   const [data, setData] = useState<any[]>([]);
+  const [zones, setZones] = useState<any[]>([]);
+  const authUser = useAppSelector(state => state.auth.user);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+  const MySwal = withReactContent(Swal);
+  const { Panel } = Collapse;
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -136,6 +144,64 @@ const RetailerWiseCardData = () => {
     }
   ];
 
+  //functions for getting zone manger list data using POST request
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+        client: {
+          id: authUser?.partnerId
+        }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  const handleClear = () => {
+    setSelectedZone(null);
+  };
+
+  useEffect(() => {
+    getZoneManagers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleZoneChange = (value: any) => {
+    setSelectedZone(value);
+  };
+
   return (
     <>
       <>
@@ -189,6 +255,93 @@ const RetailerWiseCardData = () => {
             >
               <Space direction="vertical" style={{ width: "100%" }}>
                 {/* {data && data.length != 0 && ( */}
+                <Space style={{ marginBottom: 16 }}>
+                  <div style={{ padding: "20px", backgroundColor: "white" }}>
+                    <Collapse
+                      accordion
+                      style={{
+                        backgroundColor: "#FFC857",
+                        color: "white",
+                        borderRadius: 4,
+                        // marginBottom: 24,
+                        // border: 0,
+                        overflow: "hidden",
+                        fontWeight: "bold",
+                        font: "1rem"
+                      }}
+                    >
+                      <Panel header="Filters" key="1">
+                        <Row
+                          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                          justify="space-between"
+                        >
+                          <Col
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Zone Manager</b>
+                              </span>
+                              <Select
+                                showSearch
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleZoneChange}
+                                options={zones}
+                                value={selectedZone}
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+                          <Col
+                            xs={24}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
+                            className="gutter-row"
+                          >
+                            <Button
+                              style={{
+                                width: "100%",
+                                textAlign: "center",
+                                marginTop: "25px",
+                                backgroundColor: "#F15F22",
+                                color: "#ffffff"
+                              }}
+                              onClick={() => {
+                                handleClear();
+                              }}
+                              className="ant-btn  ant-btn-lg"
+                            >
+                              Clear filters
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Panel>
+                    </Collapse>
+                  </div>
+                </Space>
                 <Table
                   className={"table-striped-rows"}
                   columns={columns}

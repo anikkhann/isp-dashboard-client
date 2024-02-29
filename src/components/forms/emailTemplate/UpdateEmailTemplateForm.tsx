@@ -843,8 +843,9 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   placeholder="About Us"
                   className={`form-control`}
                   name="aboutUs"
-                  maxLength={200}
+                  maxLength={500}
                   style={{ padding: "6px" }}
+                  rows={8}
                 />
               </Form.Item>
             </Col>

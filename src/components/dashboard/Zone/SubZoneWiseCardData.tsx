@@ -125,7 +125,7 @@ const ZoneWiseCardData = () => {
         if (!total_customer) return "-";
         return <>{total_customer}</>;
       },
-      /* width: "20%", */
+
       align: "center" as AlignType
     },
     // registered_customer
@@ -298,11 +298,11 @@ const ZoneWiseCardData = () => {
                         >
                           <Col
                             xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
                             className="gutter-row"
                           >
                             <Space
@@ -320,16 +320,26 @@ const ZoneWiseCardData = () => {
                                 onChange={handleZoneChange}
                                 options={zones}
                                 value={selectedZone}
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
                               />
                             </Space>
                           </Col>
                           <Col
                             xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
+                            sm={24}
+                            md={24}
+                            lg={24}
+                            xl={24}
+                            xxl={24}
                             className="gutter-row"
                           >
                             <Button
@@ -348,15 +358,6 @@ const ZoneWiseCardData = () => {
                               Clear filters
                             </Button>
                           </Col>
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            xl={12}
-                            xxl={12}
-                            className="gutter-row"
-                          ></Col>
                         </Row>
                       </Panel>
                     </Collapse>
