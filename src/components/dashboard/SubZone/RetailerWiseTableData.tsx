@@ -14,9 +14,12 @@ import { useAppSelector } from "@/store/hooks";
 
 const RetailerWiseCardData = () => {
   const [data, setData] = useState<any[]>([]);
-  const [zones, setZones] = useState<any[]>([]);
   const authUser = useAppSelector(state => state.auth.user);
-  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const [subzoneManagers, setSubZoneManagers] = useState<any[]>([]);
+  const [selectedSubZoneManager, setSelectedSubZoneManager] =
+    useState<any>(null);
+
   const MySwal = withReactContent(Swal);
   const { Panel } = Collapse;
   const fetchData = async () => {
@@ -90,6 +93,17 @@ const RetailerWiseCardData = () => {
       /* width: "20%", */
       align: "center" as AlignType
     },
+    {
+      title: "Retailer",
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
     // total_customer
     {
       title: "Total Customer",
@@ -145,19 +159,19 @@ const RetailerWiseCardData = () => {
   ];
 
   //functions for getting zone manger list data using POST request
-  function getZoneManagers() {
+  function getSubZoneManagers() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
-        partnerType: "zone",
+        partnerType: "reseller",
         client: {
           id: authUser?.partnerId
         }
@@ -180,26 +194,26 @@ const RetailerWiseCardData = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
 
-      setZones(list);
+      setSubZoneManagers(list);
     });
   }
 
   const handleClear = () => {
-    setSelectedZone(null);
+    setSelectedSubZoneManager(null);
   };
 
   useEffect(() => {
-    getZoneManagers();
+    getSubZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleZoneChange = (value: any) => {
-    setSelectedZone(value);
+  const handleSubZoneManagerChange = (value: any) => {
+    setSelectedSubZoneManager(value);
   };
 
   return (
@@ -289,16 +303,16 @@ const RetailerWiseCardData = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Zone Manager</b>
+                                <b>SubZone Manager</b>
                               </span>
                               <Select
-                                showSearch
                                 allowClear
                                 style={{ width: "100%", textAlign: "start" }}
                                 placeholder="Please select"
-                                onChange={handleZoneChange}
-                                options={zones}
-                                value={selectedZone}
+                                onChange={handleSubZoneManagerChange}
+                                options={subzoneManagers}
+                                value={selectedSubZoneManager}
+                                showSearch
                                 filterOption={(input, option) => {
                                   if (typeof option?.label === "string") {
                                     return (

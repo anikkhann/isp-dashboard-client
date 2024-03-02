@@ -11,8 +11,8 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import { TicketData } from "@/interfaces/TicketData";
-import { format } from "date-fns";
-import Link from "next/link";
+import { format, differenceInDays } from "date-fns";
+// import Link from "next/link";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -129,54 +129,35 @@ const TicketHistory = ({ item }: PropData) => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            <Space>
+              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
+            </Space>
           </>
         );
       },
       sorter: true,
-      width: "10%",
+      width: 140,
       align: "center" as AlignType
     },
-
     {
       title: "Ticket Number",
       dataIndex: "ticketNo",
       sorter: true,
-      render: (ticketNo, row) => {
-        return (
-          <Space size="middle" align="center" wrap className="mx-1">
-            <Link href={`/admin/complaint/customer-ticket/${row.id}`}>
-              {ticketNo}
-            </Link>
-          </Space>
-        );
-      },
       width: 200,
       align: "center" as AlignType
     },
     {
-      title: "Customer ID",
-      dataIndex: "customer.customerId",
-      sorter: false,
+      title: "Customer",
+      dataIndex: "customer",
       render: (customer, row) => {
-        return <>{row.customer.customerId}</>;
+        return <>{row.customer?.username}</>;
       },
-
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
-      title: "Username",
-      dataIndex: "customer.username",
       sorter: false,
-      render: (customer, row) => {
-        return <>{row.customer.username}</>;
-      },
-      width: 200,
+      width: 400,
       align: "center" as AlignType
     },
     {
-      title: "complainType",
+      title: "Complain Type",
       dataIndex: "complainType",
       render: (complainType, row) => {
         return <>{row.complainType.name}</>;
@@ -207,57 +188,86 @@ const TicketHistory = ({ item }: PropData) => {
       align: "center" as AlignType
     },
 
-    // insertedBy
+    {
+      title: "Assigned To",
+      dataIndex: "assignedTo",
+      sorter: false,
+      render: (assignedTo: any) => {
+        if (!assignedTo) return "-";
+        return <>{assignedTo.username}</>;
+      },
+      width: 200,
+      align: "center" as AlignType
+    },
+
     {
       title: "Created By",
       dataIndex: "insertedBy",
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
-    // createdOn
+
     {
       title: "Created At",
       dataIndex: "createdOn",
-      sorter: false,
+      sorter: true,
       render: (createdOn: any) => {
         if (!createdOn) return "-";
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     },
-    // editedBy
-    {
-      title: "Updated By",
-      dataIndex: "editedBy",
-      sorter: false,
-      render: (editedBy: any) => {
-        if (!editedBy) return "-";
-        return <>{editedBy.name}</>;
-      },
 
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // updatedOn
     {
-      title: "Updated At",
-      dataIndex: "updatedOn",
+      title: "Age",
+      dataIndex: "age",
       sorter: false,
-      render: (updatedOn: any) => {
-        if (!updatedOn) return "-";
-        const date = new Date(updatedOn);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      render: (_, row) => {
+        if (!row.createdOn) return "-";
+        const createdTime = new Date(row.createdOn);
+        const currentTime = new Date();
+        return (
+          <>
+            {differenceInDays(currentTime, createdTime).toLocaleString()} days
+          </>
+        );
       },
-      /* width: "20%", */
+      width: 200,
       align: "center" as AlignType
     }
+    // editedBy
+    // {
+    //   title: "Updated By",
+    //   dataIndex: "editedBy",
+    //   sorter: false,
+    //   render: (editedBy: any) => {
+    //     if (!editedBy) return "-";
+    //     return <>{editedBy.name}</>;
+    //   },
+
+    //   width: 200,
+    //   align: "center" as AlignType
+    // },
+    // updatedOn
+    // {
+    //   title: "Updated At",
+    //   dataIndex: "updatedOn",
+    //   sorter: false,
+    //   render: (updatedOn: any) => {
+    //     if (!updatedOn) return "-";
+    //     const date = new Date(updatedOn);
+    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
+    //   },
+    //   width: 150,
+    //   align: "center" as AlignType
+    // },
   ];
 
   const handleTableChange = (

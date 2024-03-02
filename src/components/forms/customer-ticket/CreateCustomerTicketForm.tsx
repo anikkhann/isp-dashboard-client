@@ -29,11 +29,11 @@ import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 
 const steps = [
   {
-    title: "customer",
+    title: "Customer",
     content: "customer"
   },
   {
-    title: "complain",
+    title: "Complain",
     content: "complain"
   },
   {
@@ -41,7 +41,7 @@ const steps = [
     content: "attachments"
   },
   {
-    title: "assign",
+    title: "Assign",
     content: "assign"
   }
 ];
@@ -193,7 +193,7 @@ const CreateCustomerTicketForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },

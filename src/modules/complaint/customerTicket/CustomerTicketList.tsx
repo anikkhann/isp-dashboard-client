@@ -384,7 +384,7 @@ const CustomerTicketList: React.FC = () => {
       width: 150,
       align: "center" as AlignType
     },
-    // assignedTo
+
     {
       title: "Assigned To",
       dataIndex: "assignedTo",
@@ -397,7 +397,6 @@ const CustomerTicketList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    // insertedBy
     {
       title: "Created By",
       dataIndex: "insertedBy",
@@ -410,7 +409,6 @@ const CustomerTicketList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    // createdOn
     {
       title: "Created At",
       dataIndex: "createdOn",
@@ -424,7 +422,6 @@ const CustomerTicketList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    // age
     {
       title: "Age",
       dataIndex: "age",

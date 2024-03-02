@@ -30,7 +30,7 @@ import { CustomerData } from "@/interfaces/CustomerData";
 
 const steps = [
   {
-    title: "complain",
+    title: "Complain",
     content: "complain"
   },
   {
@@ -38,10 +38,28 @@ const steps = [
     content: "attachments"
   },
   {
-    title: "assign",
+    title: "Assign",
     content: "assign"
   }
 ];
+// const steps = [
+//   {
+//     title: "customer",
+//     content: "customer"
+//   },
+//   {
+//     title: "Complain",
+//     content: "complain"
+//   },
+//   {
+//     title: "Attachments",
+//     content: "attachments"
+//   },
+//   {
+//     title: "Assign",
+//     content: "assign"
+//   }
+// ];
 
 interface PropData {
   item: CustomerData;
@@ -60,6 +78,10 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
 
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  // const [customers, setCustomers] = useState<any>([]);
+
+  // const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   const [complainTypes, setComplainTypes] = useState<any>([]);
 
@@ -98,8 +120,6 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
 
         const filteredData = Object.keys(fields).reduce((acc: any, key) => {
           if (key.startsWith("checklist-")) {
-            // acc[key] = fields[key];
-            // remove "checklist-" prefix
             const cleanedKey = key.replace("checklist-", "");
             acc[cleanedKey] = fields[key];
           }
@@ -115,8 +135,6 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
 
         setCheckListDataJson(formatCheckList);
 
-        // console.log("filteredData", formatCheckList);
-        // console.log("checkList", checkList);
         setFormValues({
           ...formValues,
           complainTypeId: form.getFieldValue("complainTypeId")
@@ -138,9 +156,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
       }
 
       setCurrent(current + 1);
-    } catch {
-      //return some msg...
-    }
+    } catch {}
   };
 
   const prev = () => {
@@ -392,6 +408,63 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
             colon={false}
             scrollToFirstError
           >
+            {/* {current === 0 && (
+              <>
+                <Row
+                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  justify="center"
+                >
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                 
+                    <Form.Item
+                      label="Customer"
+                      name="customerId"
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select Customer!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select Customer"
+                          onChange={handleCustomerChange}
+                          options={customers}
+                          value={selectedCustomer}
+                          showSearch
+                          filterOption={(input, option) => {
+                            if (typeof option?.label === "string") {
+                              return (
+                                option.label
+                                  .toLowerCase()
+                                  .indexOf(input.toLowerCase()) >= 0
+                              );
+                            }
+                            return false;
+                          }}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </>
+            )} */}
+
             {current === 0 && (
               <>
                 <Row

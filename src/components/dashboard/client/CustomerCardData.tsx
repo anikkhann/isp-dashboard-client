@@ -88,6 +88,7 @@ const CustomerCardData = () => {
       dataIndex: "total_customer",
       sorter: false,
       render: (total_customer: any) => {
+        if (total_customer == 0) return <>{total_customer}</>;
         if (!total_customer) return "-";
         return <>{total_customer}</>;
       },
@@ -100,7 +101,8 @@ const CustomerCardData = () => {
       dataIndex: "active_customer",
       sorter: false,
       render: (active_customer: any) => {
-        if (!active_customer) return "0";
+        if (active_customer == 0) return <>{active_customer}</>;
+        if (!active_customer) return "-";
         return <>{active_customer}</>;
       },
       /* width: "20%", */
@@ -112,6 +114,7 @@ const CustomerCardData = () => {
       dataIndex: "registered_customer",
       sorter: false,
       render: (registered_customer: any) => {
+        if (registered_customer == 0) return <>{registered_customer}</>;
         if (!registered_customer) return "-";
         return <>{registered_customer}</>;
       },
@@ -124,6 +127,7 @@ const CustomerCardData = () => {
       dataIndex: "expired_customer",
       sorter: false,
       render: (expired_customer: any) => {
+        if (expired_customer == 0) return <>{expired_customer}</>;
         if (!expired_customer) return "-";
         return <>{expired_customer}</>;
       },
