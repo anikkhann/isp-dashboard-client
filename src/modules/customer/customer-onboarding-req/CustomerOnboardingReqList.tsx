@@ -26,7 +26,8 @@ import {
   CloseSquareOutlined,
   EditOutlined,
   EyeOutlined,
-  IssuesCloseOutlined
+  IssuesCloseOutlined,
+  CloseOutlined
 } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
 import { CustomerData } from "@/interfaces/CustomerData";
@@ -255,6 +256,43 @@ const CustomerOnboardingReqList: React.FC = () => {
         const { data } = await axios.put(`/api/customer-request/approve`, body);
         if (data.status === 200) {
           MySwal.fire("Success!", data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
+  async function handleCancel(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Proceed"
+      });
+
+      if (result.isConfirmed) {
+        const body = {
+          id: id,
+          action: "cancel"
+        };
+        const { data } = await axios.put(`/api/customer-request/cancel`, body);
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.body.message, "success").then(() => {
             router.reload();
           });
         } else {
@@ -722,6 +760,31 @@ const CustomerOnboardingReqList: React.FC = () => {
                   </Space>
                 </Tooltip>
               ) : null}
+
+              {/* cancel */}
+              {authUser &&
+                authUser.partnerId == record.partnerId &&
+                record.clientStatus != "Approved" &&
+                (ability.can("customerOnboardingReq.cancel", "") ? (
+                  <Tooltip
+                    title="Cancel"
+                    placement="bottomRight"
+                    color="magenta"
+                  >
+                    <Space size="middle" align="center" wrap>
+                      <Button
+                        type="primary"
+                        icon={<CloseOutlined />}
+                        style={{
+                          backgroundColor: "#FF407D",
+                          borderColor: "#FF407D",
+                          color: "#ffffff"
+                        }}
+                        onClick={() => handleCancel(record.id)}
+                      />
+                    </Space>
+                  </Tooltip>
+                ) : null)}
             </Space>
           </div>
         );

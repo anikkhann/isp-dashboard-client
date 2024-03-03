@@ -227,6 +227,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
         ]
       },
       body: {
+        complainCategory: "customer",
         isActive: true
       }
     };

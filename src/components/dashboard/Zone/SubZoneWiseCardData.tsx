@@ -105,12 +105,12 @@ const ZoneWiseCardData = () => {
     },
     {
       title: "Sub Zone In Charge",
-      dataIndex: "sub_zone_manager",
+      dataIndex: "sub_zone_incharge",
       sorter: false,
-      render: (sub_zone_manager: any) => {
-        if (sub_zone_manager == 0) return <>{sub_zone_manager}</>;
-        if (!sub_zone_manager) return "-";
-        return <>{sub_zone_manager}</>;
+      render: (sub_zone_incharge: any) => {
+        if (sub_zone_incharge == 0) return <>{sub_zone_incharge}</>;
+        if (!sub_zone_incharge) return "-";
+        return <>{sub_zone_incharge}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType

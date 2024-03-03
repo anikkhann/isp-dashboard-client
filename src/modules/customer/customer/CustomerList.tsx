@@ -49,6 +49,17 @@ dayjs.extend(weekYear);
 
 const dateFormat = "YYYY-MM-DD";
 
+const statusList = [
+  {
+    label: "Active",
+    value: "true"
+  },
+  {
+    label: "Inactive",
+    value: "false"
+  }
+];
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -73,6 +84,8 @@ const CustomerList: React.FC = () => {
 
   const [customerIds, setCustomerIds] = useState<any[]>([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState<any>(null);
+
+  const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
   const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
@@ -135,6 +148,7 @@ const CustomerList: React.FC = () => {
     retailerParam?: string,
     emailParam?: string,
     mobileParam?: string,
+    statusParam?: string | null,
     startDateParam?: string,
     endDateParam?: string
   ) => {
@@ -175,6 +189,7 @@ const CustomerList: React.FC = () => {
         retailer: {
           id: retailerParam
         },
+        isActive: statusParam,
         dateRangeFilter: {
           field: "expirationTime",
           startDate: startDateParam,
@@ -208,6 +223,7 @@ const CustomerList: React.FC = () => {
       selectedRetailer,
       selectedEmail,
       selectedMobile,
+      selectedStatus,
       selectedStartDate,
       selectedEndDate
     ],
@@ -227,6 +243,7 @@ const CustomerList: React.FC = () => {
         selectedRetailer,
         selectedEmail,
         selectedMobile,
+        selectedStatus,
         selectedStartDate,
         selectedEndDate
       );
@@ -618,6 +635,7 @@ const CustomerList: React.FC = () => {
     setSelectedRetailer(null);
     setSelectedEmail(null);
     setSelectedMobile(null);
+    setSelectedStatus(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
     setSelectedDateRange(null);
@@ -635,6 +653,7 @@ const CustomerList: React.FC = () => {
     getCustomers();
     getSubZoneManagers(null);
     getRetailers(null);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
@@ -885,6 +904,10 @@ const CustomerList: React.FC = () => {
       align: "center" as AlignType
     }
   ];
+
+  const handleStatusChange = (value: any) => {
+    setSelectedStatus(value as any);
+  };
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
@@ -1515,6 +1538,41 @@ const CustomerList: React.FC = () => {
                             </Space>
                           </Col>
                         )}
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Status"
+                              onChange={handleStatusChange}
+                              options={statusList}
+                              value={selectedStatus}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
                         {ability.can("CustomerSearch.dateRange", "") && (
                           <Col
                             xs={24}

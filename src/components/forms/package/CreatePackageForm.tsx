@@ -681,7 +681,7 @@ const CreatePackageForm = () => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Zone"
+                    placeholder="Please select Next Expired Package!"
                     onChange={handleNextExpiredPackageId}
                     options={nextExpired}
                     value={nextExpiredId}

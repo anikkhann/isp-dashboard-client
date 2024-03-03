@@ -1035,44 +1035,7 @@ const EditDeviceForm = ({ item }: any) => {
                 </Form.Item>
               </Col>
             )}
-            {/* monitoringTypesList */}
-            {selectedDeviceType != "ONU" && (
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                <Form.Item
-                  label="Monitoring Type"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  name="monitoringType"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Please select Monitoring Type!"
-                  //   }
-                  // ]}
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Monitoring Type"
-                      onChange={handleMonuitoringTypeChange}
-                      options={monitoringTypesList}
-                      value={selectedMonitoringType}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-            )}
+
             {/* location */}
             {selectedDeviceType != "ONU" && (
               <Col
@@ -1280,6 +1243,44 @@ const EditDeviceForm = ({ item }: any) => {
                     name="totalPort"
                     style={{ padding: "6px" }}
                   />
+                </Form.Item>
+              </Col>
+            )}
+            {/* monitoringTypesList */}
+            {selectedDeviceType != "ONU" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  label="Monitoring Type"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="monitoringType"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Please select Monitoring Type!"
+                  //   }
+                  // ]}
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select Monitoring Type"
+                      onChange={handleMonuitoringTypeChange}
+                      options={monitoringTypesList}
+                      value={selectedMonitoringType}
+                    />
+                  </Space>
                 </Form.Item>
               </Col>
             )}
