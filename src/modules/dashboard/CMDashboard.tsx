@@ -5,6 +5,7 @@ import CustomerStatisticData from "@/components/dashboard/CustomerManagement/Cus
 import ZoneWiseCustomerStatisticData from "@/components/dashboard/CustomerManagement/ZoneWiseCustomerStatisticData";
 import PopWiseCustomerStatisticData from "@/components/dashboard/CustomerManagement/PopWiseCustomerStatisticData";
 import CustomerCard from "@/components/dashboard/CustomerManagement/CustomerCard";
+import OnlineCustomerListData from "@/components/dashboard/CustomerManagement/OnlineCustomerListData";
 const CMDashboard = () => {
   return (
     <>
@@ -17,6 +18,9 @@ const CMDashboard = () => {
         <AppRowContainer>
           <Col span={24}>
             <CustomerCard />
+          </Col>
+          <Col span={24}>
+            <OnlineCustomerListData />
           </Col>
           <Col span={24}>
             <CustomerStatisticData />

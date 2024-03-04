@@ -273,7 +273,7 @@ const CustomerOnboardingReqList: React.FC = () => {
       }
     }
   }
-  async function handleCancel(id: string) {
+  async function handleDelete(id: string) {
     try {
       const result = await MySwal.fire({
         title: "Are you sure?",
@@ -287,19 +287,19 @@ const CustomerOnboardingReqList: React.FC = () => {
 
       if (result.isConfirmed) {
         const body = {
-          id: id,
-          action: "cancel"
+          id: id
+          // action: "cancel"
         };
-        const { data } = await axios.put(`/api/customer-request/cancel`, body);
+        const { data } = await axios.put(`/api/customer-request/delete`, body);
         if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
+          MySwal.fire("Success!", data.message, "success").then(() => {
             router.reload();
           });
         } else {
           MySwal.fire("Error!", data.message, "error");
         }
       } else if (result.isDismissed) {
-        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+        MySwal.fire("Deleted", "Your Data is deleted :)", "error");
       }
     } catch (error: any) {
       // console.log(error);
@@ -765,9 +765,9 @@ const CustomerOnboardingReqList: React.FC = () => {
               {authUser &&
                 authUser.partnerId == record.partnerId &&
                 record.clientStatus != "Approved" &&
-                (ability.can("customerOnboardingReq.cancel", "") ? (
+                (ability.can("customerOnboardingReq.delete", "") ? (
                   <Tooltip
-                    title="Cancel"
+                    title="Delete"
                     placement="bottomRight"
                     color="magenta"
                   >
@@ -780,7 +780,7 @@ const CustomerOnboardingReqList: React.FC = () => {
                           borderColor: "#FF407D",
                           color: "#ffffff"
                         }}
-                        onClick={() => handleCancel(record.id)}
+                        onClick={() => handleDelete(record.id)}
                       />
                     </Space>
                   </Tooltip>
