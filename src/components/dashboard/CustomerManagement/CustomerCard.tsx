@@ -9,20 +9,20 @@ import { FaUsers } from "react-icons/fa";
 import Link from "next/link";
 
 interface Data {
-  total_customer: number;
-  active_customer: number;
-  registered_customer: number;
-  expired_customer: number;
+  active_customer?: number;
+  expired_customer?: number;
+  registered_customer?: number;
+  total_customer?: number;
 }
-interface onlineCustomerData {
-  total_online: number;
-}
+// interface onlineCustomerData {
+//   total_online?: number;
+// }
 
 const CustomerCard = () => {
   const [item, SetItem] = useState<Data | null>(null);
-  console.log(item);
-  const [onlineCustomer, setOnlineCustomer] =
-    useState<onlineCustomerData | null>(null);
+
+  const [onlineCustomer, setOnlineCustomer] = useState<any[]>([]);
+
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -30,6 +30,7 @@ const CustomerCard = () => {
     const response = await axios.get(
       `/api/dashboard/get-total-customer-admin-wise`
     );
+
     return response;
   };
 
@@ -47,6 +48,7 @@ const CustomerCard = () => {
     onSuccess(data: any) {
       if (data) {
         SetItem(data.body);
+        console.log("total", data.body);
       }
     },
     onError(error: any) {
@@ -61,6 +63,7 @@ const CustomerCard = () => {
   }, [item]);
 
   //get online customer data
+
   const fetchCustomerData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -82,7 +85,8 @@ const CustomerCard = () => {
     },
     onSuccess(data: any) {
       if (data) {
-        SetItem(data.body);
+        setOnlineCustomer(data.body);
+        console.log("online", data.body);
       }
     },
     onError(error: any) {
@@ -95,6 +99,11 @@ const CustomerCard = () => {
       setOnlineCustomer(onlineCustomer);
     }
   }, [onlineCustomer]);
+
+  useEffect(() => {
+    fetchData();
+    fetchCustomerData();
+  }, []);
 
   return (
     <>
@@ -264,33 +273,37 @@ const CustomerCard = () => {
           xxl={8}
           className="gutter-row"
         >
-          <Link href={`/admin/customer/customer`}></Link>
-          <Card
-            // bordered={false}
-            hoverable
-            style={{
-              width: "90%",
-              backgroundColor: "#ffffff",
-              borderRadius: "10px",
-              margin: "0 auto",
-              textAlign: "center",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-              border: "2px solid #F15F22"
-            }}
-          >
-            <Statistic
-              style={{ backgroundColor: "#ffffff !important" }}
-              title="Total Online"
-              value={
-                onlineCustomer?.total_online ? onlineCustomer?.total_online : 0
-              }
-              // precision={2}
-              valueStyle={{ color: "#3f8600" }}
-              prefix={<FaUsers className="w-7 h-6 mr-3 " />}
-              // suffix="%"
-            />
-          </Card>
+          <Link href={`/admin/customer/online-customer-list`}>
+            <Card
+              // bordered={false}
+              hoverable
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                textAlign: "center",
+                marginTop: "1rem",
+                marginBottom: "1rem",
+                border: "2px solid #F15F22"
+              }}
+            >
+              <Statistic
+                style={{ backgroundColor: "#ffffff !important" }}
+                title="Total Online"
+                value={
+                  // onlineCustomer?.total_online ? onlineCustomer?.total_online : 0
+                  onlineCustomer?.length > 0
+                    ? onlineCustomer[0]?.total_online
+                    : 0
+                }
+                // precision={2}
+                valueStyle={{ color: "#3f8600" }}
+                prefix={<FaUsers className="w-7 h-6 mr-3 " />}
+                // suffix="%"
+              />
+            </Card>
+          </Link>
         </Col>
         <Col
           xs={24}

@@ -5,23 +5,21 @@ import CustomerStatisticData from "@/components/dashboard/CustomerManagement/Cus
 import ZoneWiseCustomerStatisticData from "@/components/dashboard/CustomerManagement/ZoneWiseCustomerStatisticData";
 import PopWiseCustomerStatisticData from "@/components/dashboard/CustomerManagement/PopWiseCustomerStatisticData";
 import CustomerCard from "@/components/dashboard/CustomerManagement/CustomerCard";
-import OnlineCustomerListData from "@/components/dashboard/CustomerManagement/OnlineCustomerListData";
+import DeviceOnlineCustomerData from "@/components/dashboard/CustomerManagement/DeviceOnlineCustomerData";
+
 const CMDashboard = () => {
   return (
     <>
       <AppAnimate>
-        {/* <AppRowContainer>
-          <Col span={24}>
-            <ZoneCardData />
-          </Col>
-        </AppRowContainer> */}
         <AppRowContainer>
           <Col span={24}>
             <CustomerCard />
           </Col>
+
           <Col span={24}>
-            <OnlineCustomerListData />
+            <DeviceOnlineCustomerData />
           </Col>
+
           <Col span={24}>
             <CustomerStatisticData />
           </Col>

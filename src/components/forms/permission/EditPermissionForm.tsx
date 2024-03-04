@@ -269,6 +269,10 @@ const tagsList = [
   {
     label: "process",
     value: "process"
+  },
+  {
+    label: "Dashboard Online Customer",
+    value: "dashboard-online-customer"
   }
 ];
 

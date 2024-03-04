@@ -27,7 +27,7 @@ dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
 
-const OnlineCustomerListData = () => {
+const OnlineCustomerList = () => {
   const [data, setData] = useState<any[]>([]);
   const MySwal = withReactContent(Swal);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
@@ -136,12 +136,12 @@ const OnlineCustomerListData = () => {
     },
     {
       title: "Duration",
-      dataIndex: "session_start_time",
+      dataIndex: "duration_min",
       sorter: false,
       render: (duration_min: any) => {
         if (!duration_min) return "-";
-        const date = new Date(duration_min);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
+        return <>(duration_min)</>;
+        // return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: 200,
       align: "center" as AlignType
@@ -247,42 +247,55 @@ const OnlineCustomerListData = () => {
 
   return (
     <>
-      <>
-        <AppRowContainer>
-          <Col span={24} key="data-f">
-            {isError && (
-              <>
-                <div
+      <AppRowContainer>
+        <Col span={24} key="data-f">
+          {isError && (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: " 10px 5px"
+                }}
+              >
+                <Card
+                  title="Error"
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    margin: " 10px 5px"
+                    width: 300,
+                    color: "#FF5630",
+                    backgroundColor: "#ffffff"
                   }}
                 >
-                  <Card
-                    title="Error"
-                    style={{
-                      width: 300,
-                      color: "#FF5630",
-                      backgroundColor: "#ffffff"
-                    }}
-                  >
-                    <p>
-                      {error &&
-                      error.response &&
-                      error.response.data &&
-                      error.response.data.message
-                        ? error.response.data.message
-                        : error.message
-                          ? error.message
-                          : "Something went wrong"}
-                    </p>
-                  </Card>
-                </div>
-              </>
-            )}
+                  <p>
+                    {error &&
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.message
+                      ? error.response.data.message
+                      : error.message
+                        ? error.message
+                        : "Something went wrong"}
+                  </p>
+                </Card>
+              </div>
+            </>
+          )}
 
+          <TableCard
+            title="Import CSV Success List"
+            hasLink={false}
+            addLink=""
+            permission=""
+            style={{
+              // backgroundColor: "#FFFFFF",
+              borderRadius: "10px",
+              padding: "10px",
+              width: "100%",
+              overflowX: "auto",
+              backgroundColor: "#d5dfe6"
+            }}
+          >
             {/* {ability.can("customerImportCsv.download", "") && ( */}
             <Row justify={"end"}>
               <Col span={3}>
@@ -319,7 +332,7 @@ const OnlineCustomerListData = () => {
             {/* )} */}
             <Space direction="vertical" style={{ width: "100%" }}>
               <TableCard
-                title="Total Online Customer"
+                title=""
                 hasLink={false}
                 addLink=""
                 permission=""
@@ -344,11 +357,11 @@ const OnlineCustomerListData = () => {
                 </Space>
               </TableCard>
             </Space>
-          </Col>
-        </AppRowContainer>
-      </>
+          </TableCard>
+        </Col>
+      </AppRowContainer>
     </>
   );
 };
 
-export default OnlineCustomerListData;
+export default OnlineCustomerList;
