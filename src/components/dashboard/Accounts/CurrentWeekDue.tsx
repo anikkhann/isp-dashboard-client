@@ -9,25 +9,23 @@ import { FaUsers } from "react-icons/fa";
 import Link from "next/link";
 
 interface Data {
-  total_commission: number;
-  offline_commission: number;
-  online_commission: number;
+  total_payable_customer: number;
+  total_paid_customer: number;
+  total_unpaid_customer: number;
+  total_unpaid_amount: number;
 }
-const LastMonthRevenue = () => {
+const CurrentWeekDue = () => {
   const [item, SetItem] = useState<Data | null>(null);
-  //   ;
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(
-      `/api/dashboard/get-my-revenue-last-month`
-    );
+    const response = await axios.get(`/api/dashboard/current-week-due-summary`);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["last-month-revenue-dashboard-count"],
+    queryKey: ["current-week-due-summary"],
     queryFn: async () => {
       const { data } = await fetchData();
       return data;
@@ -54,7 +52,7 @@ const LastMonthRevenue = () => {
 
       {isError && <div>{error.message}</div>}
 
-      <Row gutter={16}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
         <Col
           xs={24}
           sm={12}
@@ -64,7 +62,7 @@ const LastMonthRevenue = () => {
           xxl={8}
           className="gutter-row"
         >
-          <Link href={`/admin/accounting/customer-transaction`}>
+          <Link href={`/admin/customer/customer`}>
             <Card
               hoverable
               style={{
@@ -79,8 +77,8 @@ const LastMonthRevenue = () => {
               }}
             >
               <Statistic
-                title="Total"
-                value={item?.total_commission}
+                title="Total Payable Customer"
+                value={item?.total_payable_customer || 0}
                 // precision={2}
                 valueStyle={{ color: "#0e8fdc" }}
                 prefix={<FaUsers className="w-7 h-6 mr-3 " />}
@@ -98,7 +96,7 @@ const LastMonthRevenue = () => {
           xxl={8}
           className="gutter-row"
         >
-          <Link href={`/admin/accounting/customer-transaction`}>
+          <Link href={`/admin/customer/customer`}>
             <Card
               // bordered={false}
               hoverable
@@ -115,8 +113,8 @@ const LastMonthRevenue = () => {
             >
               <Statistic
                 style={{ backgroundColor: "#ffffff !important" }}
-                title="Online"
-                value={item?.online_commission}
+                title="Total Paid Customer"
+                value={item?.total_paid_customer || 0}
                 // precision={2}
                 valueStyle={{ color: "#3f8600" }}
                 prefix={<FaUsers className="w-7 h-6 mr-3 " />}
@@ -134,7 +132,7 @@ const LastMonthRevenue = () => {
           xxl={8}
           className="gutter-row"
         >
-          <Link href={`/admin/accounting/customer-transaction`}>
+          <Link href={`/admin/accounting/week-unpaid`}>
             <Card
               // bordered={false}
               hoverable
@@ -151,8 +149,8 @@ const LastMonthRevenue = () => {
             >
               <Statistic
                 style={{ backgroundColor: "#ffffff !important" }}
-                title="Offline"
-                value={item?.offline_commission}
+                title="Total Unpaid Customer"
+                value={item?.total_unpaid_customer || 0}
                 // precision={2}
                 valueStyle={{ color: "red" }}
                 prefix={<FaUsers className="w-7 h-6 mr-3 " />}
@@ -161,9 +159,63 @@ const LastMonthRevenue = () => {
             </Card>
           </Link>
         </Col>
+        <Col
+          xs={24}
+          sm={12}
+          md={8}
+          lg={8}
+          xl={8}
+          xxl={8}
+          className="gutter-row"
+        >
+          <Link href={`/admin/accounting/week-unpaid`}>
+            <Card
+              // bordered={false}
+              hoverable
+              style={{
+                width: "90%",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                margin: "0 auto",
+                textAlign: "center",
+                marginTop: "1rem",
+                marginBottom: "1rem",
+                border: "2px solid #F15F22"
+              }}
+            >
+              <Statistic
+                style={{ backgroundColor: "#ffffff !important" }}
+                title="Total Unpaid Amount"
+                value={item?.total_unpaid_amount || 0}
+                // precision={2}
+                valueStyle={{ color: "red" }}
+                prefix={<FaUsers className="w-7 h-6 mr-3 " />}
+                // suffix="%"
+              />
+            </Card>
+          </Link>
+        </Col>
+        <Col
+          xs={24}
+          sm={12}
+          md={8}
+          lg={8}
+          xl={8}
+          xxl={8}
+          className="gutter-row"
+        ></Col>
+        <Col
+          xs={24}
+          sm={12}
+          md={8}
+          lg={8}
+          xl={8}
+          xxl={8}
+          className="gutter-row"
+        ></Col>
       </Row>
     </>
   );
 };
 
-export default LastMonthRevenue;
+export default CurrentWeekDue;

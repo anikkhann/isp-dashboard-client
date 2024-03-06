@@ -27,7 +27,7 @@ dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
 
-const OnlineCustomerList = () => {
+const WeekUnpaid = () => {
   const [data, setData] = useState<any[]>([]);
   const MySwal = withReactContent(Swal);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
@@ -37,16 +37,19 @@ const OnlineCustomerList = () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const { data } = await axios.get(`/api/dashboard/online-customer-list`, {
-      headers: {
-        "Content-Type": "application/json"
+    const { data } = await axios.get(
+      `/api/dashboard/current-week-due-details`,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["dashboard-get-online-customer-list"],
+    queryKey: ["current-week-due-details"],
     queryFn: async () => {
       const response = await fetchData();
       return response;
@@ -89,59 +92,135 @@ const OnlineCustomerList = () => {
       align: "center" as AlignType
     },
     {
-      title: "Customer",
-      dataIndex: "customer",
+      title: "User Name",
+      dataIndex: "username",
       sorter: false,
-      render: (customer: any) => {
-        if (!customer) return "-";
-        return <>{customer}</>;
+      render: (username: any) => {
+        if (!username) return "-";
+        return <>{username}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
 
     {
-      title: "IP",
-      dataIndex: "ip",
+      title: "Mobile No",
+      dataIndex: "mobile_no",
       sorter: false,
-      render: (ip: any) => {
-        if (!ip) return "-";
-        return <>{ip}</>;
+      render: (mobile_no: any) => {
+        if (!mobile_no) return "-";
+        return <>{mobile_no}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "MAC",
-      dataIndex: "mac",
+      title: "Alt Mobile No",
+      dataIndex: "alt_mobile_no",
       sorter: false,
-      render: (mac: any) => {
-        if (!mac) return "-";
-        return <>{mac}</>;
+      render: (alt_mobile_no: any) => {
+        if (!alt_mobile_no) return "-";
+        return <>{alt_mobile_no}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Session Start Time",
-      dataIndex: "session_start_time",
+      title: "Email",
+      dataIndex: "email",
       sorter: false,
-      render: (session_start_time: any) => {
-        if (!session_start_time) return "-";
-        const date = new Date(session_start_time);
+      render: (email: any) => {
+        if (!email) return "-";
+        return <>{email}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Zone Manager",
+      dataIndex: "zone_manager",
+      sorter: false,
+      render: (zone_manager: any) => {
+        if (!zone_manager) return "-";
+        return <>{zone_manager}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "SubZone Manager",
+      dataIndex: "sub_zone_manager",
+      sorter: false,
+      render: (sub_zone_manager: any) => {
+        if (!sub_zone_manager) return "-";
+        return <>{sub_zone_manager}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Retailer",
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Connection Address",
+      dataIndex: "connection_address",
+      sorter: false,
+      render: (connection_address: any) => {
+        if (!connection_address) return "-";
+        return <>{connection_address}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Credits",
+      dataIndex: "credits",
+      sorter: false,
+      render: (credits: any) => {
+        if (!credits) return "-";
+        return <>{credits}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Package",
+      dataIndex: "packageName",
+      sorter: false,
+      render: (packageName: any) => {
+        if (!packageName) return "-";
+        return <>{packageName}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Package Price",
+      dataIndex: "package_price",
+      sorter: false,
+      render: (package_price: any) => {
+        if (!package_price) return "-";
+        return <>{package_price}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Expiration Time",
+      dataIndex: "expiration_time",
+      sorter: false,
+      render: (expiration_time: any) => {
+        if (!expiration_time) return "-";
+        const date = new Date(expiration_time);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
-      },
-      width: 200,
-      align: "center" as AlignType
-    },
-    {
-      title: "Duration",
-      dataIndex: "duration_min",
-      sorter: false,
-      render: (duration_min: any) => {
-        if (!duration_min) return "-";
-        return <>{duration_min}</>;
-        // return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: 200,
       align: "center" as AlignType
@@ -179,7 +258,7 @@ const OnlineCustomerList = () => {
     // };
 
     await axios
-      .get(`/api/dashboard/online-customer-list`, {
+      .get(`/api/dashboard/current-week-due-details`, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -199,21 +278,21 @@ const OnlineCustomerList = () => {
         if (!data.body) return;
 
         const list = data.body.map((item: any) => {
-          const session = new Date(item.session_start_time);
-          // const duration = new Date(item.duration_min);
-          // const durationHours = Math.floor(item.duration_min / 60);
-          // const durationMinutes = item.duration_min % 60;
-          // const formattedDuration = `${durationHours}h ${durationMinutes}m`;
-          // const duration = item.duration_min;
-          // const durationHours = Math.floor(duration / 60);
-          // const durationMinutes = duration % 60;
-          // const formattedDuration = `${durationHours}:${durationMinutes.toString().padStart(2, "0")}:00 ${durationHours >= 12 ? "PM" : "AM"}`;
+          const expiration = new Date(item.expiration_time);
+
           return {
-            Customer: item.customer,
-            IP: item.ip,
-            MAC: item.mac,
-            "Session Start Time": format(session, "yyyy-MM-dd pp"),
-            "Duration Minute": item.duration_min
+            Username: item.username,
+            "Mobile No": item.mobile_no,
+            "Alt Mobile No": item.alt_mobile_no,
+            Email: item.email,
+            "Zone Manager": item.zone_manager,
+            "SubZone Manager": item.sub_zone_manager,
+            Retailer: item.retailer,
+            "Connection Address": item.connection_address,
+            Credits: item.credits,
+            Package: item.packageName,
+            "Package Price": item.package_price,
+            "Expiration Time": format(expiration, "yyyy-MM-dd pp")
           };
         });
 
@@ -320,7 +399,7 @@ const OnlineCustomerList = () => {
                   data={downloadRow}
                   ref={downloadRef}
                   target="_blank"
-                  filename={`online-customer-list-${dayjs().format(
+                  filename={`current-week-due-list-${dayjs().format(
                     "YYYY-MM-DD"
                   )}.csv`}
                   style={{
@@ -364,4 +443,4 @@ const OnlineCustomerList = () => {
   );
 };
 
-export default OnlineCustomerList;
+export default WeekUnpaid;

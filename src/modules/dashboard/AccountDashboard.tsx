@@ -5,6 +5,7 @@
 // import CustomerQuarterColumnChart from "@/components/charts/clientDashboard/CustomerQuarterColumnChart";
 // import CustomerYearlyColumnChart from "@/components/charts/clientDashboard/CustomerYearlyColumnChart";
 import CurrentMonthRevenue from "@/components/dashboard/Accounts/CurrentMonthRevenue";
+import CurrentWeekDue from "@/components/dashboard/Accounts/CurrentWeekDue";
 import LastMonthRevenue from "@/components/dashboard/Accounts/LastMonthRevenue";
 // import ZoneRevenueData from "@/components/dashboard/Accounts/ZoneRevenueData";
 // import CustomerCardData from "@/components/dashboard/client/CustomerCardData";
@@ -94,6 +95,21 @@ const AccountDashboard = () => {
             </h1>
 
             <LastMonthRevenue />
+          </Col>
+          <Col span={24}>
+            <h1
+              style={{
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: "#0e8fdc",
+                paddingLeft: "2rem",
+                paddingRight: "2rem"
+              }}
+            >
+              Current Week Due Summary
+            </h1>
+
+            <CurrentWeekDue />
           </Col>
 
           {/* <Col xs={24} lg={12}>

@@ -262,6 +262,10 @@ const tagsList = [
   {
     label: "Dashboard Online Customer",
     value: "dashboard-online-customer"
+  },
+  {
+    label: "Dashboard Current Week Due",
+    value: "dashboard-current-week-due"
   }
 ];
 
