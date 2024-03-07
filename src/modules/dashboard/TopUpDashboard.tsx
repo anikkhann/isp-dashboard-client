@@ -5,6 +5,7 @@ import { Col } from "antd";
 import ZoneTopUpData from "@/components/dashboard/TopUp/ZoneTopUpData";
 import AgentTopUpData from "@/components/dashboard/TopUp/AgentTopUpData";
 import { useAppSelector } from "@/store/hooks";
+import MainDashboard from "./MainDashboard";
 
 const TopUpDashboard = () => {
   const authUser = useAppSelector(state => state.auth.user);
@@ -13,14 +14,30 @@ const TopUpDashboard = () => {
     <>
       <AppAnimate>
         <AppRowContainer>
-          <Col span={24}>
-            <AgentTopUpData />
-          </Col>
-          {authUser && authUser.userType == "client" && (
+          {authUser && authUser.userType == "client" ? (
+            <Col span={24}>
+              <AgentTopUpData />
+            </Col>
+          ) : (
+            <MainDashboard />
+          )}
+
+          {authUser && authUser.userType == "client" ? (
             <Col span={24}>
               <ZoneTopUpData />
             </Col>
+          ) : (
+            <MainDashboard />
           )}
+          {/* {authUser &&
+            authUser.userType === "client" &&
+            (authUser.client_level === "quad_cycle" ||
+              authUser.client_level === "quad_cycle_hotspot" ||
+              authUser.client_level === "quad_cycle_isp_hotspot") && (
+              <Col span={24}>
+                <ZoneTopUpData />
+              </Col>
+            )} */}
         </AppRowContainer>
       </AppAnimate>
     </>

@@ -16,6 +16,7 @@ LICENSE.md
 README.md
 tsconfig.json
 .eslintrc.json
-
+node_modules
+lint-staged.config.js
 next.config.js
 .prettierrc.js

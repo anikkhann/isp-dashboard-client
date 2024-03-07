@@ -25,7 +25,7 @@ const DeviceOnlineCustomerData = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["dashboard-get-total-customer-type-wise"],
+    queryKey: ["dashboard-online-customer-nas"],
     queryFn: async () => {
       const response = await fetchData();
       return response;

@@ -35,7 +35,7 @@ const CustomerStatisticData = () => {
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data.data", data);
+        console.log("data.data", data);
 
         if (data.body) {
           setData(data.body);

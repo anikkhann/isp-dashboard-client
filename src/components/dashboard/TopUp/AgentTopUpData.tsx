@@ -63,6 +63,7 @@ const AgentTopUpData = () => {
 
   function getUsers() {
     const body = {
+      // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
@@ -71,14 +72,11 @@ const AgentTopUpData = () => {
           }
         ]
       },
-      // FOR SEARCHING DATA - OPTIONAL
       body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
         isActive: true
       }
     };
-
-    axios.post("/api/customer/get-list", body).then(res => {
+    axios.post("/api/users/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
 
@@ -256,7 +254,7 @@ const AgentTopUpData = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Customer</b>
+                                <b>Agent</b>
                               </span>
                               <Select
                                 showSearch
