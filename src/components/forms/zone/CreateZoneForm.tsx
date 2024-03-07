@@ -67,7 +67,7 @@ const CreateZoneForm = () => {
   const [divisions, setDivisions] = useState<any[]>([]);
   const [districts, setDistricts] = useState<any[]>([]);
   const [upazillas, setUpazillas] = useState<any[]>([]);
-  const [unions, setUnions] = useState([]);
+  const [unions, setUnions] = useState<any[]>([]);
 
   const [selectedDivision, setSelectedDivision] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
@@ -1024,6 +1024,16 @@ const CreateZoneForm = () => {
                     onChange={handleUnionChange}
                     options={unions}
                     value={selectedUnion}
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>

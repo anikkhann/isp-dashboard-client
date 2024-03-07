@@ -26,11 +26,6 @@ const CustomerPackageDashboard = () => {
     <>
       <AppAnimate>
         <AppRowContainer>
-          {/* <Col span={24}>
-            <ZoneCardData />
-          </Col> */}
-        </AppRowContainer>
-        <AppRowContainer>
           <Col span={24}>
             <PackageWiseActiveData />
           </Col>

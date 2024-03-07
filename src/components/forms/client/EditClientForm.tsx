@@ -145,23 +145,23 @@ const EditClientForm = ({ item }: PropData) => {
   const [clientLevel, setClientLevel] = useState<any>(null);
   const [serviceType, setServiceType] = useState<any>(null);
   const [packageType, setPackageType] = useState<any>(null);
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
+  const [districts, setDistricts] = useState<any[]>([]);
 
-  const [radiusIps, setRadiusIps] = useState([]);
+  const [radiusIps, setRadiusIps] = useState<any[]>([]);
 
   const [selectedDivision, setSelectedDivision] = useState<any>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<any>(null);
 
   const [selectedRadiusIp, setSelectedRadiusIp] = useState<any>(null);
 
-  const [upazillas, setUpazillas] = useState([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
   const [selectedUpazilla, setSelectedUpazilla] = useState<any>(null);
 
-  const [unions, setUnions] = useState([]);
+  const [unions, setUnions] = useState<any[]>([]);
   const [selectedUnion, setSelectedUnion] = useState<any>(null);
 
-  const [licenseTypes, setLicenseTypes] = useState([]);
+  const [licenseTypes, setLicenseTypes] = useState<any[]>([]);
   const [selectedLicenseType, setSelectedLicenseType] = useState<any>(null);
 
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs());
@@ -777,6 +777,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleChange}
                     options={tagsList}
                     value={clientLevel}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1053,6 +1064,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleDivisionChange}
                     options={divisions}
                     value={selectedDivision}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1088,6 +1110,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleDistrictChange}
                     options={districts}
                     value={selectedDistrict}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1117,6 +1150,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleUpazillaChange}
                     options={upazillas}
                     value={selectedUpazilla}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1148,6 +1192,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleUnionChange}
                     options={unions}
                     value={selectedUnion}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1177,6 +1232,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleLicenseTypeChange}
                     options={licenseTypes}
                     value={selectedLicenseType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1268,6 +1334,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleRadiusIpChange}
                     options={radiusIps}
                     value={selectedRadiusIp}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1359,6 +1436,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handleService}
                     options={serviceTypeList}
                     value={serviceType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1397,6 +1485,17 @@ const EditClientForm = ({ item }: PropData) => {
                     onChange={handlePackage}
                     options={packageTypeList}
                     value={packageType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>

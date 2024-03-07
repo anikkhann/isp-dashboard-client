@@ -89,10 +89,10 @@ const EditCustomerReqForm = ({ item }: PropData) => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazillas, setUpazillas] = useState([]);
-  const [unions, setUnions] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
+  const [unions, setUnions] = useState<any[]>([]);
 
   const [selectedDivision, setSelectedDivision] = useState<any>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<any>(null);
@@ -100,19 +100,19 @@ const EditCustomerReqForm = ({ item }: PropData) => {
   const [selectedUnion, setSelectedUnion] = useState<any>(null);
 
   const [selectedIdentityType, setSelectedIdentityType] = useState<any>(null);
-  const [customerTypes, setCustomerTypes] = useState([]);
+  const [customerTypes, setCustomerTypes] = useState<any[]>([]);
   const [selectedCustomerType, setSelectedCustomerType] = useState<any>(null);
 
-  const [customerPackages, setCustomerPackages] = useState([]);
+  const [customerPackages, setCustomerPackages] = useState<any[]>([]);
   const [selectedCustomerPackage, setSelectedCustomerPackage] =
     useState<any>(null);
 
   const [selectedReferenceType, setSelectedReferenceType] = useState<any>(null);
 
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const { useBreakpoint } = Grid;
@@ -893,6 +893,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleCustomerTypeChange}
                     options={customerTypes}
                     value={selectedCustomerType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1249,6 +1260,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleIdentityTypeChange}
                     options={identityTypes}
                     value={selectedIdentityType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1321,6 +1343,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleDivisionChange}
                     options={divisions}
                     value={selectedDivision}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1357,6 +1390,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleDistrictChange}
                     options={districts}
                     value={selectedDistrict}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1387,6 +1431,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleUpazillaChange}
                     options={upazillas}
                     value={selectedUpazilla}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1417,6 +1472,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleUnionChange}
                     options={unions}
                     value={selectedUnion}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1453,6 +1519,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleCustomerPackageChange}
                     options={customerPackages}
                     value={selectedCustomerPackage}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1518,6 +1595,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     onChange={handleReferenceTypeChange}
                     options={referenceTypes}
                     value={selectedReferenceType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1550,6 +1638,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                       onChange={handleUserChange}
                       options={users}
                       value={selectedUser}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -1620,6 +1719,17 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                       onChange={handleCustomerChange}
                       options={customers}
                       value={selectedCustomer}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>

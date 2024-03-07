@@ -193,11 +193,11 @@ const WeekUnpaid = () => {
     },
     {
       title: "Package",
-      dataIndex: "packageName",
+      dataIndex: "packagename",
       sorter: false,
-      render: (packageName: any) => {
-        if (!packageName) return "-";
-        return <>{packageName}</>;
+      render: (packagename: any) => {
+        if (!packagename) return "-";
+        return <>{packagename}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -290,7 +290,7 @@ const WeekUnpaid = () => {
             Retailer: item.retailer,
             "Connection Address": item.connection_address,
             Credits: item.credits,
-            Package: item.packageName,
+            Package: item.packagename,
             "Package Price": item.package_price,
             "Expiration Time": format(expiration, "yyyy-MM-dd pp")
           };

@@ -234,7 +234,7 @@ const CustomerTransactionList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },

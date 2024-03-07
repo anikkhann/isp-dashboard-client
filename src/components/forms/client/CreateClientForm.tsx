@@ -128,22 +128,22 @@ const CreateClientForm = () => {
   const [clientLevel, setClientLevel] = useState(null);
   const [serviceType, setServiceType] = useState("technology");
   const [packageType, setPackageType] = useState("voucher");
-  const [divisions, setDivisions] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
   const [selectedDivision, setSelectedDivision] = useState(null);
 
-  const [districts, setDistricts] = useState([]);
+  const [districts, setDistricts] = useState<any[]>([]);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
 
-  const [upazillas, setUpazillas] = useState([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
   const [selectedUpazilla, setSelectedUpazilla] = useState(null);
 
-  const [unions, setUnions] = useState([]);
+  const [unions, setUnions] = useState<any[]>([]);
   const [selectedUnion, setSelectedUnion] = useState(null);
 
-  const [licenseTypes, setLicenseTypes] = useState([]);
+  const [licenseTypes, setLicenseTypes] = useState<any[]>([]);
   const [selectedLicenseType, setSelectedLicenseType] = useState(null);
 
-  const [radiusIps, setRadiusIps] = useState([]);
+  const [radiusIps, setRadiusIps] = useState<any[]>([]);
   const [selectedRadiusIp, setSelectedRadiusIp] = useState(null);
 
   const { useBreakpoint } = Grid;
@@ -690,6 +690,17 @@ const CreateClientForm = () => {
                     onChange={handleChange}
                     options={tagsList}
                     value={clientLevel}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1064,6 +1075,17 @@ const CreateClientForm = () => {
                     onChange={handleDivisionChange}
                     options={divisions}
                     value={selectedDivision}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1099,6 +1121,17 @@ const CreateClientForm = () => {
                     onChange={handleDistrictChange}
                     options={districts}
                     value={selectedDistrict}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1128,6 +1161,17 @@ const CreateClientForm = () => {
                     onChange={handleUpazillaChange}
                     options={upazillas}
                     value={selectedUpazilla}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1159,6 +1203,17 @@ const CreateClientForm = () => {
                     onChange={handleUnionChange}
                     options={unions}
                     value={selectedUnion}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1188,6 +1243,17 @@ const CreateClientForm = () => {
                     onChange={handleLicenseTypeChange}
                     options={licenseTypes}
                     value={selectedLicenseType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1277,6 +1343,17 @@ const CreateClientForm = () => {
                     onChange={handleRadiusIpChange}
                     options={radiusIps}
                     value={selectedRadiusIp}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1367,6 +1444,17 @@ const CreateClientForm = () => {
                     onChange={handleService}
                     options={serviceTypeList}
                     value={serviceType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1405,6 +1493,17 @@ const CreateClientForm = () => {
                     onChange={handlePackage}
                     options={packageTypeList}
                     value={packageType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>

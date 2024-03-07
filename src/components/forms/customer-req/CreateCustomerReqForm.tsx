@@ -83,10 +83,10 @@ const CreateCustomerReqForm = () => {
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [upazillas, setUpazillas] = useState([]);
-  const [unions, setUnions] = useState([]);
+  const [divisions, setDivisions] = useState<any[]>([]);
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [upazillas, setUpazillas] = useState<any[]>([]);
+  const [unions, setUnions] = useState<any[]>([]);
 
   const [selectedDivision, setSelectedDivision] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
@@ -95,17 +95,17 @@ const CreateCustomerReqForm = () => {
 
   const [selectedIdentityType, setSelectedIdentityType] = useState(null);
 
-  const [customerTypes, setCustomerTypes] = useState([]);
+  const [customerTypes, setCustomerTypes] = useState<any[]>([]);
   const [selectedCustomerType, setSelectedCustomerType] = useState(null);
 
-  const [customerPackages, setCustomerPackages] = useState([]);
+  const [customerPackages, setCustomerPackages] = useState<any[]>([]);
   const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
 
   const [selectedReferenceType, setSelectedReferenceType] = useState(null);
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
   const { useBreakpoint } = Grid;
@@ -842,6 +842,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleCustomerTypeChange}
                     options={customerTypes}
                     value={selectedCustomerType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1168,6 +1179,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleIdentityTypeChange}
                     options={identityTypes}
                     value={selectedIdentityType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1238,6 +1260,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleDivisionChange}
                     options={divisions}
                     value={selectedDivision}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1274,6 +1307,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleDistrictChange}
                     options={districts}
                     value={selectedDistrict}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1304,6 +1348,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleUpazillaChange}
                     options={upazillas}
                     value={selectedUpazilla}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1334,6 +1389,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleUnionChange}
                     options={unions}
                     value={selectedUnion}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1370,6 +1436,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleCustomerPackageChange}
                     options={customerPackages}
                     value={selectedCustomerPackage}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1433,6 +1510,17 @@ const CreateCustomerReqForm = () => {
                     onChange={handleReferenceTypeChange}
                     options={referenceTypes}
                     value={selectedReferenceType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -1464,6 +1552,17 @@ const CreateCustomerReqForm = () => {
                       onChange={handleUserChange}
                       options={users}
                       value={selectedUser}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>
@@ -1531,6 +1630,17 @@ const CreateCustomerReqForm = () => {
                       onChange={handleCustomerChange}
                       options={customers}
                       value={selectedCustomer}
+                      showSearch
+                      filterOption={(input, option) => {
+                        if (typeof option?.label === "string") {
+                          return (
+                            option.label
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          );
+                        }
+                        return false;
+                      }}
                     />
                   </Space>
                 </Form.Item>

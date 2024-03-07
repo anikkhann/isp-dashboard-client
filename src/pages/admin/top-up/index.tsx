@@ -1,6 +1,6 @@
 import TopUpLayout from "@/core/layouts/TopUpLayout";
 import AppLoader from "@/lib/AppLoader";
-import MainDashboard from "@/modules/dashboard/MainDashboard";
+import TopUpDashboard from "@/modules/dashboard/TopUpDashboard";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("topUp.dashboard", "") ? <MainDashboard /> : <Forbidden />}
+      {ability.can("topUp.dashboard", "") ? <TopUpDashboard /> : <Forbidden />}
     </>
   );
 };

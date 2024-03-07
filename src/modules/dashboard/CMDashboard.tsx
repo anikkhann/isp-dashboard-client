@@ -6,8 +6,10 @@ import ZoneWiseCustomerStatisticData from "@/components/dashboard/CustomerManage
 import PopWiseCustomerStatisticData from "@/components/dashboard/CustomerManagement/PopWiseCustomerStatisticData";
 import CustomerCard from "@/components/dashboard/CustomerManagement/CustomerCard";
 import DeviceOnlineCustomerData from "@/components/dashboard/CustomerManagement/DeviceOnlineCustomerData";
+import { useAppSelector } from "@/store/hooks";
 
 const CMDashboard = () => {
+  const authUser = useAppSelector(state => state.auth.user);
   return (
     <>
       <AppAnimate>
@@ -15,10 +17,11 @@ const CMDashboard = () => {
           <Col span={24}>
             <CustomerCard />
           </Col>
-
-          <Col span={24}>
-            <DeviceOnlineCustomerData />
-          </Col>
+          {authUser && authUser.userType == "client" && (
+            <Col span={24}>
+              <DeviceOnlineCustomerData />
+            </Col>
+          )}
 
           <Col span={24}>
             <CustomerStatisticData />

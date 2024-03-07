@@ -123,6 +123,17 @@ const OnlineCustomerList = () => {
       align: "center" as AlignType
     },
     {
+      title: "NAS",
+      dataIndex: "nas",
+      sorter: false,
+      render: (nas: any) => {
+        if (!nas) return "-";
+        return <>{nas}</>;
+      },
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
       title: "Session Start Time",
       dataIndex: "session_start_time",
       sorter: false,
@@ -212,6 +223,7 @@ const OnlineCustomerList = () => {
             Customer: item.customer,
             IP: item.ip,
             MAC: item.mac,
+            Nas: item.nas,
             "Session Start Time": format(session, "yyyy-MM-dd pp"),
             "Duration Minute": item.duration_min
           };
@@ -332,7 +344,7 @@ const OnlineCustomerList = () => {
             {/* )} */}
             <Space direction="vertical" style={{ width: "100%" }}>
               <TableCard
-                title=""
+                title="Online Customer List"
                 hasLink={false}
                 addLink=""
                 permission=""
