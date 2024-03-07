@@ -1,6 +1,6 @@
 import AccountLayout from "@/core/layouts/AccountLayout";
 import AppLoader from "@/lib/AppLoader";
-import WeekUnpaid from "@/modules/accounting/WeekUnpaid/WeekUnpaid";
+import OverallUnpaid from "@/modules/accounting/OverallUnpaid/OverallUnpaid";
 import Forbidden from "@/modules/errorPage/Forbidden";
 
 import ability from "@/services/guard/ability";
@@ -13,9 +13,8 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {/* {ability.can("customerImportCsv.list", "") ? ( */}
-      {ability.can("accounting.dashboard-current-week-due", "") ? (
-        <WeekUnpaid />
+      {ability.can("accounting.dashboard-overall-due", "") ? (
+        <OverallUnpaid />
       ) : (
         <Forbidden />
       )}

@@ -2,10 +2,9 @@
 // ** React Imports
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+// import DOMPurify from 'dompurify';
 import {
   Alert,
   Button,
@@ -544,6 +543,7 @@ const EditNoticeForm = ({ item }: PropData) => {
 
   const handleEndDateChange = (value: any) => {
     // console.log("checked = ", value);
+
     setSelectedEndDate(value);
     form.setFieldsValue({
       endDate: value
@@ -551,18 +551,27 @@ const EditNoticeForm = ({ item }: PropData) => {
   };
 
   const handleMessageChange = (value: any) => {
-    // console.log("checked = ", value);
     setValue(value);
     form.setFieldsValue({
       message: value
     });
   };
+  // const handleMessageChange = (value: string) => {
+  //   const cleanedValue = value.replace(/<p><\/p>/gi, "");
+  //   setValue(cleanedValue);
+  //   form.setFieldsValue({
+  //     message: cleanedValue
+  //   });
+  // };
+
   useEffect(() => {
     setLoading(loading);
   }, [loading]);
   const onSubmit = async () => {
     setLoading(true);
     setTimeout(async () => {
+      // const sanitizedMessage = DOMPurify.sanitize(value);
+      const processedMessage = value.replace(/<p>/g, "").replace(/<\/p>/g, "");
       const formData = {
         id: item.id,
         noticeType: selectedNoticeType,
@@ -572,12 +581,12 @@ const EditNoticeForm = ({ item }: PropData) => {
         retailerId: selectedRetailer,
         customerPackageId: selectedCustomerPackage,
         customerId: selectedCustomer,
-        message: value,
+        message: processedMessage,
         startDate: selectedStartDate
-          ? dayjs(selectedStartDate).format("Y-m-d")
+          ? dayjs(selectedStartDate).format("YYYY-MM-DD")
           : null,
         endDate: selectedEndDate
-          ? dayjs(selectedEndDate).format("Y-m-d")
+          ? dayjs(selectedEndDate).format("YYYY-MM-DD")
           : null,
         isActive: isActive
       };
@@ -680,6 +689,17 @@ const EditNoticeForm = ({ item }: PropData) => {
                   onChange={handleNoticeTypeChange}
                   options={noticeTypes}
                   value={selectedNoticeType}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -723,6 +743,17 @@ const EditNoticeForm = ({ item }: PropData) => {
                   onChange={handleClientChange}
                   options={clients}
                   value={selectedClient}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -763,6 +794,17 @@ const EditNoticeForm = ({ item }: PropData) => {
                   onChange={handleZoneChange}
                   options={zones}
                   value={selectedZone}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -802,6 +844,17 @@ const EditNoticeForm = ({ item }: PropData) => {
                   onChange={handleSubZoneChange}
                   options={subZones}
                   value={selectedSubZone}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -837,6 +890,17 @@ const EditNoticeForm = ({ item }: PropData) => {
                   onChange={handleRetailerChange}
                   options={retailers}
                   value={selectedRetailer}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -875,6 +939,17 @@ const EditNoticeForm = ({ item }: PropData) => {
                     onChange={handleCustomerPackageChange}
                     options={customerPackages}
                     value={selectedCustomerPackage}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -913,6 +988,17 @@ const EditNoticeForm = ({ item }: PropData) => {
                     onChange={handleCustomerChange}
                     options={customers}
                     value={selectedCustomer}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -934,7 +1020,7 @@ const EditNoticeForm = ({ item }: PropData) => {
             >
               {/* message */}
               <Form.Item
-                label="message"
+                label="Message"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -951,6 +1037,7 @@ const EditNoticeForm = ({ item }: PropData) => {
                   theme="snow"
                   value={value}
                   onChange={handleMessageChange}
+                  style={{ height: "200px" }}
                 />
               </Form.Item>
             </Col>
@@ -961,11 +1048,11 @@ const EditNoticeForm = ({ item }: PropData) => {
               lg={12}
               xl={12}
               xxl={12}
-              className="gutter-row"
+              className="gutter-row my-10"
             >
               {/* startDate */}
               <Form.Item
-                label="startDate"
+                label="Start Date"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -974,7 +1061,7 @@ const EditNoticeForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your startDate!"
+                    message: "Please input your Start Date!"
                   }
                 ]}
               >
@@ -997,11 +1084,11 @@ const EditNoticeForm = ({ item }: PropData) => {
               lg={12}
               xl={12}
               xxl={12}
-              className="gutter-row"
+              className="gutter-row my-10"
             >
               {/* endDate */}
               <Form.Item
-                label="endDate"
+                label="End Date"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -1010,7 +1097,7 @@ const EditNoticeForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your endDate!"
+                    message: "Please input your End Date!"
                   }
                 ]}
               >

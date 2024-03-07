@@ -223,6 +223,8 @@ const CreateSystemSmsForm = () => {
                   className={`form-control`}
                   name="template"
                   style={{ padding: "6px" }}
+                  rows={6}
+                  cols={20}
                 />
               </Form.Item>
             </Col>

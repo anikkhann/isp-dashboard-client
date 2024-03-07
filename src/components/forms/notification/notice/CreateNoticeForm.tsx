@@ -99,22 +99,22 @@ const CreateNoticeForm = () => {
 
   const [selectedNoticeType, setSelectedNoticeType] = useState<any>(null);
 
-  const [zones, setZones] = useState([]);
+  const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState(null);
 
-  const [subZones, setSubZones] = useState([]);
+  const [subZones, setSubZones] = useState<any[]>([]);
   const [selectedSubZone, setSelectedSubZone] = useState(null);
 
-  const [retailers, setRetailers] = useState([]);
+  const [retailers, setRetailers] = useState<any[]>([]);
   const [selectedRetailer, setSelectedRetailer] = useState(null);
 
   const [clients, setClients] = useState<any[]>([]);
   const [selectedClient, setSelectedClient] = useState<any>(null);
 
-  const [customerPackages, setCustomerPackages] = useState([]);
+  const [customerPackages, setCustomerPackages] = useState<any[]>([]);
   const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
 
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   const [value, setValue] = useState("");
@@ -530,6 +530,8 @@ const CreateNoticeForm = () => {
   const onSubmit = async () => {
     setLoading(true);
     setTimeout(async () => {
+      // Preprocess content to remove <p></p> tags
+      const processedMessage = value.replace(/<p>/g, "").replace(/<\/p>/g, "");
       const formData = {
         noticeType: selectedNoticeType,
         clientId: selectedClient,
@@ -538,13 +540,14 @@ const CreateNoticeForm = () => {
         retailerId: selectedRetailer,
         customerPackageId: selectedCustomerPackage,
         customerId: selectedCustomer,
-        message: value,
+        message: processedMessage,
         startDate: selectedStartDate
-          ? dayjs(selectedStartDate).format("Y-m-d")
+          ? dayjs(selectedStartDate).format("YYYY-MM-DD")
           : null,
         endDate: selectedEndDate
-          ? dayjs(selectedEndDate).format("Y-m-d")
+          ? dayjs(selectedEndDate).format("YYYY-MM-DD")
           : null,
+
         isActive: isActive
       };
 
@@ -646,6 +649,17 @@ const CreateNoticeForm = () => {
                   onChange={handleNoticeTypeChange}
                   options={noticeTypes}
                   value={selectedNoticeType}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -689,6 +703,17 @@ const CreateNoticeForm = () => {
                   onChange={handleClientChange}
                   options={clients}
                   value={selectedClient}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -729,6 +754,17 @@ const CreateNoticeForm = () => {
                   onChange={handleZoneChange}
                   options={zones}
                   value={selectedZone}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -768,6 +804,17 @@ const CreateNoticeForm = () => {
                   onChange={handleSubZoneChange}
                   options={subZones}
                   value={selectedSubZone}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -803,6 +850,17 @@ const CreateNoticeForm = () => {
                   onChange={handleRetailerChange}
                   options={retailers}
                   value={selectedRetailer}
+                  showSearch
+                  filterOption={(input, option) => {
+                    if (typeof option?.label === "string") {
+                      return (
+                        option.label
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      );
+                    }
+                    return false;
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -841,6 +899,17 @@ const CreateNoticeForm = () => {
                     onChange={handleCustomerPackageChange}
                     options={customerPackages}
                     value={selectedCustomerPackage}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -879,6 +948,17 @@ const CreateNoticeForm = () => {
                     onChange={handleCustomerChange}
                     options={customers}
                     value={selectedCustomer}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
                   />
                 </Space>
               </Form.Item>
@@ -900,7 +980,7 @@ const CreateNoticeForm = () => {
             >
               {/* message */}
               <Form.Item
-                label="message"
+                label="Message"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -917,6 +997,7 @@ const CreateNoticeForm = () => {
                   theme="snow"
                   value={value}
                   onChange={handleMessageChange}
+                  style={{ height: "200px" }}
                 />
               </Form.Item>
             </Col>
@@ -927,11 +1008,11 @@ const CreateNoticeForm = () => {
               lg={12}
               xl={12}
               xxl={12}
-              className="gutter-row"
+              className="gutter-row my-10"
             >
               {/* startDate */}
               <Form.Item
-                label="startDate"
+                label="Start Date"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -940,7 +1021,7 @@ const CreateNoticeForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your startDate!"
+                    message: "Please input your Start Date!"
                   }
                 ]}
               >
@@ -963,11 +1044,11 @@ const CreateNoticeForm = () => {
               lg={12}
               xl={12}
               xxl={12}
-              className="gutter-row"
+              className="gutter-row my-10"
             >
               {/* endDate */}
               <Form.Item
-                label="endDate"
+                label="End Date"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -976,7 +1057,7 @@ const CreateNoticeForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your endDate!"
+                    message: "Please input your End Date!"
                   }
                 ]}
               >

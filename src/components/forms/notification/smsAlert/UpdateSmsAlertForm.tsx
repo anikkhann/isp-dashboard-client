@@ -232,7 +232,8 @@ const UpdateSmsAlertForm = () => {
                               className={`form-control`}
                               name="message"
                               style={{ padding: "6px" }}
-                              rows={4}
+                              rows={6}
+                              cols={20}
                               value={item.template}
                               defaultValue={item.template}
                               onChange={e => {

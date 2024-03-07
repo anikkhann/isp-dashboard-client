@@ -277,6 +277,10 @@ const tagsList = [
   {
     label: "Dashboard Current Week Due",
     value: "dashboard-current-week-due"
+  },
+  {
+    label: "Dashboard Overall Due",
+    value: "dashboard-overall-due"
   }
 ];
 
