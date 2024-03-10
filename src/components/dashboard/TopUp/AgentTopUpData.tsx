@@ -76,7 +76,7 @@ const AgentTopUpData = () => {
         isActive: true
       }
     };
-    axios.post("/api/users/get-list", body).then(res => {
+    axios.post("/api/users/get-list-for-table", body).then(res => {
       // console.log(res);
       const { data } = res;
 

@@ -118,7 +118,7 @@ const SessionHistory = ({ item }: PropData) => {
       sorter: false,
       render: (_, row) => {
         if (!row.onlinetime) return "-";
-        return <>{row.onlinetime}</>;
+        return <>{row.onlinetime} Min</>;
       },
       /* width: "20%", */
       align: "center" as AlignType

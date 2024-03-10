@@ -135,7 +135,7 @@ const CreateNoticeForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -163,7 +163,7 @@ const CreateNoticeForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -179,7 +179,7 @@ const CreateNoticeForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -207,7 +207,7 @@ const CreateNoticeForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -223,7 +223,7 @@ const CreateNoticeForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -253,7 +253,7 @@ const CreateNoticeForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -273,7 +273,7 @@ const CreateNoticeForm = () => {
         ]
       },
       body: {
-        client: {
+        partner: {
           id: selectedClient
         },
         isActive: true
@@ -307,7 +307,7 @@ const CreateNoticeForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -334,7 +334,7 @@ const CreateNoticeForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -356,7 +356,7 @@ const CreateNoticeForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -375,8 +375,8 @@ const CreateNoticeForm = () => {
         },
         retailer: {
           id: retailerParam
-        },
-        isActive: true
+        }
+        // isActive: true
       }
     };
     axios.post("/api/customer/get-list", body).then(res => {
@@ -428,6 +428,12 @@ const CreateNoticeForm = () => {
       getRetailers(selectedSubZone);
     }
   }, [selectedSubZone]);
+
+  useEffect(() => {
+    if (selectedClient) {
+      getCustomerPackages(selectedClient);
+    }
+  }, [selectedClient]);
 
   useEffect(() => {
     getCustomers(
@@ -738,10 +744,11 @@ const CreateNoticeForm = () => {
                 rules={[
                   {
                     required:
-                      selectedNoticeType == "zone_manager_specific" ||
-                      selectedNoticeType == "sub_zone_manager_specific" ||
-                      selectedNoticeType == "retailer_specific"
-                        ? true
+                      selectedNoticeType == "zone_manager_specific"
+                        ? // ||
+                          // selectedNoticeType == "sub_zone_manager_specific" ||
+                          // selectedNoticeType == "retailer_specific"
+                          true
                         : false,
                     message: "Please select Zone Manager!"
                   }

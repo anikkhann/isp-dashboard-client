@@ -24,7 +24,7 @@ import ability from "@/services/guard/ability";
 import Link from "next/link";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { NoticeBoardData } from "@/interfaces/NoticeBoardData";
-
+import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -206,7 +206,7 @@ const NoticeList: React.FC = () => {
           id: selectedCustomerParam
         },
         dateRangeFilter: {
-          field: "endDate",
+          field: "createdOn",
           startDate: selectedStartDateParam,
           endDate: selectedEndDateParam
         }
@@ -367,7 +367,7 @@ const NoticeList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -395,7 +395,7 @@ const NoticeList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -411,7 +411,7 @@ const NoticeList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -439,7 +439,7 @@ const NoticeList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -455,7 +455,7 @@ const NoticeList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -485,7 +485,7 @@ const NoticeList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -494,7 +494,7 @@ const NoticeList: React.FC = () => {
     });
   }
 
-  const getCustomerPackages = () => {
+  const getCustomerPackages = (selectedClientId: any) => {
     const body = {
       meta: {
         sort: [
@@ -505,6 +505,7 @@ const NoticeList: React.FC = () => {
         ]
       },
       body: {
+        partner: { id: selectedClientId },
         isActive: true
       }
     };
@@ -536,7 +537,7 @@ const NoticeList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -563,7 +564,7 @@ const NoticeList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -584,7 +585,7 @@ const NoticeList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -631,7 +632,7 @@ const NoticeList: React.FC = () => {
 
   useEffect(() => {
     getClients();
-    getCustomerPackages();
+    getCustomerPackages(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -653,6 +654,12 @@ const NoticeList: React.FC = () => {
       getRetailers(selectedSubZone);
     }
   }, [selectedSubZone]);
+
+  useEffect(() => {
+    if (selectedClient) {
+      getCustomerPackages(selectedClient);
+    }
+  }, [selectedClient]);
 
   useEffect(() => {
     if (
@@ -691,6 +698,7 @@ const NoticeList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+
     {
       title: "Notice Type",
       dataIndex: "noticeType",
@@ -699,12 +707,82 @@ const NoticeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Client",
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Zone Manager",
+      dataIndex: "zoneManager",
+      sorter: false,
+      render: (zoneManager: any) => {
+        if (!zoneManager) return "-";
+        return <>{zoneManager.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "SubZone Manager",
+      dataIndex: "subZoneManager",
+      sorter: false,
+      render: (subZoneManager: any) => {
+        if (!subZoneManager) return "-";
+        return <>{subZoneManager.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Retailer",
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Package",
+      dataIndex: "customerPackage",
+      sorter: false,
+      render: (customerPackage: any) => {
+        if (!customerPackage) return "-";
+        return <>{customerPackage.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
       title: "Message",
       dataIndex: "message",
       sorter: true,
       width: "20%",
-      align: "center" as AlignType
+      align: "center" as AlignType,
+      render: (text: string) => (
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "50ch",
+            textAlign: "center"
+          }}
+        >
+          {text}
+        </div>
+      )
     },
+
     {
       title: "Status",
       dataIndex: "isActive",
@@ -719,6 +797,57 @@ const NoticeList: React.FC = () => {
             )}
           </>
         );
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // insertedBy
+    {
+      title: "Created By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.name}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // createdOn
+    {
+      title: "Created At",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // editedBy
+    {
+      title: "Updated By",
+      dataIndex: "editedBy",
+      sorter: false,
+      render: (editedBy: any) => {
+        if (!editedBy) return "-";
+        return <>{editedBy.name}</>;
+      },
+
+      width: "20%",
+      align: "center" as AlignType
+    },
+    // updatedOn
+    {
+      title: "Updated At",
+      dataIndex: "updatedOn",
+      sorter: false,
+      render: (updatedOn: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -864,41 +993,7 @@ const NoticeList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Status</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleStatusChange}
-                              options={statuses}
-                              value={selectedStatus}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>noticeType</b>
+                              <b>Notice Type</b>
                             </span>
                             <Select
                               allowClear
@@ -933,7 +1028,7 @@ const NoticeList: React.FC = () => {
                           xl={8}
                           xxl={8}
                           className="gutter-row"
-                          style={{ marginTop: "25px" }}
+                          // style={{ marginTop: "25px" }}
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
@@ -1155,6 +1250,40 @@ const NoticeList: React.FC = () => {
                               onChange={handleDateChange}
                               value={selectedDateRange}
                               placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Status</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleStatusChange}
+                              options={statuses}
+                              value={selectedStatus}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Col>

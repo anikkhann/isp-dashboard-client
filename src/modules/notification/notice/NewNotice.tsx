@@ -19,7 +19,7 @@ const NewNotice = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/notification">Notification</Link>
+              title: <Link href="/admin/notification/notice">Notification</Link>
             },
             {
               title: "New Notice Board"

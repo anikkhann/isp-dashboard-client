@@ -26,12 +26,16 @@ const CMDashboard = () => {
           <Col span={24}>
             <CustomerStatisticData />
           </Col>
-          <Col span={24}>
-            <ZoneWiseCustomerStatisticData />
-          </Col>
-          <Col span={24}>
-            <PopWiseCustomerStatisticData />
-          </Col>
+          {authUser && authUser.userType == "client" && (
+            <Col span={24}>
+              <ZoneWiseCustomerStatisticData />
+            </Col>
+          )}
+          {authUser && authUser.userType == "client" && (
+            <Col span={24}>
+              <PopWiseCustomerStatisticData />
+            </Col>
+          )}
         </AppRowContainer>
       </AppAnimate>
     </>

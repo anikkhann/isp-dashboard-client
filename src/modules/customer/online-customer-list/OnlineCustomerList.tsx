@@ -146,12 +146,12 @@ const OnlineCustomerList = () => {
       align: "center" as AlignType
     },
     {
-      title: "Duration",
+      title: "Online Time",
       dataIndex: "duration_min",
       sorter: false,
       render: (duration_min: any) => {
         if (!duration_min) return "-";
-        return <>{duration_min}</>;
+        return <>{duration_min} Min</>;
         // return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: 200,
@@ -225,7 +225,7 @@ const OnlineCustomerList = () => {
             MAC: item.mac,
             Nas: item.nas,
             "Session Start Time": format(session, "yyyy-MM-dd pp"),
-            "Duration Minute": item.duration_min
+            "Online Time": item.duration_min
           };
         });
 

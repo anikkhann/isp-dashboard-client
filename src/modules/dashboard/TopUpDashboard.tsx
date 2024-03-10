@@ -13,7 +13,7 @@ const TopUpDashboard = () => {
   return (
     <>
       <AppAnimate>
-        <AppRowContainer>
+        {/* <AppRowContainer>
           {authUser && authUser.userType == "client" ? (
             <Col span={24}>
               <AgentTopUpData />
@@ -22,23 +22,37 @@ const TopUpDashboard = () => {
             <MainDashboard />
           )}
 
-          {authUser && authUser.userType == "client" ? (
+          {authUser &&
+          authUser.userType === "client" &&
+          (authUser.clientLevel === "quad_cycle" ||
+            authUser.clientLevel === "quad_cycle_hotspot" ||
+            authUser.clientLevel === "quad_cycle_isp_hotspot") ? (
             <Col span={24}>
               <ZoneTopUpData />
             </Col>
           ) : (
             <MainDashboard />
           )}
-          {/* {authUser &&
-            authUser.userType === "client" &&
-            (authUser.client_level === "quad_cycle" ||
-              authUser.client_level === "quad_cycle_hotspot" ||
-              authUser.client_level === "quad_cycle_isp_hotspot") && (
+        </AppRowContainer> */}
+        {authUser && authUser.userType === "client" ? (
+          authUser.clientLevel === "quad_cycle" ||
+          authUser.clientLevel === "quad_cycle_hotspot" ||
+          authUser.clientLevel === "quad_cycle_isp_hotspot" ? (
+            <AppRowContainer>
+              <Col span={24}>
+                <AgentTopUpData />
+              </Col>
               <Col span={24}>
                 <ZoneTopUpData />
               </Col>
-            )} */}
-        </AppRowContainer>
+            </AppRowContainer>
+          ) : (
+            <AgentTopUpData />
+          )
+        ) : (
+          <MainDashboard />
+        )}
+        ;
       </AppAnimate>
     </>
   );

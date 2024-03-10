@@ -168,7 +168,7 @@ const EditNoticeForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -196,7 +196,7 @@ const EditNoticeForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -212,7 +212,7 @@ const EditNoticeForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -240,7 +240,7 @@ const EditNoticeForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -256,7 +256,7 @@ const EditNoticeForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -286,7 +286,7 @@ const EditNoticeForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -295,7 +295,7 @@ const EditNoticeForm = ({ item }: PropData) => {
     });
   }
 
-  const getCustomerPackages = () => {
+  const getCustomerPackages = (selectedClient: any) => {
     const body = {
       meta: {
         sort: [
@@ -306,6 +306,9 @@ const EditNoticeForm = ({ item }: PropData) => {
         ]
       },
       body: {
+        partner: {
+          id: selectedClient
+        },
         isActive: true
       }
     };
@@ -374,6 +377,7 @@ const EditNoticeForm = ({ item }: PropData) => {
   }
 
   function getCustomers(
+    clientParam: any,
     packageParam: any,
     zoneParam: any,
     subZoneParam: any,
@@ -390,6 +394,9 @@ const EditNoticeForm = ({ item }: PropData) => {
         ]
       },
       body: {
+        client: {
+          id: clientParam
+        },
         customerPackage: {
           id: packageParam
         },
@@ -432,7 +439,7 @@ const EditNoticeForm = ({ item }: PropData) => {
 
   useEffect(() => {
     getClients();
-    getCustomerPackages();
+    getCustomerPackages(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -456,13 +463,21 @@ const EditNoticeForm = ({ item }: PropData) => {
   }, [selectedSubZone]);
 
   useEffect(() => {
+    if (selectedClient) {
+      getCustomerPackages(selectedClient);
+    }
+  }, [selectedClient]);
+
+  useEffect(() => {
     if (
+      selectedClient &&
       selectedCustomerPackage &&
       selectedZone &&
       selectedSubZone &&
       selectedRetailer
     ) {
       getCustomers(
+        selectedClient,
         selectedCustomerPackage,
         selectedZone,
         selectedSubZone,
@@ -471,6 +486,7 @@ const EditNoticeForm = ({ item }: PropData) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    selectedClient,
     selectedCustomerPackage,
     selectedZone,
     selectedSubZone,
@@ -571,7 +587,9 @@ const EditNoticeForm = ({ item }: PropData) => {
     setLoading(true);
     setTimeout(async () => {
       // const sanitizedMessage = DOMPurify.sanitize(value);
-      const processedMessage = value.replace(/<p>/g, "").replace(/<\/p>/g, "");
+      const processedMessage = value
+        .replace(/<strong>/g, "")
+        .replace(/<\/strong>/g, "");
       const formData = {
         id: item.id,
         noticeType: selectedNoticeType,
@@ -778,10 +796,11 @@ const EditNoticeForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required:
-                      selectedNoticeType == "zone_manager_specific" ||
-                      selectedNoticeType == "sub_zone_manager_specific" ||
-                      selectedNoticeType == "retailer_specific"
-                        ? true
+                      selectedNoticeType == "zone_manager_specific"
+                        ? // ||
+                          // selectedNoticeType == "sub_zone_manager_specific" ||
+                          // selectedNoticeType == "retailer_specific"
+                          true
                         : false,
                     message: "Please select Zone Manager!"
                   }

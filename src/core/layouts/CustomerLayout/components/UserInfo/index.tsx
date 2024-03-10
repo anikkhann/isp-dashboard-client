@@ -78,7 +78,7 @@ const UserInfo = () => {
                 </StyledUserArrow>
               </StyledUsernameInfo>
               {user?.userType == "client" ||
-              (user?.userType == "zone" && user?.isMasterUser == true) ? (
+              (user?.userType == "zone" && user?.masterUser == true) ? (
                 <StyledCrUserDesignation className="text-truncate">
                   Rem. bal. : {user?.credit}
                 </StyledCrUserDesignation>
