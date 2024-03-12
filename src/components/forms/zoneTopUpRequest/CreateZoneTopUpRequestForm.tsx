@@ -87,12 +87,12 @@ const CreateZoneTopUpRequestForm = () => {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "bankName"
-          }
-        ]
+        // sort: [
+        //   {
+        //     order: "asc",
+        //     field: "bankName"
+        //   }
+        // ]
       },
       body: {
         isActive: true

@@ -10,10 +10,51 @@ import { Alert, Button, Form, Input, Row, Col, Switch } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
-
+const dataArray = [
+  {
+    heading: "Username",
+    username: "[username]:",
+    description: "To include username of the customer"
+  },
+  {
+    heading: "Password",
+    username: "[password]:",
+    description: "To include password of the customer"
+  },
+  {
+    heading: "Due Date",
+    username: "[due_date]:",
+    description: "To include due date of dubscription"
+  },
+  {
+    heading: "Due Amount",
+    username: "[due_amount]:",
+    description: "To include due amount to be paid"
+  },
+  {
+    heading: "Expiration Time",
+    username: "[expiration_time]:",
+    description: "To include expiration date time"
+  },
+  {
+    heading: "Paid Amount",
+    username: "[paid_amount]:",
+    description: "To include paid amount"
+  },
+  {
+    heading: "SAF OTP",
+    username: "[saf_otp]:",
+    description: "To include saf verification code"
+  },
+  {
+    heading: "Ticket No",
+    username: "[ticket_no]:",
+    description: "To include ticket number"
+  }
+];
 const UpdateSmsAlertForm = () => {
   const [form] = Form.useForm();
-
+  // const { Panel } = Collapse;
   const [loading, setLoading] = useState(false);
 
   const [dynamicFields, setDynamicFields] = useState<any[]>([]);
@@ -54,6 +95,7 @@ const UpdateSmsAlertForm = () => {
           id: item.id,
           subject: item.subject,
           template: item.template,
+          placeholder: item.placeholder,
           isActive: item.isActive
         };
       });
@@ -78,6 +120,7 @@ const UpdateSmsAlertForm = () => {
         return {
           id: item.id,
           template: item.template,
+          // placeholder: item.placeholder,
           isActive: item.isActive
         };
       });
@@ -221,7 +264,7 @@ const UpdateSmsAlertForm = () => {
                         >
                           {/* message */}
                           <Form.Item
-                            label="message"
+                            label="Message"
                             style={{
                               marginBottom: 0,
                               fontWeight: "bold"
@@ -244,6 +287,23 @@ const UpdateSmsAlertForm = () => {
                               }}
                             />
                           </Form.Item>
+                        </Col>
+
+                        {/* placeholder */}
+                        <Col
+                          xs={16}
+                          sm={16}
+                          md={16}
+                          lg={16}
+                          xl={16}
+                          xxl={16}
+                          className="gutter-row"
+                        >
+                          {/* message */}
+                          <p>
+                            <span className="font-bold">Placeholder:</span>
+                            {item.placeholder}
+                          </p>
                         </Col>
                       </Row>
                     </Col>
@@ -271,6 +331,62 @@ const UpdateSmsAlertForm = () => {
                   {loading ? "Submitting..." : "Submit"}
                 </Button>
               </Form.Item>
+            </Col>
+          </Row>
+          <Row
+            justify="space-between"
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+          >
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
+              // style={{ textAlign: "right" }}
+            >
+              <h1 className="text-center text-lg font-bold bg-success p-5">
+                Use following Placeholder to include some information in SMS
+              </h1>
+              {/* <Collapse accordion> */}
+              {dataArray.map((data, index) => (
+                <div className="text-left" key={index}>
+                  <Row
+                    style={{
+                      marginTop: "2px"
+                    }}
+                    justify={"center"}
+                  >
+                    <Col
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "end"
+                      }}
+                      className="w-1/2"
+                    >
+                      <span className="font-bold text-base">
+                        {data.username}
+                      </span>
+                    </Col>
+                    <Col className="w-1/2">
+                      <span className="mx-1 text-base">{data.description}</span>
+                    </Col>
+                  </Row>
+                </div>
+              ))}
+              {/* </Collapse> */}
+
+              {/* {dataArray.map((data, index) => (
+                <div key={index}>
+                  <div className="flex flex-wrap place-content-center">
+                    <p className="">{data.username}</p>
+                    <p className="px-3">{data.description}</p>
+                  </div>
+                </div>
+              ))} */}
             </Col>
           </Row>
         </Form>

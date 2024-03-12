@@ -140,6 +140,7 @@ const SystemSmsTemplateList: React.FC = () => {
       width: "10%",
       align: "center" as AlignType
     },
+
     {
       title: "Key",
       dataIndex: "key",

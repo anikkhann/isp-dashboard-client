@@ -292,8 +292,9 @@ const ZoneTopUpRequestList: React.FC = () => {
       }
     };
     const res = await axios.post("/api/partner/get-list", body);
+    console.log(res);
     if (res.data.status == 200) {
-      const items = res.data.body.map((item: any) => {
+      const items = res.data.body?.map((item: any) => {
         return {
           label: item.username,
           value: item.id

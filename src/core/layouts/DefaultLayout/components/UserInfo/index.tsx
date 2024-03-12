@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import clsx from "clsx";
 import { Dropdown } from "antd";
 import { FaChevronDown } from "react-icons/fa";
-
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import {
   StyledCrUserDesignation,
@@ -12,12 +12,18 @@ import {
   StyledCrUserInfoContent,
   StyledCrUserInfoInner,
   StyledUserArrow,
-  StyledUsername,
+  // StyledUsername,
   StyledUsernameInfo
 } from "./index.styled";
 // import Cookies from "js-cookie";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+const StyledUsername = styled.div`
+  word-wrap: break-word;
+`;
 
+const UsernameWrapper = styled.div`
+  max-width: 100%; /* Adjust as needed */
+`;
 const UserInfo = () => {
   const router = useRouter();
 
@@ -66,13 +72,22 @@ const UserInfo = () => {
 
             <StyledCrUserInfoContent className="cr-user-info-content">
               <StyledUsernameInfo>
-                <StyledUsername
+                {/* <StyledUsername
                   className={clsx("text-truncate", {
                     light: "light"
                   })}
                 >
                   {user?.userName}
-                </StyledUsername>
+                </StyledUsername> */}
+                <UsernameWrapper>
+                  <StyledUsername
+                    className={clsx("text-truncate", {
+                      light: "light"
+                    })}
+                  >
+                    {user?.userName}
+                  </StyledUsername>
+                </UsernameWrapper>
                 <StyledUserArrow className="cr-user-arrow">
                   <FaChevronDown />
                 </StyledUserArrow>
