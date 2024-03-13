@@ -235,6 +235,13 @@ const hotspotRoutes = [
     path: "/admin/hotspot/retailer-onboard",
     icon: <IdcardOutlined />,
     permission: "retailerOnboard.list"
+  },
+  {
+    key: "/admin/hotspot/package",
+    label: <Link href="/admin/hotspot/package">Package</Link>,
+    path: "/admin/hotspot/package",
+    icon: <IdcardOutlined />,
+    permission: "hotspotPackage.list"
   }
 ];
 

@@ -228,7 +228,7 @@ const EditClientForm = ({ item }: PropData) => {
     setSelectedLicenseType(value as any);
   };
 
-  const onDateChange: DatePickerProps["onChange"] = (date, dateString) => {
+  const onDateChange: DatePickerProps["onChange"] = (date, dateString: any) => {
     // console.log(date, dateString);
     const newDate = dayjs(dateString);
     setSelectedDate(newDate);
