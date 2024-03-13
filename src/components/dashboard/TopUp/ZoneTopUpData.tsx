@@ -18,7 +18,7 @@ const ZoneTopUpData = () => {
   const MySwal = withReactContent(Swal);
 
   const [zones, setZones] = useState<any[]>([]);
-  console.log(zones);
+
   const [selectedZone, setSelectedZone] = useState<any>(null);
 
   const authUser = useAppSelector(state => state.auth.user);

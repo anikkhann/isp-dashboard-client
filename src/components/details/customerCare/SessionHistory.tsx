@@ -118,7 +118,7 @@ const SessionHistory = ({ item }: PropData) => {
       sorter: false,
       render: (_, row) => {
         if (!row.onlinetime) return "-";
-        return <>{row.onlinetime}</>;
+        return <>{row.onlinetime} Min</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
@@ -137,7 +137,7 @@ const SessionHistory = ({ item }: PropData) => {
     },
     // download
     {
-      title: "download",
+      title: "Download",
       dataIndex: "download",
       sorter: false,
       render: (_, row) => {
@@ -149,7 +149,7 @@ const SessionHistory = ({ item }: PropData) => {
     },
     // total
     {
-      title: "total",
+      title: "Total",
       dataIndex: "total",
       sorter: false,
       render: (_, row) => {

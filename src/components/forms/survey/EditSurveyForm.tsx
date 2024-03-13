@@ -50,7 +50,7 @@ interface PropData {
 const EditSurveyForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);

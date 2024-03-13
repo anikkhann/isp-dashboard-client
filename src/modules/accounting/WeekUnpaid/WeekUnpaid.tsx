@@ -185,6 +185,7 @@ const WeekUnpaid = () => {
       dataIndex: "credits",
       sorter: false,
       render: (credits: any) => {
+        if (credits) return <>{credits}</>;
         if (!credits) return "-";
         return <>{credits}</>;
       },

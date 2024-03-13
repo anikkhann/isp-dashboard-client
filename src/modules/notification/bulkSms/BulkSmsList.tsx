@@ -9,8 +9,11 @@ import {
   Row,
   Select,
   Space,
-  Tag
+  Tag,
+  Tooltip
 } from "antd";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import ability from "@/services/guard/ability";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -25,6 +28,7 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useAppSelector } from "@/store/hooks";
+import { useRouter } from "next/router";
 interface DataType {
   id: number;
   name: string;
@@ -74,7 +78,7 @@ const BulkSmsList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
 
   const { Panel } = Collapse;
-
+  const router = useRouter();
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
@@ -530,6 +534,73 @@ const BulkSmsList: React.FC = () => {
       setCustomerPackages(list);
     });
   };
+  // process
+  async function handleProcess(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Proceed"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.get(`/api/bulk-sms/process/${id}`);
+        if (data.status == 200) {
+          MySwal.fire("Success!", data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something Went Wrong", "error");
+      }
+    }
+  }
+  // delete
+  async function handleDelete(id: number) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, delete it!"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.delete(`/api/bulk-sms/delete/${id}`);
+        if (data.status == 200) {
+          MySwal.fire("Deleted!", data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log("error", error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
 
   // call on page load
   useEffect(() => {
@@ -702,9 +773,11 @@ const BulkSmsList: React.FC = () => {
       render: (status: any) => {
         return (
           <>
-            {status && status == "Initial" ? (
+            {status && status == "Pending" ? (
               <Tag color="blue">Pending</Tag>
-            ) : status && status == "processed" ? (
+            ) : status && status == "In Progress" ? (
+              <Tag color="sky">In Progress</Tag>
+            ) : status && status == "Processed" ? (
               <Tag color="green">Processed</Tag>
             ) : (
               <Tag color="red">Failed</Tag>
@@ -726,6 +799,61 @@ const BulkSmsList: React.FC = () => {
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (_, record: any) => {
+        return (
+          <div className="flex flex-row">
+            <Space size="middle" align="center">
+              {/* process */}
+              {ability.can("smsBulk.process", "") &&
+              record.status == "Pending" ? (
+                <Tooltip
+                  title="Process"
+                  placement="bottomRight"
+                  color="magenta"
+                >
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      type="primary"
+                      icon={<CheckOutlined />}
+                      style={{
+                        backgroundColor: "#9195F6",
+                        borderColor: "#9195F6",
+                        color: "#ffffff"
+                      }}
+                      onClick={() => handleProcess(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
+              ) : null}
+
+              {ability.can("smsBulk.delete", "") &&
+              record.status == "Pending" ? (
+                <Tooltip title="Delete" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Button
+                      type="primary"
+                      icon={<CloseOutlined />}
+                      style={{
+                        backgroundColor: "#FF407D",
+                        borderColor: "#FF407D",
+                        color: "#ffffff"
+                      }}
+                      onClick={() => handleDelete(record.id)}
+                    />
+                  </Space>
+                </Tooltip>
+              ) : null}
+              {/* process */}
+            </Space>
+          </div>
+        );
+      },
       align: "center" as AlignType
     }
   ];
