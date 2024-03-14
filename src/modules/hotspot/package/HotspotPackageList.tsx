@@ -45,8 +45,8 @@ const HotspotPackageList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("name");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -187,7 +187,7 @@ const HotspotPackageList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "dataRate",
+      title: "Data Rate",
       dataIndex: "dataRate",
       sorter: false,
       render: (dataRate: any) => {
@@ -198,7 +198,7 @@ const HotspotPackageList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "dataRateUnit",
+      title: "Data Rate Unit",
       dataIndex: "dataRateUnit",
       sorter: true,
       width: "20%",
@@ -206,7 +206,7 @@ const HotspotPackageList: React.FC = () => {
     },
 
     {
-      title: "otpLimit",
+      title: "OTP Limit",
       dataIndex: "otpLimit",
       sorter: true,
       width: "20%",
@@ -214,14 +214,14 @@ const HotspotPackageList: React.FC = () => {
     },
 
     {
-      title: "packageCategory",
+      title: "Package Category",
       dataIndex: "packageCategory",
       sorter: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "price",
+      title: "Price",
       dataIndex: "price",
       sorter: true,
       width: "20%",
@@ -229,7 +229,7 @@ const HotspotPackageList: React.FC = () => {
     },
 
     {
-      title: "validity",
+      title: "Validity",
       dataIndex: "validity",
       sorter: true,
       width: "20%",
@@ -237,7 +237,7 @@ const HotspotPackageList: React.FC = () => {
     },
 
     {
-      title: "validityUnit",
+      title: "Validity Unit",
       dataIndex: "validityUnit",
       sorter: true,
       width: "20%",
