@@ -219,12 +219,12 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
   const getComplainTypes = async () => {
     const body = {
       meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
+        // sort: [
+        //   {
+        //     order: "asc",
+        //     field: "name"
+        //   }
+        // ]
       },
       body: {
         complainCategory: "customer",
@@ -259,12 +259,12 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
   const getChecklists = async (complainId: string) => {
     const body = {
       meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
+        // sort: [
+        //   {
+        //     order: "asc",
+        //     field: "name"
+        //   }
+        // ]
       },
       body: {
         complainType: {
@@ -348,7 +348,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                 text: data.message || "Created successfully",
                 icon: "success"
               }).then(() => {
-                router.replace("/admin/complaint/customer-ticket");
+                router.replace("/admin/customer-care");
               });
             }
           })

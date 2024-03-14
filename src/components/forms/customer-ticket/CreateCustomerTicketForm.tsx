@@ -248,12 +248,12 @@ const CreateCustomerTicketForm = () => {
   const getComplainTypes = async () => {
     const body = {
       meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "name"
-          }
-        ]
+        // sort: [
+        //   {
+        //     order: "asc",
+        //     field: "name"
+        //   }
+        // ]
       },
       body: {
         complainCategory: "customer",
@@ -288,12 +288,12 @@ const CreateCustomerTicketForm = () => {
   const getChecklists = async (complainId: string) => {
     const body = {
       meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "title"
-          }
-        ]
+        // sort: [
+        //   {
+        //     order: "asc",
+        //     field: "title"
+        //   }
+        // ]
       },
       body: {
         complainType: {

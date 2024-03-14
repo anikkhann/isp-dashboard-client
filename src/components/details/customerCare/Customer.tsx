@@ -21,8 +21,10 @@ const Customer = ({ item }: PropData) => {
     nasipaddress: "",
     router_mac: ""
   });
+
   const [showRenewButton, setShowRenewButton] = useState<boolean>(false);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const MySwal = withReactContent(Swal);
   const fetchData = async () => {
     const token = Cookies.get("token");
@@ -83,9 +85,12 @@ const Customer = ({ item }: PropData) => {
 
   const isDateGreen = result2 >= today;
   const color = isDateGreen ? "green" : "red";
-
-  async function handleRenew(id: string) {
+  async function handleRenew(
+    id: string,
+    setLoading: (loading: boolean) => void
+  ) {
     try {
+      setLoading(true); // Set loading to true when initiating the request
       const result = await MySwal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -115,10 +120,49 @@ const Customer = ({ item }: PropData) => {
       } else {
         MySwal.fire("Error!", "Something went wrong", "error");
       }
+    } finally {
+      setLoading(false); // Set loading to false when the request completes (success or error)
     }
   }
-  async function handleDisconnect(username: string) {
+  // async function handleRenew(id: string) {
+  //   try {
+  //     const result = await MySwal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#570DF8",
+  //       cancelButtonColor: "#EB0808",
+  //       confirmButtonText: "Yes, Renew customer!"
+  //     });
+
+  //     if (result.isConfirmed) {
+  //       const { data } = await axios.get(`/api/customer/renew/${id}`);
+  //       if (data.status === 200) {
+  //         MySwal.fire("Success!", data.body.message, "success").then(() => {
+  //           router.reload();
+  //         });
+  //       } else {
+  //         MySwal.fire("Error!", data.message, "error");
+  //       }
+  //     } else if (result.isDismissed) {
+  //       MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+  //     }
+  //   } catch (error: any) {
+
+  //     if (error.response) {
+  //       MySwal.fire("Error!", error.response.data.message, "error");
+  //     } else {
+  //       MySwal.fire("Error!", "Something went wrong", "error");
+  //     }
+  //   }
+  // }
+  async function handleDisconnect(
+    username: string,
+    setLoading: (loading: boolean) => void
+  ) {
     try {
+      setLoading(true); // Set loading to true when initiating the request
       const result = await MySwal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -151,6 +195,8 @@ const Customer = ({ item }: PropData) => {
       } else {
         MySwal.fire("Error!", "Something went wrong", "error");
       }
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -744,9 +790,10 @@ const Customer = ({ item }: PropData) => {
                               color: "#ffffff",
                               textAlign: "right"
                             }}
-                            onClick={() => handleRenew(item?.id)}
+                            onClick={() => handleRenew(item?.id, setLoading)} // Pass setLoading function to handleRenew
+                            disabled={loading} // Disable the button when loading
                           >
-                            Renew
+                            {loading ? "Loading..." : "Renew"}
                           </Button>
                         </>
                       ) : (
@@ -859,9 +906,12 @@ const Customer = ({ item }: PropData) => {
                               backgroundColor: "#F94A29",
                               color: "#ffffff"
                             }}
-                            onClick={() => handleDisconnect(item?.username)}
+                            onClick={() =>
+                              handleDisconnect(item?.username, setLoading)
+                            }
+                            disabled={loading}
                           >
-                            Disconnect
+                            {loading ? "Loading..." : "Disconnect"}
                           </Button>
                         </>
                       ) : (

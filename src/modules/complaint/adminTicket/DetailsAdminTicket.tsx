@@ -62,7 +62,7 @@ const DetailsAdminTicket = ({ id }: any) => {
   const [checkLists, setCheckLists] = useState<any[]>([]);
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
-
+  const [loading, setLoading] = useState(false);
   const [assignToList, setAssignToList] = useState<any[]>([]);
   const [selectedAssignTo, setSelectedAssignTo] = useState<any>(null);
 
@@ -177,90 +177,113 @@ const DetailsAdminTicket = ({ id }: any) => {
     setSelectedRootCause(value);
   };
 
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
   const handleStatusSubmit = async () => {
-    await form.validateFields([
-      "status",
-      // "rootCauseId",
-      "remarks"
-    ]);
-
-    const status = form.getFieldValue("status");
-    const rootCauseId = form.getFieldValue("rootCauseId");
-    const remarks = form.getFieldValue("remarks");
-
-    const formData = {
-      id: id,
-      action: "status_change",
-      status: status,
-      rootCauseId: rootCauseId,
-      remarks: remarks
-    };
-
     try {
-      axios
-        .put("/api/ticket/update", formData)
-        .then(res => {
-          const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            form.resetFields();
-            router.reload();
-            setStatusModal(false);
-          });
-        })
-        .catch(err => {
-          // console.log(err);
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
+      await form.validateFields(["status", "rootCauseId", "remarks"]);
+    } catch (error) {
+      return;
     }
+    // await form.validateFields([
+    //   "status",
+    //   // "rootCauseId",
+    //   "remarks"
+    // ]);
+    setLoading(true);
+    setTimeout(async () => {
+      const status = form.getFieldValue("status");
+      const rootCauseId = form.getFieldValue("rootCauseId");
+      const remarks = form.getFieldValue("remarks");
+
+      const formData = {
+        id: id,
+        action: "status_change",
+        status: status,
+        rootCauseId: rootCauseId,
+        remarks: remarks
+      };
+
+      try {
+        await axios
+          .put("/api/ticket/update", formData)
+          .then(res => {
+            const { data } = res;
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              form.resetFields();
+              router.reload();
+              setStatusModal(false);
+            });
+          })
+          .catch(err => {
+            // console.log(err);
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
+          });
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false); // Reset loading state regardless of success or failure
+      }
+    }, 2000);
   };
 
   const handleOwnerSubmit = async () => {
-    await form.validateFields(["assignedToId", "remarks"]);
-
-    const assignedToId = form.getFieldValue("assignedToId");
-    const remarks = form.getFieldValue("remarks");
-
-    const formData = {
-      id: id,
-      action: "owner_change",
-      assignedToId: assignedToId,
-      remarks: remarks
-    };
-
     try {
-      axios
-        .put("/api/ticket/update", formData)
-        .then(res => {
-          const { data } = res;
-          MySwal.fire({
-            title: "Success",
-            text: data.message || "Added successfully",
-            icon: "success"
-          }).then(() => {
-            form.resetFields();
-            router.reload();
-            setOwnerModal(false);
-          });
-        })
-        .catch(err => {
-          // console.log(err);
-          setShowError(true);
-          setErrorMessages(err.response.data.message);
-        });
-    } catch (err: any) {
-      // console.log(err)
-      setShowError(true);
-      setErrorMessages(err.message);
+      await form.validateFields(["assignedToId", "remarks"]);
+    } catch (error) {
+      return;
     }
+
+    // await form.validateFields(["assignedToId", "remarks"]);
+    setLoading(true);
+    setTimeout(async () => {
+      const assignedToId = form.getFieldValue("assignedToId");
+      const remarks = form.getFieldValue("remarks");
+
+      const formData = {
+        id: id,
+        action: "owner_change",
+        assignedToId: assignedToId,
+        remarks: remarks
+      };
+
+      try {
+        await axios
+          .put("/api/ticket/update", formData)
+          .then(res => {
+            const { data } = res;
+            MySwal.fire({
+              title: "Success",
+              text: data.message || "Added successfully",
+              icon: "success"
+            }).then(() => {
+              form.resetFields();
+              router.reload();
+              setOwnerModal(false);
+            });
+          })
+          .catch(err => {
+            // console.log(err);
+            setShowError(true);
+            setErrorMessages(err.response.data.message);
+          });
+      } catch (err: any) {
+        // console.log(err)
+        setShowError(true);
+        setErrorMessages(err.message);
+      } finally {
+        setLoading(false); // Reset loading state regardless of success or failure
+      }
+    }, 2000);
   };
 
   const items: MenuProps["items"] = [
@@ -453,8 +476,13 @@ const DetailsAdminTicket = ({ id }: any) => {
             <Button key="cancel" onClick={() => setStatusModal(false)}>
               Cancel
             </Button>,
-            <Button key="submit" type="primary" onClick={handleStatusSubmit}>
-              Submit
+            <Button
+              key="submit"
+              type="primary"
+              onClick={handleStatusSubmit}
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Submit"}
             </Button>
           ]}
         >

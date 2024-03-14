@@ -275,7 +275,7 @@ const CreateHotspotPackageForm = () => {
             >
               <Form.Item
                 name="price"
-                label="price"
+                label="Price"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -307,7 +307,7 @@ const CreateHotspotPackageForm = () => {
             >
               <Form.Item
                 name="dataRate"
-                label="dataRate"
+                label="Data Rate"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -315,13 +315,13 @@ const CreateHotspotPackageForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input dataRate!"
+                    message: "Please input data rate!"
                   }
                 ]}
               >
                 <Input
                   type="number"
-                  placeholder="dataRate"
+                  placeholder="data rate"
                   className={`form-control`}
                   style={{ padding: "6px" }}
                 />
@@ -339,7 +339,7 @@ const CreateHotspotPackageForm = () => {
             >
               {/* dataRateUnit */}
               <Form.Item
-                label="dataRateUnit"
+                label="Data Rate Unit"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -370,7 +370,7 @@ const CreateHotspotPackageForm = () => {
             >
               <Form.Item
                 name="validity"
-                label="validity"
+                label="Validity"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -402,7 +402,7 @@ const CreateHotspotPackageForm = () => {
             >
               {/* validityUnit */}
               <Form.Item
-                label="validityUnit"
+                label="Validity Unit"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -433,7 +433,7 @@ const CreateHotspotPackageForm = () => {
             >
               <Form.Item
                 name="otpLimit"
-                label="otpLimit"
+                label="OTP Limit"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -441,13 +441,13 @@ const CreateHotspotPackageForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input otpLimit!"
+                    message: "Please input otp limit!"
                   }
                 ]}
               >
                 <Input
                   type="number"
-                  placeholder="otpLimit"
+                  placeholder="otp limit"
                   className={`form-control`}
                   style={{ padding: "6px" }}
                 />
@@ -465,7 +465,7 @@ const CreateHotspotPackageForm = () => {
             >
               {/* packageCategory */}
               <Form.Item
-                label="packageCategory"
+                label="Package Category"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -484,68 +484,71 @@ const CreateHotspotPackageForm = () => {
                 </Space>
               </Form.Item>
             </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="startTime"
-                label="startTime"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input startTime!"
-                  }
-                ]}
+            {packageCategory == "off_peak" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <DatePicker
-                  onChange={onStartDateChange}
-                  showTime
-                  needConfirm={false}
-                />
-              </Form.Item>
-            </Col>
+                <Form.Item
+                  name="startTime"
+                  label="Start Time"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input start time!"
+                    }
+                  ]}
+                >
+                  <DatePicker
+                    onChange={onStartDateChange}
+                    showTime
+                    needConfirm={false}
+                  />
+                </Form.Item>
+              </Col>
+            )}
 
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                name="endTime"
-                label="endTime"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input endTime!"
-                  }
-                ]}
+            {packageCategory == "off_peak" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <DatePicker
-                  onChange={onEndDateChange}
-                  showTime
-                  needConfirm={false}
-                />
-              </Form.Item>
-            </Col>
+                <Form.Item
+                  name="endTime"
+                  label="End Time"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input end time!"
+                    }
+                  ]}
+                >
+                  <DatePicker
+                    onChange={onEndDateChange}
+                    showTime
+                    needConfirm={false}
+                  />
+                </Form.Item>
+              </Col>
+            )}
           </Row>
 
           <Form.Item>

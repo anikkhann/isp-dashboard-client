@@ -117,13 +117,13 @@ const LoginComponent = () => {
           style={{ fontWeight: "bold" }}
         >
           <Form.Item
-            label="Email"
+            label="Username"
             name="email"
             className="form-field"
             rules={[
               {
                 required: true,
-                message: "Please input your Email!"
+                message: "Please input your Username!"
               },
               {
                 pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
@@ -132,7 +132,7 @@ const LoginComponent = () => {
               }
             ]}
           >
-            <Input placeholder="email" />
+            <Input placeholder="username" />
           </Form.Item>
 
           <Form.Item
