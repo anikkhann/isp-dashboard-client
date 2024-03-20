@@ -131,49 +131,56 @@ const EmailTemplateList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Brand Of",
       dataIndex: "brandOf",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Phone",
       dataIndex: "phone",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Address",
       dataIndex: "address",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Website",
       dataIndex: "website",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "CC",
       dataIndex: "cc",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "BCC",
       dataIndex: "bcc",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -183,7 +190,8 @@ const EmailTemplateList: React.FC = () => {
       render: (supportNumber: any) => {
         return <>{supportNumber}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -209,6 +217,8 @@ const EmailTemplateList: React.FC = () => {
           </>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -294,6 +304,11 @@ const EmailTemplateList: React.FC = () => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

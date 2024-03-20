@@ -409,14 +409,16 @@ const DurjoyRequisitionList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Requisition No",
       dataIndex: "requisitionNo",
       sorter: true,
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -426,7 +428,8 @@ const DurjoyRequisitionList: React.FC = () => {
       render: (client: any) => {
         return <>{client.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -444,7 +447,8 @@ const DurjoyRequisitionList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -463,7 +467,8 @@ const DurjoyRequisitionList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -473,7 +478,8 @@ const DurjoyRequisitionList: React.FC = () => {
       render: (deliveryType: any) => {
         return <>{deliveryType}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -483,7 +489,8 @@ const DurjoyRequisitionList: React.FC = () => {
       render: (totalAmount: any) => {
         return <>{totalAmount}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -493,7 +500,8 @@ const DurjoyRequisitionList: React.FC = () => {
       render: (payableAmount: any) => {
         return <>{payableAmount}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -513,7 +521,8 @@ const DurjoyRequisitionList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -525,7 +534,8 @@ const DurjoyRequisitionList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -538,7 +548,8 @@ const DurjoyRequisitionList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -818,6 +829,8 @@ const DurjoyRequisitionList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1097,6 +1110,11 @@ const DurjoyRequisitionList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

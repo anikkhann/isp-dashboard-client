@@ -137,7 +137,8 @@ const SystemSmsTemplateList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -145,28 +146,32 @@ const SystemSmsTemplateList: React.FC = () => {
       title: "Key",
       dataIndex: "key",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Placeholder",
       dataIndex: "placeholder",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Subject",
       dataIndex: "subject",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Template",
       dataIndex: "template",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -185,7 +190,8 @@ const SystemSmsTemplateList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -211,6 +217,8 @@ const SystemSmsTemplateList: React.FC = () => {
           </>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -294,6 +302,11 @@ const SystemSmsTemplateList: React.FC = () => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

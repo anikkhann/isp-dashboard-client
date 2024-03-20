@@ -128,28 +128,32 @@ const OtherProductList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Product",
       dataIndex: "name",
       sorter: true,
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Unit",
       dataIndex: "unit",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Description",
       dataIndex: "description",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -160,7 +164,8 @@ const OtherProductList: React.FC = () => {
         if (!isActive) return "-";
         return <>{isActive === true ? "Active" : "Inactive"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -173,7 +178,8 @@ const OtherProductList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -186,7 +192,8 @@ const OtherProductList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -259,6 +266,8 @@ const OtherProductList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -339,6 +348,11 @@ const OtherProductList: React.FC = () => {
           >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

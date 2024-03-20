@@ -506,7 +506,8 @@ const InvoiceList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -517,7 +518,8 @@ const InvoiceList: React.FC = () => {
         if (!customer) return "-";
         return <>{customer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -528,7 +530,8 @@ const InvoiceList: React.FC = () => {
         if (!displayName) return "-";
         return <>{displayName}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -539,7 +542,8 @@ const InvoiceList: React.FC = () => {
         if (!email) return "-";
         return <>{email}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -550,7 +554,8 @@ const InvoiceList: React.FC = () => {
         if (!invoiceId) return "-";
         return <>{invoiceId}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -561,7 +566,8 @@ const InvoiceList: React.FC = () => {
         if (!invoiceMonth) return "-";
         return <>{invoiceMonth}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -572,7 +578,8 @@ const InvoiceList: React.FC = () => {
         if (!invoiceYear) return "-";
         return <>{invoiceYear}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -591,7 +598,8 @@ const InvoiceList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -603,7 +611,8 @@ const InvoiceList: React.FC = () => {
         if (!billingPeriod) return "-";
         return <>{billingPeriod}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -617,7 +626,8 @@ const InvoiceList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -642,7 +652,8 @@ const InvoiceList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // editedBy
@@ -1047,6 +1058,11 @@ const InvoiceList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

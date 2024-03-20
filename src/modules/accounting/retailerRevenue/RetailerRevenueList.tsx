@@ -291,14 +291,16 @@ const RetailerRevenueList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Retailer",
       dataIndex: "retailer",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -312,7 +314,8 @@ const RetailerRevenueList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -326,7 +329,8 @@ const RetailerRevenueList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -334,7 +338,8 @@ const RetailerRevenueList: React.FC = () => {
       title: "Offline",
       dataIndex: "offline_commission",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -662,6 +667,11 @@ const RetailerRevenueList: React.FC = () => {
               )}
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.retailer_id}

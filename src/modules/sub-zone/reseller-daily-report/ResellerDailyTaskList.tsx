@@ -344,42 +344,48 @@ const ResellerDailyTaskList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "OLT Power",
       dataIndex: "oltPower",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "BW Congestion From",
       dataIndex: "bwCongestionFrom",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "BW Congestion To",
       dataIndex: "bwCongestionTo",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Gaming Latency",
       dataIndex: "gamingLatency",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Illegal Hotspot Details",
       dataIndex: "illegalHotspotDetails",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -394,7 +400,8 @@ const ResellerDailyTaskList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // insertedBy
@@ -707,6 +714,11 @@ const ResellerDailyTaskList: React.FC = () => {
 
               <div style={{ overflowX: "auto" }}>
                 <Table
+                  style={{
+                    width: "100%",
+                    overflowX: "auto"
+                  }}
+                  scroll={{ x: true }}
                   className={"table-striped-rows"}
                   columns={columns}
                   rowKey={record => record.id}

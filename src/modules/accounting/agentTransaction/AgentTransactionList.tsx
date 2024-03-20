@@ -378,21 +378,24 @@ const AgentTransactionList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>
+            {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
-            </Space>
+            </Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Agent",
       dataIndex: "trxFor",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -407,7 +410,8 @@ const AgentTransactionList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -422,14 +426,16 @@ const AgentTransactionList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Transaction Id",
       dataIndex: "transactionId",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -443,7 +449,8 @@ const AgentTransactionList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -457,7 +464,8 @@ const AgentTransactionList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -472,7 +480,8 @@ const AgentTransactionList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -484,7 +493,8 @@ const AgentTransactionList: React.FC = () => {
         if (!trxBy) return "-";
         return <>{trxBy}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -497,7 +507,8 @@ const AgentTransactionList: React.FC = () => {
         const date = new Date(trxDate);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // editedBy
@@ -938,6 +949,11 @@ const AgentTransactionList: React.FC = () => {
               )}
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

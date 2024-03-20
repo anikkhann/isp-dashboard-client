@@ -275,7 +275,8 @@ const DeviceList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // {
@@ -295,14 +296,16 @@ const DeviceList: React.FC = () => {
       render: (deviceType: any) => {
         return <>{deviceType ? deviceType : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Device Name",
       dataIndex: "name",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -312,7 +315,8 @@ const DeviceList: React.FC = () => {
       render: (distributionZone: any) => {
         return <>{distributionZone ? distributionZone.name : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -322,7 +326,8 @@ const DeviceList: React.FC = () => {
       render: (distributionPop: any) => {
         return <>{distributionPop ? distributionPop.name : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -333,7 +338,8 @@ const DeviceList: React.FC = () => {
       render: (monitoringType: any) => {
         return <>{monitoringType ? monitoringType : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -343,7 +349,8 @@ const DeviceList: React.FC = () => {
       render: (ip: any) => {
         return <>{ip ? ip : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -362,7 +369,8 @@ const DeviceList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -387,7 +395,8 @@ const DeviceList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -461,6 +470,8 @@ const DeviceList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -695,6 +706,11 @@ const DeviceList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

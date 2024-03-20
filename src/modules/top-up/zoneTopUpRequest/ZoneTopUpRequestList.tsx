@@ -381,7 +381,8 @@ const ZoneTopUpRequestList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -391,7 +392,8 @@ const ZoneTopUpRequestList: React.FC = () => {
       render: (requestNo: any) => {
         return <>{requestNo ? requestNo : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -401,7 +403,8 @@ const ZoneTopUpRequestList: React.FC = () => {
       render: (partner: any) => {
         return <>{partner ? partner.username : "-"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -412,7 +415,8 @@ const ZoneTopUpRequestList: React.FC = () => {
         if (!requestedBy) return "-";
         return <>{requestedBy.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -422,7 +426,8 @@ const ZoneTopUpRequestList: React.FC = () => {
       render: (paidAmount: any) => {
         return <>{paidAmount}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -433,7 +438,8 @@ const ZoneTopUpRequestList: React.FC = () => {
       render: (creditAmount: any) => {
         return <>{creditAmount}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -441,7 +447,8 @@ const ZoneTopUpRequestList: React.FC = () => {
       title: "Payment Type",
       dataIndex: "paymentType",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -451,7 +458,8 @@ const ZoneTopUpRequestList: React.FC = () => {
       render: (paymentStatus: any) => {
         return <>{paymentStatus}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -471,7 +479,8 @@ const ZoneTopUpRequestList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -486,7 +495,8 @@ const ZoneTopUpRequestList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -623,6 +633,8 @@ const ZoneTopUpRequestList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -929,6 +941,11 @@ const ZoneTopUpRequestList: React.FC = () => {
               </Space>
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

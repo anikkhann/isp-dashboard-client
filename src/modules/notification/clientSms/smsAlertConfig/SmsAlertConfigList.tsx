@@ -133,7 +133,8 @@ const SmsAlertConfigList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -147,7 +148,8 @@ const SmsAlertConfigList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // {
@@ -175,7 +177,8 @@ const SmsAlertConfigList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -190,7 +193,8 @@ const SmsAlertConfigList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -209,7 +213,8 @@ const SmsAlertConfigList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -293,6 +298,11 @@ const SmsAlertConfigList: React.FC = () => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}

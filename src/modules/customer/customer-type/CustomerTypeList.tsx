@@ -127,7 +127,8 @@ const CustomerTypeList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -135,7 +136,8 @@ const CustomerTypeList: React.FC = () => {
       title: "Title",
       dataIndex: "title",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -153,7 +155,8 @@ const CustomerTypeList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -239,6 +242,8 @@ const CustomerTypeList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -327,6 +332,11 @@ const CustomerTypeList: React.FC = () => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

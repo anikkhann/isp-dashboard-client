@@ -252,7 +252,8 @@ const NasDeviceList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -263,14 +264,16 @@ const NasDeviceList: React.FC = () => {
         if (!client) return "-";
         return <>{client.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Device Name",
       dataIndex: "name",
       sorter: true,
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // {
@@ -284,7 +287,8 @@ const NasDeviceList: React.FC = () => {
       title: "IP",
       dataIndex: "ip",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -303,14 +307,16 @@ const NasDeviceList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Location Description",
       dataIndex: "locationDescription",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -322,7 +328,8 @@ const NasDeviceList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -335,7 +342,8 @@ const NasDeviceList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -397,6 +405,8 @@ const NasDeviceList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -654,6 +664,11 @@ const NasDeviceList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

@@ -695,7 +695,8 @@ const NoticeList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -703,7 +704,8 @@ const NoticeList: React.FC = () => {
       title: "Notice Type",
       dataIndex: "noticeType",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -714,7 +716,8 @@ const NoticeList: React.FC = () => {
         if (!client) return "-";
         return <>{client.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -725,7 +728,8 @@ const NoticeList: React.FC = () => {
         if (!zoneManager) return "-";
         return <>{zoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -736,7 +740,8 @@ const NoticeList: React.FC = () => {
         if (!subZoneManager) return "-";
         return <>{subZoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -747,7 +752,8 @@ const NoticeList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -758,7 +764,8 @@ const NoticeList: React.FC = () => {
         if (!customerPackage) return "-";
         return <>{customerPackage.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -766,7 +773,8 @@ const NoticeList: React.FC = () => {
       title: "Message",
       dataIndex: "message",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType,
       render: (text: string) => (
         <div
@@ -798,7 +806,8 @@ const NoticeList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -823,7 +832,8 @@ const NoticeList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -836,7 +846,8 @@ const NoticeList: React.FC = () => {
         return <>{editedBy.name}</>;
       },
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // updatedOn
@@ -849,7 +860,8 @@ const NoticeList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -883,6 +895,8 @@ const NoticeList: React.FC = () => {
           </>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1319,6 +1333,11 @@ const NoticeList: React.FC = () => {
               </Space>
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

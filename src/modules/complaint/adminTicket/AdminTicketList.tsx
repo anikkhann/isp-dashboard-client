@@ -323,14 +323,17 @@ const AdminTicketList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>
+            {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
-            </Space>
+            </Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },
       sorter: true,
-      width: 140,
+      // width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // {
@@ -352,14 +355,18 @@ const AdminTicketList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.userType}</>;
       },
-      width: 200,
+      // width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Ticket Number",
       dataIndex: "ticketNo",
       sorter: true,
-      width: 200,
+      // width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -369,7 +376,9 @@ const AdminTicketList: React.FC = () => {
         return <>{row.complainType.name}</>;
       },
       sorter: false,
-      width: 400,
+      // width: 400,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -390,7 +399,9 @@ const AdminTicketList: React.FC = () => {
           </>
         );
       },
-      width: 150,
+      // width: 150,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // assignedTo
@@ -402,7 +413,9 @@ const AdminTicketList: React.FC = () => {
         if (!assignedTo) return "-";
         return <>{assignedTo.name}</>;
       },
-      width: 200,
+      // width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -415,7 +428,9 @@ const AdminTicketList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: 200,
+      // width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -429,7 +444,9 @@ const AdminTicketList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: 200,
+      // width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -446,7 +463,9 @@ const AdminTicketList: React.FC = () => {
           <>{differenceInDays(currentTime, createdTime).toLocaleString()}</>
         );
       },
-      width: 200,
+      // width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -500,8 +519,10 @@ const AdminTicketList: React.FC = () => {
           </div>
         );
       },
-      align: "center" as AlignType,
-      width: 200
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+      // width: 200
     }
   ];
 
@@ -933,9 +954,13 @@ const AdminTicketList: React.FC = () => {
               )}
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 tableLayout="fixed"
-                scroll={{ x: 1000 }}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}

@@ -539,7 +539,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -550,21 +551,24 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Amount",
       dataIndex: "amount",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Party-A Note",
       dataIndex: "note",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -572,7 +576,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       title: "Party-B Note",
       dataIndex: "childNote",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -595,7 +600,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -606,7 +612,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -632,6 +639,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -743,6 +752,8 @@ const RetailerRevenueDisbursementList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1049,6 +1060,11 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

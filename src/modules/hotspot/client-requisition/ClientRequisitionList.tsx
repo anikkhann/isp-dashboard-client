@@ -404,7 +404,8 @@ const ClientRequisitionList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -412,7 +413,8 @@ const ClientRequisitionList: React.FC = () => {
       title: "Requisition No",
       dataIndex: "requisitionNo",
       sorter: true,
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -422,7 +424,8 @@ const ClientRequisitionList: React.FC = () => {
       render: (partner: any) => {
         return <>{partner.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -440,7 +443,8 @@ const ClientRequisitionList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -459,7 +463,8 @@ const ClientRequisitionList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -469,7 +474,8 @@ const ClientRequisitionList: React.FC = () => {
       render: (deliveryType: any) => {
         return <>{deliveryType}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -479,7 +485,8 @@ const ClientRequisitionList: React.FC = () => {
       render: (totalAmount: any) => {
         return <>{totalAmount}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -489,7 +496,8 @@ const ClientRequisitionList: React.FC = () => {
       render: (payableAmount: any) => {
         return <>{payableAmount}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -509,7 +517,8 @@ const ClientRequisitionList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -521,7 +530,8 @@ const ClientRequisitionList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -534,7 +544,8 @@ const ClientRequisitionList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -668,6 +679,8 @@ const ClientRequisitionList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -937,6 +950,11 @@ const ClientRequisitionList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

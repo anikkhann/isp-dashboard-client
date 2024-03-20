@@ -464,7 +464,8 @@ const OtherProductSaleList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -475,7 +476,8 @@ const OtherProductSaleList: React.FC = () => {
         if (!otherProduct) return "-";
         return <>{otherProduct.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -486,7 +488,8 @@ const OtherProductSaleList: React.FC = () => {
         if (!quantity) return "-";
         return <>{quantity}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -497,7 +500,8 @@ const OtherProductSaleList: React.FC = () => {
         if (!customerName) return "-";
         return <>{customerName}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -508,7 +512,8 @@ const OtherProductSaleList: React.FC = () => {
         if (!customerNumber) return "-";
         return <>{customerNumber}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -519,7 +524,8 @@ const OtherProductSaleList: React.FC = () => {
         if (!address) return "-";
         return <>{address}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -530,7 +536,8 @@ const OtherProductSaleList: React.FC = () => {
         if (!tsoComment) return "-";
         return <>{tsoComment}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -538,7 +545,8 @@ const OtherProductSaleList: React.FC = () => {
       title: "Status",
       dataIndex: "status",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -551,7 +559,8 @@ const OtherProductSaleList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -564,7 +573,8 @@ const OtherProductSaleList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -689,6 +699,8 @@ const OtherProductSaleList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1015,6 +1027,11 @@ const OtherProductSaleList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

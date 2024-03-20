@@ -101,8 +101,16 @@ const CreateCustomerTicketForm = () => {
           ...formValues,
           customerId: form.getFieldValue("customerId")
         });
+
+        setCurrent(current + 1);
       } else if (current === 1) {
-        await form.validateFields(["complainTypeId"]);
+        const fieldsToValidate = ["complainTypeId"];
+        // await form.validateFields(["complainTypeId"]);
+        checkListItems.forEach((itemData: any) => {
+          fieldsToValidate.push(`checklist-${itemData.title}`);
+        });
+
+        await form.validateFields(fieldsToValidate);
 
         const fields = form.getFieldsValue();
 
@@ -131,6 +139,8 @@ const CreateCustomerTicketForm = () => {
           ...formValues,
           complainTypeId: form.getFieldValue("complainTypeId")
         });
+
+        setCurrent(current + 1);
       } else if (current === 2) {
         await form.validateFields(["complainDetails"]);
 
@@ -588,10 +598,10 @@ const CreateCustomerTicketForm = () => {
                                 marginRight: "10px"
                               }}
                             >
-                              {itemData.title}
                               <span style={{ color: "red", marginLeft: "5px" }}>
                                 *
                               </span>
+                              {itemData.title}
                             </span>
                             <Radio.Group
                               style={{

@@ -508,7 +508,8 @@ const CustomerImportCSVList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -516,7 +517,8 @@ const CustomerImportCSVList: React.FC = () => {
       title: "Batch No",
       dataIndex: "batchNo",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -536,7 +538,8 @@ const CustomerImportCSVList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // {
@@ -558,7 +561,8 @@ const CustomerImportCSVList: React.FC = () => {
         if (!zoneManager) return "-";
         return <>{zoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -569,7 +573,8 @@ const CustomerImportCSVList: React.FC = () => {
         if (!subZoneManager) return "-";
         return <>{subZoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -580,14 +585,16 @@ const CustomerImportCSVList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Total Upload",
       dataIndex: "totalUpload",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -595,14 +602,16 @@ const CustomerImportCSVList: React.FC = () => {
       title: "Total Success",
       dataIndex: "totalSuccess",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Total Failed",
       dataIndex: "totalFailed",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -615,7 +624,8 @@ const CustomerImportCSVList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -629,7 +639,8 @@ const CustomerImportCSVList: React.FC = () => {
 
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -641,8 +652,8 @@ const CustomerImportCSVList: React.FC = () => {
         if (!editedBy) return "-";
         return <>{editedBy.username}</>;
       },
-
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // updatedOn
@@ -655,7 +666,8 @@ const CustomerImportCSVList: React.FC = () => {
         const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -778,6 +790,8 @@ const CustomerImportCSVList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1050,6 +1064,11 @@ const CustomerImportCSVList: React.FC = () => {
               </Space>
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

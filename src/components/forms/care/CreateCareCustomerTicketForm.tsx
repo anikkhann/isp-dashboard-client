@@ -114,8 +114,13 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
   const next = async () => {
     try {
       if (current === 0) {
-        await form.validateFields(["complainTypeId"]);
-
+        const fieldsToValidate = ["complainTypeId"];
+        // await form.validateFields(["complainTypeId"]);
+        // Assuming `checkListItems` is the array containing your checklist items
+        checkListItems.forEach((itemData: any) => {
+          fieldsToValidate.push(`checklist-${itemData.title}`);
+        });
+        await form.validateFields(fieldsToValidate);
         const fields = form.getFieldsValue();
 
         const filteredData = Object.keys(fields).reduce((acc: any, key) => {
@@ -139,6 +144,8 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
           ...formValues,
           complainTypeId: form.getFieldValue("complainTypeId")
         });
+
+        setCurrent(current + 1);
       } else if (current === 1) {
         await form.validateFields(["complainDetails"]);
 
@@ -146,6 +153,8 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
           ...formValues,
           complainDetails: form.getFieldValue("complainDetails")
         });
+        // Proceed to the next step
+        setCurrent(current + 1);
       } else if (current === 2) {
         await form.validateFields(["assignedTo"]);
 
@@ -156,7 +165,11 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
       }
 
       setCurrent(current + 1);
-    } catch {}
+    } catch (error: any) {
+      console.error("Error during form submission:", error.message);
+
+      // You can handle the error here, e.g., display an error message to the user
+    }
   };
 
   const prev = () => {
@@ -312,6 +325,8 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
     setTimeout(async () => {
       // Convert to JSON format
       const checkListJson = JSON.stringify(checkListDataJson, null, 2);
+
+      // const checkListArray = JSON.parse(checkListJson);
 
       const bodyData = {
         ticketCategory: "customer",
@@ -524,7 +539,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                           rules={[
                             {
                               required: true,
-                              message: "Please select!"
+                              message: "Please select an option!"
                             }
                           ]}
                         >
@@ -546,6 +561,9 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                                 marginRight: "10px"
                               }}
                             >
+                              <span style={{ color: "red", marginLeft: "5px" }}>
+                                *
+                              </span>
                               {itemData.title}
                             </span>
                             <Radio.Group

@@ -16,7 +16,7 @@ import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
+import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
@@ -61,7 +61,10 @@ const ResellerDailyReportList: React.FC = () => {
   const MySwal = withReactContent(Swal);
 
   const authUser = useAppSelector(state => state.auth.user);
-
+  const [page, SetPage] = useState(0);
+  const [limit, SetLimit] = useState(10);
+  const [order, SetOrder] = useState("asc");
+  const [sort, SetSort] = useState("id");
   const [subZones, setSubZones] = useState<any>([]);
   const [selectedSubZone, setSelectedSubZone] = useState<any>(null);
 
@@ -76,6 +79,10 @@ const ResellerDailyReportList: React.FC = () => {
   });
 
   const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string,
     resellerIdParam?: string,
     dateParam?: string | null
   ) => {
@@ -88,6 +95,12 @@ const ResellerDailyReportList: React.FC = () => {
     const { data } = await axios.get(
       `/api/reseller-daily-report/datewise-report?date=${date}&resellerId=${resellerIdParam}`,
       {
+        params: {
+          page,
+          limit,
+          order,
+          sort
+        },
         headers: {
           "Content-Type": "application/json"
         }
@@ -99,11 +112,22 @@ const ResellerDailyReportList: React.FC = () => {
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
       "reseller-daily-report-daily-list",
+      page,
+      limit,
+      order,
+      sort,
       selectedSubZone,
       selectedDate
     ],
     queryFn: async () => {
-      const response = await fetchData(selectedSubZone, selectedDate);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedSubZone,
+        selectedDate
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -137,6 +161,32 @@ const ResellerDailyReportList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter:
+      | SorterResult<ResellerDailyTaskData>
+      | SorterResult<ResellerDailyTaskData>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<ResellerDailyTaskData>).order) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
+
+      SetOrder(
+        (sorter as SorterResult<ResellerDailyTaskData>).order === "ascend"
+          ? "asc"
+          : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<ResellerDailyTaskData>).field) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
+
+      SetSort((sorter as SorterResult<ResellerDailyTaskData>).field as string);
+    }
+  };
 
   //functions for getting zone manger list data using POST request
   function getSubZoneManagers() {
@@ -214,38 +264,59 @@ const ResellerDailyReportList: React.FC = () => {
 
   const columns: ColumnsType<ResellerDailyTaskData> = [
     {
+      title: "Serial",
+      dataIndex: "id",
+      render: (tableParams, row, index) => {
+        return (
+          <>
+            {/* <Space>{index + 1}</Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+          </>
+        );
+      },
+      sorter: false,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "OLT Power",
       dataIndex: "oltPower",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "BW Congestion From",
       dataIndex: "bwCongestionFrom",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "BW Congestion To",
       dataIndex: "bwCongestionTo",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Gaming Latency",
       dataIndex: "gamingLatency",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Illegal Hotspot Details",
       dataIndex: "illegalHotspotDetails",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -260,7 +331,8 @@ const ResellerDailyReportList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // insertedBy
@@ -515,12 +587,18 @@ const ResellerDailyReportList: React.FC = () => {
 
               <div style={{ overflowX: "auto" }}>
                 <Table
+                  style={{
+                    width: "100%",
+                    overflowX: "auto"
+                  }}
+                  scroll={{ x: true }}
                   className={"table-striped-rows"}
                   columns={columns}
                   rowKey={record => record.id}
                   dataSource={data}
                   pagination={tableParams.pagination}
                   loading={isLoading || isFetching}
+                  onChange={handleTableChange}
                 />
               </div>
             </Space>

@@ -256,7 +256,8 @@ const OtpHistoryList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -267,7 +268,8 @@ const OtpHistoryList: React.FC = () => {
         if (!partner) return "-";
         return <>{partner.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -278,14 +280,16 @@ const OtpHistoryList: React.FC = () => {
         if (!customer) return "-";
         return <>{customer.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Mobile",
       dataIndex: "mobile",
       sorter: true,
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -296,7 +300,8 @@ const OtpHistoryList: React.FC = () => {
         if (!pricingPlan) return "-";
         return <>{pricingPlan.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -307,14 +312,16 @@ const OtpHistoryList: React.FC = () => {
         if (!voucherNumber) return "-";
         return <>{voucherNumber}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "OTP",
       dataIndex: "otpCode",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -333,7 +340,8 @@ const OtpHistoryList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -345,7 +353,8 @@ const OtpHistoryList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -358,7 +367,8 @@ const OtpHistoryList: React.FC = () => {
         const date = new Date(activationTime);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -370,21 +380,24 @@ const OtpHistoryList: React.FC = () => {
         if (!ipAddress) return "-";
         return <>{ipAddress}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Mac",
       dataIndex: "mac",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Message",
       dataIndex: "message",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -395,7 +408,8 @@ const OtpHistoryList: React.FC = () => {
         if (!smsGatewayResponse) return "-";
         return <>{smsGatewayResponse}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // createdOn
@@ -648,6 +662,11 @@ const OtpHistoryList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

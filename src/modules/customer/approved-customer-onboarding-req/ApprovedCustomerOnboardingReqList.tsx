@@ -150,14 +150,16 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Username",
       dataIndex: "username",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -165,7 +167,8 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -185,7 +188,8 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // Requested By
@@ -197,7 +201,8 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
         if (!row.partner) return "-";
         return <>{row.partner.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // Requested User Type
@@ -209,7 +214,8 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
         if (!row.partner) return "-";
         return <>{row.partner.partnerType}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -236,6 +242,8 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -379,6 +387,8 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -467,6 +477,11 @@ const ApprovedCustomerOnboardingReqList: React.FC = () => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

@@ -316,7 +316,8 @@ const TsoVisitList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -328,7 +329,8 @@ const TsoVisitList: React.FC = () => {
         if (!zoneManagerName) return "-";
         return <>{zoneManagerName}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -339,7 +341,8 @@ const TsoVisitList: React.FC = () => {
         if (!tso) return "-";
         return <>{tso.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -350,7 +353,8 @@ const TsoVisitList: React.FC = () => {
         if (!areaManager) return "-";
         return <>{areaManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -361,7 +365,8 @@ const TsoVisitList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // {
@@ -383,7 +388,8 @@ const TsoVisitList: React.FC = () => {
         if (!shopName) return "-";
         return <>{shopName}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -394,7 +400,8 @@ const TsoVisitList: React.FC = () => {
         if (!gpsLocation) return "-";
         return <>{gpsLocation}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -407,7 +414,8 @@ const TsoVisitList: React.FC = () => {
           <>{isCompetitionPresent === true ? "Availabe" : "Not Available"}</>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -418,7 +426,8 @@ const TsoVisitList: React.FC = () => {
         if (!hotspotFrequency) return "-";
         return <>{hotspotFrequency}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -429,7 +438,8 @@ const TsoVisitList: React.FC = () => {
         if (!internetSpeed) return "-";
         return <>{internetSpeed}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -440,7 +450,8 @@ const TsoVisitList: React.FC = () => {
         if (!frequentComplains) return "-";
         return <>{frequentComplains}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -451,7 +462,8 @@ const TsoVisitList: React.FC = () => {
         if (!fiberCut) return "-";
         return <>{fiberCut}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -462,7 +474,8 @@ const TsoVisitList: React.FC = () => {
         if (!laserIssues) return "-";
         return <>{laserIssues}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -473,7 +486,8 @@ const TsoVisitList: React.FC = () => {
         if (!powerIssues) return "-";
         return <>{powerIssues}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -484,7 +498,8 @@ const TsoVisitList: React.FC = () => {
         if (!sunShedBannerPresent) return "-";
         return <>{sunShedBannerPresent === true ? "Yes" : "No"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -495,7 +510,8 @@ const TsoVisitList: React.FC = () => {
         if (!totalSalesAmount) return "-";
         return <>{totalSalesAmount}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -508,7 +524,8 @@ const TsoVisitList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -521,7 +538,8 @@ const TsoVisitList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // editedBy
@@ -783,6 +801,11 @@ const TsoVisitList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

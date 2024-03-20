@@ -5,7 +5,8 @@ import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
 import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
+import type { FilterValue, SorterResult } from "antd/es/table/interface";
+
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
@@ -51,7 +52,10 @@ const HotspotMyRevenueList: React.FC = () => {
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const authUser = useAppSelector(state => state.auth.user);
-
+  const [page, SetPage] = useState(0);
+  const [limit, SetLimit] = useState(10);
+  const [order, SetOrder] = useState("asc");
+  const [sort, SetSort] = useState("id");
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
@@ -84,6 +88,10 @@ const HotspotMyRevenueList: React.FC = () => {
   });
 
   const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string,
     selectedClientParam?: string,
     selectedZoneManagerParam?: string,
     selectedSubZoneManagerParam?: string,
@@ -110,7 +118,15 @@ const HotspotMyRevenueList: React.FC = () => {
     const endDate = endDateParam ? endDateParam : "";
 
     const { data } = await axios.get(
-      `/api-hotspot/revenue-report/my-revenue?clientId=${clientID}&zoneManagerId=${zoneManagerId}&subZoneManagerId=${subZoneManagerId}&retailerId=${retailerId}&packageId=${packageId}&startDate=${startDate}&endDate=${endDate}`
+      `/api-hotspot/revenue-report/my-revenue?clientId=${clientID}&zoneManagerId=${zoneManagerId}&subZoneManagerId=${subZoneManagerId}&retailerId=${retailerId}&packageId=${packageId}&startDate=${startDate}&endDate=${endDate}`,
+      {
+        params: {
+          page,
+          limit,
+          order,
+          sort
+        }
+      }
     );
 
     return data;
@@ -119,6 +135,10 @@ const HotspotMyRevenueList: React.FC = () => {
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
       "retailer-wise-revenue",
+      page,
+      limit,
+      order,
+      sort,
       selectedClient,
       selectedZone,
       selectedSubZoneManager,
@@ -129,6 +149,10 @@ const HotspotMyRevenueList: React.FC = () => {
     ],
     queryFn: async () => {
       const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
         selectedClient,
         selectedZone,
         selectedSubZoneManager,
@@ -383,6 +407,30 @@ const HotspotMyRevenueList: React.FC = () => {
     });
   };
 
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<ZoneTagData> | SorterResult<ZoneTagData>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<ZoneTagData>).order) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
+
+      SetOrder(
+        (sorter as SorterResult<ZoneTagData>).order === "ascend"
+          ? "asc"
+          : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<ZoneTagData>).field) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
+
+      SetSort((sorter as SorterResult<ZoneTagData>).field as string);
+    }
+  };
+
   useEffect(() => {
     getClients();
     getZoneManagers();
@@ -448,38 +496,59 @@ const HotspotMyRevenueList: React.FC = () => {
 
   const columns: ColumnsType<ZoneTagData> = [
     {
+      title: "Serial",
+      dataIndex: "id",
+      render: (tableParams, row, index) => {
+        return (
+          <>
+            {/* <Space>{index + 1}</Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+          </>
+        );
+      },
+      sorter: false,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "Package",
       dataIndex: "pkg_name",
 
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Total Voucher",
       dataIndex: "total_voucher_qty",
 
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Unused Voucher",
       dataIndex: "unused_voucher_qty",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Used Voucher",
       dataIndex: "used_voucher_qty",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Commission (BDT)",
       dataIndex: "commission",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -846,12 +915,18 @@ const HotspotMyRevenueList: React.FC = () => {
               )}
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}
                 pagination={tableParams.pagination}
                 loading={isLoading || isFetching}
+                onChange={handleTableChange}
               />
             </Space>
           </TableCard>

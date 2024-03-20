@@ -175,7 +175,8 @@ const HotspotPackageList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -183,7 +184,8 @@ const HotspotPackageList: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       sorter: true,
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -194,14 +196,16 @@ const HotspotPackageList: React.FC = () => {
         if (!dataRate) return "-";
         return <>{dataRate}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Data Rate Unit",
       dataIndex: "dataRateUnit",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -209,7 +213,8 @@ const HotspotPackageList: React.FC = () => {
       title: "OTP Limit",
       dataIndex: "otpLimit",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -217,14 +222,16 @@ const HotspotPackageList: React.FC = () => {
       title: "Package Category",
       dataIndex: "packageCategory",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Price",
       dataIndex: "price",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -232,7 +239,8 @@ const HotspotPackageList: React.FC = () => {
       title: "Validity",
       dataIndex: "validity",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -240,7 +248,8 @@ const HotspotPackageList: React.FC = () => {
       title: "Validity Unit",
       dataIndex: "validityUnit",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -254,7 +263,8 @@ const HotspotPackageList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -316,6 +326,8 @@ const HotspotPackageList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -529,6 +541,11 @@ const HotspotPackageList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

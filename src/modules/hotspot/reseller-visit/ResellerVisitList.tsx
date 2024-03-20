@@ -326,7 +326,8 @@ const ResellerVisitList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -337,7 +338,8 @@ const ResellerVisitList: React.FC = () => {
         if (!zoneManagerName) return "-";
         return <>{zoneManagerName}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -348,7 +350,8 @@ const ResellerVisitList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -359,7 +362,8 @@ const ResellerVisitList: React.FC = () => {
         if (!reseller) return "-";
         return <>{reseller.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -370,7 +374,8 @@ const ResellerVisitList: React.FC = () => {
         if (!shopName) return "-";
         return <>{shopName}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -381,7 +386,8 @@ const ResellerVisitList: React.FC = () => {
         if (!gpsLocation) return "-";
         return <>{gpsLocation}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -394,7 +400,8 @@ const ResellerVisitList: React.FC = () => {
           <>{isCompetitionPresent === true ? "Availabe" : "Not Available"}</>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -405,7 +412,8 @@ const ResellerVisitList: React.FC = () => {
         if (!hotspotFrequency) return "-";
         return <>{hotspotFrequency}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -416,7 +424,8 @@ const ResellerVisitList: React.FC = () => {
         if (!internetSpeed) return "-";
         return <>{internetSpeed}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -427,7 +436,8 @@ const ResellerVisitList: React.FC = () => {
         if (!frequentComplains) return "-";
         return <>{frequentComplains}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -438,7 +448,8 @@ const ResellerVisitList: React.FC = () => {
         if (!fiberCut) return "-";
         return <>{fiberCut}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -449,7 +460,8 @@ const ResellerVisitList: React.FC = () => {
         if (!laserIssues) return "-";
         return <>{laserIssues}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -460,7 +472,8 @@ const ResellerVisitList: React.FC = () => {
         if (!powerIssues) return "-";
         return <>{powerIssues}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -471,7 +484,8 @@ const ResellerVisitList: React.FC = () => {
         if (!sunShedBannerPresent) return "-";
         return <>{sunShedBannerPresent === true ? "Yes" : "No"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -482,7 +496,8 @@ const ResellerVisitList: React.FC = () => {
         if (!totalSalesInLastWeek) return "-";
         return <>{totalSalesInLastWeek}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -494,7 +509,8 @@ const ResellerVisitList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -507,7 +523,8 @@ const ResellerVisitList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // editedBy
@@ -753,6 +770,11 @@ const ResellerVisitList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

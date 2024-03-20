@@ -251,7 +251,8 @@ const ChecklistList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -268,7 +269,8 @@ const ChecklistList: React.FC = () => {
         );
       },
       sorter: false,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -279,7 +281,8 @@ const ChecklistList: React.FC = () => {
         return <>{row.complainType.name}</>;
       },
       sorter: false,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -287,7 +290,8 @@ const ChecklistList: React.FC = () => {
       title: "Check List",
       dataIndex: "title",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -306,7 +310,8 @@ const ChecklistList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -332,6 +337,8 @@ const ChecklistList: React.FC = () => {
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -390,6 +397,8 @@ const ChecklistList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -612,6 +621,11 @@ const ChecklistList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

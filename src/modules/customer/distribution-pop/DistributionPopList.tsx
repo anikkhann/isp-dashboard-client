@@ -192,7 +192,8 @@ const DistributionPopList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -205,14 +206,16 @@ const DistributionPopList: React.FC = () => {
           <>{record.zone && record.zone.name ? record.zone.name : "N/A"}</>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "POP",
       dataIndex: "name",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -230,7 +233,8 @@ const DistributionPopList: React.FC = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -256,6 +260,8 @@ const DistributionPopList: React.FC = () => {
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -318,6 +324,8 @@ const DistributionPopList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -506,6 +514,11 @@ const DistributionPopList: React.FC = () => {
               </Space>
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

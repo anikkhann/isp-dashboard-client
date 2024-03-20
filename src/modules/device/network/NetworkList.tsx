@@ -201,6 +201,8 @@ const NetworkList: React.FC = () => {
       },
       sorter: true,
       // width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -208,6 +210,8 @@ const NetworkList: React.FC = () => {
       dataIndex: "networkName",
       sorter: true,
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -215,6 +219,8 @@ const NetworkList: React.FC = () => {
       dataIndex: "networkAddress",
       sorter: true,
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -222,6 +228,8 @@ const NetworkList: React.FC = () => {
       dataIndex: "subnetMask",
       sorter: true,
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -240,6 +248,8 @@ const NetworkList: React.FC = () => {
         );
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -266,6 +276,8 @@ const NetworkList: React.FC = () => {
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -340,6 +352,8 @@ const NetworkList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -515,6 +529,11 @@ const NetworkList: React.FC = () => {
                 </Collapse>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

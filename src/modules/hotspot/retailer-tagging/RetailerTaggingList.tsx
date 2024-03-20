@@ -601,7 +601,8 @@ const RetailerTaggingList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -614,7 +615,8 @@ const RetailerTaggingList: React.FC = () => {
         if (!areaManagerTag) return "-";
         return <>{areaManagerTag.displayName}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -627,7 +629,8 @@ const RetailerTaggingList: React.FC = () => {
         if (!tso) return "-";
         return <>{tso.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // retailer
@@ -639,7 +642,8 @@ const RetailerTaggingList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -652,7 +656,8 @@ const RetailerTaggingList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -665,7 +670,8 @@ const RetailerTaggingList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -744,6 +750,8 @@ const RetailerTaggingList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1122,6 +1130,11 @@ const RetailerTaggingList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

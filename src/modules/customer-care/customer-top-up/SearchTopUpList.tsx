@@ -247,7 +247,8 @@ const SearchTopUpList = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -259,6 +260,8 @@ const SearchTopUpList = () => {
         return <>{customer?.username}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // subject
@@ -271,6 +274,8 @@ const SearchTopUpList = () => {
         return <>{subject}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // remarks
@@ -284,6 +289,8 @@ const SearchTopUpList = () => {
       },
 
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // changedData
@@ -325,6 +332,8 @@ const SearchTopUpList = () => {
       },
 
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // actionBy
@@ -337,6 +346,8 @@ const SearchTopUpList = () => {
         return <>{insertedBy.username}</>;
       },
       //   width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -348,7 +359,8 @@ const SearchTopUpList = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -596,8 +608,12 @@ const SearchTopUpList = () => {
 
           {data && data.length > 0 ? (
             <Table
+              style={{
+                width: "100%",
+                overflowX: "auto"
+              }}
+              scroll={{ x: true }}
               className={"table-striped-rows"}
-              style={{ overflow: "scroll" }}
               columns={columns}
               rowKey={record => record.id}
               dataSource={data}

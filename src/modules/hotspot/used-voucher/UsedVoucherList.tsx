@@ -487,14 +487,16 @@ const UsedVoucherList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>
+            {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
-            </Space>
+            </Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -506,7 +508,8 @@ const UsedVoucherList: React.FC = () => {
         if (!client) return "-";
         return <>{client.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -517,7 +520,8 @@ const UsedVoucherList: React.FC = () => {
         if (!zoneManager) return "-";
         return <>{zoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -528,7 +532,8 @@ const UsedVoucherList: React.FC = () => {
         if (!subZoneManager) return "-";
         return <>{subZoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -539,21 +544,24 @@ const UsedVoucherList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "SerialNo",
       dataIndex: "serialNo",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Voucher",
       dataIndex: "voucherNumber",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -564,7 +572,8 @@ const UsedVoucherList: React.FC = () => {
         if (!usedBy) return "-";
         return <>{usedBy?.customer?.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -575,7 +584,8 @@ const UsedVoucherList: React.FC = () => {
         if (!usedBy) return "-";
         return <>{usedBy?.customer?.phone}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -586,7 +596,8 @@ const UsedVoucherList: React.FC = () => {
         if (!usedIp) return "-";
         return <>{usedIp}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -597,7 +608,8 @@ const UsedVoucherList: React.FC = () => {
         if (!usedMac) return "-";
         return <>{usedMac}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -609,14 +621,16 @@ const UsedVoucherList: React.FC = () => {
         const date = new Date(usedTime);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Reference",
       dataIndex: "referenceNumber",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // pricingPlan
@@ -628,14 +642,16 @@ const UsedVoucherList: React.FC = () => {
         if (!pricingPlan) return "-";
         return <>{pricingPlan.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Price (BDT)",
       dataIndex: "packagePrice",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -648,7 +664,8 @@ const UsedVoucherList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -661,7 +678,8 @@ const UsedVoucherList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -712,6 +730,8 @@ const UsedVoucherList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1352,6 +1372,11 @@ const UsedVoucherList: React.FC = () => {
               )}
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

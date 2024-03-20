@@ -152,7 +152,8 @@ const HotspotCustomerList: React.FC = () => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -164,7 +165,8 @@ const HotspotCustomerList: React.FC = () => {
         if (!client) return "-";
         return <>{client.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -175,7 +177,8 @@ const HotspotCustomerList: React.FC = () => {
         if (!customer) return "-";
         return <>{customer.phone}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -186,7 +189,8 @@ const HotspotCustomerList: React.FC = () => {
         if (!customer) return "-";
         return <>{customer.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -197,35 +201,40 @@ const HotspotCustomerList: React.FC = () => {
         if (!activePricingPlan) return "-";
         return <>{activePricingPlan.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Last Activated By",
       dataIndex: "lastActivatedBy",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Last Ip Address",
       dataIndex: "lastIpAddress",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "OTP",
       dataIndex: "otp",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "MAC",
       dataIndex: "mac",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -237,7 +246,8 @@ const HotspotCustomerList: React.FC = () => {
         const date = new Date(expirationTime);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -250,7 +260,8 @@ const HotspotCustomerList: React.FC = () => {
         if (!insertedBy) return "-";
         return <>{insertedBy.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -263,7 +274,8 @@ const HotspotCustomerList: React.FC = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -340,6 +352,8 @@ const HotspotCustomerList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -497,6 +511,11 @@ const HotspotCustomerList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

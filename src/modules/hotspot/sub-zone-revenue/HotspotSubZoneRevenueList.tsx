@@ -5,7 +5,7 @@ import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
 import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import type { FilterValue } from "antd/es/table/interface";
+import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
@@ -49,7 +49,10 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   const MySwal = withReactContent(Swal);
 
   const authUser = useAppSelector(state => state.auth.user);
-
+  const [page, SetPage] = useState(0);
+  const [limit, SetLimit] = useState(10);
+  const [order, SetOrder] = useState("asc");
+  const [sort, SetSort] = useState("id");
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -80,6 +83,10 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   });
 
   const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string,
     selectedClientParam?: string,
     selectedZoneManagerParam?: string,
     selectedSubZoneManagerParam?: string,
@@ -101,7 +108,15 @@ const HotspotSubZoneRevenueList: React.FC = () => {
     const endDate = endDateParam ? endDateParam : "";
 
     const { data } = await axios.get(
-      `/api-hotspot/revenue-report/sub-zone-manager-wise-revenue?clientId=${clientID}&zoneManagerId=${zoneManagerId}&subZoneManagerId=${subZoneManagerId}&startDate=${startDate}&endDate=${endDate}`
+      `/api-hotspot/revenue-report/sub-zone-manager-wise-revenue?clientId=${clientID}&zoneManagerId=${zoneManagerId}&subZoneManagerId=${subZoneManagerId}&startDate=${startDate}&endDate=${endDate}`,
+      {
+        params: {
+          page,
+          limit,
+          order,
+          sort
+        }
+      }
     );
     return data;
   };
@@ -109,6 +124,10 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: [
       "sub-zone-manager-wise-revenue",
+      page,
+      limit,
+      order,
+      sort,
       selectedClient,
       selectedZone,
       selectedSubZoneManager,
@@ -117,6 +136,10 @@ const HotspotSubZoneRevenueList: React.FC = () => {
     ],
     queryFn: async () => {
       const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
         selectedClient,
         selectedZone,
         selectedSubZoneManager,
@@ -152,6 +175,30 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       console.log("error", error);
     }
   });
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<ZoneTagData> | SorterResult<ZoneTagData>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<ZoneTagData>).order) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
+
+      SetOrder(
+        (sorter as SorterResult<ZoneTagData>).order === "ascend"
+          ? "asc"
+          : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<ZoneTagData>).field) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
+
+      SetSort((sorter as SorterResult<ZoneTagData>).field as string);
+    }
+  };
 
   useEffect(() => {
     if (data) {
@@ -345,10 +392,27 @@ const HotspotSubZoneRevenueList: React.FC = () => {
 
   const columns: ColumnsType<ZoneTagData> = [
     {
+      title: "Serial",
+      dataIndex: "id",
+      render: (tableParams, row, index) => {
+        return (
+          <>
+            {/* <Space>{index + 1}</Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+          </>
+        );
+      },
+      sorter: false,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "SubZone Manager",
       dataIndex: "name",
 
-      width: 500,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -362,21 +426,24 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       title: "Unused Voucher",
       dataIndex: "unused_voucher_qty",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Used Voucher",
       dataIndex: "used_voucher_qty",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Commission (BDT)",
       dataIndex: "commission",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -666,12 +733,18 @@ const HotspotSubZoneRevenueList: React.FC = () => {
               )}
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}
                 pagination={tableParams.pagination}
                 loading={isLoading || isFetching}
+                onChange={handleTableChange}
               />
             </Space>
           </TableCard>

@@ -246,7 +246,8 @@ const SearchStatusUpdateList = () => {
         );
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -258,6 +259,8 @@ const SearchStatusUpdateList = () => {
         return <>{customer?.username}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // subject
@@ -270,6 +273,8 @@ const SearchStatusUpdateList = () => {
         return <>{subject}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // remarks
@@ -283,6 +288,8 @@ const SearchStatusUpdateList = () => {
       },
 
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // changedData
@@ -324,6 +331,8 @@ const SearchStatusUpdateList = () => {
       },
 
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // actionBy
@@ -336,6 +345,8 @@ const SearchStatusUpdateList = () => {
         return <>{insertedBy.username}</>;
       },
       //   width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -347,7 +358,8 @@ const SearchStatusUpdateList = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -597,8 +609,12 @@ const SearchStatusUpdateList = () => {
 
           {data && data.length > 0 ? (
             <Table
+              style={{
+                width: "100%",
+                overflowX: "auto"
+              }}
+              scroll={{ x: true }}
               className={"table-striped-rows"}
-              style={{ overflow: "scroll" }}
               columns={columns}
               rowKey={record => record.id}
               dataSource={data}

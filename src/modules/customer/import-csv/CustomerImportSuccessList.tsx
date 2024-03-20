@@ -21,6 +21,8 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import type { TablePaginationConfig } from "antd/es/table";
+import type { FilterValue, SorterResult } from "antd/es/table/interface";
 // import ability from "@/services/guard/ability";
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -30,6 +32,14 @@ dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
 
 // const dateFormat = "YYYY-MM-DD";
+
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Record<string, FilterValue | null>;
+}
+
 const CustomerImportSuccessList = ({ id }: any) => {
   // const [form] = Form.useForm();
 
@@ -37,14 +47,38 @@ const CustomerImportSuccessList = ({ id }: any) => {
   const MySwal = withReactContent(Swal);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const downloadRef = useRef<any>(null);
+  const [page, SetPage] = useState(0);
+  const [limit, SetLimit] = useState(10);
+  const [order, SetOrder] = useState("asc");
+  const [sort, SetSort] = useState("id");
   const [downloadRow, setDownloadRow] = useState<any[]>([]);
-  const fetchData = async () => {
+
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      total: 0,
+      current: 1,
+      pageSize: 10
+    }
+  });
+
+  const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string
+  ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
       `/api/customer-import-csv/get-success-list/${id}`,
       {
+        params: {
+          page,
+          limit,
+          order,
+          sort
+        },
         headers: {
           "Content-Type": "application/json"
         }
@@ -54,9 +88,16 @@ const CustomerImportSuccessList = ({ id }: any) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["customer-get-success-list-list", !!id],
+    queryKey: [
+      "customer-get-success-list-list",
+      !!id,
+      page,
+      limit,
+      order,
+      sort
+    ],
     queryFn: async () => {
-      const response = await fetchData();
+      const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
@@ -65,8 +106,25 @@ const CustomerImportSuccessList = ({ id }: any) => {
 
         if (data.body) {
           setData(data.body);
+          setTableParams({
+            pagination: {
+              total: data.body.length,
+              // total: data.meta.totalRecords,
+              // pageSize: data.meta.limit,
+              // current: (data.meta.page as number) + 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
         } else {
           setData([]);
+          setTableParams({
+            pagination: {
+              total: 0,
+              pageSize: 10,
+              current: 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
         }
       }
     },
@@ -85,17 +143,35 @@ const CustomerImportSuccessList = ({ id }: any) => {
 
   const columns: ColumnsType<CustomerData> = [
     {
+      title: "Serial",
+      dataIndex: "id",
+      render: (tableParams, row, index) => {
+        return (
+          <>
+            {/* <Space>{index + 1}</Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+          </>
+        );
+      },
+      sorter: false,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "Name",
       dataIndex: "name",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Username",
       dataIndex: "username",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -103,21 +179,23 @@ const CustomerImportSuccessList = ({ id }: any) => {
       title: "Email",
       dataIndex: "email",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Customer Type",
       dataIndex: "customerType",
 
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Mobile No",
       dataIndex: "mobileNo",
-
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -144,7 +222,8 @@ const CustomerImportSuccessList = ({ id }: any) => {
 
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // editedBy
@@ -174,6 +253,30 @@ const CustomerImportSuccessList = ({ id }: any) => {
     //   align: "center" as AlignType
     // },
   ];
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<CustomerData> | SorterResult<CustomerData>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<CustomerData>).order) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
+
+      SetOrder(
+        (sorter as SorterResult<CustomerData>).order === "ascend"
+          ? "asc"
+          : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<CustomerData>).field) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
+
+      SetSort((sorter as SorterResult<CustomerData>).field as string);
+    }
+  };
 
   const handleDownload = async () => {
     const token = Cookies.get("token");
@@ -355,11 +458,18 @@ const CustomerImportSuccessList = ({ id }: any) => {
             {/* )} */}
             <Space direction="vertical" style={{ width: "100%" }}>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}
+                pagination={tableParams.pagination}
                 loading={isLoading || isFetching}
+                onChange={handleTableChange}
               />
             </Space>
           </TableCard>

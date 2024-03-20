@@ -113,10 +113,16 @@ const EditSurveyForm = ({ item }: PropData) => {
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     setTimeout(async () => {
-      const { title, type, options } = data;
+      // const { title, type, options } = data;
+      const { title, type, options: newOptions } = data;
+
+      // Combine existing options with newly added options
+      const allOptions = [...optionsValue, ...newOptions];
 
       // Extract values from the array of objects
-      const values = options.map((obj: { option: any }) => obj.option);
+      // const values = options.map((obj: { option: any }) => obj.option);
+      // Extract values from the array of objects
+      const values = allOptions.map((obj: { option: any }) => obj.option);
       // Create a string by joining the values with commas and formatting
       const resultString = `{${values
         .map((value: any) => `'${value}'`)
@@ -276,9 +282,65 @@ const EditSurveyForm = ({ item }: PropData) => {
             </Col>
           </Row>
 
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+              xxl={12}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Options"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                // name="options"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your title!"
+                //   }
+                // ]}
+              >
+                <div className="text-left ">
+                  {/* Parse item.options to extract individual options */}
+                  {item.options && item.options.length > 0 && (
+                    <div className="flex">
+                      {item.options
+                        .replace(/^\{|\}$/g, "") // Remove surrounding curly braces
+                        .replace(/'/g, "") // Remove double quotes
+                        .split(/,(?=(?:(?:[^']*'){2})*[^']*$)/) // Split by comma excluding commas inside single quotes
+
+                        .map((option, index, array) => (
+                          <div className="square" key={option.trim()}>
+                            <p className="">
+                              {option.trim()}
+                              {index !== array.length - 1 ? ", " : ""}
+                            </p>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              </Form.Item>
+            </Col>
+          </Row>
+
           {!loading && (
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-              <Col>
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
                 <Form.List name="options" initialValue={optionsValue}>
                   {(fields, { add, remove }) => (
                     <>

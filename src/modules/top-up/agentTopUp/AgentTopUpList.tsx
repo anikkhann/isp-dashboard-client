@@ -174,7 +174,8 @@ const AgentTopUpList: React.FC = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -184,7 +185,8 @@ const AgentTopUpList: React.FC = () => {
       render: (agent: any) => {
         return <>{agent ? agent.username : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     /*  {
@@ -204,14 +206,16 @@ const AgentTopUpList: React.FC = () => {
       render: (type: any) => {
         return <>{type ? type : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Amount",
       dataIndex: "amount",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -221,7 +225,8 @@ const AgentTopUpList: React.FC = () => {
       render: (remarks: any) => {
         return <>{remarks ? remarks : "N/A"}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -234,7 +239,8 @@ const AgentTopUpList: React.FC = () => {
         if (!rechargedBy) return "-";
         return <>{rechargedBy.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // createdOn
@@ -247,7 +253,8 @@ const AgentTopUpList: React.FC = () => {
         const date = new Date(rechargedDate);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -297,6 +304,8 @@ const AgentTopUpList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -483,6 +492,11 @@ const AgentTopUpList: React.FC = () => {
                 </div>
               </Space>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

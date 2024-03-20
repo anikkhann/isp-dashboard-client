@@ -483,14 +483,16 @@ const UnusedVoucherList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>
+            {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
-            </Space>
+            </Space> */}
+            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
           </>
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -501,7 +503,8 @@ const UnusedVoucherList: React.FC = () => {
         if (!client) return "-";
         return <>{client.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -512,7 +515,8 @@ const UnusedVoucherList: React.FC = () => {
         if (!zoneManager) return "-";
         return <>{zoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -523,7 +527,8 @@ const UnusedVoucherList: React.FC = () => {
         if (!subZoneManager) return "-";
         return <>{subZoneManager.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -534,14 +539,16 @@ const UnusedVoucherList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Serial No",
       dataIndex: "serialNo",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -552,14 +559,16 @@ const UnusedVoucherList: React.FC = () => {
         if (!retailer) return "-";
         return <>{retailer.username}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Reference",
       dataIndex: "referenceNumber",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // pricingPlan
@@ -571,14 +580,16 @@ const UnusedVoucherList: React.FC = () => {
         if (!pricingPlan) return "-";
         return <>{pricingPlan.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Price",
       dataIndex: "packagePrice",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -655,6 +666,8 @@ const UnusedVoucherList: React.FC = () => {
           </div>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -1215,6 +1228,11 @@ const UnusedVoucherList: React.FC = () => {
               )}
 
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
                 className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}

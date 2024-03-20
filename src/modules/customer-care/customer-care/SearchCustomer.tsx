@@ -325,21 +325,24 @@ const SearchCustomer = () => {
         );
       },
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Customer ID",
       dataIndex: "customerId",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Username",
       dataIndex: "username",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -350,7 +353,8 @@ const SearchCustomer = () => {
         if (!distributionZone) return "-";
         return <>{distributionZone.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -361,35 +365,40 @@ const SearchCustomer = () => {
         if (!distributionPop) return "-";
         return <>{distributionPop.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Email",
       dataIndex: "email",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Mobile",
       dataIndex: "mobileNo",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Connection Address",
       dataIndex: "connectionAddress",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Credits",
       dataIndex: "credits",
       sorter: true,
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -400,7 +409,8 @@ const SearchCustomer = () => {
         if (!customerPackage) return "-";
         return <>{customerPackage.name}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -419,7 +429,8 @@ const SearchCustomer = () => {
         return <span style={{ color }}>{format(result2, "yyyy-MM-dd")}</span>;
         // return <>{format(result2, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -437,7 +448,8 @@ const SearchCustomer = () => {
           </>
         );
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // insertedBy
@@ -462,7 +474,8 @@ const SearchCustomer = () => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // editedBy
@@ -579,6 +592,8 @@ const SearchCustomer = () => {
           </>
         );
       },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -890,8 +905,12 @@ const SearchCustomer = () => {
 
           {data && data.length > 0 ? (
             <Table
+              style={{
+                width: "100%",
+                overflowX: "auto"
+              }}
+              scroll={{ x: true }}
               className={"table-striped-rows"}
-              style={{ overflow: "scroll" }}
               columns={columns}
               rowKey={record => record.id}
               dataSource={data}
