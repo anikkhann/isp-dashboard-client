@@ -10,7 +10,7 @@ interface PropData {
 
 const SafPrintData = ({ componentRef, item, safData }: PropData) => {
   console.log("safData", safData);
-  console.log("safData", item);
+  console.log("item", item);
   return (
     <>
       <div ref={componentRef}>
@@ -41,11 +41,9 @@ const SafPrintData = ({ componentRef, item, safData }: PropData) => {
             <div className="flex justify-between items-center py-2">
               <div>
                 <p>{safData.body.body.customer?.name}</p>
-                <p>Customer ID: {safData.body.body.customer?.customerId}</p>
-                <p>
-                  Customer Number: {safData.body.body.customer?.contactNumber}
-                </p>
-                <p>NID/PP.No/IdNo: {safData.body.body.customer?.identityNo}</p>
+                <p>Customer ID: {item?.customerId}</p>
+                <p>Customer Name: {safData.body.body.subscriberName}</p>
+                <p>NID/PP.No/IdNo: {safData.body.body.identificationNo}</p>
               </div>
               <img src="path_to_logo.png" alt="NO PHOTO" className="h-20" />
             </div>
@@ -55,16 +53,16 @@ const SafPrintData = ({ componentRef, item, safData }: PropData) => {
 
             {/* <!-- Owner Information --> */}
             <div className="text-center py-2">
-              <p>Type Of Customer: Individual</p>
+              <p>Type Of Customer: {safData.body.body.typeofCustomer}</p>
               <p>Fathers Name: {safData.body.body.fatherName}</p>
               <p>Mothers Name: {safData.body.body.motherName}</p>
               <p>Spouses Name: {safData.body.body.spouseName}</p>
               <p>Email: {safData.body.body.email}</p>
               <p>Contact Person: {safData.body.body.contactPerson}</p>
-              <p>Contact Number: {safData.body.body.mobileNumber}</p>
+              <p>Contact Number: {item.contactNumber}</p>
               <p>Alternate Mobile No: {safData.body.body.phoneNumber}</p>
               <p>Date of Birth: {safData.body.body.dateOfBirth}</p>
-              <p>Gender: a</p>
+              <p>Gender: {safData.body.body.gender}</p>
               <p>Occupation: {safData.body.body.occupation}</p>
               <p>Connectivity Address: {safData.body.body.connectionAddress}</p>
               <p>Permanent Address: {safData.body.body.permanentAddress}</p>

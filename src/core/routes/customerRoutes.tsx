@@ -83,7 +83,7 @@ const customerRoutes = [
   // Import CSV
   {
     key: "/admin/customer/import-csv",
-    label: <Link href="/admin/customer/import-csv">Import CSV</Link>,
+    label: <Link href="/admin/customer/import-csv">Customer Import</Link>,
     path: "/admin/customer/import-csv",
     icon: <UserOutlined />,
     permission: "customerImportCsv.list"

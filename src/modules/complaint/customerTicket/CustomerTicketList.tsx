@@ -358,7 +358,7 @@ const CustomerTicketList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Complain Type",
+      title: "Complaint Type",
       dataIndex: "complainType",
       render: (complainType, row) => {
         return <>{row.complainType.name}</>;
@@ -714,7 +714,7 @@ const CustomerTicketList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Complain Type</b>
+                              <b>Complaint Type</b>
                             </span>
                             <Select
                               allowClear

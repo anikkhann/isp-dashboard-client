@@ -370,7 +370,7 @@ const AdminTicketList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "complainType",
+      title: "Complaint Type",
       dataIndex: "complainType",
       render: (complainType, row) => {
         return <>{row.complainType.name}</>;

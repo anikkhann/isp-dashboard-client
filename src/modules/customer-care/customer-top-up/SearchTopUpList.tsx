@@ -466,15 +466,14 @@ const SearchTopUpList = () => {
                     backgroundColor: "#FFC857",
                     color: "white",
                     borderRadius: 4,
-                    // marginBottom: 24,
-                    // border: 0,
+
                     overflow: "hidden",
                     fontWeight: "bold",
                     font: "1rem",
                     width: "100%"
                   }}
                 >
-                  <Panel header="Customer Top Up Filters" key="1">
+                  <Panel header="Filters" key="1">
                     <Row
                       gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                       justify="space-between"
@@ -491,7 +490,8 @@ const SearchTopUpList = () => {
                         <Space style={{ width: "100%" }} direction="vertical">
                           <span>
                             <b>
-                              Username <span style={{ color: "red" }}>*</span>{" "}
+                              Username
+                              {/* <span style={{ color: "red" }}>*</span>{" "} */}
                             </b>
                           </span>
                           <Select
@@ -550,14 +550,14 @@ const SearchTopUpList = () => {
                             color: "#ffffff"
                           }}
                           onClick={() => {
-                            if (!selectedCustomer) {
-                              MySwal.fire({
-                                title: "Error",
-                                text: "Select Username",
-                                icon: "error"
-                              });
-                              return;
-                            }
+                            // if (!selectedCustomer) {
+                            //   MySwal.fire({
+                            //     title: "Error",
+                            //     text: "Select Username",
+                            //     icon: "error"
+                            //   });
+                            //   return;
+                            // }
 
                             handleSubmit(
                               page,

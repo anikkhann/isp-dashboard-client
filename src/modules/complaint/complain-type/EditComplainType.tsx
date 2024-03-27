@@ -56,15 +56,17 @@ const EditComplainType = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complain Dashboard</Link>
+              title: <Link href="/admin/complaint">Complaint Dashboard</Link>
             },
             {
               title: (
-                <Link href="/admin/complaint/complain-type">Complain Type</Link>
+                <Link href="/admin/complaint/complain-type">
+                  Complaint Type
+                </Link>
               )
             },
             {
-              title: "Edit Complain Type"
+              title: "Edit Complaint Type"
             }
           ]}
         />
@@ -86,7 +88,7 @@ const EditComplainType = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Complain Type
+            Edit Complaint Type
           </h1>
         </div>
         <Card

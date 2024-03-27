@@ -4,7 +4,7 @@ import { Col } from "antd";
 import TotalComplainData from "@/components/dashboard/ComplainManagement/TotalComplainData";
 import GetCustomerComplainData from "@/components/dashboard/ComplainManagement/GetCustomerComplainData";
 import LatestComplainData from "@/components/dashboard/ComplainManagement/LatestComplainData";
-import CustomerComplainSummaryData from "@/components/dashboard/ComplainManagement/CustomerComplainSummaryData";
+// import CustomerComplainSummaryData from "@/components/dashboard/ComplainManagement/CustomerComplainSummaryData";
 import RootWiseComplainSummaryData from "@/components/dashboard/ComplainManagement/RootWiseComplainSummaryData";
 const ComplainManagementDashboard = () => {
   return (
@@ -22,9 +22,9 @@ const ComplainManagementDashboard = () => {
           <Col span={24}>
             <LatestComplainData />
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <CustomerComplainSummaryData />
-          </Col>
+          </Col> */}
           <Col span={24}>
             <RootWiseComplainSummaryData />
           </Col>

@@ -23,13 +23,13 @@ const NewSingleSms = () => {
             },
 
             {
-              title: "New Single Sms"
+              title: "New Single SMS"
             }
           ]}
         />
 
         <Card
-          title="New Single Sms"
+          title="New Single SMS"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",

@@ -157,7 +157,7 @@ const TicketHistory = ({ item }: PropData) => {
       align: "center" as AlignType
     },
     {
-      title: "Complain Type",
+      title: "Complaint Type",
       dataIndex: "complainType",
       render: (complainType, row) => {
         return <>{row.complainType.name}</>;

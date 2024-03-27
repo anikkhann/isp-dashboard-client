@@ -267,7 +267,7 @@ const CreateRoleForm = () => {
             >
               <Form.Item label="" style={{ marginBottom: 0, padding: "6px" }}>
                 <Checkbox onChange={handleActive} checked={isActive}>
-                  Status
+                  Active
                 </Checkbox>
               </Form.Item>
             </Col>

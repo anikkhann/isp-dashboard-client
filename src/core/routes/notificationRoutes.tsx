@@ -73,7 +73,7 @@ const notificationRoutes = [
         key: "/admin/notification/sms/send-sms-single",
         label: (
           <Link href="/admin/notification/sms/send-sms-single">
-            Send SMS Single
+            Send Single SMS
           </Link>
         ),
         path: "/admin/notification/sms/send-sms-single",
@@ -84,7 +84,7 @@ const notificationRoutes = [
         key: "/admin/notification/sms/send-sms-bulk",
         label: (
           <Link href="/admin/notification/sms/send-sms-bulk">
-            Send SMS Bulk
+            Send Bulk SMS
           </Link>
         ),
         path: "/admin/notification/sms/send-sms-bulk",

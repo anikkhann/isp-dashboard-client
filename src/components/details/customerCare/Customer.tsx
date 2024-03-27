@@ -104,7 +104,7 @@ const Customer = ({ item }: PropData) => {
       if (result.isConfirmed) {
         const { data } = await axios.get(`/api/customer/renew/${id}`);
         if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
+          MySwal.fire("Success!", data.message, "success").then(() => {
             router.reload();
           });
         } else {
@@ -990,7 +990,7 @@ const Customer = ({ item }: PropData) => {
                       alignItems: "end"
                     }}
                   >
-                    <span className="font-bold text-base">Is MAC Bound :</span>
+                    <span className="font-bold text-base">Is MAC Bind? :</span>
                   </Col>
                   <Col>
                     <span

@@ -19,10 +19,12 @@ const NewComplainType = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complain Dashboard</Link>
+              title: <Link href="/admin/complaint">Complaint Dashboard</Link>
             },
             {
-              title: <Link href="/admin/complaint/complain-type">Complain</Link>
+              title: (
+                <Link href="/admin/complaint/complain-type">Complaint</Link>
+              )
             },
             {
               title: "New Complain Type"
@@ -47,7 +49,7 @@ const NewComplainType = () => {
               color: "#F15F22"
             }}
           >
-            New Complain Type
+            New Complaint Type
           </h1>
         </div>
         <Card

@@ -180,12 +180,17 @@ const RootCauseList: React.FC = () => {
     {
       title: "Complaint Category",
       dataIndex: "rootCauseCategory",
-      render: (rootCauseCategory: any) => {
+      render: (rootCauseCategory: any, row) => {
         return (
           <>
-            {authUser && authUser.userType != "durjoy"
-              ? rootCauseCategory
+            {authUser && authUser.userType !== "durjoy"
+              ? row.rootCauseCategory === "parent"
+                ? "service"
+                : row.rootCauseCategory
               : "-"}
+            {/* {authUser && authUser.userType != "durjoy"
+              ? rootCauseCategory
+              : "-"} */}
           </>
         );
       },

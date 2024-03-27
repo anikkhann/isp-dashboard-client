@@ -53,7 +53,7 @@ const OverallWeekDue = () => {
       {isError && <div>{error.message}</div>}
 
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-        <Col
+        {/* <Col
           xs={24}
           sm={12}
           md={8}
@@ -77,7 +77,7 @@ const OverallWeekDue = () => {
               }}
             >
               <Statistic
-                title="Total Unpaid Customer"
+                title="Total Payable Customer"
                 value={item?.total_payable_customer || 0}
                 // precision={2}
                 valueStyle={{ color: "#0e8fdc" }}
@@ -98,7 +98,6 @@ const OverallWeekDue = () => {
         >
           <Link href={`/admin/customer/customer`}>
             <Card
-              // bordered={false}
               hoverable
               style={{
                 width: "90%",
@@ -122,7 +121,7 @@ const OverallWeekDue = () => {
               />
             </Card>
           </Link>
-        </Col>
+        </Col> */}
         <Col
           xs={24}
           sm={12}

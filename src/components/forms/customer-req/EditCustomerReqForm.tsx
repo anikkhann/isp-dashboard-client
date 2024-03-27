@@ -172,13 +172,13 @@ const EditCustomerReqForm = ({ item }: PropData) => {
 
   const handleCustomerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ referrerCustomer: value });
+    form.setFieldsValue({ referrerCustomerId: value });
     setSelectedCustomer(value as any);
   };
 
   const handleUserChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ referrerUser: value });
+    form.setFieldsValue({ referrerUserId: value });
     setSelectedUser(value as any);
   };
 
@@ -219,6 +219,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
       setSelectedDistrict(item.districtId);
       setSelectedUpazilla(item.upazillaId);
       setSelectedUnion(item.unionId);
+      setSelectedCustomer(item.referrerCustomerId);
+      setSelectedUser(item.referrerUserId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
@@ -270,7 +272,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -294,7 +296,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -310,7 +312,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -334,7 +336,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -616,8 +618,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
         identityNo: identityNo,
         remarks: remarks,
         referenceType: referenceType,
-        referrerCustomer: selectedCustomer,
-        referrerUser: selectedUser,
+        referrerCustomerId: selectedCustomer,
+        referrerUserId: selectedUser,
         referrerName: referrerName,
         divisionId: selectedDivision,
         districtId: selectedDistrict,
@@ -627,7 +629,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
 
       try {
         await axios
-          .post("/api/customer-request/update", formData)
+          .put("/api/customer-request/update", formData)
           .then(res => {
             // console.log(res);
             const { data } = res;
@@ -700,8 +702,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
             identityNo: "",
             remarks: "",
             referenceType: "",
-            referrerCustomer: "",
-            referrerUser: "",
+            referrerCustomerId: "",
+            referrerUserId: "",
             referrerName: ""
           }}
           style={{ maxWidth: "100%" }}
@@ -1416,7 +1418,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
               className="gutter-row"
             >
               <Form.Item
-                label="Upazilla"
+                label="Upazilla/Thana"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -1628,7 +1630,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="referrerUser"
+                  name="referrerUserId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select
@@ -1709,7 +1711,7 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  name="referrerCustomer"
+                  name="referrerCustomerId"
                 >
                   <Space style={{ width: "100%" }} direction="vertical">
                     <Select

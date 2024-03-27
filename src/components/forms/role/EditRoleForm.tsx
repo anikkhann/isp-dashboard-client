@@ -266,7 +266,7 @@ const EditRoleForm = ({ item }: PropData) => {
             >
               <Form.Item label="">
                 <Checkbox onChange={handleActive} checked={isActive}>
-                  Status
+                  Active
                 </Checkbox>
               </Form.Item>
             </Col>

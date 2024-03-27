@@ -50,6 +50,11 @@ const dataArray = [
     heading: "Ticket No",
     username: "[ticket_no]:",
     description: "To include ticket number"
+  },
+  {
+    heading: "Date Adjustment",
+    username: "[date_adjusted]:",
+    description: `To incldue "Your expiration date has been adjusted to reflect the <adjusted day> days you have taken in advance." in the message`
   }
 ];
 const UpdateSmsAlertForm = () => {
@@ -363,7 +368,7 @@ const UpdateSmsAlertForm = () => {
                       style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        alignItems: "end"
+                        alignItems: "start"
                       }}
                       className="w-1/2"
                     >
@@ -371,7 +376,14 @@ const UpdateSmsAlertForm = () => {
                         {data.username}
                       </span>
                     </Col>
-                    <Col className="w-1/2">
+                    <Col
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "start"
+                      }}
+                      className="w-1/2"
+                    >
                       <span className="mx-1 text-base">{data.description}</span>
                     </Col>
                   </Row>

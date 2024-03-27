@@ -472,7 +472,7 @@ const SearchPasswordChangeList = () => {
                     font: "1rem"
                   }}
                 >
-                  <Panel header="Password Change Filters" key="1">
+                  <Panel header="Filters" key="1">
                     <Row
                       gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                       justify="space-between"
@@ -552,14 +552,14 @@ const SearchPasswordChangeList = () => {
                             color: "#ffffff"
                           }}
                           onClick={() => {
-                            if (!selectedCustomer) {
-                              MySwal.fire({
-                                title: "Error",
-                                text: "Select Username",
-                                icon: "error"
-                              });
-                              return;
-                            }
+                            // if (!selectedCustomer) {
+                            //   MySwal.fire({
+                            //     title: "Error",
+                            //     text: "Select Username",
+                            //     icon: "error"
+                            //   });
+                            //   return;
+                            // }
                             handleSubmit(
                               page,
                               limit,

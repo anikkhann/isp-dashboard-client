@@ -664,7 +664,8 @@ const CustomerOnboardingReqList: React.FC = () => {
               {authUser &&
                 authUser.partnerId != record.partnerId &&
                 ((record.zoneStatus == "Approved" &&
-                  authUser.userType == "client") ||
+                  authUser.userType == "client" &&
+                  record.clientStatus != "Rejected") ||
                   (record.zoneStatus == "Pending" &&
                     authUser.userType == "zone")) &&
                 (ability.can("customerOnboardingReq.approve", "") ? (

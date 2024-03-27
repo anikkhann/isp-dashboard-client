@@ -2143,7 +2143,7 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                   >
                     {/* upazillaId */}
                     <Form.Item
-                      label="Upazilla"
+                      label="Upazilla/Thana"
                       style={{
                         marginBottom: 0,
                         fontWeight: "bold"

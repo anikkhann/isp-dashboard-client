@@ -41,7 +41,7 @@ interface FormData {
   wsdCommission: number;
   bankName: string;
   bankAccountNumber: number;
-  bKashNumber: number;
+  bkashNumber: number;
   nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
@@ -323,7 +323,7 @@ const CreateSubZoneForm = () => {
         wsdCommission,
         bankName,
         bankAccountNumber,
-        bKashNumber,
+        bkashNumber,
         nagadNumber,
         bankAccountName,
         bankBranchName,
@@ -350,7 +350,7 @@ const CreateSubZoneForm = () => {
         wsdCommission: wsdCommission,
         bankName: bankName,
         bankAccountNumber: bankAccountNumber,
-        bKashNumber: bKashNumber,
+        bkashNumber: bkashNumber,
         nagadNumber: nagadNumber,
         bankAccountName: bankAccountName,
         bankBranchName: bankBranchName,
@@ -432,7 +432,7 @@ const CreateSubZoneForm = () => {
             wsdCommission: 0,
             bankName: "",
             bankAccountNumber: "",
-            bKashNumber: "",
+            bkashNumber: "",
             nagadNumber: "",
             bankAccountName: "",
             bankBranchName: "",
@@ -959,7 +959,7 @@ const CreateSubZoneForm = () => {
             >
               {/* upazillaId */}
               <Form.Item
-                label="Upazilla"
+                label="Upazilla/Thana"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -1271,7 +1271,7 @@ const CreateSubZoneForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="bKashNumber"
+                name="bkashNumber"
                 // rules={[
                 //   {
                 //     required: true,
@@ -1283,7 +1283,7 @@ const CreateSubZoneForm = () => {
                   type="number"
                   placeholder="BKash Number"
                   className={`form-control`}
-                  name="bKashNumber"
+                  name="bkashNumber"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>

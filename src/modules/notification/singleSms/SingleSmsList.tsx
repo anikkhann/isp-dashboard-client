@@ -314,7 +314,7 @@ const SingleSmsList: React.FC = () => {
           )}
 
           <TableCard
-            title="Single Sms List"
+            title="Single SMS List"
             hasLink={true}
             addLink="/admin/notification/sms/send-sms-single/create"
             permission="smsSingle.create"

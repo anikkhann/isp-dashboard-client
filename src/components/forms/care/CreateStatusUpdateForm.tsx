@@ -267,7 +267,7 @@ const CreateStatusUpdateForm = () => {
               }}
             >
               <Checkbox onChange={handleActive} checked={isActive}>
-                Status
+                Active
               </Checkbox>
             </Form.Item>
           </Space>

@@ -23,10 +23,10 @@ const AuthLayout = ({ children }: IAuthLayoutProps) => {
           <StyledAuthCard>
             <StyledAuthWellAction>
               <StyledAuthWelContent>
-                <h2>Welcome to Dashboard!</h2>
+                <h2>Welcome to Your ISP Billing Center!</h2>
                 <p>
-                  lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Discover essential tools for managing subscriptions, analyzing
+                  data, and optimizing your ISP billing experience seamlessly.
                 </p>
               </StyledAuthWelContent>
             </StyledAuthWellAction>

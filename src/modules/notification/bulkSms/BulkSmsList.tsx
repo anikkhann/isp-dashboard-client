@@ -932,7 +932,7 @@ const BulkSmsList: React.FC = () => {
           )}
 
           <TableCard
-            title="Bulk Sms List"
+            title="Bulk SMS List"
             hasLink={true}
             addLink="/admin/notification/sms/send-sms-bulk/create"
             permission="smsBulk.create"

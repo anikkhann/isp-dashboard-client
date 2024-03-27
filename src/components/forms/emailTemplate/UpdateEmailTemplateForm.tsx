@@ -662,7 +662,7 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
             >
               {/* emailSettingsId */}
               <Form.Item
-                label="Email Settings"
+                label="Sending Email Address"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"

@@ -41,7 +41,7 @@ interface FormData {
   wsdCommission: number;
   bankName: string;
   bankAccountNumber: number;
-  bKashNumber: number;
+  bkashNumber: number;
   nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
@@ -323,7 +323,7 @@ const CreateRetailForm = () => {
         wsdCommission,
         bankName,
         bankAccountNumber,
-        bKashNumber,
+        bkashNumber,
         nagadNumber,
         bankAccountName,
         bankBranchName,
@@ -350,7 +350,7 @@ const CreateRetailForm = () => {
         wsdCommission: wsdCommission,
         bankName: bankName,
         bankAccountNumber: bankAccountNumber,
-        bKashNumber: bKashNumber,
+        bkashNumber: bkashNumber,
         nagadNumber: nagadNumber,
         bankAccountName: bankAccountName,
         bankBranchName: bankBranchName,
@@ -432,7 +432,7 @@ const CreateRetailForm = () => {
             wsdCommission: 0,
             bankName: "",
             bankAccountNumber: "",
-            bKashNumber: "",
+            bkashNumber: "",
             nagadNumber: "",
             bankAccountName: "",
             bankBranchName: "",
@@ -958,7 +958,7 @@ const CreateRetailForm = () => {
             >
               {/* upazillaId */}
               <Form.Item
-                label="Upazilla"
+                label="Upazilla/Thana"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -1270,7 +1270,7 @@ const CreateRetailForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="bKashNumber"
+                name="bkashNumber"
                 // rules={[
                 //   {
                 //     required: true,
@@ -1282,7 +1282,7 @@ const CreateRetailForm = () => {
                   type="number"
                   placeholder="BKash Number"
                   className={`form-control`}
-                  name="bKashNumber"
+                  name="bkashNumber"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>

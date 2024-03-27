@@ -489,7 +489,8 @@ const SearchStaticIpAssignList = () => {
                         <Space style={{ width: "100%" }} direction="vertical">
                           <span>
                             <b>
-                              Username<span style={{ color: "red" }}>*</span>
+                              Username
+                              {/* <span style={{ color: "red" }}>*</span> */}
                             </b>
                           </span>
                           <Select
@@ -552,14 +553,14 @@ const SearchStaticIpAssignList = () => {
                             color: "#ffffff"
                           }}
                           onClick={() => {
-                            if (!selectedCustomer) {
-                              MySwal.fire({
-                                title: "Error",
-                                text: "Select Username",
-                                icon: "error"
-                              });
-                              return;
-                            }
+                            // if (!selectedCustomer) {
+                            //   MySwal.fire({
+                            //     title: "Error",
+                            //     text: "Select Username",
+                            //     icon: "error"
+                            //   });
+                            //   return;
+                            // }
                             handleSubmit(
                               page,
                               limit,

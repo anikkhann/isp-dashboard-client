@@ -71,7 +71,7 @@ const GetCustomerComplainData = () => {
       align: "center" as AlignType
     },
     {
-      title: "Complain Type",
+      title: "Complaint Type",
       dataIndex: "complain_type",
       sorter: false,
       render: (complain_type: any) => {
@@ -148,7 +148,7 @@ const GetCustomerComplainData = () => {
             )}
 
             <TableCard
-              title="Customer Complain (Type Wise)"
+              title="Customer Complaint (Type Wise)"
               hasLink={false}
               addLink=""
               permission=""

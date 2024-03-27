@@ -19,7 +19,7 @@ const NewRootCause = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complain Dashboard</Link>
+              title: <Link href="/admin/complaint">Complaint Dashboard</Link>
             },
             {
               title: <Link href="/admin/complaint/root-cause">Root Cause</Link>

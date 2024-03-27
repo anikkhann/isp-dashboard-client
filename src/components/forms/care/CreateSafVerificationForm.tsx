@@ -93,10 +93,7 @@ const occupations = [
     label: "Student",
     value: "Student"
   },
-  {
-    label: "Business",
-    value: "Business"
-  },
+
   {
     label: "Others",
     value: "Others"
@@ -249,6 +246,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           "gender",
           "fatherName",
           "motherName",
+          "spouseName",
           "houseNo",
           "area",
           "connectionAddress"
@@ -256,11 +254,13 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
 
         setFormValues({
           ...formValues,
+
           subscriberName: form.getFieldValue("subscriberName"),
           contactPerson: form.getFieldValue("contactPerson"),
           identificationNo: form.getFieldValue("identificationNo"),
           fatherName: form.getFieldValue("fatherName"),
           motherName: form.getFieldValue("motherName"),
+          spouseName: form.getFieldValue("spouseName"),
           flatNo: form.getFieldValue("flatNo"),
           houseNo: form.getFieldValue("houseNo"),
           roadNo: form.getFieldValue("roadNo"),
@@ -293,8 +293,8 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
           )
         });
       } else if (current === 2) {
-        console.log(form.getFieldValue("email"));
-        return;
+        // console.log(form.getFieldValue("email"));
+        // return;
         await form.validateFields([
           "mobileNumber",
           "phoneNumber",
@@ -644,33 +644,63 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
     if (item) {
       getPreviousData(item.id);
 
-      form.setFieldsValue({
-        subscriberName: item.name,
-        contactPerson: item.contactPerson,
-        identificationNo: item.identityNo,
-        connectionAddress: item.connectionAddress,
-        area: item.area,
-        roadNo: item.roadNo,
-        flatNo: item.flatNo,
-        houseNo: item.houseNo,
-        mobileNo: item.mobileNo,
-        altMobileNo: item.altMobileNo,
-        email: item.email
-      });
+      // form.setFieldsValue({
+      //   subscriberName: previous.subscriberName,
+      //   contactPerson: previous.contactPerson,
+      //   identificationNo: previous.identificationNumber,
+      //   connectionAddress: previous.connectionAddress,
+      //   area: previous.area,
+      //   roadNo: previous.roadNo,
+      //   flatNo: previous.flatNo,
+      //   houseNo: previous.houseNo,
+      //   mobileNo: previous.mobileNumber,
+      //   altMobileNo: previous.altMobileNo,
+      //   email: item.email
+      // });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
   useEffect(() => {
     if (previous) {
+      setSelectedDateOfBirth(previous.dateOfBirth);
       setSelectedDivision(previous.connectionAddressDivisionId);
       setSelectedDistrict(previous.connectionAddressDistrictId);
       setSelectedUpazilla(previous.connectionAddressUpazillaId);
 
+      setSelectedParmanentAddressDivision(previous.permanentAddressDivisionId);
+      setSelectedParmanentAddressDistrict(previous.permanentAddressDistrictId);
+      setSelectedParmanentAddressUpazilla(previous.permanentAddressUpazillaId);
+      setSelectedOccupation(previous.occupation);
       form.setFieldsValue({
+        typeOfCustomer: previous.typeOfCustomer,
+        subscriberName: previous.subscriberName,
+        contactPerson: previous.contactPerson,
+        identificationNo: previous.identificationNo,
+        // dateOfBirth: previous.dateOfBirth.format("YYYY-MM-DD"),
+        gender: previous.gender,
+        fatherName: previous.fatherName,
+        motherName: previous.motherName,
+        spouseName: previous.spouseName,
+
+        area: previous.area,
+        roadNo: previous.roadNo,
+        flatNo: previous.flatNo,
+        houseNo: previous.houseNo,
+        mobileNo: previous.mobileNumber,
+        phoneNo: previous.phoneNumber,
+        altMobileNo: previous.alternateMobileNo,
+        email: previous.email,
+        connectionAddress: previous.connectionAddress,
         connectionAddressDivisionId: previous.connectionAddressDivisionId,
         connectionAddressDistrictId: previous.connectionAddressDistrictId,
-        connectionAddressUpazillaId: previous.connectionAddressUpazillaId
+        connectionAddressUpazillaId: previous.connectionAddressUpazillaId,
+        connectionAddressPostCode: previous.connectionAddressPostCode,
+        permanentAddress: previous.permanentAddress,
+        permanentAddressDivisionId: previous.permanentAddressDivisionId,
+        permanentAddressDistrictId: previous.permanentAddressDistrictId,
+        permanentAddressUpazillaId: previous.permanentAddressUpazillaId,
+        permanentAddressPostCode: previous.permanentAddressPostCode
       });
     }
   }, [previous]);
@@ -846,7 +876,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
             autoComplete="off"
             onFinish={onSubmit}
             form={form}
-            initialValues={{}}
+            initialValues={{ email: "" }}
             style={{ maxWidth: "100%" }}
             name="wrap"
             colon={false}
@@ -1814,7 +1844,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                     >
                       {/* mobileNumber */}
                       <Form.Item
-                        name="mobileNumber"
+                        name="mobileNo"
                         label="Mobile Number"
                         style={{
                           marginBottom: 0,
@@ -1846,7 +1876,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                     >
                       {/* phoneNumber */}
                       <Form.Item
-                        name="phoneNumber"
+                        name="phoneNo"
                         label="Phone Number"
                         style={{
                           marginBottom: 0,

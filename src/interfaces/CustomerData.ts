@@ -73,6 +73,8 @@ export interface CustomerData {
   adjustmentDay?: any;
   mac: string;
   staticIp: string;
+  referrerCustomerId: string;
+  referrerUserId: string;
 }
 
 export interface CustomerType {

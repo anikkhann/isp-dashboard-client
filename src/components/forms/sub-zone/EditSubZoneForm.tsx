@@ -42,7 +42,7 @@ interface FormData {
   wsdCommission: number;
   bankName: string;
   bankAccountNumber: number;
-  bKashNumber: number;
+  bkashNumber: number;
   nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
@@ -295,12 +295,12 @@ const EditSubZoneForm = ({ item }: PropData) => {
         unionId: item.unionId,
 
         contactPerson: item.contactPerson,
-        nid: item.nid,
+        nidNo: item.nidNo,
         salesDistributionCommission: item.salesDistributionCommission,
         wsdCommission: item.wsdCommission,
         bankName: item.bankName,
         bankAccountNumber: item.bankAccountNumber,
-        bKashNumber: item.bKashNumber,
+        bkashNumber: item.bkashNumber,
         nagadNumber: item.nagadNumber,
         bankAccountName: item.bankAccountName,
         bankBranchName: item.bankBranchName,
@@ -364,7 +364,7 @@ const EditSubZoneForm = ({ item }: PropData) => {
         wsdCommission,
         bankName,
         bankAccountNumber,
-        bKashNumber,
+        bkashNumber,
         nagadNumber,
         bankAccountName,
         bankBranchName,
@@ -392,7 +392,7 @@ const EditSubZoneForm = ({ item }: PropData) => {
         wsdCommission: wsdCommission,
         bankName: bankName,
         bankAccountNumber: bankAccountNumber,
-        bKashNumber: bKashNumber,
+        bkashNumber: bkashNumber,
         nagadNumber: nagadNumber,
         bankAccountName: bankAccountName,
         bankBranchName: bankBranchName,
@@ -913,7 +913,7 @@ const EditSubZoneForm = ({ item }: PropData) => {
               className="gutter-row"
             >
               <Form.Item
-                label="Upazilla"
+                label="Upazilla/Thana"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"

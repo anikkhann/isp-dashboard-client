@@ -18,7 +18,7 @@ export interface ClientData {
   district: District;
   upazillaId: string;
   upazilla: Upazilla;
-  nid: string;
+  nidNo: string;
   password: string;
   unionId: string;
   union: Union;
@@ -45,12 +45,14 @@ export interface ClientData {
   wsdCommission: number;
   bankName: string;
   bankAccountNumber: number;
-  bKashNumber: number;
+  bkashNumber: number;
   nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
   bankRoutingNumber: string;
   bankAccountCode: string;
+  latitude: string;
+  longitude: string;
 }
 
 export interface Division {

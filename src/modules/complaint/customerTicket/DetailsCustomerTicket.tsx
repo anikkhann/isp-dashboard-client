@@ -420,7 +420,7 @@ const DetailsCustomerTicket = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complain Dashboard</Link>
+              title: <Link href="/admin/complaint">Complaint Dashboard</Link>
             },
             {
               title: (

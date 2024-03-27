@@ -1072,7 +1072,7 @@ const CreateDailyTaskForm = () => {
 
                           {/* upazillaId */}
                           <Form.Item
-                            label="Upazilla"
+                            label="Upazilla/Thana"
                             style={{
                               marginBottom: 0,
                               marginRight: "0px",

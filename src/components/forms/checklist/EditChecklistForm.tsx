@@ -215,7 +215,7 @@ const EditChecklistForm = ({ item }: PropData) => {
             >
               {/* rootCauseCategory */}
               <Form.Item
-                label="Complain Type"
+                label="Complaint Type"
                 name="complainTypeId"
                 style={{
                   marginBottom: 0,
@@ -224,7 +224,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Complain Type!"
+                    message: "Please select Complaint Type!"
                   }
                 ]}
               >
@@ -232,7 +232,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Complain Type"
+                    placeholder="Please select Complaint Type"
                     onChange={handleChange}
                     options={categories}
                     value={selectCategory}

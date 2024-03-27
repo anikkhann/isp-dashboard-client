@@ -30,7 +30,7 @@ import { CustomerData } from "@/interfaces/CustomerData";
 
 const steps = [
   {
-    title: "Complain",
+    title: "Complaint",
     content: "complain"
   },
   {
@@ -498,7 +498,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                   >
                     {/* complainTypeId */}
                     <Form.Item
-                      label="Complain Type"
+                      label="Complaint Type"
                       name="complainTypeId"
                       style={{
                         marginBottom: 0,
@@ -507,7 +507,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                       rules={[
                         {
                           required: true,
-                          message: "Please select Complain Type!"
+                          message: "Please select Complaint Type!"
                         }
                       ]}
                     >
@@ -515,7 +515,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                         <Select
                           allowClear
                           style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Complain Type"
+                          placeholder="Please select Complaint Type"
                           onChange={handleComplainTypeChange}
                           options={complainTypes}
                           value={selectedComplainType}
@@ -603,14 +603,14 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your complain Details!"
+                          message: "Please input your Complaint Details!"
                         }
                       ]}
                     >
                       <Input.TextArea
                         rows={4}
                         cols={16}
-                        placeholder="Complain Details"
+                        placeholder="Complaint Details"
                         className={`form-control`}
                         name="complainDetails"
                       />

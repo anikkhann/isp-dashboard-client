@@ -177,10 +177,15 @@ const ComplainTypeList: React.FC = () => {
       title: "Complaint Category",
       dataIndex: "complainCategory",
       sorter: true,
-      render: (complainCategory: any) => {
+      render: (complainCategory: any, row) => {
         return (
           <>
-            {authUser && authUser.userType != "durjoy" ? complainCategory : "-"}
+            {authUser && authUser.userType !== "durjoy"
+              ? row.complainCategory === "parent"
+                ? "service"
+                : row.complainCategory
+              : "-"}
+            {/* {authUser && authUser.userType != "durjoy" ? complainCategory : "-"} */}
           </>
         );
       },

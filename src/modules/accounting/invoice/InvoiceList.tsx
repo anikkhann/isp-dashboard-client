@@ -215,7 +215,7 @@ const InvoiceList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -240,7 +240,7 @@ const InvoiceList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -256,7 +256,7 @@ const InvoiceList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -287,7 +287,7 @@ const InvoiceList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -303,7 +303,7 @@ const InvoiceList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -329,7 +329,7 @@ const InvoiceList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -380,7 +380,7 @@ const InvoiceList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -402,7 +402,7 @@ const InvoiceList: React.FC = () => {
       const list = data.body.map((item: any) => {
         return {
           label: item.username,
-          value: item.username
+          value: item.id
         };
       });
       setCustomers(list);
@@ -466,6 +466,12 @@ const InvoiceList: React.FC = () => {
   };
 
   const handleClear = () => {
+    setSelectedCustomerId(null);
+    setSelectedCustomername(null);
+    setSelectedPackage(null);
+    setSelectedZone(null);
+    setSelectedSubZone(null);
+    setSelectedRetailer(null);
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
@@ -1021,10 +1027,10 @@ const InvoiceList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -1046,10 +1052,10 @@ const InvoiceList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         ></Col>
                       </Row>

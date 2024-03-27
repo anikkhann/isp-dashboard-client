@@ -16,6 +16,7 @@ const NewCareCustomerSaf = ({ id }: any) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+    // const response = await axios.get(`/api/customer/get-by-id/${id}`);
     const response = await axios.get(`/api/customer/get-by-id/${id}`);
     return response;
   };

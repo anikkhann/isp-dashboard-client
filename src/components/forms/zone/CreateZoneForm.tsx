@@ -41,7 +41,7 @@ interface FormData {
   wsdCommission: number;
   bankName: string;
   bankAccountNumber: number;
-  bKashNumber: number;
+  bkashNumber: number;
   nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
@@ -324,7 +324,7 @@ const CreateZoneForm = () => {
         wsdCommission,
         bankName,
         bankAccountNumber,
-        bKashNumber,
+        bkashNumber,
         nagadNumber,
         bankAccountName,
         bankBranchName,
@@ -352,7 +352,7 @@ const CreateZoneForm = () => {
         wsdCommission: wsdCommission,
         bankName: bankName,
         bankAccountNumber: bankAccountNumber,
-        bKashNumber: bKashNumber,
+        bkashNumber: bkashNumber,
         nagadNumber: nagadNumber,
         bankAccountName: bankAccountName,
         bankBranchName: bankBranchName,
@@ -436,7 +436,7 @@ const CreateZoneForm = () => {
             wsdCommission: 0,
             bankName: "",
             bankAccountNumber: "",
-            bKashNumber: "",
+            bkashNumber: "",
             nagadNumber: "",
             bankAccountName: "",
             bankBranchName: "",
@@ -966,7 +966,7 @@ const CreateZoneForm = () => {
             >
               {/* upazillaId */}
               <Form.Item
-                label="Upazilla"
+                label="Upazilla/Thana"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -1279,7 +1279,7 @@ const CreateZoneForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="bKashNumber"
+                name="bkashNumber"
                 // rules={[
                 //   {
                 //     required: true,
@@ -1291,7 +1291,7 @@ const CreateZoneForm = () => {
                   type="number"
                   placeholder="BKash Number"
                   className={`form-control`}
-                  name="bKashNumber"
+                  name="bkashNumber"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>

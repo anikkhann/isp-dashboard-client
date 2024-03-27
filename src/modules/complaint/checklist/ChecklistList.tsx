@@ -262,9 +262,15 @@ const ChecklistList: React.FC = () => {
       render: (complainCategory, row) => {
         return (
           <>
-            {authUser && authUser.userType != "durjoy"
+            {authUser && authUser.userType !== "durjoy"
+              ? row.complainType.complainCategory === "parent"
+                ? "service"
+                : row.complainType.complainCategory
+              : "-"}
+            {/* {authUser && authUser.userType != "durjoy"
               ? row.complainType.complainCategory
               : "-"}
+            {complainCategory == "parent" ? "service" : complainCategory} */}
           </>
         );
       },
@@ -549,7 +555,7 @@ const ChecklistList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Complain Type</b>
+                              <b>Complaint Type</b>
                             </span>
                             <Select
                               allowClear

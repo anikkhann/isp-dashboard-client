@@ -26,12 +26,12 @@ interface FormData {
 }
 const complainCategoryList = [
   {
-    label: "Parent",
-    value: "parent"
-  },
-  {
     label: "Customer",
     value: "customer"
+  },
+  {
+    label: "Service",
+    value: "parent"
   }
 ];
 const CreateChecklistForm = () => {
@@ -310,7 +310,7 @@ const CreateChecklistForm = () => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Complain Type"
+                    placeholder="Please select Complaint Type"
                     onChange={handleChange}
                     options={categories}
                     value={selectCategory}

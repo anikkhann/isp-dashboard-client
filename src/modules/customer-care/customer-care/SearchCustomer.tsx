@@ -94,6 +94,15 @@ const SearchCustomer = () => {
   const [selectedEmail, setSelectedEmail] = useState<any>(null);
   const [selectedMobile, setSelectedMobile] = useState<any>(null);
 
+  const [collapseActiveKey, setCollapseActiveKey] = useState(["1"]);
+  const handleCollapseChange = (key: any) => {
+    if (collapseActiveKey.includes(key)) {
+      setCollapseActiveKey([]);
+    } else {
+      setCollapseActiveKey([key]);
+    }
+  };
+
   const getCustomers = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -103,7 +112,7 @@ const SearchCustomer = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -681,6 +690,8 @@ const SearchCustomer = () => {
               <div style={{ padding: "20px", backgroundColor: "white" }}>
                 <Collapse
                   accordion
+                  activeKey={collapseActiveKey}
+                  onChange={handleCollapseChange}
                   style={{
                     backgroundColor: "#FFC857",
                     color: "white",

@@ -27,12 +27,12 @@ interface FormData {
 }
 const complainCategoryList = [
   {
-    label: "Parent",
-    value: "parent"
-  },
-  {
     label: "Customer",
     value: "customer"
+  },
+  {
+    label: "Service",
+    value: "parent"
   }
 ];
 const CreateRootCauseForm = () => {
@@ -168,7 +168,7 @@ const CreateRootCauseForm = () => {
                 className="gutter-row"
               >
                 <Form.Item
-                  label="Complain Category"
+                  label="Complaint Category"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -177,7 +177,7 @@ const CreateRootCauseForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please select Complain Category"
+                      message: "Please select Complaint Category"
                     }
                   ]}
                 >
@@ -185,7 +185,7 @@ const CreateRootCauseForm = () => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Complain Category"
+                      placeholder="Please select Complaint Category"
                       onChange={handleCategoryChange}
                       options={complainCategoryList}
                       value={selectCategory}

@@ -71,7 +71,7 @@ interface FormData {
   wsdCommission: number;
   bankName: string;
   bankAccountNumber: number;
-  bKashNumber: number;
+  bkashNumber: number;
   nagadNumber: number;
   bankAccountName: string;
   bankBranchName: string;
@@ -487,6 +487,8 @@ const EditClientForm = ({ item }: PropData) => {
         unionId: item.unionId,
         contactPerson: item.contactPerson,
         radiusIpId: item.radiusIpId,
+        latitude: item.latitude,
+        longitude: item.longitude,
         clientLevel: item.clientLevel,
         btrcLicenseNo: item.btrcLicenseNo,
         serviceType: item.serviceType,
@@ -495,7 +497,7 @@ const EditClientForm = ({ item }: PropData) => {
         wsdCommission: item.wsdCommission,
         bankName: item.bankName,
         bankAccountNumber: item.bankAccountNumber,
-        bKashNumber: item.bKashNumber,
+        bkashNumber: item.bkashNumber,
         nagadNumber: item.nagadNumber,
         bankAccountName: item.bankAccountName,
         bankBranchName: item.bankBranchName,
@@ -585,7 +587,7 @@ const EditClientForm = ({ item }: PropData) => {
         wsdCommission,
         bankName,
         bankAccountNumber,
-        bKashNumber,
+        bkashNumber,
         nagadNumber,
         bankAccountName,
         bankBranchName,
@@ -636,7 +638,7 @@ const EditClientForm = ({ item }: PropData) => {
         wsdCommission: wsdCommission,
         bankName: bankName,
         bankAccountNumber: bankAccountNumber,
-        bKashNumber: bKashNumber,
+        bkashNumber: bkashNumber,
         nagadNumber: nagadNumber,
         bankAccountName: bankAccountName,
         bankBranchName: bankBranchName,
@@ -729,7 +731,7 @@ const EditClientForm = ({ item }: PropData) => {
             wsdCommission: "",
             bankName: "",
             bankAccountNumber: "",
-            bKashNumber: "",
+            bkashNumber: "",
             nagadNumber: "",
             bankAccountName: "",
             bankBranchName: "",
@@ -1135,7 +1137,7 @@ const EditClientForm = ({ item }: PropData) => {
               className="gutter-row"
             >
               <Form.Item
-                label="Upazilla"
+                label="Upazilla/Thana"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -1772,7 +1774,7 @@ const EditClientForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="bKashNumber"
+                name="bkashNumber"
                 // rules={[
                 //   {
                 //     required: true,
@@ -1784,7 +1786,7 @@ const EditClientForm = ({ item }: PropData) => {
                   type="number"
                   placeholder="BKash Number"
                   className={`form-control`}
-                  name="bKashNumber"
+                  name="bkashNumber"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>

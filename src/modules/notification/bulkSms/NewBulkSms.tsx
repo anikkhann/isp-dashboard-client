@@ -23,13 +23,13 @@ const NewBulkSms = () => {
             },
 
             {
-              title: "New Bulk Sms"
+              title: "New Bulk SMS"
             }
           ]}
         />
 
         <Card
-          title="New Bulk Sms"
+          title="New Bulk SMS"
           style={{
             width: "90%",
             backgroundColor: "#ffffff",

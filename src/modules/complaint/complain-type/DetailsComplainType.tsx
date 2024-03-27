@@ -56,15 +56,17 @@ const DetailsComplainType = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complain Dashboard</Link>
+              title: <Link href="/admin/complaint">Complaint Dashboard</Link>
             },
             {
               title: (
-                <Link href="/admin/complaint/complain-type">Complain Type</Link>
+                <Link href="/admin/complaint/complain-type">
+                  Complaint Type
+                </Link>
               )
             },
             {
-              title: " Complain Type Details"
+              title: " Complaint Type Details"
             }
           ]}
         />
@@ -86,7 +88,7 @@ const DetailsComplainType = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Complain Type Details
+            Complaint Type Details
           </h1>
         </div>
         <Card
