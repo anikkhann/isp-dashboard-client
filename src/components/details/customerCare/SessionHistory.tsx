@@ -4,11 +4,19 @@ import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
+import type { FilterValue, SorterResult } from "antd/es/table/interface";
+
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Record<string, FilterValue | null>;
+}
 
 interface PropData {
   item: any | null;
@@ -16,14 +24,38 @@ interface PropData {
 
 const SessionHistory = ({ item }: PropData) => {
   const [data, setData] = useState<any[]>([]);
+  const [page, SetPage] = useState(0);
+  const [limit, SetLimit] = useState(10);
 
-  const fetchData = async () => {
+  const [order, SetOrder] = useState("asc");
+  const [sort, SetSort] = useState("id");
+
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      total: 0,
+      current: 1,
+      pageSize: 10
+    }
+  });
+
+  const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string
+  ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
       `/api/customer/session-history/${item.username}`,
       {
+        params: {
+          page,
+          limit,
+          order,
+          sort
+        },
         headers: {
           "Content-Type": "application/json"
         }
@@ -33,9 +65,9 @@ const SessionHistory = ({ item }: PropData) => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["session-list", item],
+    queryKey: ["session-list", item, page, limit, order, sort],
     queryFn: async () => {
-      const response = await fetchData();
+      const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
@@ -44,8 +76,22 @@ const SessionHistory = ({ item }: PropData) => {
 
         if (data.body) {
           setData(data.body);
+          setTableParams({
+            pagination: {
+              total: data.body.length,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
         } else {
           setData([]);
+          setTableParams({
+            pagination: {
+              total: 0,
+              pageSize: 10,
+              current: 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
         }
       }
     },
@@ -67,12 +113,14 @@ const SessionHistory = ({ item }: PropData) => {
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{index + 1}</Space>
+            {/* <Space>{index + 1}</Space> */}
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },
       sorter: false,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // username
@@ -85,6 +133,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.username}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // start_time
@@ -97,6 +147,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.start_time}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // end_time
@@ -109,6 +161,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.end_time}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // onlinetime
@@ -121,6 +175,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.onlinetime} Min</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // upload
@@ -133,6 +189,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.upload}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // download
@@ -145,6 +203,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.download}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // total
@@ -157,6 +217,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.total}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // IP
@@ -169,6 +231,8 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.IP}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // device_mac
@@ -181,9 +245,29 @@ const SessionHistory = ({ item }: PropData) => {
         return <>{row.device_mac}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<any> | SorterResult<any>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<any>).order) {
+      SetOrder(
+        (sorter as SorterResult<any>).order === "ascend" ? "asc" : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<any>).field) {
+      SetSort((sorter as SorterResult<any>).field as string);
+    }
+  };
 
   return (
     <>
@@ -237,10 +321,18 @@ const SessionHistory = ({ item }: PropData) => {
           >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
+                className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.username}
                 dataSource={data}
+                pagination={tableParams.pagination}
                 loading={isLoading || isFetching}
+                onChange={handleTableChange}
               />
             </Space>
           </TableCard>

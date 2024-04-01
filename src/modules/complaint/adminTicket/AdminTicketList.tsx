@@ -326,7 +326,7 @@ const AdminTicketList: React.FC = () => {
             {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
             </Space> */}
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },
@@ -697,7 +697,7 @@ const AdminTicketList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflow: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >

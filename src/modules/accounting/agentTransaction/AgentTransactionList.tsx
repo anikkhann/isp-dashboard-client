@@ -378,10 +378,10 @@ const AgentTransactionList: React.FC = () => {
       render: (tableParams, row, index) => {
         return (
           <>
-            {/* <Space>
+            <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
-            </Space> */}
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            </Space>
+            {/*  {page !== 0 ? index + 1 + (page - 1) * limit : index + 1} */}
           </>
         );
       },
@@ -706,7 +706,7 @@ const AgentTransactionList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflow: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >
@@ -915,7 +915,7 @@ const AgentTransactionList: React.FC = () => {
               {/* agentTransaction */}
               {ability.can("agentTransaction.download", "") && (
                 <Row justify={"end"}>
-                  <Col span={3}>
+                  <Col>
                     <Button
                       type="primary"
                       onClick={() => {

@@ -45,6 +45,7 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 // import { FaListAlt } from "react-icons/fa";
 import { useRouter } from "next/router";
+
 // import CustomerImportSuccessList from "./CustomerImportSuccessList";
 
 dayjs.extend(customParseFormat);
@@ -501,11 +502,7 @@ const CustomerImportCSVList: React.FC = () => {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
-        return (
-          <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
-          </>
-        );
+        return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
       sorter: true,
       ellipsis: true,
@@ -553,6 +550,7 @@ const CustomerImportCSVList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
+
     {
       title: "Zone Manager",
       dataIndex: "zoneManager",
@@ -895,40 +893,49 @@ const CustomerImportCSVList: React.FC = () => {
                         justify="space-between"
                       >
                         {/* {authUser?.userType == "client" && ( */}
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Zone Manager</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneChange}
-                              options={zones}
-                              value={selectedZone}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
+                        {authUser &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Zone Manager</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneChange}
+                                  options={zones}
+                                  value={selectedZone}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+
                         {/* )} */}
 
                         <Col

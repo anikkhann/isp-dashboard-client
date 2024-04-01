@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import { useAppSelector } from "@/store/hooks";
 import {
   Alert,
   Button,
@@ -63,7 +63,7 @@ interface PropData {
 
 const EditPackageForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [loading, setLoading] = useState(false);
 
   // ** States
@@ -85,7 +85,7 @@ const EditPackageForm = ({ item }: PropData) => {
 
   const [selectedDownloadUnit, setSelectedDownloadUnit] = useState<any>(null);
 
-  const [nextExpired, setNextExpired] = useState([]);
+  const [nextExpired, setNextExpired] = useState<any[]>([]);
   const [nextExpiredId, setNextExpiredId] = useState<any>(null);
 
   const token = Cookies.get("token");
@@ -174,6 +174,8 @@ const EditPackageForm = ({ item }: PropData) => {
   }
   useEffect(() => {
     getNextExpiredPackageId();
+  }, []);
+  useEffect(() => {
     if (item) {
       form.setFieldsValue({
         name: item.name,
@@ -799,19 +801,24 @@ const EditPackageForm = ({ item }: PropData) => {
             </Form.Item>
 
             {/* isAssignedToZone */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
-              <Checkbox
-                onChange={handleIsAssignedToZone}
-                checked={isAssignedToZone}
-              >
-                Assigned To Zone
-              </Checkbox>
-            </Form.Item>
+            {authUser &&
+              authUser?.clientLevel != "tri_cycle" &&
+              authUser?.clientLevel != "tri_cycle_hotspot" &&
+              authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                <Form.Item
+                  label=""
+                  style={{
+                    marginBottom: 0
+                  }}
+                >
+                  <Checkbox
+                    onChange={handleIsAssignedToZone}
+                    checked={isAssignedToZone}
+                  >
+                    Assigned To Zone
+                  </Checkbox>
+                </Form.Item>
+              )}
 
             {/* isAssignedToSubZone */}
             <Form.Item

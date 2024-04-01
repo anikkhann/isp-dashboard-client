@@ -2397,49 +2397,53 @@ const EditCustomerForm = ({ item }: PropData) => {
                       </Space>
                     </Form.Item>
                   </Col>
-                  {authUser && authUser.userType == "client" && (
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* zoneManagerId */}
-                      <Form.Item
-                        label="Zone Manager"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="zoneManagerId"
+                  {authUser &&
+                    authUser?.clientLevel != "tri_cycle" &&
+                    authUser?.clientLevel != "tri_cycle_hotspot" &&
+                    authUser?.clientLevel != "tri_cycle_isp_hotspot" &&
+                    authUser.userType == "client" && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
                       >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <Select
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select"
-                            onChange={handleZoneChange}
-                            options={zones}
-                            value={selectedZone}
-                            showSearch
-                            filterOption={(input, option) => {
-                              if (typeof option?.label === "string") {
-                                return (
-                                  option.label
-                                    .toLowerCase()
-                                    .indexOf(input.toLowerCase()) >= 0
-                                );
-                              }
-                              return false;
-                            }}
-                          />
-                        </Space>
-                      </Form.Item>
-                    </Col>
-                  )}
+                        {/* zoneManagerId */}
+                        <Form.Item
+                          label="Zone Manager"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="zoneManagerId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleZoneChange}
+                              options={zones}
+                              value={selectedZone}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    )}
 
                   {authUser &&
                     (authUser.userType == "client" ||

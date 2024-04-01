@@ -12,6 +12,8 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import { TicketData } from "@/interfaces/TicketData";
 import { format, differenceInDays } from "date-fns";
+import Link from "next/link";
+import ability from "@/services/guard/ability";
 // import Link from "next/link";
 
 interface TableParams {
@@ -30,8 +32,8 @@ const TicketHistory = ({ item }: PropData) => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -136,16 +138,38 @@ const TicketHistory = ({ item }: PropData) => {
         );
       },
       sorter: true,
-      width: 140,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Ticket Number",
       dataIndex: "ticketNo",
+      render: (ticketNo, record: any) => {
+        return (
+          <>
+            {ability.can("customerTicket.view", "") && (
+              <Link href={`/admin/complaint/customer-ticket/${record.id}`}>
+                {ticketNo}
+              </Link>
+            )}
+          </>
+        );
+      },
       sorter: true,
-      width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
+
+    // {
+    //   title: "Ticket Number",
+    //   dataIndex: "ticketNo",
+    //   sorter: true,
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Customer",
       dataIndex: "customer",
@@ -153,7 +177,8 @@ const TicketHistory = ({ item }: PropData) => {
         return <>{row.customer?.username}</>;
       },
       sorter: false,
-      width: 400,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -163,7 +188,8 @@ const TicketHistory = ({ item }: PropData) => {
         return <>{row.complainType.name}</>;
       },
       sorter: false,
-      width: 400,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -184,7 +210,8 @@ const TicketHistory = ({ item }: PropData) => {
           </>
         );
       },
-      width: 150,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -196,7 +223,8 @@ const TicketHistory = ({ item }: PropData) => {
         if (!assignedTo) return "-";
         return <>{assignedTo.username}</>;
       },
-      width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -208,7 +236,8 @@ const TicketHistory = ({ item }: PropData) => {
         if (!insertedBy) return "-";
         return <>{insertedBy.username}</>;
       },
-      width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -221,7 +250,8 @@ const TicketHistory = ({ item }: PropData) => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
 
@@ -239,7 +269,8 @@ const TicketHistory = ({ item }: PropData) => {
           </>
         );
       },
-      width: 200,
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // editedBy
@@ -344,6 +375,12 @@ const TicketHistory = ({ item }: PropData) => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
+                className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}

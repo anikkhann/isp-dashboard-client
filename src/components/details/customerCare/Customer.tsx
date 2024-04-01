@@ -10,6 +10,7 @@ import AppImageLoader from "@/components/loader/AppImageLoader";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
+import { useAppSelector } from "@/store/hooks";
 interface PropData {
   item: CustomerData;
 }
@@ -26,6 +27,7 @@ const Customer = ({ item }: PropData) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const MySwal = withReactContent(Swal);
+  const authUser = useAppSelector(state => state.auth.user);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -1687,26 +1689,34 @@ const Customer = ({ item }: PropData) => {
                     <span className="mx-1 text-base">{item?.union?.name}</span>
                   </Col>
                 </Row>
-                <Row
-                  style={{
-                    marginTop: "2px"
-                  }}
-                >
-                  <Col
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "end"
-                    }}
-                  >
-                    <span className="font-bold text-base">Zone Manager :</span>
-                  </Col>
-                  <Col>
-                    <span className="mx-1 text-base">
-                      {item?.zoneManager?.name}
-                    </span>
-                  </Col>
-                </Row>
+                {authUser &&
+                  authUser?.clientLevel != "tri_cycle" &&
+                  authUser?.clientLevel != "tri_cycle_hotspot" &&
+                  authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                    <Row
+                      style={{
+                        marginTop: "2px"
+                      }}
+                    >
+                      <Col
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "end"
+                        }}
+                      >
+                        <span className="font-bold text-base">
+                          Zone Manager :
+                        </span>
+                      </Col>
+                      <Col>
+                        <span className="mx-1 text-base">
+                          {item?.zoneManager?.name}
+                        </span>
+                      </Col>
+                    </Row>
+                  )}
+
                 <Row
                   style={{
                     marginTop: "2px"

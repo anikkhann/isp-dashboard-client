@@ -532,11 +532,7 @@ const RetailerRevenueDisbursementList: React.FC = () => {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
-        return (
-          <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
-          </>
-        );
+        return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
       sorter: true,
       ellipsis: true,
@@ -864,38 +860,42 @@ const RetailerRevenueDisbursementList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
-                        {authUser && authUser.userType == "client" && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={8}
-                            lg={8}
-                            xl={8}
-                            xxl={8}
-                            className="gutter-row"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
+                        {authUser &&
+                          authUser.userType == "client" &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
                             >
-                              <span>
-                                <b>Zone Manager</b>
-                              </span>
-                              <Select
-                                showSearch
-                                allowClear
-                                style={{
-                                  width: "100%",
-                                  textAlign: "start"
-                                }}
-                                placeholder="Please select"
-                                onChange={handleZoneChange}
-                                options={zones}
-                                value={selectedZone}
-                              />
-                            </Space>
-                          </Col>
-                        )}
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Zone Manager</b>
+                                </span>
+                                <Select
+                                  showSearch
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneChange}
+                                  options={zones}
+                                  value={selectedZone}
+                                />
+                              </Space>
+                            </Col>
+                          )}
 
                         {authUser &&
                           (authUser.userType == "client" ||

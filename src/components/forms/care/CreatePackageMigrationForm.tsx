@@ -6,16 +6,44 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Select, Space, Row, Col } from "antd";
+import { Alert, Button, Form, Select, Space, Row, Col, DatePicker } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-// import AppImageLoader from "@/components/loader/AppImageLoader";
+import "react-quill/dist/quill.snow.css";
+// const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
 
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
+// import AppImageLoader from "@/components/loader/AppImageLoader";
+const tags = [
+  {
+    label: "Upgrade",
+    value: "Upgrade"
+  },
+  {
+    label: "Downgrade",
+    value: "Downgrade"
+  }
+];
 const CreatePackageMigrationForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
   // ** States
+
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
@@ -25,8 +53,12 @@ const CreatePackageMigrationForm = () => {
   const [customers, setCustomers] = useState<any>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
+  const [selectTags, setSelectTags] = useState<any>(null);
+
   const [customerPackages, setCustomerPackages] = useState([]);
   const [selectedCustomerPackage, setSelectedCustomerPackage] = useState(null);
+
+  const [selectedMigrationDate, setSelectedMigrationDate] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -35,6 +67,14 @@ const CreatePackageMigrationForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ customerPackageId: value });
     setSelectedCustomerPackage(value as any);
+  };
+
+  const handleMigrationDateChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedMigrationDate(value);
+    form.setFieldsValue({
+      migrationDate: value
+    });
   };
 
   const getCustomerPackages = () => {
@@ -107,6 +147,12 @@ const CreatePackageMigrationForm = () => {
     setSelectedCustomer(value);
   };
 
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ tag: value });
+    setSelectTags(value as any);
+  };
+
   useEffect(() => {
     getCustomers();
     getCustomerPackages();
@@ -122,7 +168,11 @@ const CreatePackageMigrationForm = () => {
     setTimeout(async () => {
       const formData = {
         customerId: selectedCustomer,
-        customerPackageId: selectedCustomerPackage
+        tag: selectTags,
+        customerPackageId: selectedCustomerPackage,
+        migrationDate: selectedMigrationDate
+          ? dayjs(selectedMigrationDate).format("YYYY-MM-DD")
+          : null
       };
 
       try {
@@ -197,10 +247,10 @@ const CreatePackageMigrationForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* customerId */}
@@ -245,10 +295,58 @@ const CreatePackageMigrationForm = () => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* type */}
+              <Form.Item
+                label="Tag"
+                name="tag"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Tag!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Tag"
+                    onChange={handleChange}
+                    options={tags}
+                    value={selectTags}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
               {/* customerPackageId */}
@@ -285,6 +383,69 @@ const CreatePackageMigrationForm = () => {
                 </Space>
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* startDate */}
+              <Form.Item
+                label="Migration Date"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="migrationDate"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Migration Date!"
+                  }
+                ]}
+              >
+                <DatePicker
+                  className={`form-control`}
+                  style={{
+                    padding: "6px",
+                    width: "100%"
+                  }}
+                  format={dateFormat}
+                  onChange={handleMigrationDateChange}
+                  value={selectedMigrationDate}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
 
           {/* submit */}

@@ -696,7 +696,7 @@ const CustomerList: React.FC = () => {
             {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
             </Space> */}
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },
@@ -1157,7 +1157,7 @@ const CustomerList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflow: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >
@@ -1379,7 +1379,11 @@ const CustomerList: React.FC = () => {
                           </Col>
                         )}
                         {/* authUser?.userType == "client" && */}
-                        {authUser?.userType == "client" &&
+                        {authUser &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" &&
+                          authUser?.userType == "client" &&
                           ability.can("CustomerSearch.zone", "") && (
                             <Col
                               xs={24}
@@ -1649,7 +1653,7 @@ const CustomerList: React.FC = () => {
               {/* customer */}
               {ability.can("customer.download", "") && (
                 <Row justify={"end"}>
-                  <Col span={3}>
+                  <Col>
                     <Button
                       type="primary"
                       onClick={() => {

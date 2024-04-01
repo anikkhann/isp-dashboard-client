@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import { useAppSelector } from "@/store/hooks";
 import {
   Alert,
   Button,
@@ -65,7 +65,7 @@ const validityUnits = [
 
 const CreatePackageForm = () => {
   const [form] = Form.useForm();
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [loading, setLoading] = useState(false);
 
   // ** States
@@ -849,19 +849,24 @@ const CreatePackageForm = () => {
             </Form.Item>
 
             {/* isAssignedToZone */}
-            <Form.Item
-              label=""
-              style={{
-                marginBottom: 0
-              }}
-            >
-              <Checkbox
-                onChange={handleIsAssignedToZone}
-                checked={isAssignedToZone}
-              >
-                Assigned To Zone
-              </Checkbox>
-            </Form.Item>
+            {authUser &&
+              authUser?.clientLevel != "tri_cycle" &&
+              authUser?.clientLevel != "tri_cycle_hotspot" &&
+              authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                <Form.Item
+                  label=""
+                  style={{
+                    marginBottom: 0
+                  }}
+                >
+                  <Checkbox
+                    onChange={handleIsAssignedToZone}
+                    checked={isAssignedToZone}
+                  >
+                    Assigned To Zone
+                  </Checkbox>
+                </Form.Item>
+              )}
 
             {/* isAssignedToSubZone */}
             <Form.Item

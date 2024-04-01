@@ -336,9 +336,9 @@ const EditRoleForm = ({ item }: PropData) => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className="gutter-row"
+                                className="gutter-row  sm:px-2"
                                 key={item.value}
-                                style={{ padding: "0 5rem" }}
+                                // style={{ padding: "0 0.5rem" }}
                               >
                                 <Card
                                   hoverable
@@ -349,9 +349,10 @@ const EditRoleForm = ({ item }: PropData) => {
                                 >
                                   <Checkbox
                                     value={item.value}
+                                    className="flex justify-center md:flex md:justify-start "
                                     style={{
-                                      display: "flex",
-                                      justifyContent: "left",
+                                      // display: "flex",
+                                      // justifyContent: "left",
                                       fontSize: "15px",
                                       color: "#FFFFFF",
                                       fontWeight: "bold"
@@ -359,9 +360,14 @@ const EditRoleForm = ({ item }: PropData) => {
                                   >
                                     <span
                                       style={{
+                                        width: "100px", // Set the width of the span element to your desired value
                                         overflow: "hidden",
                                         textOverflow: "ellipsis",
                                         whiteSpace: "nowrap"
+                                        // width: "auto",
+                                        // overflow: "hidden",
+                                        // textOverflow: "ellipsis",
+                                        // whiteSpace: "nowrap"
                                       }}
                                     >
                                       {item.label}

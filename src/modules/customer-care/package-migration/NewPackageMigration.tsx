@@ -20,7 +20,11 @@ const NewPackageMigration = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/customer-care">Customer Care</Link>
+              title: (
+                <Link href="/admin/package-migration">
+                  Package Migration List
+                </Link>
+              )
             },
             {
               title: "New Package Migration"

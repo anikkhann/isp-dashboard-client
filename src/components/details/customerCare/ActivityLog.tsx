@@ -121,14 +121,11 @@ const ActivityLog = ({ item }: PropData) => {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
-        return (
-          <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
-          </>
-        );
+        return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
       sorter: true,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // subject
@@ -141,6 +138,8 @@ const ActivityLog = ({ item }: PropData) => {
         return <>{subject}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // remarks
@@ -154,6 +153,8 @@ const ActivityLog = ({ item }: PropData) => {
       },
 
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // changedData
@@ -195,6 +196,8 @@ const ActivityLog = ({ item }: PropData) => {
       },
 
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // actionBy
@@ -207,6 +210,8 @@ const ActivityLog = ({ item }: PropData) => {
         return <>{insertedBy.username}</>;
       },
       //   width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -218,7 +223,8 @@ const ActivityLog = ({ item }: PropData) => {
         const date = new Date(createdOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
-      width: "20%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -298,6 +304,12 @@ const ActivityLog = ({ item }: PropData) => {
                 <Button >Clear filters and sorters</Button>
               </Space> */}
               <Table
+                style={{
+                  width: "100%",
+                  overflowX: "auto"
+                }}
+                scroll={{ x: true }}
+                className={"table-striped-rows"}
                 columns={columns}
                 rowKey={record => record.id}
                 dataSource={data}

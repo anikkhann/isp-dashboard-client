@@ -449,7 +449,7 @@ const CreateUserForm = () => {
               className="gutter-row"
             >
               <Form.Item
-                label="Phone"
+                label="Mobile"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -458,17 +458,17 @@ const CreateUserForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Phone!"
+                    message: "Please input your Mobile!"
                   },
                   {
                     pattern: new RegExp(/^(01)[0-9]{9}$/),
-                    message: "Please enter correct BD Phone number."
+                    message: "Please enter correct BD Mobile number."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Phone"
+                  placeholder="Mobile"
                   className={`form-control`}
                   name="phone"
                   style={{ padding: "6px" }}

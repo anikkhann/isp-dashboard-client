@@ -398,7 +398,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
         return (
           <>
             {/* <Space>{index + 1}</Space> */}
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },

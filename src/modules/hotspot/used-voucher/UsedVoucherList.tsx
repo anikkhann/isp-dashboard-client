@@ -490,7 +490,7 @@ const UsedVoucherList: React.FC = () => {
             {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
             </Space> */}
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },
@@ -1239,7 +1239,7 @@ const UsedVoucherList: React.FC = () => {
 
               {ability.can("usedVoucher.download", "") && (
                 <Row justify={"end"}>
-                  <Col span={3}>
+                  <Col>
                     {/* <CSVLink
                       data={downloadRow}
                       asyncOnClick={true}

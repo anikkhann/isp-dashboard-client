@@ -7,7 +7,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { AlignType } from "rc-table/lib/interface";
-import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import ability from "@/services/guard/ability";
 import { format } from "date-fns";
@@ -18,16 +17,59 @@ import { format } from "date-fns";
 // import weekday from "dayjs/plugin/weekday";
 // import weekOfYear from "dayjs/plugin/weekOfYear";
 // import weekYear from "dayjs/plugin/weekYear";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
+import type { FilterValue, SorterResult } from "antd/es/table/interface";
+
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Record<string, FilterValue | null>;
+}
+
+interface Data {
+  id: number;
+  ticket_no: string;
+  complain_type: string;
+  customer: string;
+  created_on: number;
+}
+
 const LatestComplainData = () => {
   const [data, setData] = useState<any[]>([]);
 
-  const fetchData = async () => {
+  const [page, SetPage] = useState(0);
+  const [limit, SetLimit] = useState(10);
+
+  const [order, SetOrder] = useState("asc");
+  const [sort, SetSort] = useState("id");
+
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      total: 0,
+      current: 1,
+      pageSize: 10
+    }
+  });
+
+  const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string
+  ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
       `/api/dashboard/get-latest-open-complain-list`,
       {
+        params: {
+          page,
+          limit,
+          order,
+          sort
+        },
         headers: {
           "Content-Type": "application/json"
         }
@@ -37,9 +79,15 @@ const LatestComplainData = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["dashboard-get-latest-open-complain-list-cm"],
+    queryKey: [
+      "dashboard-get-latest-open-complain-list-cm",
+      page,
+      limit,
+      order,
+      sort
+    ],
     queryFn: async () => {
-      const response = await fetchData();
+      const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
@@ -48,8 +96,22 @@ const LatestComplainData = () => {
 
         if (data.body) {
           setData(data.body);
+          setTableParams({
+            pagination: {
+              total: data.body.length,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
         } else {
           setData([]);
+          setTableParams({
+            pagination: {
+              total: 0,
+              pageSize: 10,
+              current: 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
         }
       }
     },
@@ -64,19 +126,21 @@ const LatestComplainData = () => {
     }
   }, [data]);
 
-  const columns: ColumnsType<any> = [
+  const columns: ColumnsType<Data> = [
     {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
         return (
           <>
-            <Space>{index + 1}</Space>
+            {/* <Space>{index + 1}</Space> */}
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },
       sorter: false,
-      width: "10%",
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     // {
@@ -114,6 +178,8 @@ const LatestComplainData = () => {
         );
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -126,6 +192,8 @@ const LatestComplainData = () => {
         return <>{complain_type}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -138,6 +206,8 @@ const LatestComplainData = () => {
         return <>{customer}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -153,9 +223,29 @@ const LatestComplainData = () => {
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<Data> | SorterResult<Data>[]
+  ) => {
+    SetPage(pagination.current as number);
+    SetLimit(pagination.pageSize as number);
+
+    if (sorter && (sorter as SorterResult<Data>).order) {
+      SetOrder(
+        (sorter as SorterResult<Data>).order === "ascend" ? "asc" : "desc"
+      );
+    }
+    if (sorter && (sorter as SorterResult<Data>).field) {
+      SetSort((sorter as SorterResult<Data>).field as string);
+    }
+  };
 
   return (
     <>
@@ -211,10 +301,18 @@ const LatestComplainData = () => {
               <Space direction="vertical" style={{ width: "100%" }}>
                 {/* {data && data.length != 0 && ( */}
                 <Table
+                  style={{
+                    width: "100%",
+                    overflowX: "auto"
+                  }}
+                  scroll={{ x: true }}
                   columns={columns}
-                  rowKey={record => record.client}
+                  className={"table-striped-rows"}
+                  rowKey={record => record.id}
+                  pagination={tableParams.pagination}
                   dataSource={data}
                   loading={isLoading || isFetching}
+                  onChange={handleTableChange}
                 />
                 {/* )} */}
               </Space>

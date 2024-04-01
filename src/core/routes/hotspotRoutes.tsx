@@ -32,6 +32,13 @@ const hotspotRoutes = [
     icon: <BarChartOutlined />,
     permission: "hotspot.dashboard"
   },
+  {
+    key: "/admin/hotspot/package",
+    label: <Link href="/admin/hotspot/package">Package</Link>,
+    path: "/admin/hotspot/package",
+    icon: <IdcardOutlined />,
+    permission: "hotspotPackage.list"
+  },
 
   {
     key: "/admin/hotspot/nas-device",
@@ -235,13 +242,6 @@ const hotspotRoutes = [
     path: "/admin/hotspot/retailer-onboard",
     icon: <IdcardOutlined />,
     permission: "retailerOnboard.list"
-  },
-  {
-    key: "/admin/hotspot/package",
-    label: <Link href="/admin/hotspot/package">Package</Link>,
-    path: "/admin/hotspot/package",
-    icon: <IdcardOutlined />,
-    permission: "hotspotPackage.list"
   }
 ];
 

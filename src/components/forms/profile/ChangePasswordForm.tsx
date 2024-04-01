@@ -65,7 +65,8 @@ const ChangePasswordForm = () => {
                 text: data.message || "Updated successfully",
                 icon: "success"
               }).then(() => {
-                router.reload();
+                // router.reload();
+                router.replace("/admin");
               });
             }
           })
@@ -124,7 +125,7 @@ const ChangePasswordForm = () => {
             >
               <Form.Item
                 name="oldPassword"
-                label="Old Password"
+                label="OLD Password"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -132,7 +133,7 @@ const ChangePasswordForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Old Password!"
+                    message: "Please input your OLD Password!"
                   },
                   {
                     min: 6,

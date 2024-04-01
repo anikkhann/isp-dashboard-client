@@ -285,11 +285,7 @@ const ZoneRevenueList: React.FC = () => {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
-        return (
-          <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
-          </>
-        );
+        return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
       sorter: true,
       ellipsis: true,
@@ -504,7 +500,7 @@ const ZoneRevenueList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflow: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >
@@ -632,7 +628,7 @@ const ZoneRevenueList: React.FC = () => {
 
               {ability.can("accountingZoneRevenue.download", "") && (
                 <Row justify={"end"}>
-                  <Col span={3}>
+                  <Col>
                     {/* <CSVLink
                       data={downloadRow}
                       asyncOnClick={true}

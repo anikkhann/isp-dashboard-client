@@ -271,11 +271,7 @@ const PackageMigrationList: React.FC = () => {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
-        return (
-          <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
-          </>
-        );
+        return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
       sorter: true,
       ellipsis: true,
@@ -295,6 +291,18 @@ const PackageMigrationList: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
+    {
+      title: "Tag",
+      dataIndex: "tag",
+      sorter: false,
+      render: (tag: any) => {
+        if (!tag) return "-";
+        return <>{tag}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
 
     {
       title: "Customer Package",
@@ -303,6 +311,19 @@ const PackageMigrationList: React.FC = () => {
       render: (customerPackage: any) => {
         if (!customerPackage) return "-";
         return <>{customerPackage.displayName}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Migration Date",
+      dataIndex: "migrationDate",
+      sorter: false,
+      render: (migrationDate: any) => {
+        if (!migrationDate) return "-";
+        const date = new Date(migrationDate);
+        return <>{format(date, "yyyy-MM-dd")}</>;
       },
       ellipsis: true,
       width: "auto",

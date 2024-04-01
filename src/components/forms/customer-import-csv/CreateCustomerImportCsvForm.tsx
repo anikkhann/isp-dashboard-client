@@ -370,46 +370,52 @@ const CreateCustomerImportCsvForm = () => {
           scrollToFirstError
         >
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-            <Col
-              xs={24}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Zone Manager"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="zoneManagerId"
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleZoneChange}
-                    options={zones}
-                    value={selectedZone}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
-                      }
-                      return false;
+            {authUser &&
+              authUser?.clientLevel != "tri_cycle" &&
+              authUser?.clientLevel != "tri_cycle_hotspot" &&
+              authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  xxl={12}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Zone Manager"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+                    name="zoneManagerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleZoneChange}
+                        options={zones}
+                        value={selectedZone}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
             <Col
               xs={24}
               sm={12}

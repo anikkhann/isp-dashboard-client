@@ -327,20 +327,8 @@ const SearchCustomer = () => {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
-        return (
-          <>
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
-          </>
-        );
+        return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
-      sorter: true,
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Customer ID",
-      dataIndex: "customerId",
       sorter: true,
       ellipsis: true,
       width: "auto",
@@ -349,11 +337,30 @@ const SearchCustomer = () => {
     {
       title: "Username",
       dataIndex: "username",
+      render: (username, record: any) => {
+        return (
+          <>
+            {ability.can("customerTicket.view", "") && (
+              <Link href={`/admin/customer-care/${record.id}`}>{username}</Link>
+            )}
+          </>
+        );
+      },
       sorter: true,
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
     },
+
+    {
+      title: "Customer ID",
+      dataIndex: "customerId",
+      sorter: true,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+
     {
       title: "Zone",
       dataIndex: "distributionZone",

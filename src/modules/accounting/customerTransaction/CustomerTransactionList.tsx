@@ -383,7 +383,7 @@ const CustomerTransactionList: React.FC = () => {
             {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
             </Space> */}
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },
@@ -707,7 +707,7 @@ const CustomerTransactionList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflow: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >
@@ -915,7 +915,7 @@ const CustomerTransactionList: React.FC = () => {
               {/* customerTransaction */}
               {ability.can("customerTransaction.download", "") && (
                 <Row justify={"end"}>
-                  <Col span={3}>
+                  <Col>
                     {/* <CSVLink
                       data={downloadRow}
                       asyncOnClick={true}

@@ -286,7 +286,7 @@ const CreateIpUpdateForm = () => {
               >
                 {/* staticIp */}
                 <Form.Item
-                  label="Static Ip"
+                  label="Static IP"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"

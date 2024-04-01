@@ -329,7 +329,7 @@ const CustomerTicketList: React.FC = () => {
             {/* <Space>
               {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
             </Space> */}
-            <Space>{page !== 1 ? index + 1 + page * limit : index + 1}</Space>
+            {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
           </>
         );
       },
@@ -341,6 +341,17 @@ const CustomerTicketList: React.FC = () => {
     {
       title: "Ticket Number",
       dataIndex: "ticketNo",
+      render: (ticketNo, record: any) => {
+        return (
+          <>
+            {ability.can("customerTicket.view", "") && (
+              <Link href={`/admin/complaint/customer-ticket/${record.id}`}>
+                {ticketNo}
+              </Link>
+            )}
+          </>
+        );
+      },
       sorter: true,
       ellipsis: true,
       width: "auto",
@@ -677,7 +688,7 @@ const CustomerTicketList: React.FC = () => {
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto",
+              overflow: "hidden",
               backgroundColor: "#d5dfe6"
             }}
           >
