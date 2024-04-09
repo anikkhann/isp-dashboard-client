@@ -143,6 +143,221 @@ const DetailsRetailData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.contactNumber}</span>
               </Col>
             </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">AltContact Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.altContactNumber}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">NID No :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.nidNo}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">WSD Commission :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.wsdCommission}</span>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Bank Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.bankName}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Account Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.bankAccountNumber}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Account Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.bankAccountName}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Branch Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.bankBranchName}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Routing Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.bankRoutingNumber}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Account Code :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.bankAccountCode}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">BKash Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.bkashNumber}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Nagad Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.nagadNumber}</span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>
@@ -202,6 +417,42 @@ const DetailsRetailData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.district?.name}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Upazilla :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.upazilla?.name}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Union :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.union?.name}</span>
               </Col>
             </Row>
 

@@ -62,6 +62,7 @@ interface PropData {
 }
 
 const EditPackageForm = ({ item }: PropData) => {
+  console.log("item", item);
   const [form] = Form.useForm();
   const authUser = useAppSelector(state => state.auth.user);
   const [loading, setLoading] = useState(false);
@@ -200,11 +201,11 @@ const EditPackageForm = ({ item }: PropData) => {
       setIsAssignedToSubZone(item.isAssignedToSubZone);
       setIsActive(item.isActive);
 
-      if (item.nextExpiredPackage) {
+      if (item && item.nextExpiredPackageId) {
+        setNextExpiredId(item.nextExpiredPackageId);
         form.setFieldsValue({
-          nextExpiredPackageId: item.nextExpiredPackage.id
+          nextExpiredPackageId: item.nextExpiredPackageId
         });
-        setNextExpiredId(item.nextExpiredPackage.id);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

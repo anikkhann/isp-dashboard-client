@@ -19,7 +19,11 @@ const NewBulkSms = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/notification">Notification</Link>
+              title: (
+                <Link href="/admin/notification/sms/send-sms-bulk">
+                  Notification
+                </Link>
+              )
             },
 
             {

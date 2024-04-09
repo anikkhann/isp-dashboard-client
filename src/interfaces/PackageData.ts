@@ -4,6 +4,7 @@ import { ClientData } from "./ClientData";
 export interface PackageData {
   createdOn: number;
   updatedOn: number;
+  nextExpiredPackageId: string;
   id: string;
   name: string;
   displayName: string;

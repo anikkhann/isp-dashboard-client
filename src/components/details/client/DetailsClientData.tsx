@@ -47,6 +47,129 @@ const DetailsClientData = ({ item }: PropData) => {
               </Col>
             </Row>
 
+            <div>
+              <Row
+                style={{
+                  marginTop: "2px"
+                }}
+              >
+                <Col
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "end"
+                  }}
+                >
+                  <span className="font-bold text-base">Username :</span>
+                </Col>
+                <Col>
+                  <span className="mx-1 text-base">{item.username}</span>
+                </Col>
+              </Row>
+              <Row
+                style={{
+                  marginTop: "2px"
+                }}
+              >
+                <Col
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "end"
+                  }}
+                >
+                  <span className="font-bold text-base">Prefix :</span>
+                </Col>
+                <Col>
+                  <span className="mx-1 text-base">{item.prefix}</span>
+                </Col>
+              </Row>
+
+              <Row
+                style={{
+                  marginTop: "2px"
+                }}
+              >
+                <Col
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "end"
+                  }}
+                >
+                  <span className="font-bold text-base">Name :</span>
+                </Col>
+                <Col>
+                  <span className="mx-1 text-base">{item.name}</span>
+                </Col>
+              </Row>
+
+              {/* <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end",
+               
+                }}
+              >
+                <span className="font-bold text-base">Email :</span>
+              </Col>
+              <Col
+               
+              >
+                <span className="mx-1 text-base">{item.email}</span>
+              </Col>
+            </Row> */}
+
+              {/* <p className="flex flex-row   overflow-hidden">
+              <span className="font-bold">Address</span>
+              <span className="mx-1">:</span>
+              <span className="mx-1">{item.address}</span>
+            </p> */}
+              <Row
+                style={{
+                  marginTop: "2px"
+                }}
+              >
+                <Col
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "end"
+                  }}
+                >
+                  <span className="font-bold text-base">Contact Person :</span>
+                </Col>
+                <Col>
+                  <span className="mx-1 text-base">{item.contactPerson}</span>
+                </Col>
+              </Row>
+
+              <Row
+                style={{
+                  marginTop: "2px"
+                }}
+              >
+                <Col
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "end"
+                  }}
+                >
+                  <span className="font-bold text-base">Contact Number :</span>
+                </Col>
+                <Col>
+                  <span className="mx-1 text-base">{item.contactNumber}</span>
+                </Col>
+              </Row>
+            </div>
+
             {/* <p className="flex flex-row   overflow-hidden">
               <span className="font-bold">Partner Type</span>
               <span className="mx-1">:</span>
@@ -188,122 +311,7 @@ const DetailsClientData = ({ item }: PropData) => {
             backgroundColor: "white",
             borderRadius: "10px",
             border: "1px solid #F15F22"
-          }}
-        >
-          <div>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Username :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.username}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Name :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.name}</span>
-              </Col>
-            </Row>
-
-            {/* <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end",
-               
-                }}
-              >
-                <span className="font-bold text-base">Email :</span>
-              </Col>
-              <Col
-               
-              >
-                <span className="mx-1 text-base">{item.email}</span>
-              </Col>
-            </Row> */}
-
-            {/* <p className="flex flex-row   overflow-hidden">
-              <span className="font-bold">Address</span>
-              <span className="mx-1">:</span>
-              <span className="mx-1">{item.address}</span>
-            </p> */}
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Person :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.contactPerson}</span>
-              </Col>
-            </Row>
-
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Contact Number :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.contactNumber}</span>
-              </Col>
-            </Row>
-          </div>
-        </Card>
-        <Card
-          hoverable
-          bordered={false}
-          style={{
-            textAlign: "start",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            border: "1px solid #F15F22",
-            marginTop: "1rem"
+            // marginTop: "1rem"
           }}
         >
           <div>

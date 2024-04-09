@@ -23,6 +23,13 @@ export interface DeviceData {
   insertedBy: InsertedBy;
   editedBy: EditedBy;
   updatedOn?: string;
+  telnetLoginName: string;
+  telnetLoginPassword: string;
+  telnetPonPortNumber: number;
+  telnetPrivilegedPassword: string;
+  latitude: string;
+  longitude: string;
+  location: string;
 }
 
 export interface Partner {

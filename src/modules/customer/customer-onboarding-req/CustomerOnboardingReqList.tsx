@@ -4,6 +4,7 @@ import {
   Card,
   Col,
   DatePicker,
+  // Form,
   Input,
   Select,
   Space,
@@ -64,6 +65,7 @@ interface TableParams {
 
 const CustomerOnboardingReqList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
+  // const [form] = Form.useForm();
   const { Panel } = Collapse;
   const { RangePicker } = DatePicker;
   // const [form] = Form.useForm();
@@ -72,6 +74,7 @@ const CustomerOnboardingReqList: React.FC = () => {
   const [data, setData] = useState<CustomerData[]>([]);
 
   const router = useRouter();
+  // const { id } = router.query;
 
   const [customerTypes, setCustomerTypes] = useState<any[]>([]);
   const [customerPackages, setCustomerPackages] = useState<any[]>([]);
@@ -97,6 +100,9 @@ const CustomerOnboardingReqList: React.FC = () => {
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  // const [showError, setShowError] = useState(false);
+  // const [errorMessages, setErrorMessages] = useState(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -300,6 +306,48 @@ const CustomerOnboardingReqList: React.FC = () => {
         }
       } else if (result.isDismissed) {
         MySwal.fire("Deleted", "Your Data is deleted :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    }
+  }
+
+  async function handleReinitiate(id: string) {
+    try {
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Reinitiate!"
+      });
+
+      if (result.isConfirmed) {
+        const body = {
+          id: id
+          // action: "approve"
+        };
+
+        const { data } = await axios.put(
+          `/api/customer-request/re-initiate`,
+          body
+        );
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.message, "success").then(() => {
+            router.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
       }
     } catch (error: any) {
       // console.log(error);
@@ -738,20 +786,38 @@ const CustomerOnboardingReqList: React.FC = () => {
                     placement="bottomRight"
                     color="blue"
                   >
+                    {/* <Form
+                      layout="vertical"
+                      autoComplete="off"
+                      onFinish={onSubmit}
+                      form={form}
+                      initialValues={{}}
+                      style={{ maxWidth: "100%" }}
+                      name="wrap"
+                      colon={false}
+                      scrollToFirstError
+                    > */}
+                    {/* <Form.Item> */}
                     <Space size="middle" align="center" wrap>
-                      <Link
+                      {/* <Link
                         href={`/admin/customer/customer-onboarding-req/${record.id}/reinitiate`}
-                      >
-                        <Button
-                          type="primary"
-                          icon={<IssuesCloseOutlined />}
-                          style={{
-                            backgroundColor: "#241468",
-                            color: "#ffffff"
-                          }}
-                        />
-                      </Link>
+                      > */}
+                      <Button
+                        // htmlType="submit"
+                        type="primary"
+                        icon={<IssuesCloseOutlined />}
+                        style={{
+                          backgroundColor: "#241468",
+                          color: "#ffffff"
+                        }}
+                        onClick={() => {
+                          handleReinitiate(record.id);
+                        }}
+                      />
+                      {/* </Link> */}
                     </Space>
+                    {/* </Form.Item> */}
+                    {/* </Form> */}
                   </Tooltip>
                 ) : null)}
               {/* view */}
@@ -824,6 +890,81 @@ const CustomerOnboardingReqList: React.FC = () => {
       SetSort((sorter as SorterResult<CustomerData>).field as string);
     }
   };
+  // const onSubmit = async (values: any) => {
+  //   const { id } = values;
+
+  //   try {
+  //     const response = await axios.put("/api/customer-request/re-initiate", { id });
+
+  //     if (response.data.status === 200) {
+  //       Swal.fire({
+  //         title: "Success",
+  //         text: response.data.message || "Added successfully",
+  //         icon: "success"
+  //       }).then(() => {
+
+  //       });
+  //     } else {
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: response.data.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     }
+  //   } catch (err: any) {
+  //     const errorMessage = err.response?.data?.message || "Something went wrong";
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: errorMessage,
+  //       icon: "error"
+  //     });
+  //     setShowError(true);
+  //     setErrorMessages(errorMessage);
+  //   }
+  // };
+  // const onSubmit = async (data: any) => {
+  //   const formData = {
+  //     id: d
+  //   };
+
+  //   try {
+  //     await axios
+  //       .put("/api/customer-request/re-initiate", formData)
+  //       .then(res => {
+  //         const { data } = res;
+
+  //         if (data.status != 200) {
+  //           MySwal.fire({
+  //             title: "Error",
+  //             text: data.message || "Something went wrong",
+  //             icon: "error"
+  //           });
+  //         }
+
+  //         if (data.status == 200) {
+  //           MySwal.fire({
+  //             title: "Success",
+  //             text: data.message || "Reinitiated successfully",
+  //             icon: "success"
+  //           }).then(() => {
+  //             router.replace(`/admin/customer/customer-onboarding-req`);
+  //           });
+  //         }
+  //       })
+  //       .catch(err => {
+  //         MySwal.fire({
+  //           title: "Error",
+  //           text: err.response.data.message || "Something went wrong",
+  //           icon: "error"
+  //         });
+  //         // setShowError(true);
+  //         // setErrorMessages(err.response.data.message);
+  //       });
+  //   } catch (err: any) {
+  //     // setShowError(true);
+  //     // setErrorMessages(err.message);
+  //   }
+  // };
 
   return (
     <>

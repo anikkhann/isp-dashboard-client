@@ -28,6 +28,7 @@ const Customer = ({ item }: PropData) => {
   const [loading, setLoading] = useState(false);
   const MySwal = withReactContent(Swal);
   const authUser = useAppSelector(state => state.auth.user);
+  const [showFullText, setShowFullText] = useState(false);
   const fetchData = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -201,6 +202,11 @@ const Customer = ({ item }: PropData) => {
       setLoading(false);
     }
   }
+
+  const toggleFullText = () => {
+    setShowFullText(!showFullText);
+  };
+
   return (
     <>
       {isLoading && isFetching && (
@@ -352,10 +358,40 @@ const Customer = ({ item }: PropData) => {
                       alignItems: "end"
                     }}
                   >
-                    <span className="font-bold text-base">Password :</span>
+                    <span className="font-bold text-base">
+                      PPPoE Password :
+                    </span>
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">{item?.password}</span>
+                  </Col>
+                </Row>
+                <Row
+                  style={{
+                    marginTop: "2px"
+                  }}
+                >
+                  <Col>
+                    <span className="font-bold text-base">
+                      Portal Login Password :
+                    </span>
+                  </Col>
+                  <Col
+                    style={{
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                      cursor: "pointer" // Change cursor to pointer to indicate it's clickable
+                    }}
+                    onClick={toggleFullText}
+                  >
+                    {showFullText
+                      ? item?.panelPassword
+                      : (item?.panelPassword || "").substring(0, 20) + "..."}
+                    {/* <span className="mx-1 text-base">
+                      {item?.panelPassword}
+                    </span> */}
                   </Col>
                 </Row>
                 <Row

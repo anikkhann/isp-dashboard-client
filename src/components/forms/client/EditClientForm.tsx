@@ -49,6 +49,7 @@ interface FormData {
   name: string;
 
   username: string;
+  prefix: string;
   password: string;
   contactPerson: string;
   contactNumber: string;
@@ -476,6 +477,7 @@ const EditClientForm = ({ item }: PropData) => {
       form.setFieldsValue({
         name: item.name,
         username: item.username,
+        prefix: item.prefix,
         /*  password: item.password, */
         email: item.email,
         address: item.address,
@@ -566,6 +568,7 @@ const EditClientForm = ({ item }: PropData) => {
 
         name,
         username,
+        prefix,
         email,
         address,
         latitude,
@@ -617,6 +620,7 @@ const EditClientForm = ({ item }: PropData) => {
         name: name,
 
         username: username,
+        prefix: prefix,
         contactPerson: contactPerson,
         contactNumber: contactNumber,
         altContactNumber: altContactNumber,
@@ -709,6 +713,7 @@ const EditClientForm = ({ item }: PropData) => {
             email: "",
             password: "",
             username: "",
+            prefix: "",
             clientLevel: "",
 
             contactPerson: "",
@@ -828,6 +833,52 @@ const EditClientForm = ({ item }: PropData) => {
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="prefix"
+                label="Prefix"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Prefix!"
+                //   },
+                //   {
+                //     min: 3,
+                //     message: "Prefix must be minimum 3 characters."
+                //   },
+                //   {
+                //     max: 5,
+                //     message: "Prefix must be maximum 5 characters."
+                //   },
+                //   {
+                //     pattern: new RegExp(/^[a-z]+$/),
+                //     message: "Only letters (a-z) allowed"
+                //   }
+                // ]}
+              >
+                <Input
+                  disabled
+                  type="text"
+                  placeholder="Prefix"
+                  className={`form-control`}
+                  name="prefix"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>

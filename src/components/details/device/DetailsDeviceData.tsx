@@ -128,7 +128,7 @@ const DetailsDeviceData = ({ item }: PropData) => {
               </Col>
             </Row>
 
-            <Row
+            {/* <Row
               style={{
                 marginTop: "2px"
               }}
@@ -145,7 +145,7 @@ const DetailsDeviceData = ({ item }: PropData) => {
               <Col>
                 <span className="mx-1 text-base">{item.oltType}</span>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row
               style={{
@@ -220,6 +220,142 @@ const DetailsDeviceData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.snmpVersion}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Secret :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.secret}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Telnet Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.telnetLoginName}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Telnet Password :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.telnetLoginPassword}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">
+                  Telnet Pon Port Number :
+                </span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.telnetPonPortNumber}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">
+                  Telnet Privileged Password :
+                </span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.telnetPrivilegedPassword}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Latitude :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.latitude}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Longitude :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.longitude}</span>
               </Col>
             </Row>
           </div>

@@ -10,6 +10,7 @@ export interface CustomerData {
   name: string;
   username: string;
   password: string;
+  panelPassword: string;
   customerType: CustomerType;
   customerTypeId: string;
   mobileNo: string;

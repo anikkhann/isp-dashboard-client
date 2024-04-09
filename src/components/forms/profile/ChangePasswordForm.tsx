@@ -176,7 +176,11 @@ const ChangePasswordForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please confirm your New Password!"
+                    message: "Please input your New Password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
                   },
                   {
                     pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
@@ -215,6 +219,10 @@ const ChangePasswordForm = () => {
                   {
                     required: true,
                     message: "Please confirm your password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
                   },
                   {
                     pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),

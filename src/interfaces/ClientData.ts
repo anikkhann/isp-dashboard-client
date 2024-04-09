@@ -7,6 +7,7 @@ export interface ClientData {
   clientLevel: string;
   name: string;
   username: string;
+  prefix: string;
   contactPerson: string;
   contactNumber: string;
   altContactNumber: string;

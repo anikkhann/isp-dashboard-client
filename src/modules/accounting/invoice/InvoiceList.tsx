@@ -73,8 +73,20 @@ const InvoiceList: React.FC = () => {
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
-
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const { RangePicker } = DatePicker;
+
+  // const showModal = () => {
+  //   setIsModalOpen(true);
+  // };
+
+  // const handleOk = () => {
+  //   setIsModalOpen(false);
+  // };
+
+  // const handleCancel = () => {
+  //   setIsModalOpen(false);
+  // };
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -863,17 +875,45 @@ const InvoiceList: React.FC = () => {
                           xl={8}
                           xxl={8}
                           className="gutter-row"
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                          }}
                         >
-                          <Space style={{ width: "100%" }} direction="vertical">
+                          <Space direction="vertical">
                             <span>
                               <b>Date Range</b>
                             </span>
-                            <RangePicker
-                              style={{ width: "100%" }}
-                              onChange={handleDateChange}
-                              value={selectedDateRange}
-                              placeholder={["Start Date", "End Date"]}
-                            />
+                            <div style={{ marginBottom: "1rem" }}>
+                              <RangePicker
+                                style={{ width: "100%" }}
+                                // popupStyle={{
+                                //   width: "100%", // Default width for larger screens
+                                //   maxWidth: "100%", // Allow maximum width to be 100% for smaller screens
+                                //   overflowX: "auto", // Enable horizontal scrolling if necessary
+                                //   overflowY: "auto" // Enable vertical scrolling if necessary
+                                // }}
+                                onChange={handleDateChange}
+                                value={selectedDateRange}
+                                // onClick={showModal}
+                                placeholder={["Start Date", "End Date"]}
+                              />
+                            </div>
+
+                            {/* <Modal
+                              title="Basic Modal"
+                              open={isModalOpen}
+                              onOk={handleOk}
+                              onCancel={handleCancel}
+                            >
+                              <RangePicker
+                                style={{ width: "100%" }}
+                                onChange={handleDateChange}
+                                value={selectedDateRange}
+                                placeholder={["Start Date", "End Date"]}
+                              />
+                            </Modal> */}
                           </Space>
                         </Col>
                         <Col

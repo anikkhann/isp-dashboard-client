@@ -79,7 +79,7 @@ a {
 .text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  // white-space: nowrap;
 }
 
 .card-hover {
@@ -120,4 +120,12 @@ a {
 }
 .ant-card-head-title {
   white-space: normal !important;
+}
+@media (max-width: 480px) {
+  .ant-calendar-range {
+    width: 320px;
+  }
+  .ant-calendar-range-part {
+    width: 100%;
+  }
 }
