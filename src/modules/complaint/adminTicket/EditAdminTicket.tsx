@@ -60,11 +60,11 @@ const EditAdminTicket = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>
+                <Link href="/admin/complaint/admin-ticket">Service Ticket</Link>
               )
             },
             {
-              title: "Reply Admin Ticket"
+              title: "Reply Service Ticket"
             }
           ]}
         />
@@ -86,7 +86,7 @@ const EditAdminTicket = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Reply Admin Ticket
+            Reply Service Ticket
           </h1>
         </div>
         <Card

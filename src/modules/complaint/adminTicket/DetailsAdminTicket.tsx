@@ -720,7 +720,7 @@ const DetailsAdminTicket = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Admin Ticket
+            Service Ticket
           </h1>
         </div>
         <Card

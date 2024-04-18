@@ -1183,6 +1183,18 @@ const CreateDurjoyRequisitionForm = () => {
               </Col>
             </Row>
           </Form>
+          <div className="bg-gray-400 flex flex-col gap-1 ">
+            <div className="rounded-sm w-full grid grid-cols-12 bg-white shadow p-6 gap-2 items-center hover:shadow-lg transition delay-150 duration-300 ease-in-out hover:scale-105 transform">
+              <div className="col-span-11 xl:-ml-5">
+                <p className="text-blue-600 font-semibold text-left text-lg">
+                  <span className="text-danger">
+                    * Attachment must be either JPG or PNG format and should not
+                    exceed 10 MB in size.
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </>
       {/* )} */}

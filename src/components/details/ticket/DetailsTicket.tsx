@@ -222,16 +222,18 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                       {replyData.created_by}
                     </span>
                     <span className="mx-2">-</span>
-                    <span className="mx-2 font-bold text-base capitalize">
+                    <span className=" font-bold text-base capitalize">
                       {replyData.subject}
                     </span>
-                    <span className="mx-2">
+                  </p>
+                  <p className="text-left">
+                    <span className="">
                       {formatDistanceToNow(new Date(replyData.created_on), {
                         addSuffix: true
                       })}
                       - {new Date(replyData.created_on).toDateString()}
                     </span>
-                    <span className="mx-2">
+                    <span className="">
                       {new Date(replyData.created_on).toLocaleTimeString()}
                     </span>
 
@@ -262,6 +264,7 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                       />
                     </Modal>
                   </p>
+
                   <p className="ml-10 font-semibold">{replyData.note}</p>
                   {/* </Divider> */}
                 </div>

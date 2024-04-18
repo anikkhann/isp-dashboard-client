@@ -122,10 +122,23 @@ a {
   white-space: normal !important;
 }
 @media (max-width: 480px) {
-  .ant-calendar-range {
-    width: 320px;
+  .ant-picker-panels {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: wrap !important;
   }
-  .ant-calendar-range-part {
-    width: 100%;
+
+  .ant-picker-dropdown {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+@media (max-width: 680px) {
+  .ant-picker-panels {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: wrap !important;
   }
 }

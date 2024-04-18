@@ -125,7 +125,7 @@ const ChangePasswordForm = () => {
             >
               <Form.Item
                 name="oldPassword"
-                label="OLD Password"
+                label="Current Password"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -133,7 +133,7 @@ const ChangePasswordForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your OLD Password!"
+                    message: "Please input your Current Password!"
                   },
                   {
                     min: 6,
@@ -148,7 +148,7 @@ const ChangePasswordForm = () => {
                 hasFeedback
               >
                 <Input.Password
-                  placeholder="Old Password"
+                  placeholder="Current Password"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>
@@ -207,7 +207,7 @@ const ChangePasswordForm = () => {
             >
               <Form.Item
                 name="confirmPassword"
-                label="Confirm Password"
+                label="Confirm New Password"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -218,7 +218,7 @@ const ChangePasswordForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please confirm your password!"
+                    message: "Please confirm your new password!"
                   },
                   {
                     min: 6,
@@ -244,7 +244,7 @@ const ChangePasswordForm = () => {
                 ]}
               >
                 <Input.Password
-                  placeholder="Confirm Password"
+                  placeholder="Confirm New Password"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>
@@ -273,6 +273,18 @@ const ChangePasswordForm = () => {
             </Col>
           </Row>
         </Form>
+        <div className="bg-gray-400 flex flex-col gap-1 my-5">
+          <div className="rounded-sm w-full grid grid-cols-12 bg-white shadow p-6 gap-2 items-center hover:shadow-lg transition delay-150 duration-300 ease-in-out hover:scale-105 transform">
+            <div className="col-span-11 xl:-ml-5">
+              <p className="text-blue-600 font-semibold text-left text-lg">
+                <span className="text-danger">
+                  * Password should be at least 6 digit and Only letters,
+                  numbers, underscores and hyphens allowed (0-9,a-z,A-Z,_,-)
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       {/* )} */}
     </>

@@ -74,6 +74,7 @@ const InvoiceList: React.FC = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
   // const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { RangePicker } = DatePicker;
 
   // const showModal = () => {
@@ -875,11 +876,11 @@ const InvoiceList: React.FC = () => {
                           xl={8}
                           xxl={8}
                           className="gutter-row"
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}
+                          // style={{
+                          //   display: "flex",
+                          //   justifyContent: "center",
+                          //   alignItems: "center"
+                          // }}
                         >
                           <Space direction="vertical">
                             <span>
@@ -888,12 +889,6 @@ const InvoiceList: React.FC = () => {
                             <div style={{ marginBottom: "1rem" }}>
                               <RangePicker
                                 style={{ width: "100%" }}
-                                // popupStyle={{
-                                //   width: "100%", // Default width for larger screens
-                                //   maxWidth: "100%", // Allow maximum width to be 100% for smaller screens
-                                //   overflowX: "auto", // Enable horizontal scrolling if necessary
-                                //   overflowY: "auto" // Enable vertical scrolling if necessary
-                                // }}
                                 onChange={handleDateChange}
                                 value={selectedDateRange}
                                 // onClick={showModal}
@@ -916,6 +911,7 @@ const InvoiceList: React.FC = () => {
                             </Modal> */}
                           </Space>
                         </Col>
+
                         <Col
                           xs={24}
                           sm={12}
