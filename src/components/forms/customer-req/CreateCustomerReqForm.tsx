@@ -20,6 +20,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAppSelector } from "@/store/hooks";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   name: string;
@@ -73,6 +74,7 @@ const identityTypes = [
 ];
 
 const CreateCustomerReqForm = () => {
+  const authUser = useAppSelector(state => state.auth.user);
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -722,6 +724,16 @@ const CreateCustomerReqForm = () => {
               >
                 <Input
                   type="text"
+                  addonBefore={
+                    <span
+                      style={{
+                        backgroundColor: "#cfcdca",
+                        color: "black"
+                      }}
+                    >
+                      {authUser ? authUser.clientPrefix + "_" : "Not Available"}
+                    </span>
+                  }
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
@@ -878,12 +890,17 @@ const CreateCustomerReqForm = () => {
                   {
                     required: true,
                     message: "Please input your Mobile No!"
+                  },
+                  {
+                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    message:
+                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Mobile No"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="mobileNo"
                   style={{ padding: "6px" }}
@@ -907,16 +924,17 @@ const CreateCustomerReqForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input your Alt Mobile No!"
-                //   }
-                // ]}
+                rules={[
+                  {
+                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    message:
+                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
+                  }
+                ]}
               >
                 <Input
                   type="text"
-                  placeholder="Alt Mobile No"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="altMobileNo"
                   style={{ padding: "6px" }}
@@ -979,14 +997,15 @@ const CreateCustomerReqForm = () => {
                     message: "Please input your Contact Number!"
                   },
                   {
-                    pattern: new RegExp(/^(01)[0-9]{9}$/),
-                    message: "Please enter correct BD Phone number."
+                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    message:
+                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Contact Number"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="contactNumber"
                   style={{ padding: "6px" }}

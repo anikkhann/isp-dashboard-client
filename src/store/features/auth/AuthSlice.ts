@@ -13,6 +13,7 @@ interface AuthState {
 export interface UserLoggedInData {
   userId: string;
   name: string;
+  clientPrefix: string;
   firstName?: any;
   userName: string;
   lastName?: any;

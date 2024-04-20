@@ -4033,12 +4033,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           {
                             required: true,
                             message: "Please input your Mobile Number!"
+                          },
+                          {
+                            pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                            message:
+                              "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Mobile Number"
+                          placeholder="01XXXXXXXXX"
                           className={`form-control`}
                           style={{ padding: "6px" }}
                           // onChange={e =>
@@ -4071,12 +4076,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                           {
                             required: true,
                             message: "Please input your Phone Number!"
+                          },
+                          {
+                            pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                            message:
+                              "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                           }
                         ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Phone Number"
+                          placeholder="01XXXXXXXXX"
                           className={`form-control`}
                           style={{ padding: "6px" }}
                           // onChange={e =>
@@ -4111,10 +4121,17 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
                         //     message: "Please input your Alt Mobile No!"
                         //   }
                         // ]}
+                        rules={[
+                          {
+                            pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                            message:
+                              "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
+                          }
+                        ]}
                       >
                         <Input
                           type="text"
-                          placeholder="Alt Mobile No"
+                          placeholder="01XXXXXXXXX"
                           className={`form-control`}
                           style={{ padding: "6px" }}
                           // onChange={e =>

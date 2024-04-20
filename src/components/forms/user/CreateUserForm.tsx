@@ -391,6 +391,16 @@ const CreateUserForm = () => {
               >
                 <Input
                   type="text"
+                  addonBefore={
+                    <span
+                      style={{
+                        backgroundColor: "#cfcdca",
+                        color: "black"
+                      }}
+                    >
+                      {authUser ? authUser.clientPrefix + "_" : "Not Available"}
+                    </span>
+                  }
                   placeholder="Username"
                   className={`form-control`}
                   name="username"

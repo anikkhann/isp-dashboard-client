@@ -21,6 +21,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { UserData } from "@/interfaces/UserData";
+import { useAppSelector } from "@/store/hooks";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface AdminFormData {
@@ -37,6 +38,7 @@ interface PropData {
 const EditUserForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
+  const authUser = useAppSelector(state => state.auth.user);
   const [loading, setLoading] = useState(false);
 
   // ** States
@@ -267,6 +269,16 @@ const EditUserForm = ({ item }: PropData) => {
               >
                 <Input
                   type="text"
+                  addonBefore={
+                    <span
+                      style={{
+                        backgroundColor: "#cfcdca",
+                        color: "black"
+                      }}
+                    >
+                      {authUser ? authUser.clientPrefix + "_" : "Not Available"}
+                    </span>
+                  }
                   placeholder="Username"
                   className={`form-control`}
                   name="username"

@@ -20,6 +20,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Row, Col } from "antd";
+import { useAppSelector } from "@/store/hooks";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
@@ -50,6 +51,7 @@ interface FormData {
 }
 
 const CreateSubZoneForm = () => {
+  const authUser = useAppSelector(state => state.auth.user);
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -479,6 +481,13 @@ const CreateSubZoneForm = () => {
               >
                 <Input
                   type="text"
+                  addonBefore={
+                    <span
+                      style={{ backgroundColor: "#cfcdca", color: "black" }}
+                    >
+                      {authUser ? authUser.clientPrefix + "_" : "Not Available"}
+                    </span>
+                  }
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
@@ -746,14 +755,15 @@ const CreateSubZoneForm = () => {
                     message: "Please input your Contact Number!"
                   },
                   {
-                    pattern: new RegExp(/^(01)[0-9]{9}$/),
-                    message: "Please enter correct BD Phone number."
+                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    message:
+                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Contact Number"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="contactNumber"
                   style={{ padding: "6px" }}
@@ -780,14 +790,15 @@ const CreateSubZoneForm = () => {
                 }}
                 rules={[
                   {
-                    pattern: new RegExp(/^(01)[0-9]{9}$/),
-                    message: "Please enter correct BD Phone number."
+                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    message:
+                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Alt Contact Number"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="altContactNumber"
                   style={{ padding: "6px" }}

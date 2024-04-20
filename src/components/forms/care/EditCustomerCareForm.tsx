@@ -1608,12 +1608,17 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         {
                           required: true,
                           message: "Please input your Mobile No!"
+                        },
+                        {
+                          pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                          message:
+                            "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                         }
                       ]}
                     >
                       <Input
                         type="text"
-                        placeholder="Mobile No"
+                        placeholder="01XXXXXXXXX"
                         className={`form-control`}
                         name="mobileNo"
                         style={{ padding: "6px" }}
@@ -1637,10 +1642,17 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                         marginBottom: 0,
                         fontWeight: "bold"
                       }}
+                      rules={[
+                        {
+                          pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                          message:
+                            "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
+                        }
+                      ]}
                     >
                       <Input
                         type="text"
-                        placeholder="Alt Mobile No"
+                        placeholder="01XXXXXXXXX"
                         className={`form-control`}
                         name="altMobileNo"
                         style={{ padding: "6px" }}
@@ -1703,14 +1715,15 @@ const EditCustomerCareForm = ({ item }: PropData) => {
                           message: "Please input your Contact Number!"
                         },
                         {
-                          pattern: new RegExp(/^(01)[0-9]{9}$/),
-                          message: "Please enter correct BD Phone number."
+                          pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                          message:
+                            "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
                         }
                       ]}
                     >
                       <Input
                         type="text"
-                        placeholder="Contact Number"
+                        placeholder="01XXXXXXXXX"
                         className={`form-control`}
                         name="contactNumber"
                         style={{ padding: "6px" }}
