@@ -236,7 +236,8 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                     <span className="">
                       {new Date(replyData.created_on).toLocaleTimeString()}
                     </span>
-
+                  </p>
+                  <p>
                     {replyData.attachment && (
                       <Button
                         onClick={() => {

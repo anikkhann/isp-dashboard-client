@@ -176,35 +176,35 @@ const hotspotRoutes = [
     label: <Link href="/admin/hotspot/zone-transaction">ZM Transaction</Link>,
     path: "/admin/hotspot/zone-transaction",
     icon: <TransactionOutlined />,
-    permission: "zoneTransaction.list"
+    permission: "hotspotZoneTransaction.list"
   },
   {
     key: "/admin/hotspot/tso-visit",
     label: <Link href="/admin/hotspot/tso-visit">TSO Visit</Link>,
     path: "/admin/hotspot/tso-visit",
     icon: <UserSwitchOutlined />,
-    permission: "zone.list"
+    permission: "tsoVisit.list"
   },
   {
     key: "/admin/hotspot/reseller-visit",
     label: <Link href="/admin/hotspot/reseller-visit">SZM Visit</Link>,
     path: "/admin/hotspot/reseller-visit",
     icon: <TagOutlined />,
-    permission: "zone.list"
+    permission: "resellerVisit.list"
   },
   {
     key: "/admin/hotspot/area-tagging",
     label: <Link href="/admin/hotspot/area-tagging">Area Tagging</Link>,
     path: "/admin/hotspot/area-tagging",
     icon: <TagOutlined />,
-    permission: "zone.list"
+    permission: "areaTagging.list"
   },
   {
     key: "/admin/hotspot/retailer-tagging",
     label: <Link href="/admin/hotspot/retailer-tagging">Retailer Tagging</Link>,
     path: "/admin/hotspot/retailer-tagging",
     icon: <GiftOutlined />,
-    permission: "zone.list"
+    permission: "tsoRetailerTag.list"
   },
   // {
   //   key: "/admin/hotspot/tso-tagging",
@@ -218,14 +218,14 @@ const hotspotRoutes = [
     label: <Link href="/admin/hotspot/monthly-target">Monthly Target</Link>,
     path: "/admin/hotspot/monthly-target",
     icon: <CalendarOutlined />,
-    permission: "zone.list"
+    permission: "monthlyTarget.list"
   },
   {
     key: "/admin/hotspot/other-product",
     label: <Link href="/admin/hotspot/other-product">Other Product</Link>,
     path: "/admin/hotspot/other-product",
     icon: <AppstoreAddOutlined />,
-    permission: "zone.list"
+    permission: "OtherProduct.list"
   },
   {
     key: "/admin/hotspot/other-product-sale",

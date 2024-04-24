@@ -1042,9 +1042,9 @@ const CreateClientForm = () => {
                     message: "Please input your Contact Number!"
                   },
                   {
-                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
                     message:
-                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                   }
                 ]}
               >
@@ -1075,9 +1075,9 @@ const CreateClientForm = () => {
                 }}
                 rules={[
                   {
-                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
                     message:
-                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                   }
                 ]}
               >

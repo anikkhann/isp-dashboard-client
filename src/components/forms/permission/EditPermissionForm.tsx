@@ -281,6 +281,14 @@ const tagsList = [
   {
     label: "Dashboard Overall Due",
     value: "dashboard-overall-due"
+  },
+  {
+    label: "Resend",
+    value: "resend"
+  },
+  {
+    label: "Hotspot Zone Transaction",
+    value: "hotspotZoneTransaction"
   }
 ];
 

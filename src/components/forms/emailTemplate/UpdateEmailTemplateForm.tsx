@@ -474,12 +474,17 @@ const UpdateEmailTemplateForm = ({ item }: PropData) => {
                   {
                     required: true,
                     message: "Please input phone!"
+                  },
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message:
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="phone"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="phone"
                   style={{ padding: "6px" }}

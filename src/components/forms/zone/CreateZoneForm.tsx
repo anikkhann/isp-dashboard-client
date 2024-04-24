@@ -763,9 +763,9 @@ const CreateZoneForm = () => {
                     message: "Please input your Contact Number!"
                   },
                   {
-                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
                     message:
-                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                   }
                 ]}
               >
@@ -798,9 +798,9 @@ const CreateZoneForm = () => {
                 }}
                 rules={[
                   {
-                    pattern: new RegExp(/^(\+)?(880)?\s?1\d{9}$/),
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
                     message:
-                      "Please input a valid Bangladesh phone number starting with +880 and containing a total of 11 digits."
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                   }
                 ]}
               >
@@ -1292,16 +1292,17 @@ const CreateZoneForm = () => {
                   fontWeight: "bold"
                 }}
                 name="bkashNumber"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input your Name!"
-                //   }
-                // ]}
+                rules={[
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message:
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
+                  }
+                ]}
               >
                 <Input
                   type="number"
-                  placeholder="BKash Number"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="bkashNumber"
                   style={{ padding: "6px" }}
@@ -1324,16 +1325,17 @@ const CreateZoneForm = () => {
                   fontWeight: "bold"
                 }}
                 name="nagadNumber"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input your Name!"
-                //   }
-                // ]}
+                rules={[
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message:
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
+                  }
+                ]}
               >
                 <Input
                   type="number"
-                  placeholder="Nagad Number"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="nagadNumber"
                   style={{ padding: "6px" }}

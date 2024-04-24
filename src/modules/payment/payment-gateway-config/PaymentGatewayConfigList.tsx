@@ -228,7 +228,7 @@ const PaymentGatewayConfigList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "bankName"
           }
         ]
       },

@@ -124,7 +124,7 @@ const EditPaymentGatewayConfigForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "bankName"
           }
         ]
       },

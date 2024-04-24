@@ -352,13 +352,14 @@ const EditUserForm = ({ item }: PropData) => {
                   },
                   {
                     pattern: new RegExp(/^(01)[0-9]{9}$/),
-                    message: "Please enter correct BD Mobile number."
+                    message:
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Mobile"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="phone"
                   style={{ padding: "6px" }}

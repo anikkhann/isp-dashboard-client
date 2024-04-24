@@ -273,7 +273,7 @@ const CustomerImportCSVList: React.FC = () => {
           `/api/customer-import-csv/cancel/${id}`
         );
         if (data.status === 200) {
-          MySwal.fire("Success!", data.body.message, "success").then(() => {
+          MySwal.fire("Success!", data.message, "success").then(() => {
             router.reload();
           });
         } else {

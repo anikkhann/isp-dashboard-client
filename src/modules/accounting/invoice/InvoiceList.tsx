@@ -1,5 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Select, Space, Row, DatePicker } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Select,
+  Space,
+  Row,
+  DatePicker,
+  Tooltip
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -12,7 +21,7 @@ import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import { TopUpTransactionData } from "@/interfaces/TopUpTransactionData";
 import { format } from "date-fns";
-
+import ability from "@/services/guard/ability";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -24,7 +33,13 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { useAppSelector } from "@/store/hooks";
-
+// import Link from "next/link";
+import {
+  VerticalAlignBottomOutlined,
+  DoubleRightOutlined
+} from "@ant-design/icons";
+// import ability from "@/services/guard/ability";
+import { useRouter } from "next/router";
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
 dayjs.extend(weekday);
@@ -40,13 +55,19 @@ interface TableParams {
   sortOrder?: string;
   filters?: Record<string, FilterValue | null>;
 }
-
+interface LoadingState {
+  [key: string]: boolean;
+}
 const InvoiceList: React.FC = () => {
   const authUser = useAppSelector(state => state.auth.user);
+  // const [loading, setLoading] = useState(false);
+  const [loadingResend, setLoadingResend] = useState<LoadingState>({});
+  const [loadingDownload, setLoadingDownload] = useState<LoadingState>({});
   const [data, setData] = useState<TopUpTransactionData[]>([]);
+  console.log("invoice data", data);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
-
+  const router = useRouter();
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("desc");
@@ -96,6 +117,96 @@ const InvoiceList: React.FC = () => {
       pageSize: 10
     }
   });
+  // useEffect(() => {
+  //   setLoading(loading);
+  // }, [loading]);
+  // handle resend
+  async function handleResend(id: string) {
+    // setLoading(true);
+    setLoadingResend(loadingResend => ({ ...loadingResend, [id]: true }));
+    setTimeout(async () => {
+      try {
+        const result = await MySwal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#570DF8",
+          cancelButtonColor: "#EB0808",
+          confirmButtonText: "Yes, Resend!"
+        });
+
+        if (result.isConfirmed) {
+          const { data } = await axios.get(
+            `/api/customer-invoice/resend-invoice/${id}`
+          );
+          if (data.status === 200) {
+            MySwal.fire("Success!", data.message, "success").then(() => {
+              router.reload();
+            });
+          } else {
+            MySwal.fire("Error!", data.message, "error");
+          }
+        } else if (result.isDismissed) {
+          MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+        }
+      } catch (error: any) {
+        // console.log(error);
+        if (error.response) {
+          MySwal.fire("Error!", error.response.data.message, "error");
+        } else {
+          MySwal.fire("Error!", "Something went wrong", "error");
+        }
+      } finally {
+        setLoadingResend(loadingResend => ({ ...loadingResend, [id]: false })); // Set loading state for this specific button to false after download action is handled
+      }
+    }, 1000);
+  }
+  // handle download
+  async function handleDownload(id: string) {
+    // setLoading(true);
+    setLoadingDownload(loadingDownload => ({ ...loadingDownload, [id]: true })); // Set loading state for this specific button to true
+    setTimeout(async () => {
+      try {
+        const result = await MySwal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#570DF8",
+          cancelButtonColor: "#EB0808",
+          confirmButtonText: "Yes, Download!"
+        });
+
+        if (result.isConfirmed) {
+          const { data } = await axios.get(
+            `/api/customer-invoice/download-invoice/${id}`
+          );
+          if (data.status === 200) {
+            MySwal.fire("Success!", data.message, "success").then(() => {
+              router.reload();
+            });
+          } else {
+            MySwal.fire("Error!", data.message, "error");
+          }
+        } else if (result.isDismissed) {
+          MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+        }
+      } catch (error: any) {
+        // console.log(error);
+        if (error.response) {
+          MySwal.fire("Error!", error.response.data.message, "error");
+        } else {
+          MySwal.fire("Error!", "Something went wrong", "error");
+        }
+      } finally {
+        setLoadingDownload(loadingDownload => ({
+          ...loadingDownload,
+          [id]: false
+        })); // Set loading state for this specific button to false after download action is handled
+      }
+    }, 1000);
+  }
 
   const fetchData = async (
     page: number,
@@ -670,7 +781,7 @@ const InvoiceList: React.FC = () => {
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
-    }
+    },
     // editedBy
     // {
     //   title: "Updated By",
@@ -697,6 +808,66 @@ const InvoiceList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <div className="flex flex-row">
+            <Space size="middle" align="center">
+              {ability.can("invoice.resend", "") ? (
+                <Tooltip title="Resend" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    {/* <Link href={`/admin/client/client/${record.customerId}/edit`}> */}
+                    <Button
+                      type="primary"
+                      icon={<DoubleRightOutlined />}
+                      // disabled={loading}
+                      disabled={loadingResend[record.id]}
+                      onClick={() => handleResend(record.id)}
+                    >
+                      {loadingResend[record.id] ? "Resending..." : "Resend"}
+                      {/* {loading ? "Resending..." : "Resend"} */}
+                    </Button>
+                    {/* </Link> */}
+                  </Space>
+                </Tooltip>
+              ) : null}
+            </Space>
+            <Space size="middle" align="center" className="mx-1">
+              {ability.can("invoice.download", "") ? (
+                <Tooltip title="Download" placement="bottomRight" color="green">
+                  <Space size="middle" align="center" wrap>
+                    {/* <Link href={`/admin/client/client/${record.customerId}`}> */}
+                    <Button
+                      style={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#FF5630",
+                        borderColor: "#FF5630"
+                      }}
+                      icon={<VerticalAlignBottomOutlined />}
+                      // disabled={loading}
+                      disabled={loadingDownload[record.id]} // Use the loading state for this specific button
+                      onClick={() => handleDownload(record.id)}
+                    >
+                      {/* {loading ? "Downloading..." : "Download"} */}
+                      {loadingDownload[record.id]
+                        ? "Downloading..."
+                        : "Download"}
+                    </Button>
+                    {/* </Link> */}
+                  </Space>
+                </Tooltip>
+              ) : null}
+            </Space>
+          </div>
+        );
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    }
   ];
 
   const handleTableChange = (
