@@ -20,7 +20,11 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  DeleteOutlined
+} from "@ant-design/icons";
 import { SurveyData } from "@/interfaces/SurveyData";
 interface FormData {
   options: OptionData[];
@@ -46,6 +50,10 @@ const types = [
 interface PropData {
   item: SurveyData;
 }
+// interface Item {
+//   id: number;
+//   name: string;
+// }
 
 const EditSurveyForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
@@ -63,7 +71,13 @@ const EditSurveyForm = ({ item }: PropData) => {
   const [type, setType] = useState<any>(null);
 
   const [optionsValue, setOptionsValue] = useState<any[]>([]);
+  console.log("options", optionsValue);
 
+  // const [items, setItems] = useState<Item[]>([
+  //   { id: 1, name: "Item 1" },
+  //   { id: 2, name: "Item 2" },
+  //   { id: 3, name: "Item 3" }
+  // ]);
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -179,7 +193,12 @@ const EditSurveyForm = ({ item }: PropData) => {
       }
     }, 2000);
   };
-
+  // const deleteItem = (index: number) => {
+  //   setOptionsValue(prevItems => prevItems.filter((item, i) => i !== index));
+  // };
+  // const deleteItem = (id: number) => {
+  //   setItems(prevItems => prevItems.filter(item => item.id !== id));
+  // };
   return (
     <>
       {/* {loading && <AppImageLoader />} */}
@@ -316,9 +335,19 @@ const EditSurveyForm = ({ item }: PropData) => {
                         .split(/,(?=(?:(?:[^']*'){2})*[^']*$)/) // Split by comma excluding commas inside single quotes
 
                         .map((option, index, array) => (
-                          <div className="square" key={option.trim()}>
+                          // key={option.trim()}
+                          <div className="square" key={index}>
                             <p className="">
                               {option.trim()}
+                              <span
+                                // onClick={() => handleDeleteOption(index)}
+                                style={{
+                                  cursor: "pointer",
+                                  marginLeft: "0.5rem"
+                                }}
+                              >
+                                <DeleteOutlined />
+                              </span>
                               {index !== array.length - 1 ? ", " : ""}
                             </p>
                           </div>
@@ -341,7 +370,8 @@ const EditSurveyForm = ({ item }: PropData) => {
                 xxl={12}
                 className="gutter-row"
               >
-                <Form.List name="options" initialValue={optionsValue}>
+                {/*  initialValue={optionsValue} */}
+                <Form.List name="options">
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map(({ key, name, ...restField }) => (
@@ -388,6 +418,19 @@ const EditSurveyForm = ({ item }: PropData) => {
                     </>
                   )}
                 </Form.List>
+                {/* <div>
+                  <h1>Items</h1>
+                  <ul>
+                    {optionsValue.map((item, index) => (
+                      <li key={index}>
+                        {item.option}
+                        <button onClick={() => deleteItem(index)}>
+                          Delete
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div> */}
               </Col>
             </Row>
           )}
