@@ -12,7 +12,7 @@ import {
 } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Table, Collapse, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -85,11 +85,23 @@ interface TableParams {
 
 const DurjoyRequisitionList: React.FC = () => {
   const [data, setData] = useState<DurjoyRequisitionData[]>([]);
+  console.log("data", data);
+
   const { Panel } = Collapse;
 
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
+  const [downloadUnusedLoading, setDownloadUnusedLoading] =
+    useState<boolean>(false);
+  const [downloadApproveLoading, setDownloadApproveLoading] =
+    useState<boolean>(false);
+  const [rejectLoading, setRejectLoading] = useState<boolean>(false);
+  const [downloadCancelLoading, setDownloadCancelLoading] =
+    useState<boolean>(false);
   const [usedVoucherData, setUsedVoucherData] = useState<any[]>([]);
+  console.log("usedVoucherData", usedVoucherData);
   const [unusedVoucherData, setUnusedVoucherData] = useState<any[]>([]);
-
+  const downloadRef = useRef<any>(null);
+  const downloadUnused = useRef<any>(null);
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
   const [selectedRequisitionNo, setSelectedRequisitionNo] = useState<any>(null);
@@ -152,7 +164,7 @@ const DurjoyRequisitionList: React.FC = () => {
         client: {
           id: clientParam
         },
-        isActive: selectedStatusParam,
+        status: selectedStatusParam,
         dateRangeFilter: {
           field: "createdOn",
           startDate: startDateParam,
@@ -236,8 +248,12 @@ const DurjoyRequisitionList: React.FC = () => {
     }
   }, [data]);
 
-  async function handleCancel(id: string) {
+  async function handleCancel(
+    id: string,
+    setDownloadCancelLoading: (downloadCancelLoading: boolean) => void
+  ) {
     try {
+      setDownloadCancelLoading(true); // Set loading to true when initiating the request
       const result = await MySwal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -274,11 +290,17 @@ const DurjoyRequisitionList: React.FC = () => {
       } else {
         MySwal.fire("Error!", "Something went wrong", "error");
       }
+    } finally {
+      setDownloadCancelLoading(false); // Set loading to false when the request completes (success or error)
     }
   }
 
-  async function handleApprove(id: string) {
+  async function handleApprove(
+    id: string,
+    setDownloadApproveLoading: (downloadApproveLoading: boolean) => void
+  ) {
     try {
+      setDownloadApproveLoading(true);
       const result = await MySwal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -310,6 +332,8 @@ const DurjoyRequisitionList: React.FC = () => {
       } else {
         MySwal.fire("Error!", "Something went wrong", "error");
       }
+    } finally {
+      setDownloadApproveLoading(false); // Set loading to false when the request completes (success or error)
     }
   }
 
@@ -397,6 +421,26 @@ const DurjoyRequisitionList: React.FC = () => {
     setSelectedClient(value);
   };
 
+  const handleRejectClick = async () => {
+    try {
+      // Show loading state
+      setRejectLoading(true);
+
+      // Normalize function can go here
+      // For example, if you want to normalize data before sending it
+
+      // Simulating API request delay for 1 second
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // After API request completes, you can navigate or perform other actions
+    } catch (error) {
+      // Handle errors if any
+      console.error("Error:", error);
+    } finally {
+      // Reset loading state
+      setRejectLoading(false);
+    }
+  };
   const columns: ColumnsType<DurjoyRequisitionData> = [
     {
       title: "Serial",
@@ -589,13 +633,22 @@ const DurjoyRequisitionList: React.FC = () => {
                   <Space size="middle" align="center" wrap>
                     <Button
                       type="primary"
-                      icon={<CheckSquareOutlined />}
+                      // icon={<CheckSquareOutlined />}
                       style={{
                         backgroundColor: "#0B666A",
                         color: "#ffffff"
                       }}
-                      onClick={() => handleApprove(record.id)}
-                    />
+                      disabled={downloadApproveLoading}
+                      onClick={() =>
+                        handleApprove(record.id, setDownloadApproveLoading)
+                      }
+                    >
+                      {downloadApproveLoading ? (
+                        "Loading..."
+                      ) : (
+                        <CheckSquareOutlined />
+                      )}
+                    </Button>
                   </Space>
                 </Tooltip>
               ) : null}
@@ -605,14 +658,19 @@ const DurjoyRequisitionList: React.FC = () => {
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
                     <Button
-                      icon={<CloseOutlined />}
+                      // icon={<CloseOutlined />}
                       style={{
                         color: "#FFFFFF",
                         backgroundColor: "#FF5630",
                         borderColor: "#FF5630"
                       }}
-                      onClick={() => handleCancel(record.id)}
-                    />
+                      disabled={downloadCancelLoading}
+                      onClick={() =>
+                        handleCancel(record.id, setDownloadCancelLoading)
+                      }
+                    >
+                      {downloadCancelLoading ? "Loading..." : <CloseOutlined />}
+                    </Button>
                   </Space>
                 </Tooltip>
               ) : null}
@@ -625,12 +683,16 @@ const DurjoyRequisitionList: React.FC = () => {
                     >
                       <Button
                         type="primary"
-                        icon={<CloseSquareOutlined />}
+                        // icon={<CloseSquareOutlined />}
                         style={{
                           backgroundColor: "#EA1179",
                           color: "#ffffff"
                         }}
-                      />
+                        onClick={handleRejectClick}
+                        loading={rejectLoading}
+                      >
+                        {rejectLoading ? "Loading..." : <CloseSquareOutlined />}
+                      </Button>
                     </Link>
                   </Space>
                 </Tooltip>
@@ -660,19 +722,26 @@ const DurjoyRequisitionList: React.FC = () => {
                       ""
                     ) ? (
                       <Tooltip
-                        title="used Voucher Download"
+                        title="Used Voucher Download"
                         placement="bottomRight"
                         color="green"
                       >
                         <Space size="middle" align="center" wrap>
-                          <CSVLink
-                            data={usedVoucherData}
-                            asyncOnClick={true}
-                            onClick={(event, done) => {
+                          <Button
+                            type="primary"
+                            // onClick={() => {
+                            //   setDownloadLoading(true);
+                            //   // handleDownloadUsed();
+                            //   data.map((item: any) => {
+                            //     handleDownloadUsed(item.id);
+                            //   });
+                            // }}
+                            // event, done
+                            onClick={() => {
                               const token = Cookies.get("token");
                               axios.defaults.headers.common["Authorization"] =
                                 `Bearer ${token}`;
-
+                              setDownloadLoading(true);
                               const body = {
                                 meta: {
                                   sort: [
@@ -701,7 +770,7 @@ const DurjoyRequisitionList: React.FC = () => {
                                   }
                                 )
                                 .then(res => {
-                                  // console.log(res);
+                                  console.log("res", res);
                                   const { data } = res;
 
                                   if (data.status != 200) {
@@ -714,10 +783,125 @@ const DurjoyRequisitionList: React.FC = () => {
                                   }
 
                                   if (!data.body) return;
-                                  setUsedVoucherData(data.body);
-                                  done();
+                                  const list = data.body.map((item: any) => {
+                                    // const date = new Date(item.expireDate);
+                                    return {
+                                      "Client Name": item.client?.username,
+                                      "Client Commission":
+                                        item.clientCommission,
+                                      "Package price": item.packagePrice,
+                                      Package: item.pricingPlan?.name,
+                                      Voucher: item.voucherNumber,
+                                      Reference: item.referenceNumber,
+                                      "Serial No": item.serialNo,
+                                      // "Expiration Date": format(date, "yyyy-MM-dd pp"),
+                                      "Zone Manager":
+                                        item.zoneManager?.username,
+                                      "Sub Zone Manager":
+                                        item.subZoneManager?.username,
+
+                                      "Used IP": item.usedIp,
+                                      "Used Mac": item.usedMac,
+                                      "Created At": item.createdOn
+                                    };
+                                  });
+                                  console.log("item", list);
+                                  setUsedVoucherData([
+                                    // {
+                                    //   Total: "Total",
+                                    //   Offline: "Offline",
+                                    //   Online: "Online"
+                                    // },
+                                    ...list
+                                  ]);
+                                  // setUsedVoucherData(data.body);
+                                  // done();
                                 });
                             }}
+                            style={{
+                              // width: "100%",
+                              // textAlign: "center",
+                              // marginTop: "1rem",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                          >
+                            {downloadLoading ? (
+                              "Loading..."
+                            ) : (
+                              <DownloadOutlined />
+                            )}
+                          </Button>
+                          <CSVLink
+                            data={usedVoucherData}
+                            ref={downloadRef}
+                            // asyncOnClick={true}
+                            // event, done
+                            // onClick={(event, done) => {
+                            //   const token = Cookies.get("token");
+                            //   axios.defaults.headers.common["Authorization"] =
+                            //     `Bearer ${token}`;
+
+                            //   const body = {
+                            //     meta: {
+                            //       sort: [
+                            //         {
+                            //           order: "asc",
+                            //           field: "serialNo"
+                            //         }
+                            //       ]
+                            //     },
+                            //     body: {
+                            //       // SEND FIELD NAME WITH DATA TO SEARCH
+                            //       clientCardRequisition: {
+                            //         id: record.id
+                            //       }
+                            //     }
+                            //   };
+
+                            //   axios
+                            //     .post(
+                            //       `/api-hotspot/voucher-archive/get-list`,
+                            //       body,
+                            //       {
+                            //         headers: {
+                            //           "Content-Type": "application/json"
+                            //         }
+                            //       }
+                            //     )
+                            //     .then(res => {
+                            //       // console.log(res);
+                            //       const { data } = res;
+
+                            //       if (data.status != 200) {
+                            //         MySwal.fire({
+                            //           title: "Error",
+                            //           text:
+                            //             data.message || "Something went wrong",
+                            //           icon: "error"
+                            //         });
+                            //       }
+
+                            //       if (!data.body) return;
+                            //       const list = data.body.map((item: any) => {
+                            //         return {
+                            //           Total: item.total_commission,
+                            //           Offline: item.offline_commission,
+                            //           Online: item.online_commission
+                            //         };
+                            //       });
+                            //       setUsedVoucherData([
+                            //         // {
+                            //         //   Total: "Total",
+                            //         //   Offline: "Offline",
+                            //         //   Online: "Online"
+                            //         // },
+                            //         ...list
+                            //       ]);
+                            //       // setUsedVoucherData(data.body);
+                            //       // done();
+                            //     });
+                            // }}
                             className="ant-btn ant-btn-lg"
                             target="_blank"
                             style={{
@@ -726,7 +910,8 @@ const DurjoyRequisitionList: React.FC = () => {
                               marginTop: "25px",
                               backgroundColor: "#F15F22",
                               color: "#ffffff",
-                              padding: "10px"
+                              padding: "10px",
+                              display: "none"
                             }}
                             filename={`used-voucher-${dayjs().format(
                               "YYYY-MM-DD"
@@ -744,19 +929,26 @@ const DurjoyRequisitionList: React.FC = () => {
                       ""
                     ) ? (
                       <Tooltip
-                        title="unused Voucher Download"
+                        title="Unused Voucher Download"
                         placement="bottomRight"
                         color="blue"
                       >
                         <Space size="middle" align="center" wrap>
-                          <CSVLink
-                            data={unusedVoucherData}
-                            asyncOnClick={true}
-                            onClick={(event, done) => {
+                          <Button
+                            type="primary"
+                            // onClick={() => {
+                            //   setDownloadUnusedLoading(true);
+                            //   // handleDownloadUnused();
+                            //   data.map((item: any) => {
+                            //     handleDownloadUnused(item.id);
+                            //   });
+                            // }}
+                            // event, done
+                            onClick={() => {
                               const token = Cookies.get("token");
                               axios.defaults.headers.common["Authorization"] =
                                 `Bearer ${token}`;
-
+                              setDownloadUnusedLoading(true);
                               const body = {
                                 meta: {
                                   sort: [
@@ -795,10 +987,114 @@ const DurjoyRequisitionList: React.FC = () => {
 
                                   if (!data.body) return;
 
-                                  setUnusedVoucherData(data.body);
-                                  done();
+                                  const list = data.body.map((item: any) => {
+                                    const createdOn = new Date(item.createdOn);
+                                    const expireDate = new Date(
+                                      item.expireDate
+                                    );
+                                    return {
+                                      "Client Username": item.client?.username,
+                                      "Requisition ID":
+                                        item.clientCardRequisitionId,
+                                      "Client Commission":
+                                        item.clientCommission,
+                                      "Package Price": item.packagePrice,
+                                      "Pricing Name": item.pricingPlan?.name,
+                                      Reference: item.referenceNumber,
+                                      "Serial No": item.serialNo,
+                                      "Sub Zone Commission":
+                                        item.subZoneCommission,
+                                      "Zone Manager":
+                                        item.zoneManager?.username,
+                                      "Sub Zone Manager":
+                                        item.subZoneManager?.username,
+                                      "Created Time": format(
+                                        createdOn,
+                                        "yyyy-MM-dd pp"
+                                      ),
+                                      "Expire Time": format(
+                                        expireDate,
+                                        "yyyy-MM-dd pp"
+                                      )
+                                    };
+                                  });
+                                  setUnusedVoucherData([
+                                    // {
+                                    //   Total: "Total",
+                                    //   Offline: "Offline",
+                                    //   Online: "Online"
+                                    // },
+                                    ...list
+                                  ]);
+                                  // setUnusedVoucherData(data.body);
+                                  // done();
                                 });
                             }}
+                            style={{
+                              // width: "100%",
+                              // textAlign: "center",
+                              // marginTop: "1rem",
+                              backgroundColor: "#570DF8",
+                              color: "#ffffff"
+                            }}
+                          >
+                            {downloadUnusedLoading ? (
+                              "Loading..."
+                            ) : (
+                              <DownloadOutlined />
+                            )}
+                          </Button>
+                          <CSVLink
+                            data={unusedVoucherData}
+                            asyncOnClick={true}
+                            ref={downloadUnused}
+                            // onClick={(event, done) => {
+                            //   const token = Cookies.get("token");
+                            //   axios.defaults.headers.common["Authorization"] =
+                            //     `Bearer ${token}`;
+
+                            //   const body = {
+                            //     meta: {
+                            //       sort: [
+                            //         {
+                            //           order: "asc",
+                            //           field: "serialNo"
+                            //         }
+                            //       ]
+                            //     },
+                            //     body: {
+                            //       // SEND FIELD NAME WITH DATA TO SEARCH
+                            //       clientCardRequisition: {
+                            //         id: record.id
+                            //       }
+                            //     }
+                            //   };
+
+                            //   axios
+                            //     .post(`/api-hotspot/voucher/get-list`, body, {
+                            //       headers: {
+                            //         "Content-Type": "application/json"
+                            //       }
+                            //     })
+                            //     .then(res => {
+                            //       // console.log(res);
+                            //       const { data } = res;
+
+                            //       if (data.status != 200) {
+                            //         MySwal.fire({
+                            //           title: "Error",
+                            //           text:
+                            //             data.message || "Something went wrong",
+                            //           icon: "error"
+                            //         });
+                            //       }
+
+                            //       if (!data.body) return;
+
+                            //       setUnusedVoucherData(data.body);
+                            //       done();
+                            //     });
+                            // }}
                             className="ant-btn ant-btn-lg"
                             target="_blank"
                             style={{
@@ -807,9 +1103,10 @@ const DurjoyRequisitionList: React.FC = () => {
                               marginTop: "25px",
                               backgroundColor: "#570DF8",
                               color: "#ffffff",
-                              padding: "10px"
+                              padding: "10px",
+                              display: "none"
                             }}
-                            filename={`used-voucher-${dayjs().format(
+                            filename={`unused-voucher-${dayjs().format(
                               "YYYY-MM-DD"
                             )}.csv`}
                           >
@@ -856,7 +1153,149 @@ const DurjoyRequisitionList: React.FC = () => {
       SetSort((sorter as SorterResult<DurjoyRequisitionData>).field as string);
     }
   };
+  // download work of usedVoucher
+  // const handleDownloadUsed = async (id: any) => {
+  //   const token = Cookies.get("token");
+  //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "serialNo"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       // SEND FIELD NAME WITH DATA TO SEARCH
+  //       clientCardRequisition: {
+  //         id: id
+  //       }
+  //     }
+  //   };
+
+  //   axios
+  //     .post(`/api-hotspot/voucher-archive/get-list`, body, {
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       }
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       const { data } = res;
+
+  //       if (data.status != 200) {
+  //         MySwal.fire({
+  //           title: "Error",
+  //           text: data.message || "Something went wrong",
+  //           icon: "error"
+  //         });
+  //       }
+
+  //       if (!data.body) return;
+  //       const list = data.body.map((item: any) => {
+  //         return {
+  //           Total: item.total_commission,
+  //           Offline: item.offline_commission,
+  //           Online: item.online_commission
+  //         };
+  //       });
+  //       setUsedVoucherData([
+  //         // {
+  //         //   Total: "Total",
+  //         //   Offline: "Offline",
+  //         //   Online: "Online"
+  //         // },
+  //         ...list
+  //       ]);
+  //       // setUsedVoucherData(data.body);
+  //       // done();
+  //     });
+  // };
+
+  // download work of unUsedVoucher
+  // const handleDownloadUnused = async (id: any) => {
+  //   const token = Cookies.get("token");
+  //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  //   const body = {
+  //     meta: {
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "serialNo"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       // SEND FIELD NAME WITH DATA TO SEARCH
+  //       clientCardRequisition: {
+  //         id: id
+  //       }
+  //     }
+  //   };
+
+  //   axios
+  //     .post(`/api-hotspot/voucher/get-list`, body, {
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       }
+  //     })
+  //     .then(res => {
+  //       // console.log(res);
+  //       const { data } = res;
+
+  //       if (data.status != 200) {
+  //         MySwal.fire({
+  //           title: "Error",
+  //           text: data.message || "Something went wrong",
+  //           icon: "error"
+  //         });
+  //       }
+
+  //       if (!data.body) return;
+  //       const list = data.body.map((item: any) => {
+  //         return {
+  //           Total: item.total_commission,
+  //           Offline: item.offline_commission,
+  //           Online: item.online_commission
+  //         };
+  //       });
+  //       setUnusedVoucherData([
+  //         // {
+  //         //   Total: "Total",
+  //         //   Offline: "Offline",
+  //         //   Online: "Online"
+  //         // },
+  //         ...list
+  //       ]);
+  //       // setUsedVoucherData(data.body);
+  //       // done();
+  //     });
+  // };
+
+  useEffect(() => {
+    if (usedVoucherData && usedVoucherData.length > 0) {
+      setUsedVoucherData(usedVoucherData);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
+    }
+  }, [usedVoucherData]);
+
+  useEffect(() => {
+    if (unusedVoucherData && unusedVoucherData.length > 0) {
+      setUnusedVoucherData(unusedVoucherData);
+
+      if (downloadUnused.current) {
+        downloadUnused.current.link.click();
+      }
+      setDownloadUnusedLoading(false);
+    }
+  }, [unusedVoucherData]);
   return (
     <>
       <AppRowContainer>

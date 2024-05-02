@@ -257,7 +257,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -285,7 +285,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -295,19 +295,20 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   }
 
   //functions for getting zone manger list data using POST request
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "reseller",
+        zoneManager: { id: selectedZoneId },
         client: {
           id: authUser?.partnerId
         }
@@ -330,7 +331,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -342,7 +343,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   useEffect(() => {
     getClients();
     getZoneManagers();
-    getSubZoneManagers();
+    getSubZoneManagers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -389,7 +390,11 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
   const columns: ColumnsType<ZoneTagData> = [
     {
       title: "Serial",
@@ -567,9 +572,13 @@ const HotspotSubZoneRevenueList: React.FC = () => {
                               </Space>
                             </Col>
                           )}
+
                         {authUser &&
                           authUser.userType != "zone" &&
-                          authUser.userType != "reseller" && (
+                          authUser.userType != "reseller" &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
                             <Col
                               xs={24}
                               sm={12}

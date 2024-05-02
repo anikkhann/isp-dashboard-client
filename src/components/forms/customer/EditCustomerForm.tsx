@@ -532,7 +532,7 @@ const EditCustomerForm = ({ item }: PropData) => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -545,7 +545,7 @@ const EditCustomerForm = ({ item }: PropData) => {
       },
       body: {
         partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -1095,8 +1095,8 @@ const EditCustomerForm = ({ item }: PropData) => {
     getUsers();
 
     getZoneManagers();
-    // getSubZoneManagers();
-    getRetailers();
+    getSubZoneManagers(null);
+    getRetailers(null);
     getOltDevice();
     getOnuDevice();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1130,9 +1130,16 @@ const EditCustomerForm = ({ item }: PropData) => {
     }
   }, [selectedZone]);
 
+  // useEffect(() => {
+  //   getSubZoneManagers(null);
+  // }, []);
+
   useEffect(() => {
-    getSubZoneManagers(null);
-  }, []);
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+  }, [selectedSubZone]);
+
   useEffect(() => {
     setLoading(loading);
   }, [loading]);
@@ -1422,6 +1429,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                         className={`form-control`}
                         name="name"
                         style={{ padding: "6px" }}
+                        maxLength={50}
                       />
                     </Form.Item>
                   </Col>
@@ -1455,24 +1463,25 @@ const EditCustomerForm = ({ item }: PropData) => {
                       ]}
                     >
                       <Input
-                        disabled
+                        readOnly
                         type="text"
-                        addonBefore={
-                          <span
-                            style={{
-                              backgroundColor: "#cfcdca",
-                              color: "black"
-                            }}
-                          >
-                            {authUser
-                              ? authUser.clientPrefix + "_"
-                              : "Not Available"}
-                          </span>
-                        }
+                        // addonBefore={
+                        //   <span
+                        //     style={{
+                        //       backgroundColor: "#cfcdca",
+                        //       color: "black"
+                        //     }}
+                        //   >
+                        //     {authUser
+                        //       ? authUser.clientPrefix + "_"
+                        //       : "Not Available"}
+                        //   </span>
+                        // }
                         placeholder="Username"
                         className={`form-control`}
                         name="username"
                         style={{ padding: "6px" }}
+                        maxLength={32}
                       />
                     </Form.Item>
                   </Col>
@@ -1562,6 +1571,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                         className={`form-control`}
                         name="email"
                         style={{ padding: "6px" }}
+                        maxLength={32}
                       />
                     </Form.Item>
                   </Col>
@@ -1601,6 +1611,7 @@ const EditCustomerForm = ({ item }: PropData) => {
                       <Input.Password
                         placeholder="Password"
                         style={{ padding: "6px" }}
+                        maxLength={32}
                       />
                     </Form.Item>
                   </Col>

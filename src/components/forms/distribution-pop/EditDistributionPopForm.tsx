@@ -284,6 +284,7 @@ const EditDistributionPopForm = ({ item }: PropData) => {
                   style={{
                     padding: "6px"
                   }}
+                  maxLength={50}
                 />
               </Form.Item>
             </Col>
@@ -311,6 +312,7 @@ const EditDistributionPopForm = ({ item }: PropData) => {
                   className={`form-control`}
                   name="latitude"
                   style={{ padding: "6px" }}
+                  maxLength={20}
                 />
               </Form.Item>
             </Col>
@@ -338,6 +340,7 @@ const EditDistributionPopForm = ({ item }: PropData) => {
                   className={`form-control`}
                   name="longitude"
                   style={{ padding: "6px" }}
+                  maxLength={20}
                 />
               </Form.Item>
             </Col>

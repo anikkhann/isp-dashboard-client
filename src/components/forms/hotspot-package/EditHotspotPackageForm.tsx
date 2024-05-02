@@ -6,12 +6,13 @@ import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import type { DatePickerProps } from "antd";
+// import type { DatePickerProps } from "antd";
 import {
   Alert,
   Button,
   Checkbox,
-  DatePicker,
+  // DatePicker,
+  TimePicker,
   Form,
   Input,
   Select,
@@ -25,6 +26,7 @@ import type { Dayjs } from "dayjs";
 import { HotspotPackage } from "@/interfaces/HotspotPackage";
 
 import dayjs from "dayjs";
+import type { TimePickerProps } from "antd";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import localeData from "dayjs/plugin/localeData";
@@ -89,9 +91,10 @@ const packageCategories = [
 
 interface PropData {
   item: HotspotPackage;
+  id: string;
 }
 
-const EditHotspotPackageForm = ({ item }: PropData) => {
+const EditHotspotPackageForm = ({ id, item }: PropData) => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -117,20 +120,48 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const onStartDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
-    date: any,
-    dateString: any
+  // const onStartDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
+  //   date: any,
+  //   dateString: any
+  // ) => {
+  //   console.log(date, dateString);
+  //   setSelectedStartTime(dateString);
+  // };
+  const onChange: TimePickerProps["onChange"] = (
+    time: any,
+    timeString: any
   ) => {
-    console.log(date, dateString);
-    setSelectedStartTime(dateString);
+    if (timeString != "") {
+      const newDate = dayjs(timeString, "HH:mm");
+      setSelectedStartTime(newDate);
+
+      form.setFieldsValue({ startTime: newDate });
+    } else {
+      setSelectedStartTime(null);
+      form.setFieldsValue({ startTime: null });
+    }
   };
 
-  const onEndDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
-    date: any,
-    dateString: any
+  // const onEndDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
+  //   date: any,
+  //   dateString: any
+  // ) => {
+  //   console.log(date, dateString);
+  //   setSelectedEndTime(dateString);
+  // };
+
+  const onEndChange: TimePickerProps["onChange"] = (
+    time: any,
+    timeString: any
   ) => {
-    console.log(date, dateString);
-    setSelectedEndTime(dateString);
+    if (timeString != "") {
+      const newDate = dayjs(timeString, "HH:mm");
+      setSelectedEndTime(newDate);
+      form.setFieldsValue({ endTime: newDate });
+    } else {
+      setSelectedEndTime(null);
+      form.setFieldsValue({ endTime: null });
+    }
   };
 
   const handleActive = (e: any) => {
@@ -167,18 +198,22 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
 
       // convert start time to string
 
-      let startTime = null;
-      let endTime = null;
+      // let startTime = null;
+      // let endTime = null;
 
-      if (item.startTime) {
-        startTime = dayjs(item.startTime);
-        setSelectedStartTime(startTime);
-      }
+      // if (item.startTime) {
+      //   startTime = dayjs(item.startTime);
+      //   setSelectedStartTime(startTime);
+      // }
 
-      if (item.endTime) {
-        endTime = dayjs(item.endTime);
-        setSelectedEndTime(endTime);
-      }
+      // if (item.endTime) {
+      //   endTime = dayjs(item.endTime);
+      //   setSelectedEndTime(endTime);
+      // }
+      setSelectedStartTime(
+        item.startTime ? dayjs(item.startTime, "HH:mm") : null
+      );
+      setSelectedEndTime(item.endTime ? dayjs(item.endTime, "HH:mm") : null);
 
       form.setFieldsValue({
         name: item.name,
@@ -189,8 +224,10 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
         validityUnit: item.validityUnit,
         otpLimit: item.otpLimit,
         packageCategory: item.packageCategory,
-        startTime: startTime,
-        endTime: endTime
+        // startTime: startTime,
+        // endTime: endTime
+        startTime: item.startTime ? dayjs(item.startTime, "HH:mm") : null,
+        endTime: item.endTime ? dayjs(item.endTime, "HH:mm") : null
       });
     }
   }, [item]);
@@ -210,6 +247,7 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
       } = data;
 
       const formData = {
+        id: id,
         name: name,
         price: price,
         dataRate: dataRate,
@@ -218,8 +256,11 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
         validityUnit: validityUnit,
         otpLimit: otpLimit,
         packageCategory: packageCategory,
-        startTime: selectedStartTime,
-        endTime: selectedEndTime,
+        // startTime: selectedStartTime,
+        // endTime: selectedEndTime,
+        startTime: selectedStartTime ? selectedStartTime.format("HH:mm") : null,
+        endTime: selectedEndTime ? selectedEndTime.format("HH:mm") : null,
+
         isActive: isActive
       };
 
@@ -551,6 +592,33 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
                 className="gutter-row"
               >
                 <Form.Item
+                  label="Start Time"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="startTime"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your start time!"
+                    }
+                  ]}
+                >
+                  <TimePicker
+                    style={{
+                      width: "100%",
+                      marginBottom: 10
+                    }}
+                    onChange={onChange}
+                    value={selectedStartTime}
+                    format="HH:mm"
+                    minuteStep={5}
+                    allowClear
+                  />
+                </Form.Item>
+
+                {/* <Form.Item
                   name="startTime"
                   label="Start Time"
                   style={{
@@ -569,7 +637,7 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
                     showTime
                     needConfirm={false}
                   />
-                </Form.Item>
+                </Form.Item> */}
               </Col>
             )}
 
@@ -584,6 +652,32 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
                 className="gutter-row"
               >
                 <Form.Item
+                  label="End Time"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="endTime"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your end time!"
+                    }
+                  ]}
+                >
+                  <TimePicker
+                    style={{
+                      width: "100%"
+                    }}
+                    onChange={onEndChange}
+                    value={selectedEndTime}
+                    format="HH:mm"
+                    minuteStep={5}
+                    allowClear
+                  />
+                </Form.Item>
+
+                {/* <Form.Item
                   name="endTime"
                   label="End Time"
                   style={{
@@ -602,7 +696,7 @@ const EditHotspotPackageForm = ({ item }: PropData) => {
                     showTime
                     needConfirm={false}
                   />
-                </Form.Item>
+                </Form.Item> */}
               </Col>
             )}
             <Col

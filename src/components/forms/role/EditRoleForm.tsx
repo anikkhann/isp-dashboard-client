@@ -166,7 +166,7 @@ const EditRoleForm = ({ item }: PropData) => {
           .put(`/api/role/update`, {
             id: item.id,
             name: name,
-            is_active: isActive,
+            isActive: isActive,
             rolePermissions: rolePermissions
           })
           .then(res => {

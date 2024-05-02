@@ -169,6 +169,7 @@ const EditComplainTypeForm = ({ item }: PropData) => {
                   className={`form-control`}
                   name="name"
                   style={{ padding: "6px" }}
+                  maxLength={50}
                 />
               </Form.Item>
             </Col>

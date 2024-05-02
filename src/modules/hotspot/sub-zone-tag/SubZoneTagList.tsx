@@ -220,7 +220,7 @@ const SubZoneTagList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -248,11 +248,11 @@ const SubZoneTagList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
-
+      console.log("list", list);
       setSubZoneManagers(list);
     });
   }
@@ -336,7 +336,7 @@ const SubZoneTagList: React.FC = () => {
     setSelectedStatus(value);
   };
 
-  const handleZoneManagerChange = (value: any) => {
+  const handleSubZoneManagerChange = (value: any) => {
     setSelectedSubZoneManager(value);
   };
 
@@ -612,7 +612,7 @@ const SubZoneTagList: React.FC = () => {
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleZoneManagerChange}
+                              onChange={handleSubZoneManagerChange}
                               options={subzoneManagers}
                               value={selectedSubZoneManager}
                               showSearch

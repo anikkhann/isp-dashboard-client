@@ -225,10 +225,46 @@ const DetailsApDeviceData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">SNMP Information :</span>
+                <span className="font-bold text-base">SNMP Community :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.isSnmpActive}</span>
+                <span className="mx-1 text-base">{item.snmpCommunity}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">SNMP Port :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.snmpPort}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">SNMP Version :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.snmpVersion}</span>
               </Col>
             </Row>
           </div>
@@ -339,6 +375,96 @@ const DetailsApDeviceData = ({ item }: PropData) => {
                   {item.updatedOn
                     ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
                     : null}
+                </span>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Client Name :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.client?.name}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Active Customer :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.client?.activeCustomer}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Address :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.client?.address}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Mobile Number :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.client?.contactNumber}
                 </span>
               </Col>
             </Row>

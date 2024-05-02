@@ -501,6 +501,7 @@ const CreateZoneForm = () => {
                   className={`form-control`}
                   name="username"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -534,6 +535,7 @@ const CreateZoneForm = () => {
                   className={`form-control`}
                   name="name"
                   style={{ padding: "6px" }}
+                  maxLength={50}
                 />
               </Form.Item>
             </Col>
@@ -577,6 +579,7 @@ const CreateZoneForm = () => {
                   className={`form-control`}
                   name="email"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -618,6 +621,7 @@ const CreateZoneForm = () => {
                 <Input.Password
                   placeholder="Password"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -668,6 +672,7 @@ const CreateZoneForm = () => {
                 <Input.Password
                   placeholder="Confirm Password"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -702,6 +707,7 @@ const CreateZoneForm = () => {
                   className={`form-control`}
                   name="address"
                   style={{ padding: "6px" }}
+                  maxLength={100}
                 />
               </Form.Item>
             </Col>
@@ -838,6 +844,7 @@ const CreateZoneForm = () => {
                   className={`form-control`}
                   name="nidNo"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>

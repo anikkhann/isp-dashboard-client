@@ -525,6 +525,7 @@ const EditRetailerOnboardForm = ({ item }: PropData) => {
                   <Input
                     placeholder="Customer Name"
                     className={`form-control`}
+                    maxLength={50}
                   />
                 </Form.Item>
               </Col>
@@ -579,7 +580,7 @@ const EditRetailerOnboardForm = ({ item }: PropData) => {
                     }
                   ]}
                 >
-                  <Input placeholder="Address" />
+                  <Input placeholder="Address" maxLength={100} />
                 </Form.Item>
               </Col>
               <Col
@@ -794,7 +795,7 @@ const EditRetailerOnboardForm = ({ item }: PropData) => {
                     }
                   ]}
                 >
-                  <Input placeholder="NID No" />
+                  <Input placeholder="NID No" maxLength={32} />
                 </Form.Item>
               </Col>
               <Col
@@ -902,7 +903,7 @@ const EditRetailerOnboardForm = ({ item }: PropData) => {
                     }
                   ]}
                 >
-                  <Input placeholder="Latitude" />
+                  <Input placeholder="Latitude" maxLength={20} />
                 </Form.Item>
               </Col>
               <Col
@@ -929,7 +930,7 @@ const EditRetailerOnboardForm = ({ item }: PropData) => {
                     }
                   ]}
                 >
-                  <Input placeholder="longitude" />
+                  <Input placeholder="longitude" maxLength={20} />
                 </Form.Item>
               </Col>
 

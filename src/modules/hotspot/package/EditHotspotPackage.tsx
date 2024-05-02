@@ -106,7 +106,7 @@ const EditHotspotPackage = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditHotspotPackageForm item={item} />}
+          {!isLoading && item && <EditHotspotPackageForm id={id} item={item} />}
         </Card>
       </AppRowContainer>
     </>

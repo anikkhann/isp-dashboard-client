@@ -483,7 +483,7 @@ const CreateClientRequisitionForm = () => {
                   <Input
                     placeholder="Total Amount"
                     value={totalAmount}
-                    disabled
+                    readOnly
                   />
                 </Form.Item>
               </Col>
@@ -498,7 +498,7 @@ const CreateClientRequisitionForm = () => {
                   <Input
                     placeholder="Payable"
                     value={wsdCommissionValue}
-                    disabled
+                    readOnly
                   />
                 </Form.Item>
               </Col>

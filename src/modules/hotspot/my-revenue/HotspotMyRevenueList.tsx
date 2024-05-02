@@ -248,7 +248,7 @@ const HotspotMyRevenueList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -276,7 +276,7 @@ const HotspotMyRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -286,19 +286,20 @@ const HotspotMyRevenueList: React.FC = () => {
   }
 
   //functions for getting zone manger list data using POST request
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "reseller",
+        zoneManager: { id: selectedZoneId },
         client: {
           id: authUser?.partnerId
         }
@@ -321,7 +322,7 @@ const HotspotMyRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -330,19 +331,20 @@ const HotspotMyRevenueList: React.FC = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -363,7 +365,7 @@ const HotspotMyRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -434,8 +436,8 @@ const HotspotMyRevenueList: React.FC = () => {
   useEffect(() => {
     getClients();
     getZoneManagers();
-    getSubZoneManagers();
-    getRetailers();
+    getSubZoneManagers(null);
+    getRetailers(null);
     getCustomerPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -493,6 +495,21 @@ const HotspotMyRevenueList: React.FC = () => {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
+
+  // useEffect(() => {
+  //   getSubZoneManagers(null);
+  // }, []);
+
+  useEffect(() => {
+    if (selectedSubZoneManager) {
+      getRetailers(selectedSubZoneManager);
+    }
+  }, [selectedSubZoneManager]);
 
   const columns: ColumnsType<ZoneTagData> = [
     {
@@ -674,8 +691,11 @@ const HotspotMyRevenueList: React.FC = () => {
                           )}
 
                         {authUser &&
-                          authUser.userType != "zone" &&
-                          authUser.userType != "reseller" && (
+                          authUser?.userType != "zone" &&
+                          authUser?.userType != "reseller" &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
                             <Col
                               xs={24}
                               sm={12}

@@ -56,8 +56,17 @@ const CreateCustomerImportCsvForm = () => {
       file =>
         file.status !== "removed" &&
         file.status !== "error" &&
-        file.status !== "uploading"
+        file.status !== "uploading",
+      file.size <= 10 * 1024 * 1024
     ) as UploadFile[];
+
+    if (newFileList.length !== filteredList.length) {
+      MySwal.fire({
+        title: "Error",
+        text: "File size exceeds the limit of 10 MB",
+        icon: "error"
+      });
+    }
 
     setFileList(filteredList);
   };
@@ -510,7 +519,14 @@ const CreateCustomerImportCsvForm = () => {
                   fontWeight: "bold"
                 }}
                 name="csvFile"
-                rules={[{ required: true, message: "Please upload CSV File!" }]} // Move rules here
+                rules={[
+                  {
+                    required: true,
+                    message: "Please upload CSV File!"
+                  }
+                ]}
+                // rules={[{ required: true, message: "Please upload CSV File!" }]}
+                // Move rules here
                 // rules={[
                 //   {
                 //     required: true,
@@ -527,6 +543,12 @@ const CreateCustomerImportCsvForm = () => {
                     fileList={fileList}
                   >
                     {fileList.length >= 1 ? null : uploadButton}
+                    {/* {fileList.length >= 1 ? null : (
+        <Space>
+         
+          <div style={{ marginLeft: 4 }}>Upload CSV</div>
+        </Space>
+      )} */}
                   </Upload>
                 </Space>
               </Form.Item>

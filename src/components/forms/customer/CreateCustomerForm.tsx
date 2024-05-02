@@ -515,7 +515,7 @@ const CreateCustomerForm = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -528,7 +528,7 @@ const CreateCustomerForm = () => {
       },
       body: {
         partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -960,8 +960,8 @@ const CreateCustomerForm = () => {
     getCustomers();
     getUsers();
     getZoneManagers();
-
-    getRetailers();
+    getSubZoneManagers(null);
+    getRetailers(null);
     getOltDevice();
     getOnuDevice();
 
@@ -983,9 +983,15 @@ const CreateCustomerForm = () => {
     }
   }, [selectedZone]);
 
+  // useEffect(() => {
+  //   getSubZoneManagers(null);
+  // }, []);
+
   useEffect(() => {
-    getSubZoneManagers(null);
-  }, []);
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+  }, [selectedSubZone]);
 
   useEffect(() => {
     if (selectedDivision) {
@@ -1278,6 +1284,7 @@ const CreateCustomerForm = () => {
                         className={`form-control`}
                         name="name"
                         style={{ padding: "6px" }}
+                        maxLength={50}
                       />
                     </Form.Item>
                   </Col>
@@ -1329,6 +1336,7 @@ const CreateCustomerForm = () => {
                         className={`form-control`}
                         name="username"
                         style={{ padding: "6px" }}
+                        maxLength={32}
                       />
                     </Form.Item>
                   </Col>
@@ -1419,6 +1427,7 @@ const CreateCustomerForm = () => {
                         className={`form-control`}
                         name="email"
                         style={{ padding: "6px" }}
+                        maxLength={32}
                       />
                     </Form.Item>
                   </Col>
@@ -1459,6 +1468,7 @@ const CreateCustomerForm = () => {
                       <Input.Password
                         placeholder="Password"
                         style={{ padding: "6px" }}
+                        maxLength={32}
                       />
                     </Form.Item>
                   </Col>

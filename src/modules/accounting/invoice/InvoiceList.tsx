@@ -162,43 +162,43 @@ const InvoiceList: React.FC = () => {
       }
     }, 1000);
   }
-  // handle download
-  async function handleDownload(id: string) {
-    // setLoading(true);
-    setLoadingDownload(loadingDownload => ({ ...loadingDownload, [id]: true })); // Set loading state for this specific button to true
+
+  // download invoice
+  const downloadInvoice = async (id: string) => {
+    setLoadingDownload(loadingDownload => ({ ...loadingDownload, [id]: true }));
     setTimeout(async () => {
       try {
-        const result = await MySwal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#570DF8",
-          cancelButtonColor: "#EB0808",
-          confirmButtonText: "Yes, Download!"
-        });
-
-        if (result.isConfirmed) {
-          const { data } = await axios.get(
-            `/api/customer-invoice/download-invoice/${id}`
-          );
-          if (data.status === 200) {
-            MySwal.fire("Success!", data.message, "success").then(() => {
-              router.reload();
-            });
-          } else {
-            MySwal.fire("Error!", data.message, "error");
+        // Make a GET request to the backend API endpoint
+        const response = await axios.get(
+          `/api/customer-invoice/download-invoice/${id}`,
+          {
+            responseType: "blob" // Set responseType to 'blob' to handle binary data
           }
-        } else if (result.isDismissed) {
-          MySwal.fire("Cancelled", "Your Data is safe :)", "error");
-        }
-      } catch (error: any) {
-        // console.log(error);
-        if (error.response) {
-          MySwal.fire("Error!", error.response.data.message, "error");
-        } else {
-          MySwal.fire("Error!", "Something went wrong", "error");
-        }
+        );
+
+        // Create a blob object from the response data
+        const blob = new Blob([response.data], { type: "application/pdf" });
+
+        // Create a temporary URL for the blob object
+        const url = window.URL.createObjectURL(blob);
+
+        // Create an anchor element
+        const link = document.createElement("a");
+        link.href = url;
+
+        // Set the filename for the downloaded file
+        link.setAttribute("download", `invoice_${id}.pdf`);
+
+        // Append the anchor element to the document body
+        document.body.appendChild(link);
+
+        // Trigger the click event on the anchor element to start the download
+        link.click();
+
+        // Remove the anchor element from the document body
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error downloading invoice:", error);
       } finally {
         setLoadingDownload(loadingDownload => ({
           ...loadingDownload,
@@ -206,7 +206,7 @@ const InvoiceList: React.FC = () => {
         })); // Set loading state for this specific button to false after download action is handled
       }
     }, 1000);
-  }
+  };
 
   const fetchData = async (
     page: number,
@@ -420,7 +420,7 @@ const InvoiceList: React.FC = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -433,6 +433,7 @@ const InvoiceList: React.FC = () => {
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -606,7 +607,7 @@ const InvoiceList: React.FC = () => {
     getCustomers();
     getZoneManagers();
     getSubZoneManagers(null);
-    getRetailers();
+    getRetailers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -616,6 +617,11 @@ const InvoiceList: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedZone]);
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+  }, [selectedSubZone]);
 
   useEffect(() => {
     if (data) {
@@ -849,7 +855,7 @@ const InvoiceList: React.FC = () => {
                       icon={<VerticalAlignBottomOutlined />}
                       // disabled={loading}
                       disabled={loadingDownload[record.id]} // Use the loading state for this specific button
-                      onClick={() => handleDownload(record.id)}
+                      onClick={() => downloadInvoice(record.id)}
                     >
                       {/* {loading ? "Downloading..." : "Download"} */}
                       {loadingDownload[record.id]

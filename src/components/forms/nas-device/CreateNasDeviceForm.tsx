@@ -216,6 +216,7 @@ const CreateNasDeviceForm = () => {
                       placeholder="Device Name"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={32}
                     />
                   </Form.Item>
                 </Col>
@@ -248,6 +249,7 @@ const CreateNasDeviceForm = () => {
                       placeholder="Map Location"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={100}
                     />
                   </Form.Item>
                 </Col>

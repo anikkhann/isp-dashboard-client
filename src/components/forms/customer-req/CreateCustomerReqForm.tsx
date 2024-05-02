@@ -690,6 +690,7 @@ const CreateCustomerReqForm = () => {
                   className={`form-control`}
                   name="name"
                   style={{ padding: "6px" }}
+                  maxLength={50}
                 />
               </Form.Item>
             </Col>
@@ -738,6 +739,7 @@ const CreateCustomerReqForm = () => {
                   className={`form-control`}
                   name="username"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -780,6 +782,7 @@ const CreateCustomerReqForm = () => {
                   className={`form-control`}
                   name="email"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -819,6 +822,7 @@ const CreateCustomerReqForm = () => {
                 <Input.Password
                   placeholder="Password"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>

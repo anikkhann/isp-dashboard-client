@@ -238,7 +238,7 @@ const HotspotRetailerRevenueList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -266,7 +266,7 @@ const HotspotRetailerRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -276,19 +276,20 @@ const HotspotRetailerRevenueList: React.FC = () => {
   }
 
   //functions for getting zone manger list data using POST request
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "reseller",
+        zoneManager: { id: selectedZoneId },
         client: {
           id: authUser?.partnerId
         }
@@ -311,7 +312,7 @@ const HotspotRetailerRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -320,19 +321,20 @@ const HotspotRetailerRevenueList: React.FC = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -353,7 +355,7 @@ const HotspotRetailerRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -389,8 +391,8 @@ const HotspotRetailerRevenueList: React.FC = () => {
   useEffect(() => {
     getClients();
     getZoneManagers();
-    getSubZoneManagers();
-    getRetailers();
+    getSubZoneManagers(null);
+    getRetailers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -442,6 +444,17 @@ const HotspotRetailerRevenueList: React.FC = () => {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedZone);
+    }
+  }, [selectedZone]);
+
+  useEffect(() => {
+    if (selectedSubZoneManager) {
+      getRetailers(selectedSubZoneManager);
+    }
+  }, [selectedSubZoneManager]);
 
   const columns: ColumnsType<ZoneTagData> = [
     {
@@ -622,8 +635,11 @@ const HotspotRetailerRevenueList: React.FC = () => {
                             </Col>
                           )}
                         {authUser &&
-                          authUser.userType != "zone" &&
-                          authUser.userType != "reseller" && (
+                          authUser?.userType != "zone" &&
+                          authUser?.userType != "reseller" &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
                             <Col
                               xs={24}
                               sm={12}

@@ -1126,6 +1126,7 @@ const CreateDeviceForm = () => {
                     className={`form-control`}
                     name="latitude"
                     style={{ padding: "6px" }}
+                    maxLength={20}
                   />
                 </Form.Item>
               </Col>
@@ -1161,6 +1162,7 @@ const CreateDeviceForm = () => {
                     className={`form-control`}
                     name="longitude"
                     style={{ padding: "6px" }}
+                    maxLength={20}
                   />
                 </Form.Item>
               </Col>

@@ -43,6 +43,7 @@ interface PropData {
 }
 
 const EditApDeviceForm = ({ item }: PropData) => {
+  console.log("item", item);
   const [form] = Form.useForm();
 
   const authUser = useAppSelector(state => state.auth.user);
@@ -56,8 +57,12 @@ const EditApDeviceForm = ({ item }: PropData) => {
   const [isSnmpActive, setIsSnmpActive] = useState<boolean>(false);
 
   const [nasDevices, setNasDevices] = useState<any[]>([]);
-  const [selectedSnmpVersion, setSelectedSnmpVersion] = useState(null);
   const [selectedNasDevice, setSelectedNasDevice] = useState<any>(null);
+
+  // const [snmpVersion, setSnmpVersion] = useState<any>(null);
+  const [selectedSnmpVersion, setSelectedSnmpVersion] = useState<any>(
+    item.snmpVersion
+  );
 
   const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState<any>(null);
@@ -131,7 +136,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -159,7 +164,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -175,7 +180,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -205,7 +210,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -214,20 +219,20 @@ const EditApDeviceForm = ({ item }: PropData) => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -247,7 +252,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -287,7 +292,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
   useEffect(() => {
     getZoneManagers();
     getSubZoneManagers(null);
-    getRetailers();
+    getRetailers(null);
     getNasDevices();
   }, []);
   useEffect(() => {
@@ -295,6 +300,11 @@ const EditApDeviceForm = ({ item }: PropData) => {
       getSubZoneManagers(selectedZone);
     }
   }, [selectedZone]);
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+  }, [selectedSubZone]);
 
   useEffect(() => {
     if (item) {
@@ -303,6 +313,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
       setSelectedSubZone(item.subZoneManagerId);
       setSelectedRetailer(item.retailerId);
       setIsActive(item.isActive);
+      // setSnmpVersion(item.snmpVersion);
       setIsSnmpActive(item.isSnmpActive);
       // setSelectedSnmpVersion(item.snmpVersion);
       form.setFieldsValue({
@@ -530,7 +541,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
                 name="nasDeviceId"
                 rules={[
                   {
-                    required: true,
+                    required: !selectedNasDevice,
                     message: "Please select nas device!"
                   }
                 ]}
@@ -608,6 +619,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   placeholder="mapLocation"
                   className={`form-control`}
                   style={{ padding: "6px" }}
+                  maxLength={100}
                 />
               </Form.Item>
             </Col>

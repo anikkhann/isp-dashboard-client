@@ -163,7 +163,7 @@ const CreateDurjoyRequisitionForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -191,7 +191,7 @@ const CreateDurjoyRequisitionForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -242,19 +242,20 @@ const CreateDurjoyRequisitionForm = () => {
     });
   }
 
-  function getSubZoneManagers() {
+  function getSubZoneManagers(selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "reseller",
+        zoneManager: { id: selectedZoneId },
         client: {
           id: authUser?.partnerId
         },
@@ -278,7 +279,7 @@ const CreateDurjoyRequisitionForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -363,7 +364,7 @@ const CreateDurjoyRequisitionForm = () => {
   useEffect(() => {
     getZoneManagers();
     getPricingPlan();
-    getSubZoneManagers();
+    getSubZoneManagers(null);
     getPaymentGateway();
   }, []);
 
@@ -445,6 +446,12 @@ const CreateDurjoyRequisitionForm = () => {
       deliveryType: selectedDeliveryType
     });
   }, []);
+
+  useEffect(() => {
+    if (selectedZoneManager) {
+      getSubZoneManagers(selectedZoneManager);
+    }
+  }, [selectedZoneManager]);
 
   useEffect(() => {
     setLoading(loading);
@@ -643,7 +650,7 @@ const CreateDurjoyRequisitionForm = () => {
                   <Input
                     placeholder="Total Amount"
                     value={totalAmount}
-                    disabled
+                    readOnly
                   />
                 </Form.Item>
               </Col>
@@ -658,7 +665,7 @@ const CreateDurjoyRequisitionForm = () => {
                   <Input
                     placeholder="Payable Amount (BDT)10px"
                     value={wsdCommissionValue}
-                    disabled
+                    readOnly
                   />
                 </Form.Item>
               </Col>
@@ -1062,6 +1069,11 @@ const CreateDurjoyRequisitionForm = () => {
                       {
                         required: true,
                         message: "Please input Contact!"
+                      },
+                      {
+                        pattern: new RegExp(/^(01)[0-9]{9}$/),
+                        message:
+                          "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                       }
                     ]}
                   >

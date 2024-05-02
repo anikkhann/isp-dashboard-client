@@ -292,6 +292,7 @@ const CreateDistributionPopForm = () => {
                   className={`form-control`}
                   name="latitude"
                   style={{ padding: "6px" }}
+                  maxLength={20}
                 />
               </Form.Item>
             </Col>
@@ -320,6 +321,7 @@ const CreateDistributionPopForm = () => {
                   className={`form-control`}
                   name="longitude"
                   style={{ padding: "6px" }}
+                  maxLength={20}
                 />
               </Form.Item>
             </Col>

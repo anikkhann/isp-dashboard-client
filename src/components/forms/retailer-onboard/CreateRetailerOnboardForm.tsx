@@ -498,6 +498,7 @@ const CreateRetailerOnboardForm = () => {
                   <Input
                     placeholder="Customer Name"
                     className={`form-control`}
+                    maxLength={50}
                   />
                 </Form.Item>
               </Col>
@@ -552,7 +553,7 @@ const CreateRetailerOnboardForm = () => {
                     }
                   ]}
                 >
-                  <Input placeholder="Address" />
+                  <Input placeholder="Address" maxLength={100} />
                 </Form.Item>
               </Col>
               <Col
@@ -766,7 +767,7 @@ const CreateRetailerOnboardForm = () => {
                     }
                   ]}
                 >
-                  <Input placeholder="NID No" />
+                  <Input placeholder="NID No" maxLength={32} />
                 </Form.Item>
               </Col>
               <Col
@@ -874,7 +875,7 @@ const CreateRetailerOnboardForm = () => {
                     }
                   ]}
                 >
-                  <Input placeholder="Latitude" />
+                  <Input placeholder="Latitude" maxLength={20} />
                 </Form.Item>
               </Col>
               <Col
@@ -901,7 +902,7 @@ const CreateRetailerOnboardForm = () => {
                     }
                   ]}
                 >
-                  <Input placeholder="Longitude" />
+                  <Input placeholder="Longitude" maxLength={20} />
                 </Form.Item>
               </Col>
               <Col

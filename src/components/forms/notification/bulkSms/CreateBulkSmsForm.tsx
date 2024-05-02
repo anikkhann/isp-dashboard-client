@@ -303,7 +303,7 @@ const CreateBulkSmsForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -386,20 +386,20 @@ const CreateBulkSmsForm = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
         partnerType: "retailer",
-        // subZoneManager: { id: selectedSubZone },
+        subZoneManager: { id: selectedSubZoneId },
         isActive: true
       }
     };
@@ -420,7 +420,7 @@ const CreateBulkSmsForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -471,7 +471,7 @@ const CreateBulkSmsForm = () => {
     getZoneManagers();
 
     getSubZoneManagers(null);
-    getRetailers();
+    getRetailers(null);
   }, []);
   // getSubZoneManagers();
   useEffect(() => {
@@ -487,6 +487,11 @@ const CreateBulkSmsForm = () => {
     }
   }, [selectedZone]);
 
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+  }, [selectedSubZone]);
   useEffect(() => {
     setLoading(loading);
   }, [loading]);

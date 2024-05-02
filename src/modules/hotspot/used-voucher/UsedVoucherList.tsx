@@ -27,6 +27,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -47,7 +48,7 @@ interface TableParams {
 const UsedVoucherList: React.FC = () => {
   const [data, setData] = useState<ZoneTagData[]>([]);
   const { Panel } = Collapse;
-
+  const authUser = useAppSelector(state => state.auth.user);
   const MySwal = withReactContent(Swal);
   const downloadRef = useRef<any>(null);
 
@@ -251,7 +252,7 @@ const UsedVoucherList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -279,7 +280,7 @@ const UsedVoucherList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -295,7 +296,7 @@ const UsedVoucherList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -322,7 +323,7 @@ const UsedVoucherList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -536,18 +537,18 @@ const UsedVoucherList: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
-    {
-      title: "Retailer",
-      dataIndex: "retailer",
-      sorter: false,
-      render: (retailer: any) => {
-        if (!retailer) return "-";
-        return <>{retailer.username}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Retailer",
+    //   dataIndex: "retailer",
+    //   sorter: false,
+    //   render: (retailer: any) => {
+    //     if (!retailer) return "-";
+    //     return <>{retailer.username}</>;
+    //   },
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // },
     {
       title: "SerialNo",
       dataIndex: "serialNo",
@@ -662,7 +663,7 @@ const UsedVoucherList: React.FC = () => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -810,24 +811,38 @@ const UsedVoucherList: React.FC = () => {
         if (!data.body) return;
 
         const list = data.body.map((item: any) => {
-          const date = new Date(item.expireDate);
+          // const date = new Date(item.expireDate);
           return {
-            "Used By": item.usedBy.customer.name,
-            "Used From": item.usedBy.customer.phone,
-            "Used IP": item.usedIp,
-            "Used MAC": item.usedMac,
+            "Client Name": item.client?.username,
+            "Client Commission": item.clientCommission,
+            "Package price": item.packagePrice,
+            Package: item.pricingPlan?.name,
             Voucher: item.voucherNumber,
             Reference: item.referenceNumber,
             "Serial No": item.serialNo,
-            "Expiration Date": format(date, "yyyy-MM-dd pp"),
-            Client: item.client.username,
-            Package: item.pricingPlan.name,
-            "Package Price": item.pricingPlan.price,
-            "Package Category": item.pricingPlan.packageCategory,
-            "OTP Limit": item.pricingPlan.otpLimit,
-            "Start Time": item.pricingPlan.startTime,
-            "End Time": item.pricingPlan.endTime,
+            // "Expiration Date": format(date, "yyyy-MM-dd pp"),
+            "Zone Manager": item.zoneManager?.username,
+            "Sub Zone Manager": item.subZoneManager?.username,
+
+            "Used IP": item.usedIp,
+            "Used Mac": item.usedMac,
             "Created At": item.createdOn
+            // "Used By": item.usedBy?.customer.name,
+            // "Used From": item.usedBy?.customer.phone,
+            // "Used IP": item.usedIp,
+            // "Used MAC": item.usedMac,
+            // Voucher: item.voucherNumber,
+            // Reference: item.referenceNumber,
+            // "Serial No": item.serialNo,
+            // // "Expiration Date": format(date, "yyyy-MM-dd pp"),
+            // Client: item.client?.username,
+            // Package: item.pricingPlan?.name,
+            // "Package Price": item.pricingPlan?.price,
+            // "Package Category": item.pricingPlan?.packageCategory,
+            // "OTP Limit": item.pricingPlan?.otpLimit,
+            // "Start Time": item.pricingPlan?.startTime,
+            // "End Time": item.pricingPlan?.endTime,
+            // "Created At": item.createdOn
           };
         });
         setDownloadRow([
@@ -973,40 +988,49 @@ const UsedVoucherList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Zone Manager</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleZoneChange}
-                              options={zones}
-                              value={selectedZone}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
+                        {authUser &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Zone Manager</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneChange}
+                                  options={zones}
+                                  value={selectedZone}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+
                         <Col
                           xs={24}
                           sm={12}

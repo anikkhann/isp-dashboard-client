@@ -3,7 +3,7 @@
 import { Button, Card, Col, Select, Space, Row, DatePicker, Input } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -14,7 +14,7 @@ import axios from "axios";
 import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -59,9 +59,9 @@ const ClientTransactionList: React.FC = () => {
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
-
+  const downloadRef = useRef<any>(null);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
-
+  const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const authUser = useAppSelector(state => state.auth.user);
 
   const [selectedTransactionType, setSelectedTransactionType] =
@@ -384,13 +384,21 @@ const ClientTransactionList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "ZM Commission",
-      dataIndex: "zoneCommission",
+      title: "Transaction ID",
+      dataIndex: "transactionId",
 
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
     }
+    // {
+    //   title: "ZM Commission",
+    //   dataIndex: "zoneCommission",
+
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // }
   ];
 
   const handleTableChange = (
@@ -416,6 +424,102 @@ const ClientTransactionList: React.FC = () => {
       SetSort((sorter as SorterResult<ZoneTagData>).field as string);
     }
   };
+
+  const handleDownload = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const body = {
+      meta: {
+        // limit: 10,
+        // page: 1,
+        sort: [
+          {
+            order: "asc",
+            field: "id"
+          }
+        ]
+      },
+      body: {
+        // clientId: selectedClientParam,
+        // transactionId: transactionIdParam,
+        // trxType: selectedTransactionTypeParam, //dropdown (Online, Offline)
+        // trxBy: selectedTransactionByParam, //dropdown Transaction By API
+        // dateRangeFilter: {
+        //   field: "trxDate",
+        //   startDate: selectedStartDateParam,
+        //   endDate: selectedEndDateParam
+        // }
+      }
+    };
+
+    await axios
+      .post(`/api-hotspot/transaction/get-list`, body, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        // console.log(res);
+        const { data } = res;
+        console.log(data.body);
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
+
+        const list = data.body.map((item: any) => {
+          const createdOn = new Date(item.createdOn);
+          // const date = new Date(item.expireDate);
+          return {
+            "Client Username": item.client?.username,
+            ID: item.clientId,
+            "Zone Manager": item.zoneManager?.username,
+            "Created Time": format(createdOn, "yyyy-MM-dd pp")
+          };
+        });
+        setDownloadRow([
+          // {
+          //   UsedBy: "Used By",
+          //   UsedFrom: "Used From",
+          //   UsedIP: "Used IP",
+          //   UsedMAC: "Used MAC",
+          //   Voucher: "Voucher",
+          //   Reference: "Reference",
+          //   SerialNo: "Serial No",
+          //   ExpirationDate: "Expiration Date",
+          //   Client: "Client",
+          //   Package: "Package",
+          //   PackagePrice: "Package Price",
+          //   PackageCategory: "Package Category",
+          //   OTPLimit: "OTP Limit",
+          //   StartTime: "Start Time",
+          //   EndTime: "End Time",
+          //   CreatedAt: "Created At"
+          // },
+          ...list
+        ]);
+        // if (downloadRef.current) {
+        //   downloadRef.current.link.click();
+        // }
+      });
+  };
+
+  useEffect(() => {
+    if (downloadRow && downloadRow.length > 0) {
+      setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
+    }
+  }, [downloadRow]);
 
   return (
     <>
@@ -657,16 +761,34 @@ const ClientTransactionList: React.FC = () => {
               {ability.can("clientTransaction.download", "") && (
                 <Row justify={"end"}>
                   <Col span={3}>
-                    <CSVLink
-                      data={data}
-                      asyncOnClick={true}
-                      onClick={(event, done) => {
+                    <Button
+                      type="primary"
+                      onClick={() => {
                         setDownloadLoading(true);
-                        setTimeout(() => {
-                          setDownloadLoading(false);
-                        }, 2000);
-                        done();
+                        handleDownload();
                       }}
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "25px",
+                        backgroundColor: "#F15F22",
+                        color: "#ffffff"
+                      }}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                    </Button>
+                    <CSVLink
+                      // data={data}
+                      data={downloadRow}
+                      ref={downloadRef}
+                      // asyncOnClick={true}
+                      // onClick={(event, done) => {
+                      //   setDownloadLoading(true);
+                      //   setTimeout(() => {
+                      //     setDownloadLoading(false);
+                      //   }, 2000);
+                      //   done();
+                      // }}
                       className="ant-btn ant-btn-lg"
                       target="_blank"
                       style={{
@@ -675,7 +797,8 @@ const ClientTransactionList: React.FC = () => {
                         marginTop: "25px",
                         backgroundColor: "#F15F22",
                         color: "#ffffff",
-                        padding: "10px"
+                        padding: "10px",
+                        display: "none"
                       }}
                       filename={`client-transaction-${dayjs().format(
                         "YYYY-MM-DD"

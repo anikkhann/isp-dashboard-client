@@ -20,7 +20,7 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Row, Col } from "antd";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
@@ -52,7 +52,7 @@ interface FormData {
 }
 
 const EditZoneForm = ({ item }: any) => {
-  const authUser = useAppSelector(state => state.auth.user);
+  // const authUser = useAppSelector(state => state.auth.user);
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -522,19 +522,22 @@ const EditZoneForm = ({ item }: any) => {
                 ]}
               >
                 <Input
-                  disabled
+                  // disabled
+                  readOnly
                   type="text"
-                  addonBefore={
-                    <span
-                      style={{ backgroundColor: "#cfcdca", color: "black" }}
-                    >
-                      {authUser ? authUser.clientPrefix + "_" : "Not Available"}
-                    </span>
-                  }
+                  // addonBefore={
+                  //   <span
+                  //     style={{ backgroundColor: "#cfcdca", color: "black" }}
+                  //   >
+                  //     {authUser ? authUser.clientPrefix + "_" : "Not Available"}
+                  //   </span>
+                  // }
+                  // disabled
                   placeholder="Username"
                   className={`form-control`}
                   name="username"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -568,6 +571,7 @@ const EditZoneForm = ({ item }: any) => {
                   className={`form-control`}
                   name="name"
                   style={{ padding: "6px" }}
+                  maxLength={50}
                 />
               </Form.Item>
             </Col>
@@ -611,6 +615,7 @@ const EditZoneForm = ({ item }: any) => {
                   className={`form-control`}
                   name="email"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -644,6 +649,7 @@ const EditZoneForm = ({ item }: any) => {
                   className={`form-control`}
                   name="address"
                   style={{ padding: "6px" }}
+                  maxLength={100}
                 />
               </Form.Item>
             </Col>
@@ -776,6 +782,7 @@ const EditZoneForm = ({ item }: any) => {
                   className={`form-control`}
                   name="nidNo"
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>

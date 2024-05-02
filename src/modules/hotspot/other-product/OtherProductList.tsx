@@ -172,7 +172,7 @@ const OtherProductList: React.FC = () => {
       sorter: false,
       render: (insertedBy: any) => {
         if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+        return <>{insertedBy.username}</>;
       },
       ellipsis: true,
       width: "auto",

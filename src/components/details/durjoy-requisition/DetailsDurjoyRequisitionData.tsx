@@ -12,6 +12,7 @@ interface PropData {
 
 const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
   // convert to string
+  console.log("durjot", item);
   // const data = JSON.stringify(item);
   const [previewOpen, setPreviewOpen] = useState(false);
   const handleCancel = () => setPreviewOpen(false);
@@ -213,24 +214,7 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.deliveryType}</span>
               </Col>
             </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "end"
-                }}
-              >
-                <span className="font-bold text-base">Admin Note :</span>
-              </Col>
-              <Col>
-                <span className="mx-1 text-base">{item.adminNote}</span>
-              </Col>
-            </Row>
+
             <Row
               style={{
                 marginTop: "2px"
@@ -303,7 +287,7 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.deliveryAddress}</span>
               </Col>
             </Row>
-            {/*
+
             <Row
               style={{
                 marginTop: "2px"
@@ -321,7 +305,7 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
               <Col>
                 <span className="mx-1 text-base">{item.contactNumber}</span>
               </Col>
-            </Row> */}
+            </Row>
             <div>
               <h1 className="font-bold text-lg">Attachment :</h1>
               {/* {item.attachment && (  */}
@@ -429,7 +413,7 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {item.editedBy?.username}
+                  {/* {item.editedBy?.username} */}
                 </span>
               </Col>
             </Row>
@@ -450,10 +434,87 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {item.updatedOn
+                  {/* {item.updatedOn
                     ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
-                    : null}
+                    : null} */}
                 </span>
+              </Col>
+            </Row>
+          </div>
+        </Card>
+
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "start"
+                }}
+              >
+                <span className="font-bold text-base">Package :</span>
+              </Col>
+              <Col>
+                <ol className="mx-1 text-base">
+                  {item.lines &&
+                    item.lines.map((line, index) => (
+                      <li key={index}>{line.pricingPlan?.name}</li>
+                    ))}
+                </ol>
+                {/* <span className="mx-1 text-base">
+                  {item.lines &&
+                    item.lines.map((line, index) => (
+                      <span key={index} className="mx-1 text-base">
+                        {line.pricingPlan?.name}
+                      </span>
+                    ))}
+                </span> */}
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "start"
+                }}
+              >
+                <span className="font-bold text-base">Quantity :</span>
+              </Col>
+              <Col>
+                <ol className="mx-1 text-base">
+                  {item.lines &&
+                    item.lines.map((line, index) => (
+                      <li key={index}>{line.quantity}</li>
+                    ))}
+                </ol>
+                {/* <span className="mx-1 text-base">
+                  {item.lines &&
+                    item.lines.map((line, index) => (
+                      <span key={index} className="mx-1 text-base">
+                        {line.quantity}
+                      </span>
+                    ))}
+                </span> */}
               </Col>
             </Row>
           </div>

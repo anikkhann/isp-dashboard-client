@@ -61,7 +61,7 @@ const CreateZoneTagForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -89,7 +89,7 @@ const CreateZoneTagForm = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -349,37 +349,41 @@ const CreateZoneTagForm = () => {
                 />
               </Form.Item>
             </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* zoneManagerId */}
-              <Form.Item
-                label="Zone Manager"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="zoneManagerId"
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Zone Manager"
-                    onChange={handleZoneManagerChange}
-                    options={zoneManagers}
-                    value={selectedZoneManager}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+            {authUser &&
+              authUser?.clientLevel != "tri_cycle" &&
+              authUser?.clientLevel != "tri_cycle_hotspot" &&
+              authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* zoneManagerId */}
+                  <Form.Item
+                    label="Zone Manager"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="zoneManagerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Zone Manager"
+                        onChange={handleZoneManagerChange}
+                        options={zoneManagers}
+                        value={selectedZoneManager}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
 
             <Col
               xs={24}

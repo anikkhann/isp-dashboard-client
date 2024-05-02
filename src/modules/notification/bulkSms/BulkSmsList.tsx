@@ -457,20 +457,20 @@ const BulkSmsList: React.FC = () => {
     });
   }
 
-  function getRetailers() {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
       body: {
-        partnerType: "retailer"
-        // subZoneManager: { id: selectedSubZone },
+        partnerType: "retailer",
+        subZoneManager: { id: selectedSubZoneId }
         // isActive: true
       }
     };
@@ -491,7 +491,7 @@ const BulkSmsList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -609,7 +609,7 @@ const BulkSmsList: React.FC = () => {
     getZoneManagers();
 
     getSubZoneManagers(null);
-    getRetailers();
+    getRetailers(null);
   }, []);
   // getSubZoneManagers();
   useEffect(() => {
@@ -627,6 +627,11 @@ const BulkSmsList: React.FC = () => {
       getSubZoneManagers(selectedZone);
     }
   }, [selectedZone]);
+  useEffect(() => {
+    if (selectedSubZone) {
+      getRetailers(selectedSubZone);
+    }
+  }, [selectedSubZone]);
 
   const handleClear = () => {
     setSelectedDistributionZone(null);

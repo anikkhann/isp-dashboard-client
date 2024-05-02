@@ -6,22 +6,39 @@ import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import type { DatePickerProps } from "antd";
+// import type { DatePickerProps } from "antd";
+import dayjs from "dayjs";
+import type { TimePickerProps } from "antd";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
 import {
   Alert,
   Button,
   Checkbox,
-  DatePicker,
+  // DatePicker,
   Form,
   Input,
   Select,
-  Space
+  Space,
+  TimePicker
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
-import type { Dayjs } from "dayjs";
+// import type { Dayjs } from "dayjs";
 
 interface FormData {
   name: string;
@@ -81,15 +98,18 @@ const CreateHotspotPackageForm = () => {
 
   const [isActive, setIsActive] = useState<boolean>(true);
 
-  const [dataRateUnit, setDataRateUnit] = useState<string | null>(null);
-  const [validityUnit, setValidityUnit] = useState<string | null>(null);
+  const [dataRateUnit, setDataRateUnit] = useState<string | null>("Mbps");
+  const [validityUnit, setValidityUnit] = useState<string | null>("Hour");
   const [packageCategory, setPackageCategory] = useState<string | null>(null);
 
-  const [selectedStartTime, setSelectedStartTime] = useState<string | null>(
-    null
-  );
+  // const [selectedStartTime, setSelectedStartTime] = useState<string | null>(
+  //   null
+  // );
 
-  const [selectedEndTime, setSelectedEndTime] = useState<string | null>(null);
+  // const [selectedEndTime, setSelectedEndTime] = useState<string | null>(null);
+
+  const [startTime, setStartTime] = useState<any>(null);
+  const [endTime, setEndTime] = useState<any>(null);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -97,21 +117,50 @@ const CreateHotspotPackageForm = () => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const onStartDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
-    date: any,
-    dateString: any
+  const onChange: TimePickerProps["onChange"] = (
+    time: any,
+    timeString: any
   ) => {
-    console.log(date, dateString);
-    setSelectedStartTime(dateString);
+    if (timeString != "") {
+      const newDate = dayjs(timeString, "HH:mm");
+      setStartTime(newDate);
+
+      form.setFieldsValue({ startTime: newDate });
+    } else {
+      setStartTime(null);
+      form.setFieldsValue({ startTime: null });
+    }
   };
 
-  const onEndDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
-    date: any,
-    dateString: any
+  const onEndChange: TimePickerProps["onChange"] = (
+    time: any,
+    timeString: any
   ) => {
-    console.log(date, dateString);
-    setSelectedEndTime(dateString);
+    if (timeString != "") {
+      const newDate = dayjs(timeString, "HH:mm");
+      setEndTime(newDate);
+      form.setFieldsValue({ endTime: newDate });
+    } else {
+      setEndTime(null);
+      form.setFieldsValue({ endTime: null });
+    }
   };
+
+  // const onStartDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
+  //   date: any,
+  //   dateString: any
+  // ) => {
+  //   console.log(date, dateString);
+  //   setSelectedStartTime(dateString);
+  // };
+
+  // const onEndDateChange: DatePickerProps<Dayjs[]>["onChange"] = (
+  //   date: any,
+  //   dateString: any
+  // ) => {
+  //   console.log(date, dateString);
+  //   setSelectedEndTime(dateString);
+  // };
 
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
@@ -162,8 +211,10 @@ const CreateHotspotPackageForm = () => {
         validityUnit: validityUnit,
         otpLimit: otpLimit,
         packageCategory: packageCategory,
-        startTime: selectedStartTime,
-        endTime: selectedEndTime,
+        // startTime: selectedStartTime,
+        // endTime: selectedEndTime,
+        startTime: startTime ? startTime.format("HH:mm") : null,
+        endTime: endTime ? endTime.format("HH:mm") : null,
         isActive: isActive
       };
 
@@ -494,7 +545,7 @@ const CreateHotspotPackageForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
-                <Form.Item
+                {/* <Form.Item
                   name="startTime"
                   label="Start Time"
                   style={{
@@ -513,6 +564,32 @@ const CreateHotspotPackageForm = () => {
                     showTime
                     needConfirm={false}
                   />
+                </Form.Item> */}
+                <Form.Item
+                  label="Start Time"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="startTime"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your start time!"
+                    }
+                  ]}
+                >
+                  <TimePicker
+                    style={{
+                      width: "100%",
+                      marginBottom: 10
+                    }}
+                    onChange={onChange}
+                    value={startTime}
+                    format="HH:mm"
+                    minuteStep={5}
+                    allowClear
+                  />
                 </Form.Item>
               </Col>
             )}
@@ -527,7 +604,7 @@ const CreateHotspotPackageForm = () => {
                 xxl={8}
                 className="gutter-row"
               >
-                <Form.Item
+                {/* <Form.Item
                   name="endTime"
                   label="End Time"
                   style={{
@@ -545,6 +622,25 @@ const CreateHotspotPackageForm = () => {
                     onChange={onEndDateChange}
                     showTime
                     needConfirm={false}
+                  />
+                </Form.Item> */}
+                <Form.Item
+                  label="End Time"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="endTime"
+                >
+                  <TimePicker
+                    style={{
+                      width: "100%"
+                    }}
+                    onChange={onEndChange}
+                    value={endTime}
+                    format="HH:mm"
+                    minuteStep={5}
+                    allowClear
                   />
                 </Form.Item>
               </Col>

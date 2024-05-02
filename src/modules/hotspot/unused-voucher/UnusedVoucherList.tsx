@@ -246,7 +246,7 @@ const UnusedVoucherList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -274,7 +274,7 @@ const UnusedVoucherList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -290,7 +290,7 @@ const UnusedVoucherList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -317,7 +317,7 @@ const UnusedVoucherList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -334,7 +334,7 @@ const UnusedVoucherList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -363,7 +363,7 @@ const UnusedVoucherList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -747,20 +747,34 @@ const UnusedVoucherList: React.FC = () => {
         if (!data.body) return;
 
         const list = data.body.map((item: any) => {
-          const date = new Date(item.expireDate);
+          const createdOn = new Date(item.createdOn);
+          const expireDate = new Date(item.expireDate);
+          // const date = new Date(item.expireDate);
           return {
-            Voucher: item.voucherNumber,
+            "Client Username": item.client?.username,
+            "Requisition ID": item.clientCardRequisitionId,
+            "Client Commission": item.clientCommission,
+            "Package Price": item.packagePrice,
+            "Pricing Name": item.pricingPlan?.name,
             Reference: item.referenceNumber,
             "Serial No": item.serialNo,
-            "Expiration Date": format(date, "yyyy-MM-dd pp"),
-            Client: item.client.username,
-            Package: item.pricingPlan.name,
-            "Package Price": item.pricingPlan.price,
-            "Package Category": item.pricingPlan.packageCategory,
-            "OTP Limit": item.pricingPlan.otpLimit,
-            "Start Time": item.pricingPlan.startTime,
-            "End Time": item.pricingPlan.endTime,
-            "Created At": item.createdOn
+            "Sub Zone Commission": item.subZoneCommission,
+            "Zone Manager": item.zoneManager?.username,
+            "Sub Zone Manager": item.subZoneManager?.username,
+            "Created Time": format(createdOn, "yyyy-MM-dd pp"),
+            "Expire Time": format(expireDate, "yyyy-MM-dd pp")
+            // Voucher: item.voucherNumber,
+            // Reference: item.referenceNumber,
+            // "Serial No": item.serialNo,
+            // "Expiration Date": format(date, "yyyy-MM-dd pp"),
+            // Client: item.client?.username,
+            // Package: item.pricingPlan?.name,
+            // "Package Price": item.pricingPlan?.price,
+            // "Package Category": item.pricingPlan?.packageCategory,
+            // "OTP Limit": item.pricingPlan?.otpLimit,
+            // "Start Time": item.pricingPlan?.startTime,
+            // "End Time": item.pricingPlan?.endTime,
+            // "Created At": item.createdOn
 
             // TrxDate: format(date, "yyyy-MM-dd pp")
           };

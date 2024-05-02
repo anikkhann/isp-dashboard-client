@@ -239,6 +239,7 @@ const CreateComplainTypeForm = () => {
                   className={`form-control`}
                   name="name"
                   style={{ padding: "6px" }}
+                  maxLength={50}
                 />
               </Form.Item>
             </Col>
