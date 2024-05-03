@@ -12,7 +12,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 interface FormData {
   serialFrom: string;
   serialTo: string;
@@ -32,7 +32,7 @@ const types = [
 const CreateSubZoneTagForm = () => {
   const [form] = Form.useForm();
 
-  const authUser = useAppSelector(state => state.auth.user);
+  // const authUser = useAppSelector(state => state.auth.user);
 
   const [loading, setLoading] = useState(false);
   // ** States
@@ -41,8 +41,9 @@ const CreateSubZoneTagForm = () => {
 
   const [selectedType, setSelectedType] = useState<any>(null);
 
-  const [zoneManagers, setZoneManagers] = useState<any[]>([]);
-  const [selectedZoneManager, setSelectedZoneManager] = useState<any>(null);
+  const [subZoneManagers, setSubZoneManagers] = useState<any[]>([]);
+  const [selectedSubZoneManager, setSelectedSubZoneManager] =
+    useState<any>(null);
 
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
   const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
@@ -54,7 +55,7 @@ const CreateSubZoneTagForm = () => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   //functions for getting zone manger list data using POST request
-  function getZoneManagers() {
+  function getSubZoneManagers() {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -67,10 +68,10 @@ const CreateSubZoneTagForm = () => {
       },
       body: {
         partnerType: "reseller",
-        client: {
-          id: authUser?.partnerId
-        }
-        // isActive: true
+        // client: {
+        //   id: authUser?.partnerId
+        // }
+        isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
@@ -94,7 +95,7 @@ const CreateSubZoneTagForm = () => {
         };
       });
 
-      setZoneManagers(list);
+      setSubZoneManagers(list);
     });
   }
 
@@ -139,22 +140,16 @@ const CreateSubZoneTagForm = () => {
     });
   }
 
-  useEffect(() => {
-    getZoneManagers();
-    getPricingPlan();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleTypeChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ type: value });
     setSelectedType(value as any);
   };
 
-  const handleZoneManagerChange = (value: any) => {
+  const handleSubZoneManagerChange = (value: any) => {
     // console.log("checked = ", value);
-    form.setFieldsValue({ zoneManagerId: value });
-    setSelectedZoneManager(value as any);
+    form.setFieldsValue({ subZoneManagerId: value });
+    setSelectedSubZoneManager(value as any);
   };
 
   const handlePricingPlanChange = (value: any) => {
@@ -164,7 +159,7 @@ const CreateSubZoneTagForm = () => {
   };
 
   useEffect(() => {
-    getZoneManagers();
+    getSubZoneManagers();
     getPricingPlan();
   }, []);
 
@@ -181,7 +176,7 @@ const CreateSubZoneTagForm = () => {
         type: selectedType,
         serialFrom: serialFrom,
         serialTo: serialTo,
-        subZoneManagerId: selectedZoneManager,
+        subZoneManagerId: selectedSubZoneManager,
         pricingPlanId: selectedPricingPlan
       };
 
@@ -250,6 +245,43 @@ const CreateSubZoneTagForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
+            {/* type */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* type */}
+              <Form.Item
+                label="Type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="type"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Type"
+                    onChange={handleTypeChange}
+                    options={types}
+                    value={selectedType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
             <Col
               xs={24}
               sm={12}
@@ -272,16 +304,16 @@ const CreateSubZoneTagForm = () => {
                     message: "Please input Sub Zone Manager!"
                   }
                 ]}
-                name="zoneManagerId"
+                name="subZoneManagerId"
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select Sub Zone Manager"
-                    onChange={handleZoneManagerChange}
-                    options={zoneManagers}
-                    value={selectedZoneManager}
+                    onChange={handleSubZoneManagerChange}
+                    options={subZoneManagers}
+                    value={selectedSubZoneManager}
                   />
                 </Space>
               </Form.Item>
@@ -384,43 +416,6 @@ const CreateSubZoneTagForm = () => {
                   className={`form-control`}
                   style={{ padding: "6px" }}
                 />
-              </Form.Item>
-            </Col>
-            {/* type */}
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* type */}
-              <Form.Item
-                label="Type"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="type"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Type!"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Type"
-                    onChange={handleTypeChange}
-                    options={types}
-                    value={selectedType}
-                  />
-                </Space>
               </Form.Item>
             </Col>
 

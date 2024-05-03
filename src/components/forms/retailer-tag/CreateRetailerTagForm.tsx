@@ -12,7 +12,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 interface FormData {
   serialFrom: string;
   serialTo: string;
@@ -32,7 +32,7 @@ const types = [
 const CreateRetailerTagForm = () => {
   const [form] = Form.useForm();
 
-  const authUser = useAppSelector(state => state.auth.user);
+  // const authUser = useAppSelector(state => state.auth.user);
 
   const [loading, setLoading] = useState(false);
   // ** States
@@ -71,10 +71,10 @@ const CreateRetailerTagForm = () => {
       },
       body: {
         partnerType: "reseller",
-        client: {
-          id: authUser?.partnerId
-        }
-        // isActive: true
+        // client: {
+        //   id: authUser?.partnerId
+        // }
+        isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {
@@ -202,8 +202,8 @@ const CreateRetailerTagForm = () => {
   };
 
   const handleSubZoneManagerChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ zoneManagerId: value });
+    // console.log("checked = ", value);  name="subZoneManagerId"
+    form.setFieldsValue({ subZoneManagerId: value });
     setSelectedSubZoneManager(value as any);
     // Fetch retailers for the selected subzone
     // getRetailers(value);
@@ -318,6 +318,43 @@ const CreateRetailerTagForm = () => {
               xxl={8}
               className="gutter-row"
             >
+              {/* type */}
+              <Form.Item
+                label="Type"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="type"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Type!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Type"
+                    onChange={handleTypeChange}
+                    options={types}
+                    value={selectedType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
               {/* zoneManagerId */}
               <Form.Item
                 label="Sub Zone Manager"
@@ -331,7 +368,7 @@ const CreateRetailerTagForm = () => {
                     message: "Please input SubZone Manager!"
                   }
                 ]}
-                name="zoneManagerId"
+                name="subZoneManagerId"
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
@@ -483,42 +520,6 @@ const CreateRetailerTagForm = () => {
               </Form.Item>
             </Col>
             {/* type */}
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* type */}
-              <Form.Item
-                label="Type"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="type"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Type!"
-                  }
-                ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Type"
-                    onChange={handleTypeChange}
-                    options={types}
-                    value={selectedType}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
           </Row>
 
           {/* submit */}

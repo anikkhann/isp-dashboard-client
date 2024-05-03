@@ -521,6 +521,12 @@ const CreateHotspotPackageForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Category"
+                  }
+                ]}
                 name="packageCategory"
               >
                 <Space style={{ width: "100%" }} direction="vertical">

@@ -390,6 +390,54 @@ const DetailsClientRequisitionData = ({ item }: PropData) => {
             </Row>
           </div>
         </Card>
+        <Card
+          hoverable
+          bordered={false}
+          style={{
+            textAlign: "start",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            border: "1px solid #F15F22",
+            marginTop: "1rem"
+          }}
+        >
+          <div>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "start"
+                }}
+              >
+                <span className="font-bold text-base">Package :</span>
+              </Col>
+              <Col>
+                <ul className="mx-1 text-base">
+                  {item.lines &&
+                    item.lines.map((line, index) => (
+                      <li key={index}>
+                        {line.pricingPlan?.name} - {line.quantity}
+                        {line.quantity ? " pcs" : null}
+                      </li>
+                    ))}
+                </ul>
+                {/* <span className="mx-1 text-base">
+                  {item.lines &&
+                    item.lines.map((line, index) => (
+                      <span key={index} className="mx-1 text-base">
+                        {line.pricingPlan?.name}
+                      </span>
+                    ))}
+                </span> */}
+              </Col>
+            </Row>
+          </div>
+        </Card>
       </Col>
     </Row>
   );

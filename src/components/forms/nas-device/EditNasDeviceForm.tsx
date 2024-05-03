@@ -304,6 +304,7 @@ const EditNasDeviceForm = ({ item }: PropData) => {
                       placeholder="Location Description"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={100}
                     />
                   </Form.Item>
                 </Col>
@@ -367,6 +368,7 @@ const EditNasDeviceForm = ({ item }: PropData) => {
                       placeholder="Secret"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={20}
                     />
                   </Form.Item>
                 </Col>
@@ -388,8 +390,29 @@ const EditNasDeviceForm = ({ item }: PropData) => {
                     }}
                     rules={[
                       {
-                        required: true,
-                        message: "Please input Radius Incoming Port!"
+                        required: true
+                        // message: "Please input Radius Incoming Port!"
+                      },
+                      {
+                        validator: async (_, value) => {
+                          if (!value) {
+                            return Promise.reject(
+                              "Please input your Incoming Port!"
+                            );
+                          }
+                          const intValue = parseInt(value, 10);
+                          if (isNaN(intValue)) {
+                            return Promise.reject(
+                              "Please enter a valid number."
+                            );
+                          }
+                          if (intValue <= 1000 || intValue > 65535) {
+                            return Promise.reject(
+                              "Port number must be greater than 1000 and less than or equal to 65535."
+                            );
+                          }
+                          return Promise.resolve();
+                        }
                       }
                     ]}
                   >
@@ -487,8 +510,29 @@ const EditNasDeviceForm = ({ item }: PropData) => {
                     }}
                     rules={[
                       {
-                        required: true,
-                        message: "Please input your API Port!"
+                        required: true
+                        // message: "Please input your API Port!"
+                      },
+                      {
+                        validator: async (_, value) => {
+                          if (!value) {
+                            return Promise.reject(
+                              "Please input your API Port!"
+                            );
+                          }
+                          const intValue = parseInt(value, 10);
+                          if (isNaN(intValue)) {
+                            return Promise.reject(
+                              "Please enter a valid number."
+                            );
+                          }
+                          if (intValue <= 1000 || intValue > 65535) {
+                            return Promise.reject(
+                              "API Port number must be greater than 1000 and less than or equal to 65535."
+                            );
+                          }
+                          return Promise.resolve();
+                        }
                       }
                     ]}
                   >
@@ -528,6 +572,7 @@ const EditNasDeviceForm = ({ item }: PropData) => {
                       placeholder="API Username"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={32}
                     />
                   </Form.Item>
                 </Col>
@@ -559,6 +604,7 @@ const EditNasDeviceForm = ({ item }: PropData) => {
                       placeholder="API Password"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={32}
                     />
                   </Form.Item>
                 </Col>

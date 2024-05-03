@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Input, Select, Space, Row, Tooltip } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  Select,
+  Space,
+  Row,
+  Tooltip,
+  Tag
+} from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -244,6 +254,25 @@ const HotspotPackageList: React.FC = () => {
       title: "Validity Unit",
       dataIndex: "validityUnit",
       sorter: true,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Status",
+      dataIndex: "isActive",
+      sorter: true,
+      render: (isActive: any) => {
+        return (
+          <>
+            {isActive ? (
+              <Tag color="blue">Active</Tag>
+            ) : (
+              <Tag color="red">Inactive</Tag>
+            )}
+          </>
+        );
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType

@@ -294,7 +294,7 @@ const CreateDurjoyRequisitionForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "bankName"
           }
         ]
       },

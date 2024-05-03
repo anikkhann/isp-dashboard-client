@@ -165,7 +165,7 @@ const CreateClientRequisitionForm = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "bankName"
           }
         ]
       },

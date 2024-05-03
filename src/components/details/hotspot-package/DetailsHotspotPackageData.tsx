@@ -50,6 +50,103 @@ const DetailsHotspotPackageData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.name}</span>
               </Col>
             </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base"> OTP Limit :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.otpLimit}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base"> Category :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.packageCategory}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base"> Price :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item ? `${item.price} BDT` : null}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Rate :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.dataRate} {item.dataRateUnit}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Validity :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.validity} {item.validityUnit}
+                </span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>
@@ -86,12 +183,75 @@ const DetailsHotspotPackageData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
+                <span className="font-bold text-base">Created By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.insertedBy?.username}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
                 <span className="font-bold text-base">Created At :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">
                   {item.createdOn
                     ? format(new Date(item.createdOn), "yyyy-MM-dd pp")
+                    : null}
+                </span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated By :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.editedBy?.username}
+                </span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Updated At :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">
+                  {item.createdOn
+                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
                     : null}
                 </span>
               </Col>

@@ -470,48 +470,20 @@ const DetailsDurjoyRequisitionData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Package :</span>
               </Col>
               <Col>
-                <ol className="mx-1 text-base">
+                <ul className="mx-1 text-base">
                   {item.lines &&
                     item.lines.map((line, index) => (
-                      <li key={index}>{line.pricingPlan?.name}</li>
+                      <li key={index}>
+                        {line.pricingPlan?.name} - {line.quantity}
+                        {line.quantity ? " pcs" : null}
+                      </li>
                     ))}
-                </ol>
+                </ul>
                 {/* <span className="mx-1 text-base">
                   {item.lines &&
                     item.lines.map((line, index) => (
                       <span key={index} className="mx-1 text-base">
                         {line.pricingPlan?.name}
-                      </span>
-                    ))}
-                </span> */}
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: "2px"
-              }}
-            >
-              <Col
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "start"
-                }}
-              >
-                <span className="font-bold text-base">Quantity :</span>
-              </Col>
-              <Col>
-                <ol className="mx-1 text-base">
-                  {item.lines &&
-                    item.lines.map((line, index) => (
-                      <li key={index}>{line.quantity}</li>
-                    ))}
-                </ol>
-                {/* <span className="mx-1 text-base">
-                  {item.lines &&
-                    item.lines.map((line, index) => (
-                      <span key={index} className="mx-1 text-base">
-                        {line.quantity}
                       </span>
                     ))}
                 </span> */}

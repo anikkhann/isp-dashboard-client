@@ -554,6 +554,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="name"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -665,6 +666,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="secret"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -689,8 +691,27 @@ const EditDeviceForm = ({ item }: any) => {
                   }}
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your Incoming Port!"
+                      required: true
+                      // message: "Please input your Incoming Port!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject(
+                            "Please input your Incoming Port!"
+                          );
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 1000 || intValue > 65535) {
+                          return Promise.reject(
+                            "Port number must be greater than 1000 and less than or equal to 65535."
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -803,8 +824,27 @@ const EditDeviceForm = ({ item }: any) => {
                   }}
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your Total Either Port!"
+                      required: true
+                      // message: "Please input your Total Either Port!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject(
+                            "Please input your Total Ether Port!"
+                          );
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 0 || intValue > 100) {
+                          return Promise.reject(
+                            "Total Either Port number must be less than or equal 100"
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -838,8 +878,27 @@ const EditDeviceForm = ({ item }: any) => {
                   }}
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your Total Pon Port!"
+                      required: true
+                      // message: "Please input your Total Pon Port!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject(
+                            "Please input your Total PON Port!"
+                          );
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 0 || intValue > 50) {
+                          return Promise.reject(
+                            "Total PON Port number must be less than or equal 50"
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -884,6 +943,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="name"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -1031,6 +1091,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="brandName"
                     style={{ padding: "6px" }}
+                    maxLength={50}
                   />
                 </Form.Item>
               </Col>
@@ -1067,6 +1128,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="location"
                     style={{ padding: "6px" }}
+                    maxLength={100}
                   />
                 </Form.Item>
               </Col>
@@ -1233,8 +1295,27 @@ const EditDeviceForm = ({ item }: any) => {
                   name="totalPort"
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your Total Port!"
+                      required: true
+                      // message: "Please input your Total Port!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject(
+                            "Please input your Total Port!"
+                          );
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 0 || intValue > 100) {
+                          return Promise.reject(
+                            "Total Port number must be less than or equal 100"
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -1306,8 +1387,25 @@ const EditDeviceForm = ({ item }: any) => {
                   }}
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your Api Port!"
+                      required: true
+                      // message: "Please input your Api Port!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject("Please input your API Port!");
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 1000 || intValue > 65535) {
+                          return Promise.reject(
+                            "Port number must be greater than 1000 and less than or equal to 65535."
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -1352,6 +1450,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="apiUsername"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -1387,6 +1486,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="apiPassword"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -1422,6 +1522,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="telnetLoginName"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -1457,6 +1558,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="telnetLoginPassword"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -1492,6 +1594,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="telnetPrivilegedPassword"
                     style={{ padding: "6px" }}
+                    maxLength={32}
                   />
                 </Form.Item>
               </Col>
@@ -1516,8 +1619,27 @@ const EditDeviceForm = ({ item }: any) => {
                   }}
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your Telnet Port Number!"
+                      required: true
+                      // message: "Please input your Telnet Port Number!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject(
+                            "Please input your Telnet Port!"
+                          );
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 22 || intValue > 65535) {
+                          return Promise.reject(
+                            "Telnet Port number must be greater than 22 and less than or equal to 65535."
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -1551,8 +1673,25 @@ const EditDeviceForm = ({ item }: any) => {
                   }}
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your SNMP Port No!"
+                      required: true
+                      // message: "Please input your SNMP Port No!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject("Please input your SNMP Port!");
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 22 || intValue > 65535) {
+                          return Promise.reject(
+                            "SNMP Port number must be greater than 22 and less than or equal to 65535."
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -1597,6 +1736,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="snmpVersion"
                     style={{ padding: "6px" }}
+                    maxLength={5}
                   />
                 </Form.Item>
               </Col>
@@ -1632,6 +1772,7 @@ const EditDeviceForm = ({ item }: any) => {
                     className={`form-control`}
                     name="snmpCommunity"
                     style={{ padding: "6px" }}
+                    maxLength={20}
                   />
                 </Form.Item>
               </Col>

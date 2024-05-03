@@ -587,6 +587,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   placeholder="name"
                   className={`form-control`}
                   style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>
@@ -652,6 +653,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   placeholder="locationDescription"
                   className={`form-control`}
                   style={{ padding: "6px" }}
+                  maxLength={100}
                 />
               </Form.Item>
             </Col>
@@ -666,7 +668,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
             >
               <Form.Item
                 name="ip"
-                label="ip"
+                label="IP"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -715,6 +717,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   placeholder="macAddress"
                   className={`form-control`}
                   style={{ padding: "6px" }}
+                  maxLength={16}
                 />
               </Form.Item>
             </Col>
@@ -794,15 +797,32 @@ const EditApDeviceForm = ({ item }: PropData) => {
               >
                 <Form.Item
                   name="snmpPort"
-                  label="snmpPort"
+                  label="SNMP Port"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
                   rules={[
                     {
-                      required: true,
-                      message: "Please input your snmpPort!"
+                      required: true
+                      // message: "Please input your snmpPort!"
+                    },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject("Please input your SNMP Port!");
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 20 || intValue > 65535) {
+                          return Promise.reject(
+                            "SNMP Port number must be greater than 20 and less than or equal to 65535."
+                          );
+                        }
+                        return Promise.resolve();
+                      }
                     }
                   ]}
                 >
@@ -844,6 +864,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
                     placeholder="snmpCommunity"
                     className={`form-control`}
                     style={{ padding: "6px" }}
+                    maxLength={20}
                   />
                 </Form.Item>
               </Col>

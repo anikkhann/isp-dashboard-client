@@ -214,7 +214,7 @@ const EditHotspotPackageForm = ({ id, item }: PropData) => {
         item.startTime ? dayjs(item.startTime, "HH:mm") : null
       );
       setSelectedEndTime(item.endTime ? dayjs(item.endTime, "HH:mm") : null);
-
+      setIsActive(item.isActive);
       form.setFieldsValue({
         name: item.name,
         price: item.price,
@@ -567,6 +567,12 @@ const EditHotspotPackageForm = ({ id, item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Category"
+                  }
+                ]}
                 name="packageCategory"
               >
                 <Space style={{ width: "100%" }} direction="vertical">

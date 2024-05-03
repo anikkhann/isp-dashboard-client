@@ -34,7 +34,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -69,7 +69,7 @@ const SubZoneTagList: React.FC = () => {
 
   const MySwal = withReactContent(Swal);
 
-  const authUser = useAppSelector(state => state.auth.user);
+  // const authUser = useAppSelector(state => state.auth.user);
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
@@ -226,10 +226,10 @@ const SubZoneTagList: React.FC = () => {
       },
       body: {
         partnerType: "reseller",
-        client: {
-          id: authUser?.partnerId
-        }
-        // isActive: true
+        // client: {
+        //   id: authUser?.partnerId
+        // }
+        isActive: true
       }
     };
     axios.post("/api/partner/get-list", body).then(res => {

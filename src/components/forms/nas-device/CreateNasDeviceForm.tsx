@@ -282,6 +282,7 @@ const CreateNasDeviceForm = () => {
                       placeholder="Location Description"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={100}
                     />
                   </Form.Item>
                 </Col>
@@ -345,6 +346,7 @@ const CreateNasDeviceForm = () => {
                       placeholder="Secret"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={20}
                     />
                   </Form.Item>
                 </Col>
@@ -366,8 +368,29 @@ const CreateNasDeviceForm = () => {
                     }}
                     rules={[
                       {
-                        required: true,
-                        message: "Please input Radius Incoming Port!"
+                        required: true
+                        // message: "Please input Radius Incoming Port!"
+                      },
+                      {
+                        validator: async (_, value) => {
+                          if (!value) {
+                            return Promise.reject(
+                              "Please input your Incoming Port!"
+                            );
+                          }
+                          const intValue = parseInt(value, 10);
+                          if (isNaN(intValue)) {
+                            return Promise.reject(
+                              "Please enter a valid number."
+                            );
+                          }
+                          if (intValue <= 1000 || intValue > 65535) {
+                            return Promise.reject(
+                              "Port number must be greater than 1000 and less than or equal to 65535."
+                            );
+                          }
+                          return Promise.resolve();
+                        }
                       }
                     ]}
                   >
@@ -467,8 +490,29 @@ const CreateNasDeviceForm = () => {
                     }}
                     rules={[
                       {
-                        required: true,
-                        message: "Please input your API Port!"
+                        required: true
+                        // message: "Please input your API Port!"
+                      },
+                      {
+                        validator: async (_, value) => {
+                          if (!value) {
+                            return Promise.reject(
+                              "Please input your API Port!"
+                            );
+                          }
+                          const intValue = parseInt(value, 10);
+                          if (isNaN(intValue)) {
+                            return Promise.reject(
+                              "Please enter a valid number."
+                            );
+                          }
+                          if (intValue <= 1000 || intValue > 65535) {
+                            return Promise.reject(
+                              "API Port number must be greater than 1000 and less than or equal to 65535."
+                            );
+                          }
+                          return Promise.resolve();
+                        }
                       }
                     ]}
                   >
@@ -508,6 +552,7 @@ const CreateNasDeviceForm = () => {
                       placeholder="API Username"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={32}
                     />
                   </Form.Item>
                 </Col>
@@ -539,6 +584,7 @@ const CreateNasDeviceForm = () => {
                       placeholder="API Password"
                       className={`form-control`}
                       style={{ padding: "6px" }}
+                      maxLength={32}
                     />
                   </Form.Item>
                 </Col>
