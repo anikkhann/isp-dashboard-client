@@ -259,6 +259,12 @@ const CreateGatewayConfigForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input client!"
+                  }
+                ]}
                 name="clientId"
               >
                 <Space style={{ width: "100%" }} direction="vertical">
@@ -301,6 +307,12 @@ const CreateGatewayConfigForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input sms gateway credential!"
+                  }
+                ]}
                 name="smsGatewayId"
               >
                 <Space style={{ width: "100%" }} direction="vertical">

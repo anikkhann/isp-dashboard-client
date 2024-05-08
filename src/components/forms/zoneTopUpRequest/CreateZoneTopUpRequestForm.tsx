@@ -197,15 +197,64 @@ const CreateZoneTopUpRequestForm = () => {
               });
             }
 
-            if (data.status == 200) {
+            if (
+              data.status == 200 &&
+              data.message == "Redirect to payment gateway"
+            ) {
+              MySwal.fire({
+                // title: "Success",
+                // text: data.message || "Updated successfully",
+                // icon: "success"
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#570DF8",
+                cancelButtonColor: "#EB0808",
+                confirmButtonText: "Yes, Proceed!",
+                cancelButtonText: "Cancel"
+              }).then(result => {
+                if (result.isConfirmed) {
+                  if (data.body) {
+                    const url = data.body;
+                    // Redirect to the URL
+                    window.location.href = url;
+                  }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                  // Redirect to '/' if cancel button is clicked
+                  window.location.href = "/admin/top-up/zone-top-up-request";
+                }
+              });
+              // .then(() => {
+              //   router.replace("/admin/top-up/zone-top-up-request");
+              // });
+            } else if (data.status == 200) {
               MySwal.fire({
                 title: "Success",
-                text: data.message || "Updated successfully",
+                text: data.message || "Request Submitted",
                 icon: "success"
               }).then(() => {
                 router.replace("/admin/top-up/zone-top-up-request");
               });
             }
+
+            // if (data.status == 200) {
+            //   MySwal.fire({
+            //     // title: "Success",
+            //     // text: data.message || "Updated successfully",
+            //     // icon: "success"
+            //     title: "Are you sure?",
+            //     text: "You won't be able to revert this!",
+            //     icon: "warning",
+            //     showCancelButton: true,
+            //     confirmButtonColor: "#570DF8",
+            //     cancelButtonColor: "#EB0808",
+            //     confirmButtonText: "Yes, Proceed!",
+            //     cancelButtonText: "Cancel"
+            //   }).then(() => {
+            //     router.replace("/admin/top-up/zone-top-up-request");
+            //   });
+            // }
           })
           .catch(err => {
             // console.log(err);
@@ -224,7 +273,7 @@ const CreateZoneTopUpRequestForm = () => {
       } finally {
         setLoading(false);
       }
-    }, 2000);
+    }, 5000);
   };
 
   return (
@@ -286,6 +335,46 @@ const CreateZoneTopUpRequestForm = () => {
               </Form.Item>
             </Col>
 
+            {paymentType == "online" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                {/* paymentGatewayId */}
+                <Form.Item
+                  label="Payment Gateway"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    {
+                      // required: paymentType ? paymentType === "offline" : false,
+                      required: true,
+                      message: "Please upload file!"
+                    }
+                  ]}
+                  name="paymentGatewayId"
+                >
+                  <Space style={{ width: "100%" }} direction="vertical">
+                    <Select
+                      allowClear
+                      style={{ width: "100%", textAlign: "start" }}
+                      placeholder="Please select"
+                      onChange={handlePaymentGatewayChange}
+                      options={paymentGateways}
+                      value={selectedPaymentGateway}
+                    />
+                  </Space>
+                </Form.Item>
+              </Col>
+            )}
+
             <Col
               xs={24}
               sm={12}
@@ -297,7 +386,7 @@ const CreateZoneTopUpRequestForm = () => {
             >
               {/* paidAmount */}
               <Form.Item
-                label="Paid Amount"
+                label="Amount"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -352,45 +441,25 @@ const CreateZoneTopUpRequestForm = () => {
                 />
               </Form.Item>
             </Col>
-            {paymentType == "online" && (
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={8}
-                xl={8}
-                xxl={8}
-                className="gutter-row"
-              >
-                {/* paymentGatewayId */}
-                <Form.Item
-                  label="Payment Gateway"
-                  style={{
-                    marginBottom: 0,
-                    fontWeight: "bold"
-                  }}
-                  rules={[
-                    {
-                      // required: paymentType ? paymentType === "offline" : false,
-                      required: true,
-                      message: "Please upload file!"
-                    }
-                  ]}
-                  name="paymentGatewayId"
-                >
-                  <Space style={{ width: "100%" }} direction="vertical">
-                    <Select
-                      allowClear
-                      style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select"
-                      onChange={handlePaymentGatewayChange}
-                      options={paymentGateways}
-                      value={selectedPaymentGateway}
-                    />
-                  </Space>
-                </Form.Item>
-              </Col>
-            )}
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
           {paymentType == "offline" && (
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">

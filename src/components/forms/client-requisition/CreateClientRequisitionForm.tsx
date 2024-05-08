@@ -330,21 +330,60 @@ const CreateClientRequisitionForm = () => {
                 icon: "error"
               });
             }
-
-            if (data.status == 200) {
+            if (
+              data.status == 200 &&
+              data.message == "Redirect to payment gateway"
+            ) {
               MySwal.fire({
-                title: "Success",
-                text: data.message || "Created successfully",
-                icon: "success"
-              }).then(() => {
-                if (selectedPaymentType === "online") {
-                  const url = data.body;
-                  window.open(url, "_blank");
-                } else {
-                  router.replace("/admin/hotspot/client-requisition");
+                // title: "Success",
+                // text: data.message || "Updated successfully",
+                // icon: "success"
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#570DF8",
+                cancelButtonColor: "#EB0808",
+                confirmButtonText: "Yes, Proceed!",
+                cancelButtonText: "Cancel"
+              }).then(result => {
+                if (result.isConfirmed) {
+                  if (data.body) {
+                    const url = data.body;
+                    // Redirect to the URL
+                    window.location.href = url;
+                  }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                  // Redirect to '/' if cancel button is clicked
+                  window.location.href = "/admin/hotspot/client-requisition";
                 }
               });
+              // .then(() => {
+              //   router.replace("/admin/top-up/zone-top-up-request");
+              // });
+            } else if (data.status == 200) {
+              MySwal.fire({
+                title: "Success",
+                text: data.message || "Request Submitted",
+                icon: "success"
+              }).then(() => {
+                router.replace("/admin/hotspot/client-requisition");
+              });
             }
+            // if (data.status == 200) {
+            //   MySwal.fire({
+            //     title: "Success",
+            //     text: data.message || "Created successfully",
+            //     icon: "success"
+            //   }).then(() => {
+            //     if (selectedPaymentType === "online") {
+            //       const url = data.body;
+            //       window.open(url, "_blank");
+            //     } else {
+            //       router.replace("/admin/hotspot/client-requisition");
+            //     }
+            //   });
+            // }
           })
           .catch(err => {
             // console.log(err);
@@ -379,7 +418,7 @@ const CreateClientRequisitionForm = () => {
             autoComplete="off"
             onFinish={onSubmit}
             form={form}
-            initialValues={{}}
+            initialValues={{ paymentType: selectedPaymentType }}
             style={{ maxWidth: "100%" }}
             name="wrap"
             colon={false}

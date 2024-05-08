@@ -246,6 +246,22 @@ const CreatePaymentGatewayConfigForm = () => {
           colon={false}
           scrollToFirstError
         >
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {/* isForSystem */}
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox
+                onChange={handleActiveForSystem}
+                checked={isActiveForSystem}
+              >
+                System
+              </Checkbox>
+            </Form.Item>
+          </div>
           <Row
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
@@ -342,6 +358,12 @@ const CreatePaymentGatewayConfigForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select credential!"
+                  }
+                ]}
                 name="credential"
               >
                 <Input.TextArea
@@ -377,7 +399,7 @@ const CreatePaymentGatewayConfigForm = () => {
 
           <div style={{ display: "flex", justifyContent: "center" }}>
             {/* isForSystem */}
-            <Form.Item
+            {/* <Form.Item
               label=""
               style={{
                 marginBottom: 0
@@ -389,7 +411,7 @@ const CreatePaymentGatewayConfigForm = () => {
               >
                 System
               </Checkbox>
-            </Form.Item>
+            </Form.Item> */}
 
             {/* status */}
             <Form.Item

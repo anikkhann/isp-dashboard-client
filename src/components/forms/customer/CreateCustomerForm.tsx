@@ -2493,6 +2493,7 @@ const CreateCustomerForm = () => {
                       ]}
                     >
                       <Input
+                        readOnly
                         type="text"
                         placeholder="Simultaneous User"
                         className={`form-control`}
@@ -2534,6 +2535,7 @@ const CreateCustomerForm = () => {
                           options={ipModes}
                           value={selectedIpMode}
                           showSearch
+                          disabled
                           filterOption={(input, option) => {
                             if (typeof option?.label === "string") {
                               return (

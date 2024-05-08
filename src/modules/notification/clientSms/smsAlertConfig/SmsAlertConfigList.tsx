@@ -275,7 +275,7 @@ const SmsAlertConfigList: React.FC = () => {
           )}
 
           <TableCard
-            title="Client Sms Alert List"
+            title="Client SMS Alert List"
             hasLink={true}
             addLink="/admin/notification/sms/client-sms-alert/update"
             permission="clientSmsAlert.update"

@@ -287,6 +287,12 @@ const EditGatewayConfigForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input client!"
+                  }
+                ]}
                 name="clientId"
               >
                 <Space style={{ width: "100%" }} direction="vertical">
@@ -329,6 +335,12 @@ const EditGatewayConfigForm = ({ item }: PropData) => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input gateway!"
+                  }
+                ]}
                 name="smsGatewayId"
               >
                 <Space style={{ width: "100%" }} direction="vertical">

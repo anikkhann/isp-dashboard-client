@@ -286,6 +286,48 @@ const CreateZoneTagForm = () => {
               </Form.Item>
             </Col>
 
+            {authUser &&
+              authUser?.clientLevel != "tri_cycle" &&
+              authUser?.clientLevel != "tri_cycle_hotspot" &&
+              authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* zoneManagerId */}
+                  <Form.Item
+                    label="Zone Manager"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select zone manager!"
+                      }
+                    ]}
+                    name="zoneManagerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Zone Manager"
+                        onChange={handleZoneManagerChange}
+                        options={zoneManagers}
+                        value={selectedZoneManager}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
+
             <Col
               xs={24}
               sm={12}
@@ -349,41 +391,6 @@ const CreateZoneTagForm = () => {
                 />
               </Form.Item>
             </Col>
-            {authUser &&
-              authUser?.clientLevel != "tri_cycle" &&
-              authUser?.clientLevel != "tri_cycle_hotspot" &&
-              authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={8}
-                  xxl={8}
-                  className="gutter-row"
-                >
-                  {/* zoneManagerId */}
-                  <Form.Item
-                    label="Zone Manager"
-                    style={{
-                      marginBottom: 0,
-                      fontWeight: "bold"
-                    }}
-                    name="zoneManagerId"
-                  >
-                    <Space style={{ width: "100%" }} direction="vertical">
-                      <Select
-                        allowClear
-                        style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Zone Manager"
-                        onChange={handleZoneManagerChange}
-                        options={zoneManagers}
-                        value={selectedZoneManager}
-                      />
-                    </Space>
-                  </Form.Item>
-                </Col>
-              )}
 
             <Col
               xs={24}
@@ -401,6 +408,12 @@ const CreateZoneTagForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select package!"
+                  }
+                ]}
                 name="pricingPlanId"
               >
                 <Space style={{ width: "100%" }} direction="vertical">

@@ -631,7 +631,7 @@ const CreateClientForm = () => {
             address: "",
             latitude: "",
             longitude: "",
-            serviceType: "",
+            serviceType: serviceType,
             packageType: "",
             dnsName: "",
             wsdCommission: 0,

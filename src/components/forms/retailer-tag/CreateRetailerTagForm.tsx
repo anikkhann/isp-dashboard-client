@@ -12,7 +12,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
-// import { useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 interface FormData {
   serialFrom: string;
   serialTo: string;
@@ -32,7 +32,7 @@ const types = [
 const CreateRetailerTagForm = () => {
   const [form] = Form.useForm();
 
-  // const authUser = useAppSelector(state => state.auth.user);
+  const authUser = useAppSelector(state => state.auth.user);
 
   const [loading, setLoading] = useState(false);
   // ** States
@@ -345,43 +345,46 @@ const CreateRetailerTagForm = () => {
                 </Space>
               </Form.Item>
             </Col>
-
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* zoneManagerId */}
-              <Form.Item
-                label="Sub Zone Manager"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input SubZone Manager!"
-                  }
-                ]}
-                name="subZoneManagerId"
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Sub Zone Manager"
-                    onChange={handleSubZoneManagerChange}
-                    options={subZoneManagers}
-                    value={selectedSubZoneManager}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+            {authUser &&
+              (authUser.userType == "client" ||
+                authUser.userType == "zone") && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* zoneManagerId */}
+                  <Form.Item
+                    label="Sub Zone Manager"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input SubZone Manager!"
+                      }
+                    ]}
+                    name="subZoneManagerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select Sub Zone Manager"
+                        onChange={handleSubZoneManagerChange}
+                        options={subZoneManagers}
+                        value={selectedSubZoneManager}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
 
             <Col
               xs={24}
@@ -519,6 +522,15 @@ const CreateRetailerTagForm = () => {
                 />
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
             {/* type */}
           </Row>
 
