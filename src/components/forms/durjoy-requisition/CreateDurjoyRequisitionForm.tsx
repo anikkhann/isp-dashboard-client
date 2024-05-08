@@ -290,14 +290,14 @@ const CreateDurjoyRequisitionForm = () => {
 
   function getPaymentGateway() {
     const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "bankName"
-          }
-        ]
-      },
+      // meta: {
+      //   sort: [
+      //     {
+      //       order: "asc",
+      //       field: "bankName"
+      //     }
+      //   ]
+      // },
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
@@ -305,29 +305,31 @@ const CreateDurjoyRequisitionForm = () => {
       }
     };
 
-    axios.post("/api/payment-gateway-config/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
+    axios
+      .post("/api/payment-gateway-config/get-list-for-online-payment", body)
+      .then(res => {
+        // console.log(res);
+        const { data } = res;
 
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
+        if (data.status != 200) {
+          MySwal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong",
+            icon: "error"
+          });
+        }
+
+        if (!data.body) return;
+
+        const list = data.body.map((item: PaymentGatewayConfigData) => {
+          return {
+            label: item.paymentGateway.bankName,
+            value: item.id
+          };
         });
-      }
 
-      if (!data.body) return;
-
-      const list = data.body.map((item: PaymentGatewayConfigData) => {
-        return {
-          label: item.paymentGateway.bankName,
-          value: item.id
-        };
+        setPaymentGateways(list);
       });
-
-      setPaymentGateways(list);
-    });
   }
 
   // getWsdCommission

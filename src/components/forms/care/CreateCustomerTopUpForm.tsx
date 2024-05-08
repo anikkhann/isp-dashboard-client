@@ -9,6 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAppDispatch } from "@/store/hooks";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
@@ -29,6 +30,8 @@ const types = [
 
 const CreateCustomerTopUpForm = () => {
   const [form] = Form.useForm();
+
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
   // ** States
@@ -129,7 +132,31 @@ const CreateCustomerTopUpForm = () => {
                 title: "Success",
                 text: data.message || "Added successfully",
                 icon: "success"
-              }).then(() => {
+              }).then(async () => {
+                await axios
+                  .get("/api/api/v1/auth/get", {
+                    headers: {
+                      Authorization: `Bearer ${token}`
+                    }
+                  })
+                  .then(response => {
+                    // // console.log(response);
+                    if (response.data.status == "401") {
+                      Cookies.remove("token");
+                      router.replace("/login");
+                    }
+                    dispatch({ type: "auth/setUser", payload: response.data });
+                    // console.log(response.data);
+                  })
+                  .catch(error => {
+                    // // console.log(error);
+                    if (error.response) {
+                      if (error.response.status === 401) {
+                        Cookies.remove("token");
+                        router.replace("/login");
+                      }
+                    }
+                  });
                 router.replace(`/admin/customer-top-up`);
               });
             }
