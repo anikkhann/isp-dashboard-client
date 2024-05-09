@@ -109,8 +109,8 @@ const LoginComponent = () => {
           layout="vertical"
           initialValues={{
             remember: true,
-            email: "duronto",
-            password: "hotspot@1234"
+            email: "",
+            password: ""
           }}
           onFinish={signInUser}
           onFinishFailed={onFinishFailed}
@@ -132,7 +132,7 @@ const LoginComponent = () => {
               }
             ]}
           >
-            <Input placeholder="username" />
+            <Input placeholder="Enter Your Username" />
           </Form.Item>
 
           <Form.Item
@@ -151,7 +151,7 @@ const LoginComponent = () => {
               }
             ]}
           >
-            <Input.Password placeholder="password" />
+            <Input.Password placeholder="Enter Your Password" />
           </Form.Item>
 
           <div className="form-btn-field">

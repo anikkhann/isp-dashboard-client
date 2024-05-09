@@ -54,19 +54,20 @@ const CreateCustomerImportCsvForm = () => {
     // only remove the files that are not uploaded
     const filteredList = newFileList.filter(
       file =>
+        file &&
         file.status !== "removed" &&
         file.status !== "error" &&
-        file.status !== "uploading",
-      file.size <= 10 * 1024 * 1024
+        file.status !== "uploading"
+      // file. <= 10 * 1024 * 1024
     ) as UploadFile[];
 
-    if (newFileList.length !== filteredList.length) {
-      MySwal.fire({
-        title: "Error",
-        text: "File size exceeds the limit of 10 MB",
-        icon: "error"
-      });
-    }
+    // if (newFileList.length !== filteredList.length) {
+    //   MySwal.fire({
+    //     title: "Error",
+    //     text: "File size exceeds the limit of 10 MB",
+    //     icon: "error"
+    //   });
+    // }
     setFileList(filteredList);
   };
 
