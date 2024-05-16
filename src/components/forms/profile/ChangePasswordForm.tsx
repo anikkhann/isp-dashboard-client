@@ -145,9 +145,9 @@ const ChangePasswordForm = () => {
                   //     "Only letters, numbers, underscores and hyphens allowed"
                   // }
                   {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-]{6,}$/),
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                     message:
-                      "Password should be at least 6 characters and only contain letters, numbers, underscores, and hyphens (0-9,a-z,A-Z,_,-)."
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
                   }
                 ]}
                 hasFeedback
@@ -183,19 +183,19 @@ const ChangePasswordForm = () => {
                     required: true,
                     message: "Please input your New Password!"
                   },
-                  // {
-                  //   min: 6,
-                  //   message: "Password must be minimum 6 characters."
-                  // },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
                   // {
                   //   pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                   //   message:
                   //     "Only letters, numbers, underscores and hyphens allowed"
                   // }
                   {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-]{6,}$/),
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                     message:
-                      "Password should be at least 6 characters and only contain letters, numbers, underscores, and hyphens (0-9,a-z,A-Z,_,-)."
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
                   }
                 ]}
               >
@@ -230,19 +230,19 @@ const ChangePasswordForm = () => {
                     required: true,
                     message: "Please confirm your new password!"
                   },
-                  // {
-                  //   min: 6,
-                  //   message: "Password must be minimum 6 characters."
-                  // },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
                   // {
                   //   pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                   //   message:
                   //     "Only letters, numbers, underscores and hyphens allowed"
                   // },
                   {
-                    pattern: new RegExp(/^[A-Za-z0-9_\-]{6,}$/),
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                     message:
-                      "Password should be at least 6 characters and only contain letters, numbers, underscores, and hyphens (0-9,a-z,A-Z,_,-)."
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
                   },
 
                   ({ getFieldValue }) => ({
@@ -294,8 +294,9 @@ const ChangePasswordForm = () => {
             <div className="col-span-11 xl:-ml-5">
               <p className="text-blue-600 font-semibold text-left text-lg">
                 <span className="text-danger">
-                  * Password should be at least 6 digit and Only letters,
-                  numbers, underscores and hyphens allowed (0-9,a-z,A-Z,_,-)
+                  * Password should be at least 6 characters and Only letters,
+                  numbers, underscores, @ and hyphens allowed
+                  (0-9,a-z,A-Z,_,-,@)
                 </span>
               </p>
             </div>

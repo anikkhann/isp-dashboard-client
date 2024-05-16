@@ -815,7 +815,7 @@ const CreateCustomerReqForm = () => {
                   {
                     pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                     message:
-                      "Only letters, numbers, underscores and hyphens allowed"
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
                   }
                 ]}
               >

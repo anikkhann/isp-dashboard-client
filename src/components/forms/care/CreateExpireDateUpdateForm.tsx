@@ -6,11 +6,37 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col,
+  DatePicker
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-// import AppImageLoader from "@/components/loader/AppImageLoader";
 
+// import AppImageLoader from "@/components/loader/AppImageLoader";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
 interface FormData {
   day: string;
   remarks: string;
@@ -38,6 +64,17 @@ const extensionTypes = [
   }
 ];
 
+const adjustByTypes = [
+  {
+    label: "Date",
+    value: "date"
+  },
+  {
+    label: "Day",
+    value: "day"
+  }
+];
+
 const CreateExpireDateUpdateForm = () => {
   const [form] = Form.useForm();
 
@@ -56,6 +93,10 @@ const CreateExpireDateUpdateForm = () => {
 
   const [selectExtensionType, setSelectExtensionType] = useState<any>(null);
 
+  const [selectAdjustByType, setSelectAdjustByType] = useState<any>(null);
+
+  const [selectedDate, setSelectedDate] = useState<any>(null);
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -65,10 +106,24 @@ const CreateExpireDateUpdateForm = () => {
     setSelectType(value as any);
   };
 
+  const handleStartDateChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedDate(value);
+    form.setFieldsValue({
+      adjustmentDate: value
+    });
+  };
+
   const handleExtensionTypeChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ extensionType: value });
     setSelectExtensionType(value as any);
+  };
+
+  const handleAdjustByTypeChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ adjustBy: value });
+    setSelectAdjustByType(value as any);
   };
 
   const getCustomers = async () => {
@@ -125,6 +180,10 @@ const CreateExpireDateUpdateForm = () => {
         day: day,
         type: selectType,
         extensionType: selectExtensionType,
+        adjustBy: selectAdjustByType,
+        adjustmentDate: selectedDate
+          ? dayjs(selectedDate).format("YYYY-MM-DD")
+          : null,
         remarks: remarks
       };
 
@@ -187,6 +246,7 @@ const CreateExpireDateUpdateForm = () => {
           initialValues={{
             type: "",
             day: "",
+            adjustBy: "",
             remarks: ""
           }}
           style={{ maxWidth: "100%" }}
@@ -293,7 +353,6 @@ const CreateExpireDateUpdateForm = () => {
                 </Space>
               </Form.Item>
             </Col>
-
             {selectType == "Extension" && (
               <Col
                 xs={24}
@@ -343,7 +402,6 @@ const CreateExpireDateUpdateForm = () => {
                 </Form.Item>
               </Col>
             )}
-
             <Col
               xs={24}
               sm={12}
@@ -353,30 +411,118 @@ const CreateExpireDateUpdateForm = () => {
               xxl={12}
               className="gutter-row"
             >
-              {/* day */}
+              {/* Adjustment By */}
               <Form.Item
-                label="Day"
+                label="Adjust By"
+                name="adjustBy"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="day"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your day!"
+                    message: "Please select Adjust By!"
                   }
                 ]}
               >
-                <Input
-                  type="number"
-                  placeholder="day"
-                  className={`form - control`}
-                  name="day"
-                  style={{ padding: "6px" }}
-                />
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{ width: "100%", textAlign: "start" }}
+                    placeholder="Please select Adjust By"
+                    onChange={handleAdjustByTypeChange}
+                    options={adjustByTypes}
+                    value={selectAdjustByType}
+                    showSearch
+                    filterOption={(input, option) => {
+                      if (typeof option?.label === "string") {
+                        return (
+                          option.label
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        );
+                      }
+                      return false;
+                    }}
+                  />
+                </Space>
               </Form.Item>
             </Col>
+            {selectAdjustByType === "date" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* startDate */}
+                <Form.Item
+                  label="Date"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="adjustmentDate"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Date!"
+                    }
+                  ]}
+                >
+                  <DatePicker
+                    className={`form-control`}
+                    style={{
+                      padding: "6px",
+                      width: "100%"
+                    }}
+                    format={dateFormat}
+                    onChange={handleStartDateChange}
+                    value={selectedDate}
+                  />
+                </Form.Item>
+              </Col>
+            )}
+
+            {selectAdjustByType === "day" && (
+              <Col
+                xs={24}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                xxl={12}
+                className="gutter-row"
+              >
+                {/* day */}
+                <Form.Item
+                  label="Day"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  name="day"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your day!"
+                    }
+                  ]}
+                >
+                  <Input
+                    type="number"
+                    placeholder="day"
+                    className={`form - control`}
+                    name="day"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+            )}
 
             <Col
               xs={24}

@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
 import { useAppSelector } from "@/store/hooks";
+import ability from "@/services/guard/ability";
 interface PropData {
   item: CustomerData;
 }
@@ -182,6 +183,49 @@ const Customer = ({ item }: PropData) => {
         );
         if (data.status === 200) {
           MySwal.fire("Success!", data.body.message, "success").then(() => {
+            router.reload();
+            // window.location.reload();
+          });
+        } else {
+          MySwal.fire("Error!", data.message, "error");
+        }
+      } else if (result.isDismissed) {
+        MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+      }
+    } catch (error: any) {
+      // console.log(error);
+      if (error.response) {
+        MySwal.fire("Error!", error.response.data.message, "error");
+      } else {
+        MySwal.fire("Error!", "Something went wrong", "error");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleMacBind(
+    username: string,
+    setLoading: (loading: boolean) => void
+  ) {
+    try {
+      setLoading(true); // Set loading to true when initiating the request
+      const result = await MySwal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#570DF8",
+        cancelButtonColor: "#EB0808",
+        confirmButtonText: "Yes, Proceed"
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await axios.get(
+          `/api/customer/sync-mac-with-radius/${username}`
+        );
+        if (data.status === 200) {
+          MySwal.fire("Success!", data.message, "success").then(() => {
             router.reload();
             // window.location.reload();
           });
@@ -406,7 +450,7 @@ const Customer = ({ item }: PropData) => {
                       alignItems: "end"
                     }}
                   >
-                    <span className="font-bold text-base">Credits :</span>
+                    <span className="font-bold text-base">Balance (BDT) :</span>
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">{item?.credits}</span>
@@ -424,7 +468,7 @@ const Customer = ({ item }: PropData) => {
                       alignItems: "end"
                     }}
                   >
-                    <span className="font-bold text-base">Discount :</span>
+                    <span className="font-bold text-base">Discount (BDT):</span>
                   </Col>
                   <Col>
                     <span className="mx-1 text-base">{item?.discount}</span>
@@ -1038,7 +1082,39 @@ const Customer = ({ item }: PropData) => {
                           item && item?.isMacBound == true ? "green" : "red"
                       }}
                     >
-                      {item && item?.isMacBound == true ? "Yes" : "No"}
+                      {item && item?.isMacBound == true ? (
+                        "Yes"
+                      ) : (
+                        <>
+                          <span
+                            style={{
+                              fontWeight: "bold",
+                              margin: "1rem 0"
+                              // color: "red",
+                            }}
+                          >
+                            No
+                          </span>
+                          {ability.can("customerCare.macUpdate", "") && (
+                            <>
+                              <Button
+                                style={{
+                                  marginLeft: "1rem",
+                                  // marginRight: "20px",
+                                  backgroundColor: "#F94A29",
+                                  color: "#ffffff"
+                                }}
+                                onClick={() =>
+                                  handleMacBind(item?.username, setLoading)
+                                }
+                                disabled={loading}
+                              >
+                                {loading ? "Loading..." : "Bind Last MAC"}
+                              </Button>
+                            </>
+                          )}
+                        </>
+                      )}
                     </span>
                   </Col>
                 </Row>

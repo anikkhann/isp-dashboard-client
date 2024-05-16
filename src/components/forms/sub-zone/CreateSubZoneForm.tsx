@@ -605,7 +605,7 @@ const CreateSubZoneForm = () => {
                   {
                     pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                     message:
-                      "Only letters, numbers, underscores and hyphens allowed"
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
                   }
                 ]}
                 hasFeedback
@@ -643,9 +643,13 @@ const CreateSubZoneForm = () => {
                     message: "Please confirm your password!"
                   },
                   {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
+                  {
                     pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
                     message:
-                      "Only letters, numbers, underscores and hyphens allowed"
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
                   },
                   ({ getFieldValue }) => ({
                     validator(_, value) {

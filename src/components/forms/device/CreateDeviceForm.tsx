@@ -32,6 +32,7 @@ interface FormData {
   longitude: string;
   secret: string;
   incomingPort: string;
+  sfpPortNo: string;
   ip: string;
   totalPort: string;
   mac: string;
@@ -117,6 +118,18 @@ const oltVendorList = [
   {
     label: "C-DATA",
     value: "C-DATA"
+  },
+  {
+    label: "WSFE",
+    value: "WSFE"
+  },
+  {
+    label: "BDCOM",
+    value: "BDCOM"
+  },
+  {
+    label: "Syrotech/Richelink",
+    value: "Syrotech/Richelink"
   },
   {
     label: "Others",
@@ -318,6 +331,7 @@ const CreateDeviceForm = () => {
         longitude,
         secret,
         incomingPort,
+        sfpPortNo,
         ip,
         totalPort,
         mac,
@@ -349,6 +363,7 @@ const CreateDeviceForm = () => {
         longitude: longitude,
         secret: secret,
         incomingPort: incomingPort,
+        sfpPortNo: sfpPortNo,
         ip: ip,
         totalPort: totalPort,
         mac: mac,
@@ -435,6 +450,7 @@ const CreateDeviceForm = () => {
             longitude: "",
             secret: "",
             incomingPort: "1700",
+            sfpPortNo: "",
             ip: "",
             totalPort: "",
             mac: "",
@@ -705,6 +721,63 @@ const CreateDeviceForm = () => {
                 </Form.Item>
               </Col>
             )}
+            {/* SFP Port No */}
+            {(selectedDeviceType == "OLT" ||
+              selectedDeviceType == "Router" ||
+              selectedDeviceType == "Switch") && (
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
+              >
+                <Form.Item
+                  name="sfpPortNo"
+                  label="SFP Port No"
+                  style={{
+                    marginBottom: 0,
+                    fontWeight: "bold"
+                  }}
+                  rules={[
+                    // {
+                    //   required: true
+                    //   // message: "Please input your Incoming Port!"
+                    // },
+                    {
+                      validator: async (_, value) => {
+                        if (!value) {
+                          return Promise.reject(
+                            "Please input your Total SFP Port!"
+                          );
+                        }
+                        const intValue = parseInt(value, 10);
+                        if (isNaN(intValue)) {
+                          return Promise.reject("Please enter a valid number.");
+                        }
+                        if (intValue <= 0 || intValue > 100) {
+                          return Promise.reject(
+                            "Total SFP Port number must be less than or equal 100"
+                          );
+                        }
+                        return Promise.resolve();
+                      }
+                    }
+                  ]}
+                >
+                  <Input
+                    type="text"
+                    placeholder="SFP Port"
+                    className={`form-control`}
+                    name="sfpPortNo"
+                    style={{ padding: "6px" }}
+                  />
+                </Form.Item>
+              </Col>
+            )}
+
             {/* oltTypesList */}
             {selectedDeviceType == "OLT" && (
               <Col
@@ -788,7 +861,9 @@ const CreateDeviceForm = () => {
               </Col>
             )}
             {/* totalEitherPort */}
-            {selectedDeviceType == "OLT" && (
+            {(selectedDeviceType == "OLT" ||
+              selectedDeviceType == "Router" ||
+              selectedDeviceType == "Switch") && (
               <Col
                 xs={24}
                 sm={12}

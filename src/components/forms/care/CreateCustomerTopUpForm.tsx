@@ -6,7 +6,17 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Form, Input, Select, Space, Row, Col } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Row,
+  Col,
+  Checkbox
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useAppDispatch } from "@/store/hooks";
@@ -19,11 +29,11 @@ interface FormData {
 
 const types = [
   {
-    label: "debit",
+    label: "debit (deduct)",
     value: "debit"
   },
   {
-    label: "credit",
+    label: "credit (deposit)",
     value: "credit"
   }
 ];
@@ -46,6 +56,8 @@ const CreateCustomerTopUpForm = () => {
 
   const [selectType, setSelectType] = useState<any>("credit");
 
+  const [isRenew, setIsRenew] = useState<boolean>(true);
+
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -53,6 +65,10 @@ const CreateCustomerTopUpForm = () => {
     // console.log("checked = ", value);
     form.setFieldsValue({ type: value });
     setSelectType(value as any);
+  };
+
+  const handleRenew = (e: any) => {
+    setIsRenew(e.target.checked ? true : false);
   };
 
   const getCustomers = async () => {
@@ -110,7 +126,8 @@ const CreateCustomerTopUpForm = () => {
         customerId: selectedCustomer,
         amount: amount,
         type: selectType,
-        remarks: remarks
+        remarks: remarks,
+        isRenew: isRenew
       };
 
       try {
@@ -371,6 +388,17 @@ const CreateCustomerTopUpForm = () => {
               </Form.Item>
             </Col>
           </Row>
+
+          <Form.Item
+            label=""
+            style={{
+              marginBottom: 0
+            }}
+          >
+            <Checkbox onChange={handleRenew} checked={isRenew}>
+              Is Renew ?
+            </Checkbox>
+          </Form.Item>
 
           {/* submit */}
           <Row justify="center">
