@@ -56,7 +56,7 @@ const CreateCustomerTopUpForm = () => {
 
   const [selectType, setSelectType] = useState<any>("credit");
 
-  const [isRenew, setIsRenew] = useState<boolean>(true);
+  const [isRenew, setIsRenew] = useState<boolean>(false);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -388,17 +388,18 @@ const CreateCustomerTopUpForm = () => {
               </Form.Item>
             </Col>
           </Row>
-
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleRenew} checked={isRenew}>
-              Is Renew ?
-            </Checkbox>
-          </Form.Item>
+          {selectType === "credit" && (
+            <Form.Item
+              label=""
+              style={{
+                marginBottom: 0
+              }}
+            >
+              <Checkbox onChange={handleRenew} checked={isRenew}>
+                Is Renew ?
+              </Checkbox>
+            </Form.Item>
+          )}
 
           {/* submit */}
           <Row justify="center">

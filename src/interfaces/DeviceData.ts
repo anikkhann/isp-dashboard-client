@@ -5,6 +5,10 @@ export interface DeviceData {
   id: string;
   name: string;
   partner: Partner;
+  oltVendor: string;
+  sfpPortNo: number;
+  totalEitherPort: number;
+  totalPonPort: number;
   partnerId: string;
   distributionZone: DistributionZone;
   distributionZoneId: string;

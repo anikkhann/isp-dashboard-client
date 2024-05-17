@@ -741,31 +741,33 @@ const CreateDeviceForm = () => {
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
-                  rules={[
-                    // {
-                    //   required: true
-                    //   // message: "Please input your Incoming Port!"
-                    // },
-                    {
-                      validator: async (_, value) => {
-                        if (!value) {
-                          return Promise.reject(
-                            "Please input your Total SFP Port!"
-                          );
-                        }
-                        const intValue = parseInt(value, 10);
-                        if (isNaN(intValue)) {
-                          return Promise.reject("Please enter a valid number.");
-                        }
-                        if (intValue <= 0 || intValue > 100) {
-                          return Promise.reject(
-                            "Total SFP Port number must be less than or equal 100"
-                          );
-                        }
-                        return Promise.resolve();
-                      }
-                    }
-                  ]}
+                  rules={
+                    [
+                      // {
+                      //   required: true
+                      //   // message: "Please input your Incoming Port!"
+                      // },
+                      // {
+                      //   validator: async (_, value) => {
+                      //     if (!value) {
+                      //       return Promise.reject(
+                      //         "Please input your Total SFP Port!"
+                      //       );
+                      //     }
+                      //     const intValue = parseInt(value, 10);
+                      //     if (isNaN(intValue)) {
+                      //       return Promise.reject("Please enter a valid number.");
+                      //     }
+                      //     if (intValue <= 0 || intValue > 100) {
+                      //       return Promise.reject(
+                      //         "Total SFP Port number must be less than or equal 100"
+                      //       );
+                      //     }
+                      //     return Promise.resolve();
+                      //   }
+                      // }
+                    ]
+                  }
                 >
                   <Input
                     type="text"

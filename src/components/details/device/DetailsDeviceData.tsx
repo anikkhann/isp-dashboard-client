@@ -334,6 +334,98 @@ const DetailsDeviceData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
+                <span className="font-bold text-base">OLT Type :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.oltType}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">OLT Vendor :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.oltVendor}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">SFP Port :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.sfpPortNo}</span>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Total Either Port :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.totalEitherPort}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Total Pon Port :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.totalPonPort}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
                 <span className="font-bold text-base">Latitude :</span>
               </Col>
               <Col>
