@@ -9,6 +9,7 @@ export interface DeviceData {
   sfpPortNo: number;
   totalEitherPort: number;
   totalPonPort: number;
+  totalPort: number;
   partnerId: string;
   distributionZone: DistributionZone;
   distributionZoneId: string;

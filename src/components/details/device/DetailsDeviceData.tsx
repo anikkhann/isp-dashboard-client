@@ -388,10 +388,29 @@ const DetailsDeviceData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">Total Either Port :</span>
+                <span className="font-bold text-base">Total Ether Port :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.totalEitherPort}</span>
+              </Col>
+            </Row>
+
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">Total Port :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.totalPort}</span>
               </Col>
             </Row>
 
