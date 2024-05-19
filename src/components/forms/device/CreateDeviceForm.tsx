@@ -120,8 +120,8 @@ const oltVendorList = [
     value: "C-DATA"
   },
   {
-    label: "WSFE",
-    value: "WSFE"
+    label: "WSEE",
+    value: "WSEE"
   },
   {
     label: "BDCOM",

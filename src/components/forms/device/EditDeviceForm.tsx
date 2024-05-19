@@ -117,8 +117,8 @@ const oltVendorList = [
     value: "C-DATA"
   },
   {
-    label: "WSFE",
-    value: "WSFE"
+    label: "WSEE",
+    value: "WSEE"
   },
   {
     label: "BDCOM",
@@ -894,7 +894,7 @@ const EditDeviceForm = ({ item }: any) => {
               >
                 <Form.Item
                   name="totalEitherPort"
-                  label="Total Either Port"
+                  label="Total Ether Port"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -917,7 +917,7 @@ const EditDeviceForm = ({ item }: any) => {
                         }
                         if (intValue <= 0 || intValue > 100) {
                           return Promise.reject(
-                            "Total Either Port number must be less than or equal 100"
+                            "Total Ether Port number must be less than or equal 100"
                           );
                         }
                         return Promise.resolve();
@@ -927,7 +927,7 @@ const EditDeviceForm = ({ item }: any) => {
                 >
                   <Input
                     type="text"
-                    placeholder="Total Either Port"
+                    placeholder="Total Ether Port"
                     className={`form-control`}
                     name="totalEitherPort"
                     style={{ padding: "6px" }}
