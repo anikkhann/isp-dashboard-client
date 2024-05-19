@@ -220,7 +220,7 @@ const AgentTopUpData = () => {
 
     // active_customer
     {
-      title: "Balance",
+      title: "Balance (BDT)",
       dataIndex: "balance",
       sorter: false,
       render: (balance: any) => {

@@ -15,6 +15,76 @@ const MainDashboard = () => {
             margin: "0 30px"
           }}
         >
+          <Can I="customer.dashboard">
+            <Col xs={24} sm={12} md={6}>
+              <MainCard
+                bgColor="#3A1078"
+                color="#fff"
+                icon="/assets/images/icons/worker.png"
+                title="Customer Management"
+                link="/admin/customer"
+              />
+            </Col>
+          </Can>
+
+          <Can I="customerCare.dashboard">
+            <Col xs={24} sm={12} md={6}>
+              <MainCard
+                bgColor="#216583"
+                color="#fff"
+                icon="/assets/images/icons/computer.png"
+                title="Customer Care"
+                link="/admin/customer-care"
+              />
+            </Col>
+          </Can>
+          <Can I="complaint.dashboard">
+            <Col xs={24} sm={12} md={6}>
+              <MainCard
+                bgColor="#0EA293"
+                color="#fff"
+                icon="/assets/images/icons/letter.png"
+                title="Complaint Management"
+                link="/admin/complaint"
+              />
+            </Col>
+          </Can>
+
+          <Can I="accounting.dashboard">
+            <Col xs={24} sm={12} md={6}>
+              <MainCard
+                bgColor="#216583"
+                color="#fff"
+                icon="/assets/images/icons/computer.png"
+                title="Accounting & Billing"
+                link="/admin/accounting"
+              />
+            </Col>
+          </Can>
+          <Can I="topUp.dashboard">
+            <Col xs={24} sm={12} md={6}>
+              <MainCard
+                bgColor="#216583"
+                color="#fff"
+                icon="/assets/images/icons/computer.png"
+                title="Top-Up Management"
+                link="/admin/top-up"
+              />
+            </Col>
+          </Can>
+
+          <Can I="hotspot.dashboard">
+            <Col xs={24} sm={12} md={6}>
+              <MainCard
+                bgColor="#216583"
+                color="#fff"
+                icon="/assets/images/icons/computer.png"
+                title="Wi-Fi Hotspot"
+                link="/admin/hotspot"
+              />
+            </Col>
+          </Can>
+
           <Can I="client.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
@@ -82,28 +152,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="customer.dashboard">
-            <Col xs={24} sm={12} md={6}>
-              <MainCard
-                bgColor="#3A1078"
-                color="#fff"
-                icon="/assets/images/icons/worker.png"
-                title="Customer Management"
-                link="/admin/customer"
-              />
-            </Col>
-          </Can>
-          <Can I="complaint.dashboard">
-            <Col xs={24} sm={12} md={6}>
-              <MainCard
-                bgColor="#0EA293"
-                color="#fff"
-                icon="/assets/images/icons/letter.png"
-                title="Complaint Management"
-                link="/admin/complaint"
-              />
-            </Col>
-          </Can>
+
           <Can I="user.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
@@ -115,28 +164,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="topUp.dashboard">
-            <Col xs={24} sm={12} md={6}>
-              <MainCard
-                bgColor="#216583"
-                color="#fff"
-                icon="/assets/images/icons/computer.png"
-                title="Top-Up Management"
-                link="/admin/top-up"
-              />
-            </Col>
-          </Can>
-          <Can I="customerCare.dashboard">
-            <Col xs={24} sm={12} md={6}>
-              <MainCard
-                bgColor="#216583"
-                color="#fff"
-                icon="/assets/images/icons/computer.png"
-                title="Customer Care"
-                link="/admin/customer-care"
-              />
-            </Col>
-          </Can>
+
           <Can I="notification.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
@@ -156,28 +184,6 @@ const MainDashboard = () => {
                 icon="/assets/images/icons/computer.png"
                 title="Payment Gateway"
                 link="/admin/payment"
-              />
-            </Col>
-          </Can>
-          <Can I="accounting.dashboard">
-            <Col xs={24} sm={12} md={6}>
-              <MainCard
-                bgColor="#216583"
-                color="#fff"
-                icon="/assets/images/icons/computer.png"
-                title="Accounting & Billing"
-                link="/admin/accounting"
-              />
-            </Col>
-          </Can>
-          <Can I="hotspot.dashboard">
-            <Col xs={24} sm={12} md={6}>
-              <MainCard
-                bgColor="#216583"
-                color="#fff"
-                icon="/assets/images/icons/computer.png"
-                title="Wi-Fi Hotspot"
-                link="/admin/hotspot"
               />
             </Col>
           </Can>

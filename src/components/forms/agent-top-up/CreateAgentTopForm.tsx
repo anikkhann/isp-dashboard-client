@@ -19,11 +19,11 @@ interface FormData {
 
 const types = [
   {
-    label: "credit",
+    label: "credit (deposit)",
     value: "credit"
   },
   {
-    label: "debit",
+    label: "debit (deduct)",
     value: "debit"
   }
 ];

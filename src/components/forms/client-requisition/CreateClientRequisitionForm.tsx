@@ -72,7 +72,7 @@ const CreateClientRequisitionForm = () => {
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [selectedPaymentType, setSelectedPaymentType] = useState<any>("online");
+  const [selectedPaymentType, setSelectedPaymentType] = useState<any>(null);
 
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
 

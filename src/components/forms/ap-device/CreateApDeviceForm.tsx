@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslNew AP Devicent-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useEffect, useState } from "react";
@@ -403,36 +403,41 @@ const CreateApDeviceForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              {/* zoneManagerId */}
-              <Form.Item
-                label="Zone Manager"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="zoneManagerId"
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
-                    style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select"
-                    onChange={handleZoneChange}
-                    options={zones}
-                    value={selectedZone}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
+            {authUser &&
+              authUser?.clientLevel != "tri_cycle" &&
+              authUser?.clientLevel != "tri_cycle_hotspot" &&
+              authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* zoneManagerId */}
+                  <Form.Item
+                    label="Zone Manager"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="zoneManagerId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleZoneChange}
+                        options={zones}
+                        value={selectedZone}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
 
             <Col
               xs={24}
@@ -646,12 +651,12 @@ const CreateApDeviceForm = () => {
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input IP!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input IP!"
+                //   }
+                // ]}
               >
                 <Input
                   type="text"
@@ -690,7 +695,7 @@ const CreateApDeviceForm = () => {
                   placeholder="Mac Address"
                   className={`form-control`}
                   style={{ padding: "6px" }}
-                  maxLength={16}
+                  maxLength={17}
                 />
               </Form.Item>
             </Col>

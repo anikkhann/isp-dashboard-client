@@ -778,6 +778,39 @@ const ClientRequisitionList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser &&
+                          authUser?.userType == "client" &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Zone Manager</b>
+                                </span>
+                                <Select
+                                  showSearch
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneChange}
+                                  options={zones}
+                                  value={selectedZone}
+                                />
+                              </Space>
+                            </Col>
+                          )}
                         <Col
                           xs={24}
                           sm={12}
@@ -802,40 +835,6 @@ const ClientRequisitionList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-
-                        {authUser &&
-                          authUser?.userType == "client" &&
-                          authUser?.clientLevel != "tri_cycle" &&
-                          authUser?.clientLevel != "tri_cycle_hotspot" &&
-                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
-                            <Col
-                              xs={24}
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
-                              xxl={12}
-                              className="gutter-row"
-                            >
-                              <Space
-                                style={{ width: "100%" }}
-                                direction="vertical"
-                              >
-                                <span>
-                                  <b>Zone Manager</b>
-                                </span>
-                                <Select
-                                  showSearch
-                                  allowClear
-                                  style={{ width: "100%", textAlign: "start" }}
-                                  placeholder="Please select"
-                                  onChange={handleZoneChange}
-                                  options={zones}
-                                  value={selectedZone}
-                                />
-                              </Space>
-                            </Col>
-                          )}
 
                         <Col
                           xs={24}

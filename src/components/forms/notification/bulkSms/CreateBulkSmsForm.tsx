@@ -954,6 +954,7 @@ const CreateBulkSmsForm = () => {
               >
                 <Input
                   type="text"
+                  maxLength={50}
                   placeholder="subject"
                   className={`form-control`}
                   name="subject"
@@ -990,8 +991,9 @@ const CreateBulkSmsForm = () => {
                   className={`form-control`}
                   name="message"
                   style={{ padding: "6px" }}
-                  rows={6} // Specify the number of rows
-                  cols={40}
+                  rows={10}
+                  cols={20}
+                  maxLength={500}
                 />
               </Form.Item>
             </Col>

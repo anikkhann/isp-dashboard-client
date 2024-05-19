@@ -456,7 +456,7 @@ const CustomerTransactionList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Balance",
+      title: "Balance (BDT)",
       dataIndex: "balance",
       render: (text, record) => {
         return (

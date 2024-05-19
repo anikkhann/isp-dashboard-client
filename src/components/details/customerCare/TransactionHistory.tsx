@@ -207,7 +207,7 @@ const TransactionHistory = ({ item }: PropData) => {
     },
     // balance
     {
-      title: "Balance",
+      title: "Balance (BDT)",
       dataIndex: "balance",
       sorter: false,
       render: (balance: any) => {

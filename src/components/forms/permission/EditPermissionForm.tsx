@@ -289,6 +289,14 @@ const tagsList = [
   {
     label: "Hotspot Zone Transaction",
     value: "hotspotZoneTransaction"
+  },
+  {
+    label: "Registered List",
+    value: "registeredList"
+  },
+  {
+    label: "Expired List",
+    value: "expiredList"
   }
 ];
 

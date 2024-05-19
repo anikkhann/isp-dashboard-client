@@ -126,7 +126,9 @@ const ZoneTagList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         zoneManagerId: selectedZoneManagerParam,
-        pricingPlanId: selectedPricingPlanParam,
+        pricingPlan: {
+          id: selectedPricingPlanParam
+        },
         type: selectedStatusParam,
         dateRangeFilter: {
           field: "createdOn",

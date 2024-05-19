@@ -147,6 +147,7 @@ const CreateClientTemplateForm = () => {
               >
                 <Input
                   type="text"
+                  maxLength={50}
                   placeholder="Subject"
                   className={`form-control`}
                   name="subject"
@@ -185,8 +186,9 @@ const CreateClientTemplateForm = () => {
                   className={`form-control`}
                   name="template"
                   style={{ padding: "6px" }}
-                  rows={6}
+                  rows={10}
                   cols={20}
+                  maxLength={500}
                 />
               </Form.Item>
             </Col>

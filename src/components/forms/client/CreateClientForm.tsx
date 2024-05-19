@@ -1471,170 +1471,178 @@ const CreateClientForm = () => {
                 />
               </Form.Item>
             </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Service Type"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="serviceType"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please select Service Type"
-                //   }
-                // ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
+            {(clientLevel === "quad_cycle_hotspot" ||
+              clientLevel === "tri_cycle_hotspot" ||
+              clientLevel === "quad_cycle_isp_hotspot" ||
+              clientLevel === "tri_cycle_isp_hotspot") && (
+              <>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Service Type"
                     style={{
-                      width: "100%",
-                      textAlign: "start"
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
-                    placeholder="Please select Service Type"
-                    onChange={handleService}
-                    options={serviceTypeList}
-                    value={serviceType}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
+                    name="serviceType"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Service Type"
                       }
-                      return false;
-                    }}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Package Type"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="packageType"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please select Service Type"
-                //   }
-                // ]}
-              >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Select
-                    allowClear
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{
+                          width: "100%",
+                          textAlign: "start"
+                        }}
+                        placeholder="Please select Service Type"
+                        onChange={handleService}
+                        options={serviceTypeList}
+                        value={serviceType}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="Package Type"
                     style={{
-                      width: "100%",
-                      textAlign: "start"
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
-                    placeholder="Please select Package Type"
-                    onChange={handlePackage}
-                    options={packageTypeList}
-                    value={packageType}
-                    showSearch
-                    filterOption={(input, option) => {
-                      if (typeof option?.label === "string") {
-                        return (
-                          option.label
-                            .toLowerCase()
-                            .indexOf(input.toLowerCase()) >= 0
-                        );
+                    name="packageType"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please select Package Type"
                       }
-                      return false;
+                    ]}
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{
+                          width: "100%",
+                          textAlign: "start"
+                        }}
+                        placeholder="Please select Package Type"
+                        onChange={handlePackage}
+                        options={packageTypeList}
+                        value={packageType}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="DNS Name"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
                     }}
-                  />
-                </Space>
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="DNS Name"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="dnsName"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input your Name!"
-                //   }
-                // ]}
-              >
-                <Input
-                  type="text"
-                  placeholder="DNS Name"
-                  className={`form-control`}
-                  name="dnsName"
-                  style={{ padding: "6px" }}
-                  maxLength={32}
-                />
-              </Form.Item>
-            </Col>
+                    name="dnsName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input dns name!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="text"
+                      placeholder="DNS Name"
+                      className={`form-control`}
+                      name="dnsName"
+                      style={{ padding: "6px" }}
+                      maxLength={32}
+                    />
+                  </Form.Item>
+                </Col>
 
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="WSD Commission (%)"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="wsdCommission"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input your Name!"
-                //   }
-                // ]}
-              >
-                <Input
-                  type="number"
-                  placeholder="WSD Commission"
-                  className={`form-control`}
-                  name="wsdCommission"
-                  style={{ padding: "6px" }}
-                />
-              </Form.Item>
-            </Col>
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  <Form.Item
+                    label="WSD Commission (%)"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    name="wsdCommission"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input wsd commission (%)!"
+                      }
+                    ]}
+                  >
+                    <Input
+                      type="number"
+                      placeholder="WSD Commission"
+                      className={`form-control`}
+                      name="wsdCommission"
+                      style={{ padding: "6px" }}
+                    />
+                  </Form.Item>
+                </Col>
+              </>
+            )}
+
             <Col
               xs={24}
               sm={12}

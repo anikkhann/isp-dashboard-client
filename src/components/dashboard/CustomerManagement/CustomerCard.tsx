@@ -198,7 +198,7 @@ const CustomerCard = () => {
           xxl={8}
           className="gutter-row"
         >
-          <Link href={`/admin/customer/customer`}>
+          <Link href={`/admin/customer/register-details`}>
             <Card
               // bordered={false}
               hoverable
@@ -236,7 +236,7 @@ const CustomerCard = () => {
           xxl={8}
           className="gutter-row"
         >
-          <Link href={`/admin/customer/customer`}>
+          <Link href={`/admin/customer/expire-details`}>
             <Card
               // bordered={false}
               hoverable

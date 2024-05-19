@@ -282,6 +282,7 @@ const UpdateSmsAlertForm = () => {
                               style={{ padding: "6px" }}
                               rows={6}
                               cols={20}
+                              maxLength={500}
                               value={item.template}
                               defaultValue={item.template}
                               onChange={e => {

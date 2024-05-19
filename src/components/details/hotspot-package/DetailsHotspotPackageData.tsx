@@ -250,8 +250,8 @@ const DetailsHotspotPackageData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {item.createdOn
-                    ? format(new Date(item.updatedOn), "yyyy-MM-dd pp")
+                  {item?.updatedOn
+                    ? format(new Date(item?.updatedOn), "yyyy-MM-dd pp")
                     : null}
                 </span>
               </Col>

@@ -275,13 +275,18 @@ const CreateSingleSmsForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your mobileNo!"
+                    message: "Please input your Mobile Number!"
+                  },
+                  {
+                    pattern: new RegExp(/^(01)[0-9]{9}$/),
+                    message:
+                      "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Mobile No"
+                  placeholder="01XXXXXXXXX"
                   className={`form-control`}
                   name="mobileNo"
                   style={{ padding: "6px" }}
@@ -315,6 +320,7 @@ const CreateSingleSmsForm = () => {
               >
                 <Input
                   type="text"
+                  maxLength={50}
                   placeholder="Subject"
                   className={`form-control`}
                   name="subject"
@@ -351,8 +357,9 @@ const CreateSingleSmsForm = () => {
                   className={`form-control`}
                   name="message"
                   style={{ padding: "6px" }}
-                  rows={6} // Specify the number of rows
-                  cols={40}
+                  rows={10}
+                  cols={20}
+                  maxLength={500}
                 />
               </Form.Item>
             </Col>

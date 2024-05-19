@@ -93,7 +93,7 @@ const CreateDurjoyRequisitionForm = () => {
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [selectedPaymentType, setSelectedPaymentType] = useState<any>("online");
+  const [selectedPaymentType, setSelectedPaymentType] = useState<any>(null);
   const [selectedTagVoucherType, setSelectedTagVoucherType] =
     useState<any>(null);
   const [selectedDeliveryType, setSelectedDeliveryType] =
@@ -306,7 +306,7 @@ const CreateDurjoyRequisitionForm = () => {
     };
 
     axios
-      .post("/api/payment-gateway-config/get-list-for-online-payment", body)
+      .post("/api/payment-gateway-config/get-list-for-client-payment", body)
       .then(res => {
         // console.log(res);
         const { data } = res;

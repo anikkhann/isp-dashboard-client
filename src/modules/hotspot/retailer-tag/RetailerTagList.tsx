@@ -131,7 +131,10 @@ const RetailerTagList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         subZoneManagerId: selectedZoneManagerParam,
-        pricingPlanId: selectedPricingPlanParam,
+        pricingPlan: {
+          id: selectedPricingPlanParam
+        },
+
         retailerId: selectedRetailerParam,
         type: selectedStatusParam,
         dateRangeFilter: {
@@ -362,6 +365,7 @@ const RetailerTagList: React.FC = () => {
     setSelectedEndDate(null);
     setSelectedSubZoneManager(null);
     setSelectedPricingPlan(null);
+    setSelectedRetailer(null);
   };
   const handleDateChange = (value: any) => {
     // console.log(value);
