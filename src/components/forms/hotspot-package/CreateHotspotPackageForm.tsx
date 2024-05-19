@@ -396,6 +396,7 @@ const CreateHotspotPackageForm = () => {
                   fontWeight: "bold"
                 }}
                 name="dataRateUnit"
+                initialValue={dataRateUnit}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
@@ -459,6 +460,7 @@ const CreateHotspotPackageForm = () => {
                   fontWeight: "bold"
                 }}
                 name="validityUnit"
+                initialValue={validityUnit}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
@@ -636,6 +638,12 @@ const CreateHotspotPackageForm = () => {
                     marginBottom: 0,
                     fontWeight: "bold"
                   }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your end time!"
+                    }
+                  ]}
                   name="endTime"
                 >
                   <TimePicker
