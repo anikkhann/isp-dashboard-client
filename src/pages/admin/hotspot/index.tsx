@@ -5,7 +5,7 @@ import Forbidden from "@/modules/errorPage/Forbidden";
 import ability from "@/services/guard/ability";
 import { useAppSelector } from "@/store/hooks";
 import { ReactNode } from "react";
-import MainDashboard from "@Modules/dashboard/MainDashboard";
+import TotalVoucherDashboard from "@/modules/dashboard/TotalVoucherDashboard";
 
 const Home = () => {
   const auth = useAppSelector(state => state.auth);
@@ -13,7 +13,11 @@ const Home = () => {
   return (
     <>
       {auth.isLoading && <AppLoader />}
-      {ability.can("hotspot.dashboard", "") ? <MainDashboard /> : <Forbidden />}
+      {ability.can("hotspot.dashboard", "") ? (
+        <TotalVoucherDashboard />
+      ) : (
+        <Forbidden />
+      )}
     </>
   );
 };
