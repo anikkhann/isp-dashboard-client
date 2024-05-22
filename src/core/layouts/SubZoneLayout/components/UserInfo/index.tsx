@@ -17,6 +17,7 @@ import {
 } from "./index.styled";
 // import Cookies from "js-cookie";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import Cookies from "js-cookie";
 const StyledUsername = styled.div`
   word-wrap: break-word;
 `;
@@ -28,7 +29,7 @@ const UserInfo = () => {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-
+  const userBalance = Cookies.get("user_balance");
   const user = useAppSelector(state => state.auth.user);
 
   const logout = () => {
@@ -95,7 +96,7 @@ const UserInfo = () => {
               {user?.userType == "client" ||
               (user?.userType == "zone" && user?.masterUser == true) ? (
                 <StyledCrUserDesignation className="text-truncate">
-                  Rem. bal. : {user?.credit}
+                  Rem. bal. : {userBalance}
                 </StyledCrUserDesignation>
               ) : null}
             </StyledCrUserInfoContent>

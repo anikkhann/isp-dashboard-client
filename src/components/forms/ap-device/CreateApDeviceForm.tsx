@@ -699,7 +699,6 @@ const CreateApDeviceForm = () => {
                 />
               </Form.Item>
             </Col>
-
             <Col
               xs={24}
               sm={12}
@@ -708,13 +707,29 @@ const CreateApDeviceForm = () => {
               xl={8}
               xxl={8}
               className="gutter-row"
-            >
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
+          <Row justify={"center"}>
+            <Col>
               <Form.Item
                 name="isSnmpActive"
-                label="SNMP Information"
+                // label="SNMP Information"
                 style={{
                   marginBottom: 0,
-                  fontWeight: "bold"
+                  fontWeight: "bold",
+                  display: "flex",
+                  justifyItems: "center",
+                  alignContent: "center",
+                  alignItems: "center"
                 }}
               >
                 <Checkbox
@@ -726,6 +741,12 @@ const CreateApDeviceForm = () => {
                 </Checkbox>
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
+          >
             {isSnmpActive != false && (
               <Col
                 xs={24}

@@ -3,11 +3,56 @@ import AppAnimate from "@/lib/AppAnimate";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Can } from "@/services/guard/Can";
 import { Col } from "antd";
+import axios from "axios";
+import Cookies from "js-cookie";
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import AppLoader from "@/lib/AppLoader";
 
 const MainDashboard = () => {
+  // const [data, setData] = useState<any[]>([]);
+
+  const fetchData = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    const { data } = await axios.get(`/api/api/v1/auth/get-user-balance`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    return data;
+  };
+
+  const { isLoading, isError, error, isFetching } = useQuery<string, Error>({
+    queryKey: ["user_balance"],
+    queryFn: async () => {
+      const response = await fetchData();
+      return response;
+    },
+    onSuccess(data) {
+      if (data) {
+        // console.log("data.data", data);
+        Cookies.set("user_balance", data);
+        // if (data.body) {
+        //   setData(data.body);
+
+        // } else {
+        //   setData(null);
+
+        // }
+      }
+    },
+    onError(error) {
+      console.error("Error fetching user balance:", error);
+    }
+  });
+
   return (
     <>
+      {isLoading && isFetching && <AppLoader />}
+
+      {isError && <div>{error.message}</div>}
       <AppAnimate>
         <AppRowContainer
           style={{

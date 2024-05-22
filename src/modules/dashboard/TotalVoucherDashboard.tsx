@@ -5,7 +5,8 @@
 // import CustomerQuarterColumnChart from "@/components/charts/clientDashboard/CustomerQuarterColumnChart";
 // import CustomerYearlyColumnChart from "@/components/charts/clientDashboard/CustomerYearlyColumnChart";
 // import CustomerCardData from "@/components/dashboard/client/CustomerCardData";
-import PackageWiseCardData from "@/components/dashboard/WifiHotspot/PackageWiseCardData";
+// import PackageWiseCardData from "@/components/dashboard/WifiHotspot/PackageWiseCardData";
+import PackageWiseVoucherData from "@/components/dashboard/WifiHotspot/PackageWiseVoucherData";
 import TotalVoucherCardData from "@/components/dashboard/WifiHotspot/TotalVoucherCardData";
 import AppAnimate from "@/lib/AppAnimate";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -68,8 +69,12 @@ const TotalVoucherDashboard = () => {
             <TotalVoucherCardData />
           </Col>
 
-          <Col span={24}>
+          {/* <Col span={24}>
             <PackageWiseCardData />
+          </Col> */}
+
+          <Col span={24}>
+            <PackageWiseVoucherData />
           </Col>
 
           {/* <Col xs={24} lg={12}>

@@ -25,6 +25,7 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { CSVLink } from "react-csv";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -50,7 +51,7 @@ const AdminTicketList: React.FC = () => {
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("desc");
   const [sort, SetSort] = useState("createdOn");
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [complainTypeList, setComplainTypes] = useState<any>([]);
@@ -237,7 +238,8 @@ const AdminTicketList: React.FC = () => {
         },
         assignTo: {
           id: assignToParams
-        }
+        },
+        isForSystemAdmin: authUser?.userType == "durjoy" ? true : null
       }
     };
 

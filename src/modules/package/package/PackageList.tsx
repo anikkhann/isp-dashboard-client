@@ -18,6 +18,7 @@ import { format } from "date-fns";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useAppSelector } from "@/store/hooks";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -30,11 +31,15 @@ const PackageList: React.FC = () => {
   const [data, setData] = useState<PackageData[]>([]);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [clients, setClients] = useState<any[]>([]);
+
+  const [selectedClient, setSelectedClient] = useState<any>(null);
 
   const [packages, setPackages] = useState<PackageData[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
@@ -52,6 +57,7 @@ const PackageList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
+    selectedClientParam?: string,
     nameParam?: string
   ) => {
     const token = Cookies.get("token");
@@ -70,6 +76,7 @@ const PackageList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        partner: { id: selectedClientParam },
         name: nameParam
       }
     };
@@ -83,13 +90,22 @@ const PackageList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["packages-list", page, limit, order, sort, selectedPackage],
+    queryKey: [
+      "packages-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedClient,
+      selectedPackage
+    ],
     queryFn: async () => {
       const response = await fetchData(
         page,
         limit,
         order,
         sort,
+        selectedClient,
         selectedPackage
       );
       return response;
@@ -167,16 +183,65 @@ const PackageList: React.FC = () => {
     });
   }
 
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value as any);
+  };
+
   const handlePackageChange = (value: any) => {
     // console.log("checked = ", value);
     setSelectedPackage(value as any);
   };
 
   const handleClear = () => {
+    setSelectedClient(null);
     setSelectedPackage(null);
   };
 
   useEffect(() => {
+    getClients();
     getPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -483,6 +548,36 @@ const PackageList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser &&
+                          (authUser.userType == "durjoy" ||
+                            authUser.userType == "duronto") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              xl={12}
+                              xxl={12}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Client</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleClientChange}
+                                  options={clients}
+                                  value={selectedClient}
+                                />
+                              </Space>
+                            </Col>
+                          )}
                         <Col
                           xs={24}
                           sm={12}

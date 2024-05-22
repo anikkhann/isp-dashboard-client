@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useRouter } from "next/router";
+import { useAppSelector } from "@/store/hooks";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -77,12 +78,17 @@ const statusList = [
 const DeviceList: React.FC = () => {
   const [data, setData] = useState<DeviceData[]>([]);
   const { Panel } = Collapse;
+  const authUser = useAppSelector(state => state.auth.user);
   const router = useRouter();
   const MySwal = withReactContent(Swal);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
+
+  const [clients, setClients] = useState<any[]>([]);
+
+  const [selectedClient, setSelectedClient] = useState<any>(null);
 
   const [selectedDeviceType, setSelectedDeviceType] = useState<any>(null);
 
@@ -106,6 +112,7 @@ const DeviceList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
+    selectedClientParam?: string,
     deviceTypeParam?: string,
     monitoringTypeParam?: string,
     ipParam?: string,
@@ -128,6 +135,7 @@ const DeviceList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         partnerType: "client",
+        partner: { id: selectedClientParam },
         deviceType: deviceTypeParam,
         monitoringType: monitoringTypeParam,
         ip: ipParam,
@@ -150,6 +158,7 @@ const DeviceList: React.FC = () => {
       limit,
       order,
       sort,
+      selectedClient,
       selectedDeviceType,
       selectedMonitoringType,
       ip,
@@ -161,6 +170,7 @@ const DeviceList: React.FC = () => {
         limit,
         order,
         sort,
+        selectedClient,
         selectedDeviceType,
         selectedMonitoringType,
         ip,
@@ -200,6 +210,59 @@ const DeviceList: React.FC = () => {
     }
   });
 
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
+  useEffect(() => {
+    getClients();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value as any);
+  };
+
   const handleDeviceTypeChange = (value: any) => {
     // console.log("checked = ", value);
     setSelectedDeviceType(value as any);
@@ -216,6 +279,7 @@ const DeviceList: React.FC = () => {
   };
 
   const handleClear = () => {
+    setSelectedClient(null);
     setSelectedDeviceType(null);
     setSelectedMonitoringType(null);
     setIp(null);
@@ -566,6 +630,37 @@ const DeviceList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser &&
+                          (authUser.userType == "durjoy" ||
+                            authUser.userType == "duronto") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Client</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleClientChange}
+                                  options={clients}
+                                  value={selectedClient}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+
                         <Col
                           xs={24}
                           sm={12}

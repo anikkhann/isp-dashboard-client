@@ -19,7 +19,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useAppDispatch } from "@/store/hooks";
+// import { useAppDispatch } from "@/store/hooks";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
@@ -41,7 +41,7 @@ const types = [
 const CreateCustomerTopUpForm = () => {
   const [form] = Form.useForm();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
   // ** States
@@ -151,18 +151,19 @@ const CreateCustomerTopUpForm = () => {
                 icon: "success"
               }).then(async () => {
                 await axios
-                  .get("/api/api/v1/auth/get", {
+                  .get("/api/api/v1/auth/get-user-balance", {
                     headers: {
                       Authorization: `Bearer ${token}`
                     }
                   })
                   .then(response => {
                     // // console.log(response);
-                    if (response.data.status == "401") {
-                      Cookies.remove("token");
-                      router.replace("/login");
-                    }
-                    dispatch({ type: "auth/setUser", payload: response.data });
+                    // if (response.data.status == "401") {
+                    //   Cookies.remove("token");
+                    //   router.replace("/login");
+                    // }
+                    Cookies.set("user_balance", response.data);
+                    // dispatch({ type: "auth/setUser", payload: response.data });
                     // console.log(response.data);
                   })
                   .catch(error => {

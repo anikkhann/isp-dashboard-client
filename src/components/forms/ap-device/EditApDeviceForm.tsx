@@ -575,7 +575,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
             >
               <Form.Item
                 name="name"
-                label="name"
+                label="Name"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -608,7 +608,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
             >
               <Form.Item
                 name="mapLocation"
-                label="mapLocation"
+                label="Map Location"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -622,7 +622,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
               >
                 <Input
                   type="text"
-                  placeholder="mapLocation"
+                  placeholder="map location"
                   className={`form-control`}
                   style={{ padding: "6px" }}
                   maxLength={100}
@@ -641,7 +641,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
             >
               <Form.Item
                 name="locationDescription"
-                label="locationDescription"
+                label="Location Description"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -655,7 +655,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
               >
                 <Input
                   type="text"
-                  placeholder="locationDescription"
+                  placeholder="Location Description"
                   className={`form-control`}
                   style={{ padding: "6px" }}
                   maxLength={100}
@@ -705,7 +705,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
             >
               <Form.Item
                 name="macAddress"
-                label="macAddress"
+                label="MAC Address"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -719,14 +719,13 @@ const EditApDeviceForm = ({ item }: PropData) => {
               >
                 <Input
                   type="text"
-                  placeholder="macAddress"
+                  placeholder="mac address"
                   className={`form-control`}
                   style={{ padding: "6px" }}
                   maxLength={17}
                 />
               </Form.Item>
             </Col>
-
             <Col
               xs={24}
               sm={12}
@@ -735,10 +734,22 @@ const EditApDeviceForm = ({ item }: PropData) => {
               xl={8}
               xxl={8}
               className="gutter-row"
-            >
+            ></Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
+          <Row justify={"center"}>
+            <Col>
               <Form.Item
                 name="isSnmpActive"
-                label="isSnmpActive"
+                label=""
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -749,10 +760,16 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   checked={isSnmpActive}
                   className="gutter-row"
                 >
-                  isSnmpActive
+                  Is SNMP Active?
                 </Checkbox>
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+            justify="space-between"
+          >
             {isSnmpActive != false && (
               <Col
                 xs={24}
@@ -852,7 +869,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
               >
                 <Form.Item
                   name="snmpCommunity"
-                  label="snmpCommunity"
+                  label="SNMP Community"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -866,7 +883,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
                 >
                   <Input
                     type="text"
-                    placeholder="snmpCommunity"
+                    placeholder="snmp community"
                     className={`form-control`}
                     style={{ padding: "6px" }}
                     maxLength={20}

@@ -296,7 +296,7 @@ const PackageWiseCardData = () => {
                     >
                       <Space style={{ width: "100%" }} direction="vertical">
                         <span>
-                          <b style={{ color: "red" }}>*</b> <b>Date</b>
+                          <b style={{ color: "red" }}>*</b> <b>Date Range</b>
                         </span>
                         <RangePicker
                           style={{ width: "100%" }}

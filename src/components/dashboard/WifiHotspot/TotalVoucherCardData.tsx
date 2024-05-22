@@ -73,7 +73,7 @@ const TotalVoucherCardData = () => {
   const { RangePicker } = DatePicker;
   const [selectedTotalVoucherType, setSelectedTotalVoucherType] =
     useState<string>(totalVoucherType[0].value);
-  const [activeKey, setActiveKey] = useState<string | string[]>(["1"]);
+  //   const [activeKey, setActiveKey] = useState<string | string[]>(["1"]);
   const [isDateTouched, setIsDateTouched] = useState<boolean>(false);
 
   const handleChange = (value: string) => {
@@ -165,15 +165,16 @@ const TotalVoucherCardData = () => {
   };
 
   const handleClear = () => {
+    setSelectedTotalVoucherType(totalVoucherType[0].value);
     setSelectedDateRange(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
     // setSelectedTotalVoucherType(null);
   };
 
-  const handleCollapseChange = (key: string | string[]) => {
-    setActiveKey(key);
-  };
+  //   const handleCollapseChange = (key: string | string[]) => {
+  //     setActiveKey(key);
+  //   };
   //   const fetchData = async (
   //     startDate: string | null,
   //     endDate: string | null
@@ -232,13 +233,15 @@ const TotalVoucherCardData = () => {
       {isError && <div>{(error as Error).message}</div>}
 
       <Space direction="vertical" style={{ width: "100%" }}>
-        <h2 className="p-5 font-bold text-[#F15F22]">Voucher :</h2>
+        <h2 className="p-5 font-bold text-[#F15F22]">
+          Activated Voucher Summary:
+        </h2>
         <Space style={{ marginBottom: 16 }}>
           <div style={{ padding: "20px", backgroundColor: "white" }}>
             <Collapse
               accordion
-              activeKey={activeKey}
-              onChange={handleCollapseChange}
+              //   activeKey={activeKey}
+              //   onChange={handleCollapseChange}
               style={{
                 backgroundColor: "#FFC857",
                 color: "white",
