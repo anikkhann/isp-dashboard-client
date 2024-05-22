@@ -71,6 +71,7 @@ const EditUserForm = ({ item }: PropData) => {
         ]
       },
       body: {
+        isForSystem: false,
         isActive: true
       }
     };

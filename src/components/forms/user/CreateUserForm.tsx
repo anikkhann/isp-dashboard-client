@@ -116,6 +116,7 @@ const CreateUserForm = () => {
         ]
       },
       body: {
+        isForSystem: false,
         isActive: true
       }
     };
