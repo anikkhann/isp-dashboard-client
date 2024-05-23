@@ -242,10 +242,10 @@ const SearchCustomer = () => {
     order: string,
     sort: string,
     selectedClientParam?: string,
-    customerIdParam?: string,
     usernameParam?: string,
     emailParam?: string,
     mobileParam?: string,
+    customerIdParam?: string,
     startDateParam?: string,
     endDateParam?: string
   ) => {
@@ -267,10 +267,10 @@ const SearchCustomer = () => {
       },
       body: {
         client: { id: selectedClientParam },
-        customerId: customerIdParam,
         username: usernameParam,
         email: emailParam,
         mobile: mobileParam,
+        customerId: customerIdParam,
         dateRangeFilter: {
           field: "expirationTime",
           startDate: startDateParam,

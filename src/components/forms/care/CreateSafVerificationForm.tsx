@@ -2259,7 +2259,7 @@ const CreateSafVerificationForm = ({ item }: PropData) => {
   const [loading, setLoading] = useState(false);
 
   const [previous, setPrevious] = useState<any>("");
-  console.log(previous.id);
+  console.log("previous", previous);
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
