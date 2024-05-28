@@ -787,10 +787,11 @@ const DurjoyRequisitionList: React.FC = () => {
                                     // const date = new Date(item.expireDate);
                                     return {
                                       "Client Name": item.client?.username,
-                                      "Client Commission":
-                                        item.clientCommission,
-                                      "Package price": item.packagePrice,
+                                      // "Client Commission":
+                                      //   item.clientCommission,
                                       Package: item.pricingPlan?.name,
+                                      "Package price (BDT)": item.packagePrice,
+
                                       Voucher: item.voucherNumber,
                                       Reference: item.referenceNumber,
                                       "Serial No": item.serialNo,
@@ -799,9 +800,11 @@ const DurjoyRequisitionList: React.FC = () => {
                                         item.zoneManager?.username,
                                       "Sub Zone Manager":
                                         item.subZoneManager?.username,
-
+                                      Retailer: item.retailer?.username,
+                                      "Used By": item.usedBy?.phone,
                                       "Used IP": item.usedIp,
                                       "Used Mac": item.usedMac,
+
                                       "Created At": item.createdOn
                                     };
                                   });
@@ -996,10 +999,11 @@ const DurjoyRequisitionList: React.FC = () => {
                                       "Client Username": item.client?.username,
                                       "Requisition ID":
                                         item.clientCardRequisitionId,
-                                      "Client Commission":
-                                        item.clientCommission,
-                                      "Package Price": item.packagePrice,
+                                      // "Client Commission":
+                                      //   item.clientCommission,
                                       "Pricing Name": item.pricingPlan?.name,
+                                      "Package Price (BDT)": item.packagePrice,
+                                      Voucher: item.voucherNumber,
                                       Reference: item.referenceNumber,
                                       "Serial No": item.serialNo,
                                       "Sub Zone Commission":
@@ -1008,6 +1012,7 @@ const DurjoyRequisitionList: React.FC = () => {
                                         item.zoneManager?.username,
                                       "Sub Zone Manager":
                                         item.subZoneManager?.username,
+                                      Retailer: item.retailer?.username,
                                       "Created Time": format(
                                         createdOn,
                                         "yyyy-MM-dd pp"

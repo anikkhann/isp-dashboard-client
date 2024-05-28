@@ -578,30 +578,38 @@ const PackageList: React.FC = () => {
                               </Space>
                             </Col>
                           )}
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Name</b>
-                            </span>
-                            <Select
-                              showSearch
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handlePackageChange}
-                              options={packages}
-                              value={selectedPackage}
-                            />
-                          </Space>
-                        </Col>
+                        {authUser &&
+                          authUser.userType !== "durjoy" &&
+                          authUser.userType !== "duronto" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              xl={12}
+                              xxl={12}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Name</b>
+                                </span>
+                                <Select
+                                  showSearch
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handlePackageChange}
+                                  options={packages}
+                                  value={selectedPackage}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+
                         <Col
                           xs={24}
                           sm={12}

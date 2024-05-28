@@ -190,12 +190,6 @@ const UnusedVoucherList: React.FC = () => {
     }
   });
 
-  useEffect(() => {
-    if (data) {
-      setData(data);
-    }
-  }, [data]);
-
   function getClients() {
     const body = {
       meta: {
@@ -414,6 +408,12 @@ const UnusedVoucherList: React.FC = () => {
   }
 
   useEffect(() => {
+    if (data) {
+      setData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
     getPricingPlan();
     getClients();
 
@@ -448,6 +448,7 @@ const UnusedVoucherList: React.FC = () => {
     setSelectedVoucherNumber(null);
     setSelectedSerialNo(null);
     setSelectedReferenceNumber(null);
+    // fetchData();
   };
 
   const handleZoneChange = (value: any) => {
@@ -753,14 +754,16 @@ const UnusedVoucherList: React.FC = () => {
           return {
             "Client Username": item.client?.username,
             "Requisition ID": item.clientCardRequisitionId,
-            "Client Commission": item.clientCommission,
-            "Package Price": item.packagePrice,
+            // "Client Commission": item.clientCommission,
             "Pricing Name": item.pricingPlan?.name,
+            "Package Price (BDT)": item.packagePrice,
+            Voucher: item.voucherNumber,
             Reference: item.referenceNumber,
             "Serial No": item.serialNo,
             "Sub Zone Commission": item.subZoneCommission,
             "Zone Manager": item.zoneManager?.username,
             "Sub Zone Manager": item.subZoneManager?.username,
+            Retailer: item.retailer?.username,
             "Created Time": format(createdOn, "yyyy-MM-dd pp"),
             "Expire Time": format(expireDate, "yyyy-MM-dd pp")
             // Voucher: item.voucherNumber,
@@ -1132,13 +1135,36 @@ const UnusedVoucherList: React.FC = () => {
                           xl={8}
                           xxl={8}
                           className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
                         >
                           <Button
                             style={{
                               width: "100%",
                               textAlign: "center",
                               marginTop: "25px",
-                              backgroundColor: "#F15F22",
+                              backgroundColor: "#0a8fdc",
                               color: "#ffffff"
                             }}
                             onClick={() => {
@@ -1152,10 +1178,10 @@ const UnusedVoucherList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Button

@@ -1,6 +1,6 @@
 export interface UsedVoucherData {
   createdOn: number;
-  retailer: string;
+  retailer: Retailer;
   package: string;
   insertedBy: InsertedBy;
   editedBy: EditedBy;
@@ -26,6 +26,36 @@ export interface UsedVoucherData {
   subZoneManagerId: string;
 }
 
+export interface Retailer {
+  createdOn: number;
+  updatedOn: number;
+  id: string;
+  partnerType: string;
+  name: string;
+  username: string;
+  contactPerson: string;
+  contactNumber: string;
+  email: string;
+  address: string;
+  divisionId: string;
+  division: Division;
+  districtId: string;
+  district: District;
+  salesDistributionCommission: number;
+  credits: number;
+  parentId: string;
+  parent: Parent;
+  clientId: string;
+  client: Client;
+  isActive: boolean;
+  insertedBy: InsertedBy;
+  editedBy: EditedBy;
+  totalCustomer: number;
+  activeCustomer: number;
+  registeredCustomer: number;
+  expiredCustomer: number;
+  wsdCommission: number;
+}
 export interface ClientCardRequisition {
   createdOn: number;
   updatedOn: number;
@@ -69,6 +99,10 @@ export interface PricingPlan {
 export interface UsedBy {
   createdOn: number;
   id: string;
+  name: string;
+  gender: string;
+  dateOfBirth: string;
+  phone: number;
   customer: Customer;
   clientId: string;
   activePricingPlan: ActivePricingPlan;

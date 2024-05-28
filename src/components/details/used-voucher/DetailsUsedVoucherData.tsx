@@ -107,7 +107,7 @@ const DetailsUsedVoucherData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Retailer :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">{item.retailer}</span>
+                <span className="mx-1 text-base">{item.retailer?.name}</span>
               </Col>
             </Row>
 
@@ -243,9 +243,7 @@ const DetailsUsedVoucherData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Customer Name :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">
-                  {item.usedBy?.customer?.name}
-                </span>
+                <span className="mx-1 text-base">{item.usedBy?.name}</span>
               </Col>
             </Row>
             <Row
@@ -263,9 +261,7 @@ const DetailsUsedVoucherData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Mobile :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">
-                  {item.usedBy?.customer?.phone}
-                </span>
+                <span className="mx-1 text-base">{item.usedBy?.phone}</span>
               </Col>
             </Row>
             <Row
@@ -283,9 +279,7 @@ const DetailsUsedVoucherData = ({ item }: PropData) => {
                 <span className="font-bold text-base">Gender :</span>
               </Col>
               <Col>
-                <span className="mx-1 text-base">
-                  {item.usedBy?.customer?.gender}
-                </span>
+                <span className="mx-1 text-base">{item.usedBy?.gender}</span>
               </Col>
             </Row>
             <Row
@@ -304,11 +298,8 @@ const DetailsUsedVoucherData = ({ item }: PropData) => {
               </Col>
               <Col>
                 <span className="mx-1 text-base">
-                  {item.createdOn
-                    ? format(
-                        new Date(item.usedBy?.customer?.dateOfBirth),
-                        "yyyy-MM-dd "
-                      )
+                  {item.usedBy
+                    ? format(new Date(item.usedBy?.dateOfBirth), "yyyy-MM-dd ")
                     : null}
                   {/* {item.usedBy?.customer?.dateOfBirth} */}
                 </span>

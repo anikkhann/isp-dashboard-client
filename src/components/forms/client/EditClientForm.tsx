@@ -51,6 +51,7 @@ interface FormData {
   username: string;
   prefix: string;
   password: string;
+  confirmPassword: string;
   contactPerson: string;
   contactNumber: string;
   altContactNumber: any;
@@ -478,7 +479,8 @@ const EditClientForm = ({ item }: PropData) => {
         name: item.name,
         username: item.username,
         prefix: item.prefix,
-        /*  password: item.password, */
+        password: item.password,
+        confirmPassword: item.password,
         email: item.email,
         address: item.address,
         altContactNumber: item.altContactNumber,
@@ -568,6 +570,8 @@ const EditClientForm = ({ item }: PropData) => {
 
         name,
         username,
+        password,
+        confirmPassword,
         prefix,
         email,
         address,
@@ -620,6 +624,8 @@ const EditClientForm = ({ item }: PropData) => {
         name: name,
 
         username: username,
+        password: password,
+        confirmPassword: confirmPassword,
         prefix: prefix,
         contactPerson: contactPerson,
         contactNumber: contactNumber,
@@ -712,6 +718,7 @@ const EditClientForm = ({ item }: PropData) => {
 
             email: "",
             password: "",
+            confirmPassword: "",
             username: "",
             prefix: "",
             clientLevel: "",
@@ -962,6 +969,102 @@ const EditClientForm = ({ item }: PropData) => {
               </Form.Item>
             </Col>
             {/* password, confirm password, address */}
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* password */}
+              <Form.Item
+                name="password"
+                label="Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    // required: true,
+                    message: "Please input your password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
+                  }
+                ]}
+                hasFeedback
+              >
+                <Input.Password
+                  placeholder="Password"
+                  style={{ padding: "6px" }}
+                  maxLength={32}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* confirm password */}
+              <Form.Item
+                name="confirmPassword"
+                label="Confirm Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                dependencies={["password"]}
+                hasFeedback
+                rules={[
+                  {
+                    // required: true,
+                    message: "Please confirm your password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          "confirm password that you entered do not match with password!"
+                        )
+                      );
+                    }
+                  })
+                ]}
+              >
+                <Input.Password
+                  placeholder="Confirm Password"
+                  style={{ padding: "6px" }}
+                  maxLength={32}
+                />
+              </Form.Item>
+            </Col>
             <Col
               xs={24}
               sm={12}

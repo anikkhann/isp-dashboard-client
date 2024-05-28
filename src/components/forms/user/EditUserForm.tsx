@@ -27,6 +27,8 @@ import { UserData } from "@/interfaces/UserData";
 interface AdminFormData {
   name: string;
   email: string;
+  password: string;
+  confirmPassword: string;
   username: string;
   phone: string;
 }
@@ -121,12 +123,14 @@ const EditUserForm = ({ item }: PropData) => {
   const onSubmit = async (data: AdminFormData) => {
     setLoading(true);
     setTimeout(async () => {
-      const { name, email, username, phone } = data;
+      const { name, email, password, confirmPassword, username, phone } = data;
 
       const formData = {
         id: item.id,
         name: name,
         email: email,
+        password: password,
+        confirmPassword: confirmPassword,
         username: username,
         phone: phone,
         isActive: isActive,
@@ -196,6 +200,8 @@ const EditUserForm = ({ item }: PropData) => {
           initialValues={{
             name: item.name || "",
             email: item.email || "",
+            password: item.password || "",
+            confirmPassword: item.confirmPassword || "",
             username: item.username || "",
             phone: item.phone || ""
           }}
@@ -326,6 +332,102 @@ const EditUserForm = ({ item }: PropData) => {
                   className={`form-control`}
                   name="email"
                   style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* password */}
+              <Form.Item
+                name="password"
+                label="Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                rules={[
+                  {
+                    // required: true,
+                    message: "Please input your password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
+                  }
+                ]}
+                hasFeedback
+              >
+                <Input.Password
+                  placeholder="Password"
+                  style={{ padding: "6px" }}
+                  maxLength={32}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* confirm password */}
+              <Form.Item
+                name="confirmPassword"
+                label="Confirm Password"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                dependencies={["password"]}
+                hasFeedback
+                rules={[
+                  {
+                    // required: true,
+                    message: "Please confirm your password!"
+                  },
+                  {
+                    min: 6,
+                    message: "Password must be minimum 6 characters."
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores, @ and hyphens allowed"
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          "confirm password that you entered do not match with password!"
+                        )
+                      );
+                    }
+                  })
+                ]}
+              >
+                <Input.Password
+                  placeholder="Confirm Password"
+                  style={{ padding: "6px" }}
+                  maxLength={32}
                 />
               </Form.Item>
             </Col>

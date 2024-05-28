@@ -55,12 +55,12 @@ const types = [
 // (dropdown - "Conditional", "Adjustment")
 const extensionTypes = [
   {
-    label: "Conditional",
-    value: "Conditional"
-  },
-  {
     label: "Adjustment",
     value: "Adjustment"
+  },
+  {
+    label: "Conditional",
+    value: "Conditional"
   }
 ];
 

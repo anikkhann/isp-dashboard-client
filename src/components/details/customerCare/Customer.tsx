@@ -864,19 +864,25 @@ const Customer = ({ item }: PropData) => {
                           >
                             Expired
                           </span>
-                          <Button
-                            style={{
-                              marginLeft: "auto",
-                              marginRight: "20px",
-                              backgroundColor: "#D61355",
-                              color: "#ffffff",
-                              textAlign: "right"
-                            }}
-                            onClick={() => handleRenew(item?.id, setLoading)} // Pass setLoading function to handleRenew
-                            disabled={loading} // Disable the button when loading
-                          >
-                            {loading ? "Loading..." : "Renew"}
-                          </Button>
+                          {authUser &&
+                            authUser.userType !== "durjoy" &&
+                            authUser.userType !== "duronto" && (
+                              <Button
+                                style={{
+                                  marginLeft: "auto",
+                                  marginRight: "20px",
+                                  backgroundColor: "#D61355",
+                                  color: "#ffffff",
+                                  textAlign: "right"
+                                }}
+                                onClick={() =>
+                                  handleRenew(item?.id, setLoading)
+                                } // Pass setLoading function to handleRenew
+                                disabled={loading} // Disable the button when loading
+                              >
+                                {loading ? "Loading..." : "Renew"}
+                              </Button>
+                            )}
                         </>
                       ) : (
                         <span

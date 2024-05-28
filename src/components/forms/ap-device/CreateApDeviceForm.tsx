@@ -19,6 +19,7 @@ interface FormData {
   locationDescription: string;
   ip: string;
   macAddress: string;
+  vlanId: string;
   snmpVersion: string;
   snmpPort: string;
   snmpCommunity: string;
@@ -316,6 +317,7 @@ const CreateApDeviceForm = () => {
         locationDescription,
         ip,
         macAddress,
+        vlanId,
         // snmpVersion,
         snmpPort,
         snmpCommunity
@@ -328,6 +330,7 @@ const CreateApDeviceForm = () => {
         locationDescription: locationDescription,
         ip: ip,
         macAddress: macAddress,
+        vlanId: vlanId,
         isSnmpActive: isSnmpActive,
         snmpVersion: selectedSnmpVersion,
         snmpPort: snmpPort,
@@ -678,7 +681,7 @@ const CreateApDeviceForm = () => {
             >
               <Form.Item
                 name="macAddress"
-                label="Mac Address"
+                label="MAC Address"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -686,16 +689,48 @@ const CreateApDeviceForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input Mac Address!"
+                    message: "Please input MAC Address!"
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="Mac Address"
+                  placeholder="MAC Address"
                   className={`form-control`}
                   style={{ padding: "6px" }}
                   maxLength={17}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="vlanId"
+                label="Vlan ID"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input Vlan ID!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="Vlan ID"
+                  className={`form-control`}
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>

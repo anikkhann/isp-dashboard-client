@@ -6,6 +6,8 @@ export interface UserData {
   username: string;
   phone: string;
   email: string;
+  password: string;
+  confirmPassword: string;
   isActive: boolean;
   userRoles: any[];
   userType: string;

@@ -124,6 +124,7 @@ const ZoneTransactionList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        userType: "zone",
         zoneManagerId: selectedZoneParam,
         transactionId: transactionIdParam,
         trxType: selectedTransactionTypeParam,

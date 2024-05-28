@@ -537,18 +537,18 @@ const UsedVoucherList: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
-    // {
-    //   title: "Retailer",
-    //   dataIndex: "retailer",
-    //   sorter: false,
-    //   render: (retailer: any) => {
-    //     if (!retailer) return "-";
-    //     return <>{retailer.username}</>;
-    //   },
-    //   ellipsis: true,
-    //   width: "auto",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Retailer",
+      dataIndex: "retailer",
+      sorter: false,
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
     {
       title: "SerialNo",
       dataIndex: "serialNo",
@@ -571,7 +571,7 @@ const UsedVoucherList: React.FC = () => {
       sorter: false,
       render: (usedBy: any) => {
         if (!usedBy) return "-";
-        return <>{usedBy?.customer?.name}</>;
+        return <>{usedBy?.name}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -583,7 +583,7 @@ const UsedVoucherList: React.FC = () => {
       sorter: false,
       render: (usedBy: any) => {
         if (!usedBy) return "-";
-        return <>{usedBy?.customer?.phone}</>;
+        return <>{usedBy?.phone}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -657,18 +657,18 @@ const UsedVoucherList: React.FC = () => {
     },
 
     // insertedBy
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.username}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.username}</>;
+    //   },
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // },
     // createdOn
     {
       title: "Created At",
@@ -814,8 +814,8 @@ const UsedVoucherList: React.FC = () => {
           // const date = new Date(item.expireDate);
           return {
             "Client Name": item.client?.username,
-            "Client Commission": item.clientCommission,
-            "Package price": item.packagePrice,
+            // "Client Commission": item.clientCommission,
+            "Package price (BDT)": item.packagePrice,
             Package: item.pricingPlan?.name,
             Voucher: item.voucherNumber,
             Reference: item.referenceNumber,
@@ -823,7 +823,8 @@ const UsedVoucherList: React.FC = () => {
             // "Expiration Date": format(date, "yyyy-MM-dd pp"),
             "Zone Manager": item.zoneManager?.username,
             "Sub Zone Manager": item.subZoneManager?.username,
-
+            Retailer: item.retailer?.username,
+            "Used By": item.usedBy?.phone,
             "Used IP": item.usedIp,
             "Used Mac": item.usedMac,
             "Created At": item.createdOn
@@ -1213,13 +1214,36 @@ const UsedVoucherList: React.FC = () => {
                           xl={8}
                           xxl={8}
                           className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                      </Row>
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
                         >
                           <Button
                             style={{
                               width: "100%",
                               textAlign: "center",
                               marginTop: "25px",
-                              backgroundColor: "#F15F22",
+                              backgroundColor: "#0a8fdc",
                               color: "#ffffff"
                             }}
                             onClick={() => {
@@ -1233,10 +1257,10 @@ const UsedVoucherList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Button

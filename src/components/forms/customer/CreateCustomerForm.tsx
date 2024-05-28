@@ -138,6 +138,8 @@ const CreateCustomerForm = () => {
 
   const [selectedIpMode, setSelectedIpMode] = useState("nas");
 
+  const [addPrefix, setAddPrefix] = useState<boolean>(true);
+
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
@@ -203,7 +205,9 @@ const CreateCustomerForm = () => {
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
-
+  const handlePrefix = (e: any) => {
+    setAddPrefix(e.target.checked ? true : false);
+  };
   const handleSmsAlert = (e: any) => {
     setSmsAlert(e.target.checked ? true : false);
   };
@@ -342,6 +346,7 @@ const CreateCustomerForm = () => {
     form.setFieldsValue({ onuDeviceId: value });
     setOnuDeviceId(value as any);
   };
+
   // olt device
   function getOltDevice() {
     const body = {
@@ -1054,6 +1059,7 @@ const CreateCustomerForm = () => {
 
       const formData = {
         name: name,
+        addPrefix: addPrefix,
         username: username,
         password: password,
         customerTypeId: selectedCustomerType,
@@ -1167,6 +1173,7 @@ const CreateCustomerForm = () => {
           form={form}
           initialValues={{
             name: "",
+            addPrefix: true,
             username: "",
             password: "",
             // customerTypeId: string
@@ -1298,6 +1305,18 @@ const CreateCustomerForm = () => {
                     xxl={12}
                     className="gutter-row"
                   >
+                    {/* <Form.Item
+                         label=""
+                        style={{
+                          marginBottom: 0
+                        }}
+                      >
+                        <Checkbox
+                          onChange={handlePrefix}
+                          checked={addPrefix}
+                        ></Checkbox>
+                      </Form.Item> */}
+
                     {/* username */}
                     <Form.Item
                       name="username"
@@ -1318,26 +1337,31 @@ const CreateCustomerForm = () => {
                         }
                       ]}
                     >
-                      <Input
-                        type="text"
-                        addonBefore={
-                          <span
-                            style={{
-                              backgroundColor: "#cfcdca",
-                              color: "black"
-                            }}
-                          >
-                            {authUser
-                              ? authUser.clientPrefix + "_"
-                              : "Not Available"}
-                          </span>
-                        }
-                        placeholder="Username"
-                        className={`form-control`}
-                        name="username"
-                        style={{ padding: "6px" }}
-                        maxLength={32}
-                      />
+                      <div className="flex justify-between">
+                        <Checkbox onChange={handlePrefix} checked={addPrefix}>
+                          {/* Prefix? */}
+                        </Checkbox>
+                        <Input
+                          type="text"
+                          addonBefore={
+                            <span
+                              style={{
+                                backgroundColor: "#cfcdca",
+                                color: "black"
+                              }}
+                            >
+                              {authUser
+                                ? authUser.clientPrefix + "_"
+                                : "Not Available"}
+                            </span>
+                          }
+                          placeholder="Username"
+                          className={`form-control`}
+                          name="username"
+                          style={{ padding: "6px" }}
+                          maxLength={32}
+                        />
+                      </div>
                     </Form.Item>
                   </Col>
                   <Col

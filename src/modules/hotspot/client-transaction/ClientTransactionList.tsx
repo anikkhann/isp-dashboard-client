@@ -122,6 +122,7 @@ const ClientTransactionList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        userType: "client",
         clientId: selectedClientParam,
         transactionId: transactionIdParam,
         trxType: selectedTransactionTypeParam, //dropdown (Online, Offline)
