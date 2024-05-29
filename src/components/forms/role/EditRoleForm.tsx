@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import type { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 import {
   Alert,
@@ -20,7 +20,7 @@ import {
   Divider,
   Space
 } from "antd";
-import { CheckboxValueType } from "antd/es/checkbox/Group";
+import type { CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
 import { RoleData } from "@/interfaces/RoleData";
 import Cookies from "js-cookie";
