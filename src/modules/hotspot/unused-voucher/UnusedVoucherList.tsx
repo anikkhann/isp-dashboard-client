@@ -448,6 +448,7 @@ const UnusedVoucherList: React.FC = () => {
     setSelectedVoucherNumber(null);
     setSelectedSerialNo(null);
     setSelectedReferenceNumber(null);
+
     // fetchData();
   };
 

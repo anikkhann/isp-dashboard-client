@@ -42,8 +42,9 @@ const CreateRetailerTagForm = () => {
   const [selectedType, setSelectedType] = useState<any>(null);
 
   const [subZoneManagers, setSubZoneManagers] = useState<any[]>([]);
-  const [selectedSubZoneManager, setSelectedSubZoneManager] =
-    useState<any>(null);
+  const [selectedSubZoneManager, setSelectedSubZoneManager] = useState<
+    string | null
+  >(null);
 
   const [pricingPlans, setPricingPlans] = useState<any[]>([]);
   const [selectedPricingPlan, setSelectedPricingPlan] = useState<any>(null);
@@ -101,7 +102,7 @@ const CreateRetailerTagForm = () => {
       setSubZoneManagers(list);
     });
   }
-  function getRetailers(selectedSubZoneManager?: string) {
+  function getRetailers(selectedSubZoneManager: string | null) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -186,6 +187,7 @@ const CreateRetailerTagForm = () => {
 
   useEffect(() => {
     getSubZoneManagers();
+    getRetailers(null);
     getPricingPlan();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
