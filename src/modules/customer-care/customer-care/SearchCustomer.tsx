@@ -241,7 +241,7 @@ const SearchCustomer = () => {
     limit: number,
     order: string,
     sort: string,
-    selectedClientParam?: string,
+    clientParam?: string,
     usernameParam?: string,
     emailParam?: string,
     mobileParam?: string,
@@ -251,7 +251,13 @@ const SearchCustomer = () => {
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    if (!customerIdParam && !usernameParam && !emailParam && !mobileParam) {
+    if (
+      !clientParam &&
+      !customerIdParam &&
+      !usernameParam &&
+      !emailParam &&
+      !mobileParam
+    ) {
       return true;
     }
     const body = {
@@ -266,7 +272,7 @@ const SearchCustomer = () => {
         ]
       },
       body: {
-        client: { id: selectedClientParam },
+        client: { id: clientParam },
         username: usernameParam,
         email: emailParam,
         mobile: mobileParam,
@@ -987,10 +993,11 @@ const SearchCustomer = () => {
                               limit,
                               order,
                               sort,
-                              selectedCustomerId,
+                              selectedClient,
                               selectedCustomer,
                               selectedEmail,
                               selectedMobile,
+                              selectedCustomerId,
                               selectedStartDate,
                               selectedEndDate
                             );

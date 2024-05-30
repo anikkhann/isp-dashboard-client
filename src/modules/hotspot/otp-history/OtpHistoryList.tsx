@@ -226,7 +226,11 @@ const OtpHistoryList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClear = () => {};
+  const handleClear = () => {
+    setSelectedClient(null);
+    setSelectedCustomer(null);
+    setSelectedVoucherNumber(null);
+  };
 
   const handleClientChange = (value: any) => {
     setSelectedClient(value);

@@ -20,7 +20,7 @@ import {
   Divider,
   Space
 } from "antd";
-import { type CheckboxValueType } from "antd/es/checkbox/Group";
+// import { type CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
 import { RoleData } from "@/interfaces/RoleData";
 import Cookies from "js-cookie";
@@ -111,10 +111,14 @@ const EditRoleForm = ({ item }: PropData) => {
     getPermissions();
   }, []);
 
-  const onChange = (checkedValues: CheckboxValueType[]) => {
-    // console.log("checked = ", checkedValues);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setCheckedList(checkedValues as any[]);
+  // const onChange = (checkedValues: CheckboxValueType[]) => {
+  //   // console.log("checked = ", checkedValues);
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   setCheckedList(checkedValues as any[]);
+  // };
+  const onChange = (checkedValues: string[]) => {
+    console.log("checked = ", checkedValues);
+    setCheckedList(checkedValues);
   };
 
   useEffect(() => {

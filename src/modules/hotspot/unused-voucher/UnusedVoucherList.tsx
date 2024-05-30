@@ -439,7 +439,17 @@ const UnusedVoucherList: React.FC = () => {
     }
   }, [selectedSubZoneManager]);
 
-  const handleClear = () => {
+  // const handleClear = () => {
+  //   setSelectedSubZoneManager(null);
+  //   setSelectedPricingPlan(null);
+  //   setSelectedClient(null);
+  //   setSelectedZone(null);
+  //   setSelectedRetailer(null);
+  //   setSelectedVoucherNumber(null);
+  //   setSelectedSerialNo(null);
+  //   setSelectedReferenceNumber(null);
+  // };
+  const handleClear = async () => {
     setSelectedSubZoneManager(null);
     setSelectedPricingPlan(null);
     setSelectedClient(null);
@@ -449,7 +459,32 @@ const UnusedVoucherList: React.FC = () => {
     setSelectedSerialNo(null);
     setSelectedReferenceNumber(null);
 
-    // fetchData();
+    // Call fetchData with required parameters
+    const newData = await fetchData(
+      page,
+      limit,
+      order,
+      sort,
+      undefined, // selectedPricingPlanParam
+      undefined, // selectedClientParam
+      undefined, // selectedZoneParam
+      undefined, // selectedSubZoneManagerParam
+      undefined, // selectedRetailerParam
+      undefined, // selectedVoucherNumberParam
+      undefined, // selectedSerialNoParam
+      undefined // selectedReferenceNumberParam
+    );
+
+    // Update data and pagination
+    setData(newData.body);
+    setTableParams({
+      pagination: {
+        total: newData.meta.totalRecords,
+        pageSize: newData.meta.limit,
+        current: (newData.meta.page as number) + 1,
+        pageSizeOptions: ["10", "20", "30", "40", "50"]
+      }
+    });
   };
 
   const handleZoneChange = (value: any) => {

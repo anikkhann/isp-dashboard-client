@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { type CheckboxChangeEvent } from "antd/es/checkbox";
+
+import { type CheckboxChangeEvent } from "antd/lib/checkbox";
 // import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 import {
@@ -21,7 +22,7 @@ import {
   Space
 } from "antd";
 // import { CheckboxValueType } from "antd/es/checkbox/Group";
-import { type CheckboxValueType } from "antd/es/checkbox/Group";
+// import { type CheckboxValueType } from "antd/es/checkbox/Group";
 import axios from "axios";
 import Cookies from "js-cookie";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
@@ -80,9 +81,13 @@ const CreateRoleForm = () => {
     }
   };
 
-  const onChange = (checkedValues: CheckboxValueType[]) => {
+  // const onChange = (checkedValues: CheckboxValueType[]) => {
+  //   console.log("checked = ", checkedValues);
+  //   setCheckedList(checkedValues as any[]);
+  // };
+  const onChange = (checkedValues: string[]) => {
     console.log("checked = ", checkedValues);
-    setCheckedList(checkedValues as any[]);
+    setCheckedList(checkedValues);
   };
 
   // console.log('checkedList', checkedList)
