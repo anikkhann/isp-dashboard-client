@@ -30,6 +30,7 @@ const UserInfo = () => {
 
   const dispatch = useAppDispatch();
   const userBalance = Cookies.get("user_balance");
+  console.log("userBalance");
   const user = useAppSelector(state => state.auth.user);
 
   const logout = () => {

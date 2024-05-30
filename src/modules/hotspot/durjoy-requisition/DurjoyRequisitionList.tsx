@@ -784,6 +784,7 @@ const DurjoyRequisitionList: React.FC = () => {
 
                                   if (!data.body) return;
                                   const list = data.body.map((item: any) => {
+                                    const createdOn = new Date(item.createdOn);
                                     // const date = new Date(item.expireDate);
                                     return {
                                       "Client Name": item.client?.username,
@@ -792,7 +793,9 @@ const DurjoyRequisitionList: React.FC = () => {
                                       Package: item.pricingPlan?.name,
                                       "Package price (BDT)": item.packagePrice,
 
-                                      Voucher: item.voucherNumber,
+                                      Voucher: item.voucherNumber
+                                        ? `pin - ${item.voucherNumber}`
+                                        : "-",
                                       Reference: item.referenceNumber,
                                       "Serial No": item.serialNo,
                                       // "Expiration Date": format(date, "yyyy-MM-dd pp"),
@@ -805,7 +808,10 @@ const DurjoyRequisitionList: React.FC = () => {
                                       "Used IP": item.usedIp,
                                       "Used Mac": item.usedMac,
 
-                                      "Created At": item.createdOn
+                                      "Created Time": format(
+                                        createdOn,
+                                        "yyyy-MM-dd pp"
+                                      )
                                     };
                                   });
                                   console.log("item", list);
@@ -1003,7 +1009,9 @@ const DurjoyRequisitionList: React.FC = () => {
                                       //   item.clientCommission,
                                       "Pricing Name": item.pricingPlan?.name,
                                       "Package Price (BDT)": item.packagePrice,
-                                      Voucher: item.voucherNumber,
+                                      Voucher: item.voucherNumber
+                                        ? `pin - ${item.voucherNumber}`
+                                        : "-",
                                       Reference: item.referenceNumber,
                                       "Serial No": item.serialNo,
                                       "Sub Zone Commission":
