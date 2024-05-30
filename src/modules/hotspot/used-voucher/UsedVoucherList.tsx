@@ -837,13 +837,14 @@ const UsedVoucherList: React.FC = () => {
         if (!data.body) return;
 
         const list = data.body.map((item: any) => {
+          const createdOn = new Date(item.createdOn);
           // const date = new Date(item.expireDate);
           return {
             "Client Name": item.client?.username,
             // "Client Commission": item.clientCommission,
             "Package price (BDT)": item.packagePrice,
             Package: item.pricingPlan?.name,
-            Voucher: item.voucherNumber,
+            Voucher: item.voucherNumber ? `pin - ${item.voucherNumber}` : "-",
             Reference: item.referenceNumber,
             "Serial No": item.serialNo,
             // "Expiration Date": format(date, "yyyy-MM-dd pp"),
@@ -853,7 +854,7 @@ const UsedVoucherList: React.FC = () => {
             "Used By": item.usedBy?.phone,
             "Used IP": item.usedIp,
             "Used Mac": item.usedMac,
-            "Created At": item.createdOn
+            "Created Time": format(createdOn, "yyyy-MM-dd pp")
             // "Used By": item.usedBy?.customer.name,
             // "Used From": item.usedBy?.customer.phone,
             // "Used IP": item.usedIp,

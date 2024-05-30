@@ -793,7 +793,7 @@ const UnusedVoucherList: React.FC = () => {
             // "Client Commission": item.clientCommission,
             "Pricing Name": item.pricingPlan?.name,
             "Package Price (BDT)": item.packagePrice,
-            Voucher: item.voucherNumber,
+            Voucher: item.voucherNumber ? `pin - ${item.voucherNumber}` : "-",
             Reference: item.referenceNumber,
             "Serial No": item.serialNo,
             "Sub Zone Commission": item.subZoneCommission,
