@@ -1563,6 +1563,7 @@ export interface ApDeviceData {
   locationDescription: string;
   ip: string;
   macAddress: string;
+  vlanId: string;
   snmpVersion: string;
   snmpPort: string;
   snmpCommunity: string;

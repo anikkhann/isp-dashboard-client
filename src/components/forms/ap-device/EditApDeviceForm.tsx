@@ -20,6 +20,7 @@ interface FormData {
   locationDescription: string;
   ip: string;
   macAddress: string;
+  vlanId: string;
   snmpVersion: string;
   snmpPort: string;
   snmpCommunity: string;
@@ -322,6 +323,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
         locationDescription: item.locationDescription,
         ip: item.ip,
         macAddress: item.macAddress,
+        vlanId: item.vlanId,
         snmpVersion: item.snmpVersion,
         snmpPort: item.snmpPort,
         snmpCommunity: item.snmpCommunity
@@ -342,6 +344,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
         locationDescription,
         ip,
         macAddress,
+        vlanId,
         // snmpVersion,
         snmpPort,
         snmpCommunity
@@ -355,6 +358,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
         locationDescription: locationDescription,
         ip: ip,
         macAddress: macAddress,
+        vlanId: vlanId,
         isSnmpActive: isSnmpActive,
         snmpVersion: selectedSnmpVersion,
         snmpPort: snmpPort,
@@ -723,6 +727,37 @@ const EditApDeviceForm = ({ item }: PropData) => {
                   className={`form-control`}
                   style={{ padding: "6px" }}
                   maxLength={17}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                name="vlanId"
+                label="VLAN Info"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input Vlan ID!"
+                //   }
+                // ]}
+              >
+                <Input
+                  type="text"
+                  placeholder="VLAN Info"
+                  className={`form-control`}
+                  style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>

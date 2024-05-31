@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
+import { format } from "date-fns";
 // import { format } from "date-fns";
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -133,78 +134,79 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
     },
     // subject
     {
-      title: "PIN",
-      dataIndex: "insertedBy",
+      title: "Voucher",
+      dataIndex: "voucherNumber",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (voucherNumber: any) => {
+        if (!voucherNumber) return "-";
+        return <>{voucherNumber}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Package",
-      dataIndex: "insertedBy",
+      title: "Pricing Plan",
+      dataIndex: "pricingPlan",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (pricingPlan: any) => {
+        if (!pricingPlan) return "-";
+        return <>{pricingPlan.name}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Retailer",
-      dataIndex: "insertedBy",
+      dataIndex: "retailer",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (retailer: any) => {
+        if (!retailer) return "-";
+        return <>{retailer.username}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Reference Number",
-      dataIndex: "insertedBy",
+      dataIndex: "referenceNumber",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (referenceNumber: any) => {
+        if (!referenceNumber) return "-";
+        return <>{referenceNumber}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
-      title: "Used Device",
-      dataIndex: "insertedBy",
+      title: "Used IP",
+      dataIndex: "usedIp",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (usedIp: any) => {
+        if (!usedIp) return "-";
+        return <>{usedIp}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Used Mac",
-      dataIndex: "insertedBy",
+      dataIndex: "usedMac",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (usedMac: any) => {
+        if (!usedMac) return "-";
+        return <>{usedMac}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType
     },
     {
       title: "Used Time",
-      dataIndex: "insertedBy",
+      dataIndex: "usedTime",
       sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.name}</>;
+      render: (usedTime: any) => {
+        if (!usedTime) return "-";
+        const date = new Date(usedTime);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
       align: "center" as AlignType

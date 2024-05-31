@@ -29,7 +29,7 @@ const HotspotCustomerList: React.FC = () => {
   const { Panel } = Collapse;
 
   const [selectedRadiusUsername, setSelectedRadiusUsername] =
-    useState<string>("");
+    useState<any>(null);
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
@@ -138,7 +138,9 @@ const HotspotCustomerList: React.FC = () => {
     }
   }, [data]);
 
-  const handleClear = () => {};
+  const handleClear = () => {
+    setSelectedRadiusUsername(null);
+  };
 
   const columns: ColumnsType<ClientRequisitionData> = [
     {

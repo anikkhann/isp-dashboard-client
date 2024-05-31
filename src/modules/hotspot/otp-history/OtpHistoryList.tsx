@@ -161,7 +161,7 @@ const OtpHistoryList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -185,7 +185,7 @@ const OtpHistoryList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -193,26 +193,31 @@ const OtpHistoryList: React.FC = () => {
     });
   }
 
-  const getCustomers = async () => {
+  const getCustomers = async (selectedClient: string) => {
     const body = {
       meta: {
         sort: [
           {
-            order: "asc",
-            field: "name"
+            order: "desc",
+            field: "createdOn"
           }
         ]
       },
       body: {
+        clientId: selectedClient
         // isActive: true
       }
     };
 
-    const res = await axios.post("/api/customer/get-list", body);
+    const res = await axios.post(
+      "/api-hotspot/partner-customer/get-list",
+      body
+    );
     if (res.data.status == 200) {
       const items = res.data.body.map((item: any) => {
+        // console.log("items", items);
         return {
-          label: item.customerId,
+          label: `${item.customer.phone} - ${item.client.username}`,
           value: item.customerId
         };
       });
@@ -222,7 +227,7 @@ const OtpHistoryList: React.FC = () => {
   };
   useEffect(() => {
     getClients();
-    getCustomers();
+    getCustomers(selectedClient);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -234,6 +239,7 @@ const OtpHistoryList: React.FC = () => {
 
   const handleClientChange = (value: any) => {
     setSelectedClient(value);
+    getCustomers(value);
   };
 
   const handleCustomerChange = (value: any) => {
@@ -262,11 +268,11 @@ const OtpHistoryList: React.FC = () => {
     },
     {
       title: "Client",
-      dataIndex: "partner",
+      dataIndex: "client",
       sorter: false,
-      render: (partner: any) => {
-        if (!partner) return "-";
-        return <>{partner.username}</>;
+      render: (client: any) => {
+        if (!client) return "-";
+        return <>{client.username}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -548,15 +554,15 @@ const OtpHistoryList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Customer Id</b>
+                              <b>Client</b>
                             </span>
                             <Select
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleCustomerChange}
-                              options={customers}
-                              value={selectedCustomer}
+                              onChange={handleClientChange}
+                              options={clients}
+                              value={selectedClient}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
@@ -571,6 +577,7 @@ const OtpHistoryList: React.FC = () => {
                             />
                           </Space>
                         </Col>
+
                         <Col
                           xs={24}
                           sm={12}
@@ -582,15 +589,15 @@ const OtpHistoryList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Client</b>
+                              <b>Customer Mobile</b>
                             </span>
                             <Select
                               allowClear
                               style={{ width: "100%", textAlign: "start" }}
                               placeholder="Please select"
-                              onChange={handleClientChange}
-                              options={clients}
-                              value={selectedClient}
+                              onChange={handleCustomerChange}
+                              options={customers}
+                              value={selectedCustomer}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {

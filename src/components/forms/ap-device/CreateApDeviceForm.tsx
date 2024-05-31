@@ -714,7 +714,7 @@ const CreateApDeviceForm = () => {
             >
               <Form.Item
                 name="vlanId"
-                label="Vlan ID"
+                label="VLAN Info"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -728,7 +728,7 @@ const CreateApDeviceForm = () => {
               >
                 <Input
                   type="text"
-                  placeholder="Vlan ID"
+                  placeholder="VLAN Info"
                   className={`form-control`}
                   style={{ padding: "6px" }}
                 />

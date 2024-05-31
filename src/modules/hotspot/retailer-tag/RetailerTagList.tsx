@@ -34,7 +34,7 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-// import { useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -69,7 +69,7 @@ const RetailerTagList: React.FC = () => {
 
   const MySwal = withReactContent(Swal);
 
-  // const authUser = useAppSelector(state => state.auth.user);
+  const authUser = useAppSelector(state => state.auth.user);
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
@@ -222,7 +222,10 @@ const RetailerTagList: React.FC = () => {
     }
   }, [data]);
 
-  function getRetailers(selectedSubZoneManager: string) {
+  function getRetailers(selectedSubZoneManager: any) {
+    // if (selectedSubZoneManager === null) {
+    //   return;
+    // }
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -353,6 +356,7 @@ const RetailerTagList: React.FC = () => {
 
   useEffect(() => {
     getSubZoneManagers();
+    getRetailers(null);
     getPricingPlan();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -405,12 +409,12 @@ const RetailerTagList: React.FC = () => {
     setSelectedRetailer(value);
   };
 
-  useEffect(() => {
-    if (selectedSubZoneManager) {
-      getRetailers(selectedSubZoneManager);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedSubZoneManager]);
+  // useEffect(() => {
+  //   if (selectedSubZoneManager) {
+  //     getRetailers(selectedSubZoneManager);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedSubZoneManager]);
 
   const columns: ColumnsType<RetailerTagData> = [
     {
@@ -671,40 +675,46 @@ const RetailerTagList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Sub Zone Manager</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleSubZoneManagerChange}
-                              options={subzoneManagers}
-                              value={selectedSubZoneManager}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
+                        {authUser && authUser.userType != "reseller" && (
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Sub Zone Manager</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select"
+                                onChange={handleSubZoneManagerChange}
+                                options={subzoneManagers}
+                                value={selectedSubZoneManager}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+                        )}
+
                         <Col
                           xs={24}
                           sm={12}
@@ -739,6 +749,7 @@ const RetailerTagList: React.FC = () => {
                             />
                           </Space>
                         </Col>
+
                         <Col
                           xs={24}
                           sm={12}
