@@ -478,10 +478,15 @@ const ClientTransactionList: React.FC = () => {
           const createdOn = new Date(item.createdOn);
           // const date = new Date(item.expireDate);
           return {
-            "Client Username": item.client?.username,
-            ID: item.clientId,
-            "Zone Manager": item.zoneManager?.username,
-            "Created Time": format(createdOn, "yyyy-MM-dd pp")
+            "Trx For": item.trxFor,
+            "Trx Type": item.trxType,
+            "Amount (BDT)": item.amount,
+            "Trx By": item.trxBy,
+            "Transaction ID": item.transactionId
+            // "Client Username": item.client?.username,
+            // ID: item.clientId,
+            // "Zone Manager": item.zoneManager?.username,
+            // "Created Time": format(createdOn, "yyyy-MM-dd pp")
           };
         });
         setDownloadRow([

@@ -371,7 +371,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
 
       try {
         await axios
-          .post("/api-hotspot/ap-device/update", formData)
+          .put("/api-hotspot/ap-device/update", formData)
           .then(res => {
             // console.log(res);
             const { data } = res;

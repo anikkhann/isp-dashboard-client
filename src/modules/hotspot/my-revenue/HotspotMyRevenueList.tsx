@@ -841,34 +841,29 @@ const HotspotMyRevenueList: React.FC = () => {
                                   />
                                 </Space>
                               </Col>
-
-                              <Col
-                                xs={24}
-                                sm={12}
-                                md={8}
-                                lg={8}
-                                xl={8}
-                                xxl={8}
-                                className="gutter-row"
-                              >
-                                <Space
-                                  style={{ width: "100%" }}
-                                  direction="vertical"
-                                >
-                                  <span>
-                                    <b>Date Range </b>
-                                  </span>
-                                  <RangePicker
-                                    style={{ width: "100%" }}
-                                    onChange={handleDateChange}
-                                    value={selectedDateRange}
-                                    placeholder={["Start Date", "End Date"]}
-                                  />
-                                </Space>
-                              </Col>
                             </>
                           )}
-
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range </b>
+                            </span>
+                            <RangePicker
+                              style={{ width: "100%" }}
+                              onChange={handleDateChange}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
                         <Col
                           xs={24}
                           sm={12}

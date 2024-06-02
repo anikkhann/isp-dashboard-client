@@ -40,8 +40,8 @@ const OtpHistoryList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("otpCode");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -268,11 +268,11 @@ const OtpHistoryList: React.FC = () => {
     },
     {
       title: "Client",
-      dataIndex: "client",
+      dataIndex: "partner",
       sorter: false,
-      render: (client: any) => {
-        if (!client) return "-";
-        return <>{client.username}</>;
+      render: (partner: any) => {
+        if (!partner) return "-";
+        return <>{partner.username}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -326,6 +326,26 @@ const OtpHistoryList: React.FC = () => {
       title: "OTP",
       dataIndex: "otpCode",
       sorter: true,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Is Activated?",
+      dataIndex: "isActivated",
+      sorter: false,
+      render: (isActivated: any) => {
+        // if (!isActivated) return "-";
+        return (
+          <>
+            {isActivated === true ? (
+              <Tag color="green">Yes</Tag>
+            ) : (
+              <Tag color="red">No</Tag>
+            )}
+          </>
+        );
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType

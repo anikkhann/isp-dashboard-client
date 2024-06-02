@@ -484,7 +484,13 @@ const ZoneTransactionList: React.FC = () => {
         const list = data.body.map((item: any) => {
           console.log("zone", item);
           // const date = new Date(item.expireDate);
-          return {};
+          return {
+            "Trx For": item.trxFor,
+            "Trx Type": item.trxType,
+            "Amount (BDT)": item.amount,
+            "Trx By": item.trxBy,
+            "Transaction ID": item.transactionId
+          };
         });
         setDownloadRow([
           // {

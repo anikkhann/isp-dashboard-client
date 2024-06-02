@@ -588,18 +588,18 @@ const UnusedVoucherList: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
-    {
-      title: "Retailer",
-      dataIndex: "retailer",
-      sorter: false,
-      render: (retailer: any) => {
-        if (!retailer) return "-";
-        return <>{retailer.username}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Retailer",
+    //   dataIndex: "retailer",
+    //   sorter: false,
+    //   render: (retailer: any) => {
+    //     if (!retailer) return "-";
+    //     return <>{retailer.username}</>;
+    //   },
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Reference",
       dataIndex: "referenceNumber",
