@@ -1,6 +1,6 @@
 // import AppLoader from "@/lib/AppLoader";
 // import Forbidden from "@/modules/errorPage/Forbidden";
-// import Success from "@/modules/success/Success";
+// import UnSuccess from "@/modules/unsuccess/UnSuccess";
 
 // import ability from "@/services/guard/ability";
 // import { useAppSelector } from "@/store/hooks";
@@ -11,7 +11,7 @@
 //   return (
 //     <>
 //       {auth.isLoading && <AppLoader />}
-//       {ability.can("dashboard.view", "") ? <Success /> : <Forbidden />}
+//       {ability.can("dashboard.view", "") ? <UnSuccess /> : <Forbidden />}
 //     </>
 //   );
 // };
@@ -20,6 +20,6 @@
 import AppAsyncComponent from "@/lib/AppAsyncComponent";
 
 export default AppAsyncComponent(
-  () => import("@Modules/success/Success"),
+  () => import("@/modules/failed/Failed"),
   false
 );

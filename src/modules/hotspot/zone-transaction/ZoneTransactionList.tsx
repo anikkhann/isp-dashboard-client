@@ -14,6 +14,7 @@ import axios from "axios";
 import { ZoneTagData } from "@/interfaces/ZoneTagData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { format } from "date-fns";
 // import { format } from "date-fns";
 
 import dayjs from "dayjs";
@@ -355,6 +356,16 @@ const ZoneTransactionList: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
+    {
+      title: "Trx Date",
+      dataIndex: "trxDate",
+      sorter: false,
+      render: (trxDate: any) => {
+        if (!trxDate) return "-";
+        const date = new Date(trxDate);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      }
+    },
 
     {
       title: "Trx For",
@@ -482,9 +493,10 @@ const ZoneTransactionList: React.FC = () => {
         if (!data.body) return;
 
         const list = data.body.map((item: any) => {
-          console.log("zone", item);
+          const trxDate = new Date(item.trxDate);
           // const date = new Date(item.expireDate);
           return {
+            "Trx Date": format(trxDate, "yyyy-MM-dd pp"),
             "Trx For": item.trxFor,
             "Trx Type": item.trxType,
             "Amount (BDT)": item.amount,

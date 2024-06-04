@@ -657,20 +657,29 @@ const DurjoyRequisitionList: React.FC = () => {
               record.status === "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
-                    <Button
-                      // icon={<CloseOutlined />}
-                      style={{
-                        color: "#FFFFFF",
-                        backgroundColor: "#FF5630",
-                        borderColor: "#FF5630"
-                      }}
-                      disabled={downloadCancelLoading}
-                      onClick={() =>
-                        handleCancel(record.id, setDownloadCancelLoading)
-                      }
-                    >
-                      {downloadCancelLoading ? "Loading..." : <CloseOutlined />}
-                    </Button>
+                    {!(
+                      record.paymentType === "online" &&
+                      record.paymentStatus === "Paid"
+                    ) && (
+                      <Button
+                        // icon={<CloseOutlined />}
+                        style={{
+                          color: "#FFFFFF",
+                          backgroundColor: "#FF5630",
+                          borderColor: "#FF5630"
+                        }}
+                        disabled={downloadCancelLoading}
+                        onClick={() =>
+                          handleCancel(record.id, setDownloadCancelLoading)
+                        }
+                      >
+                        {downloadCancelLoading ? (
+                          "Loading..."
+                        ) : (
+                          <CloseOutlined />
+                        )}
+                      </Button>
+                    )}
                   </Space>
                 </Tooltip>
               ) : null}

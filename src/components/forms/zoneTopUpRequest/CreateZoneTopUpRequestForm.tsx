@@ -180,92 +180,45 @@ const CreateZoneTopUpRequestForm = () => {
       formData.append("body", JSON.stringify(bodyData));
 
       try {
-        await axios
-          .post("/api/zone-topup-request/create", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          })
-          .then(res => {
-            const { data } = res;
-
-            if (data.status != 200) {
+        const result = await MySwal.fire({
+          title: "Are you sure?",
+          text: "Please confirm to proceed with your payment!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#570DF8",
+          cancelButtonColor: "#EB0808",
+          confirmButtonText: "Yes, Confirm!"
+        });
+        if (result.isConfirmed) {
+          await axios
+            .post("/api/zone-topup-request/create", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            })
+            .then(res => {
+              const { data } = res;
+              if (data.status === 200) {
+                MySwal.fire("Success!", data.message, "success").then(() => {
+                  router.replace("/admin/top-up/zone-top-up-request");
+                });
+              } else {
+                MySwal.fire("Error!", data.message, "error");
+              }
+            })
+            .catch(err => {
+              // console.log(err);
               MySwal.fire({
                 title: "Error",
-                text: data.message || "Something went wrong",
+                text: err.response.data.message || "Something went wrong",
                 icon: "error"
               });
-            }
-
-            if (
-              data.status == 200 &&
-              data.message == "Redirect to payment gateway"
-            ) {
-              MySwal.fire({
-                // title: "Success",
-                // text: data.message || "Updated successfully",
-                // icon: "success"
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#570DF8",
-                cancelButtonColor: "#EB0808",
-                confirmButtonText: "Yes, Proceed!",
-                cancelButtonText: "Cancel"
-              }).then(result => {
-                if (result.isConfirmed) {
-                  if (data.body) {
-                    const url = data.body;
-                    // Redirect to the URL
-                    window.location.href = url;
-                  }
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                  // Redirect to '/' if cancel button is clicked
-                  window.location.href = "/admin/top-up/zone-top-up-request";
-                }
-              });
-              // .then(() => {
-              //   router.replace("/admin/top-up/zone-top-up-request");
-              // });
-            } else if (data.status == 200) {
-              MySwal.fire({
-                title: "Success",
-                text: data.message || "Request Submitted",
-                icon: "success"
-              }).then(() => {
-                router.replace("/admin/top-up/zone-top-up-request");
-              });
-            }
-
-            // if (data.status == 200) {
-            //   MySwal.fire({
-            //     // title: "Success",
-            //     // text: data.message || "Updated successfully",
-            //     // icon: "success"
-            //     title: "Are you sure?",
-            //     text: "You won't be able to revert this!",
-            //     icon: "warning",
-            //     showCancelButton: true,
-            //     confirmButtonColor: "#570DF8",
-            //     cancelButtonColor: "#EB0808",
-            //     confirmButtonText: "Yes, Proceed!",
-            //     cancelButtonText: "Cancel"
-            //   }).then(() => {
-            //     router.replace("/admin/top-up/zone-top-up-request");
-            //   });
-            // }
-          })
-          .catch(err => {
-            // console.log(err);
-            MySwal.fire({
-              title: "Error",
-              text: err.response.data.message || "Something went wrong",
-              icon: "error"
+              setShowError(true);
+              setErrorMessages(err.response.data.message);
             });
-            setShowError(true);
-            setErrorMessages(err.response.data.message);
-          });
+        } else if (result.isDismissed) {
+          MySwal.fire("Cancelled", "Your Data is safe :)", "error");
+        }
       } catch (err: any) {
         // console.log(err)
         setShowError(true);

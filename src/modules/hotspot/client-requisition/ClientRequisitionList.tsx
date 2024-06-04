@@ -86,7 +86,8 @@ const ClientRequisitionList: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
   const authUser = useAppSelector(state => state.auth.user);
-
+  const [downloadCancelLoading, setDownloadCancelLoading] =
+    useState<boolean>(false);
   const [selectedRequisitionNo, setSelectedRequisitionNo] = useState<any>(null);
 
   const [zones, setZones] = useState<any[]>([]);
@@ -229,8 +230,12 @@ const ClientRequisitionList: React.FC = () => {
     }
   }, [data]);
 
-  async function handleCancel(id: string) {
+  async function handleCancel(
+    id: string,
+    setDownloadCancelLoading: (downloadCancelLoading: boolean) => void
+  ) {
     try {
+      setDownloadCancelLoading(true);
       const result = await MySwal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -626,18 +631,35 @@ const ClientRequisitionList: React.FC = () => {
               record.status === "Pending" ? (
                 <Tooltip title="Cancel" placement="bottomRight" color="red">
                   <Space size="middle" align="center" wrap>
-                    <Button
-                      icon={<CloseOutlined />}
-                      style={{
-                        color: "#FFFFFF",
-                        backgroundColor: "#FF5630",
-                        borderColor: "#FF5630"
-                      }}
-                      onClick={() => handleCancel(record.id)}
-                    />
+                    {!(
+                      record.paymentType === "online" &&
+                      record.paymentStatus === "Paid"
+                    ) && (
+                      <Button
+                        icon={<CloseOutlined />}
+                        style={{
+                          color: "#FFFFFF",
+                          backgroundColor: "#FF5630",
+                          borderColor: "#FF5630"
+                        }}
+                        onClick={() =>
+                          handleCancel(record.id, setDownloadCancelLoading)
+                        }
+                      >
+                        {downloadCancelLoading ? (
+                          "Loading..."
+                        ) : (
+                          <CloseOutlined />
+                        )}
+                      </Button>
+                      // <Button
+
+                      // />
+                    )}
                   </Space>
                 </Tooltip>
               ) : null}
+
               {ability.can("clientRequisition.reject", "") &&
               record.status === "Pending" ? (
                 <Tooltip title="Reject" placement="bottomRight" color="magenta">

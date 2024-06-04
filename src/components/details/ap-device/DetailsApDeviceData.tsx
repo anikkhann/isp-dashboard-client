@@ -267,6 +267,24 @@ const DetailsApDeviceData = ({ item }: PropData) => {
                 <span className="mx-1 text-base">{item.snmpVersion}</span>
               </Col>
             </Row>
+            <Row
+              style={{
+                marginTop: "2px"
+              }}
+            >
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "end"
+                }}
+              >
+                <span className="font-bold text-base">VLAN Info :</span>
+              </Col>
+              <Col>
+                <span className="mx-1 text-base">{item.vlanId}</span>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Col>

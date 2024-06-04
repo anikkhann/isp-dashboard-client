@@ -5,7 +5,8 @@ const Success = () => {
     <div className="max-w-md mx-auto bg-white p-8 rounded shadow-lg text-center relative">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className=" text-success mx-auto mb-4"
+        className="h-24 w-24 mx-auto mb-4"
+        style={{ color: "#2DB48B" }}
         viewBox="0 0 20 20"
         fill="currentColor"
       >
@@ -16,19 +17,22 @@ const Success = () => {
         />
       </svg>
 
-      <h1 className="text-2xl font-bold text-success mb-4">
+      <h1 className="text-2xl font-bold mb-4" style={{ color: "#2DB48B" }}>
         Payment Successful
       </h1>
       <button
         onClick={() => {
           window.location.href = "/";
         }}
-        className="bg-success cursor-pointer text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        className="bg-primary cursor-pointer text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       >
         Go Dashboard
       </button>
 
-      <div className="absolute bottom-0 left-0 w-full h-px bg-secondary"></div>
+      <div
+        className="absolute bottom-0 left-0 w-full h-px"
+        style={{ color: "#2DB48B" }}
+      ></div>
     </div>
   );
 };

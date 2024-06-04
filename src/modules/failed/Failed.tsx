@@ -1,11 +1,11 @@
 import React from "react";
 
-const UnSuccess = () => {
+const Failed = () => {
   return (
     <div className="max-w-md mx-auto bg-white p-8 rounded shadow-lg text-center relative">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-24 w-24  text-primary mx-auto mb-4"
+        className="h-24 w-24  text-[#EE5921] mx-auto mb-4"
         viewBox="0 0 20 20"
         fill="currentColor"
       >
@@ -15,7 +15,7 @@ const UnSuccess = () => {
           clip-rule="evenodd"
         />
       </svg>
-      <h1 className="text-2xl font-bold text-primary mb-4">
+      <h1 className="text-2xl font-bold text-[#EE5921] mb-4">
         Payment Unsuccessful
       </h1>
       <button
@@ -27,9 +27,12 @@ const UnSuccess = () => {
         Go Dashboard
       </button>
 
-      <div className="absolute bottom-0 left-0 w-full h-px bg-primary"></div>
+      <div
+        className="absolute bottom-0 left-0 w-full h-px"
+        style={{ color: "#EE5921" }}
+      ></div>
     </div>
   );
 };
 
-export default UnSuccess;
+export default Failed;
