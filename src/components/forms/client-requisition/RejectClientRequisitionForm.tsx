@@ -9,7 +9,8 @@ import withReactContent from "sweetalert2-react-content";
 import { Alert, Button, Form, Input, Row, Col } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
+// import { DurjoyRequisitionData } from "@/interfaces/DurjoyRequisitionData";
+import { ClientRequisitionData } from "@/interfaces/ClientRequisitionData";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface FormData {
@@ -17,7 +18,7 @@ interface FormData {
 }
 
 interface PropData {
-  item: DurjoyRequisitionData;
+  item: ClientRequisitionData;
 }
 
 const RejectClientRequisitionForm = ({ item }: PropData) => {
@@ -134,7 +135,7 @@ const RejectClientRequisitionForm = ({ item }: PropData) => {
             >
               {/* remarks */}
               <Form.Item
-                label="remarks"
+                label="Remarks"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"

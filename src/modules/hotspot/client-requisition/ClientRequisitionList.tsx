@@ -636,7 +636,7 @@ const ClientRequisitionList: React.FC = () => {
                       record.paymentStatus === "Paid"
                     ) && (
                       <Button
-                        icon={<CloseOutlined />}
+                        // icon={<CloseOutlined />}
                         style={{
                           color: "#FFFFFF",
                           backgroundColor: "#FF5630",
