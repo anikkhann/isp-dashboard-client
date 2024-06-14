@@ -129,6 +129,8 @@ const CreateCustomerForm = () => {
 
   const [isActive, setIsActive] = useState(true);
 
+  const [requiredField, setIsRequiredField] = useState(false);
+
   const [autoRenew, setAutoRenew] = useState(true);
 
   const [isMacBound, setIsMacBound] = useState(false);
@@ -202,6 +204,9 @@ const CreateCustomerForm = () => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  const handleRequiredField = (e: any) => {
+    setIsRequiredField(e.target.checked ? true : false);
+  };
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
@@ -1238,6 +1243,43 @@ const CreateCustomerForm = () => {
             <Col
               xs={24}
               sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
+            >
+              <Card
+                hoverable
+                style={{
+                  width: "90%",
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                  margin: "0 auto",
+                  textAlign: "center",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                  border: "1px solid #F15F22"
+                }}
+              >
+                <Form.Item
+                  label=""
+                  style={{
+                    marginBottom: 0
+                  }}
+                >
+                  <Checkbox
+                    onChange={handleRequiredField}
+                    checked={requiredField}
+                  >
+                    Show Only Required Field
+                  </Checkbox>
+                </Form.Item>
+              </Card>
+            </Col>
+            <Col
+              xs={24}
+              sm={24}
               md={12}
               lg={12}
               xl={12}
@@ -1261,692 +1303,1286 @@ const CreateCustomerForm = () => {
                   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                   justify="space-between"
                 >
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* name */}
-                    <Form.Item
-                      label="Name"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="name"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Name!"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Name"
-                        className={`form-control`}
-                        name="name"
-                        style={{ padding: "6px" }}
-                        maxLength={50}
-                      />
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* <Form.Item
-                         label=""
+                      {/* name */}
+                      <Form.Item
+                        label="Name"
                         style={{
-                          marginBottom: 0
+                          marginBottom: 0,
+                          fontWeight: "bold"
                         }}
+                        name="name"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Name!"
+                          }
+                        ]}
                       >
-                        <Checkbox
-                          onChange={handlePrefix}
-                          checked={addPrefix}
-                        ></Checkbox>
-                      </Form.Item> */}
-
-                    {/* username */}
-                    <Form.Item
-                      name="username"
-                      label="Username"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Username!"
-                        },
-                        {
-                          pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
-                          message:
-                            "Only letters, numbers, underscores and hyphens allowed"
-                        }
-                      ]}
-                    >
-                      <div className="flex justify-between">
-                        <Checkbox onChange={handlePrefix} checked={addPrefix}>
-                          {/* Prefix? */}
-                        </Checkbox>
                         <Input
                           type="text"
-                          addonBefore={
-                            <span
-                              style={{
-                                backgroundColor: "#cfcdca",
-                                color: "black"
-                              }}
-                            >
-                              {authUser
-                                ? authUser.clientPrefix + "_"
-                                : "Not Available"}
-                            </span>
-                          }
-                          placeholder="Username"
+                          placeholder="Name"
                           className={`form-control`}
-                          name="username"
+                          name="name"
+                          style={{ padding: "6px" }}
+                          maxLength={50}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* name */}
+                      <Form.Item
+                        label="Name"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="name"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Name!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Name"
+                          className={`form-control`}
+                          name="name"
+                          style={{ padding: "6px" }}
+                          maxLength={50}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      <Form.Item
+                        name="username"
+                        label="Username"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Username!"
+                          },
+                          {
+                            pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
+                            message:
+                              "Only letters, numbers, underscores and hyphens allowed"
+                          }
+                        ]}
+                      >
+                        <div className="flex justify-between">
+                          <Checkbox onChange={handlePrefix} checked={addPrefix}>
+                            {/* Prefix? */}
+                          </Checkbox>
+                          <Input
+                            type="text"
+                            addonBefore={
+                              <span
+                                style={{
+                                  backgroundColor: "#cfcdca",
+                                  color: "black"
+                                }}
+                              >
+                                {authUser
+                                  ? authUser.clientPrefix + "_"
+                                  : "Not Available"}
+                              </span>
+                            }
+                            placeholder="Username"
+                            className={`form-control`}
+                            name="username"
+                            style={{ padding: "6px" }}
+                            maxLength={32}
+                            minLength={3}
+                          />
+                        </div>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      <Form.Item
+                        name="username"
+                        label="Username"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Username!"
+                          },
+                          {
+                            pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
+                            message:
+                              "Only letters, numbers, underscores and hyphens allowed"
+                          }
+                        ]}
+                      >
+                        <div className="flex justify-between">
+                          <Checkbox onChange={handlePrefix} checked={addPrefix}>
+                            {/* Prefix? */}
+                          </Checkbox>
+                          <Input
+                            type="text"
+                            addonBefore={
+                              <span
+                                style={{
+                                  backgroundColor: "#cfcdca",
+                                  color: "black"
+                                }}
+                              >
+                                {authUser
+                                  ? authUser.clientPrefix + "_"
+                                  : "Not Available"}
+                              </span>
+                            }
+                            placeholder="Username"
+                            className={`form-control`}
+                            name="username"
+                            style={{ padding: "6px" }}
+                            maxLength={32}
+                            minLength={3}
+                          />
+                        </div>
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* customerTypeId */}
+                      <Form.Item
+                        label="Customer Type"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="customerTypeId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Customer Type!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Customer Type"
+                            onChange={handleCustomerTypeChange}
+                            options={customerTypes}
+                            value={selectedCustomerType}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* customerTypeId */}
+                      <Form.Item
+                        label="Customer Type"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="customerTypeId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Customer Type!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Customer Type"
+                            onChange={handleCustomerTypeChange}
+                            options={customerTypes}
+                            value={selectedCustomerType}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* email */}
+                      <Form.Item
+                        label="Email"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="email"
+                        rules={[
+                          {
+                            type: "email",
+                            message: "The input is not valid E-mail!"
+                          },
+                          {
+                            required: true,
+                            message: "Please input your E-mail!"
+                          },
+                          {
+                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                            message:
+                              "Only letters, numbers, underscores and hyphens allowed"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          className={`form-control`}
+                          name="email"
                           style={{ padding: "6px" }}
                           maxLength={32}
                         />
-                      </div>
-                    </Form.Item>
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* customerTypeId */}
-                    <Form.Item
-                      label="Customer Type"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="customerTypeId"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select Customer Type!"
-                        }
-                      ]}
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Customer Type"
-                          onChange={handleCustomerTypeChange}
-                          options={customerTypes}
-                          value={selectedCustomerType}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* email */}
-                    <Form.Item
-                      label="Email"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="email"
-                      rules={[
-                        {
-                          type: "email",
-                          message: "The input is not valid E-mail!"
-                        },
-                        {
-                          required: true,
-                          message: "Please input your E-mail!"
-                        },
-                        {
-                          pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                          message:
-                            "Only letters, numbers, underscores and hyphens allowed"
-                        }
-                      ]}
-                    >
-                      <Input
-                        type="email"
-                        placeholder="Email"
-                        className={`form-control`}
+                      {/* email */}
+                      <Form.Item
+                        label="Email"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
                         name="email"
-                        style={{ padding: "6px" }}
-                        maxLength={32}
-                      />
-                    </Form.Item>
-                  </Col>
+                        rules={[
+                          {
+                            type: "email",
+                            message: "The input is not valid E-mail!"
+                          },
+                          {
+                            required: true,
+                            message: "Please input your E-mail!"
+                          },
+                          {
+                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                            message:
+                              "Only letters, numbers, underscores and hyphens allowed"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          className={`form-control`}
+                          name="email"
+                          style={{ padding: "6px" }}
+                          maxLength={32}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* password */}
-                    <Form.Item
-                      name="password"
-                      label="Password"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Password!"
-                        },
-                        {
-                          min: 6,
-                          message: "Password must be minimum 6 characters."
-                        },
-                        {
-                          pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
-                          message:
-                            "Only letters, numbers, underscores, @ and hyphens allowed"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input.Password
-                        placeholder="Password"
-                        style={{ padding: "6px" }}
-                        maxLength={32}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* mobileNo */}
-                    <Form.Item
-                      name="mobileNo"
-                      label="Mobile No"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Mobile No!"
-                        },
-                        {
-                          pattern: new RegExp(/^(01)[0-9]{9}$/),
-                          message:
-                            "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
-                        }
-                      ]}
+                      {/* password */}
+                      <Form.Item
+                        name="password"
+                        label="Password"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Password!"
+                          },
+                          {
+                            min: 6,
+                            message: "Password must be minimum 6 characters."
+                          },
+                          {
+                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                            message:
+                              "Only letters, numbers, underscores, @ and hyphens allowed"
+                          }
+                        ]}
+                      >
+                        <Input.Password
+                          placeholder="Password"
+                          style={{ padding: "6px" }}
+                          maxLength={32}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="01XXXXXXXXX"
-                        className={`form-control`}
+                      {/* password */}
+                      <Form.Item
+                        name="password"
+                        label="Password"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Password!"
+                          },
+                          {
+                            min: 6,
+                            message: "Password must be minimum 6 characters."
+                          },
+                          {
+                            pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                            message:
+                              "Only letters, numbers, underscores, @ and hyphens allowed"
+                          }
+                        ]}
+                      >
+                        <Input.Password
+                          placeholder="Password"
+                          style={{ padding: "6px" }}
+                          maxLength={32}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* mobileNo */}
+                      <Form.Item
                         name="mobileNo"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* altMobileNo */}
-                    <Form.Item
-                      name="altMobileNo"
-                      label="Alt Mobile No"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      // rules={[
-                      //   {
-                      //     required: true,
-                      //     message: "Please input your Alt Mobile No!"
-                      //   }
-                      // ]}
-                      rules={[
-                        {
-                          pattern: new RegExp(/^(01)[0-9]{9}$/),
-                          message:
-                            "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
-                        }
-                      ]}
+                        label="Mobile No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Mobile No!"
+                          },
+                          {
+                            pattern: new RegExp(/^(01)[0-9]{9}$/),
+                            message:
+                              "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="01XXXXXXXXX"
+                          className={`form-control`}
+                          name="mobileNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="01XXXXXXXXX"
-                        className={`form-control`}
+                      {/* mobileNo */}
+                      <Form.Item
+                        name="mobileNo"
+                        label="Mobile No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Mobile No!"
+                          },
+                          {
+                            pattern: new RegExp(/^(01)[0-9]{9}$/),
+                            message:
+                              "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="01XXXXXXXXX"
+                          className={`form-control`}
+                          name="mobileNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField !== true && (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* altMobileNo */}
+                      <Form.Item
                         name="altMobileNo"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
+                        label="Alt Mobile No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        // rules={[
+                        //   {
+                        //     required: true,
+                        //     message: "Please input your Alt Mobile No!"
+                        //   }
+                        // ]}
+                        rules={[
+                          {
+                            pattern: new RegExp(/^(01)[0-9]{9}$/),
+                            message:
+                              "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="01XXXXXXXXX"
+                          className={`form-control`}
+                          name="altMobileNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* contact Person */}
-                    <Form.Item
-                      name="contactPerson"
-                      label="Contact Person"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Contact Person!"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Contact Person"
-                        className={`form-control`}
+                      {/* contact Person */}
+                      <Form.Item
                         name="contactPerson"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* contactNumber */}
-                    <Form.Item
-                      name="contactNumber"
-                      label="Contact Number"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Contact Number!"
-                        },
-                        {
-                          pattern: new RegExp(/^(01)[0-9]{9}$/),
-                          message:
-                            "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
-                        }
-                      ]}
+                        label="Contact Person"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Contact Person!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Contact Person"
+                          className={`form-control`}
+                          name="contactPerson"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="01XXXXXXXXX"
-                        className={`form-control`}
+                      {/* contact Person */}
+                      <Form.Item
+                        name="contactPerson"
+                        label="Contact Person"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Contact Person!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Contact Person"
+                          className={`form-control`}
+                          name="contactPerson"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* contactNumber */}
+                      <Form.Item
                         name="contactNumber"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* connectionAddress */}
-                    <Form.Item
-                      name="connectionAddress"
-                      label="Connection Address"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Connection Address!"
-                        }
-                      ]}
+                        label="Contact Number"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Contact Number!"
+                          },
+                          {
+                            pattern: new RegExp(/^(01)[0-9]{9}$/),
+                            message:
+                              "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="01XXXXXXXXX"
+                          className={`form-control`}
+                          name="contactNumber"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Connection Address"
-                        className={`form-control`}
+                      {/* contactNumber */}
+                      <Form.Item
+                        name="contactNumber"
+                        label="Contact Number"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Contact Number!"
+                          },
+                          {
+                            pattern: new RegExp(/^(01)[0-9]{9}$/),
+                            message:
+                              "Please enter correct BD Number starting with (01) and containing a total of 11 digits."
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="01XXXXXXXXX"
+                          className={`form-control`}
+                          name="contactNumber"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* connectionAddress */}
+                      <Form.Item
                         name="connectionAddress"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* flatNo */}
-                    <Form.Item
-                      name="flatNo"
-                      label="Flat No"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      // rules={[
-                      //   {
-                      //     required: true,
-                      //     message: "Please input your Flat No!"
-                      //   }
-                      // ]}
+                        label="Connection Address"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Connection Address!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Connection Address"
+                          className={`form-control`}
+                          name="connectionAddress"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Flat No"
-                        className={`form-control`}
+                      {/* connectionAddress */}
+                      <Form.Item
+                        name="connectionAddress"
+                        label="Connection Address"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Connection Address!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Connection Address"
+                          className={`form-control`}
+                          name="connectionAddress"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {requiredField !== true && (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* flatNo */}
+
+                      <Form.Item
                         name="flatNo"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
+                        label="Flat No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        // rules={[
+                        //   {
+                        //     required: true,
+                        //     message: "Please input your Flat No!"
+                        //   }
+                        // ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Flat No"
+                          className={`form-control`}
+                          name="flatNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* houseNo */}
-                    <Form.Item
-                      name="houseNo"
-                      label="House No"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your House No!"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="House No"
-                        className={`form-control`}
+                      {/* houseNo */}
+                      <Form.Item
                         name="houseNo"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* roadNo */}
-                    <Form.Item
-                      name="roadNo"
-                      label="Road No"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      // rules={[
-                      //   {
-                      //     required: true,
-                      //     message: "Please input your Road No!"
-                      //   }
-                      // ]}
+                        label="House No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your House No!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="House No"
+                          className={`form-control`}
+                          name="houseNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Road No"
-                        className={`form-control`}
+                      {/* houseNo */}
+                      <Form.Item
+                        name="houseNo"
+                        label="House No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your House No!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="House No"
+                          className={`form-control`}
+                          name="houseNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {requiredField !== true && (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* roadNo */}
+                      <Form.Item
                         name="roadNo"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
+                        label="Road No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        // rules={[
+                        //   {
+                        //     required: true,
+                        //     message: "Please input your Road No!"
+                        //   }
+                        // ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Road No"
+                          className={`form-control`}
+                          name="roadNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* area */}
-                    <Form.Item
-                      name="area"
-                      label="Area"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Area!"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Area"
-                        className={`form-control`}
+                      {/* area */}
+                      <Form.Item
                         name="area"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* customerPackageId */}
-                    <Form.Item
-                      label="Customer Package"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select Customer Package!"
-                        }
-                      ]}
-                      name="customerPackageId"
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Customer Package"
-                          onChange={handleCustomerPackageChange}
-                          options={customerPackages}
-                          value={selectedCustomerPackage}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
+                        label="Area"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Area!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Area"
+                          className={`form-control`}
+                          name="area"
+                          style={{ padding: "6px" }}
                         />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* identityType */}
-                    <Form.Item
-                      label="Identity Type"
-                      style={{
-                        marginBottom: 0,
-                        marginRight: lg ? "10px" : "0px",
-                        fontWeight: "bold"
-                      }}
-                      name="identityType"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select Identity Type"
-                        }
-                      ]}
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Identity Type"
-                          onChange={handleIdentityTypeChange}
-                          options={identityTypes}
-                          value={selectedIdentityType}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
+                      {/* area */}
+                      <Form.Item
+                        name="area"
+                        label="Area"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Area!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Area"
+                          className={`form-control`}
+                          name="area"
+                          style={{ padding: "6px" }}
                         />
-                      </Space>
-                    </Form.Item>
-                  </Col>
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* identityNo */}
-                    <Form.Item
-                      name="identityNo"
-                      label="Identity No"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Identity No!"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Identity No"
-                        className={`form-control`}
+                      {/* customerPackageId */}
+                      <Form.Item
+                        label="Customer Package"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Customer Package!"
+                          }
+                        ]}
+                        name="customerPackageId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Customer Package"
+                            onChange={handleCustomerPackageChange}
+                            options={customerPackages}
+                            value={selectedCustomerPackage}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* customerPackageId */}
+                      <Form.Item
+                        label="Customer Package"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Customer Package!"
+                          }
+                        ]}
+                        name="customerPackageId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Customer Package"
+                            onChange={handleCustomerPackageChange}
+                            options={customerPackages}
+                            value={selectedCustomerPackage}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* identityType */}
+                      <Form.Item
+                        label="Identity Type"
+                        style={{
+                          marginBottom: 0,
+                          marginRight: lg ? "10px" : "0px",
+                          fontWeight: "bold"
+                        }}
+                        name="identityType"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Identity Type"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Identity Type"
+                            onChange={handleIdentityTypeChange}
+                            options={identityTypes}
+                            value={selectedIdentityType}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* identityType */}
+                      <Form.Item
+                        label="Identity Type"
+                        style={{
+                          marginBottom: 0,
+                          marginRight: lg ? "10px" : "0px",
+                          fontWeight: "bold"
+                        }}
+                        name="identityType"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Identity Type"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Identity Type"
+                            onChange={handleIdentityTypeChange}
+                            options={identityTypes}
+                            value={selectedIdentityType}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* identityNo */}
+                      <Form.Item
                         name="identityNo"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
+                        label="Identity No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Identity No!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Identity No"
+                          className={`form-control`}
+                          name="identityNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* identityNo */}
+                      <Form.Item
+                        name="identityNo"
+                        label="Identity No"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Identity No!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Identity No"
+                          className={`form-control`}
+                          name="identityNo"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+
                   <Col
                     xs={24}
                     sm={12}
@@ -2004,7 +2640,52 @@ const CreateCustomerForm = () => {
                   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                   justify="space-between"
                 >
-                  {authUser && authUser.userType == "subZone" && (
+                  {authUser &&
+                    authUser.userType == "reseller" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* retailerId */}
+                        <Form.Item
+                          label="Retailer"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="retailerId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleRetailerChange}
+                              options={retailers}
+                              value={selectedRetailer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    )}
+                  {requiredField === true ? (
                     <Col
                       xs={24}
                       sm={12}
@@ -2014,23 +2695,79 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* retailerId */}
+                      {/* divisionId */}
                       <Form.Item
-                        label="Retailer"
+                        label="Division"
                         style={{
                           marginBottom: 0,
+                          marginRight: lg ? "10px" : "0px",
                           fontWeight: "bold"
                         }}
-                        name="retailerId"
+                        name="divisionId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Division!"
+                          }
+                        ]}
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
                             allowClear
                             style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select"
-                            onChange={handleRetailerChange}
-                            options={retailers}
-                            value={selectedRetailer}
+                            placeholder="Please select Division"
+                            onChange={handleDivisionChange}
+                            options={divisions}
+                            value={selectedDivision}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* divisionId */}
+                      <Form.Item
+                        label="Division"
+                        style={{
+                          marginBottom: 0,
+                          marginRight: lg ? "10px" : "0px",
+                          fontWeight: "bold"
+                        }}
+                        name="divisionId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Division!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Division"
+                            onChange={handleDivisionChange}
+                            options={divisions}
+                            value={selectedDivision}
                             showSearch
                             filterOption={(input, option) => {
                               if (typeof option?.label === "string") {
@@ -2048,322 +2785,429 @@ const CreateCustomerForm = () => {
                     </Col>
                   )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* divisionId */}
-                    <Form.Item
-                      label="Division"
-                      style={{
-                        marginBottom: 0,
-                        marginRight: lg ? "10px" : "0px",
-                        fontWeight: "bold"
-                      }}
-                      name="divisionId"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select Division!"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Division"
-                          onChange={handleDivisionChange}
-                          options={divisions}
-                          value={selectedDivision}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
+                      {/* districtId */}
+                      <Form.Item
+                        label="District"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="districtId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select District!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select District"
+                            onChange={handleDistrictChange}
+                            options={districts}
+                            value={selectedDistrict}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* districtId */}
+                      <Form.Item
+                        label="District"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="districtId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select District!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select District"
+                            onChange={handleDistrictChange}
+                            options={districts}
+                            value={selectedDistrict}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
+                  {requiredField !== true && (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* upazillaId */}
+                      <Form.Item
+                        label="Upazilla/Thana"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="upazillaId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Upazilla"
+                            onChange={handleUpazillaChange}
+                            options={upazillas}
+                            value={selectedUpazilla}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* districtId */}
-                    <Form.Item
-                      label="District"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="districtId"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select District!"
-                        }
-                      ]}
+                  {requiredField !== true && (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select District"
-                          onChange={handleDistrictChange}
-                          options={districts}
-                          value={selectedDistrict}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
+                      {/* unionId */}
+                      <Form.Item
+                        label="Union"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        name="unionId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Union"
+                            onChange={handleUnionChange}
+                            options={unions}
+                            value={selectedUnion}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* upazillaId */}
-                    <Form.Item
-                      label="Upazilla/Thana"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="upazillaId"
+                  {requiredField !== true && (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Upazilla"
-                          onChange={handleUpazillaChange}
-                          options={upazillas}
-                          value={selectedUpazilla}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* unionId */}
-                    <Form.Item
-                      label="Union"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="unionId"
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Union"
-                          onChange={handleUnionChange}
-                          options={unions}
-                          value={selectedUnion}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* remarks */}
-                    <Form.Item
-                      name="remarks"
-                      label="Remarks"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      // rules={[
-                      //   {
-                      //     required: true,
-                      //     message: "Please input your Remarks!"
-                      //   }
-                      // ]}
-                    >
-                      <Input
-                        type="text"
-                        placeholder="Remarks"
-                        className={`form-control`}
+                      {/* remarks */}
+                      <Form.Item
                         name="remarks"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* distributionZoneId */}
-                    <Form.Item
-                      label="Distribution Zone"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select Distribution Zone!"
-                        }
-                      ]}
-                      name="distributionZoneId"
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Distribution Zone"
-                          onChange={handleDistributionZoneChange}
-                          options={distributionZones}
-                          value={selectedDistributionZone}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
+                        label="Remarks"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        // rules={[
+                        //   {
+                        //     required: true,
+                        //     message: "Please input your Remarks!"
+                        //   }
+                        // ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Remarks"
+                          className={`form-control`}
+                          name="remarks"
+                          style={{ padding: "6px" }}
                         />
-                      </Space>
-                    </Form.Item>
-                  </Col>
+                      </Form.Item>
+                    </Col>
+                  )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* distributionPopId */}
-                    <Form.Item
-                      label="Distribution POP"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select Distribution POP!"
-                        }
-                      ]}
-                      name="distributionPopId"
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Distribution Pop"
-                          onChange={handleDistributionPopChange}
-                          options={distributionPops}
-                          value={selectedDistributionPop}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
+                      {/* distributionZoneId */}
+                      <Form.Item
+                        label="Distribution Zone"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Distribution Zone!"
+                          }
+                        ]}
+                        name="distributionZoneId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Distribution Zone"
+                            onChange={handleDistributionZoneChange}
+                            options={distributionZones}
+                            value={selectedDistributionZone}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* distributionZoneId */}
+                      <Form.Item
+                        label="Distribution Zone"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Distribution Zone!"
+                          }
+                        ]}
+                        name="distributionZoneId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Distribution Zone"
+                            onChange={handleDistributionZoneChange}
+                            options={distributionZones}
+                            value={selectedDistributionZone}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* distributionPopId */}
+                      <Form.Item
+                        label="Distribution POP"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Distribution POP!"
+                          }
+                        ]}
+                        name="distributionPopId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Distribution Pop"
+                            onChange={handleDistributionPopChange}
+                            options={distributionPops}
+                            value={selectedDistributionPop}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* distributionPopId */}
+                      <Form.Item
+                        label="Distribution POP"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select Distribution POP!"
+                          }
+                        ]}
+                        name="distributionPopId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Distribution Pop"
+                            onChange={handleDistributionPopChange}
+                            options={distributionPops}
+                            value={selectedDistributionPop}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
 
                   {authUser &&
                     authUser?.clientLevel != "tri_cycle" &&
                     authUser?.clientLevel != "tri_cycle_hotspot" &&
                     authUser?.clientLevel != "tri_cycle_isp_hotspot" &&
-                    authUser.userType == "client" && (
+                    authUser.userType == "client" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -2409,7 +3253,8 @@ const CreateCustomerForm = () => {
 
                   {authUser &&
                     (authUser.userType == "client" ||
-                      authUser.userType == "zone") && (
+                      authUser.userType == "zone") &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -2492,89 +3337,7 @@ const CreateCustomerForm = () => {
                   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                   justify="space-between"
                 >
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* simultaneousUser */}
-                    <Form.Item
-                      name="simultaneousUser"
-                      label="Simultaneous User"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Simultaneous User!"
-                        }
-                      ]}
-                    >
-                      <Input
-                        readOnly
-                        type="text"
-                        placeholder="Simultaneous User"
-                        className={`form-control`}
-                        name="simultaneousUser"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* ipMode */}
-                    <Form.Item
-                      name="ipMode"
-                      label="IP Mode"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your IP Mode!"
-                        }
-                      ]}
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Union"
-                          onChange={handleIpModeChange}
-                          options={ipModes}
-                          value={selectedIpMode}
-                          showSearch
-                          disabled
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                  {selectedIpMode && selectedIpMode == "staticip" && (
+                  {requiredField === true ? (
                     <Col
                       xs={24}
                       sm={12}
@@ -2584,10 +3347,10 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* staticIp */}
+                      {/* simultaneousUser */}
                       <Form.Item
-                        name="staticIp"
-                        label="Static IP"
+                        name="simultaneousUser"
+                        label="Simultaneous User"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
@@ -2595,62 +3358,21 @@ const CreateCustomerForm = () => {
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Static IP!"
+                            message: "Please input your Simultaneous User!"
                           }
                         ]}
                       >
                         <Input
+                          readOnly
                           type="text"
-                          placeholder="Static IP"
+                          placeholder="Simultaneous User"
                           className={`form-control`}
-                          name="staticIp"
+                          name="simultaneousUser"
                           style={{ padding: "6px" }}
                         />
                       </Form.Item>
                     </Col>
-                  )}
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* referenceType */}
-                    <Form.Item
-                      label="Reference Type"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="referenceType"
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Reference Type"
-                          onChange={handleReferenceTypeChange}
-                          options={referenceTypes}
-                          value={selectedReferenceType}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
-                          }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                  {selectedReferenceType == "Internal" && (
+                  ) : (
                     <Col
                       xs={24}
                       sm={12}
@@ -2660,24 +3382,117 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* referrerUser */}
+                      {/* simultaneousUser */}
                       <Form.Item
-                        label="Referrer User"
+                        name="simultaneousUser"
+                        label="Simultaneous User"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
-                        name="referrerUserId"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Simultaneous User!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          readOnly
+                          type="text"
+                          placeholder="Simultaneous User"
+                          className={`form-control`}
+                          name="simultaneousUser"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* ipMode */}
+                      <Form.Item
+                        name="ipMode"
+                        label="IP Mode"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your IP Mode!"
+                          }
+                        ]}
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
                             allowClear
                             style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Referrer User"
-                            onChange={handleUserChange}
-                            options={users}
-                            value={selectedUser}
+                            placeholder="Please select Union"
+                            onChange={handleIpModeChange}
+                            options={ipModes}
+                            value={selectedIpMode}
                             showSearch
+                            disabled
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* ipMode */}
+                      <Form.Item
+                        name="ipMode"
+                        label="IP Mode"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your IP Mode!"
+                          }
+                        ]}
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select Union"
+                            onChange={handleIpModeChange}
+                            options={ipModes}
+                            value={selectedIpMode}
+                            showSearch
+                            disabled
                             filterOption={(input, option) => {
                               if (typeof option?.label === "string") {
                                 return (
@@ -2693,42 +3508,85 @@ const CreateCustomerForm = () => {
                       </Form.Item>
                     </Col>
                   )}
-                  {selectedReferenceType == "External" && (
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* referrerName */}
-                      <Form.Item
-                        name="referrerName"
-                        label="Referrer Name"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        // rules={[
-                        //   {
-                        //     required: true,
-                        //     message: "Please input your Referrer Name!"
-                        //   }
-                        // ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Referrer Name"
-                          className={`form-control`}
-                          name="referrerName"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
+                  {requiredField === true ? (
+                    <>
+                      {selectedIpMode && selectedIpMode == "staticip" && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          {/* staticIp */}
+                          <Form.Item
+                            name="staticIp"
+                            label="Static IP"
+                            style={{
+                              marginBottom: 0,
+                              fontWeight: "bold"
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your Static IP!"
+                              }
+                            ]}
+                          >
+                            <Input
+                              type="text"
+                              placeholder="Static IP"
+                              className={`form-control`}
+                              name="staticIp"
+                              style={{ padding: "6px" }}
+                            />
+                          </Form.Item>
+                        </Col>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {selectedIpMode && selectedIpMode == "staticip" && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          {/* staticIp */}
+                          <Form.Item
+                            name="staticIp"
+                            label="Static IP"
+                            style={{
+                              marginBottom: 0,
+                              fontWeight: "bold"
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your Static IP!"
+                              }
+                            ]}
+                          >
+                            <Input
+                              type="text"
+                              placeholder="Static IP"
+                              className={`form-control`}
+                              name="staticIp"
+                              style={{ padding: "6px" }}
+                            />
+                          </Form.Item>
+                        </Col>
+                      )}
+                    </>
                   )}
-                  {selectedReferenceType == "Customer" && (
+
+                  {requiredField !== true && (
                     <Col
                       xs={24}
                       sm={12}
@@ -2738,23 +3596,23 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* referrerCustomer */}
+                      {/* referenceType */}
                       <Form.Item
-                        label="Referrer Customer"
+                        label="Reference Type"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
-                        name="referrerCustomer"
+                        name="referenceType"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
                             allowClear
                             style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Referrer Customer"
-                            onChange={handleCustomerChange}
-                            options={customers}
-                            value={selectedCustomer}
+                            placeholder="Please select Reference Type"
+                            onChange={handleReferenceTypeChange}
+                            options={referenceTypes}
+                            value={selectedReferenceType}
                             showSearch
                             filterOption={(input, option) => {
                               if (typeof option?.label === "string") {
@@ -2772,118 +3630,131 @@ const CreateCustomerForm = () => {
                     </Col>
                   )}
 
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* connectionType */}
-                    <Form.Item
-                      label="Connection Type"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      name="connectionType"
-                    >
-                      <Space style={{ width: "100%" }} direction="vertical">
-                        <Select
-                          allowClear
-                          style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Connection Type"
-                          onChange={handleConnectionTypeChange}
-                          options={connectionTypes}
-                          value={selectedConnectionType}
-                          showSearch
-                          filterOption={(input, option) => {
-                            if (typeof option?.label === "string") {
-                              return (
-                                option.label
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              );
-                            }
-                            return false;
+                  {selectedReferenceType == "Internal" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* referrerUser */}
+                        <Form.Item
+                          label="Referrer User"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
                           }}
-                        />
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                  {selectedConnectionType == "utp" && (
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* cableLength */}
-                      <Form.Item
-                        name="cableLength"
-                        label="Cable Length"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        // rules={[
-                        //   {
-                        //     required: true,
-                        //     message: "Please input your Cable Length!"
-                        //   }
-                        // ]}
+                          name="referrerUserId"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Referrer User"
+                              onChange={handleUserChange}
+                              options={users}
+                              value={selectedUser}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    )}
+                  {selectedReferenceType == "External" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
                       >
-                        <Input
-                          type="text"
-                          placeholder="Cable Length"
-                          className={`form-control`}
-                          name="cableLength"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                  )}
-                  {selectedConnectionType == "utp" && (
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* vlanBoxName */}
-                      <Form.Item
-                        name="vlanBoxName"
-                        label="Vlan Box Name"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        // rules={[
-                        //   {
-                        //     required: true,
-                        //     message: "Please input your Vlan Box Name!"
-                        //   }
-                        // ]}
+                        {/* referrerName */}
+                        <Form.Item
+                          name="referrerName"
+                          label="Referrer Name"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          // rules={[
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your Referrer Name!"
+                          //   }
+                          // ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="Referrer Name"
+                            className={`form-control`}
+                            name="referrerName"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    )}
+                  {selectedReferenceType == "Customer" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
                       >
-                        <Input
-                          type="text"
-                          placeholder="Vlan Box Name"
-                          className={`form-control`}
-                          name="vlanBoxName"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                  )}
-                  {selectedConnectionType == "utp" && (
+                        {/* referrerCustomer */}
+                        <Form.Item
+                          label="Referrer Customer"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="referrerCustomer"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Referrer Customer"
+                              onChange={handleCustomerChange}
+                              options={customers}
+                              value={selectedCustomer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    )}
+                  {requiredField !== true && (
                     <Col
                       xs={24}
                       sm={12}
@@ -2893,58 +3764,23 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* swPortNo */}
+                      {/* connectionType */}
                       <Form.Item
-                        name="swPortNo"
-                        label="Sw Port No"
+                        label="Connection Type"
                         style={{
                           marginBottom: 0,
                           fontWeight: "bold"
                         }}
-                        // rules={[
-                        //   {
-                        //     required: true,
-                        //     message: "Please input your Sw Port No!"
-                        //   }
-                        // ]}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Sw Port No"
-                          className={`form-control`}
-                          name="swPortNo"
-                          style={{ padding: "6px" }}
-                        />
-                      </Form.Item>
-                    </Col>
-                  )}
-                  {selectedConnectionType == "fiber_optic" && (
-                    <Col
-                      xs={24}
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}
-                      xxl={12}
-                      className="gutter-row"
-                    >
-                      {/* fiberOpticDeviceType */}
-                      <Form.Item
-                        label="Fiber Optic Device Type"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        name="fiberOpticDeviceType"
+                        name="connectionType"
                       >
                         <Space style={{ width: "100%" }} direction="vertical">
                           <Select
                             allowClear
                             style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select Fiber Optic Device Type"
-                            onChange={handleFiberOpticDeviceTypeChange}
-                            options={fiberOpticDeviceTypes}
-                            value={selectedFiberOpticDeviceType}
+                            placeholder="Please select Connection Type"
+                            onChange={handleConnectionTypeChange}
+                            options={connectionTypes}
+                            value={selectedConnectionType}
                             showSearch
                             filterOption={(input, option) => {
                               if (typeof option?.label === "string") {
@@ -2961,9 +3797,163 @@ const CreateCustomerForm = () => {
                       </Form.Item>
                     </Col>
                   )}
+
+                  {selectedConnectionType == "utp" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* cableLength */}
+                        <Form.Item
+                          name="cableLength"
+                          label="Cable Length"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          // rules={[
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your Cable Length!"
+                          //   }
+                          // ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="Cable Length"
+                            className={`form-control`}
+                            name="cableLength"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    )}
+                  {selectedConnectionType == "utp" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* vlanBoxName */}
+                        <Form.Item
+                          name="vlanBoxName"
+                          label="Vlan Box Name"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          // rules={[
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your Vlan Box Name!"
+                          //   }
+                          // ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="Vlan Box Name"
+                            className={`form-control`}
+                            name="vlanBoxName"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    )}
+                  {selectedConnectionType == "utp" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* swPortNo */}
+                        <Form.Item
+                          name="swPortNo"
+                          label="Sw Port No"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          // rules={[
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your Sw Port No!"
+                          //   }
+                          // ]}
+                        >
+                          <Input
+                            type="text"
+                            placeholder="Sw Port No"
+                            className={`form-control`}
+                            name="swPortNo"
+                            style={{ padding: "6px" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    )}
+                  {selectedConnectionType == "fiber_optic" &&
+                    requiredField !== true && (
+                      <Col
+                        xs={24}
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        xl={12}
+                        xxl={12}
+                        className="gutter-row"
+                      >
+                        {/* fiberOpticDeviceType */}
+                        <Form.Item
+                          label="Fiber Optic Device Type"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          name="fiberOpticDeviceType"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Fiber Optic Device Type"
+                              onChange={handleFiberOpticDeviceTypeChange}
+                              options={fiberOpticDeviceTypes}
+                              value={selectedFiberOpticDeviceType}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Form.Item>
+                      </Col>
+                    )}
 
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "OLT" && (
+                    selectedFiberOpticDeviceType == "OLT" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3020,7 +4010,8 @@ const CreateCustomerForm = () => {
                       </Col>
                     )}
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "OLT" && (
+                    selectedFiberOpticDeviceType == "OLT" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3078,7 +4069,8 @@ const CreateCustomerForm = () => {
                     )}
                   {/* cableLength */}
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "OLT" && (
+                    selectedFiberOpticDeviceType == "OLT" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3115,7 +4107,8 @@ const CreateCustomerForm = () => {
 
                   {/* cableId */}
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "OLT" && (
+                    selectedFiberOpticDeviceType == "OLT" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3151,7 +4144,8 @@ const CreateCustomerForm = () => {
                     )}
                   {/* colorCode */}
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "OLT" && (
+                    selectedFiberOpticDeviceType == "OLT" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3187,7 +4181,8 @@ const CreateCustomerForm = () => {
                     )}
 
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "OLT" && (
+                    selectedFiberOpticDeviceType == "OLT" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3224,7 +4219,8 @@ const CreateCustomerForm = () => {
                     )}
 
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "MC" && (
+                    selectedFiberOpticDeviceType == "MC" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3261,7 +4257,8 @@ const CreateCustomerForm = () => {
                     )}
 
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "MC" && (
+                    selectedFiberOpticDeviceType == "MC" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3297,7 +4294,8 @@ const CreateCustomerForm = () => {
                       </Col>
                     )}
                   {selectedConnectionType == "fiber_optic" &&
-                    selectedFiberOpticDeviceType == "MC" && (
+                    selectedFiberOpticDeviceType == "MC" &&
+                    requiredField !== true && (
                       <Col
                         xs={24}
                         sm={12}
@@ -3394,32 +4392,12 @@ const CreateCustomerForm = () => {
                   ></Col>
                 </Row>
                 {/* isMacBound */}
+
                 <Row
                   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                   justify="center"
                 >
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    <Form.Item
-                      label=""
-                      // style={{
-                      //   marginBottom: 0,
-                      //   fontWeight: "bold"
-                      // }}
-                    >
-                      <Checkbox onChange={handleMacBound} checked={isMacBound}>
-                        MAC Bind
-                      </Checkbox>
-                    </Form.Item>
-                  </Col>
-                  {isMacBound && (
+                  {requiredField !== true && (
                     <Col
                       xs={24}
                       sm={12}
@@ -3429,30 +4407,99 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      {/* mac */}
                       <Form.Item
-                        name="mac"
-                        label="MAC"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Mac!"
-                          }
-                        ]}
+                        label=""
+                        // style={{
+                        //   marginBottom: 0,
+                        //   fontWeight: "bold"
+                        // }}
                       >
-                        <Input
-                          type="text"
-                          placeholder="Mac"
-                          className={`form-control`}
-                          name="mac"
-                          style={{ padding: "6px" }}
-                        />
+                        <Checkbox
+                          onChange={handleMacBound}
+                          checked={isMacBound}
+                        >
+                          MAC Bind
+                        </Checkbox>
                       </Form.Item>
                     </Col>
+                  )}
+
+                  {requiredField === true ? (
+                    <>
+                      {isMacBound && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          {/* mac */}
+                          <Form.Item
+                            name="mac"
+                            label="MAC"
+                            style={{
+                              marginBottom: 0,
+                              fontWeight: "bold"
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your Mac!"
+                              }
+                            ]}
+                          >
+                            <Input
+                              type="text"
+                              placeholder="Mac"
+                              className={`form-control`}
+                              name="mac"
+                              style={{ padding: "6px" }}
+                            />
+                          </Form.Item>
+                        </Col>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {isMacBound && (
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          {/* mac */}
+                          <Form.Item
+                            name="mac"
+                            label="MAC"
+                            style={{
+                              marginBottom: 0,
+                              fontWeight: "bold"
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your Mac!"
+                              }
+                            ]}
+                          >
+                            <Input
+                              type="text"
+                              placeholder="Mac"
+                              className={`form-control`}
+                              name="mac"
+                              style={{ padding: "6px" }}
+                            />
+                          </Form.Item>
+                        </Col>
+                      )}
+                    </>
                   )}
                 </Row>
               </Card>
@@ -3485,39 +4532,75 @@ const CreateCustomerForm = () => {
                   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                   justify="center"
                 >
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    xxl={12}
-                    className="gutter-row"
-                  >
-                    {/* discount */}
-                    <Form.Item
-                      name="discount"
-                      label="Discount"
-                      style={{
-                        marginBottom: 0,
-                        fontWeight: "bold"
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Discount!"
-                        }
-                      ]}
+                  {requiredField === true ? (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
                     >
-                      <Input
-                        type="text"
-                        placeholder="Discount"
-                        className={`form-control`}
+                      {/* discount */}
+                      <Form.Item
                         name="discount"
-                        style={{ padding: "6px" }}
-                      />
-                    </Form.Item>
-                  </Col>
+                        label="Discount"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Discount!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Discount"
+                          className={`form-control`}
+                          name="discount"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      xl={12}
+                      xxl={12}
+                      className="gutter-row"
+                    >
+                      {/* discount */}
+                      <Form.Item
+                        name="discount"
+                        label="Discount"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Discount!"
+                          }
+                        ]}
+                      >
+                        <Input
+                          type="text"
+                          placeholder="Discount"
+                          className={`form-control`}
+                          name="discount"
+                          style={{ padding: "6px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )}
                 </Row>
 
                 <Space

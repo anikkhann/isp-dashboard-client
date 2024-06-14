@@ -397,13 +397,31 @@ const CreatePackageForm = () => {
                 name="uploadLimit"
                 rules={[
                   {
-                    required: true,
-                    message: "Please input your Upload Limit!"
+                    required: true
+
+                    // message: "Please input your Upload Limit!"
+                  },
+                  {
+                    validator: async (_, value) => {
+                      if (!value) {
+                        return Promise.reject("Please input Upload Limit!");
+                      }
+                      const intValue = parseInt(value, 10);
+                      if (isNaN(intValue)) {
+                        return Promise.reject("Please enter a valid number.");
+                      }
+                      if (intValue >= 0 || intValue <= 10240) {
+                        return Promise.reject(
+                          "Upload Limit must be >=0 and <= 10240"
+                        );
+                      }
+                      return Promise.resolve();
+                    }
                   }
                 ]}
               >
                 <Input
-                  type="text"
+                  type="number"
                   placeholder="Upload Limit"
                   className={`form-control`}
                   name="uploadLimit"
@@ -467,13 +485,30 @@ const CreatePackageForm = () => {
                 name="downloadLimit"
                 rules={[
                   {
-                    required: true,
-                    message: "Please input your Download Limit!"
+                    required: true
+                    // message: "Please input your Upload Limit!"
+                  },
+                  {
+                    validator: async (_, value) => {
+                      if (!value) {
+                        return Promise.reject("Please input Download Limit!");
+                      }
+                      const intValue = parseInt(value, 10);
+                      if (isNaN(intValue)) {
+                        return Promise.reject("Please enter a valid number.");
+                      }
+                      if (intValue >= 0 || intValue <= 10240) {
+                        return Promise.reject(
+                          "Download Limit must be >=0 and <= 10240"
+                        );
+                      }
+                      return Promise.resolve();
+                    }
                   }
                 ]}
               >
                 <Input
-                  type="text"
+                  type="number"
                   placeholder="Download Limit"
                   className={`form-control`}
                   name="downloadLimit"
@@ -536,8 +571,25 @@ const CreatePackageForm = () => {
                 name="validity"
                 rules={[
                   {
-                    required: true,
-                    message: "Please input your Validity!"
+                    required: true
+                    // message: "Please input your Upload Limit!"
+                  },
+                  {
+                    validator: async (_, value) => {
+                      if (!value) {
+                        return Promise.reject("Please input Validity Limit!");
+                      }
+                      const intValue = parseInt(value, 10);
+                      if (isNaN(intValue)) {
+                        return Promise.reject("Please enter a valid number.");
+                      }
+                      if (intValue >= 0 || intValue <= 10240) {
+                        return Promise.reject(
+                          "Validity Limit must be >=0 and <= 10240"
+                        );
+                      }
+                      return Promise.resolve();
+                    }
                   }
                 ]}
               >
@@ -598,7 +650,7 @@ const CreatePackageForm = () => {
             >
               {/* vat */}
               <Form.Item
-                label="Vat (%)"
+                label="VAT (%)"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -606,14 +658,29 @@ const CreatePackageForm = () => {
                 name="vat"
                 rules={[
                   {
-                    required: true,
-                    message: "Please input your Vat (%)!"
+                    required: true
+                    // message: "Please input your Upload Limit!"
+                  },
+                  {
+                    validator: async (_, value) => {
+                      if (!value) {
+                        return Promise.reject("Please input VAT!");
+                      }
+                      const intValue = parseInt(value, 10);
+                      if (isNaN(intValue)) {
+                        return Promise.reject("Please enter a valid number.");
+                      }
+                      if (intValue >= 0 || intValue <= 100) {
+                        return Promise.reject("VAT must be >=0 and <= 100");
+                      }
+                      return Promise.resolve();
+                    }
                   }
                 ]}
               >
                 <Input
-                  type="text"
-                  placeholder="Vat (%)"
+                  type="number"
+                  placeholder="VAT (%)"
                   className={`form-control`}
                   name="vat"
                   style={{ padding: "6px" }}
@@ -639,13 +706,30 @@ const CreatePackageForm = () => {
                 name="totalPrice"
                 rules={[
                   {
-                    required: true,
-                    message: "Please input your Total Price!"
+                    required: true
+                    // message: "Please input your Upload Limit!"
+                  },
+                  {
+                    validator: async (_, value) => {
+                      if (!value) {
+                        return Promise.reject("Please input Total Price!");
+                      }
+                      const intValue = parseInt(value, 10);
+                      if (isNaN(intValue)) {
+                        return Promise.reject("Please enter a valid number.");
+                      }
+                      if (intValue >= 0 || intValue <= 100000) {
+                        return Promise.reject(
+                          "Total Price must be >=0 and <= 100000"
+                        );
+                      }
+                      return Promise.resolve();
+                    }
                   }
                 ]}
               >
                 <Input
-                  type="text"
+                  type="number"
                   placeholder="Total Price"
                   className={`form-control`}
                   name="totalPrice"

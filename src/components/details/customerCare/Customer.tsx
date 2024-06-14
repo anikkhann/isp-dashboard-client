@@ -78,7 +78,11 @@ const Customer = ({ item }: PropData) => {
     if (item?.expirationTime) {
       const date = new Date(item?.expirationTime);
       const today = new Date();
-      if (date < today) {
+      // Reset hours, minutes, seconds, and milliseconds to compare only dates
+      date.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
+      if (date <= today) {
         setShowRenewButton(true);
       }
     }

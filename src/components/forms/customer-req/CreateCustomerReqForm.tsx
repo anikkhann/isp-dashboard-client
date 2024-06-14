@@ -740,6 +740,7 @@ const CreateCustomerReqForm = () => {
                   name="username"
                   style={{ padding: "6px" }}
                   maxLength={32}
+                  minLength={3}
                 />
               </Form.Item>
             </Col>

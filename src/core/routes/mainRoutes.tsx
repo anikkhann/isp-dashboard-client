@@ -145,6 +145,13 @@ const mainRoutes = [
     path: "/admin/hotspot",
     icon: <WifiOutlined />,
     permission: "hotspot.dashboard"
+  },
+  {
+    key: "/admin/monitoring",
+    label: <Link href="/admin/monitoring">Monitoring</Link>,
+    path: "/admin/monitoring",
+    icon: <WifiOutlined />,
+    permission: "hotspot.dashboard"
   }
 ];
 

@@ -7,8 +7,10 @@ import { useAppSelector } from "@/store/hooks";
 import { Card } from "antd";
 
 import React from "react";
-
-const Failed = () => {
+interface FailedProps {
+  message: string;
+}
+const Failed: React.FC<FailedProps> = ({ message }) => {
   const authUser = useAppSelector(state => state.auth.user);
 
   return (
@@ -39,6 +41,9 @@ const Failed = () => {
             >
               Payment Unsuccessful
             </h1>
+            <div>
+              <p className="font-semibold text-center">{message}</p>
+            </div>
             <button
               onClick={() => {
                 window.location.href = "/";

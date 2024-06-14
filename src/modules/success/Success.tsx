@@ -7,8 +7,10 @@ import { useAppSelector } from "@/store/hooks";
 import { Card } from "antd";
 
 import React from "react";
-
-const Success = () => {
+interface SuccessProps {
+  message: string;
+}
+const Success: React.FC<SuccessProps> = ({ message }) => {
   const authUser = useAppSelector(state => state.auth.user);
 
   return (
@@ -39,6 +41,9 @@ const Success = () => {
             >
               Payment Successful
             </h1>
+            <div>
+              <p className="font-semibold text-center">{message}</p>
+            </div>
             <button
               onClick={() => {
                 window.location.href = "/";
