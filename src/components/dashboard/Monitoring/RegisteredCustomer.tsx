@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Select, Space, Row } from "antd";
+import { Card, Col, Space } from "antd";
+// import { Button, Card, Col, Select, Space, Row } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table, Collapse } from "antd";
+import { Table } from "antd";
+// import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { ClientWiseSummaryData } from "@/interfaces/ClientWiseSummaryData";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import { RegisteredCustomerData } from "@/interfaces/RegisteredCustomerData";
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
 
 interface TableParams {
@@ -22,24 +24,17 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const ClientWiseSummary: React.FC = () => {
-  const [data, setData] = useState<ClientWiseSummaryData[]>([]);
-  const { Panel } = Collapse;
+const RegisteredCustomer: React.FC = () => {
+  const [data, setData] = useState<RegisteredCustomerData[]>([]);
+  // const { Panel } = Collapse;
 
-  const MySwal = withReactContent(Swal);
+  // const MySwal = withReactContent(Swal);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   //   const [order, SetOrder] = useState("asc");
   //   const [sort, SetSort] = useState("id");
-  const [order, SetOrder] = useState<string | undefined>("asc");
-  const [sort, SetSort] = useState<string | undefined>("id");
-  // const [sortField, SetSortField] = useState<string | undefined>("desc");
-  // const [sortOrder, SetSortOrder] = useState<string | undefined>(
-  //   "total_customer"
-  // );
-  const [clients, setClients] = useState<any[]>([]);
-  console.log("client", clients);
-  const [selectedClient, setSelectedClient] = useState<any>(null);
+  const [sortField, SetSortField] = useState<string | undefined>(undefined);
+  const [sortOrder, SetSortOrder] = useState<string | undefined>(undefined);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -52,27 +47,24 @@ const ClientWiseSummary: React.FC = () => {
   const fetchData = async (
     page: number,
     limit: number,
-    // sortField?: string,
-    // sortOrder?: string,
-    order?: string,
-    sort?: string,
-    selectedClientParam?: string
+    sortField?: string,
+    sortOrder?: string
+    // order: string,
+    // sort: string,
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const clientID = selectedClientParam ? selectedClientParam : "";
-
     const { data } = await axios.get(
-      `/api/dashboard/monitoring/client-wise-summary?clientId=${clientID}`,
+      `/api/dashboard/monitoring/top-ten-client-wise/registered-customer`,
       {
         params: {
           page,
           limit,
-          // sortField,
-          // sortOrder
-          order,
-          sort
+          sortField,
+          sortOrder
+          // order,
+          // sort
         }
       }
     );
@@ -81,25 +73,15 @@ const ClientWiseSummary: React.FC = () => {
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     // , page, limit, order, sort,
-    queryKey: [
-      "clientWise-summary",
-      page,
-      limit,
-      order,
-      sort,
-      // sortField,
-      // sortOrder,
-      selectedClient
-    ],
+    queryKey: ["top-10-registered-customer", page, limit, sortField, sortOrder],
     queryFn: async () => {
       const response = await fetchData(
         page,
         limit,
-        // sortField,
-        // sortOrder,
-        order,
-        sort,
-        selectedClient
+        sortField,
+        sortOrder
+        // order,
+        // sort,
       );
       return response;
     },
@@ -137,125 +119,49 @@ const ClientWiseSummary: React.FC = () => {
     }
   }, [data]);
 
-  function getClients() {
-    const body = {
-      meta: {
-        sort: [
-          {
-            order: "asc",
-            field: "username"
-          }
-        ]
-      },
-      // FOR SEARCHING DATA - OPTIONAL
-      body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        partnerType: "client",
-        isActive: true
-      }
-    };
-
-    axios.post("/api/partner/get-list", body).then(res => {
-      // console.log(res);
-      const { data } = res;
-      console.log("list", data.body);
-      if (data.status != 200) {
-        MySwal.fire({
-          title: "Error",
-          text: data.message || "Something went wrong",
-          icon: "error"
-        });
-      }
-
-      if (!data.body) return;
-
-      const list = data.body.map((item: any) => {
-        return {
-          label: item.username,
-          value: item.id
-        };
-      });
-
-      setClients(list);
-    });
-  }
-
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
     sorter:
-      | SorterResult<ClientWiseSummaryData>
-      | SorterResult<ClientWiseSummaryData>[]
+      | SorterResult<RegisteredCustomerData>
+      | SorterResult<RegisteredCustomerData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).order) {
-      SetOrder(
-        (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
+    if (sorter && (sorter as SorterResult<RegisteredCustomerData>).order) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
+      // SetOrder(
+      //   (sorter as SorterResult<RegisteredCustomerData>).order === "ascend"
+      //     ? "asc"
+      //     : "desc"
+      // );
+      SetSortOrder(
+        (sorter as SorterResult<RegisteredCustomerData>).order === "ascend"
           ? "asc"
           : "desc"
       );
+    } else {
+      SetSortOrder(undefined);
     }
-    if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-      SetSort((sorter as SorterResult<ClientWiseSummaryData>).field as string);
+    if (sorter && (sorter as SorterResult<RegisteredCustomerData>).field) {
+      SetSortField(
+        (sorter as SorterResult<RegisteredCustomerData>).field as string
+      );
+    } else {
+      SetSortField(undefined);
     }
-  };
-
-  // const handleTableChange = (
-  //   pagination: TablePaginationConfig,
-  //   filters: Record<string, FilterValue | null>,
-  //   sorter:
-  //     | SorterResult<ClientWiseSummaryData>
-  //     | SorterResult<ClientWiseSummaryData>[]
-  // ) => {
-  //   SetPage(pagination.current as number);
-  //   SetLimit(pagination.pageSize as number);
-
-  //   if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).order) {
-  //     // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
-  //     // SetOrder(
-  //     //   (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
-  //     //     ? "asc"
-  //     //     : "desc"
-  //     // );
-  //     SetOrder(
-  //       (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
-  //         ? "asc"
-  //         : "desc"
-  //     );
-  //   } else {
-  //     SetOrder(undefined);
-  //   }
-  //   if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-  //     SetSort((sorter as SorterResult<ClientWiseSummaryData>).field as string);
-  //   } else {
-  //     SetSort(undefined);
-  //   }
-  //   // if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-  //   //   // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
-  //   //    SetSort((sorter as SorterResult<ZoneTagData>).field as string);
-  //   // }
-  // };
-
-  useEffect(() => {
-    getClients();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleClear = () => {
-    setSelectedClient(null);
-  };
-
-  const handleClientChange = (value: any) => {
-    setSelectedClient(value);
+    // if (sorter && (sorter as SorterResult<RegisteredCustomerData>).field) {
+    //   // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
+    //    SetSort((sorter as SorterResult<ZoneTagData>).field as string);
+    // }
   };
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const columns: ColumnsType<ClientWiseSummaryData> = [
+  const columns: ColumnsType<RegisteredCustomerData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -269,81 +175,31 @@ const ClientWiseSummary: React.FC = () => {
       },
       sorter: true,
       ellipsis: true,
-      width: "auto",
+      width: "20%",
       align: "center" as AlignType
     },
     {
       title: "Client",
-      dataIndex: "client",
+      dataIndex: "client_name",
       sorter: true,
-
-      render: (client: any) => {
-        if (!client) return "-";
-        return <>{client}</>;
+      render: (client_name: any) => {
+        if (!client_name) return "-";
+        return <>{client_name}</>;
       },
       ellipsis: true,
       width: "20%",
       align: "center" as AlignType
     },
     {
-      title: "Active Customer",
-      dataIndex: "active_customer",
+      title: "Total Registered",
+      dataIndex: "total_registered",
       sorter: true,
-      render: (active_customer: any) => {
-        if (!active_customer) return "-";
-        return <>{active_customer}</>;
+      render: (total_registered: any) => {
+        if (!total_registered) return "-";
+        return <>{total_registered}</>;
       },
       ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Expired Customer",
-
-      dataIndex: "expired_customer",
-      sorter: true,
-      render: (expired_customer: any) => {
-        if (!expired_customer) return "-";
-        return <>{expired_customer}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Registered Customer",
-      dataIndex: "registered_customer",
-      sorter: true,
-      render: (registered_customer: any) => {
-        if (!registered_customer) return "-";
-        return <>{registered_customer}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Total Customer",
-      dataIndex: "total_customer",
-      sorter: true,
-      render: (total_customer: any) => {
-        if (!total_customer) return "-";
-        return <>{total_customer}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Total Online",
-      dataIndex: "total_online",
-      sorter: true,
-      render: (total_online: any) => {
-        if (!total_online) return "-";
-        return <>{total_online}</>;
-      },
-      ellipsis: true,
-      width: "auto",
+      width: "20%",
       align: "center" as AlignType
     }
   ];
@@ -386,7 +242,7 @@ const ClientWiseSummary: React.FC = () => {
           )}
 
           <TableCard
-            title="Client Wise Summary"
+            title="Registered Customer"
             hasLink={false}
             addLink=""
             permission=""
@@ -399,7 +255,7 @@ const ClientWiseSummary: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              <Space style={{ marginBottom: 16 }}>
+              {/* <Space style={{ marginBottom: 16 }}>
                 <div style={{ padding: "20px", backgroundColor: "white" }}>
                   <Collapse
                     accordion
@@ -439,6 +295,41 @@ const ClientWiseSummary: React.FC = () => {
                               onChange={handleClientChange}
                               options={clients}
                               value={selectedClient}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>NAS Device</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select"
+                              onChange={handleNasDeviceChange}
+                              options={nasDevices}
+                              value={selectedNasDevice}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {
@@ -510,7 +401,7 @@ const ClientWiseSummary: React.FC = () => {
                     </Panel>
                   </Collapse>
                 </div>
-              </Space>
+              </Space> */}
 
               <Table
                 style={{
@@ -534,4 +425,4 @@ const ClientWiseSummary: React.FC = () => {
   );
 };
 
-export default ClientWiseSummary;
+export default RegisteredCustomer;

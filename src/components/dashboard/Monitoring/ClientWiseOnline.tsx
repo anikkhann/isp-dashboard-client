@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { ClientWiseSummaryData } from "@/interfaces/ClientWiseSummaryData";
+import { ClientWiseOnlineData } from "@/interfaces/ClientWiseOnlineData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
@@ -22,8 +22,8 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const ClientWiseSummary: React.FC = () => {
-  const [data, setData] = useState<ClientWiseSummaryData[]>([]);
+const ClientWiseOnline: React.FC = () => {
+  const [data, setData] = useState<ClientWiseOnlineData[]>([]);
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
@@ -31,12 +31,8 @@ const ClientWiseSummary: React.FC = () => {
   const [limit, SetLimit] = useState(10);
   //   const [order, SetOrder] = useState("asc");
   //   const [sort, SetSort] = useState("id");
-  const [order, SetOrder] = useState<string | undefined>("asc");
-  const [sort, SetSort] = useState<string | undefined>("id");
-  // const [sortField, SetSortField] = useState<string | undefined>("desc");
-  // const [sortOrder, SetSortOrder] = useState<string | undefined>(
-  //   "total_customer"
-  // );
+  const [sortField, SetSortField] = useState<string | undefined>(undefined);
+  const [sortOrder, SetSortOrder] = useState<string | undefined>(undefined);
   const [clients, setClients] = useState<any[]>([]);
   console.log("client", clients);
   const [selectedClient, setSelectedClient] = useState<any>(null);
@@ -52,10 +48,10 @@ const ClientWiseSummary: React.FC = () => {
   const fetchData = async (
     page: number,
     limit: number,
-    // sortField?: string,
-    // sortOrder?: string,
-    order?: string,
-    sort?: string,
+    sortField?: string,
+    sortOrder?: string,
+    // order: string,
+    // sort: string,
     selectedClientParam?: string
   ) => {
     const token = Cookies.get("token");
@@ -69,10 +65,10 @@ const ClientWiseSummary: React.FC = () => {
         params: {
           page,
           limit,
-          // sortField,
-          // sortOrder
-          order,
-          sort
+          sortField,
+          sortOrder
+          // order,
+          // sort
         }
       }
     );
@@ -82,23 +78,21 @@ const ClientWiseSummary: React.FC = () => {
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     // , page, limit, order, sort,
     queryKey: [
-      "clientWise-summary",
+      "clientWise-online",
       page,
       limit,
-      order,
-      sort,
-      // sortField,
-      // sortOrder,
+      sortField,
+      sortOrder,
       selectedClient
     ],
     queryFn: async () => {
       const response = await fetchData(
         page,
         limit,
-        // sortField,
-        // sortOrder,
-        order,
-        sort,
+        sortField,
+        sortOrder,
+        // order,
+        // sort,
         selectedClient
       );
       return response;
@@ -184,59 +178,39 @@ const ClientWiseSummary: React.FC = () => {
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
     sorter:
-      | SorterResult<ClientWiseSummaryData>
-      | SorterResult<ClientWiseSummaryData>[]
+      | SorterResult<ClientWiseOnlineData>
+      | SorterResult<ClientWiseOnlineData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).order) {
-      SetOrder(
-        (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
+    if (sorter && (sorter as SorterResult<ClientWiseOnlineData>).order) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
+      // SetOrder(
+      //   (sorter as SorterResult<ClientWiseOnlineData>).order === "ascend"
+      //     ? "asc"
+      //     : "desc"
+      // );
+      SetSortOrder(
+        (sorter as SorterResult<ClientWiseOnlineData>).order === "ascend"
           ? "asc"
           : "desc"
       );
+    } else {
+      SetSortOrder(undefined);
     }
-    if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-      SetSort((sorter as SorterResult<ClientWiseSummaryData>).field as string);
+    if (sorter && (sorter as SorterResult<ClientWiseOnlineData>).field) {
+      SetSortField(
+        (sorter as SorterResult<ClientWiseOnlineData>).field as string
+      );
+    } else {
+      SetSortField(undefined);
     }
+    // if (sorter && (sorter as SorterResult<ClientWiseOnlineData>).field) {
+    //   // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
+    //    SetSort((sorter as SorterResult<ZoneTagData>).field as string);
+    // }
   };
-
-  // const handleTableChange = (
-  //   pagination: TablePaginationConfig,
-  //   filters: Record<string, FilterValue | null>,
-  //   sorter:
-  //     | SorterResult<ClientWiseSummaryData>
-  //     | SorterResult<ClientWiseSummaryData>[]
-  // ) => {
-  //   SetPage(pagination.current as number);
-  //   SetLimit(pagination.pageSize as number);
-
-  //   if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).order) {
-  //     // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
-  //     // SetOrder(
-  //     //   (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
-  //     //     ? "asc"
-  //     //     : "desc"
-  //     // );
-  //     SetOrder(
-  //       (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
-  //         ? "asc"
-  //         : "desc"
-  //     );
-  //   } else {
-  //     SetOrder(undefined);
-  //   }
-  //   if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-  //     SetSort((sorter as SorterResult<ClientWiseSummaryData>).field as string);
-  //   } else {
-  //     SetSort(undefined);
-  //   }
-  //   // if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-  //   //   // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
-  //   //    SetSort((sorter as SorterResult<ZoneTagData>).field as string);
-  //   // }
-  // };
 
   useEffect(() => {
     getClients();
@@ -255,7 +229,7 @@ const ClientWiseSummary: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const columns: ColumnsType<ClientWiseSummaryData> = [
+  const columns: ColumnsType<ClientWiseOnlineData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -276,7 +250,6 @@ const ClientWiseSummary: React.FC = () => {
       title: "Client",
       dataIndex: "client",
       sorter: true,
-
       render: (client: any) => {
         if (!client) return "-";
         return <>{client}</>;
@@ -345,6 +318,38 @@ const ClientWiseSummary: React.FC = () => {
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
+    },
+    {
+      title: "Online Ratio (%)",
+      dataIndex: "online_ratio",
+      sorter: true,
+      render: (text, record) => {
+        let total_online: string | number | 0 = record.total_online || 0;
+        let registered_customer: string | number | 1 =
+          record.registered_customer || 1;
+
+        // Ensure total_online is a number for the calculation
+        if (typeof total_online === "string") {
+          total_online = parseFloat(total_online);
+        }
+
+        // Ensure registered_customer is a number for the calculation
+        if (typeof registered_customer === "string") {
+          registered_customer = parseFloat(registered_customer);
+        }
+
+        const online_ratio = parseFloat(
+          ((total_online / registered_customer) * 100).toFixed(2)
+        );
+        // Check if online_ratio is a valid number
+        if (isNaN(online_ratio) || !isFinite(online_ratio)) {
+          return <>-</>;
+        }
+        return <>{online_ratio}%</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
     }
   ];
 
@@ -386,7 +391,7 @@ const ClientWiseSummary: React.FC = () => {
           )}
 
           <TableCard
-            title="Client Wise Summary"
+            title="Online Customer"
             hasLink={false}
             addLink=""
             permission=""
@@ -534,4 +539,4 @@ const ClientWiseSummary: React.FC = () => {
   );
 };
 
-export default ClientWiseSummary;
+export default ClientWiseOnline;

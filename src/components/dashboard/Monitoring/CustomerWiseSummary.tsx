@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { ClientWiseSummaryData } from "@/interfaces/ClientWiseSummaryData";
+import { CustomerWiseSummaryData } from "@/interfaces/CustomerWiseSummaryData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
@@ -22,8 +22,8 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const ClientWiseSummary: React.FC = () => {
-  const [data, setData] = useState<ClientWiseSummaryData[]>([]);
+const CustomerWiseSummary: React.FC = () => {
+  const [data, setData] = useState<CustomerWiseSummaryData[]>([]);
   const { Panel } = Collapse;
 
   const MySwal = withReactContent(Swal);
@@ -31,14 +31,10 @@ const ClientWiseSummary: React.FC = () => {
   const [limit, SetLimit] = useState(10);
   //   const [order, SetOrder] = useState("asc");
   //   const [sort, SetSort] = useState("id");
-  const [order, SetOrder] = useState<string | undefined>("asc");
-  const [sort, SetSort] = useState<string | undefined>("id");
-  // const [sortField, SetSortField] = useState<string | undefined>("desc");
-  // const [sortOrder, SetSortOrder] = useState<string | undefined>(
-  //   "total_customer"
-  // );
+  const [sortField, SetSortField] = useState<string | undefined>(undefined);
+  const [sortOrder, SetSortOrder] = useState<string | undefined>(undefined);
   const [clients, setClients] = useState<any[]>([]);
-  console.log("client", clients);
+
   const [selectedClient, setSelectedClient] = useState<any>(null);
 
   const [tableParams, setTableParams] = useState<TableParams>({
@@ -52,10 +48,10 @@ const ClientWiseSummary: React.FC = () => {
   const fetchData = async (
     page: number,
     limit: number,
-    // sortField?: string,
-    // sortOrder?: string,
-    order?: string,
-    sort?: string,
+    sortField?: string,
+    sortOrder?: string,
+    // order: string,
+    // sort: string,
     selectedClientParam?: string
   ) => {
     const token = Cookies.get("token");
@@ -64,15 +60,15 @@ const ClientWiseSummary: React.FC = () => {
     const clientID = selectedClientParam ? selectedClientParam : "";
 
     const { data } = await axios.get(
-      `/api/dashboard/monitoring/client-wise-summary?clientId=${clientID}`,
+      `/api/dashboard/monitoring/customer-summary?clientId=${clientID}`,
       {
         params: {
           page,
           limit,
-          // sortField,
-          // sortOrder
-          order,
-          sort
+          sortField,
+          sortOrder
+          // order,
+          // sort
         }
       }
     );
@@ -82,23 +78,21 @@ const ClientWiseSummary: React.FC = () => {
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     // , page, limit, order, sort,
     queryKey: [
-      "clientWise-summary",
+      "customerWise-summary",
       page,
       limit,
-      order,
-      sort,
-      // sortField,
-      // sortOrder,
+      sortField,
+      sortOrder,
       selectedClient
     ],
     queryFn: async () => {
       const response = await fetchData(
         page,
         limit,
-        // sortField,
-        // sortOrder,
-        order,
-        sort,
+        sortField,
+        sortOrder,
+        // order,
+        // sort,
         selectedClient
       );
       return response;
@@ -184,59 +178,39 @@ const ClientWiseSummary: React.FC = () => {
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
     sorter:
-      | SorterResult<ClientWiseSummaryData>
-      | SorterResult<ClientWiseSummaryData>[]
+      | SorterResult<CustomerWiseSummaryData>
+      | SorterResult<CustomerWiseSummaryData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).order) {
-      SetOrder(
-        (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
+    if (sorter && (sorter as SorterResult<CustomerWiseSummaryData>).order) {
+      // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
+      // SetOrder(
+      //   (sorter as SorterResult<CustomerWiseSummaryData>).order === "ascend"
+      //     ? "asc"
+      //     : "desc"
+      // );
+      SetSortOrder(
+        (sorter as SorterResult<CustomerWiseSummaryData>).order === "ascend"
           ? "asc"
           : "desc"
       );
+    } else {
+      SetSortOrder(undefined);
     }
-    if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-      SetSort((sorter as SorterResult<ClientWiseSummaryData>).field as string);
+    if (sorter && (sorter as SorterResult<CustomerWiseSummaryData>).field) {
+      SetSortField(
+        (sorter as SorterResult<CustomerWiseSummaryData>).field as string
+      );
+    } else {
+      SetSortField(undefined);
     }
+    // if (sorter && (sorter as SorterResult<CustomerWiseSummaryData>).field) {
+    //   // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
+    //    SetSort((sorter as SorterResult<ZoneTagData>).field as string);
+    // }
   };
-
-  // const handleTableChange = (
-  //   pagination: TablePaginationConfig,
-  //   filters: Record<string, FilterValue | null>,
-  //   sorter:
-  //     | SorterResult<ClientWiseSummaryData>
-  //     | SorterResult<ClientWiseSummaryData>[]
-  // ) => {
-  //   SetPage(pagination.current as number);
-  //   SetLimit(pagination.pageSize as number);
-
-  //   if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).order) {
-  //     // // console.log((sorter as SorterResult<ZoneRevenueData>).order)
-  //     // SetOrder(
-  //     //   (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
-  //     //     ? "asc"
-  //     //     : "desc"
-  //     // );
-  //     SetOrder(
-  //       (sorter as SorterResult<ClientWiseSummaryData>).order === "ascend"
-  //         ? "asc"
-  //         : "desc"
-  //     );
-  //   } else {
-  //     SetOrder(undefined);
-  //   }
-  //   if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-  //     SetSort((sorter as SorterResult<ClientWiseSummaryData>).field as string);
-  //   } else {
-  //     SetSort(undefined);
-  //   }
-  //   // if (sorter && (sorter as SorterResult<ClientWiseSummaryData>).field) {
-  //   //   // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
-  //   //    SetSort((sorter as SorterResult<ZoneTagData>).field as string);
-  //   // }
-  // };
 
   useEffect(() => {
     getClients();
@@ -255,7 +229,7 @@ const ClientWiseSummary: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const columns: ColumnsType<ClientWiseSummaryData> = [
+  const columns: ColumnsType<CustomerWiseSummaryData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -273,13 +247,12 @@ const ClientWiseSummary: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Client",
-      dataIndex: "client",
+      title: "Username",
+      dataIndex: "username",
       sorter: true,
-
-      render: (client: any) => {
-        if (!client) return "-";
-        return <>{client}</>;
+      render: (username: any) => {
+        if (!username) return "-";
+        return <>{username}</>;
       },
       ellipsis: true,
       width: "20%",
@@ -311,6 +284,19 @@ const ClientWiseSummary: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Expired Ratio",
+
+      dataIndex: "expired_ratio",
+      sorter: true,
+      render: (expired_ratio: any) => {
+        if (!expired_ratio) return "-";
+        return <>{expired_ratio}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "Registered Customer",
       dataIndex: "registered_customer",
       sorter: true,
@@ -329,18 +315,6 @@ const ClientWiseSummary: React.FC = () => {
       render: (total_customer: any) => {
         if (!total_customer) return "-";
         return <>{total_customer}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Total Online",
-      dataIndex: "total_online",
-      sorter: true,
-      render: (total_online: any) => {
-        if (!total_online) return "-";
-        return <>{total_online}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -386,7 +360,7 @@ const ClientWiseSummary: React.FC = () => {
           )}
 
           <TableCard
-            title="Client Wise Summary"
+            title="Customer Wise Summary"
             hasLink={false}
             addLink=""
             permission=""
@@ -534,4 +508,4 @@ const ClientWiseSummary: React.FC = () => {
   );
 };
 
-export default ClientWiseSummary;
+export default CustomerWiseSummary;
