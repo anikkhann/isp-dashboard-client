@@ -389,7 +389,7 @@ const NASWiseSummary: React.FC = () => {
           )}
 
           <TableCard
-            title="NAS Wise Summary"
+            title=""
             hasLink={false}
             addLink=""
             permission=""
@@ -425,10 +425,10 @@ const NASWiseSummary: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -460,10 +460,10 @@ const NASWiseSummary: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -494,11 +494,11 @@ const NASWiseSummary: React.FC = () => {
 
                         <Col
                           xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                          xxl={24}
                           className="gutter-row"
                         >
                           <Button

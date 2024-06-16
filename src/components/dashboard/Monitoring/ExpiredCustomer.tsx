@@ -242,7 +242,7 @@ const ExpiredCustomer: React.FC = () => {
           )}
 
           <TableCard
-            title="Expired Customer"
+            title=""
             hasLink={false}
             addLink=""
             permission=""

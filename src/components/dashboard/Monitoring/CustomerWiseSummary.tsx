@@ -360,7 +360,7 @@ const CustomerWiseSummary: React.FC = () => {
           )}
 
           <TableCard
-            title="Customer Wise Summary"
+            title=""
             hasLink={false}
             addLink=""
             permission=""
@@ -395,11 +395,11 @@ const CustomerWiseSummary: React.FC = () => {
                       >
                         <Col
                           xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                          xxl={24}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -430,11 +430,11 @@ const CustomerWiseSummary: React.FC = () => {
 
                         <Col
                           xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                          xxl={24}
                           className="gutter-row"
                         >
                           <Button

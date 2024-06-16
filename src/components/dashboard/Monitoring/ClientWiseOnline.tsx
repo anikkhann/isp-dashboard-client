@@ -391,7 +391,7 @@ const ClientWiseOnline: React.FC = () => {
           )}
 
           <TableCard
-            title="Online Customer"
+            title=""
             hasLink={false}
             addLink=""
             permission=""
@@ -426,11 +426,11 @@ const ClientWiseOnline: React.FC = () => {
                       >
                         <Col
                           xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                          xxl={24}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -461,11 +461,11 @@ const ClientWiseOnline: React.FC = () => {
 
                         <Col
                           xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
+                          sm={24}
+                          md={24}
+                          lg={24}
+                          xl={24}
+                          xxl={24}
                           className="gutter-row"
                         >
                           <Button

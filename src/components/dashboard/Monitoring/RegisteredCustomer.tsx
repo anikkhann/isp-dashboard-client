@@ -242,7 +242,7 @@ const RegisteredCustomer: React.FC = () => {
           )}
 
           <TableCard
-            title="Registered Customer"
+            title=""
             hasLink={false}
             addLink=""
             permission=""

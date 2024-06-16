@@ -286,6 +286,34 @@ const tagsList = [
   {
     label: "Expired List",
     value: "expiredList"
+  },
+  {
+    label: "Monitoring-Client-Summary",
+    value: "monitoring-client-summary"
+  },
+  {
+    label: "Monitoring-Online-Customer",
+    value: "monitoring-online-customer"
+  },
+  {
+    label: "Monitoring-Package-Summary",
+    value: "monitoring-package-summary"
+  },
+  {
+    label: "Monitoring-NAS-Summary",
+    value: "monitoring-nas-summary"
+  },
+  {
+    label: "Monitoring-Registered-Customer",
+    value: "monitoring-registered-customer"
+  },
+  {
+    label: "Monitoring-Expired-Customer",
+    value: "monitoring-expired-customer"
+  },
+  {
+    label: "Monitoring-Customer-Summary",
+    value: "monitoring-customer-summary"
   }
 ];
 

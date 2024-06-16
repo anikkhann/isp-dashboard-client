@@ -706,17 +706,26 @@ const CustomerList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    {
-      title: "Customer ID",
-      dataIndex: "customerId",
-      sorter: true,
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+    // {
+    //   title: "Customer ID",
+    //   dataIndex: "customerId",
+    //   sorter: true,
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Username",
       dataIndex: "username",
+      render: (username, record: any) => {
+        return (
+          <>
+            {ability.can("customerTicket.view", "") && (
+              <Link href={`/admin/customer-care/${record.id}`}>{username}</Link>
+            )}
+          </>
+        );
+      },
       sorter: true,
       ellipsis: true,
       width: "auto",
