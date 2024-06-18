@@ -1374,6 +1374,7 @@ const CreateCustomerForm = () => {
                       </Form.Item>
                     </Col>
                   )}
+
                   {requiredField === true ? (
                     <Col
                       xs={24}
@@ -1384,52 +1385,63 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      <Form.Item
-                        name="username"
-                        label="Username"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Username!"
-                          },
-                          {
-                            pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
-                            message:
-                              "Only letters, numbers, underscores and hyphens allowed"
-                          }
-                        ]}
-                      >
-                        <div className="flex justify-between">
+                      <div className="flex justify-between">
+                        <Form.Item
+                          style={{
+                            margin: "2.8rem 0"
+                          }}
+                        >
                           <Checkbox onChange={handlePrefix} checked={addPrefix}>
                             {/* Prefix? */}
                           </Checkbox>
-                          <Input
-                            type="text"
-                            addonBefore={
-                              <span
-                                style={{
-                                  backgroundColor: "#cfcdca",
-                                  color: "black"
-                                }}
-                              >
-                                {authUser
-                                  ? authUser.clientPrefix + "_"
-                                  : "Not Available"}
-                              </span>
+                        </Form.Item>
+                        <Form.Item
+                          name="username"
+                          label="Username"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your Username!"
+                            },
+                            {
+                              pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
+                              message:
+                                "Only letters, numbers, underscores and hyphens allowed"
                             }
-                            placeholder="Username"
-                            className={`form-control`}
-                            name="username"
-                            style={{ padding: "6px" }}
-                            maxLength={32}
-                            minLength={3}
-                          />
-                        </div>
-                      </Form.Item>
+                          ]}
+                        >
+                          <div className="flex justify-between">
+                            {/* <Checkbox onChange={handlePrefix} checked={addPrefix}>
+                         
+                          </Checkbox> */}
+                            <Input
+                              type="text"
+                              addonBefore={
+                                <span
+                                  style={{
+                                    backgroundColor: "#cfcdca",
+                                    color: "black"
+                                  }}
+                                >
+                                  {authUser
+                                    ? authUser.clientPrefix + "_"
+                                    : "Not Available"}
+                                </span>
+                              }
+                              placeholder="Username"
+                              className={`form-control`}
+                              name="username"
+                              style={{ padding: "6px" }}
+                              maxLength={32}
+                              minLength={3}
+                            />
+                          </div>
+                        </Form.Item>
+                      </div>
                     </Col>
                   ) : (
                     <Col
@@ -1441,29 +1453,39 @@ const CreateCustomerForm = () => {
                       xxl={12}
                       className="gutter-row"
                     >
-                      <Form.Item
-                        name="username"
-                        label="Username"
-                        style={{
-                          marginBottom: 0,
-                          fontWeight: "bold"
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Username!"
-                          },
-                          {
-                            pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
-                            message:
-                              "Only letters, numbers, underscores and hyphens allowed"
-                          }
-                        ]}
-                      >
-                        <div className="flex justify-between">
+                      <div className="flex justify-between">
+                        <Form.Item
+                          label=""
+                          style={{
+                            margin: "2.8rem 0"
+                          }}
+                        >
                           <Checkbox onChange={handlePrefix} checked={addPrefix}>
                             {/* Prefix? */}
                           </Checkbox>
+                        </Form.Item>
+                        <Form.Item
+                          name="username"
+                          label="Username"
+                          style={{
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your Username!"
+                            },
+                            {
+                              pattern: new RegExp(/^[A-Za-z0-9_\-@]+$/),
+                              message:
+                                "Only letters, numbers, underscores and hyphens allowed"
+                            }
+                          ]}
+                        >
+                          {/* <Checkbox onChange={handlePrefix} checked={addPrefix}>
+                           
+                          </Checkbox> */}
                           <Input
                             type="text"
                             addonBefore={
@@ -1485,8 +1507,8 @@ const CreateCustomerForm = () => {
                             maxLength={32}
                             minLength={3}
                           />
-                        </div>
-                      </Form.Item>
+                        </Form.Item>
+                      </div>
                     </Col>
                   )}
                   {requiredField === true ? (
