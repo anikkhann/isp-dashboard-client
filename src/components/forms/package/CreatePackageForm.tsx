@@ -395,22 +395,45 @@ const CreatePackageForm = () => {
                   fontWeight: "bold"
                 }}
                 name="uploadLimit"
+                // rules={[
+                //   {
+                //     required: true
+
+                //     // message: "Please input your Upload Limit!"
+                //   },
+                //   {
+                //     validator: async (_, value) => {
+                //       if (!value) {
+                //         return Promise.reject("Please input Upload Limit!");
+                //       }
+                //       const intValue = parseInt(value, 10);
+                //       if (isNaN(intValue)) {
+                //         return Promise.reject("Please enter a valid number.");
+                //       }
+                //       if (intValue >= 0 || intValue <= 10240) {
+                //         return Promise.reject(
+                //           "Upload Limit must be >=0 and <= 10240"
+                //         );
+                //       }
+                //       return Promise.resolve();
+                //     }
+                //   }
+                // ]}
                 rules={[
                   {
                     required: true
-
-                    // message: "Please input your Upload Limit!"
+                    // message: "Please input Upload Limit!"
                   },
                   {
                     validator: async (_, value) => {
-                      if (!value) {
+                      if (value === undefined || value === null) {
                         return Promise.reject("Please input Upload Limit!");
                       }
                       const intValue = parseInt(value, 10);
                       if (isNaN(intValue)) {
                         return Promise.reject("Please enter a valid number.");
                       }
-                      if (intValue >= 0 || intValue <= 10240) {
+                      if (intValue < 0 || intValue > 10240) {
                         return Promise.reject(
                           "Upload Limit must be >=0 and <= 10240"
                         );
@@ -483,21 +506,44 @@ const CreatePackageForm = () => {
                   fontWeight: "bold"
                 }}
                 name="downloadLimit"
+                // rules={[
+                //   {
+                //     required: true
+                //     // message: "Please input your Upload Limit!"
+                //   },
+                //   {
+                //     validator: async (_, value) => {
+                //       if (!value) {
+                //         return Promise.reject("Please input Download Limit!");
+                //       }
+                //       const intValue = parseInt(value, 10);
+                //       if (isNaN(intValue)) {
+                //         return Promise.reject("Please enter a valid number.");
+                //       }
+                //       if (intValue >= 0 || intValue <= 10240) {
+                //         return Promise.reject(
+                //           "Download Limit must be >=0 and <= 10240"
+                //         );
+                //       }
+                //       return Promise.resolve();
+                //     }
+                //   }
+                // ]}
                 rules={[
                   {
                     required: true
-                    // message: "Please input your Upload Limit!"
+                    // message: "Please input Upload Limit!"
                   },
                   {
                     validator: async (_, value) => {
-                      if (!value) {
+                      if (value === undefined || value === null) {
                         return Promise.reject("Please input Download Limit!");
                       }
                       const intValue = parseInt(value, 10);
                       if (isNaN(intValue)) {
                         return Promise.reject("Please enter a valid number.");
                       }
-                      if (intValue >= 0 || intValue <= 10240) {
+                      if (intValue < 0 || intValue > 10240) {
                         return Promise.reject(
                           "Download Limit must be >=0 and <= 10240"
                         );
@@ -569,21 +615,44 @@ const CreatePackageForm = () => {
                   fontWeight: "bold"
                 }}
                 name="validity"
+                // rules={[
+                //   {
+                //     required: true
+                //     // message: "Please input your Upload Limit!"
+                //   },
+                //   {
+                //     validator: async (_, value) => {
+                //       if (!value) {
+                //         return Promise.reject("Please input Validity Limit!");
+                //       }
+                //       const intValue = parseInt(value, 10);
+                //       if (isNaN(intValue)) {
+                //         return Promise.reject("Please enter a valid number.");
+                //       }
+                //       if (intValue >= 0 || intValue <= 10240) {
+                //         return Promise.reject(
+                //           "Validity Limit must be >=0 and <= 10240"
+                //         );
+                //       }
+                //       return Promise.resolve();
+                //     }
+                //   }
+                // ]}
                 rules={[
                   {
                     required: true
-                    // message: "Please input your Upload Limit!"
+                    // message: "Please input Upload Limit!"
                   },
                   {
                     validator: async (_, value) => {
-                      if (!value) {
+                      if (value === undefined || value === null) {
                         return Promise.reject("Please input Validity Limit!");
                       }
                       const intValue = parseInt(value, 10);
                       if (isNaN(intValue)) {
                         return Promise.reject("Please enter a valid number.");
                       }
-                      if (intValue >= 0 || intValue <= 10240) {
+                      if (intValue < 0 || intValue > 10240) {
                         return Promise.reject(
                           "Validity Limit must be >=0 and <= 10240"
                         );
@@ -656,21 +725,42 @@ const CreatePackageForm = () => {
                   fontWeight: "bold"
                 }}
                 name="vat"
+                // rules={[
+                //   {
+                //     required: true
+                //     // message: "Please input your Upload Limit!"
+                //   },
+                //   {
+                //     validator: async (_, value) => {
+                //       if (!value) {
+                //         return Promise.reject("Please input VAT!");
+                //       }
+                //       const intValue = parseInt(value, 10);
+                //       if (isNaN(intValue)) {
+                //         return Promise.reject("Please enter a valid number.");
+                //       }
+                //       if (intValue >= 0 || intValue <= 100) {
+                //         return Promise.reject("VAT must be >=0 and <= 100");
+                //       }
+                //       return Promise.resolve();
+                //     }
+                //   }
+                // ]}
                 rules={[
                   {
                     required: true
-                    // message: "Please input your Upload Limit!"
+                    // message: "Please input Upload Limit!"
                   },
                   {
                     validator: async (_, value) => {
-                      if (!value) {
+                      if (value === undefined || value === null) {
                         return Promise.reject("Please input VAT!");
                       }
                       const intValue = parseInt(value, 10);
                       if (isNaN(intValue)) {
                         return Promise.reject("Please enter a valid number.");
                       }
-                      if (intValue >= 0 || intValue <= 100) {
+                      if (intValue < 0 || intValue > 100) {
                         return Promise.reject("VAT must be >=0 and <= 100");
                       }
                       return Promise.resolve();
@@ -704,21 +794,44 @@ const CreatePackageForm = () => {
                   fontWeight: "bold"
                 }}
                 name="totalPrice"
+                // rules={[
+                //   {
+                //     required: true
+                //     // message: "Please input your Upload Limit!"
+                //   },
+                //   {
+                //     validator: async (_, value) => {
+                //       if (!value) {
+                //         return Promise.reject("Please input Total Price!");
+                //       }
+                //       const intValue = parseInt(value, 10);
+                //       if (isNaN(intValue)) {
+                //         return Promise.reject("Please enter a valid number.");
+                //       }
+                //       if (intValue >= 0 || intValue <= 100000) {
+                //         return Promise.reject(
+                //           "Total Price must be >=0 and <= 100000"
+                //         );
+                //       }
+                //       return Promise.resolve();
+                //     }
+                //   }
+                // ]}
                 rules={[
                   {
                     required: true
-                    // message: "Please input your Upload Limit!"
+                    // message: "Please input Upload Limit!"
                   },
                   {
                     validator: async (_, value) => {
-                      if (!value) {
+                      if (value === undefined || value === null) {
                         return Promise.reject("Please input Total Price!");
                       }
                       const intValue = parseInt(value, 10);
                       if (isNaN(intValue)) {
                         return Promise.reject("Please enter a valid number.");
                       }
-                      if (intValue >= 0 || intValue <= 100000) {
+                      if (intValue < 0 || intValue > 100000) {
                         return Promise.reject(
                           "Total Price must be >=0 and <= 100000"
                         );

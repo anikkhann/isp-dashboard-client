@@ -51,7 +51,7 @@ const DetailsAdminTicket = ({ id }: any) => {
 
   const [form] = Form.useForm();
   const [item, setItem] = useState<TicketData | null>(null);
-  console.log(item);
+  console.log("ticket", item);
   const [replys, setReplys] = useState<any | []>([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,21 +84,21 @@ const DetailsAdminTicket = ({ id }: any) => {
     setIsModalOpen(false);
   };
 
-  const getCheckList = async () => {
-    const token = Cookies.get("token");
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  // const getCheckList = async () => {
+  //   const token = Cookies.get("token");
+  //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const body = {
-      body: {
-        complainType: {
-          id: item?.complainType?.id
-        },
-        isActive: true
-      }
-    };
-    const response = await axios.post(`/api/checklist/get-list`, body);
-    setCheckLists(response.data.body);
-  };
+  //   const body = {
+  //     body: {
+  //       complainType: {
+  //         id: item?.complainType?.id
+  //       },
+  //       isActive: true
+  //     }
+  //   };
+  //   const response = await axios.post(`/api/checklist/get-list`, body);
+  //   setCheckLists(response.data.body);
+  // };
 
   // console.log("checkLists", checkLists)
   const changeStatus = () => {
@@ -338,7 +338,7 @@ const DetailsAdminTicket = ({ id }: any) => {
   const [ticketQuery, replayQuery] = useQueries<any>({
     queries: [
       {
-        queryKey: ["customer-ticket-list", id],
+        queryKey: ["service-ticket-list", id],
         queryFn: async () => {
           const { data } = await fetchData();
           return data;
@@ -376,9 +376,29 @@ const DetailsAdminTicket = ({ id }: any) => {
 
   useEffect(() => {
     if (item) {
-      getCheckList();
+      // getCheckList();
       getAssignedTo();
       getRootCauseList();
+      if (item.checkList) {
+        const convertData = item?.checkList;
+        // convertData = convertData.replaceAll('"', "&quot;");
+        // convertData = convertData.replaceAll("'", '"');
+
+        const checklists = JSON.parse(convertData);
+
+        // convert checkList to array
+        const checkListData = checklists.map(
+          (checklist: any, index: number) => {
+            return {
+              key: index,
+              title: checklist.title,
+              status: checklist.status
+            };
+          }
+        );
+
+        setCheckLists(checkListData);
+      }
     }
   }, [item]);
 
@@ -400,11 +420,11 @@ const DetailsAdminTicket = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>
+                <Link href="/admin/complaint/admin-ticket">Service Ticket</Link>
               )
             },
             {
-              title: "Admin Ticket"
+              title: "Service Ticket"
             }
           ]}
         />
@@ -428,19 +448,20 @@ const DetailsAdminTicket = ({ id }: any) => {
             >
               CheckList
             </Button>
-
-            <Dropdown
-              menu={{ items }}
-              placement="bottom"
-              arrow={{ pointAtCenter: true }}
-            >
-              <Button type="primary">
-                <Space>
-                  Actions
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
+            {item.status != "closed" && (
+              <Dropdown
+                menu={{ items }}
+                placement="bottom"
+                arrow={{ pointAtCenter: true }}
+              >
+                <Button type="primary">
+                  <Space>
+                    Actions
+                    <DownOutlined />
+                  </Space>
+                </Button>
+              </Dropdown>
+            )}
           </div>
         )}
 

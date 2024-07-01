@@ -123,6 +123,10 @@ const packageTypeList = [
     value: "voucher"
   },
   {
+    label: "Online",
+    value: "online"
+  },
+  {
     label: "Voucher Online",
     value: "voucherOnline"
   }

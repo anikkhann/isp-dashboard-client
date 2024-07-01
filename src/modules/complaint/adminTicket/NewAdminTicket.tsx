@@ -23,11 +23,11 @@ const NewAdminTicket = () => {
             },
             {
               title: (
-                <Link href="/admin/complaint/admin-ticket">Admin Ticket</Link>
+                <Link href="/admin/complaint/admin-ticket">Service Ticket</Link>
               )
             },
             {
-              title: "New Admin Ticket"
+              title: "New Service Ticket"
             }
           ]}
         />
@@ -49,7 +49,7 @@ const NewAdminTicket = () => {
               color: "#F15F22"
             }}
           >
-            New Admin Ticket
+            New Service Ticket
           </h1>
         </div>
         <Card

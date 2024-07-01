@@ -103,15 +103,19 @@ const DetailsTicket = ({ item, replys }: PropData) => {
                 </p>
               </>
             )}
+            {item.customer?.name && (
+              <p>
+                <span className="font-bold">Customer Name:</span>
+                <span className="mx-2">{item.customer?.name}</span>
+              </p>
+            )}
+            {item.customer?.username && (
+              <p>
+                <span className="font-bold">Customer Username:</span>
+                <span className="mx-2">{item.customer?.username}</span>
+              </p>
+            )}
 
-            <p>
-              <span className="font-bold">Customer Name:</span>
-              <span className="mx-2">{item.customer?.name}</span>
-            </p>
-            <p>
-              <span className="font-bold">Customer Username:</span>
-              <span className="mx-2">{item.customer?.username}</span>
-            </p>
             <p>
               <span className="font-bold">Owner:</span>
               <span className="mx-2">{item.assignedTo?.username}</span>

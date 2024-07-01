@@ -350,6 +350,25 @@ const AdminTicketList: React.FC = () => {
     //   align: "center" as AlignType
     // },
     {
+      title: "Ticket Number",
+      dataIndex: "ticketNo",
+      render: (ticketNo, record: any) => {
+        return (
+          <>
+            {ability.can("adminTicket.view", "") && (
+              <Link href={`/admin/complaint/admin-ticket/${record.id}`}>
+                {ticketNo}
+              </Link>
+            )}
+          </>
+        );
+      },
+      sorter: true,
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "Ticket User Type",
       dataIndex: "insertedBy",
       sorter: false,
@@ -362,15 +381,7 @@ const AdminTicketList: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
-    {
-      title: "Ticket Number",
-      dataIndex: "ticketNo",
-      sorter: true,
-      // width: 200,
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+
     {
       title: "Complaint Type",
       dataIndex: "complainType",
@@ -462,7 +473,9 @@ const AdminTicketList: React.FC = () => {
         const createdTime = new Date(row.createdOn);
         const currentTime = new Date();
         return (
-          <>{differenceInDays(currentTime, createdTime).toLocaleString()}</>
+          <>
+            {differenceInDays(currentTime, createdTime).toLocaleString()} days
+          </>
         );
       },
       // width: 200,

@@ -259,6 +259,18 @@ const ClientWiseOnline: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Total Customer",
+      dataIndex: "total_customer",
+      sorter: true,
+      render: (total_customer: any) => {
+        if (!total_customer) return "-";
+        return <>{total_customer}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "Active Customer",
       dataIndex: "active_customer",
       sorter: true,
@@ -295,18 +307,7 @@ const ClientWiseOnline: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
-    {
-      title: "Total Customer",
-      dataIndex: "total_customer",
-      sorter: true,
-      render: (total_customer: any) => {
-        if (!total_customer) return "-";
-        return <>{total_customer}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+
     {
       title: "Total Online",
       dataIndex: "total_online",

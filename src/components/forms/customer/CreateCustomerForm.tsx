@@ -1387,8 +1387,11 @@ const CreateCustomerForm = () => {
                     >
                       <div className="flex justify-between">
                         <Form.Item
+                          label="Prefix"
                           style={{
-                            margin: "2.8rem 0"
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                            // margin: "2.8rem 0"
                           }}
                         >
                           <Checkbox onChange={handlePrefix} checked={addPrefix}>
@@ -1455,9 +1458,11 @@ const CreateCustomerForm = () => {
                     >
                       <div className="flex justify-between">
                         <Form.Item
-                          label=""
+                          label="Prefix"
                           style={{
-                            margin: "2.8rem 0"
+                            marginBottom: 0,
+                            fontWeight: "bold"
+                            // margin: "2.8rem 0"
                           }}
                         >
                           <Checkbox onChange={handlePrefix} checked={addPrefix}>

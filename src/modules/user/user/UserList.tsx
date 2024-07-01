@@ -197,6 +197,32 @@ const UserList: React.FC = () => {
     //   width: "20%",
     //   align: "center" as AlignType
     // },
+    {
+      title: "IP Address",
+      dataIndex: "ipAddress",
+      sorter: false,
+      render: (ipAddress: any) => {
+        if (!ipAddress) return "-";
+        return <>{ipAddress}</>;
+      },
+
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Last Login",
+      dataIndex: "lastLoginTime",
+      sorter: false,
+      render: (lastLoginTime: any) => {
+        if (!lastLoginTime) return "-";
+        const date = new Date(lastLoginTime);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
     // createdOn
     {
       title: "Created At",

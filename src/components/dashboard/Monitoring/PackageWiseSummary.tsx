@@ -312,14 +312,26 @@ const PackageWiseSummary: React.FC = () => {
     },
     {
       title: "Package",
-      dataIndex: "package_data",
+      dataIndex: "package_name",
       sorter: true,
-      render: (package_data: any) => {
-        if (!package_data) return "-";
-        return <>{package_data}</>;
+      render: (package_name: any) => {
+        if (!package_name) return "-";
+        return <>{package_name}</>;
       },
       ellipsis: true,
       width: "20%",
+      align: "center" as AlignType
+    },
+    {
+      title: "Total Customer",
+      dataIndex: "total_customer",
+      sorter: true,
+      render: (total_customer: any) => {
+        if (!total_customer) return "-";
+        return <>{total_customer}</>;
+      },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     },
     {
@@ -359,18 +371,7 @@ const PackageWiseSummary: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
-    {
-      title: "Total Customer",
-      dataIndex: "total_customer",
-      sorter: true,
-      render: (total_customer: any) => {
-        if (!total_customer) return "-";
-        return <>{total_customer}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+
     {
       title: "Total Online",
       dataIndex: "total_online",

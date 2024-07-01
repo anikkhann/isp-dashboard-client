@@ -259,6 +259,18 @@ const CustomerWiseSummary: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Total Customer",
+      dataIndex: "total_customer",
+      sorter: true,
+      render: (total_customer: any) => {
+        if (!total_customer) return "-";
+        return <>{total_customer}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "Active Customer",
       dataIndex: "active_customer",
       sorter: true,
@@ -283,19 +295,7 @@ const CustomerWiseSummary: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
-    {
-      title: "Expired Ratio",
 
-      dataIndex: "expired_ratio",
-      sorter: true,
-      render: (expired_ratio: any) => {
-        if (!expired_ratio) return "-";
-        return <>{expired_ratio}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
     {
       title: "Registered Customer",
       dataIndex: "registered_customer",
@@ -308,13 +308,34 @@ const CustomerWiseSummary: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     },
+
     {
-      title: "Total Customer",
-      dataIndex: "total_customer",
+      title: "Expired Ratio (%)",
+      dataIndex: "expired_ratio",
       sorter: true,
-      render: (total_customer: any) => {
-        if (!total_customer) return "-";
-        return <>{total_customer}</>;
+      render: (text, record) => {
+        let expired_customer: string | number | 0 =
+          record.expired_customer || 0;
+        let active_customer: string | number | 1 = record.active_customer || 1;
+
+        // Ensure total_online is a number for the calculation
+        if (typeof expired_customer === "string") {
+          expired_customer = parseFloat(expired_customer);
+        }
+
+        // Ensure registered_customer is a number for the calculation
+        if (typeof active_customer === "string") {
+          active_customer = parseFloat(active_customer);
+        }
+
+        const expired_ratio = parseFloat(
+          ((expired_customer / active_customer) * 100).toFixed(2)
+        );
+        // Check if online_ratio is a valid number
+        if (isNaN(expired_ratio) || !isFinite(expired_ratio)) {
+          return <>-</>;
+        }
+        return <>{expired_ratio}%</>;
       },
       ellipsis: true,
       width: "auto",

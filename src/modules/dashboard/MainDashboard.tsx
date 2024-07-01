@@ -34,7 +34,7 @@ const MainDashboard = () => {
       if (data) {
         // console.log("data.data", data);
         Cookies.set("user_balance", data);
-        console.log("userbalance", status);
+
         // if (data.body) {
         //   setData(data.body);
 
