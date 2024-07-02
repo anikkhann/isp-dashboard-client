@@ -76,11 +76,11 @@ const CreateUserForm = () => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   const [roles, setRoles] = useState<any[]>([]);
-  const [checkedList, setCheckedList] = useState<any>(null);
+  const [checkedList, setCheckedList] = useState<any[]>([]);
 
-  const handleRoleChange = (value: any) => {
+  const handleRoleChange = (value: any[]) => {
     // console.log("checked = ", value);
-    setCheckedList(value as any);
+    setCheckedList(value as any[]);
   };
 
   const handleActive = (e: any) => {
@@ -238,7 +238,7 @@ const CreateUserForm = () => {
       const { name, email, password, username, phone } = data;
 
       // convert to array
-      const roleId = [checkedList];
+      const roleId = checkedList;
 
       const formData = {
         name: name,
@@ -597,13 +597,13 @@ const CreateUserForm = () => {
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
-                    // mode="multiple"
-
+                    mode="multiple"
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
                     placeholder="Please select"
                     onChange={handleRoleChange}
                     options={roles}
+                    value={checkedList}
                   />
                 </Space>
               </Form.Item>

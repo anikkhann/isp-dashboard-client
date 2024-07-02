@@ -151,7 +151,7 @@ const mainRoutes = [
     label: <Link href="/admin/monitoring">Monitoring</Link>,
     path: "/admin/monitoring",
     icon: <WifiOutlined />,
-    permission: "hotspot.dashboard"
+    permission: "monitoring.dashboard"
   }
 ];
 
