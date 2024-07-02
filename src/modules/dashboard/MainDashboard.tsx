@@ -233,7 +233,7 @@ const MainDashboard = () => {
               />
             </Col>
           </Can>
-          <Can I="hotspot.dashboard">
+          <Can I="monitoring.dashboard">
             <Col xs={24} sm={12} md={6}>
               <MainCard
                 bgColor="#216583"
