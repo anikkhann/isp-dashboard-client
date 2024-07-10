@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -60,7 +60,7 @@ const HotspotMacBindingHistory = ({ item }: PropData) => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        customer: {
+        clientCustomer: {
           id: item.id
         }
       }
@@ -132,40 +132,44 @@ const HotspotMacBindingHistory = ({ item }: PropData) => {
       align: "center" as AlignType
     },
     // subject
-    {
-      title: "Changed On",
-      dataIndex: "subject",
-      sorter: false,
-      render: (subject: any) => {
-        if (!subject) return "-";
-        return <>{subject}</>;
-      },
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
-    // remarks
-    {
-      title: "Changed By",
-      dataIndex: "remarks",
-      sorter: false,
-      render: (remarks: any) => {
-        if (!remarks) return "-";
-        return <>{remarks}</>;
-      },
 
-      /* width: "20%", */
-      align: "center" as AlignType
-    },
+    // remarks
+
     {
       title: "MAC",
-      dataIndex: "remarks",
+      dataIndex: "mac",
       sorter: false,
-      render: (remarks: any) => {
-        if (!remarks) return "-";
-        return <>{remarks}</>;
+      render: (mac: any) => {
+        if (!mac) return "-";
+        return <>{mac}</>;
       },
 
       /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Changed By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy.username}</>;
+      },
+
+      /* width: "20%", */
+      align: "center" as AlignType
+    },
+    {
+      title: "Changed On",
+      dataIndex: "createdOn",
+      sorter: false,
+      render: (createdOn: any) => {
+        if (!createdOn) return "-";
+        const date = new Date(createdOn);
+        return <>{format(date, "yyyy-MM-dd pp")}</>;
+      },
+      ellipsis: true,
+      width: "auto",
       align: "center" as AlignType
     }
     // changedData

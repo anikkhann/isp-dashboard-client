@@ -224,7 +224,16 @@ const CreatePasswordUpdateForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your password!"
+                    message: "Please input your Password!"
+                  },
+                  {
+                    min: 3,
+                    message: "Password must be minimum 3 characters."
+                  },
+                  {
+                    pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
+                    message:
+                      "Only letters, numbers, underscores and hyphens allowed"
                   }
                 ]}
               >

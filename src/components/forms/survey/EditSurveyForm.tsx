@@ -70,14 +70,9 @@ const EditSurveyForm = ({ item }: PropData) => {
 
   const [type, setType] = useState<any>(null);
 
-  const [optionsValue, setOptionsValue] = useState<any[]>([]);
+  const [optionsValue, setOptionsValue] = useState<OptionData[]>([]);
   console.log("options", optionsValue);
 
-  // const [items, setItems] = useState<Item[]>([
-  //   { id: 1, name: "Item 1" },
-  //   { id: 2, name: "Item 2" },
-  //   { id: 3, name: "Item 3" }
-  // ]);
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -96,21 +91,31 @@ const EditSurveyForm = ({ item }: PropData) => {
         type: item.type,
         title: item.title
       });
+      const setString = item.options;
+      const jsonString = setString.replace(/{|}/g, "").replace(/'/g, '"');
+      const arrayString = `[${jsonString}]`;
 
+      try {
+        const parsedArray = JSON.parse(arrayString);
+        const optionsArray = parsedArray.map((option: string) => ({ option }));
+        setOptionsValue(optionsArray);
+      } catch (error) {
+        console.error("Failed to parse options:", error);
+      }
       // convert options to array
-      const options = item.options
-        .slice(1, -1) // Remove the curly braces
-        .split(",")
-        .map(option => option.replace(/'/g, "").trim());
+      // const options = item.options
+      //   .slice(1, -1) // Remove the curly braces
+      //   .split(",")
+      //   .map(option => option.replace(/'/g, "").trim());
 
-      const newOptions = options.map((option: any, index: number) => {
-        return {
-          option: option,
-          index: index
-        };
-      });
+      // const newOptions = options.map((option: any, index: number) => {
+      //   return {
+      //     option: option,
+      //     index: index
+      //   };
+      // });
 
-      setOptionsValue(newOptions);
+      // setOptionsValue(newOptions);
 
       setType(item.type);
 
@@ -125,18 +130,18 @@ const EditSurveyForm = ({ item }: PropData) => {
   }, [loading]);
 
   const onSubmit = async (data: FormData) => {
+    console.log("data", data);
     setLoading(true);
     setTimeout(async () => {
-      // const { title, type, options } = data;
-      const { title, type, options: newOptions } = data;
-
+      const { title, type, options } = data;
+      // Ensure options is an array
+      const optionsArray = Array.isArray(options) ? options : [];
       // Combine existing options with newly added options
-      const allOptions = [...optionsValue, ...newOptions];
+      const allOptions = [...optionsValue, ...optionsArray];
 
-      // Extract values from the array of objects
-      // const values = options.map((obj: { option: any }) => obj.option);
       // Extract values from the array of objects
       const values = allOptions.map((obj: { option: any }) => obj.option);
+
       // Create a string by joining the values with commas and formatting
       const resultString = `{${values
         .map((value: any) => `'${value}'`)
@@ -146,6 +151,7 @@ const EditSurveyForm = ({ item }: PropData) => {
         id: item.id,
         type: type,
         title: title,
+
         options: resultString,
         isActive: isActive
       };
@@ -199,6 +205,11 @@ const EditSurveyForm = ({ item }: PropData) => {
   // const deleteItem = (id: number) => {
   //   setItems(prevItems => prevItems.filter(item => item.id !== id));
   // };
+  const handleDeleteOption = (index: number) => {
+    const updatedOptions = [...optionsValue];
+    updatedOptions.splice(index, 1);
+    setOptionsValue(updatedOptions);
+  };
   return (
     <>
       {/* {loading && <AppImageLoader />} */}
@@ -301,64 +312,6 @@ const EditSurveyForm = ({ item }: PropData) => {
             </Col>
           </Row>
 
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-            <Col
-              xs={24}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
-              className="gutter-row"
-            >
-              <Form.Item
-                label="Options"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                // name="options"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input your title!"
-                //   }
-                // ]}
-              >
-                <div className="text-left ">
-                  {/* Parse item.options to extract individual options */}
-                  {item.options && item.options.length > 0 && (
-                    <div className="flex">
-                      {item.options
-                        .replace(/^\{|\}$/g, "") // Remove surrounding curly braces
-                        .replace(/'/g, "") // Remove double quotes
-                        .split(/,(?=(?:(?:[^']*'){2})*[^']*$)/) // Split by comma excluding commas inside single quotes
-
-                        .map((option, index, array) => (
-                          // key={option.trim()}
-                          <div className="square" key={index}>
-                            <p className="">
-                              {option.trim()}
-                              <span
-                                // onClick={() => handleDeleteOption(index)}
-                                style={{
-                                  cursor: "pointer",
-                                  marginLeft: "0.5rem"
-                                }}
-                              >
-                                <DeleteOutlined />
-                              </span>
-                              {index !== array.length - 1 ? ", " : ""}
-                            </p>
-                          </div>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </Form.Item>
-            </Col>
-          </Row>
-
           {!loading && (
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
               <Col
@@ -434,6 +387,67 @@ const EditSurveyForm = ({ item }: PropData) => {
               </Col>
             </Row>
           )}
+
+          {/*  */}
+          {/*  */}
+          {/* mx-auto */}
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              xxl={24}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Options"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+              >
+                <div className="max-w-7xl  mt-10">
+                  {/* space-y-4 flex flex-col md:flex-row md:justify-between justify-between */}
+                  {optionsValue?.length > 0 && (
+                    <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {optionsValue.map((option, index) => (
+                        <li
+                          key={index}
+                          className="flex justify-between items-center p-2 bg-white shadow rounded-md hover:bg-gray-50"
+                        >
+                          <span className="text-gray-700">
+                            {option.option.trim()}
+                          </span>
+                          <button
+                            onClick={() => handleDeleteOption(index)}
+                            className="text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
+                          >
+                            {/* <svg
+                       className="h-6 w-6"
+                       fill="none"
+                       stroke="currentColor"
+                       viewBox="0 0 24 24"
+                       xmlns="http://www.w3.org/2000/svg"
+                     >
+                       <path
+                         strokeLinecap="round"
+                         strokeLinejoin="round"
+                         strokeWidth="2"
+                         d="M6 18L18 6M6 6l12 12"
+                       />
+                     </svg> */}
+                            <DeleteOutlined className="cursor-pointer" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </Form.Item>
+            </Col>
+          </Row>
 
           {/* status */}
           <Form.Item

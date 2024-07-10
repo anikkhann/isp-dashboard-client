@@ -171,9 +171,19 @@ const HotspotCustomerList: React.FC = () => {
       title: "Mobile",
       dataIndex: "customer",
       sorter: false,
-      render: (customer: any) => {
+      render: (customer: any, record: any) => {
         if (!customer) return "-";
-        return <>{customer.phone}</>;
+        return (
+          <>
+            <>
+              {ability.can("HotspotCustomerCare.view", "") && (
+                <Link href={`/admin/hotspot/customer-care/${record.id}`}>
+                  {customer.phone}
+                </Link>
+              )}
+            </>
+          </>
+        );
       },
       ellipsis: true,
       width: "auto",
@@ -311,7 +321,7 @@ const HotspotCustomerList: React.FC = () => {
         return (
           <div className="flex flex-row">
             <Space size="middle" align="center" className="mx-1">
-              {ability.can("clientRequisition.view", "") ? (
+              {ability.can("HotspotCustomerCare.view", "") ? (
                 <Tooltip title="View" placement="bottomRight" color="green">
                   <Space size="middle" align="center" wrap>
                     <Link href={`/admin/hotspot/customer-care/${record.id}`}>

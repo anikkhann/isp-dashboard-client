@@ -61,7 +61,7 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        usedBy: {
+        clientCustomer: {
           id: item.id
         }
       }

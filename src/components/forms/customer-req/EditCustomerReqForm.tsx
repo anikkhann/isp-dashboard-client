@@ -868,8 +868,8 @@ const EditCustomerReqForm = ({ item }: PropData) => {
                     message: "Please input your Password!"
                   },
                   {
-                    min: 6,
-                    message: "Password must be minimum 6 characters."
+                    min: 3,
+                    message: "Password must be minimum 3 characters."
                   },
                   {
                     pattern: new RegExp(/^[A-Za-z0-9_\-@.]+$/),
