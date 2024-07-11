@@ -34,7 +34,9 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-
+import { useAppSelector } from "@/store/hooks";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
 dayjs.extend(weekday);
@@ -66,6 +68,11 @@ const NasDeviceList: React.FC = () => {
   const [data, setData] = useState<NasDeviceData[]>([]);
 
   const { Panel } = Collapse;
+  const MySwal = withReactContent(Swal);
+  const authUser = useAppSelector(state => state.auth.user);
+
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
@@ -96,6 +103,7 @@ const NasDeviceList: React.FC = () => {
     limit: number,
     order: string,
     sort: string,
+    selectedClientParam?: string,
     nameParam?: string,
     ipParam?: string,
     selectedStatusParam?: string,
@@ -118,6 +126,7 @@ const NasDeviceList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
+        clientId: selectedClientParam,
         name: nameParam,
         ip: ipParam,
         isActive: selectedStatusParam,
@@ -148,6 +157,7 @@ const NasDeviceList: React.FC = () => {
       limit,
       order,
       sort,
+      selectedClient,
       selectedName,
       selectedIp,
       selectedStatus,
@@ -160,6 +170,7 @@ const NasDeviceList: React.FC = () => {
         limit,
         order,
         sort,
+        selectedClient,
         selectedName,
         selectedIp,
         selectedStatus,
@@ -204,7 +215,51 @@ const NasDeviceList: React.FC = () => {
     }
   }, [data]);
 
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+
   const handleClear = () => {
+    setSelectedClient(null);
     setSelectedName(null);
     setSelectedIp(null);
     setSelectedStatus(null);
@@ -235,9 +290,12 @@ const NasDeviceList: React.FC = () => {
   const handleStatusChange = (value: any) => {
     setSelectedStatus(value);
   };
-
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value);
+  };
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    getClients();
   }, []);
 
   const columns: ColumnsType<NasDeviceData> = [
@@ -502,6 +560,51 @@ const NasDeviceList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser &&
+                          authUser.userType != "client" &&
+                          authUser.userType != "zone" &&
+                          authUser.userType != "reseller" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Client</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleClientChange}
+                                  options={clients}
+                                  value={selectedClient}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
                         <Col
                           xs={24}
                           sm={12}

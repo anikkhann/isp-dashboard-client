@@ -62,7 +62,8 @@ const ApDeviceList: React.FC = () => {
   const [selectedName, setSelectedName] = useState<any>(null);
   const [selectedIp, setSelectedIp] = useState<any>(null);
   const [selectedMac, setSelectedMac] = useState<any>(null);
-
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
   const [zones, setZones] = useState<any[]>([]);
   const [selectedZone, setSelectedZone] = useState<any>(null);
 
@@ -94,6 +95,7 @@ const ApDeviceList: React.FC = () => {
     ipParam?: string,
     selectedStatusParam?: string,
     macParam?: string,
+    selectedClientParam?: string,
     zoneManagerId?: string,
     subZoneManagerId?: string,
     retailerId?: string
@@ -118,6 +120,7 @@ const ApDeviceList: React.FC = () => {
         ip: ipParam,
         macAddress: macParam,
         isActive: selectedStatusParam,
+        selectedClientParam: selectedClientParam,
         zoneManagerId: zoneManagerId,
         subZoneManagerId: subZoneManagerId,
         retailerId: retailerId
@@ -143,6 +146,7 @@ const ApDeviceList: React.FC = () => {
       selectedIp,
       selectedStatus,
       selectedMac,
+      selectedClient,
       selectedZone,
       selectedSubZone,
       selectedRetailer
@@ -157,6 +161,7 @@ const ApDeviceList: React.FC = () => {
         selectedIp,
         selectedStatus,
         selectedMac,
+        selectedClient,
         selectedZone,
         selectedSubZone,
         selectedRetailer
@@ -200,6 +205,7 @@ const ApDeviceList: React.FC = () => {
   }, [data]);
 
   const handleClear = () => {
+    setSelectedClient(null);
     setSelectedName(null);
     setSelectedIp(null);
     setSelectedMac(null);
@@ -212,8 +218,49 @@ const ApDeviceList: React.FC = () => {
   const handleStatusChange = (value: any) => {
     setSelectedStatus(value);
   };
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "name"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
 
-  function getZoneManagers() {
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
+  function getZoneManagers(selectedClient: string) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -226,6 +273,9 @@ const ApDeviceList: React.FC = () => {
       },
       body: {
         partnerType: "zone",
+        client: {
+          id: selectedClient
+        },
         isActive: true
       }
     };
@@ -254,7 +304,7 @@ const ApDeviceList: React.FC = () => {
     });
   }
 
-  function getSubZoneManagers(selectedZoneId: any) {
+  function getSubZoneManagers(selectedClient: any, selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -267,11 +317,13 @@ const ApDeviceList: React.FC = () => {
       },
       body: {
         partnerType: "reseller",
-
-        zoneManager: { id: selectedZoneId },
         client: {
-          id: authUser?.partnerId
+          id: selectedClient
         },
+        zoneManager: { id: selectedZoneId },
+        // client: {
+        //   id: authUser?.partnerId
+        // },
         isActive: true
       }
     };
@@ -301,7 +353,11 @@ const ApDeviceList: React.FC = () => {
     });
   }
 
-  function getRetailers(selectedSubZoneId: any) {
+  function getRetailers(
+    selectedClient: any,
+    selectedZoneId: any,
+    selectedSubZoneId: any
+  ) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -314,7 +370,12 @@ const ApDeviceList: React.FC = () => {
       },
       body: {
         partnerType: "retailer",
+        client: {
+          id: selectedClient
+        },
+        zoneManager: { id: selectedZoneId },
         subZoneManager: { id: selectedSubZoneId },
+
         isActive: true
       }
     };
@@ -345,24 +406,35 @@ const ApDeviceList: React.FC = () => {
   }
 
   useEffect(() => {
-    getZoneManagers();
-    getSubZoneManagers(null);
-    getRetailers(null);
+    getClients();
+    // getZoneManagers();
+    // getSubZoneManagers(null);
+    // getRetailers(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedZone);
+    if (selectedClient) {
+      getZoneManagers(selectedClient);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedClient]);
+
+  useEffect(() => {
+    if (selectedZone) {
+      getSubZoneManagers(selectedClient, selectedZone);
+    }
   }, [selectedZone]);
 
   useEffect(() => {
     if (selectedSubZone) {
-      getRetailers(selectedSubZone);
+      getRetailers(selectedClient, selectedZone, selectedSubZone);
     }
   }, [selectedSubZone]);
+
+  const handleClientChange = (value: any) => {
+    setSelectedClient(value);
+  };
 
   const handleZoneChange = (value: any) => {
     // setSelectedZone(value);
@@ -688,6 +760,51 @@ const ApDeviceList: React.FC = () => {
                         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                         justify="space-between"
                       >
+                        {authUser &&
+                          authUser.userType != "client" &&
+                          authUser.userType != "zone" &&
+                          authUser.userType != "reseller" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Client</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleClientChange}
+                                  options={clients}
+                                  value={selectedClient}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
                         {authUser &&
                           authUser?.clientLevel != "tri_cycle" &&
                           authUser?.clientLevel != "tri_cycle_hotspot" &&

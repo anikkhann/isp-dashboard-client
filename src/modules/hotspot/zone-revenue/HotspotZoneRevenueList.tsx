@@ -237,7 +237,7 @@ const HotspotZoneRevenueList: React.FC = () => {
   }
 
   //functions for getting zone manger list data using POST request
-  function getZoneManagers() {
+  function getZoneManagers(selectedClient: string) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -250,8 +250,11 @@ const HotspotZoneRevenueList: React.FC = () => {
       },
       body: {
         partnerType: "zone",
+        // client: {
+        //   id: authUser?.partnerId
+        // }
         client: {
-          id: authUser?.partnerId
+          id: selectedClient
         }
         // isActive: true
       }
@@ -283,10 +286,16 @@ const HotspotZoneRevenueList: React.FC = () => {
 
   useEffect(() => {
     getClients();
-    getZoneManagers();
+    // getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (selectedClient) {
+      getZoneManagers(selectedClient);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedClient]);
   const handleClear = () => {
     setSelectedDateRange(null);
     setSelectedStartDate(null);
@@ -344,7 +353,7 @@ const HotspotZoneRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Zone Manger",
+      title: "Client",
       dataIndex: "name",
 
       ellipsis: true,
@@ -360,17 +369,62 @@ const HotspotZoneRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Unused Voucher",
-      dataIndex: "unused_voucher_qty",
+      title: "Unused Voucher Revenue",
+      dataIndex: "unused_voucher_revenue",
+      sorter: false,
+      render: (unused_voucher_revenue: any) => {
+        if (unused_voucher_revenue === 0) return 0;
+        if (!unused_voucher_revenue) return "-";
+        return <>{unused_voucher_revenue}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Used Voucher",
+      dataIndex: "used_voucher_qty",
 
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
     },
     {
-      title: "Used Voucher",
-      dataIndex: "used_voucher_qty",
-
+      title: "Used Voucher Revenue",
+      dataIndex: "used_voucher_revenue",
+      sorter: false,
+      render: (used_voucher_revenue: any) => {
+        if (used_voucher_revenue === 0) return 0;
+        if (!used_voucher_revenue) return "-";
+        return <>{used_voucher_revenue}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Online Purchase QTY",
+      dataIndex: "online_purchase_qty",
+      sorter: false,
+      render: (online_purchase_qty: any) => {
+        if (online_purchase_qty === 0) return 0;
+        if (!online_purchase_qty) return "-";
+        return <>{online_purchase_qty}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Online Purchase Revenue",
+      dataIndex: "online_purchase_revenue",
+      sorter: false,
+      render: (online_purchase_revenue: any) => {
+        if (online_purchase_revenue === 0) return 0;
+        if (!online_purchase_revenue) return "-";
+        return <>{online_purchase_revenue}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType

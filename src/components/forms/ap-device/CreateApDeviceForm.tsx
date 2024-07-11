@@ -45,6 +45,9 @@ const CreateApDeviceForm = () => {
 
   const [loading, setLoading] = useState(false);
   // ** States
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
@@ -77,6 +80,49 @@ const CreateApDeviceForm = () => {
   const handleIsSnmpActive = (e: any) => {
     setIsSnmpActive(e.target.checked ? true : false);
   };
+
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
 
   // nasDevices
   function getNasDevices() {
@@ -120,7 +166,7 @@ const CreateApDeviceForm = () => {
     });
   }
 
-  function getZoneManagers() {
+  function getZoneManagers(selectedClient: string) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -133,9 +179,13 @@ const CreateApDeviceForm = () => {
       },
       body: {
         partnerType: "zone",
-        client: {
-          id: authUser?.partnerId
-        },
+        // client: {
+        //   id: selectedClient
+        // },
+        client: selectedClient ? { id: selectedClient } : null,
+        // client: {
+        //   id: authUser?.partnerId
+        // },
         isActive: true
       }
     };
@@ -164,7 +214,7 @@ const CreateApDeviceForm = () => {
     });
   }
 
-  function getSubZoneManagers(selectedZoneId: any) {
+  function getSubZoneManagers(selectedClient: any, selectedZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -177,10 +227,12 @@ const CreateApDeviceForm = () => {
       },
       body: {
         partnerType: "reseller",
-        zoneManager: { id: selectedZoneId },
-        client: {
-          id: authUser?.partnerId
-        },
+        zoneManager: selectedZoneId ? { id: selectedZoneId } : null,
+        client: selectedClient ? { id: selectedClient } : null,
+        // zoneManager: { id: selectedZoneId },
+        // client: {
+        //   id: selectedClient
+        // },
         isActive: true
       }
     };
@@ -210,7 +262,11 @@ const CreateApDeviceForm = () => {
     });
   }
 
-  function getRetailers(selectedSubZoneId: any) {
+  function getRetailers(
+    selectedClient: any,
+    selectedZoneId: any,
+    selectedSubZoneId: any
+  ) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -223,7 +279,14 @@ const CreateApDeviceForm = () => {
       },
       body: {
         partnerType: "retailer",
-        subZoneManager: { id: selectedSubZoneId },
+        // zoneManager: { id: selectedZoneId },
+        // subZoneManager: { id: selectedSubZoneId },
+        // client: {
+        //   id: selectedClient
+        // },
+        zoneManager: selectedZoneId ? { id: selectedZoneId } : null,
+        subZoneManager: selectedSubZoneId ? { id: selectedSubZoneId } : null,
+        client: selectedClient ? { id: selectedClient } : null,
         isActive: true
       }
     };
@@ -251,6 +314,13 @@ const CreateApDeviceForm = () => {
       setRetailers(list);
     });
   }
+  const handleClientChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({
+      clientId: value
+    });
+    setSelectedClient(value || null);
+  };
 
   const handleZoneChange = (value: any) => {
     // console.log("checked = ", value);
@@ -282,9 +352,10 @@ const CreateApDeviceForm = () => {
   };
 
   useEffect(() => {
-    getZoneManagers();
-    getSubZoneManagers(null);
-    getRetailers(null);
+    getClients();
+    // getZoneManagers();
+    // getSubZoneManagers(null);
+    // getRetailers(null);
     getNasDevices();
     form.setFieldsValue({
       snmpVersion: selectedSnmpVersion,
@@ -293,15 +364,22 @@ const CreateApDeviceForm = () => {
     });
   }, []);
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedZone);
-    }
+    // if (selectedClient) {
+    getZoneManagers(selectedClient);
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedClient]);
+
+  useEffect(() => {
+    // if (selectedZone) {
+    getSubZoneManagers(selectedClient, selectedZone);
+    // }
   }, [selectedZone]);
 
   useEffect(() => {
-    if (selectedSubZone) {
-      getRetailers(selectedSubZone);
-    }
+    // if (selectedSubZone) {
+    getRetailers(selectedClient, selectedZone, selectedSubZone);
+    // }
   }, [selectedSubZone]);
 
   useEffect(() => {
@@ -324,6 +402,7 @@ const CreateApDeviceForm = () => {
       } = data;
 
       const formData = {
+        clientId: selectedClient,
         nasDeviceId: selectedNasDevice,
         name: name,
         mapLocation: mapLocation,
@@ -406,6 +485,57 @@ const CreateApDeviceForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
+            {authUser &&
+              (authUser.userType == "durjoy" ||
+                authUser.userType == "duronto") && (
+                <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={8}
+                  xxl={8}
+                  className="gutter-row"
+                >
+                  {/* clientId */}
+                  <Form.Item
+                    label="Client"
+                    style={{
+                      marginBottom: 0,
+                      fontWeight: "bold"
+                    }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input client!"
+                      }
+                    ]}
+                    name="clientId"
+                  >
+                    <Space style={{ width: "100%" }} direction="vertical">
+                      <Select
+                        allowClear
+                        style={{ width: "100%", textAlign: "start" }}
+                        placeholder="Please select"
+                        onChange={handleClientChange}
+                        options={clients}
+                        value={selectedClient}
+                        showSearch
+                        filterOption={(input, option) => {
+                          if (typeof option?.label === "string") {
+                            return (
+                              option.label
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            );
+                          }
+                          return false;
+                        }}
+                      />
+                    </Space>
+                  </Form.Item>
+                </Col>
+              )}
             {authUser &&
               authUser?.clientLevel != "tri_cycle" &&
               authUser?.clientLevel != "tri_cycle_hotspot" &&

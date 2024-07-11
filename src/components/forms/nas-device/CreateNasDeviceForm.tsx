@@ -7,10 +7,20 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { Alert, Button, Checkbox, Form, Input, Card } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Card,
+  Space,
+  Select
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Col, Row } from "antd";
+import { useAppSelector } from "@/store/hooks";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 interface FormData {
   name: string;
@@ -26,9 +36,12 @@ interface FormData {
 
 const CreateNasDeviceForm = () => {
   const [form] = Form.useForm();
-
+  const authUser = useAppSelector(state => state.auth.user);
   const [loading, setLoading] = useState(false);
   // ** States
+  const [clients, setClients] = useState<any[]>([]);
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
@@ -41,6 +54,14 @@ const CreateNasDeviceForm = () => {
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+  const handleClientChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({
+      clientId: value
+    });
+    setSelectedClient(value || null);
+  };
+
   const handleActive = (e: any) => {
     setIsActive(e.target.checked ? true : false);
   };
@@ -49,7 +70,10 @@ const CreateNasDeviceForm = () => {
     setIsApiSslActive(e.target.checked ? true : false);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getClients();
+  }, []);
+
   useEffect(() => {
     setLoading(loading);
   }, [loading]);
@@ -69,6 +93,7 @@ const CreateNasDeviceForm = () => {
       } = data;
 
       const formData = {
+        clientId: selectedClient,
         name: name,
         mapLocation: mapLocation,
         locationDescription: locationDescription,
@@ -125,6 +150,48 @@ const CreateNasDeviceForm = () => {
     }, 2000);
   };
 
+  function getClients() {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      // FOR SEARCHING DATA - OPTIONAL
+      body: {
+        // SEND FIELD NAME WITH DATA TO SEARCH
+        partnerType: "client",
+        isActive: true
+      }
+    };
+
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setClients(list);
+    });
+  }
   return (
     <>
       {/* {loading && <AppImageLoader />} */}
@@ -188,6 +255,58 @@ const CreateNasDeviceForm = () => {
                 gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                 justify="space-between"
               >
+                {authUser &&
+                  (authUser.userType == "durjoy" ||
+                    authUser.userType == "duronto") && (
+                    <Col
+                      xs={24}
+                      sm={12}
+                      md={8}
+                      lg={8}
+                      xl={8}
+                      xxl={8}
+                      className="gutter-row"
+                    >
+                      {/* clientId */}
+                      <Form.Item
+                        label="Client"
+                        style={{
+                          marginBottom: 0,
+                          fontWeight: "bold"
+                        }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input client!"
+                          }
+                        ]}
+                        name="clientId"
+                      >
+                        <Space style={{ width: "100%" }} direction="vertical">
+                          <Select
+                            allowClear
+                            style={{ width: "100%", textAlign: "start" }}
+                            placeholder="Please select"
+                            onChange={handleClientChange}
+                            options={clients}
+                            value={selectedClient}
+                            showSearch
+                            filterOption={(input, option) => {
+                              if (typeof option?.label === "string") {
+                                return (
+                                  option.label
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                );
+                              }
+                              return false;
+                            }}
+                          />
+                        </Space>
+                      </Form.Item>
+                    </Col>
+                  )}
+
                 <Col
                   xs={24}
                   sm={12}
