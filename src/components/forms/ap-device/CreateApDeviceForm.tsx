@@ -139,7 +139,7 @@ const CreateApDeviceForm = () => {
       body: {
         // partnerType: "zone",
 
-        deviceType: "ONU",
+        // deviceType: "ONU",
         client: selectedClient
           ? { id: selectedClient }
           : { id: authUser?.partnerId },

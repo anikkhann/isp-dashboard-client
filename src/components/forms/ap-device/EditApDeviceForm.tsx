@@ -89,20 +89,21 @@ const EditApDeviceForm = ({ item }: PropData) => {
   };
 
   // nasDevices
-  function getNasDevices() {
+  function getNasDevices(clientId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "username"
+            field: "name"
           }
         ]
       },
       body: {
         // partnerType: "zone",
-        deviceType: "ONU",
+        // deviceType: "ONU",
+        client: clientId ? { id: clientId } : { id: authUser?.partnerId },
         isActive: true
       }
     };
@@ -121,7 +122,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.username,
+          label: item.name,
           value: item.id
         };
       });
@@ -297,7 +298,12 @@ const EditApDeviceForm = ({ item }: PropData) => {
     getZoneManagers();
     getSubZoneManagers(null);
     getRetailers(null);
-    getNasDevices();
+    // getNasDevices();
+  }, []);
+  useEffect(() => {
+    // if (selectedZone) {
+    getNasDevices(item?.clientId);
+    // }
   }, []);
   useEffect(() => {
     if (selectedZone) {

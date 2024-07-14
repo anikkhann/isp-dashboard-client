@@ -433,7 +433,10 @@ const HotspotSubZoneRevenueList: React.FC = () => {
     {
       title: "Sub Zone Manager",
       dataIndex: "name",
-
+      render: (name: any) => {
+        if (!name) return "-";
+        return <>{name}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
@@ -443,7 +446,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       dataIndex: "total_voucher_qty",
       render: (total_voucher_qty: any) => {
         if (total_voucher_qty === 0) return 0;
-        if (!total_voucher_qty) return "-";
+        if (!total_voucher_qty) return 0;
         return <>{total_voucher_qty}</>;
       },
       ellipsis: true,
@@ -456,7 +459,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       sorter: false,
       render: (unused_voucher_revenue: any) => {
         if (unused_voucher_revenue === 0) return 0;
-        if (!unused_voucher_revenue) return "-";
+        if (!unused_voucher_revenue) return 0;
         return <>{unused_voucher_revenue}</>;
       },
       ellipsis: true,
@@ -469,7 +472,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       dataIndex: "used_voucher_qty",
       render: (used_voucher_qty: any) => {
         if (used_voucher_qty === 0) return 0;
-        if (!used_voucher_qty) return "-";
+        if (!used_voucher_qty) return 0;
         return <>{used_voucher_qty}</>;
       },
       ellipsis: true,
@@ -482,7 +485,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       sorter: false,
       render: (used_voucher_revenue: any) => {
         if (used_voucher_revenue === 0) return 0;
-        if (!used_voucher_revenue) return "-";
+        if (!used_voucher_revenue) return 0;
         return <>{used_voucher_revenue}</>;
       },
       ellipsis: true,
@@ -495,7 +498,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       sorter: false,
       render: (online_purchase_qty: any) => {
         if (online_purchase_qty === 0) return 0;
-        if (!online_purchase_qty) return "-";
+        if (!online_purchase_qty) return 0;
         return <>{online_purchase_qty}</>;
       },
       ellipsis: true,
@@ -508,7 +511,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       sorter: false,
       render: (online_purchase_revenue: any) => {
         if (online_purchase_revenue === 0) return 0;
-        if (!online_purchase_revenue) return "-";
+        if (!online_purchase_revenue) return 0;
         return <>{online_purchase_revenue}</>;
       },
       ellipsis: true,
@@ -520,7 +523,7 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       dataIndex: "commission",
       render: (commission: any) => {
         if (commission === 0) return 0;
-        if (!commission) return "-";
+        if (!commission) return 0;
         return <>{commission}</>;
       },
       ellipsis: true,
