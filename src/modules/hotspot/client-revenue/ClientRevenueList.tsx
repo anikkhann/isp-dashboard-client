@@ -162,7 +162,7 @@ const ClientRevenueList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -190,7 +190,7 @@ const ClientRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -288,15 +288,19 @@ const ClientRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Total Voucher",
+      title: "Total Voucher (Qty)",
       dataIndex: "total_voucher_qty",
-
+      render: (total_voucher_qty: any) => {
+        if (total_voucher_qty === 0) return 0;
+        if (!total_voucher_qty) return "-";
+        return <>{total_voucher_qty}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
     },
     {
-      title: "Unused Voucher Revenue",
+      title: "Unused Voucher Revenue (BDT)",
       dataIndex: "unused_voucher_revenue",
       sorter: false,
       render: (unused_voucher_revenue: any) => {
@@ -310,15 +314,19 @@ const ClientRevenueList: React.FC = () => {
     },
 
     {
-      title: "Used Voucher",
+      title: "Used Voucher (Qty)",
       dataIndex: "used_voucher_qty",
-
+      render: (used_voucher_qty: any) => {
+        if (used_voucher_qty === 0) return 0;
+        if (!used_voucher_qty) return "-";
+        return <>{used_voucher_qty}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
     },
     {
-      title: "Used Voucher Revenue",
+      title: "Used Voucher Revenue (BDT)",
       dataIndex: "used_voucher_revenue",
       sorter: false,
       render: (used_voucher_revenue: any) => {
@@ -331,7 +339,7 @@ const ClientRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Online Purchase QTY",
+      title: "Online Purchase (Qty)",
       dataIndex: "online_purchase_qty",
       sorter: false,
       render: (online_purchase_qty: any) => {
@@ -344,7 +352,7 @@ const ClientRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Online Purchase Revenue",
+      title: "Online Purchase Revenue (BDT)",
       dataIndex: "online_purchase_revenue",
       sorter: false,
       render: (online_purchase_revenue: any) => {
@@ -359,7 +367,11 @@ const ClientRevenueList: React.FC = () => {
     {
       title: "Commission (BDT)",
       dataIndex: "commission",
-
+      render: (commission: any) => {
+        if (commission === 0) return 0;
+        if (!commission) return "-";
+        return <>{commission}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType

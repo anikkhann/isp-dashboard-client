@@ -224,7 +224,7 @@ const ApDeviceList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -252,7 +252,7 @@ const ApDeviceList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -273,9 +273,12 @@ const ApDeviceList: React.FC = () => {
       },
       body: {
         partnerType: "zone",
-        client: {
-          id: selectedClient
-        },
+        client: selectedClient
+          ? { id: selectedClient }
+          : { id: authUser?.partnerId },
+        // client: {
+        //   id: selectedClient
+        // },
         isActive: true
       }
     };
@@ -414,9 +417,9 @@ const ApDeviceList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedClient) {
-      getZoneManagers(selectedClient);
-    }
+    // if (selectedClient) {
+    getZoneManagers(selectedClient);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedClient]);
 

@@ -96,7 +96,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -121,7 +121,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -143,9 +143,10 @@ const EditApDeviceForm = ({ item }: PropData) => {
       },
       body: {
         partnerType: "zone",
-        client: {
-          id: authUser?.partnerId
-        },
+        client: item ? { id: item.clientId } : { id: authUser?.partnerId },
+        // client: {
+        //   id: authUser?.partnerId
+        // },
         isActive: true
       }
     };
@@ -188,9 +189,10 @@ const EditApDeviceForm = ({ item }: PropData) => {
       body: {
         partnerType: "reseller",
         zoneManager: { id: selectedZoneId },
-        client: {
-          id: authUser?.partnerId
-        },
+        // client: {
+        //   id: authUser?.partnerId
+        // },
+        client: item ? { id: item.clientId } : { id: authUser?.partnerId },
         isActive: true
       }
     };
@@ -234,6 +236,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
       body: {
         partnerType: "retailer",
         subZoneManager: { id: selectedSubZoneId },
+        client: item ? { id: item.clientId } : { id: authUser?.partnerId },
         isActive: true
       }
     };

@@ -203,7 +203,7 @@ const HotspotMyRevenueList: React.FC = () => {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "username"
           }
         ]
       },
@@ -231,7 +231,7 @@ const HotspotMyRevenueList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.username,
           value: item.id
         };
       });
@@ -254,9 +254,12 @@ const HotspotMyRevenueList: React.FC = () => {
       },
       body: {
         partnerType: "zone",
-        client: {
-          id: selectedClient
-        }
+        client: selectedClient
+          ? { id: selectedClient }
+          : { id: authUser?.partnerId }
+        // client: {
+        //   id: selectedClient
+        // }
         // client: {
         //   id: authUser?.partnerId
         // }
@@ -510,9 +513,9 @@ const HotspotMyRevenueList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    if (selectedClient) {
-      getZoneManagers(selectedClient);
-    }
+    // if (selectedClient) {
+    getZoneManagers(selectedClient);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedClient]);
 
@@ -554,25 +557,97 @@ const HotspotMyRevenueList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Total Voucher",
+      title: "Price",
+      dataIndex: "price",
+      render: (price: any) => {
+        if (price === 0) return 0;
+        if (!price) return "-";
+        return <>{price}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Total Voucher (Qty)",
       dataIndex: "total_voucher_qty",
-
+      render: (total_voucher_qty: any) => {
+        if (total_voucher_qty === 0) return 0;
+        if (!total_voucher_qty) return "-";
+        return <>{total_voucher_qty}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
     },
     {
-      title: "Unused Voucher",
+      title: "Unused Voucher (Qty)",
       dataIndex: "unused_voucher_qty",
-
+      render: (unused_voucher_qty: any) => {
+        if (unused_voucher_qty === 0) return 0;
+        if (!unused_voucher_qty) return "-";
+        return <>{unused_voucher_qty}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
     },
     {
-      title: "Used Voucher",
+      title: "Unused Voucher Revenue (BDT)",
+      dataIndex: "unused_voucher_revenue",
+      render: (unused_voucher_revenue: any) => {
+        if (unused_voucher_revenue === 0) return 0;
+        if (!unused_voucher_revenue) return "-";
+        return <>{unused_voucher_revenue}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Used Voucher (Qty)",
       dataIndex: "used_voucher_qty",
-
+      render: (used_voucher_qty: any) => {
+        if (used_voucher_qty === 0) return 0;
+        if (!used_voucher_qty) return "-";
+        return <>{used_voucher_qty}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Used Voucher Revenue (BDT)",
+      dataIndex: "used_voucher_revenue",
+      render: (used_voucher_revenue: any) => {
+        if (used_voucher_revenue === 0) return 0;
+        if (!used_voucher_revenue) return "-";
+        return <>{used_voucher_revenue}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Online Purchase (Qty)",
+      dataIndex: "online_purchase_qty",
+      render: (online_purchase_qty: any) => {
+        if (online_purchase_qty === 0) return 0;
+        if (!online_purchase_qty) return "-";
+        return <>{online_purchase_qty}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Online Purchase Revenue (BDT)",
+      dataIndex: "online_purchase_revenue",
+      render: (online_purchase_revenue: any) => {
+        if (online_purchase_revenue === 0) return 0;
+        if (!online_purchase_revenue) return "-";
+        return <>{online_purchase_revenue}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType
@@ -580,7 +655,11 @@ const HotspotMyRevenueList: React.FC = () => {
     {
       title: "Commission (BDT)",
       dataIndex: "commission",
-
+      render: (commission: any) => {
+        if (commission === 0) return 0;
+        if (!commission) return "-";
+        return <>{commission}</>;
+      },
       ellipsis: true,
       width: "auto",
       align: "center" as AlignType

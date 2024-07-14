@@ -125,7 +125,7 @@ const CreateApDeviceForm = () => {
   }
 
   // nasDevices
-  function getNasDevices() {
+  function getNasDevices(selectedClient: string) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -138,7 +138,11 @@ const CreateApDeviceForm = () => {
       },
       body: {
         // partnerType: "zone",
+
         deviceType: "ONU",
+        client: selectedClient
+          ? { id: selectedClient }
+          : { id: authUser?.partnerId },
         isActive: true
       }
     };
@@ -182,7 +186,9 @@ const CreateApDeviceForm = () => {
         // client: {
         //   id: selectedClient
         // },
-        client: selectedClient ? { id: selectedClient } : null,
+        client: selectedClient
+          ? { id: selectedClient }
+          : { id: authUser?.partnerId },
         // client: {
         //   id: authUser?.partnerId
         // },
@@ -356,7 +362,7 @@ const CreateApDeviceForm = () => {
     // getZoneManagers();
     // getSubZoneManagers(null);
     // getRetailers(null);
-    getNasDevices();
+    // getNasDevices();
     form.setFieldsValue({
       snmpVersion: selectedSnmpVersion,
       snmpCommunity: "public",
@@ -365,21 +371,27 @@ const CreateApDeviceForm = () => {
   }, []);
   useEffect(() => {
     // if (selectedClient) {
+    getNasDevices(selectedClient);
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedClient]);
+  useEffect(() => {
+    // if (selectedClient) {
     getZoneManagers(selectedClient);
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedClient]);
 
   useEffect(() => {
-    // if (selectedZone) {
-    getSubZoneManagers(selectedClient, selectedZone);
-    // }
+    if (selectedZone) {
+      getSubZoneManagers(selectedClient, selectedZone);
+    }
   }, [selectedZone]);
 
   useEffect(() => {
-    // if (selectedSubZone) {
-    getRetailers(selectedClient, selectedZone, selectedSubZone);
-    // }
+    if (selectedSubZone) {
+      getRetailers(selectedClient, selectedZone, selectedSubZone);
+    }
   }, [selectedSubZone]);
 
   useEffect(() => {
