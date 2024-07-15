@@ -2,7 +2,7 @@
 import { Button, Card, Col, Select, Space, Row, DatePicker } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Table, Collapse } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -61,7 +61,8 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
 
   const { RangePicker } = DatePicker;
-
+  const downloadRef = useRef<any>(null);
+  const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const [clients, setClients] = useState<any[]>([]);
@@ -531,7 +532,72 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       align: "center" as AlignType
     }
   ];
+  const handleDownload = async () => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+    try {
+      const res = await axios.get(
+        `/api-hotspot/revenue-report/sub-zone-manager-wise-revenue`,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      const { data } = res;
+      console.log(data.body);
+
+      if (data.status !== 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+        setDownloadLoading(false); // Ensure the button state is reset on error
+        return;
+      }
+
+      if (!data.body) {
+        setDownloadLoading(false); // Reset button if no data
+        return;
+      }
+
+      const list = data.body.map((item: any) => {
+        return {
+          "Sub Zone Manager": item.name,
+          "Total Voucher (Qty)": item.total_voucher_qty,
+          "Unused Voucher Revenue (BDT)": item.unused_voucher_revenue,
+          "Used Voucher (Qty)": item.used_voucher_qty,
+          "Used Voucher Revenue (BDT)": item.used_voucher_revenue,
+          "Online Purchase (Qty)": item.online_purchase_qty,
+          "Online Purchase Revenue (BDT)": item.online_purchase_revenue,
+          "Commission (BDT)": item.commission
+        };
+      });
+
+      setDownloadRow([...list]);
+    } catch (message) {
+      MySwal.fire({
+        title: "Error",
+        text: error.message || "Something went wrong",
+        icon: "error"
+      });
+      setDownloadLoading(false); // Ensure the button state is reset on error
+    }
+  };
+
+  useEffect(() => {
+    if (downloadRow && downloadRow.length > 0) {
+      setDownloadRow(downloadRow);
+
+      if (downloadRef.current) {
+        downloadRef.current.link.click();
+      }
+      setDownloadLoading(false);
+    }
+  }, [downloadRow]);
   return (
     <>
       <AppRowContainer>
@@ -788,34 +854,66 @@ const HotspotSubZoneRevenueList: React.FC = () => {
               </Space>
 
               {ability.can("subzoneRevenue.download", "") && (
+                // <Row justify={"end"}>
+                //   <Col span={3}>
+                //     <CSVLink
+                //       data={data}
+                //       asyncOnClick={true}
+                //       onClick={(event, done) => {
+                //         setDownloadLoading(true);
+                //         setTimeout(() => {
+                //           setDownloadLoading(false);
+                //         }, 2000);
+                //         done();
+                //       }}
+                //       className="ant-btn ant-btn-lg"
+                //       target="_blank"
+                //       style={{
+                //         width: "100%",
+                //         textAlign: "center",
+                //         marginTop: "25px",
+                //         backgroundColor: "#F15F22",
+                //         color: "#ffffff",
+                //         padding: "10px"
+                //       }}
+                //       filename={`sub-zone-revenue-${dayjs().format(
+                //         "YYYY-MM-DD"
+                //       )}.csv`}
+                //     >
+                //       {downloadLoading ? "Loading..." : "Download"}
+                //     </CSVLink>
+                //   </Col>
+                // </Row>
                 <Row justify={"end"}>
                   <Col span={3}>
-                    <CSVLink
-                      data={data}
-                      asyncOnClick={true}
-                      onClick={(event, done) => {
+                    <Button
+                      type="primary"
+                      onClick={() => {
                         setDownloadLoading(true);
-                        setTimeout(() => {
-                          setDownloadLoading(false);
-                        }, 2000);
-                        done();
+                        handleDownload();
                       }}
-                      className="ant-btn ant-btn-lg"
-                      target="_blank"
                       style={{
                         width: "100%",
                         textAlign: "center",
                         marginTop: "25px",
                         backgroundColor: "#F15F22",
-                        color: "#ffffff",
-                        padding: "10px"
+                        color: "#ffffff"
                       }}
+                    >
+                      {downloadLoading ? "Loading..." : "Download"}
+                    </Button>
+
+                    <CSVLink
+                      data={downloadRow}
+                      ref={downloadRef}
+                      target="_blank"
                       filename={`sub-zone-revenue-${dayjs().format(
                         "YYYY-MM-DD"
                       )}.csv`}
-                    >
-                      {downloadLoading ? "Loading..." : "Download"}
-                    </CSVLink>
+                      style={{
+                        display: "none"
+                      }}
+                    ></CSVLink>
                   </Col>
                 </Row>
               )}

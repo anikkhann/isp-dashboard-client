@@ -221,6 +221,8 @@ const CreateApDeviceForm = () => {
   }
 
   function getSubZoneManagers(selectedClient: any, selectedZoneId: any) {
+    // Check if selectedClient has retailers
+
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -233,9 +235,9 @@ const CreateApDeviceForm = () => {
       },
       body: {
         partnerType: "reseller",
-        zoneManager: selectedZoneId ? { id: selectedZoneId } : null,
+
         client: selectedClient ? { id: selectedClient } : null,
-        // zoneManager: { id: selectedZoneId },
+        zoneManager: { id: selectedZoneId },
         // client: {
         //   id: selectedClient
         // },
@@ -268,11 +270,7 @@ const CreateApDeviceForm = () => {
     });
   }
 
-  function getRetailers(
-    selectedClient: any,
-    selectedZoneId: any,
-    selectedSubZoneId: any
-  ) {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -290,9 +288,9 @@ const CreateApDeviceForm = () => {
         // client: {
         //   id: selectedClient
         // },
-        zoneManager: selectedZoneId ? { id: selectedZoneId } : null,
+        // zoneManager: selectedZoneId ? { id: selectedZoneId } : null,
         subZoneManager: selectedSubZoneId ? { id: selectedSubZoneId } : null,
-        client: selectedClient ? { id: selectedClient } : null,
+        // client: selectedClient ? { id: selectedClient } : null,
         isActive: true
       }
     };
@@ -383,14 +381,14 @@ const CreateApDeviceForm = () => {
   }, [selectedClient]);
 
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedClient, selectedZone);
-    }
-  }, [selectedZone]);
+    // if (selectedZone) {
+    getSubZoneManagers(selectedClient, selectedZone);
+    // }
+  }, [selectedClient, selectedZone]);
 
   useEffect(() => {
     if (selectedSubZone) {
-      getRetailers(selectedClient, selectedZone, selectedSubZone);
+      getRetailers(selectedSubZone);
     }
   }, [selectedSubZone]);
 

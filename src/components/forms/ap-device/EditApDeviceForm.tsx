@@ -237,7 +237,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
       body: {
         partnerType: "retailer",
         subZoneManager: { id: selectedSubZoneId },
-        client: item ? { id: item.clientId } : { id: authUser?.partnerId },
+        // client: item ? { id: item.clientId } : { id: authUser?.partnerId },
         isActive: true
       }
     };
@@ -297,7 +297,7 @@ const EditApDeviceForm = ({ item }: PropData) => {
   useEffect(() => {
     getZoneManagers();
     getSubZoneManagers(null);
-    getRetailers(null);
+    // getRetailers(null);
     // getNasDevices();
   }, []);
   useEffect(() => {
