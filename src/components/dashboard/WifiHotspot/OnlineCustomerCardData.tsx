@@ -236,7 +236,7 @@ const OnlineCustomerCardData: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Online Customer",
+      title: "Total Online",
       dataIndex: "total_online",
       sorter: true,
       render: (total_online: any) => {
