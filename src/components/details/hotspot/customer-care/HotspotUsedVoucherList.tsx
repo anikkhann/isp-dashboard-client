@@ -11,6 +11,9 @@ import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
 import { format } from "date-fns";
+import { VoucherAndPackageData } from "@/interfaces/VoucherAndPackageData";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 // import { format } from "date-fns";
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -24,8 +27,8 @@ interface PropData {
 }
 
 const HotspotUsedVoucherList = ({ item }: PropData) => {
-  const [data, setData] = useState<any[]>([]);
-
+  const [data, setData] = useState<VoucherAndPackageData[]>([]);
+  const MySwal = withReactContent(Swal);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("desc");
@@ -48,29 +51,34 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const body = {
-      meta: {
-        limit: limit,
-        page: page === 0 ? 0 : page - 1,
-        sort: [
-          {
-            order: order,
-            field: sort
-          }
-        ]
-      },
-      body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        clientCustomer: {
-          id: item.id
-        }
-      }
-    };
+    // const body = {
+    //   meta: {
+    //     limit: limit,
+    //     page: page === 0 ? 0 : page - 1,
+    //     sort: [
+    //       {
+    //         order: order,
+    //         field: sort
+    //       }
+    //     ]
+    //   },
+    //   // body: {
+    //   //   // SEND FIELD NAME WITH DATA TO SEARCH
+    //   //   clientCustomer: {
+    //   //     id: item.id
+    //   //   }
+    //   // }
+    // };
 
-    const { data } = await axios.post(
-      "/api-hotspot/voucher-archive/get-list",
-      body,
+    const { data } = await axios.get(
+      `/api-hotspot/partner-customer/voucher-and-package-purchase-history?id=${item.id}`,
       {
+        params: {
+          page,
+          limit,
+          order,
+          sort
+        },
         headers: {
           "Content-Type": "application/json"
         }
@@ -87,13 +95,25 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
     },
     onSuccess(data: any) {
       if (data) {
+        // console.log("data.data", data);
+
+        if (data.status == 500) {
+          MySwal.fire({
+            title: "Error!",
+            text: data.message ? data.message : "Something went wrong",
+            icon: "error",
+            confirmButtonText: "Ok"
+          });
+        }
+
         if (data.body) {
           setData(data.body);
           setTableParams({
             pagination: {
-              total: data.meta.totalRecords,
-              pageSize: data.meta.limit,
-              current: (data.meta.page as number) + 1,
+              total: data.body.length,
+              // total: data.meta.totalRecords,
+              // pageSize: data.meta.limit,
+              // current: (data.meta.page as number) + 1,
               pageSizeOptions: ["10", "20", "30", "40", "50"]
             }
           });
@@ -121,7 +141,7 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
     }
   }, [data]);
 
-  const columns: ColumnsType<any> = [
+  const columns: ColumnsType<VoucherAndPackageData> = [
     {
       title: "Serial",
       dataIndex: "id",
@@ -129,86 +149,89 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
         return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
       sorter: true,
-      width: "10%",
+      ellipsis: false,
+      width: "auto",
       align: "center" as AlignType
     },
     // subject
     {
       title: "Voucher",
-      dataIndex: "voucherNumber",
+      dataIndex: "voucher_number",
       sorter: false,
-      render: (voucherNumber: any) => {
-        if (!voucherNumber) return "-";
-        return <>{voucherNumber}</>;
+      render: (voucher_number: any) => {
+        if (!voucher_number) return "-";
+        return <>{voucher_number}</>;
       },
       /* width: "20%", */
+      ellipsis: false,
+      width: "auto",
       align: "center" as AlignType
     },
     {
-      title: "Pricing Plan",
-      dataIndex: "pricingPlan",
+      title: "Package",
+      dataIndex: "package_name",
       sorter: false,
-      render: (pricingPlan: any) => {
-        if (!pricingPlan) return "-";
-        return <>{pricingPlan.name}</>;
+      render: (package_name: any) => {
+        if (!package_name) return "-";
+        return <>{package_name}</>;
       },
       /* width: "20%", */
-      align: "center" as AlignType
-    },
-    {
-      title: "Retailer",
-      dataIndex: "retailer",
-      sorter: false,
-      render: (retailer: any) => {
-        if (!retailer) return "-";
-        return <>{retailer.username}</>;
-      },
-      /* width: "20%", */
+      ellipsis: false,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Reference Number",
-      dataIndex: "referenceNumber",
+      dataIndex: "reference_number",
       sorter: false,
-      render: (referenceNumber: any) => {
-        if (!referenceNumber) return "-";
-        return <>{referenceNumber}</>;
+      render: (reference_number: any) => {
+        if (!reference_number) return "-";
+        return <>{reference_number}</>;
       },
       /* width: "20%", */
+      ellipsis: false,
+      width: "auto",
       align: "center" as AlignType
     },
     {
       title: "Used IP",
-      dataIndex: "usedIp",
+      dataIndex: "used_ip",
       sorter: false,
-      render: (usedIp: any) => {
-        if (!usedIp) return "-";
-        return <>{usedIp}</>;
+      render: (used_ip: any) => {
+        if (!used_ip) return "-";
+        return <>{used_ip}</>;
       },
       /* width: "20%", */
+      ellipsis: false,
+      width: "auto",
       align: "center" as AlignType
     },
+
     {
       title: "Used Mac",
-      dataIndex: "usedMac",
+      dataIndex: "used_mac",
       sorter: false,
-      render: (usedMac: any) => {
-        if (!usedMac) return "-";
-        return <>{usedMac}</>;
+      render: (used_mac: any) => {
+        if (!used_mac) return "-";
+        return <>{used_mac}</>;
       },
       /* width: "20%", */
+      ellipsis: false,
+      width: "auto",
       align: "center" as AlignType
     },
     {
-      title: "Used Time",
-      dataIndex: "usedTime",
+      title: "Activated At",
+      dataIndex: "created_on",
       sorter: false,
-      render: (usedTime: any) => {
-        if (!usedTime) return "-";
-        const date = new Date(usedTime);
+      render: (created_on: any) => {
+        if (!created_on) return "-";
+        const date = new Date(created_on);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       /* width: "20%", */
+      ellipsis: false,
+      width: "auto",
       align: "center" as AlignType
     }
   ];
@@ -216,18 +239,22 @@ const HotspotUsedVoucherList = ({ item }: PropData) => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<any> | SorterResult<any>[]
+    sorter:
+      | SorterResult<VoucherAndPackageData>
+      | SorterResult<VoucherAndPackageData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<any>).order) {
+    if (sorter && (sorter as SorterResult<VoucherAndPackageData>).order) {
       SetOrder(
-        (sorter as SorterResult<any>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<VoucherAndPackageData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<any>).field) {
-      SetSort((sorter as SorterResult<any>).field as string);
+    if (sorter && (sorter as SorterResult<VoucherAndPackageData>).field) {
+      SetSort((sorter as SorterResult<VoucherAndPackageData>).field as string);
     }
   };
 

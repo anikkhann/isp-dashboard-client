@@ -306,9 +306,9 @@ const HotspotMyRevenueList: React.FC = () => {
       body: {
         partnerType: "reseller",
         zoneManager: { id: selectedZoneId },
-        client: {
-          id: selectedClient
-        }
+        client: selectedClient
+          ? { id: selectedClient }
+          : { id: authUser?.partnerId }
         // client: {
         //   id: authUser?.partnerId
         // }
@@ -340,11 +340,7 @@ const HotspotMyRevenueList: React.FC = () => {
     });
   }
 
-  function getRetailers(
-    selectedClient: any,
-    selectedZoneId: any,
-    selectedSubZoneId: any
-  ) {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -357,11 +353,11 @@ const HotspotMyRevenueList: React.FC = () => {
       },
       body: {
         partnerType: "retailer",
-        zoneManager: { id: selectedZoneId },
+        // zoneManager: { id: selectedZoneId },
         subZoneManager: { id: selectedSubZoneId },
-        client: {
-          id: selectedClient
-        },
+        // client: {
+        //   id: selectedClient
+        // },
         isActive: true
       }
     };
@@ -520,14 +516,14 @@ const HotspotMyRevenueList: React.FC = () => {
   }, [selectedClient]);
 
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedClient, selectedZone);
-    }
-  }, [selectedZone]);
+    // if (selectedZone) {
+    getSubZoneManagers(selectedClient, selectedZone);
+    // }
+  }, [selectedClient, selectedZone]);
 
   useEffect(() => {
     if (selectedSubZoneManager) {
-      getRetailers(selectedClient, selectedZone, selectedSubZoneManager);
+      getRetailers(selectedSubZoneManager);
     }
   }, [selectedSubZoneManager]);
 

@@ -316,9 +316,9 @@ const HotspotSubZoneRevenueList: React.FC = () => {
       body: {
         partnerType: "reseller",
         zoneManager: { id: selectedZoneId },
-        client: {
-          id: selectedClient
-        }
+        client: selectedClient
+          ? { id: selectedClient }
+          : { id: authUser?.partnerId }
         // client: {
         //   id: authUser?.partnerId
         // }
@@ -365,10 +365,10 @@ const HotspotSubZoneRevenueList: React.FC = () => {
   }, [selectedClient]);
 
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedClient, selectedZone);
-    }
-  }, [selectedZone]);
+    // if (selectedZone) {
+    getSubZoneManagers(selectedClient, selectedZone);
+    // }
+  }, [selectedClient, selectedZone]);
 
   const handleClear = () => {
     setSelectedDateRange(null);

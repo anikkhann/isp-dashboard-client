@@ -320,9 +320,9 @@ const ApDeviceList: React.FC = () => {
       },
       body: {
         partnerType: "reseller",
-        client: {
-          id: selectedClient
-        },
+        client: selectedClient
+          ? { id: selectedClient }
+          : { id: authUser?.partnerId },
         zoneManager: { id: selectedZoneId },
         // client: {
         //   id: authUser?.partnerId
@@ -356,11 +356,7 @@ const ApDeviceList: React.FC = () => {
     });
   }
 
-  function getRetailers(
-    selectedClient: any,
-    selectedZoneId: any,
-    selectedSubZoneId: any
-  ) {
+  function getRetailers(selectedSubZoneId: any) {
     const body = {
       // FOR PAGINATION - OPTIONAL
       meta: {
@@ -373,10 +369,10 @@ const ApDeviceList: React.FC = () => {
       },
       body: {
         partnerType: "retailer",
-        client: {
-          id: selectedClient
-        },
-        zoneManager: { id: selectedZoneId },
+        // client: {
+        //   id: selectedClient
+        // },
+        // zoneManager: { id: selectedZoneId },
         subZoneManager: { id: selectedSubZoneId },
 
         isActive: true
@@ -424,14 +420,14 @@ const ApDeviceList: React.FC = () => {
   }, [selectedClient]);
 
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedClient, selectedZone);
-    }
-  }, [selectedZone]);
+    // if (selectedZone) {
+    getSubZoneManagers(selectedClient, selectedZone);
+    // }
+  }, [selectedClient, selectedZone]);
 
   useEffect(() => {
     if (selectedSubZone) {
-      getRetailers(selectedClient, selectedZone, selectedSubZone);
+      getRetailers(selectedSubZone);
     }
   }, [selectedSubZone]);
 
