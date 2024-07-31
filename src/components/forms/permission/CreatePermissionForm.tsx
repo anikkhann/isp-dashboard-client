@@ -314,6 +314,10 @@ const tagsList = [
   {
     label: "Monitoring-Customer-Summary",
     value: "monitoring-customer-summary"
+  },
+  {
+    label: "Online-Package-Purchase",
+    value: "onlinePackagePurchase"
   }
 ];
 

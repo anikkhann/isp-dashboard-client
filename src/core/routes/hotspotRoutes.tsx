@@ -16,6 +16,7 @@ import {
   IdcardOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
+
 const hotspotRoutes = [
   {
     key: "/admin",
@@ -242,6 +243,17 @@ const hotspotRoutes = [
     path: "/admin/hotspot/retailer-onboard",
     icon: <IdcardOutlined />,
     permission: "retailerOnboard.list"
+  },
+  {
+    key: "/admin/hotspot/online-package-purchase",
+    label: (
+      <Link href="/admin/hotspot/online-package-purchase">
+        Online Package Purchase
+      </Link>
+    ),
+    path: "/admin/hotspot/online-package-purchase",
+    icon: <DollarOutlined />,
+    permission: "onlinePackagePurchase.list"
   }
 ];
 
