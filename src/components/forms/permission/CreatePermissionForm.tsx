@@ -318,6 +318,15 @@ const tagsList = [
   {
     label: "Online-Package-Purchase",
     value: "onlinePackagePurchase"
+  },
+
+  {
+    label: "Vendors",
+    value: "vendors"
+  },
+  {
+    label: "Account Head",
+    value: "accountHead"
   }
 ];
 

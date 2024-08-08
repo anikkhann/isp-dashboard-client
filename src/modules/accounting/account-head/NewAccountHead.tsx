@@ -1,0 +1,75 @@
+import CreateAccountHeadForm from "@/components/forms/account-head/CreateAccountHeadForm";
+import AppRowContainer from "@/lib/AppRowContainer";
+import { Breadcrumb, Card } from "antd";
+import Link from "next/link";
+
+import React from "react";
+
+const NewAccountHead = () => {
+  return (
+    <>
+      <AppRowContainer>
+        <Breadcrumb
+          style={{
+            margin: "10px 30px",
+            textAlign: "left"
+          }}
+          items={[
+            {
+              title: <Link href="/admin">Home</Link>
+            },
+            {
+              title: <Link href="/admin/accounting">Accounting</Link>
+            },
+            {
+              title: (
+                <Link href="/admin/accounting/account-head">Account Head</Link>
+              )
+            },
+            {
+              title: "New Account Head"
+            }
+          ]}
+        />
+        <div
+          style={{
+            width: "90%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            // border: "1px solid #F15F22",
+            textAlign: "center"
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              color: "#F15F22"
+            }}
+          >
+            New Account Head
+          </h1>
+        </div>
+        <Card
+          hoverable
+          style={{
+            width: "90%",
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            margin: "0 auto",
+            textAlign: "center",
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            border: "1px solid #F15F22"
+          }}
+        >
+          <CreateAccountHeadForm />
+        </Card>
+      </AppRowContainer>
+    </>
+  );
+};
+
+export default NewAccountHead;

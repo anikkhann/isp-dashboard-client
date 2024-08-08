@@ -136,13 +136,6 @@ const CustomerTransactionList: React.FC = () => {
         ]
       },
       body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        // "userId": "f5e50c82-a6a0-41df-a56f-03c93aad6218", //dropdown - Customer List API
-        // "transaction_id": null,
-        // "trx_mode": null, //dropdown (debit, credit)
-        // "trx_type": null, //dropdown (Online, Offline)
-        // "trx_by": null, //dropdown Transaction By API
-        // "dateRangeFilter": {"field": "trxDate", "startDate": null, "endDate": null}
         userType: "customer",
         userId: userParam,
         transactionId: transactionIdParam,
@@ -513,32 +506,6 @@ const CustomerTransactionList: React.FC = () => {
       width: "auto",
       align: "center" as AlignType
     }
-    // editedBy
-    // {
-    //   title: "Updated By",
-    //   dataIndex: "editedBy",
-    //   sorter: false,
-    //   render: (editedBy: any) => {
-    //     if (!editedBy) return "-";
-    //     return <>{editedBy.name}</>;
-    //   },
-
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
-    // updatedOn
-    // {
-    //   title: "Updated At",
-    //   dataIndex: "updatedOn",
-    //   sorter: false,
-    //   render: (updatedOn: any) => {
-    //     if (!updatedOn) return "-";
-    //     const date = new Date(updatedOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
   ];
 
   const handleTableChange = (
@@ -633,20 +600,7 @@ const CustomerTransactionList: React.FC = () => {
           };
         });
 
-        setDownloadRow([
-          // {
-          //   Customer: "Customer",
-          //   TRXType: "TRX Type",
-          //   TrxMode: "Trx Mode",
-          //   TransactionId: "Transaction Id",
-          //   Amount: "Amount",
-          //   Balance: "Balance",
-          //   Remarks: "Remarks",
-          //   TrxBy: "Trx By",
-          //   TrxDate: "Trx Date"
-          // },
-          ...list
-        ]);
+        setDownloadRow([...list]);
       });
   };
 
@@ -916,100 +870,6 @@ const CustomerTransactionList: React.FC = () => {
               {ability.can("customerTransaction.download", "") && (
                 <Row justify={"end"}>
                   <Col>
-                    {/* <CSVLink
-                      data={downloadRow}
-                      asyncOnClick={true}
-                      onClick={(event, done) => {
-                        setDownloadLoading(true);
-                        setTimeout(() => {
-                          setDownloadLoading(false);
-                        }, 2000);
-                        const token = Cookies.get("token");
-                        axios.defaults.headers.common["Authorization"] =
-                          `Bearer ${token}`;
-
-                        const body = {
-                          meta: {
-                            sort: [
-                              {
-                                order: "desc",
-                                field: "trxDate"
-                              }
-                            ]
-                          },
-                          body: {
-                            
-                            userType: "customer",
-                            userId: selectUser,
-                            transactionId: transactionId,
-                            trxMode: selectedTransactionMode,
-                            trxType: selectedTransactionType,
-                            trxBy: selectedTransactionBy,
-                            dateRangeFilter: {
-                              field: "trxDate",
-                              startDate: selectedStartDate,
-                              endDate: selectedEndDate
-                            }
-                          }
-                        };
-
-                        axios
-                          .post(`/api/topup-transaction/get-list`, body, {
-                            headers: {
-                              "Content-Type": "application/json"
-                            }
-                          })
-                          .then(res => {
-                         
-                            const { data } = res;
-
-                            if (data.status != 200) {
-                              MySwal.fire({
-                                title: "Error",
-                                text: data.message || "Something went wrong",
-                                icon: "error"
-                              });
-                            }
-
-                            if (!data.body) return;
-
-                            const list = data.body.map((item: any) => {
-                              const date = new Date(item.trxDate);
-                              return {
-                                Customer: item.trxFor,
-                                TRXType: item.trxType,
-                                TrxMode: item.trxMode,
-                                TransactionId: item.transactionId,
-                                Amount: item.amount,
-                                Balance: item.balance,
-                                Remarks: item.remarks,
-                                TrxBy: item.trxBy,
-                                TrxDate: format(date, "yyyy-MM-dd pp")
-                              };
-                            });
-                            setDownloadRow(list);
-                            console.log(list);
-                            done();
-                          });
-                      }}
-                      className="ant-btn ant-btn-lg"
-                      target="_blank"
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        marginTop: "25px",
-                        backgroundColor: "#F15F22",
-                        color: "#ffffff",
-                        padding: "10px"
-                      }}
-                      filename={`customer-transaction-${dayjs().format(
-                        "YYYY-MM-DD"
-                      )}.csv`}
-                    >
-                      {downloadLoading ? "Loading..." : "Download"}
-                     
-                    </CSVLink> */}
-
                     <Button
                       type="primary"
                       onClick={() => {

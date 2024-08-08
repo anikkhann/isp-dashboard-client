@@ -126,6 +126,13 @@ const accountRoutes = [
     path: "/admin/accounting/my-revenue",
     icon: <DollarCircleOutlined />,
     permission: "accountingMyRevenue.list"
+  },
+  {
+    key: "/admin/accounting/account-head",
+    label: <Link href="/admin/accounting/account-head">Account Head</Link>,
+    path: "/admin/accounting/account-head",
+    icon: <DollarCircleOutlined />,
+    permission: "accountHead.list"
   }
 ];
 

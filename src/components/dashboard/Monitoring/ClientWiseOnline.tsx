@@ -325,23 +325,23 @@ const ClientWiseOnline: React.FC = () => {
       dataIndex: "online_ratio",
       sorter: true,
       render: (text, record) => {
-        let total_online: string | number | 0 = record.total_online || 0;
-        let registered_customer: string | number | 1 =
-          record.registered_customer || 1;
+        let active_customer: string | number | 0 = record.active_customer || 0;
+        let total_online: string | number | 1 = record.total_online || 1;
+
+        // Ensure active_customer is a number for the calculation
+        if (typeof active_customer === "string") {
+          active_customer = parseFloat(active_customer);
+        }
 
         // Ensure total_online is a number for the calculation
         if (typeof total_online === "string") {
           total_online = parseFloat(total_online);
         }
 
-        // Ensure registered_customer is a number for the calculation
-        if (typeof registered_customer === "string") {
-          registered_customer = parseFloat(registered_customer);
-        }
-
         const online_ratio = parseFloat(
-          ((total_online / registered_customer) * 100).toFixed(2)
+          ((active_customer / total_online) * 100).toFixed(2)
         );
+
         // Check if online_ratio is a valid number
         if (isNaN(online_ratio) || !isFinite(online_ratio)) {
           return <>-</>;

@@ -52,6 +52,13 @@ const userRoutes = [
     path: "/admin/user/bw-nttn-provider",
     icon: <WifiOutlined />,
     permission: "bwNttnProvider.list"
+  },
+  {
+    key: "/admin/user/vendors",
+    label: <Link href="/admin/user/vendors">Vendors</Link>,
+    path: "/admin/user/vendors",
+    icon: <UserOutlined />,
+    permission: "vendors.list"
   }
 ];
 

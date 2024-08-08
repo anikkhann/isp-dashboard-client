@@ -247,7 +247,7 @@ const CustomerWiseSummary: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Username",
+      title: "Client",
       dataIndex: "username",
       sorter: true,
       render: (username: any) => {
