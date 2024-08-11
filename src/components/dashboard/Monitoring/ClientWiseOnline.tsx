@@ -339,7 +339,7 @@ const ClientWiseOnline: React.FC = () => {
         }
 
         const online_ratio = parseFloat(
-          ((active_customer / total_online) * 100).toFixed(2)
+          ((total_online / active_customer) * 100).toFixed(2)
         );
 
         // Check if online_ratio is a valid number

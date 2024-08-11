@@ -108,7 +108,6 @@ const VendorList: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      console.log("data", data);
       setData(data);
     }
   }, [data]);

@@ -180,6 +180,17 @@ const hotspotRoutes = [
     permission: "hotspotZoneTransaction.list"
   },
   {
+    key: "/admin/hotspot/online-package-purchase",
+    label: (
+      <Link href="/admin/hotspot/online-package-purchase">
+        Online Package Purchase
+      </Link>
+    ),
+    path: "/admin/hotspot/online-package-purchase",
+    icon: <DollarOutlined />,
+    permission: "onlinePackagePurchase.list"
+  },
+  {
     key: "/admin/hotspot/tso-visit",
     label: <Link href="/admin/hotspot/tso-visit">TSO Visit</Link>,
     path: "/admin/hotspot/tso-visit",
@@ -243,17 +254,6 @@ const hotspotRoutes = [
     path: "/admin/hotspot/retailer-onboard",
     icon: <IdcardOutlined />,
     permission: "retailerOnboard.list"
-  },
-  {
-    key: "/admin/hotspot/online-package-purchase",
-    label: (
-      <Link href="/admin/hotspot/online-package-purchase">
-        Online Package Purchase
-      </Link>
-    ),
-    path: "/admin/hotspot/online-package-purchase",
-    icon: <DollarOutlined />,
-    permission: "onlinePackagePurchase.list"
   }
 ];
 

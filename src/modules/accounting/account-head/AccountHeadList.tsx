@@ -28,8 +28,8 @@ const AccountHeadList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("");
-  const [sort, SetSort] = useState("");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -71,8 +71,10 @@ const AccountHeadList: React.FC = () => {
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
+    // order, sort
     queryKey: ["account-head-list", page, limit, order, sort],
     queryFn: async () => {
+      // , order, sort
       const response = await fetchData(page, limit, order, sort);
       return response;
     },
@@ -202,7 +204,7 @@ const AccountHeadList: React.FC = () => {
                 <Tooltip title="Edit" placement="bottomRight" color="magenta">
                   <Space size="middle" align="center" wrap>
                     <Link
-                      href={`/admin/accounting/accounting-head/${record.id}/edit`}
+                      href={`/admin/accounting/account-head/${record.id}/edit`}
                     >
                       <Button type="primary" icon={<EditOutlined />} />
                     </Link>

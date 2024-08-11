@@ -7,7 +7,7 @@ import {
   Space,
   Row,
   DatePicker,
-  Input,
+  // Input,
   Tag
 } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
@@ -78,8 +78,8 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("id");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("createdOn");
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -88,9 +88,9 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
   const [downloadRow, setDownloadRow] = useState<any[]>([]);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
-  const [selectedStatus, setSelectedStatus] = useState<any>("Paid");
+  const [selectedStatus, setSelectedStatus] = useState<any>(null);
 
-  const [selectedVlan, setSelectedVlan] = useState<any>(null);
+  // const [selectedVlan, setSelectedVlan] = useState<any>(null);
 
   const [clients, setClients] = useState<any[]>([]);
   const [selectedClient, setSelectedClient] = useState<any>(null);
@@ -131,7 +131,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
     order: string,
     sort: string,
     selectedStatusParam?: string,
-    vlanIdParam?: string,
+    // vlanIdParam?: string,
     selectedClientParam?: string,
     selectedZoneParam?: string,
     selectedSubZoneParam?: string,
@@ -158,7 +158,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         status: selectedStatusParam,
-        vlan_id: vlanIdParam,
+        // vlan_id: vlanIdParam,
         clientId: selectedClientParam,
         zoneManagerId: selectedZoneParam,
         subZoneManagerId: selectedSubZoneParam,
@@ -197,7 +197,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
       order,
       sort,
       selectedStatus,
-      selectedVlan,
+      // selectedVlan,
       selectedClient,
       selectedZone,
       selectedSubZone,
@@ -214,7 +214,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
         order,
         sort,
         selectedStatus,
-        selectedVlan,
+        // selectedVlan,
         selectedClient,
         selectedZone,
         selectedSubZone,
@@ -603,9 +603,9 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
   }, [selectedClient]);
 
   useEffect(() => {
-    if (selectedZone) {
-      getSubZoneManagers(selectedClient, selectedZone);
-    }
+    // if (selectedClient || selectedZone) {
+    getSubZoneManagers(selectedClient, selectedZone);
+    // }
   }, [selectedClient, selectedZone]);
 
   useEffect(() => {
@@ -616,7 +616,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
 
   const handleClear = () => {
     setSelectedStatus(null);
-    setSelectedVlan(null);
+    // setSelectedVlan(null);
     setSelectedClient(null);
     setSelectedZone(null);
     setSelectedSubZone(null);
@@ -661,7 +661,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
   };
 
   const handleZoneManagerChange = (value: any) => {
-    setSubZones(value as any);
+    setSelectedSubZone(value as any);
   };
 
   const handleRetailerChange = (value: any) => {
@@ -766,10 +766,10 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
     },
     {
       title: "Customer Name",
-      dataIndex: "name",
-      render: (name?: any) => {
-        if (!name) return "-";
-        return <>{name}</>;
+      dataIndex: "customer",
+      render: (customer?: any) => {
+        if (!customer.name) return "-";
+        return <>{customer.name}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -777,10 +777,10 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
     },
     {
       title: "Mobile No",
-      dataIndex: "phone",
-      render: (phone?: any) => {
-        if (!phone) return "-";
-        return <>{phone}</>;
+      dataIndex: "customer",
+      render: (customer?: any) => {
+        if (!customer.phone) return "-";
+        return <>{customer.phone}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -865,9 +865,9 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
     {
       title: "Paid On",
       dataIndex: "updatedOn",
-      render: (updateOn?: any) => {
-        if (!updateOn) return "-";
-        const date = new Date(updateOn);
+      render: (updatedOn?: any) => {
+        if (!updatedOn) return "-";
+        const date = new Date(updatedOn);
         return <>{format(date, "yyyy-MM-dd pp")}</>;
       },
       ellipsis: true,
@@ -893,7 +893,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
         status: selectedStatus,
-        vlan_id: selectedVlan,
+        // vlan_id: selectedVlan,
         clientId: selectedClient,
         zoneManagerId: selectedZone,
         subZoneManagerId: selectedSubZone,
@@ -912,13 +912,12 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
       }
     };
     await axios
-      .post(`/api/payment-gateway/get-list`, body, {
+      .post(`/api-hotspot/package-purchase/get-list`, body, {
         headers: {
           "Content-Type": "application/json"
         }
       })
       .then(res => {
-        // console.log(res);
         const { data } = res;
 
         if (data.status != 200) {
@@ -933,24 +932,31 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
         if (!data.body) return;
 
         const list = data.body.map((item: any) => {
-          const requestAt = new Date(item.createdOn);
-          const updateOn = new Date(item.updateOn);
+          // const requestAt = new Date(item?.createdOn);
+          // const paidOn = new Date(item?.updatedOn);
+          const requestAt = item?.createdOn ? new Date(item.createdOn) : null;
+          const paidOn = item?.updatedOn ? new Date(item.updatedOn) : null;
+
           return {
             "Order No": item.orderNo,
-            "Requested At": format(requestAt, "yyyy-MM-dd pp"),
-            Client: item.client,
-            "Zone Manager": item.zoneManager.username,
-            "Sub Zone Manager": item.subZoneManager.username,
-            Retailer: item.retailer.username,
-            "Customer Name": item.name,
-            "Mobile No": item.phone,
-            Package: item.pricingPlan.name,
-            "Package Price": item.pricingPlan.price,
+            // "Requested At": format(requestAt, "yyyy-MM-dd pp"),
+            "Requested At": requestAt
+              ? format(requestAt, "yyyy-MM-dd pp")
+              : "N/A",
+            Client: item.client?.username,
+            "Zone Manager": item.zoneManager?.username,
+            "Sub Zone Manager": item.subZoneManager?.username,
+            Retailer: item.retailer?.username,
+            "Customer Name": item.customer?.name,
+            "Mobile No": item.customer?.phone,
+            Package: item.pricingPlan?.name,
+            "Package Price": item.pricingPlan?.price,
             "Total Amount": item.totalAmount,
             "Payable Amount": item.payableAmount,
             "Payment Status": item.status,
-            "Payment Gatewayer Name": item.paymentGateway.bankName,
-            "Paid On": format(updateOn, "yyyy-MM-dd pp")
+            "Payment Gateway Name": item.paymentGateway?.bankName,
+            // "Paid On": format(paidOn, "yyyy-MM-dd pp")
+            "Paid On": paidOn ? format(paidOn, "yyyy-MM-dd pp") : "N/A"
           };
         });
 
@@ -1089,7 +1095,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
                             />
                           </Space>
                         </Col>
-                        <Col
+                        {/* <Col
                           xs={24}
                           sm={12}
                           md={8}
@@ -1110,7 +1116,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
                               onChange={e => setSelectedVlan(e.target.value)}
                             />
                           </Space>
-                        </Col>
+                        </Col> */}
 
                         {authUser &&
                           (authUser.userType === "duronto" ||
@@ -1159,10 +1165,13 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
                         {/*  authUser.userType != "zone" &&
                           authUser.userType != "reseller" && */}
                         {authUser &&
-                          authUser.userType === "client" &&
-                          authUser?.clientLevel != "tri_cycle" &&
-                          authUser?.clientLevel != "tri_cycle_hotspot" &&
-                          authUser?.clientLevel != "tri_cycle_isp_hotspot" && (
+                          (authUser.userType === "duronto" ||
+                            authUser.userType === "durjoy" ||
+                            (authUser.userType === "client" &&
+                              authUser.clientLevel !== "tri_cycle" &&
+                              authUser.clientLevel !== "tri_cycle_hotspot" &&
+                              authUser.clientLevel !==
+                                "tri_cycle_isp_hotspot")) && (
                             <Col
                               xs={24}
                               sm={12}
@@ -1182,10 +1191,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
                                 <Select
                                   showSearch
                                   allowClear
-                                  style={{
-                                    width: "100%",
-                                    textAlign: "start"
-                                  }}
+                                  style={{ width: "100%", textAlign: "start" }}
                                   placeholder="Please select"
                                   onChange={handleZoneChange}
                                   options={zones}
@@ -1194,8 +1200,11 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
                               </Space>
                             </Col>
                           )}
+
                         {authUser &&
-                          (authUser.userType === "client" ||
+                          (authUser.userType === "duronto" ||
+                            authUser.userType === "durjoy" ||
+                            authUser.userType === "client" ||
                             authUser.userType === "zone") && (
                             <Col
                               xs={24}
@@ -1450,7 +1459,7 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
                       data={downloadRow}
                       ref={downloadRef}
                       target="_blank"
-                      filename={`sub-zone-revenue-${dayjs().format(
+                      filename={`hotspot-online-purchase-${dayjs().format(
                         "YYYY-MM-DD"
                       )}.csv`}
                       style={{
