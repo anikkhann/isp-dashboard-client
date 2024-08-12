@@ -76,6 +76,12 @@ export interface CustomerData {
   staticIp: string;
   referrerCustomerId: string;
   referrerUserId: string;
+  firstPaymentDate?: number;
+  firstPaidAmount?: number;
+  firstPaidBy?: string;
+  lastPaymentDate?: number;
+  lastPaidAmount?: number;
+  lastPaidBy?: string;
 }
 
 export interface CustomerType {

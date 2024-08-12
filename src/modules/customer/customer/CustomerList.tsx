@@ -60,6 +60,17 @@ const statusList = [
   }
 ];
 
+const dates = [
+  {
+    label: "Expiration Date",
+    value: "expirationDate"
+  },
+  {
+    label: "Onboard Date",
+    value: "onboardDate"
+  }
+];
+
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -86,6 +97,8 @@ const CustomerList: React.FC = () => {
   const [selectedCustomerId, setSelectedCustomerId] = useState<any>(null);
 
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
+
+  const [selectedDates, setSelectedDates] = useState<any>("expirationDate");
 
   const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
@@ -116,6 +129,13 @@ const CustomerList: React.FC = () => {
   const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
   const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+
+  const [selectedOnboardDateRange, setSelectedOnboardDateRange] =
+    useState<any>(null);
+  const [selectedOnboardStartDate, setSelectedOnboardStartDate] =
+    useState<any>(null);
+  const [selectedOnboardEndDate, setSelectedOnboardEndDate] =
+    useState<any>(null);
 
   const { RangePicker } = DatePicker;
 
@@ -150,7 +170,9 @@ const CustomerList: React.FC = () => {
     mobileParam?: string,
     statusParam?: string | null,
     startDateParam?: string,
-    endDateParam?: string
+    endDateParam?: string,
+    startOnboardDateParam?: string,
+    endOnboardDateParam?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -191,10 +213,15 @@ const CustomerList: React.FC = () => {
         },
         isActive: statusParam,
         dateRangeFilter: {
-          field: "expirationTime",
-          startDate: startDateParam,
-          endDate: endDateParam
+          field: selectedDateRange ? "expirationTime" : "createdOn",
+          startDate: selectedStartDate ? startDateParam : startOnboardDateParam,
+          endDate: selectedEndDate ? endDateParam : endOnboardDateParam
         }
+        // dateOnboardRangeFilter: {
+        //   field: "createdOn",
+        //   startDate: startOnboardDateParam,
+        //   endDate: endOnboardDateParam
+        // }
       }
     };
 
@@ -225,7 +252,9 @@ const CustomerList: React.FC = () => {
       selectedMobile,
       selectedStatus,
       selectedStartDate,
-      selectedEndDate
+      selectedEndDate,
+      selectedOnboardStartDate,
+      selectedOnboardEndDate
     ],
     queryFn: async () => {
       const response = await fetchData(
@@ -245,7 +274,9 @@ const CustomerList: React.FC = () => {
         selectedMobile,
         selectedStatus,
         selectedStartDate,
-        selectedEndDate
+        selectedEndDate,
+        selectedOnboardStartDate,
+        selectedOnboardEndDate
       );
       return response;
     },
@@ -298,6 +329,26 @@ const CustomerList: React.FC = () => {
       setSelectedDateRange(null);
       setSelectedStartDate(null);
       setSelectedEndDate(null);
+    }
+  };
+
+  const handleOnboardDateChange = (value: any) => {
+    // console.log(value);
+
+    if (value) {
+      setSelectedOnboardDateRange(value);
+
+      const startOnboardDate = dayjs(value[0]).format(dateFormat);
+      const endOnboardDate = dayjs(value[1]).format(dateFormat);
+
+      setSelectedOnboardStartDate(startOnboardDate);
+      setSelectedOnboardEndDate(endOnboardDate);
+
+      // console.log(startDate, endDate);
+    } else {
+      setSelectedOnboardDateRange(null);
+      setSelectedOnboardStartDate(null);
+      setSelectedOnboardEndDate(null);
     }
   };
 
@@ -636,9 +687,16 @@ const CustomerList: React.FC = () => {
     setSelectedEmail(null);
     setSelectedMobile(null);
     setSelectedStatus(null);
+    setSelectedDates(null);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
     setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+    setSelectedDateRange(null);
+    setSelectedOnboardDateRange(null);
+    setSelectedOnboardStartDate(null);
+    setSelectedOnboardEndDate(null);
   };
 
   useEffect(() => {
@@ -934,6 +992,10 @@ const CustomerList: React.FC = () => {
     setSelectedStatus(value as any);
   };
 
+  const handleDatesChange = (value: any) => {
+    setSelectedDates(value as any);
+  };
+
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
@@ -1026,9 +1088,13 @@ const CustomerList: React.FC = () => {
 
         const list = data.body.map((item: any) => {
           const date = new Date(item.expirationTime);
+          const firstPaymentDate = new Date(item.firstPaymentDate);
+          const lastPaymentDate = new Date(item.lastPaymentDate);
+          const createdOn = new Date(item.createdOn);
           return {
             "Customer ID": item.customerId,
             "User Name": item.username,
+            Package: item.customerPackage?.name,
             "Mobile No": item.mobileNo,
             Email: item.email,
             "Contact Person": item.contactPerson,
@@ -1036,31 +1102,44 @@ const CustomerList: React.FC = () => {
             "Connection Address": item.connectionAddress,
             "House No": item.houseNo,
             Area: item.area,
-            "Identity Type": item.identityType,
-            "Identity No": item.identityNo,
-            "Is Mac Bound": item.isMacBound,
-            MAC: item.mac,
-            "Simultaneous User": item.simultaneousUser,
-            "IP Mode": item.ipMode,
-            "Static IP": item.staticIp,
-            "Expiration Time": format(date, "yyyy-MM-dd pp"),
-            Credits: item.simultaneousUser,
-            "Auto Renew": item.autoRenew,
-            Discount: item.discount,
-            "SMS Alert": item.smsAlert,
-            "Email Alert": item.emailAlert,
-            "Client Id": item.clientId,
+            // "Identity Type": item.identityType,
+            // "Identity No": item.identityNo,
+            // "Is Mac Bound": item.isMacBound,
+            // MAC: item.mac,
+            // "Simultaneous User": item.simultaneousUser,
+            // "IP Mode": item.ipMode,
+            // "Static IP": item.staticIp,
+            "Expiration Time": date ? format(date, "yyyy-MM-dd pp") : "N/A",
+            Credits: item.credits,
+            // "Auto Renew": item.autoRenew,
+            // Discount: item.discount,
+            // "SMS Alert": item.smsAlert,
+            // "Email Alert": item.emailAlert,
+            // "Client Id": item.clientId,
             "Is Active": item.isActive,
-            "Is SafOtp Send": item.isSafOtpSend,
-            "Is Saf Verified": item.isSafVerified,
-            "Is SafOtp Verified": item.isSafOtpVerified,
-            "Adjustment Day": item.adjustmentDay,
-            "Alt Mobile No": item.altMobileNo,
+            // "Is SafOtp Send": item.isSafOtpSend,
+            // "Is Saf Verified": item.isSafVerified,
+            // "Is SafOtp Verified": item.isSafOtpVerified,
+            // "Adjustment Day": item.adjustmentDay,
+            // "Alt Mobile No": item.altMobileNo,
             "Flat No": item.flatNo,
             "Road No": item.roadNo,
-            Remarks: item.remarks,
-            "Referrer Name": item.referrerName,
-            "Connection Type": item.connectionType
+            // Remarks: item.remarks
+            // "Referrer Name": item.referrerName,
+            // "Connection Type": item.connectionType
+            "First Payment Date": firstPaymentDate
+              ? format(firstPaymentDate, "yyyy-MM-dd pp")
+              : "N/A",
+            "First Paid Amount": item.firstPaidAmount,
+            "First Paid By": item.firstPaidBy,
+            "Last Payment Date": lastPaymentDate
+              ? format(lastPaymentDate, "yyyy-MM-dd pp")
+              : "N/A",
+            "Last Paid Amount": item.lastPaidAmount,
+            "Last Paid By": item.lastPaidBy,
+            "Onboard Date": item.createdOn
+              ? format(createdOn, "yyyy-MM-dd pp")
+              : "N/A"
           };
         });
 
@@ -1432,45 +1511,48 @@ const CustomerList: React.FC = () => {
                               </Space>
                             </Col>
                           )}
-                        {ability.can("CustomerSearch.subZone", "") && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={8}
-                            lg={8}
-                            xl={8}
-                            xxl={8}
-                            className="gutter-row"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
+                        {authUser &&
+                          (authUser.userType === "client" ||
+                            authUser.userType === "zone") &&
+                          ability.can("CustomerSearch.subZone", "") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
                             >
-                              <span>
-                                <b>Sub Zone</b>
-                              </span>
-                              <Select
-                                allowClear
-                                style={{ width: "100%", textAlign: "start" }}
-                                placeholder="Please select"
-                                onChange={handleSubZoneChange}
-                                options={subZones}
-                                value={selectedSubZone}
-                                showSearch
-                                filterOption={(input, option) => {
-                                  if (typeof option?.label === "string") {
-                                    return (
-                                      option.label
-                                        .toLowerCase()
-                                        .indexOf(input.toLowerCase()) >= 0
-                                    );
-                                  }
-                                  return false;
-                                }}
-                              />
-                            </Space>
-                          </Col>
-                        )}
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Sub Zone</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{ width: "100%", textAlign: "start" }}
+                                  placeholder="Please select"
+                                  onChange={handleSubZoneChange}
+                                  options={subZones}
+                                  value={selectedSubZone}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
 
                         {ability.can("CustomerSearch.retailer", "") && (
                           <Col
@@ -1602,32 +1684,97 @@ const CustomerList: React.FC = () => {
                           </Space>
                         </Col>
 
-                        {ability.can("CustomerSearch.dateRange", "") && (
-                          <Col
-                            xs={24}
-                            sm={12}
-                            md={8}
-                            lg={8}
-                            xl={8}
-                            xxl={8}
-                            className="gutter-row"
-                          >
-                            <Space
-                              style={{ width: "100%" }}
-                              direction="vertical"
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range Field</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{ width: "100%", textAlign: "start" }}
+                              placeholder="Please select Dates"
+                              onChange={handleDatesChange}
+                              options={dates}
+                              value={selectedDates}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+
+                        {selectedDates &&
+                          selectedDates === "expirationDate" &&
+                          ability.can("CustomerSearch.dateRange", "") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
                             >
-                              <span>
-                                <b>Date Range By (Expiration Date)</b>
-                              </span>
-                              <RangePicker
+                              <Space
                                 style={{ width: "100%" }}
-                                onChange={handleDateChange}
-                                value={selectedDateRange}
-                                placeholder={["Start Date", "End Date"]}
-                              />
-                            </Space>
-                          </Col>
-                        )}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Date Range By (Expiration Date)</b>
+                                </span>
+                                <RangePicker
+                                  style={{ width: "100%" }}
+                                  onChange={handleDateChange}
+                                  value={selectedDateRange}
+                                  placeholder={["Start Date", "End Date"]}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {selectedDates &&
+                          selectedDates === "onboardDate" &&
+                          ability.can("CustomerSearch.dateRange", "") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Date Range By (Onboarding Date)</b>
+                                </span>
+                                <RangePicker
+                                  style={{ width: "100%" }}
+                                  onChange={handleOnboardDateChange}
+                                  value={selectedOnboardDateRange}
+                                  placeholder={["Start Date", "End Date"]}
+                                />
+                              </Space>
+                            </Col>
+                          )}
                         <Col
                           xs={24}
                           sm={12}
@@ -1653,6 +1800,15 @@ const CustomerList: React.FC = () => {
                             Clear filters
                           </Button>
                         </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
                       </Row>
                     </Panel>
                   </Collapse>

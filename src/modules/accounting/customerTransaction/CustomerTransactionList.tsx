@@ -26,6 +26,7 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import { CSVLink } from "react-csv";
 import ability from "@/services/guard/ability";
+import { useAppSelector } from "@/store/hooks";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -67,7 +68,7 @@ const transactionTypes = [
 
 const CustomerTransactionList: React.FC = () => {
   const [data, setData] = useState<TopUpTransactionData[]>([]);
-  console.log(data);
+  const authUser = useAppSelector(state => state.auth.user);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
 
@@ -86,6 +87,13 @@ const CustomerTransactionList: React.FC = () => {
   const [selectedTransactionMode, setSelectedTransactionMode] =
     useState<any>(null);
   const [selectedTransactionType, setSelectedTransactionType] =
+    useState<any>(null);
+
+  const [zones, setZones] = useState<any[]>([]);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+
+  const [subzoneManagers, setSubZoneManagers] = useState<any[]>([]);
+  const [selectedSubZoneManager, setSelectedSubZoneManager] =
     useState<any>(null);
 
   const [transactionByList, setTransactionByList] = useState<any[]>([]);
@@ -114,6 +122,8 @@ const CustomerTransactionList: React.FC = () => {
     order: string,
     sort: string,
     userParam?: string,
+    zoneManagerParam?: string,
+    subZoneManagerParam?: string,
     transactionModeParam?: string,
     transactionTypeParam?: string,
     transactionByParam?: string,
@@ -138,6 +148,13 @@ const CustomerTransactionList: React.FC = () => {
       body: {
         userType: "customer",
         userId: userParam,
+        zoneManager: {
+          id: zoneManagerParam
+        },
+        subZoneManager: {
+          id: subZoneManagerParam
+        },
+
         transactionId: transactionIdParam,
         trxMode: transactionModeParam,
         trxType: transactionTypeParam,
@@ -166,6 +183,8 @@ const CustomerTransactionList: React.FC = () => {
       order,
       sort,
       selectUser,
+      selectedZone,
+      selectedSubZoneManager,
       selectedTransactionMode,
       selectedTransactionType,
       selectedTransactionBy,
@@ -180,6 +199,8 @@ const CustomerTransactionList: React.FC = () => {
         order,
         sort,
         selectUser,
+        selectedZone,
+        selectedSubZoneManager,
         selectedTransactionMode,
         selectedTransactionType,
         selectedTransactionBy,
@@ -221,6 +242,102 @@ const CustomerTransactionList: React.FC = () => {
     }
   });
 
+  //functions for getting zone manger list data using POST request
+  function getZoneManagers() {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      body: {
+        partnerType: "zone",
+
+        // client: {
+        //   id: selectedClient
+        // }
+        client: {
+          id: authUser?.partnerId
+        }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setZones(list);
+    });
+  }
+
+  //functions for getting zone manger list data using POST request
+  function getSubZoneManagers(selectedZoneId: any) {
+    const body = {
+      // FOR PAGINATION - OPTIONAL
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "username"
+          }
+        ]
+      },
+      body: {
+        partnerType: "reseller",
+        zoneManager: { id: selectedZoneId },
+        client: { id: authUser?.partnerId }
+        // client: {
+        //   id: authUser?.partnerId
+        // }
+        // isActive: true
+      }
+    };
+    axios.post("/api/partner/get-list", body).then(res => {
+      // console.log(res);
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        return {
+          label: item.username,
+          value: item.id
+        };
+      });
+
+      setSubZoneManagers(list);
+    });
+  }
+
   function getUsers() {
     const body = {
       meta: {
@@ -234,7 +351,7 @@ const CustomerTransactionList: React.FC = () => {
       // FOR SEARCHING DATA - OPTIONAL
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        isActive: true
+        // isActive: true
       }
     };
 
@@ -302,6 +419,13 @@ const CustomerTransactionList: React.FC = () => {
       setSelectUser(null);
     }
   };
+  const handleZoneChange = (value: any) => {
+    setSelectedZone(value);
+  };
+
+  const handleZoneManagerChange = (value: any) => {
+    setSelectedSubZoneManager(value);
+  };
 
   const handleTransactionModeChange = (value: any) => {
     // console.log("checked = ", value);
@@ -345,6 +469,8 @@ const CustomerTransactionList: React.FC = () => {
 
   const handleClear = () => {
     setSelectUser(null);
+    setSelectedZone(null);
+    setSelectedSubZoneManager(null);
     setSelectedTransactionMode(null);
     setSelectedTransactionType(null);
     setSelectedTransactionBy(null);
@@ -357,8 +483,15 @@ const CustomerTransactionList: React.FC = () => {
   useEffect(() => {
     getUsers();
     getTransactionByList();
+    getZoneManagers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    // if (selectedZone) {
+    getSubZoneManagers(selectedZone);
+    // }
+  }, [selectedZone]);
 
   useEffect(() => {
     if (data) {
@@ -689,10 +822,10 @@ const CustomerTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -710,13 +843,93 @@ const CustomerTransactionList: React.FC = () => {
                             />
                           </Space>
                         </Col>
+                        {authUser &&
+                          authUser?.clientLevel != "tri_cycle" &&
+                          authUser?.clientLevel != "tri_cycle_hotspot" &&
+                          authUser?.clientLevel != "tri_cycle_isp_hotspot" &&
+                          authUser?.userType == "client" && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>Zone Manager</b>
+                                </span>
+                                <Select
+                                  showSearch
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneChange}
+                                  options={zones}
+                                  value={selectedZone}
+                                />
+                              </Space>
+                            </Col>
+                          )}
+                        {authUser &&
+                          (authUser.userType === "client" ||
+                            authUser.userType === "zone") && (
+                            <Col
+                              xs={24}
+                              sm={12}
+                              md={8}
+                              lg={8}
+                              xl={8}
+                              xxl={8}
+                              className="gutter-row"
+                            >
+                              <Space
+                                style={{ width: "100%" }}
+                                direction="vertical"
+                              >
+                                <span>
+                                  <b>SubZone Manager</b>
+                                </span>
+                                <Select
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                    textAlign: "start"
+                                  }}
+                                  placeholder="Please select"
+                                  onChange={handleZoneManagerChange}
+                                  options={subzoneManagers}
+                                  value={selectedSubZoneManager}
+                                  showSearch
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
+                                />
+                              </Space>
+                            </Col>
+                          )}
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -737,10 +950,10 @@ const CustomerTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -761,10 +974,10 @@ const CustomerTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -785,10 +998,10 @@ const CustomerTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -807,10 +1020,10 @@ const CustomerTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
@@ -829,10 +1042,10 @@ const CustomerTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         >
                           <Button
@@ -854,10 +1067,29 @@ const CustomerTransactionList: React.FC = () => {
                         <Col
                           xs={24}
                           sm={12}
-                          md={12}
-                          lg={12}
-                          xl={12}
-                          xxl={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        ></Col>
+
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
                           className="gutter-row"
                         ></Col>
                       </Row>
