@@ -1020,169 +1020,240 @@ const CustomerList: React.FC = () => {
     }
   };
 
+  // const handleDownload = async () => {
+  //   const token = Cookies.get("token");
+  //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  //   const body = {
+  //     meta: {
+  //       // limit: 10,
+  //       // page: 1,
+  //       sort: [
+  //         {
+  //           order: "asc",
+  //           field: "id"
+  //         }
+  //       ]
+  //     },
+  //     body: {
+  //       customerId: selectedCustomerId,
+  //       username: selectedCustomer,
+  //       email: selectedEmail,
+  //       mobile: selectedMobile,
+  //       distributionZone: {
+  //         id: selectedDistributionZone
+  //       },
+  //       distributionPop: {
+  //         id: selectedDistributionPop
+  //       },
+  //       customerPackage: {
+  //         id: selectedPackage
+  //       },
+  //       zoneManager: {
+  //         id: selectedZone
+  //       },
+  //       subZoneManager: {
+  //         id: selectedSubZone
+  //       },
+  //       retailer: {
+  //         id: selectedRetailer
+  //       },
+  //       dateRangeFilter: {
+  //         field: "expirationTime",
+  //         startDate: selectedStartDate,
+  //         endDate: selectedEndDate
+  //       }
+  //     }
+  //   };
+
+  //   await axios
+  //     .post(`/api/customer/get-list`, body, {
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       }
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       const { data } = res;
+  //       console.log(data.body);
+  //       if (data.status != 200) {
+  //         MySwal.fire({
+  //           title: "Error",
+  //           text: data.message || "Something went wrong",
+  //           icon: "error"
+  //         });
+  //       }
+
+  //       if (!data.body) return;
+
+  //       const list = data.body.map((item: any) => {
+  //         const date = new Date(item.expirationTime);
+  //         const firstPaymentDate = new Date(item.firstPaymentDate);
+  //         const lastPaymentDate = new Date(item.lastPaymentDate);
+  //         const createdOn = new Date(item.createdOn);
+  //         return {
+  //           "Customer ID": item.customerId,
+  //           "User Name": item.username,
+  //           Package: item.customerPackage?.name,
+  //           "Mobile No": item.mobileNo,
+  //           Email: item.email,
+  //           "Contact Person": item.contactPerson,
+  //           "Contact Number": item.contactNumber,
+  //           "Connection Address": item.connectionAddress,
+  //           "House No": item.houseNo,
+  //           Area: item.area,
+  //           // "Identity Type": item.identityType,
+  //           // "Identity No": item.identityNo,
+  //           // "Is Mac Bound": item.isMacBound,
+  //           // MAC: item.mac,
+  //           // "Simultaneous User": item.simultaneousUser,
+  //           // "IP Mode": item.ipMode,
+  //           // "Static IP": item.staticIp,
+  //           "Expiration Time": date ? format(date, "yyyy-MM-dd pp") : "N/A",
+  //           Credits: item.credits,
+  //           // "Auto Renew": item.autoRenew,
+  //           // Discount: item.discount,
+  //           // "SMS Alert": item.smsAlert,
+  //           // "Email Alert": item.emailAlert,
+  //           // "Client Id": item.clientId,
+  //           "Is Active": item.isActive,
+  //           // "Is SafOtp Send": item.isSafOtpSend,
+  //           // "Is Saf Verified": item.isSafVerified,
+  //           // "Is SafOtp Verified": item.isSafOtpVerified,
+  //           // "Adjustment Day": item.adjustmentDay,
+  //           // "Alt Mobile No": item.altMobileNo,
+  //           "Flat No": item.flatNo,
+  //           "Road No": item.roadNo,
+  //           // Remarks: item.remarks
+  //           // "Referrer Name": item.referrerName,
+  //           // "Connection Type": item.connectionType
+  //           "First Payment Date": firstPaymentDate
+  //             ? format(firstPaymentDate, "yyyy-MM-dd pp")
+  //             : "N/A",
+  //           "First Paid Amount": item.firstPaidAmount,
+  //           "First Paid By": item.firstPaidBy,
+  //           "Last Payment Date": lastPaymentDate
+  //             ? format(lastPaymentDate, "yyyy-MM-dd pp")
+  //             : "N/A",
+  //           "Last Paid Amount": item.lastPaidAmount,
+  //           "Last Paid By": item.lastPaidBy,
+  //           "Onboard Date": item.createdOn
+  //             ? format(createdOn, "yyyy-MM-dd pp")
+  //             : "N/A"
+  //         };
+  //       });
+
+  //       setDownloadRow([...list]);
+  //     });
+  // };
   const handleDownload = async () => {
-    const token = Cookies.get("token");
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    try {
+      const token = Cookies.get("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const body = {
-      meta: {
-        // limit: 10,
-        // page: 1,
-        sort: [
-          {
-            order: "asc",
-            field: "id"
+      const body = {
+        meta: {
+          sort: [
+            {
+              order: "asc",
+              field: "id"
+            }
+          ]
+        },
+        body: {
+          customerId: selectedCustomerId,
+          username: selectedCustomer,
+          email: selectedEmail,
+          mobile: selectedMobile,
+          distributionZone: {
+            id: selectedDistributionZone
+          },
+          distributionPop: {
+            id: selectedDistributionPop
+          },
+          customerPackage: {
+            id: selectedPackage
+          },
+          zoneManager: {
+            id: selectedZone
+          },
+          subZoneManager: {
+            id: selectedSubZone
+          },
+          retailer: {
+            id: selectedRetailer
+          },
+          dateRangeFilter: {
+            field: "expirationTime",
+            startDate: selectedStartDate,
+            endDate: selectedEndDate
           }
-        ]
-      },
-      body: {
-        customerId: selectedCustomerId,
-        username: selectedCustomer,
-        email: selectedEmail,
-        mobile: selectedMobile,
-        distributionZone: {
-          id: selectedDistributionZone
-        },
-        distributionPop: {
-          id: selectedDistributionPop
-        },
-        customerPackage: {
-          id: selectedPackage
-        },
-        zoneManager: {
-          id: selectedZone
-        },
-        subZoneManager: {
-          id: selectedSubZone
-        },
-        retailer: {
-          id: selectedRetailer
-        },
-        dateRangeFilter: {
-          field: "expirationTime",
-          startDate: selectedStartDate,
-          endDate: selectedEndDate
         }
-      }
-    };
+      };
 
-    await axios
-      .post(`/api/customer/get-list`, body, {
+      const res = await axios.post(`/api/customer/get-list`, body, {
         headers: {
           "Content-Type": "application/json"
         }
-      })
-      .then(res => {
-        // console.log(res);
-        const { data } = res;
-        console.log(data.body);
-        if (data.status != 200) {
-          MySwal.fire({
-            title: "Error",
-            text: data.message || "Something went wrong",
-            icon: "error"
-          });
-        }
-
-        if (!data.body) return;
-
-        const list = data.body.map((item: any) => {
-          const date = new Date(item.expirationTime);
-          const firstPaymentDate = new Date(item.firstPaymentDate);
-          const lastPaymentDate = new Date(item.lastPaymentDate);
-          const createdOn = new Date(item.createdOn);
-          return {
-            "Customer ID": item.customerId,
-            "User Name": item.username,
-            Package: item.customerPackage?.name,
-            "Mobile No": item.mobileNo,
-            Email: item.email,
-            "Contact Person": item.contactPerson,
-            "Contact Number": item.contactNumber,
-            "Connection Address": item.connectionAddress,
-            "House No": item.houseNo,
-            Area: item.area,
-            // "Identity Type": item.identityType,
-            // "Identity No": item.identityNo,
-            // "Is Mac Bound": item.isMacBound,
-            // MAC: item.mac,
-            // "Simultaneous User": item.simultaneousUser,
-            // "IP Mode": item.ipMode,
-            // "Static IP": item.staticIp,
-            "Expiration Time": date ? format(date, "yyyy-MM-dd pp") : "N/A",
-            Credits: item.credits,
-            // "Auto Renew": item.autoRenew,
-            // Discount: item.discount,
-            // "SMS Alert": item.smsAlert,
-            // "Email Alert": item.emailAlert,
-            // "Client Id": item.clientId,
-            "Is Active": item.isActive,
-            // "Is SafOtp Send": item.isSafOtpSend,
-            // "Is Saf Verified": item.isSafVerified,
-            // "Is SafOtp Verified": item.isSafOtpVerified,
-            // "Adjustment Day": item.adjustmentDay,
-            // "Alt Mobile No": item.altMobileNo,
-            "Flat No": item.flatNo,
-            "Road No": item.roadNo,
-            // Remarks: item.remarks
-            // "Referrer Name": item.referrerName,
-            // "Connection Type": item.connectionType
-            "First Payment Date": firstPaymentDate
-              ? format(firstPaymentDate, "yyyy-MM-dd pp")
-              : "N/A",
-            "First Paid Amount": item.firstPaidAmount,
-            "First Paid By": item.firstPaidBy,
-            "Last Payment Date": lastPaymentDate
-              ? format(lastPaymentDate, "yyyy-MM-dd pp")
-              : "N/A",
-            "Last Paid Amount": item.lastPaidAmount,
-            "Last Paid By": item.lastPaidBy,
-            "Onboard Date": item.createdOn
-              ? format(createdOn, "yyyy-MM-dd pp")
-              : "N/A"
-          };
-        });
-
-        setDownloadRow([
-          // {
-          //   CustomerID: "Customer",
-          //   UserName: "User Name",
-          //   MobileNo: "Mobile No",
-          //   Email: "Email",
-          //   ContactPerson: "Contact Person",
-          //   ContactNumber: "Contact Number",
-          //   ConnectionAddress: "Connection Address",
-          //   HouseNo: "House No",
-          //   Area: "Area",
-          //   IdentityType: "Identity Type",
-          //   IdentityNo: "Identity No",
-          //   IsMacBound: "Is Mac Bound",
-          //   MAC: "MAC",
-          //   SimultaneousUser: "Simultaneous User",
-          //   IPMode: "IP Mode",
-          //   StaticIP: "Static IP",
-          //   ExpirationTime: "Expiration Time",
-          //   Credits: "Simultaneous User",
-          //   AutoRenew: "Auto Renew",
-          //   Discount: "Discount",
-          //   SMSAlert: "SMS Alert",
-          //   EmailAlert: "Email Alert",
-          //   ClientId: "Client Id",
-          //   isActive: "Is Active",
-          //   isSafOtpSend: "Is SafOtp Send",
-          //   isSafVerified: "Is Saf Verified",
-          //   isSafOtpVerified: "Is SafOtp Verified",
-          //   adjustmentDay: "Adjustment Day",
-          //   altMobileNo: "Alt Mobile No",
-          //   flatNo: "Flat No",
-          //   roadNo: "Road No",
-          //   remarks: "Remarks",
-          //   referrerName: "Referrer Name",
-          //   connectionType: "Connection Type"
-          // },
-          ...list
-        ]);
       });
+      console.log(res.data.body);
+      const { data } = res;
+
+      if (data.status !== 200) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      if (!data.body) return;
+
+      const list = data.body.map((item: any) => {
+        const date = new Date(item.expirationTime);
+        const firstPaymentDate = new Date(item.firstPaymentDate);
+        const lastPaymentDate = new Date(item.lastPaymentDate);
+        const createdOn = new Date(item.createdOn);
+
+        return {
+          "Customer ID": item.customerId,
+          "User Name": item.username,
+          Package: item.customerPackage?.name,
+          "Mobile No": item.mobileNo,
+          Email: item.email,
+          "Contact Person": item.contactPerson,
+          "Contact Number": item.contactNumber,
+          "Connection Address": item.connectionAddress,
+          "House No": item.houseNo,
+          Area: item.area,
+          "Expiration Time": date ? format(date, "yyyy-MM-dd pp") : "N/A",
+          Credits: item.credits,
+          "Is Active": item.isActive,
+          "Flat No": item.flatNo,
+          "Road No": item.roadNo,
+          "First Payment Date": item.firstPaymentDate
+            ? format(firstPaymentDate, "yyyy-MM-dd pp")
+            : "N/A",
+          "First Paid Amount": item.firstPaidAmount,
+          "First Paid By": item.firstPaidBy,
+          "Last Payment Date": item.lastPaymentDate
+            ? format(lastPaymentDate, "yyyy-MM-dd pp")
+            : "N/A",
+          "Last Paid Amount": item.lastPaidAmount,
+          "Last Paid By": item.lastPaidBy,
+          "Onboard Date": item.createdOn
+            ? format(createdOn, "yyyy-MM-dd pp")
+            : "N/A"
+        };
+      });
+
+      setDownloadRow([...list]);
+    } catch (error: any) {
+      console.log(error.message);
+      MySwal.fire({
+        title: "Error",
+        text: error?.message || "Something went wrong",
+        icon: "error"
+      });
+    } finally {
+      setDownloadLoading(false);
+    }
   };
 
   useEffect(() => {
