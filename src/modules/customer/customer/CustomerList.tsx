@@ -1184,9 +1184,16 @@ const CustomerList: React.FC = () => {
             id: selectedRetailer
           },
           dateRangeFilter: {
-            field: "expirationTime",
-            startDate: selectedStartDate,
-            endDate: selectedEndDate
+            // field: "expirationTime",
+            // startDate: selectedStartDate,
+            // endDate: selectedEndDate
+            field: selectedDateRange ? "expirationTime" : "createdOn",
+            startDate: selectedDateRange
+              ? selectedStartDate
+              : selectedOnboardStartDate,
+            endDate: selectedDateRange
+              ? selectedEndDate
+              : selectedOnboardEndDate
           }
         }
       };
