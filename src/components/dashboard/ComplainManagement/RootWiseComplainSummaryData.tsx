@@ -250,7 +250,7 @@ const RootWiseComplainSummaryData = () => {
             )}
 
             <TableCard
-              title="Customer Complaint (Root Cause Wise)"
+              title="Customer Ticket (Root Cause Wise)"
               hasLink={false}
               addLink=""
               permission=""

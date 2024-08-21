@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Col, Space, Tag } from "antd";
+import { Button, Card, Col, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
 import axios from "axios";
-import { TicketData } from "@/interfaces/TicketData";
-import { format, differenceInDays } from "date-fns";
 import Link from "next/link";
+import { EditOutlined } from "@ant-design/icons";
 import ability from "@/services/guard/ability";
-// import Link from "next/link";
+import { format } from "date-fns";
+import { DailyIncomeExpenseListData } from "@/interfaces/DailyIncomeExpenseListData";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -23,16 +23,11 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-interface PropData {
-  item: any | null;
-}
-
-const TicketHistory = ({ item }: PropData) => {
-  const [data, setData] = useState<TicketData[]>([]);
-
+const DailyIncomeExpenseList: React.FC = () => {
+  const [data, setData] = useState<DailyIncomeExpenseListData[]>([]);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("desc");
+  const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
@@ -50,6 +45,7 @@ const TicketHistory = ({ item }: PropData) => {
     sort: string
   ) => {
     const token = Cookies.get("token");
+    // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
@@ -62,34 +58,28 @@ const TicketHistory = ({ item }: PropData) => {
             field: sort
           }
         ]
-      },
-      body: {
-        // SEND FIELD NAME WITH DATA TO SEARCH
-        customer: {
-          id: item.id,
-          status: "open"
-        }
       }
     };
 
-    const { data } = await axios.post("/api/ticket/get-list", body, {
+    const { data } = await axios.post("/api/daily-expenditure/get-list", body, {
       headers: {
         "Content-Type": "application/json"
       }
     });
+    // console.log("data", data);
     return data;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["ticket-list", page, limit, order, sort],
+    // order, sort
+    queryKey: ["daily-income-expense-list", page, limit, order, sort],
     queryFn: async () => {
+      // , order, sort
       const response = await fetchData(page, limit, order, sort);
       return response;
     },
     onSuccess(data: any) {
       if (data) {
-        // console.log("data.data", data);
-
         if (data.body) {
           setData(data.body);
           setTableParams({
@@ -120,41 +110,19 @@ const TicketHistory = ({ item }: PropData) => {
 
   useEffect(() => {
     if (data) {
+      console.log("data", data);
       setData(data);
     }
   }, [data]);
 
-  const columns: ColumnsType<TicketData> = [
+  // console.log(error, isLoading, isError)
+
+  const columns: ColumnsType<DailyIncomeExpenseListData> = [
     {
       title: "Serial",
       dataIndex: "id",
       render: (tableParams, row, index) => {
-        return (
-          <>
-            <Space>
-              {page !== 0 ? index + 1 + (page - 1) * limit : index + 1}
-            </Space>
-          </>
-        );
-      },
-      sorter: true,
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Ticket Number",
-      dataIndex: "ticketNo",
-      render: (ticketNo, record: any) => {
-        return (
-          <>
-            {ability.can("customerTicket.view", "") && (
-              <Link href={`/admin/complaint/customer-ticket/${record.id}`}>
-                {ticketNo}
-              </Link>
-            )}
-          </>
-        );
+        return <>{page !== 0 ? index + 1 + (page - 1) * limit : index + 1}</>;
       },
       sorter: true,
       ellipsis: true,
@@ -162,89 +130,88 @@ const TicketHistory = ({ item }: PropData) => {
       align: "center" as AlignType
     },
 
+    {
+      title: "Client",
+      dataIndex: "client",
+      sorter: false,
+      render: (client: any) => {
+        if (!client) return "-";
+
+        return <>{client?.username}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Partner",
+      dataIndex: "partner",
+      sorter: false,
+      render: (partner: any) => {
+        if (!partner) return "-";
+
+        return <>{partner?.username}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      sorter: false,
+      render: (type: any) => {
+        if (!type) return "-";
+
+        return <>{type}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      sorter: false,
+      render: (amount: any) => {
+        if (!amount) return "-";
+
+        return <>{amount}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
+      title: "Payment Channel",
+      dataIndex: "paymentChannel",
+      sorter: false,
+      render: (paymentChannel: any) => {
+        if (!paymentChannel) return "-";
+
+        return <>{paymentChannel}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    // insertedBy
     // {
-    //   title: "Ticket Number",
-    //   dataIndex: "ticketNo",
-    //   sorter: true,
-    //   ellipsis: true,
-    //   width: "auto",
+    //   title: "Created By",
+    //   dataIndex: "insertedBy",
+    //   sorter: false,
+    //   render: (insertedBy: any) => {
+    //     if (!insertedBy) return "-";
+    //     return <>{insertedBy.name}</>;
+    //   },
+    //   width: "20%",
     //   align: "center" as AlignType
     // },
-    {
-      title: "Customer",
-      dataIndex: "customer",
-      render: (customer, row) => {
-        return <>{row.customer?.username}</>;
-      },
-      sorter: false,
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Ticket Type",
-      dataIndex: "complainType",
-      render: (complainType, row) => {
-        return <>{row.complainType.name}</>;
-      },
-      sorter: false,
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "Ticket State",
-      dataIndex: "status",
-      sorter: true,
-      render: (status: any) => {
-        return (
-          <>
-            {status === "open" ? (
-              <Tag color="green">{status}</Tag>
-            ) : status === "closed" ? (
-              <Tag color="red">{status}</Tag>
-            ) : (
-              <Tag color="blue">{status}</Tag>
-            )}
-          </>
-        );
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "Assigned To",
-      dataIndex: "assignedTo",
-      sorter: false,
-      render: (assignedTo: any) => {
-        if (!assignedTo) return "-";
-        return <>{assignedTo.username}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-
-    {
-      title: "Created By",
-      dataIndex: "insertedBy",
-      sorter: false,
-      render: (insertedBy: any) => {
-        if (!insertedBy) return "-";
-        return <>{insertedBy.username}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-
+    // createdOn
     {
       title: "Created At",
       dataIndex: "createdOn",
-      sorter: true,
+      sorter: false,
       render: (createdOn: any) => {
         if (!createdOn) return "-";
         const date = new Date(createdOn);
@@ -254,25 +221,6 @@ const TicketHistory = ({ item }: PropData) => {
       width: "auto",
       align: "center" as AlignType
     },
-
-    {
-      title: "Age",
-      dataIndex: "age",
-      sorter: false,
-      render: (_, row) => {
-        if (!row.createdOn) return "-";
-        const createdTime = new Date(row.createdOn);
-        const currentTime = new Date();
-        return (
-          <>
-            {differenceInDays(currentTime, createdTime).toLocaleString()} days
-          </>
-        );
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    }
     // editedBy
     // {
     //   title: "Updated By",
@@ -283,39 +231,77 @@ const TicketHistory = ({ item }: PropData) => {
     //     return <>{editedBy.name}</>;
     //   },
 
-    //   width: 200,
+    //   width: "20%",
     //   align: "center" as AlignType
     // },
     // updatedOn
-    // {
-    //   title: "Updated At",
-    //   dataIndex: "updatedOn",
-    //   sorter: false,
-    //   render: (updatedOn: any) => {
-    //     if (!updatedOn) return "-";
-    //     const date = new Date(updatedOn);
-    //     return <>{format(date, "yyyy-MM-dd pp")}</>;
-    //   },
-    //   width: 150,
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Date",
+      dataIndex: "date",
+      sorter: false,
+      render: (date: any) => {
+        if (!date) return "-";
+        const datee = new Date(date);
+        return <>{format(datee, "yyyy-MM-dd pp")}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
+
+    {
+      title: "Action",
+      dataIndex: "action",
+      sorter: false,
+      render: (text: any, record: any) => {
+        return (
+          <>
+            <Space size="middle" align="center">
+              {ability.can("accountHead.update", "") ? (
+                <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                  <Space size="middle" align="center" wrap>
+                    <Link
+                      href={`/admin/accounting/account-head/${record.id}/edit`}
+                    >
+                      <Button type="primary" icon={<EditOutlined />} />
+                    </Link>
+                  </Space>
+                </Tooltip>
+              ) : null}
+            </Space>
+          </>
+        );
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    }
   ];
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<TicketData> | SorterResult<TicketData>[]
+    sorter:
+      | SorterResult<DailyIncomeExpenseListData>
+      | SorterResult<DailyIncomeExpenseListData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<TicketData>).order) {
+    if (sorter && (sorter as SorterResult<DailyIncomeExpenseListData>).order) {
+      // // console.log((sorter as SorterResult<BwNttnProviderData>).order)
+
       SetOrder(
-        (sorter as SorterResult<TicketData>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<DailyIncomeExpenseListData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<TicketData>).field) {
-      SetSort((sorter as SorterResult<TicketData>).field as string);
+    if (sorter && (sorter as SorterResult<DailyIncomeExpenseListData>).field) {
+      // // console.log((sorter as SorterResult<BwNttnProviderData>).field)
+
+      SetSort(
+        (sorter as SorterResult<DailyIncomeExpenseListData>).field as string
+      );
     }
   };
 
@@ -330,11 +316,14 @@ const TicketHistory = ({ item }: PropData) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  margin: " 10px 5px"
+                  margin: " 10px 5px",
+                  backgroundColor: "#ffffff",
+                  width: "100%"
                 }}
               >
                 <Card
                   title="Error"
+                  hoverable
                   style={{
                     width: 300,
                     color: "#FF5630",
@@ -357,15 +346,17 @@ const TicketHistory = ({ item }: PropData) => {
           )}
 
           <TableCard
-            title="Ticket List"
-            hasLink={false}
-            addLink="/admin/device/ip-management/create"
-            permission="ip.create"
+            title="Daily Income/Expense List"
+            hasLink={true}
+            addLink="/admin/accounting/daily-income-expense/create"
+            permission="daily_income_expense.create"
             style={{
+              // backgroundColor: "#FFFFFF",
               borderRadius: "10px",
               padding: "10px",
               width: "100%",
-              overflowX: "auto"
+              overflowX: "auto",
+              backgroundColor: "#d5dfe6"
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
@@ -396,4 +387,4 @@ const TicketHistory = ({ item }: PropData) => {
   );
 };
 
-export default TicketHistory;
+export default DailyIncomeExpenseList;

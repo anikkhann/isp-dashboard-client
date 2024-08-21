@@ -26,7 +26,7 @@ const complaintCategoryList = [
     value: "customer"
   },
   {
-    label: "Parent",
+    label: "Service",
     value: "parent"
   }
 ];
@@ -45,7 +45,7 @@ const ChecklistList: React.FC = () => {
 
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("desc");
+  const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("createdOn");
 
   // const [status, setStatus] = useState<any>([]);
@@ -252,7 +252,7 @@ const ChecklistList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Complaint Category",
+      title: "Ticket Category",
       dataIndex: "complainCategory",
 
       render: (complainCategory, row) => {
@@ -277,7 +277,7 @@ const ChecklistList: React.FC = () => {
     },
 
     {
-      title: "Complaint Type",
+      title: "Ticket Type",
       dataIndex: "complainType",
       render: (complainType, row) => {
         return <>{row.complainType.name}</>;
@@ -512,7 +512,7 @@ const ChecklistList: React.FC = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Complaint Category</b>
+                                <b>Ticket Category</b>
                               </span>
                               <Select
                                 allowClear
@@ -551,7 +551,7 @@ const ChecklistList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Complaint Type</b>
+                              <b>Ticket Type</b>
                             </span>
                             <Select
                               allowClear

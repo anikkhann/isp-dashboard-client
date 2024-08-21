@@ -327,6 +327,10 @@ const tagsList = [
   {
     label: "Account Head",
     value: "accountHead"
+  },
+  {
+    label: "Daily Income Expense",
+    value: "daily_income_expense"
   }
 ];
 

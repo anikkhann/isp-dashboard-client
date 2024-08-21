@@ -85,7 +85,7 @@ const mainRoutes = [
 
   {
     key: "/admin/complaint",
-    label: <Link href="/admin/complaint">Complaint Management</Link>,
+    label: <Link href="/admin/complaint">Complaint/Ticket</Link>,
     path: "/admin/complaint",
     icon: <ExclamationCircleOutlined />,
     permission: "complaint.dashboard"

@@ -64,7 +64,6 @@ const InvoiceList: React.FC = () => {
   const [loadingResend, setLoadingResend] = useState<LoadingState>({});
   const [loadingDownload, setLoadingDownload] = useState<LoadingState>({});
   const [data, setData] = useState<TopUpTransactionData[]>([]);
-  console.log("invoice data", data);
   const { Panel } = Collapse;
   const MySwal = withReactContent(Swal);
   const router = useRouter();

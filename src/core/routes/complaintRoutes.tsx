@@ -22,7 +22,7 @@ const complaintRoutes = [
 
   {
     key: "/admin/complaint",
-    label: <Link href="/admin/complaint">Complaint Dashboard</Link>,
+    label: <Link href="/admin/complaint">Ticket Dashboard</Link>,
     path: "/admin/complaint",
     icon: <BarChartOutlined />,
     permission: "complaint.dashboard"
@@ -30,7 +30,7 @@ const complaintRoutes = [
 
   {
     key: "/admin/complaint/complain-type",
-    label: <Link href="/admin/complaint/complain-type">Complaint Type</Link>,
+    label: <Link href="/admin/complaint/complain-type">Ticket Type</Link>,
     path: "/admin/complaint/complain-type",
     icon: <ExclamationCircleOutlined />,
     permission: "complainType.list"

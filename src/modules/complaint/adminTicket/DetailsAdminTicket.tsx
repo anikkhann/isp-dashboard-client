@@ -416,7 +416,7 @@ const DetailsAdminTicket = ({ id }: any) => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Complaint Dashboard</Link>
+              title: <Link href="/admin/complaint">Ticket Dashboard</Link>
             },
             {
               title: (

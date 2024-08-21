@@ -835,7 +835,7 @@ const CreateDailyTaskForm = () => {
               <Col xs={12} className="gutter-row">
                 {/* totalComplaints */}
                 <Form.Item
-                  label="Total Complaints"
+                  label="Total Tickets"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -844,11 +844,11 @@ const CreateDailyTaskForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input Total Complaints!"
+                      message: "Please input Total Tickets!"
                     }
                   ]}
                 >
-                  <Input placeholder="Total Complaints" />
+                  <Input placeholder="Total Tickets" />
                 </Form.Item>
               </Col>
             </Row>

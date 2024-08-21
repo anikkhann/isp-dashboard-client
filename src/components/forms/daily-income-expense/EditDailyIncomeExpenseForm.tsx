@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
 import { useEffect, useState } from "react";
@@ -6,78 +5,83 @@ import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Space,
-  Row,
-  Col
-} from "antd";
+import { Alert, Button, Form, Row, Col, Input, Space, Select } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ChecklistData } from "@/interfaces/ChecklistData";
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
-interface FormData {
-  title: string;
+interface DailyIncomeExpenseFormData {
+  type: string;
+  accountHeadId: number;
+  paymentChannel: string;
+  remarks: string;
 }
+
+const types = [
+  {
+    label: "Income",
+    value: "income"
+  },
+  {
+    label: "Expense",
+    value: "expense"
+  }
+];
+const channelList = [
+  {
+    label: "Cash",
+    value: "cash"
+  },
+  {
+    label: "Cheque",
+    value: "cheque"
+  },
+  {
+    label: "Online",
+    value: "online"
+  }
+];
 
 interface PropData {
-  item: ChecklistData;
+  item: any;
 }
 
-const EditChecklistForm = ({ item }: PropData) => {
+const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
-
   // ** States
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
-  const [isActive, setIsActive] = useState(true);
-
   const router = useRouter();
   const MySwal = withReactContent(Swal);
+  const [selectType, setSelectType] = useState<string>(item.type);
+  const [accountHeadIds, setAccountHeadIds] = useState<any>([]);
+  const [selectedAccountHeadId, setSelectedAccountHeadId] = useState<any>(null);
 
-  const [categories, setCategories] = useState<any>([]);
-  const [selectCategory, setSelectCategory] = useState<any>(null);
+  const [selectPaymentChannel, setSelectPaymentChannel] = useState<any>(null);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const handleActive = (e: any) => {
-    setIsActive(e.target.checked ? true : false);
-  };
-
-  const handleChange = (value: any) => {
-    // console.log("checked = ", value);
-    form.setFieldsValue({ complainTypeId: value });
-    setSelectCategory(value as any);
-  };
-
-  function getCategories() {
+  const getAccountHeadList = (selectType: string) => {
     const body = {
-      // FOR PAGINATION - OPTIONAL
       meta: {
         sort: [
           {
             order: "asc",
-            field: "name"
+            field: "id"
           }
         ]
       },
       body: {
+        // isActive: true
+        type: selectType, // Assuming the API can filter based on type
         isActive: true
       }
     };
-    axios.post("/api/complain-type/get-list", body).then(res => {
-      // console.log(res);
+    axios.post("/api/account-head/get-list", body).then(res => {
       const { data } = res;
 
       if (data.status != 200) {
@@ -90,29 +94,40 @@ const EditChecklistForm = ({ item }: PropData) => {
 
       if (!data.body) return;
 
-      const list = data.body.map((item: any) => {
+      const accountHeadIds = data.body.map((item: any) => {
         return {
-          label: item.name,
+          label: item.title,
           value: item.id
         };
       });
-
-      setCategories(list);
+      setAccountHeadIds(accountHeadIds);
     });
-  }
+  };
 
-  useEffect(() => {
-    getCategories();
-  }, []);
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ type: value });
+    setSelectType(value as any);
+  };
+  const handleAccountHeadIDChange = (value: any) => {
+    form.setFieldsValue({ accountHeadId: value });
+    setSelectedAccountHeadId(value as any);
+  };
 
+  const handlePaymentChannelChange = (value: any) => {
+    // console.log("checked = ", value);
+    form.setFieldsValue({ paymentChannel: value });
+    setSelectPaymentChannel(value as any);
+  };
   useEffect(() => {
     if (item) {
-      setSelectCategory(item.complainTypeId);
       form.setFieldsValue({
         title: item.title,
-        complainTypeId: item.complainTypeId
+        type: item.type,
+        accountHeadId: item.accountHeadId,
+        paymentChannel: item.paymentChannel,
+        remarks: item.remarks
       });
-      setIsActive(item.isActive);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
@@ -121,25 +136,34 @@ const EditChecklistForm = ({ item }: PropData) => {
     setLoading(loading);
   }, [loading]);
 
-  const onSubmit = async (data: FormData) => {
+  useEffect(() => {
+    if (selectType) {
+      getAccountHeadList(selectType);
+    }
+  }, [selectType]);
+  const onSubmit = async (data: DailyIncomeExpenseFormData) => {
     setLoading(true);
     setTimeout(async () => {
-      const { title } = data;
+      const { type, remarks } = data;
 
       const formData = {
         id: item.id,
-        complainTypeId: selectCategory,
-        title: title,
-        isActive: isActive
+        type: type,
+        accountHeadId: selectedAccountHeadId,
+        paymentChannel: selectPaymentChannel,
+        remarks: remarks
       };
 
       try {
         await axios
-          .put("/api/checklist/update", formData)
+          .put("/api/daily-expenditure/update", formData)
           .then(res => {
+            // console.log(res);
             const { data } = res;
 
             if (data.status != 200) {
+              setShowError(true);
+              setErrorMessages(data.message);
               MySwal.fire({
                 title: "Error",
                 text: data.message || "Something went wrong",
@@ -153,7 +177,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                 text: data.message || "Added successfully",
                 icon: "success"
               }).then(() => {
-                router.replace("/admin/complaint/checklist");
+                router.replace("/admin/accounting/daily-income-expense");
               });
             }
           })
@@ -168,7 +192,7 @@ const EditChecklistForm = ({ item }: PropData) => {
             setErrorMessages(err.response.data.message);
           });
       } catch (err: any) {
-        // console.log(err)
+        // // console.log(err)
         setShowError(true);
         setErrorMessages(err.message);
       } finally {
@@ -180,6 +204,7 @@ const EditChecklistForm = ({ item }: PropData) => {
   return (
     <>
       {/* {loading && <AppImageLoader />} */}
+
       {showError && <Alert message={errorMessages} type="error" showIcon />}
 
       {/* {!loading && ( */}
@@ -190,11 +215,7 @@ const EditChecklistForm = ({ item }: PropData) => {
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
-          initialValues={{
-            complainTypeId: "",
-            rootCauseCategory: "",
-            name: ""
-          }}
+          initialValues={{}}
           style={{ maxWidth: "100%" }}
           name="wrap"
           colon={false}
@@ -207,16 +228,16 @@ const EditChecklistForm = ({ item }: PropData) => {
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
-              {/* rootCauseCategory */}
+              {/* type */}
               <Form.Item
-                label="Ticket Type"
-                name="complainTypeId"
+                label="Type"
+                name="type"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -224,7 +245,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Ticket Type!"
+                    message: "Please select Type!"
                   }
                 ]}
               >
@@ -232,10 +253,48 @@ const EditChecklistForm = ({ item }: PropData) => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Ticket Type"
+                    placeholder="Please select Type"
                     onChange={handleChange}
-                    options={categories}
-                    value={selectCategory}
+                    options={types}
+                    value={selectType}
+                  />
+                </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Account Head"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="accountHeadId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select Account Head Id!"
+                  }
+                ]}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Select
+                    allowClear
+                    style={{
+                      width: "100%",
+                      textAlign: "start"
+                    }}
+                    placeholder="Please select"
+                    onChange={handleAccountHeadIDChange}
+                    options={accountHeadIds}
+                    value={selectedAccountHeadId}
                     showSearch
                     filterOption={(input, option) => {
                       if (typeof option?.label === "string") {
@@ -251,7 +310,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                 </Space>
               </Form.Item>
             </Col>
-            {/*  <Col
+            <Col
               xs={24}
               sm={12}
               md={8}
@@ -260,83 +319,61 @@ const EditChecklistForm = ({ item }: PropData) => {
               xxl={8}
               className="gutter-row"
             >
+              {/* type */}
               <Form.Item
-                label="Root Cause Category"
-                name="rootCauseCategory"
+                label="Payment Channel"
+                name="paymentChannel"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select Root Cause Category!"
-                  }
-                ]}
               >
                 <Space style={{ width: "100%" }} direction="vertical">
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Root Cause Category"
-                    onChange={handleChangeRoot}
-                    options={rootCategories}
-                    value={selectRootCategory}
+                    placeholder="Please select Payment"
+                    onChange={handlePaymentChannelChange}
+                    options={channelList}
+                    value={selectPaymentChannel}
                   />
                 </Space>
               </Form.Item>
-            </Col> */}
+            </Col>
             <Col
               xs={24}
               sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-              xxl={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
               className="gutter-row"
             >
-              {/* Title */}
+              {/* remarks */}
               <Form.Item
-                label="Title"
+                label="Remarks"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
                 }}
-                name="title"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Title!"
-                  }
-                ]}
+                name="remarks"
               >
-                <Input
-                  type="text"
-                  placeholder="Title"
-                  className={`form-control`}
-                  name="title"
+                <Input.TextArea
+                  placeholder="remarks"
+                  rows={4}
+                  // maxLength={6}
+                  className={`form - control`}
+                  name="remarks"
                   style={{ padding: "6px" }}
                 />
               </Form.Item>
             </Col>
           </Row>
 
-          {/* status */}
-          <Form.Item
-            label=""
-            style={{
-              marginBottom: 0
-            }}
-          >
-            <Checkbox onChange={handleActive} checked={isActive}>
-              Active
-            </Checkbox>
-          </Form.Item>
-
-          {/* submit */}
           <Row justify="center">
             <Col>
               <Form.Item>
+                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
                 <Button
                   // type="primary"
                   htmlType="submit"
@@ -346,6 +383,7 @@ const EditChecklistForm = ({ item }: PropData) => {
                     color: "#FFFFFF",
                     fontWeight: "bold"
                   }}
+                  loading={loading}
                   disabled={loading}
                 >
                   {loading ? "Submitting..." : "Submit"}
@@ -360,4 +398,4 @@ const EditChecklistForm = ({ item }: PropData) => {
   );
 };
 
-export default EditChecklistForm;
+export default EditDailyIncomeExpenseForm;

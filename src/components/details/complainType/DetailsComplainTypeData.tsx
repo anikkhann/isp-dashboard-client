@@ -171,9 +171,7 @@ const DetailsComplainTypeData = ({ item }: PropData) => {
                   alignItems: "end"
                 }}
               >
-                <span className="font-bold text-base">
-                  Complaint Category :
-                </span>
+                <span className="font-bold text-base">Ticket Category :</span>
               </Col>
               <Col>
                 <span className="mx-1 text-base">{item.complainCategory}</span>

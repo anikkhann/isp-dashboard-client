@@ -33,7 +33,7 @@ const steps = [
     content: "customer"
   },
   {
-    title: "Complain",
+    title: "Complain/Ticket",
     content: "complain"
   },
   {
@@ -84,6 +84,7 @@ const CreateCustomerTicketForm = () => {
     customerId: "",
     complainTypeId: "",
     complainDetails: "",
+
     assignedTo: ""
   });
 
@@ -258,12 +259,12 @@ const CreateCustomerTicketForm = () => {
   const getComplainTypes = async () => {
     const body = {
       meta: {
-        // sort: [
-        //   {
-        //     order: "asc",
-        //     field: "name"
-        //   }
-        // ]
+        sort: [
+          {
+            order: "asc",
+            field: "createdOn"
+          }
+        ]
       },
       body: {
         complainCategory: "customer",
@@ -298,12 +299,12 @@ const CreateCustomerTicketForm = () => {
   const getChecklists = async (complainId: string) => {
     const body = {
       meta: {
-        // sort: [
-        //   {
-        //     order: "asc",
-        //     field: "title"
-        //   }
-        // ]
+        sort: [
+          {
+            order: "asc",
+            field: "createdOn"
+          }
+        ]
       },
       body: {
         complainType: {
@@ -359,6 +360,7 @@ const CreateCustomerTicketForm = () => {
         complainTypeId: selectedComplainType,
         complainDetails: formValues.complainDetails,
         checkList: checkListJson,
+        // remarks: "remarks",
         assignedToId: selectedAssignedTo
       };
 
@@ -523,7 +525,7 @@ const CreateCustomerTicketForm = () => {
                   >
                     {/* complainTypeId */}
                     <Form.Item
-                      label="Complaint Type"
+                      label="Ticket Type"
                       name="complainTypeId"
                       style={{
                         marginBottom: 0,
@@ -532,7 +534,7 @@ const CreateCustomerTicketForm = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please select Complaint Type!"
+                          message: "Please select Ticket Type!"
                         }
                       ]}
                     >
@@ -540,7 +542,7 @@ const CreateCustomerTicketForm = () => {
                         <Select
                           allowClear
                           style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Complaint Type"
+                          placeholder="Please select Ticket Type"
                           onChange={handleComplainTypeChange}
                           options={complainTypes}
                           value={selectedComplainType}
@@ -572,6 +574,7 @@ const CreateCustomerTicketForm = () => {
                           key={index}
                           // label={itemData.title}
                           name={`checklist-${itemData.title}`}
+                          initialValue="unchecked"
                           rules={[
                             {
                               required: true,
@@ -609,10 +612,19 @@ const CreateCustomerTicketForm = () => {
                                 justifyContent: "start"
                               }}
                               key={index}
+                              defaultValue="unchecked"
                             >
+                              <Radio value="unchecked">Unchecked</Radio>
                               <Radio value="yes">Yes</Radio>
                               <Radio value="no">No</Radio>
                             </Radio.Group>
+                            <Input
+                              type="text"
+                              placeholder="remarks"
+                              className={`form-control`}
+                              name="amount"
+                              style={{ padding: "6px" }}
+                            />
                           </div>
                         </Form.Item>
                       ))}
@@ -640,14 +652,14 @@ const CreateCustomerTicketForm = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your Complaint Details!"
+                          message: "Please input your Ticket Details!"
                         }
                       ]}
                     >
                       <Input.TextArea
                         rows={4}
                         cols={16}
-                        placeholder="Complaint Details"
+                        placeholder="Ticket Details"
                         className={`form-control`}
                         name="complainDetails"
                       />

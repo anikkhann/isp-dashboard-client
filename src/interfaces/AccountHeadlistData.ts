@@ -5,4 +5,5 @@ export interface AccountHeadListData {
   partnerId: number;
   isActive: boolean;
   updatedOn?: number;
+  description?: string;
 }

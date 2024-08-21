@@ -90,7 +90,7 @@ const MainDashboard = () => {
                 bgColor="#0EA293"
                 color="#fff"
                 icon="/assets/images/icons/letter.png"
-                title="Complaint Management"
+                title="Complaint/Ticket Management"
                 link="/admin/complaint"
               />
             </Col>

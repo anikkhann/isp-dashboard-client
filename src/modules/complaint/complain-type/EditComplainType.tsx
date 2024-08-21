@@ -88,7 +88,7 @@ const EditComplainType = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Complaint Type
+            Edit Ticket Type
           </h1>
         </div>
         <Card

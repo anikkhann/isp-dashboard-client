@@ -383,7 +383,7 @@ const AdminTicketList: React.FC = () => {
     },
 
     {
-      title: "Complaint Type",
+      title: "Ticket Type",
       dataIndex: "complainType",
       render: (complainType, row) => {
         return <>{row.complainType.name}</>;

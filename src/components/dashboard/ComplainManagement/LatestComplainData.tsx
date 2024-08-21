@@ -183,7 +183,7 @@ const LatestComplainData = () => {
       align: "center" as AlignType
     },
     {
-      title: "Complaint Type",
+      title: "Ticket Type",
       dataIndex: "complain_type",
       sorter: false,
       render: (complain_type: any) => {
@@ -286,7 +286,7 @@ const LatestComplainData = () => {
             )}
 
             <TableCard
-              title="Latest Open Complaint List"
+              title="Latest Open Ticket List"
               hasLink={false}
               addLink=""
               permission=""

@@ -498,7 +498,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                   >
                     {/* complainTypeId */}
                     <Form.Item
-                      label="Complaint Type"
+                      label="Ticket Type"
                       name="complainTypeId"
                       style={{
                         marginBottom: 0,
@@ -507,7 +507,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                       rules={[
                         {
                           required: true,
-                          message: "Please select Complaint Type!"
+                          message: "Please select Ticket Type!"
                         }
                       ]}
                     >
@@ -515,7 +515,7 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                         <Select
                           allowClear
                           style={{ width: "100%", textAlign: "start" }}
-                          placeholder="Please select Complaint Type"
+                          placeholder="Please select Ticket Type"
                           onChange={handleComplainTypeChange}
                           options={complainTypes}
                           value={selectedComplainType}
@@ -603,14 +603,14 @@ const CreateCareCustomerTicketForm = ({ item }: PropData) => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your Complaint Details!"
+                          message: "Please input your Ticket Details!"
                         }
                       ]}
                     >
                       <Input.TextArea
                         rows={4}
                         cols={16}
-                        placeholder="Complaint Details"
+                        placeholder="Ticket Details"
                         className={`form-control`}
                         name="complainDetails"
                       />

@@ -39,7 +39,7 @@ const ComplainTypeList: React.FC = () => {
 
   const [status, setStatus] = useState<any>([]);
   const [statusChanged, setStatusChanged] = useState<any>(null);
-  const [order, SetOrder] = useState("desc");
+  const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("createdOn");
 
   const [tableParams, setTableParams] = useState<TableParams>({
@@ -137,7 +137,7 @@ const ComplainTypeList: React.FC = () => {
         value: "customer"
       },
       {
-        label: "Parent",
+        label: "Service",
         value: "parent"
       }
     ];
@@ -170,7 +170,7 @@ const ComplainTypeList: React.FC = () => {
     },
 
     {
-      title: "Complaint Category",
+      title: "Ticket Category",
       dataIndex: "complainCategory",
       sorter: true,
       render: (complainCategory: any, row) => {
@@ -190,7 +190,7 @@ const ComplainTypeList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Complaint Type",
+      title: "Ticket Type",
       dataIndex: "name",
       sorter: true,
       ellipsis: true,
@@ -366,7 +366,7 @@ const ComplainTypeList: React.FC = () => {
           )}
 
           <TableCard
-            title="Complaint Types List"
+            title="Ticket Types List"
             hasLink={true}
             addLink="/admin/complaint/complain-type/create"
             permission="complainType.create"
@@ -417,7 +417,7 @@ const ComplainTypeList: React.FC = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Complaint Category</b>
+                                <b>Ticket Category</b>
                               </span>
                               <Select
                                 allowClear

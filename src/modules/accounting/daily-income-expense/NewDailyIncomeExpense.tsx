@@ -1,11 +1,11 @@
-import CreateCustomerTicketForm from "@/components/forms/customer-ticket/CreateCustomerTicketForm";
+import CreateDailyIncomeExpenseForm from "@/components/forms/daily-income-expense/CreateDailyIncomeExpenseForm";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Breadcrumb, Card } from "antd";
 import Link from "next/link";
 
 import React from "react";
 
-const NewCustomerTicket = () => {
+const NewDailyIncomeExpense = () => {
   return (
     <>
       <AppRowContainer>
@@ -19,17 +19,17 @@ const NewCustomerTicket = () => {
               title: <Link href="/admin">Home</Link>
             },
             {
-              title: <Link href="/admin/complaint">Ticket Dashboard</Link>
+              title: <Link href="/admin/accounting">Accounting</Link>
             },
             {
               title: (
-                <Link href="/admin/complaint/customer-ticket">
-                  Customer Ticket
+                <Link href="/admin/accounting/daily-income-expense">
+                  Daily Income/Expense
                 </Link>
               )
             },
             {
-              title: "New Customer Ticket"
+              title: "New Daily Income/Expense"
             }
           ]}
         />
@@ -51,11 +51,10 @@ const NewCustomerTicket = () => {
               color: "#F15F22"
             }}
           >
-            New Customer Ticket
+            New Daily Income/Expense
           </h1>
         </div>
         <Card
-          // title="New Customer Ticket"
           hoverable
           style={{
             width: "90%",
@@ -68,11 +67,11 @@ const NewCustomerTicket = () => {
             border: "1px solid #F15F22"
           }}
         >
-          <CreateCustomerTicketForm />
+          <CreateDailyIncomeExpenseForm />
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default NewCustomerTicket;
+export default NewDailyIncomeExpense;

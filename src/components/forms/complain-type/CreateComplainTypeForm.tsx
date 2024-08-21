@@ -171,7 +171,7 @@ const CreateComplainTypeForm = () => {
                 className="gutter-row"
               >
                 <Form.Item
-                  label="Complaint Category"
+                  label="Ticket Category"
                   style={{
                     marginBottom: 0,
                     fontWeight: "bold"
@@ -180,7 +180,7 @@ const CreateComplainTypeForm = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please select Complaint Category"
+                      message: "Please select Ticket Category"
                     }
                   ]}
                 >
@@ -188,7 +188,7 @@ const CreateComplainTypeForm = () => {
                     <Select
                       allowClear
                       style={{ width: "100%", textAlign: "start" }}
-                      placeholder="Please select Complaint Category"
+                      placeholder="Please select Ticket Category"
                       onChange={handleCategoryChange}
                       options={complainCategoryList}
                       value={selectComplainCategory}

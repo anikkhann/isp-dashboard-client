@@ -88,7 +88,7 @@ const DetailsComplainType = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Complaint Type Details
+            Ticket Type Details
           </h1>
         </div>
         <Card

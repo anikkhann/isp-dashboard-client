@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import EditAccountHeadForm from "@/components/forms/account-head/EditAccountHeadForm";
-import { AccountHeadListData } from "@/interfaces/AccountHeadlistData";
+import EditDailyIncomeExpenseForm from "@/components/forms/daily-income-expense/EditDailyIncomeExpenseForm";
+import { DailyIncomeExpenseListData } from "@/interfaces/DailyIncomeExpenseListData";
 import AppLoader from "@/lib/AppLoader";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { useQuery } from "@tanstack/react-query";
@@ -11,21 +10,21 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const EditAccountHead = ({ id }: any) => {
-  const [item, SetItem] = useState<AccountHeadListData | null>(null);
+const EditDailyIncomeExpense = ({ id }: any) => {
+  const [item, SetItem] = useState<DailyIncomeExpenseListData | null>(null);
 
   const fetchData = async () => {
     const token = Cookies.get("token");
     // // console.log('token', token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    const response = await axios.get(`/api/account-head/get-by-id/${id}`);
+    const response = await axios.get(`/api/daily-expenditure/get-by-id/${id}`);
     console.log("response", response);
     return response;
   };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
-    queryKey: ["account-head-edit-list", id],
+    queryKey: ["daily-income-expense-edit-list", id],
     enabled: !!id,
     queryFn: async () => {
       const { data } = await fetchData();
@@ -64,11 +63,13 @@ const EditAccountHead = ({ id }: any) => {
             },
             {
               title: (
-                <Link href="/admin/accounting/account-head">Account Head</Link>
+                <Link href="/admin/accounting/daily-income-expense">
+                  Daily Income/Expense
+                </Link>
               )
             },
             {
-              title: "Edit Account Head"
+              title: "Edit Daily Income/Expense"
             }
           ]}
         />
@@ -90,7 +91,7 @@ const EditAccountHead = ({ id }: any) => {
               color: "#F15F22"
             }}
           >
-            Edit Account Head
+            Edit Daily Income/Expense
           </h1>
         </div>
         <Card
@@ -111,11 +112,11 @@ const EditAccountHead = ({ id }: any) => {
 
           {isError && <div>{error.message}</div>}
 
-          {!isLoading && item && <EditAccountHeadForm item={item} />}
+          {!isLoading && item && <EditDailyIncomeExpenseForm item={item} />}
         </Card>
       </AppRowContainer>
     </>
   );
 };
 
-export default EditAccountHead;
+export default EditDailyIncomeExpense;

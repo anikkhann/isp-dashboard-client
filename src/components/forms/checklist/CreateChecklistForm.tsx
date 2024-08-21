@@ -235,7 +235,7 @@ const CreateChecklistForm = () => {
                   className="gutter-row"
                 >
                   <Form.Item
-                    label="Complaint Category"
+                    label="Ticket Category"
                     style={{
                       marginBottom: 0,
                       fontWeight: "bold"
@@ -250,7 +250,7 @@ const CreateChecklistForm = () => {
                       {
                         required: selectComplainCategory === null, // Only required if null
                         // required: true,
-                        message: "Please select Complaint Category"
+                        message: "Please select Ticket Category"
                       }
                     ]}
                   >
@@ -258,7 +258,7 @@ const CreateChecklistForm = () => {
                       <Select
                         allowClear
                         style={{ width: "100%", textAlign: "start" }}
-                        placeholder="Please select Complaint Category"
+                        placeholder="Please select Ticket Category"
                         onChange={handleCategoryChange}
                         options={complainCategoryList}
                         value={selectComplainCategory}
@@ -293,7 +293,7 @@ const CreateChecklistForm = () => {
             >
               {/* complainTypeId */}
               <Form.Item
-                label="Complaint Type"
+                label="Ticket Type"
                 name="complainTypeId"
                 style={{
                   marginBottom: 0,
@@ -302,7 +302,7 @@ const CreateChecklistForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Complain Type!"
+                    message: "Please select Ticket Type!"
                   }
                 ]}
               >
@@ -310,7 +310,7 @@ const CreateChecklistForm = () => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Complaint Type"
+                    placeholder="Please select Ticket Type"
                     onChange={handleChange}
                     options={categories}
                     value={selectCategory}

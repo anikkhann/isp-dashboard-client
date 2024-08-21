@@ -334,14 +334,14 @@ const CreateAdminTicketForm = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your Complaint Details!"
+                          message: "Please input your Ticket Details!"
                         }
                       ]}
                     >
                       <Input.TextArea
                         rows={4}
                         cols={16}
-                        placeholder="Complaint Details"
+                        placeholder="Ticket Details"
                         className={`form-control`}
                         name="complainDetails"
                         style={{ padding: "6px" }}

@@ -23,7 +23,7 @@ const complaintCategoryList = [
     value: "parent"
   },
   {
-    label: "Customer",
+    label: "Service",
     value: "customer"
   }
 ];
@@ -174,7 +174,7 @@ const RootCauseList: React.FC = () => {
     },
 
     {
-      title: "Complaint Category",
+      title: "Ticket Category",
       dataIndex: "rootCauseCategory",
       render: (rootCauseCategory: any, row) => {
         return (
@@ -411,7 +411,7 @@ const RootCauseList: React.FC = () => {
                               direction="vertical"
                             >
                               <span>
-                                <b>Complaint Category</b>
+                                <b>Ticket Category</b>
                               </span>
                               <Select
                                 allowClear

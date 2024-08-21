@@ -133,6 +133,17 @@ const accountRoutes = [
     path: "/admin/accounting/account-head",
     icon: <DollarCircleOutlined />,
     permission: "accountHead.list"
+  },
+  {
+    key: "/admin/accounting/daily-income-expense",
+    label: (
+      <Link href="/admin/accounting/daily-income-expense">
+        Daily Income/Expense
+      </Link>
+    ),
+    path: "/admin/accounting/daily-income-expense",
+    icon: <DollarCircleOutlined />,
+    permission: "daily_income_expense.list"
   }
 ];
 
