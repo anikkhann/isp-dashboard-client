@@ -11,18 +11,14 @@ import {
   Form,
   Row,
   Col,
-  Input,
   Space,
   Select,
-  Upload,
-  Modal,
+  Input,
   DatePicker
+  // Upload
 } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { FileImageOutlined, UploadOutlined } from "@ant-design/icons";
-import type { UploadProps } from "antd/es/upload";
-import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -30,6 +26,9 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+// import { UploadOutlined } from "@ant-design/icons";
+// import type { UploadProps } from "antd/es/upload";
+// import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -42,9 +41,11 @@ const dateFormat = "YYYY-MM-DD";
 
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
-interface DailyIncomeExpenseFormData {
+interface FormData {
+  date: string;
   type: string;
   accountHeadId: number;
+  amount: number;
   paymentChannel: string;
   remarks: string;
 }
@@ -74,11 +75,12 @@ const channelList = [
   }
 ];
 
-interface PropData {
-  item: any;
-}
+// const layout = {
+//   labelCol: { span: 6 },
+//   wrapperCol: { span: 18 }
+// };
 
-const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
+const CreateBulkForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
@@ -88,23 +90,17 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
-
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const handleCancel = () => setPreviewOpen(false);
-
-  const [file, setFile] = useState<any>(null);
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [selectType, setSelectType] = useState<string>(item.type);
+  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [selectType, setSelectType] = useState<string>("income");
   const [accountHeadIds, setAccountHeadIds] = useState<any>([]);
   const [selectedAccountHeadId, setSelectedAccountHeadId] = useState<any>(null);
 
-  const [selectPaymentChannel, setSelectPaymentChannel] = useState<any>(null);
+  const [selectPaymentChannel, setSelectPaymentChannel] = useState(null);
+  // const [file, setFile] = useState<any>(null);
+  // const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [selectedDate, setSelectedDate] = useState<any>(null);
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-  const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const getAccountHeadList = (selectType: string) => {
     const body = {
@@ -145,35 +141,6 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
     });
   };
 
-  const handleFileChange: UploadProps["onChange"] = ({
-    fileList: newFileList
-  }) => {
-    // only remove the files that are not uploaded
-    const filteredList = newFileList.filter(
-      file =>
-        file.status !== "removed" &&
-        file.status !== "error" &&
-        file.status !== "uploading"
-    ) as UploadFile[];
-
-    setFileList(filteredList);
-  };
-
-  const dummyAction = (options: any) => {
-    const { file } = options;
-    console.log("Dummy action triggered. File:", file);
-
-    fileList.push({
-      uid: file.uid,
-      name: file.name,
-      status: "done" as UploadFileStatus
-    });
-    setFile(file);
-  };
-
-  const uploadButton = (
-    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-  );
   const handleDateChange = (value: any) => {
     // console.log("checked = ", value);
     setSelectedDate(value);
@@ -181,6 +148,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
       date: value
     });
   };
+
   const handleChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ type: value });
@@ -196,60 +164,95 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
     form.setFieldsValue({ paymentChannel: value });
     setSelectPaymentChannel(value as any);
   };
-  useEffect(() => {
-    setSelectedDate(item.date ? dayjs(item.date) : null);
-    if (item) {
-      form.setFieldsValue({
-        date: item.date ? dayjs(item.date) : null,
-        type: item.type,
-        accountHeadId: item.accountHeadId,
-        paymentChannel: item.paymentChannel,
-        remarks: item.remarks
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
+
+  // const handleFileChange: UploadProps["onChange"] = ({
+  //   fileList: newFileList
+  // }) => {
+  //   // only remove the files that are not uploaded
+  //   const filteredList = newFileList.filter(
+  //     file =>
+  //       file.status !== "removed" &&
+  //       file.status !== "error" &&
+  //       file.status !== "uploading"
+  //   ) as UploadFile[];
+
+  //   setFileList(filteredList);
+  // };
+
+  // const dummyAction = (options: any) => {
+  //   const { file } = options;
+  //   console.log("Dummy action triggered. File:", file);
+
+  //   fileList.push({
+  //     uid: file.uid,
+  //     name: file.name,
+  //     status: "done" as UploadFileStatus
+  //   });
+  //   setFile(file);
+  // };
+
+  // const uploadButton = (
+  //   <Button icon={<UploadOutlined />}>Click to Upload</Button>
+  // );
 
   useEffect(() => {
     setLoading(loading);
   }, [loading]);
 
   useEffect(() => {
+    // Set today's date as default value
+    const today = new Date();
+    setSelectedDate(today);
+  }, []);
+
+  useEffect(() => {
     if (selectType) {
       getAccountHeadList(selectType);
     }
   }, [selectType]);
-  const onSubmit = async (data: DailyIncomeExpenseFormData) => {
+
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
     setTimeout(async () => {
-      const { type, remarks } = data;
+      const { type, amount, remarks } = data;
 
-      const bodyData = {
-        id: item.id,
-        date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
-        type: type,
-        accountHeadId: selectedAccountHeadId,
-        paymentChannel: selectPaymentChannel,
-        remarks: remarks
-      };
+      // const date = selectedDate
+      //   ? dayjs(selectedDate).format("YYYY-MM-DD").toString()
+      //   : null;
+      const date = selectedDate
+        ? dayjs(selectedDate).format("YYYY-MM-DD")
+        : dayjs().format("YYYY-MM-DD");
+
+      const bodyData = [
+        {
+          // date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
+          type: type,
+          accountHeadId: selectedAccountHeadId,
+          amount: amount,
+          paymentChannel: selectPaymentChannel,
+          remarks: remarks
+        }
+      ];
+
       const formData = new FormData();
-      if (file) {
-        formData.append("attachment", file);
+      if (date) {
+        formData.append("date", JSON.stringify(date));
       }
-      formData.append("body", JSON.stringify(bodyData));
+      formData.append("transactions", JSON.stringify(bodyData));
+
       // const formData = {
-      //   id: item.id,
-      //   type: type,
-      //   accountHeadId: selectedAccountHeadId,
-      //   paymentChannel: selectPaymentChannel,
-      //   remarks: remarks
+      //   // date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
+      //   // type: type,
+      //   // accountHeadId: selectedAccountHeadId,
+      //   // paymentChannel: selectPaymentChannel,
+      //   // remarks: remarks
       // };
 
       try {
         await axios
-          .put("/api/daily-expenditure/update", formData)
+          .post("/api/daily-expenditure/bulk-create", formData)
           .then(res => {
-            // console.log(res);
+            console.log("data", res);
             const { data } = res;
 
             if (data.status != 200) {
@@ -273,7 +276,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
             }
           })
           .catch(err => {
-            // console.log(err);
+            console.log(err.response.data.message);
             MySwal.fire({
               title: "Error",
               text: err.response.data.message || "Something went wrong",
@@ -306,7 +309,13 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
           autoComplete="off"
           onFinish={onSubmit}
           form={form}
-          initialValues={{}}
+          initialValues={{
+            type: "income",
+            // accountHeadId:
+            // paymentChannel: "",
+            amount: 5000,
+            remarks: ""
+          }}
           style={{ maxWidth: "100%" }}
           name="wrap"
           colon={false}
@@ -335,7 +344,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
                 // rules={[
                 //   {
                 //     required: true,
-                //     message: "Please input your Start Date!"
+                //     message: "Please input your Date!"
                 //   }
                 // ]}
               >
@@ -348,6 +357,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
                   format={dateFormat}
                   onChange={handleDateChange}
                   value={selectedDate}
+                  defaultValue={dayjs()}
                 />
               </Form.Item>
             </Col>
@@ -445,6 +455,34 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
               xxl={8}
               className="gutter-row"
             >
+              {/* remarks */}
+              <Form.Item
+                label="Amount"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="amount"
+              >
+                <Input
+                  placeholder="amount"
+                  // maxLength={6}
+                  type="number"
+                  className={`form - control`}
+                  name="amount"
+                  style={{ padding: "6px" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
               {/* type */}
               <Form.Item
                 label="Payment Channel"
@@ -494,33 +532,18 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
                 />
               </Form.Item>
             </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
           </Row>
 
-          <div>
-            <h1 className="font-bold text-lg">Attachment :</h1>
-            {/* {item.attachment && (  */}
-            <Button onClick={() => setPreviewOpen(true)}>
-              <FileImageOutlined /> {item.attachment}
-            </Button>
-            {/* )} */}
-
-            <Modal
-              open={previewOpen}
-              title={item.attachment}
-              footer={null}
-              onCancel={handleCancel}
-            >
-              <img
-                alt={item.attachment}
-                style={{ width: "100%" }}
-                src={`${url}/public/downloadFile/${item.attachment}/daily-expenditure`}
-              />
-            </Modal>
-
-            {/* <p className="text-justify">{item.complainDetails}</p> */}
-          </div>
-
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+          {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
             <Col>
               <Form.Item
                 label="Attachment"
@@ -544,7 +567,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
                 </Space>
               </Form.Item>
             </Col>
-          </Row>
+          </Row> */}
 
           <Row justify="center">
             <Col>
@@ -574,4 +597,4 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
   );
 };
 
-export default EditDailyIncomeExpenseForm;
+export default CreateBulkForm;

@@ -341,6 +341,10 @@ const tagsList = [
   {
     label: "Daily Income Expense",
     value: "daily_income_expense"
+  },
+  {
+    label: "Bulk Create",
+    value: "bulkCreate"
   }
 ];
 

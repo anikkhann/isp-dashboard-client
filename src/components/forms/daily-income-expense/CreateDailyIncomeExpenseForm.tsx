@@ -5,12 +5,44 @@ import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { Alert, Button, Form, Row, Col, Space, Select, Input } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Row,
+  Col,
+  Space,
+  Select,
+  Input,
+  DatePicker,
+  Upload
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+import { UploadOutlined } from "@ant-design/icons";
+import type { UploadProps } from "antd/es/upload";
+import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+
+const dateFormat = "YYYY-MM-DD";
+
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
 interface DailyIncomeExpenseFormData {
+  date: string;
   type: string;
   accountHeadId: number;
   paymentChannel: string;
@@ -57,11 +89,14 @@ const CreateDailyIncomeExpenseForm = () => {
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
+  const [selectedDate, setSelectedDate] = useState<any>(null);
   const [selectType, setSelectType] = useState<string>("income");
   const [accountHeadIds, setAccountHeadIds] = useState<any>([]);
   const [selectedAccountHeadId, setSelectedAccountHeadId] = useState<any>(null);
 
   const [selectPaymentChannel, setSelectPaymentChannel] = useState(null);
+  const [file, setFile] = useState<any>(null);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -105,6 +140,14 @@ const CreateDailyIncomeExpenseForm = () => {
     });
   };
 
+  const handleDateChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectedDate(value);
+    form.setFieldsValue({
+      date: value
+    });
+  };
+
   const handleChange = (value: any) => {
     // console.log("checked = ", value);
     form.setFieldsValue({ type: value });
@@ -121,6 +164,36 @@ const CreateDailyIncomeExpenseForm = () => {
     setSelectPaymentChannel(value as any);
   };
 
+  const handleFileChange: UploadProps["onChange"] = ({
+    fileList: newFileList
+  }) => {
+    // only remove the files that are not uploaded
+    const filteredList = newFileList.filter(
+      file =>
+        file.status !== "removed" &&
+        file.status !== "error" &&
+        file.status !== "uploading"
+    ) as UploadFile[];
+
+    setFileList(filteredList);
+  };
+
+  const dummyAction = (options: any) => {
+    const { file } = options;
+    console.log("Dummy action triggered. File:", file);
+
+    fileList.push({
+      uid: file.uid,
+      name: file.name,
+      status: "done" as UploadFileStatus
+    });
+    setFile(file);
+  };
+
+  const uploadButton = (
+    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+  );
+
   useEffect(() => {
     setLoading(loading);
   }, [loading]);
@@ -136,12 +209,27 @@ const CreateDailyIncomeExpenseForm = () => {
     setTimeout(async () => {
       const { type, remarks } = data;
 
-      const formData = {
+      const bodyData = {
+        date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
         type: type,
         accountHeadId: selectedAccountHeadId,
         paymentChannel: selectPaymentChannel,
         remarks: remarks
       };
+
+      const formData = new FormData();
+      if (file) {
+        formData.append("attachment", file);
+      }
+      formData.append("body", JSON.stringify(bodyData));
+
+      // const formData = {
+      //   // date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
+      //   // type: type,
+      //   // accountHeadId: selectedAccountHeadId,
+      //   // paymentChannel: selectPaymentChannel,
+      //   // remarks: remarks
+      // };
 
       try {
         await axios
@@ -219,6 +307,41 @@ const CreateDailyIncomeExpenseForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              <Form.Item
+                label="Date"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="date"
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input your Date!"
+                //   }
+                // ]}
+              >
+                <DatePicker
+                  className={`form-control`}
+                  style={{
+                    padding: "6px",
+                    width: "100%"
+                  }}
+                  format={dateFormat}
+                  onChange={handleDateChange}
+                  value={selectedDate}
+                />
+              </Form.Item>
+            </Col>
             <Col
               xs={24}
               sm={12}
@@ -360,6 +483,41 @@ const CreateDailyIncomeExpenseForm = () => {
                   name="remarks"
                   style={{ padding: "6px" }}
                 />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            ></Col>
+          </Row>
+
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            <Col>
+              <Form.Item
+                label="Attachment"
+                style={{
+                  marginBottom: 0,
+                  width: "100%",
+                  textAlign: "center",
+                  fontWeight: "bold"
+                }}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Upload
+                    customRequest={dummyAction}
+                    onChange={handleFileChange}
+                    maxCount={1}
+                    listType="picture"
+                    fileList={fileList}
+                  >
+                    {fileList.length >= 1 ? null : uploadButton}
+                  </Upload>
+                </Space>
               </Form.Item>
             </Col>
           </Row>

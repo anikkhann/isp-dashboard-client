@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Space } from "antd";
+import { Button, Card, Col, Row, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -360,10 +360,23 @@ const DailyIncomeExpenseList: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <Button >Sort age</Button>
-                <Button >Clear filters</Button>
-                <Button >Clear filters and sorters</Button>
+              {ability.can("bulkCreate.create", "") && (
+                <Link
+                  href={`/admin/accounting/daily-income-expense/bulkCreate`}
+                >
+                  <Row justify={"end"}>
+                    <Col>
+                      <Button>Bulk Create</Button>
+                    </Col>
+                  </Row>
+                </Link>
+              )}
+
+              {/* <Space
+                style={{ marginBottom: 16 }}
+                className="w-full flex justify-end mb-4"
+              >
+                <Button>Bulk Create</Button>
               </Space> */}
               <Table
                 style={{
