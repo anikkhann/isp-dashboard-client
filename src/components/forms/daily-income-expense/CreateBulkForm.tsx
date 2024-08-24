@@ -416,7 +416,7 @@ const CreateBulkForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Account Head Id!"
+                    message: "Please select Account Head!"
                   }
                 ]}
               >

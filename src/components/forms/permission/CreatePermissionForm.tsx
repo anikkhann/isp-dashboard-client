@@ -335,6 +335,10 @@ const tagsList = [
   {
     label: "Bulk Create",
     value: "bulkCreate"
+  },
+  {
+    label: "Income Expense Report",
+    value: "income_expense_report"
   }
 ];
 

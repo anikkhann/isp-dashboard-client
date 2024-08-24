@@ -144,6 +144,17 @@ const accountRoutes = [
     path: "/admin/accounting/daily-income-expense",
     icon: <DollarCircleOutlined />,
     permission: "daily_income_expense.list"
+  },
+  {
+    key: "/admin/accounting/daily-income-expense",
+    label: (
+      <Link href="/admin/accounting/income-expense-report">
+        Income/Expense Report
+      </Link>
+    ),
+    path: "/admin/accounting/income-expense-report",
+    icon: <DollarCircleOutlined />,
+    permission: "income_expense_report.list"
   }
 ];
 

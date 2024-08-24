@@ -105,41 +105,93 @@ const CreateCustomerTicketForm = () => {
 
         setCurrent(current + 1);
       } else if (current === 1) {
-        const fieldsToValidate = ["complainTypeId"];
-        // await form.validateFields(["complainTypeId"]);
+        const fieldsToValidate: (string | (string | number)[])[] = [];
+
         checkListItems.forEach((itemData: any) => {
-          fieldsToValidate.push(`checklist-${itemData.title}`);
+          fieldsToValidate.push([`checklist-${itemData.title}`, "status"]);
+          fieldsToValidate.push([`checklist-${itemData.title}`, "remarks"]);
         });
 
-        await form.validateFields(fieldsToValidate);
+        console.log(fieldsToValidate); // Check the structure of fieldsToValidate
 
-        const fields = form.getFieldsValue();
+        try {
+          await form.validateFields(fieldsToValidate); // Validate the specified fields
+        } catch (error) {
+          console.error("Validation failed:", error);
+          return; // Stop the flow if validation fails
+        }
 
-        const filteredData = Object.keys(fields).reduce((acc: any, key) => {
-          if (key.startsWith("checklist-")) {
-            // acc[key] = fields[key];
-            // remove "checklist-" prefix
-            const cleanedKey = key.replace("checklist-", "");
-            acc[cleanedKey] = fields[key];
-          }
-          return acc;
-        }, {});
+        const fields = form.getFieldsValue(true);
 
-        const formatCheckList = Object.keys(filteredData).map(key => {
+        const checklists = checkListItems.map((item: any) => {
+          const fieldData = fields[`checklist-${item.title}`];
           return {
-            title: key,
-            status: filteredData[key]
+            title: item.title,
+            status: fieldData.remarks
+              ? `${fieldData.status}->${fieldData.remarks}`
+              : fieldData.status
+            // remarks: fieldData.remarks
           };
         });
 
-        setCheckListDataJson(formatCheckList);
+        setCheckListDataJson(checklists);
 
-        // console.log("filteredData", formatCheckList);
-        // console.log("checkList", checkList);
         setFormValues({
           ...formValues,
           complainTypeId: form.getFieldValue("complainTypeId")
         });
+
+        // const fieldsToValidate = ["complainTypeId"];
+
+        // checkListItems.forEach((itemData: any) => {
+        //   // fieldsToValidate.push(`checklist-${itemData.title}`);
+        //   fieldsToValidate.push(`checklist-${itemData.title}`, "status");
+        //   fieldsToValidate.push(`checklist-${itemData.title}`, "remarks");
+        // });
+
+        // await form.validateFields(fieldsToValidate);
+
+        // const fields = form.getFieldsValue();
+        // const fields = form.getFieldsValue(true);
+
+        // const filteredData = Object.keys(fields).reduce((acc: any, key) => {
+        //   if (key.startsWith("checklist-")) {
+        //     // remove "checklist-" prefix
+        //     const cleanedKey = key.replace("checklist-", "");
+        //     acc[cleanedKey] = fields[key];
+        //   }
+        //   return acc;
+        // }, {});
+
+        // const formatCheckList = Object.keys(filteredData).map(key => {
+        //   return {
+        //     title: key,
+        //     status: filteredData[key]
+        //   };
+        // });
+
+        // setCheckListDataJson(formatCheckList);
+
+        // setFormValues({
+        //   ...formValues,
+        //   complainTypeId: form.getFieldValue("complainTypeId")
+        // });
+
+        // const checklists = checkListItems.map((item: any) => {
+        //   const fieldData = fields[`checklist-${item.title}`];
+        //   return {
+        //     title: item.title,
+        //     status: fieldData.status,
+        //     remarks: fieldData.remarks
+        //   };
+        // });
+
+        // setCheckListDataJson(checklists);
+
+        // setFormValues({
+        //   ...formValues,
+        //   complainTypeId: form.getFieldValue("complainTypeId")
+        // });
 
         setCurrent(current + 1);
       } else if (current === 2) {
@@ -349,10 +401,10 @@ const CreateCustomerTicketForm = () => {
 
   const onSubmit = async () => {
     setLoading(true);
-    // Filter keys to keep only those starting with "checklist-"
-    setTimeout(async () => {
-      // Convert to JSON format
-      const checkListJson = JSON.stringify(checkListDataJson, null, 2);
+
+    try {
+      // const checkListJson = JSON.stringify(checkListDataJson);
+      const checkListJson = checkListDataJson;
 
       const bodyData = {
         ticketCategory: "customer",
@@ -360,7 +412,6 @@ const CreateCustomerTicketForm = () => {
         complainTypeId: selectedComplainType,
         complainDetails: formValues.complainDetails,
         checkList: checkListJson,
-        // remarks: "remarks",
         assignedToId: selectedAssignedTo
       };
 
@@ -370,49 +421,98 @@ const CreateCustomerTicketForm = () => {
       }
       formData.append("body", JSON.stringify(bodyData));
 
-      try {
-        await axios
-          .post("/api/ticket/create", formData)
-          .then(res => {
-            const { data } = res;
+      const res = await axios.post("/api/ticket/create", formData);
 
-            if (data.status != 200) {
-              MySwal.fire({
-                title: "Error",
-                text: data.message || "Something went wrong",
-                icon: "error"
-              });
-            }
-
-            if (data.status == 200) {
-              MySwal.fire({
-                title: "Success",
-                text: data.message || "Created successfully",
-                icon: "success"
-              }).then(() => {
-                router.replace("/admin/complaint/customer-ticket");
-              });
-            }
-          })
-          .catch(err => {
-            // console.log(err);
-            MySwal.fire({
-              title: "Error",
-              text: err.response.data.message || "Something went wrong",
-              icon: "error"
-            });
-            setShowError(true);
-            setErrorMessages(err.response.data.message);
-          });
-      } catch (err: any) {
-        // console.log(err)
-        setShowError(true);
-        setErrorMessages(err.message);
-      } finally {
-        setLoading(false);
+      if (res.data.status === 200) {
+        MySwal.fire({
+          title: "Success",
+          text: res.data.message || "Created successfully",
+          icon: "success"
+        }).then(() => {
+          router.replace("/admin/complaint/customer-ticket");
+        });
+      } else {
+        throw new Error(res.data.message || "Something went wrong");
       }
-    }, 2000);
+    } catch (err: any) {
+      MySwal.fire({
+        title: "Error",
+        text: err.message,
+        icon: "error"
+      });
+      setShowError(true);
+      setErrorMessages(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // const onSubmit = async () => {
+  //   setLoading(true);
+  //   // Filter keys to keep only those starting with "checklist-"
+  //   setTimeout(async () => {
+  //     // Convert to JSON format
+  //     const checkListJson = JSON.stringify(checkListDataJson, null, 2);
+
+  //     const bodyData = {
+  //       ticketCategory: "customer",
+  //       customerId: selectedCustomer,
+  //       complainTypeId: selectedComplainType,
+  //       complainDetails: formValues.complainDetails,
+  //       checkList: checkListJson,
+  //       // remarks: "remarks",
+  //       assignedToId: selectedAssignedTo
+  //     };
+
+  //     const formData = new FormData();
+  //     if (file) {
+  //       formData.append("attachment", file);
+  //     }
+  //     formData.append("body", JSON.stringify(bodyData));
+
+  //     try {
+  //       await axios
+  //         .post("/api/ticket/create", formData)
+  //         .then(res => {
+  //           const { data } = res;
+
+  //           if (data.status != 200) {
+  //             MySwal.fire({
+  //               title: "Error",
+  //               text: data.message || "Something went wrong",
+  //               icon: "error"
+  //             });
+  //           }
+
+  //           if (data.status == 200) {
+  //             MySwal.fire({
+  //               title: "Success",
+  //               text: data.message || "Created successfully",
+  //               icon: "success"
+  //             }).then(() => {
+  //               router.replace("/admin/complaint/customer-ticket");
+  //             });
+  //           }
+  //         })
+  //         .catch(err => {
+  //           // console.log(err);
+  //           MySwal.fire({
+  //             title: "Error",
+  //             text: err.response.data.message || "Something went wrong",
+  //             icon: "error"
+  //           });
+  //           setShowError(true);
+  //           setErrorMessages(err.response.data.message);
+  //         });
+  //     } catch (err: any) {
+  //       // console.log(err)
+  //       setShowError(true);
+  //       setErrorMessages(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }, 2000);
+  // };
 
   return (
     <>
@@ -563,71 +663,229 @@ const CreateCustomerTicketForm = () => {
                   </Col>
                 </Row>
                 {checkListItems.length > 0 && (
+                  // <Row
+                  //   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  //   justify="center"
+                  // >
+                  //   <Col>
+                  //     {/* checklist */}
+                  //     {checkListItems.map((itemData: any, index: any) => (
+                  //       <Form.Item
+                  //         key={index}
+                  //         // label={itemData.title}
+                  //         name={`checklist-${itemData.title}`}
+                  //         initialValue="unchecked"
+                  //         rules={[
+                  //           {
+                  //             required: true,
+
+                  //             message: "Please select an option!"
+                  //           }
+                  //         ]}
+                  //       >
+                  //         <div
+                  //           style={{
+                  //             marginBottom: 0,
+                  //             display: "flex",
+                  //             width: "100%",
+                  //             flexDirection: "row",
+                  //             border: "2px solid #000000",
+                  //             padding: "10px",
+                  //             borderRadius: "4px"
+                  //           }}
+                  //         >
+                  //           <span
+                  //             style={{
+                  //               width: "100%",
+                  //               textAlign: "start",
+                  //               marginRight: "10px"
+                  //             }}
+                  //           >
+                  //             <span style={{ color: "red", marginLeft: "5px" }}>
+                  //               *
+                  //             </span>
+                  //             {itemData.title}
+                  //           </span>
+                  //           <Radio.Group
+                  //             style={{
+                  //               display: "flex",
+                  //               justifyContent: "start"
+                  //             }}
+                  //             // key={index}
+                  //             // defaultValue="unchecked"
+                  //           >
+                  //             {/* <Radio value="unchecked">Unchecked</Radio> */}
+                  //             <Radio value="yes">Yes</Radio>
+                  //             <Radio value="no">No</Radio>
+                  //           </Radio.Group>
+                  //           {/* <Input
+                  //             type="text"
+                  //             placeholder="remarks"
+                  //             className={`form-control`}
+                  //             name="amount"
+                  //             style={{ padding: "6px" }}
+                  //           /> */}
+                  //         </div>
+                  //       </Form.Item>
+                  //     ))}
+                  //   </Col>
+                  // </Row>
+
+                  // <Row
+                  //   gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  //   justify="center"
+                  // >
+                  //   <Col>
+                  //     {checkListItems.length > 0 &&
+                  //       checkListItems.map((itemData: any, index: any) => (
+                  //         <Form.Item
+                  //           key={index}
+                  //           name={`checklist-${itemData.title}`}
+                  //           initialValue={{ status: "unchecked", remarks: "" }}
+                  //           rules={[
+                  //             {
+                  //               required: true,
+                  //               message: "Please select an option!"
+                  //             }
+                  //           ]}
+                  //         >
+                  //           <div
+                  //             style={{
+                  //               marginBottom: 0,
+                  //               display: "flex",
+                  //               width: "100%",
+                  //               flexDirection: "row",
+                  //               border: "2px solid #000000",
+                  //               padding: "10px",
+                  //               borderRadius: "4px"
+                  //             }}
+                  //           >
+                  //             <span
+                  //               style={{
+                  //                 width: "100%",
+                  //                 textAlign: "start",
+                  //                 marginRight: "10px"
+                  //               }}
+                  //             >
+                  //               <span
+                  //                 style={{ color: "red", marginLeft: "5px" }}
+                  //               >
+                  //                 *
+                  //               </span>
+                  //               {itemData.title}
+                  //             </span>
+                  //             <Radio.Group
+                  //               style={{
+                  //                 display: "flex",
+                  //                 justifyContent: "start",
+                  //                 marginRight: "10px"
+                  //               }}
+                  //               defaultValue="unchecked"
+                  //               onChange={e => {
+                  //                 const value = e.target.value;
+                  //                 const checklist =
+                  //                   form.getFieldValue(
+                  //                     `checklist-${itemData.title}`
+                  //                   ) || {};
+                  //                 form.setFieldsValue({
+                  //                   [`checklist-${itemData.title}`]: {
+                  //                     ...checklist,
+                  //                     status: value
+                  //                   }
+                  //                 });
+                  //               }}
+                  //             >
+                  //               <Radio value="unchecked">Unchecked</Radio>
+                  //               <Radio value="yes">Yes</Radio>
+                  //               <Radio value="no">No</Radio>
+                  //             </Radio.Group>
+                  //             <Input
+                  //               type="text"
+                  //               placeholder="remarks"
+                  //               className={`form-control`}
+                  //               style={{ padding: "6px" }}
+                  //               onChange={e => {
+                  //                 const value = e.target.value;
+                  //                 const checklist =
+                  //                   form.getFieldValue(
+                  //                     `checklist-${itemData.title}`
+                  //                   ) || {};
+                  //                 form.setFieldsValue({
+                  //                   [`checklist-${itemData.title}`]: {
+                  //                     ...checklist,
+                  //                     remarks: value
+                  //                   }
+                  //                 });
+                  //               }}
+                  //             />
+                  //           </div>
+                  //         </Form.Item>
+                  //       ))}
+                  //   </Col>
+                  // </Row>
+
                   <Row
                     gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
                     justify="center"
                   >
                     <Col>
-                      {/* checklist */}
-                      {checkListItems.map((itemData: any, index: any) => (
-                        <Form.Item
-                          key={index}
-                          // label={itemData.title}
-                          name={`checklist-${itemData.title}`}
-                          initialValue="unchecked"
-                          rules={[
-                            {
-                              required: true,
-
-                              message: "Please select an option!"
+                      {checkListItems.length > 0 &&
+                        checkListItems.map((itemData: any, index: any) => (
+                          <Form.Item
+                            key={index}
+                            // label={itemData.title}
+                            label={
+                              <>
+                                <span
+                                  style={{ color: "red", marginRight: "4px" }}
+                                >
+                                  *
+                                </span>
+                                {itemData.title}
+                              </>
                             }
-                          ]}
-                        >
-                          <div
-                            style={{
-                              marginBottom: 0,
-                              display: "flex",
-                              width: "100%",
-                              flexDirection: "row",
-                              border: "2px solid #000000",
-                              padding: "10px",
-                              borderRadius: "4px"
-                            }}
+                            style={{ marginBottom: 16 }}
                           >
-                            <span
-                              style={{
-                                width: "100%",
-                                textAlign: "start",
-                                marginRight: "10px"
-                              }}
-                            >
-                              <span style={{ color: "red", marginLeft: "5px" }}>
-                                *
-                              </span>
-                              {itemData.title}
-                            </span>
-                            <Radio.Group
-                              style={{
-                                display: "flex",
-                                justifyContent: "start"
-                              }}
-                              key={index}
-                              defaultValue="unchecked"
-                            >
-                              <Radio value="unchecked">Unchecked</Radio>
-                              <Radio value="yes">Yes</Radio>
-                              <Radio value="no">No</Radio>
-                            </Radio.Group>
-                            <Input
-                              type="text"
-                              placeholder="remarks"
-                              className={`form-control`}
-                              name="amount"
-                              style={{ padding: "6px" }}
-                            />
-                          </div>
-                        </Form.Item>
-                      ))}
+                            <Input.Group compact>
+                              <Form.Item
+                                name={[`checklist-${itemData.title}`, "status"]}
+                                noStyle
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please select a status!"
+                                  }
+                                ]}
+                                initialValue="unchecked"
+                              >
+                                <Radio.Group>
+                                  <Radio value="yes">Yes</Radio>
+                                  <Radio value="no">No</Radio>
+                                  <Radio value="unchecked">Unchecked</Radio>
+                                </Radio.Group>
+                              </Form.Item>
+                              <Form.Item
+                                name={[
+                                  `checklist-${itemData.title}`,
+                                  "remarks"
+                                ]}
+                                noStyle
+                                // rules={[
+                                //   {
+                                //     required: true,
+                                //     message: "Please enter remarks!"
+                                //   }
+                                // ]}
+                              >
+                                <Input
+                                  style={{ width: "50%" }}
+                                  maxLength={15} // Limit input to 15 characters
+                                  placeholder="Enter remarks"
+                                />
+                              </Form.Item>
+                            </Input.Group>
+                          </Form.Item>
+                        ))}
                     </Col>
                   </Row>
                 )}
