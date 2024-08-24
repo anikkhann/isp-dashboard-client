@@ -128,12 +128,24 @@ const DetailsCustomerTicket = ({ id }: any) => {
     };
     const response = await axios.post(`/api/root-cause/get-list`, body);
 
-    const list = response.data.body.map((item: any) => {
-      return {
-        label: item.title,
-        value: item.id
-      };
-    });
+    // Assuming each item in response.data.body has a createdOn field
+    const list = response.data.body
+      .sort(
+        (a: any, b: any) =>
+          new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+      )
+      .map((item: any) => {
+        return {
+          label: item.title,
+          value: item.id
+        };
+      });
+    // const list = response.data.body.map((item: any) => {
+    //   return {
+    //     label: item.title,
+    //     value: item.id
+    //   };
+    // });
     setRootCauseList(list);
   };
   // ;
