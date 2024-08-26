@@ -840,6 +840,16 @@ const CustomerTransactionList: React.FC = () => {
                               onChange={handleUserChange}
                               options={users}
                               value={selectUser}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Col>
@@ -875,6 +885,16 @@ const CustomerTransactionList: React.FC = () => {
                                   onChange={handleZoneChange}
                                   options={zones}
                                   value={selectedZone}
+                                  filterOption={(input, option) => {
+                                    if (typeof option?.label === "string") {
+                                      return (
+                                        option.label
+                                          .toLowerCase()
+                                          .indexOf(input.toLowerCase()) >= 0
+                                      );
+                                    }
+                                    return false;
+                                  }}
                                 />
                               </Space>
                             </Col>
@@ -944,6 +964,16 @@ const CustomerTransactionList: React.FC = () => {
                               onChange={handleTransactionModeChange}
                               options={transactionModes}
                               value={selectedTransactionMode}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Col>
@@ -968,6 +998,16 @@ const CustomerTransactionList: React.FC = () => {
                               onChange={handleTransactionTypeChange}
                               options={transactionTypes}
                               value={selectedTransactionType}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Col>
@@ -992,6 +1032,16 @@ const CustomerTransactionList: React.FC = () => {
                               onChange={handleTransactionByChange}
                               options={transactionByList}
                               value={selectedTransactionBy}
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
                             />
                           </Space>
                         </Col>

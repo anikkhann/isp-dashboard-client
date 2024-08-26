@@ -216,9 +216,6 @@ const CreateBulkForm = () => {
     setTimeout(async () => {
       const { type, amount, remarks } = data;
 
-      // const date = selectedDate
-      //   ? dayjs(selectedDate).format("YYYY-MM-DD").toString()
-      //   : null;
       const date = selectedDate
         ? dayjs(selectedDate).format("YYYY-MM-DD")
         : dayjs().format("YYYY-MM-DD");
@@ -234,23 +231,27 @@ const CreateBulkForm = () => {
         }
       ];
 
-      const formData = new FormData();
-      if (date) {
-        formData.append("date", JSON.stringify(date));
-      }
-      formData.append("transactions", JSON.stringify(bodyData));
-
-      // const formData = {
-      //   // date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
-      //   // type: type,
-      //   // accountHeadId: selectedAccountHeadId,
-      //   // paymentChannel: selectPaymentChannel,
-      //   // remarks: remarks
-      // };
-
+      // const formData = new FormData();
+      // if (date) {
+      //   formData.append("date", JSON.stringify(date));
+      // }
+      // formData.append("transactions", JSON.stringify(bodyData));
+      // Create the JSON strings for individual parameters
+      const requestData = {
+        date: date,
+        transactions: bodyData
+      };
       try {
         await axios
-          .post("/api/daily-expenditure/bulk-create", formData)
+          .post(
+            "/api/daily-expenditure/bulk-create",
+            requestData, // Sending them as separate JSON strings separated by a newline or another delimiter
+            {
+              headers: {
+                "Content-Type": "application/json"
+              }
+            }
+          )
           .then(res => {
             console.log("data", res);
             const { data } = res;

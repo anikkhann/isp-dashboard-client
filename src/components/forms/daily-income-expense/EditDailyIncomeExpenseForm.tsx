@@ -45,6 +45,7 @@ const dateFormat = "YYYY-MM-DD";
 interface DailyIncomeExpenseFormData {
   type: string;
   accountHeadId: number;
+  amount: number;
   paymentChannel: string;
   remarks: string;
 }
@@ -198,12 +199,16 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
   };
   useEffect(() => {
     setSelectedDate(item.date ? dayjs(item.date) : null);
+    setSelectedAccountHeadId(item.accountHeadId);
+    setSelectPaymentChannel(item.paymentChannel);
     if (item) {
       form.setFieldsValue({
         date: item.date ? dayjs(item.date) : null,
         type: item.type,
         accountHeadId: item.accountHeadId,
+        amount: item.amount,
         paymentChannel: item.paymentChannel,
+
         remarks: item.remarks
       });
     }
@@ -222,13 +227,14 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
   const onSubmit = async (data: DailyIncomeExpenseFormData) => {
     setLoading(true);
     setTimeout(async () => {
-      const { type, remarks } = data;
+      const { type, amount, remarks } = data;
 
       const bodyData = {
         id: item.id,
         date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
         type: type,
         accountHeadId: selectedAccountHeadId,
+        amount: amount,
         paymentChannel: selectPaymentChannel,
         remarks: remarks
       };
@@ -406,7 +412,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Account Head Id!"
+                    message: "Please select Account Head !"
                   }
                 ]}
               >
@@ -434,6 +440,33 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
                     }}
                   />
                 </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* remarks */}
+              <Form.Item
+                label="Amount"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="amount"
+              >
+                <Input
+                  placeholder="amount"
+                  // maxLength={6}
+                  className={`form - control`}
+                  name="amount"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
             <Col
@@ -497,7 +530,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
           </Row>
 
           <div>
-            <h1 className="font-bold text-lg">Attachment :</h1>
+            <h1 className="font-bold text-sm">View Existing Attachment :</h1>
             {/* {item.attachment && (  */}
             <Button onClick={() => setPreviewOpen(true)}>
               <FileImageOutlined /> {item.attachment}
@@ -523,7 +556,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
             <Col>
               <Form.Item
-                label="Attachment"
+                label="Upload New Attachment"
                 style={{
                   marginBottom: 0,
                   width: "100%",

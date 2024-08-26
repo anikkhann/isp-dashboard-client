@@ -45,6 +45,7 @@ interface DailyIncomeExpenseFormData {
   date: string;
   type: string;
   accountHeadId: number;
+  amount: number;
   paymentChannel: string;
   remarks: string;
 }
@@ -207,12 +208,13 @@ const CreateDailyIncomeExpenseForm = () => {
   const onSubmit = async (data: DailyIncomeExpenseFormData) => {
     setLoading(true);
     setTimeout(async () => {
-      const { type, remarks } = data;
+      const { type, amount, remarks } = data;
 
       const bodyData = {
         date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
         type: type,
         accountHeadId: selectedAccountHeadId,
+        amount: amount,
         paymentChannel: selectPaymentChannel,
         remarks: remarks
       };
@@ -295,6 +297,7 @@ const CreateDailyIncomeExpenseForm = () => {
           initialValues={{
             type: "income",
             // accountHeadId:
+            amount: null,
             paymentChannel: "",
             remarks: ""
           }}
@@ -425,6 +428,33 @@ const CreateDailyIncomeExpenseForm = () => {
                     }}
                   />
                 </Space>
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={8}
+              xxl={8}
+              className="gutter-row"
+            >
+              {/* remarks */}
+              <Form.Item
+                label="Amount"
+                style={{
+                  marginBottom: 0,
+                  fontWeight: "bold"
+                }}
+                name="amount"
+              >
+                <Input
+                  placeholder="amount"
+                  // maxLength={6}
+                  className={`form - control`}
+                  name="amount"
+                  style={{ padding: "6px" }}
+                />
               </Form.Item>
             </Col>
             <Col

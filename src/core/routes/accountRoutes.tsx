@@ -146,7 +146,7 @@ const accountRoutes = [
     permission: "daily_income_expense.list"
   },
   {
-    key: "/admin/accounting/daily-income-expense",
+    key: "/admin/accounting/income-expense-report",
     label: (
       <Link href="/admin/accounting/income-expense-report">
         Income/Expense Report

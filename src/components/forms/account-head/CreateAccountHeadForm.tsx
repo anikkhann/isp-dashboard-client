@@ -173,7 +173,7 @@ const CreateAccountHeadForm = () => {
               className="gutter-row"
             >
               <Form.Item
-                label="Title"
+                label="Account Head"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -188,7 +188,7 @@ const CreateAccountHeadForm = () => {
               >
                 <Input
                   type="text"
-                  placeholder="title"
+                  placeholder="Account Head"
                   className={`form-control`}
                   name="title"
                   style={{ padding: "6px" }}
@@ -206,7 +206,7 @@ const CreateAccountHeadForm = () => {
             >
               {/* type */}
               <Form.Item
-                label="Type"
+                label="Account Head Type"
                 name="type"
                 style={{
                   marginBottom: 0,
@@ -215,7 +215,7 @@ const CreateAccountHeadForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Type!"
+                    message: "Please select Account Head Type!"
                   }
                 ]}
               >
@@ -223,7 +223,7 @@ const CreateAccountHeadForm = () => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Type"
+                    placeholder="Please select"
                     onChange={handleChange}
                     options={types}
                     value={selectType}

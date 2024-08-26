@@ -581,8 +581,8 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
 
       const list = data.body.map((item: any) => {
         return {
-          label: item.bankName,
-          value: item.id
+          label: item?.bankName,
+          value: item?.id
         };
       });
 
@@ -852,11 +852,11 @@ const HotspotOnlinePackagePurchaseList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Payment Gatewayer Name",
+      title: "Payment Gateway",
       dataIndex: "paymentGateway",
-      render: (paymentGateway?: any) => {
+      render: (paymentGateway: any) => {
         if (!paymentGateway.bankName) return "-";
-        return <>{paymentGateway.bankName}</>;
+        return <>{paymentGateway?.bankName}</>;
       },
       ellipsis: true,
       width: "auto",

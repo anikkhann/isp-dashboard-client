@@ -186,7 +186,7 @@ const EditAccountHeadForm = ({ item }: PropData) => {
               className="gutter-row"
             >
               <Form.Item
-                label="Title"
+                label="Account Head"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -195,13 +195,13 @@ const EditAccountHeadForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Title!"
+                    message: "Please input your Account Head!"
                   }
                 ]}
               >
                 <Input
                   type="text"
-                  placeholder="title"
+                  placeholder="Account Head"
                   className={`form-control`}
                   name="title"
                   style={{ padding: "6px" }}
@@ -219,7 +219,7 @@ const EditAccountHeadForm = ({ item }: PropData) => {
             >
               {/* type */}
               <Form.Item
-                label="Type"
+                label="Account Head Type"
                 name="type"
                 style={{
                   marginBottom: 0,
@@ -228,7 +228,7 @@ const EditAccountHeadForm = ({ item }: PropData) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please select Type!"
+                    message: "Please select Account Head Type!"
                   }
                 ]}
               >
@@ -236,7 +236,7 @@ const EditAccountHeadForm = ({ item }: PropData) => {
                   <Select
                     allowClear
                     style={{ width: "100%", textAlign: "start" }}
-                    placeholder="Please select Type"
+                    placeholder="Please select"
                     onChange={handleChange}
                     options={types}
                     value={selectType}
@@ -261,12 +261,12 @@ const EditAccountHeadForm = ({ item }: PropData) => {
                   fontWeight: "bold"
                 }}
                 name="description"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input description!"
-                  }
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please input description!"
+                //   }
+                // ]}
               >
                 <Input.TextArea
                   rows={4}

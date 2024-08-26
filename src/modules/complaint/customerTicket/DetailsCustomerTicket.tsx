@@ -121,6 +121,14 @@ const DetailsCustomerTicket = ({ id }: any) => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "createdOn"
+          }
+        ]
+      },
       body: {
         rootCauseCategory: item?.ticketCategory,
         isActive: true
@@ -128,24 +136,12 @@ const DetailsCustomerTicket = ({ id }: any) => {
     };
     const response = await axios.post(`/api/root-cause/get-list`, body);
 
-    // Assuming each item in response.data.body has a createdOn field
-    const list = response.data.body
-      .sort(
-        (a: any, b: any) =>
-          new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
-      )
-      .map((item: any) => {
-        return {
-          label: item.title,
-          value: item.id
-        };
-      });
-    // const list = response.data.body.map((item: any) => {
-    //   return {
-    //     label: item.title,
-    //     value: item.id
-    //   };
-    // });
+    const list = response.data.body.map((item: any) => {
+      return {
+        label: item.title,
+        value: item.id
+      };
+    });
     setRootCauseList(list);
   };
   // ;

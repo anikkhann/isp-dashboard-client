@@ -60,6 +60,9 @@ const AccountHeadList: React.FC = () => {
           }
         ]
       }
+      // body: {
+      //   isForSystem: true
+      // }
     };
 
     const { data } = await axios.post("/api/account-head/get-list", body, {
@@ -131,7 +134,7 @@ const AccountHeadList: React.FC = () => {
     },
 
     {
-      title: "Title",
+      title: "Account Head",
       dataIndex: "title",
       sorter: true,
       ellipsis: true,
@@ -140,17 +143,17 @@ const AccountHeadList: React.FC = () => {
     },
 
     // insertedBy
-    // {
-    //   title: "Created By",
-    //   dataIndex: "insertedBy",
-    //   sorter: false,
-    //   render: (insertedBy: any) => {
-    //     if (!insertedBy) return "-";
-    //     return <>{insertedBy.name}</>;
-    //   },
-    //   width: "20%",
-    //   align: "center" as AlignType
-    // },
+    {
+      title: "Account Head Type",
+      dataIndex: "type",
+      sorter: false,
+      render: (type: any) => {
+        if (!type) return "-";
+        return <>{type}</>;
+      },
+      width: "20%",
+      align: "center" as AlignType
+    },
     // createdOn
     {
       title: "Created At",
@@ -200,17 +203,18 @@ const AccountHeadList: React.FC = () => {
         return (
           <>
             <Space size="middle" align="center">
-              {ability.can("accountHead.update", "") ? (
-                <Tooltip title="Edit" placement="bottomRight" color="magenta">
-                  <Space size="middle" align="center" wrap>
-                    <Link
-                      href={`/admin/accounting/account-head/${record.id}/edit`}
-                    >
-                      <Button type="primary" icon={<EditOutlined />} />
-                    </Link>
-                  </Space>
-                </Tooltip>
-              ) : null}
+              {ability.can("accountHead.update", "") &&
+                record.isForSystem === false && (
+                  <Tooltip title="Edit" placement="bottomRight" color="magenta">
+                    <Space size="middle" align="center" wrap>
+                      <Link
+                        href={`/admin/accounting/account-head/${record.id}/edit`}
+                      >
+                        <Button type="primary" icon={<EditOutlined />} />
+                      </Link>
+                    </Space>
+                  </Tooltip>
+                )}
             </Space>
           </>
         );
