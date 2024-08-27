@@ -87,7 +87,7 @@ const ChecklistList: React.FC = () => {
       },
       body: {
         // SEND FIELD NAME WITH DATA TO SEARCH
-        selectedComplaintCategory: complaintCategoryParam,
+        complaintCategory: complaintCategoryParam,
         complainType: {
           id: complainTypeParam
         }
@@ -463,7 +463,7 @@ const ChecklistList: React.FC = () => {
           )}
 
           <TableCard
-            title="Checklist List"
+            title="Check List"
             hasLink={true}
             addLink="/admin/complaint/checklist/create"
             permission="checklist.create"

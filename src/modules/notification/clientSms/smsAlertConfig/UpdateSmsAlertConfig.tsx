@@ -44,7 +44,7 @@ const UpdateSmsAlertConfig = () => {
               color: "#F15F22"
             }}
           >
-            Update CLient Sms Alert Config
+            Update Client Sms Alert Config
           </h1>
         </div>
         <Card

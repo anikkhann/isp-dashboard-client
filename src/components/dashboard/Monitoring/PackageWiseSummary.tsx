@@ -194,7 +194,7 @@ const PackageWiseSummary: React.FC = () => {
         ]
       },
       body: {
-        client: { id: selectedClient },
+        partner: { id: selectedClient },
         isActive: true
       }
     };

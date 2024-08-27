@@ -38,18 +38,18 @@ const TotalVoucherDashboard = () => {
   // registeredCustomer
   const [registeredCustomer, setRegisteredCustomer] = useState(false);
   const toggleRegisteredCustomer = () => {
-    setRegisteredCustomer(!NASWise);
+    setRegisteredCustomer(!registeredCustomer);
   };
   // expiredCustomer
 
   const [expiredCustomer, setExpiredCustomer] = useState(false);
   const toggleExpiredCustomer = () => {
-    setExpiredCustomer(!NASWise);
+    setExpiredCustomer(!expiredCustomer);
   };
   // customerWise
   const [customerWise, setCustomerWise] = useState(false);
   const toggleCustomerWise = () => {
-    setCustomerWise(!NASWise);
+    setCustomerWise(!customerWise);
   };
   return (
     <>

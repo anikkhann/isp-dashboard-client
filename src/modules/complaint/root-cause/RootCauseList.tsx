@@ -19,12 +19,12 @@ import { useAppSelector } from "@/store/hooks";
 
 const complaintCategoryList = [
   {
-    label: "Parent",
-    value: "parent"
+    label: "Customer",
+    value: "customer"
   },
   {
     label: "Service",
-    value: "customer"
+    value: "parent"
   }
 ];
 interface TableParams {

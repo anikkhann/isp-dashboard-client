@@ -26,15 +26,16 @@ interface TableParams {
 
 const RegisteredCustomer: React.FC = () => {
   const [data, setData] = useState<RegisteredCustomerData[]>([]);
-  // const { Panel } = Collapse;
 
   // const MySwal = withReactContent(Swal);
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   //   const [order, SetOrder] = useState("asc");
   //   const [sort, SetSort] = useState("id");
-  const [sortField, SetSortField] = useState<string | undefined>(undefined);
-  const [sortOrder, SetSortOrder] = useState<string | undefined>(undefined);
+  const [order, SetOrder] = useState<string | undefined>("asc");
+  const [sort, SetSort] = useState<string | undefined>("id");
+  // const [sortField, SetSortField] = useState<string | undefined>(undefined);
+  // const [sortOrder, SetSortOrder] = useState<string | undefined>(undefined);
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -47,10 +48,8 @@ const RegisteredCustomer: React.FC = () => {
   const fetchData = async (
     page: number,
     limit: number,
-    sortField?: string,
-    sortOrder?: string
-    // order: string,
-    // sort: string,
+    order?: string,
+    sort?: string
   ) => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -61,10 +60,9 @@ const RegisteredCustomer: React.FC = () => {
         params: {
           page,
           limit,
-          sortField,
-          sortOrder
-          // order,
-          // sort
+
+          order,
+          sort
         }
       }
     );
@@ -73,15 +71,14 @@ const RegisteredCustomer: React.FC = () => {
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     // , page, limit, order, sort,
-    queryKey: ["top-10-registered-customer", page, limit, sortField, sortOrder],
+    queryKey: ["top-10-registered-customer", page, limit, sort, sort],
     queryFn: async () => {
       const response = await fetchData(
         page,
         limit,
-        sortField,
-        sortOrder
-        // order,
-        // sort,
+
+        order,
+        sort
       );
       return response;
     },
@@ -136,20 +133,16 @@ const RegisteredCustomer: React.FC = () => {
       //     ? "asc"
       //     : "desc"
       // );
-      SetSortOrder(
+      SetOrder(
         (sorter as SorterResult<RegisteredCustomerData>).order === "ascend"
           ? "asc"
           : "desc"
       );
     } else {
-      SetSortOrder(undefined);
+      SetOrder(undefined);
     }
     if (sorter && (sorter as SorterResult<RegisteredCustomerData>).field) {
-      SetSortField(
-        (sorter as SorterResult<RegisteredCustomerData>).field as string
-      );
-    } else {
-      SetSortField(undefined);
+      SetSort((sorter as SorterResult<RegisteredCustomerData>).field as string);
     }
     // if (sorter && (sorter as SorterResult<RegisteredCustomerData>).field) {
     //   // // console.log((sorter as SorterResult<ZoneRevenueData>).field)
@@ -255,154 +248,6 @@ const RegisteredCustomer: React.FC = () => {
             }}
           >
             <Space direction="vertical" style={{ width: "100%" }}>
-              {/* <Space style={{ marginBottom: 16 }}>
-                <div style={{ padding: "20px", backgroundColor: "white" }}>
-                  <Collapse
-                    accordion
-                    style={{
-                      backgroundColor: "#FFC857",
-                      color: "white",
-                      borderRadius: 4,
-                      // marginBottom: 24,
-                      // border: 0,
-                      overflow: "hidden",
-                      fontWeight: "bold",
-                      font: "1rem"
-                    }}
-                  >
-                    <Panel header="Filters" key="1">
-                      <Row
-                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                        justify="space-between"
-                      >
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>Client</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleClientChange}
-                              options={clients}
-                              value={selectedClient}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
-                              <b>NAS Device</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{ width: "100%", textAlign: "start" }}
-                              placeholder="Please select"
-                              onChange={handleNasDeviceChange}
-                              options={nasDevices}
-                              value={selectedNasDevice}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Button
-                            style={{
-                              width: "100%",
-                              textAlign: "center",
-                              marginTop: "25px",
-                              backgroundColor: "#F15F22",
-                              color: "#ffffff"
-                            }}
-                            onClick={() => {
-                              handleClear();
-                            }}
-                            className="ant-btn  ant-btn-lg"
-                          >
-                            Clear filters
-                          </Button>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        ></Col>
-                      </Row>
-                    </Panel>
-                  </Collapse>
-                </div>
-              </Space> */}
-
               <Table
                 style={{
                   width: "100%",

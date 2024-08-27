@@ -192,12 +192,12 @@ const NASWiseSummary: React.FC = () => {
       },
       body: {
         // partnerType: "zone",
-        client: { id: selectedClient },
-        deviceType: "ONU",
+        partner: { id: selectedClient },
+        deviceType: "NAS",
         isActive: true
       }
     };
-    axios.post("/api-hotspot/nas-device/get-list", body).then(res => {
+    axios.post("/api/device/get-list", body).then(res => {
       // console.log(res);
       const { data } = res;
       if (data.status != 200) {
