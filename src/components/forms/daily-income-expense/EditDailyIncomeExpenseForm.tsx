@@ -332,7 +332,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
               className="gutter-row"
             >
               <Form.Item
-                label="Date"
+                label="Event Date"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -453,7 +453,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
             >
               {/* remarks */}
               <Form.Item
-                label="Amount"
+                label="Amount (BDT)"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"

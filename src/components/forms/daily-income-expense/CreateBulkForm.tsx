@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ** React Imports
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import Swal from "sweetalert2";
@@ -11,10 +11,12 @@ import {
   Form,
   Row,
   Col,
-  Space,
+  // Space,
   Select,
   Input,
-  DatePicker
+  DatePicker,
+  Space
+
   // Upload
 } from "antd";
 import axios from "axios";
@@ -26,9 +28,6 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-// import { UploadOutlined } from "@ant-design/icons";
-// import type { UploadProps } from "antd/es/upload";
-// import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -41,14 +40,14 @@ const dateFormat = "YYYY-MM-DD";
 
 // import AppImageLoader from "@/components/loader/AppImageLoader";
 
-interface FormData {
-  date: string;
-  type: string;
-  accountHeadId: number;
-  amount: number;
-  paymentChannel: string;
-  remarks: string;
-}
+// interface FormData {
+//   date: string;
+//   type: string;
+//   accountHeadId: number;
+//   amount: number;
+//   paymentChannel: string;
+//   remarks: string;
+// }
 
 const types = [
   {
@@ -75,16 +74,14 @@ const channelList = [
   }
 ];
 
-// const layout = {
-//   labelCol: { span: 6 },
-//   wrapperCol: { span: 18 }
-// };
-
 const CreateBulkForm = () => {
   const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
   // ** States
+  const [formSets, setFormSets] = useState([
+    { id: Date.now(), selectType: "income" }
+  ]);
   const [showError, setShowError] = useState(false);
   const [errorMessages, setErrorMessages] = useState(null);
 
@@ -101,6 +98,14 @@ const CreateBulkForm = () => {
 
   const token = Cookies.get("token");
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+  const addNewFormSet = () => {
+    setFormSets([...formSets, { id: Date.now(), selectType: "income" }]);
+  };
+
+  const deleteFormSet = (id: number) => {
+    setFormSets(formSets.filter(set => set.id !== id));
+  };
 
   const getAccountHeadList = (selectType: string) => {
     const body = {
@@ -165,36 +170,6 @@ const CreateBulkForm = () => {
     setSelectPaymentChannel(value as any);
   };
 
-  // const handleFileChange: UploadProps["onChange"] = ({
-  //   fileList: newFileList
-  // }) => {
-  //   // only remove the files that are not uploaded
-  //   const filteredList = newFileList.filter(
-  //     file =>
-  //       file.status !== "removed" &&
-  //       file.status !== "error" &&
-  //       file.status !== "uploading"
-  //   ) as UploadFile[];
-
-  //   setFileList(filteredList);
-  // };
-
-  // const dummyAction = (options: any) => {
-  //   const { file } = options;
-  //   console.log("Dummy action triggered. File:", file);
-
-  //   fileList.push({
-  //     uid: file.uid,
-  //     name: file.name,
-  //     status: "done" as UploadFileStatus
-  //   });
-  //   setFile(file);
-  // };
-
-  // const uploadButton = (
-  //   <Button icon={<UploadOutlined />}>Click to Upload</Button>
-  // );
-
   useEffect(() => {
     setLoading(loading);
   }, [loading]);
@@ -205,55 +180,49 @@ const CreateBulkForm = () => {
     setSelectedDate(today);
   }, []);
 
+  // useEffect(() => {
+  //   formSets.forEach((set: any) => {
+  //     getAccountHeadList(set.type);
+  //   });
+  // }, [formSets]);
   useEffect(() => {
     if (selectType) {
       getAccountHeadList(selectType);
     }
   }, [selectType]);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async () => {
     setLoading(true);
     setTimeout(async () => {
-      const { type, amount, remarks } = data;
-
-      const date = selectedDate
-        ? dayjs(selectedDate).format("YYYY-MM-DD")
-        : dayjs().format("YYYY-MM-DD");
-
-      const bodyData = [
-        {
-          // date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
-          type: type,
-          accountHeadId: selectedAccountHeadId,
-          amount: amount,
-          paymentChannel: selectPaymentChannel,
-          remarks: remarks
-        }
-      ];
-
-      // const formData = new FormData();
-      // if (date) {
-      //   formData.append("date", JSON.stringify(date));
-      // }
-      // formData.append("transactions", JSON.stringify(bodyData));
-      // Create the JSON strings for individual parameters
-      const requestData = {
-        date: date,
-        transactions: bodyData
-      };
       try {
+        const values = await form.validateFields();
+
+        const date = selectedDate
+          ? dayjs(selectedDate).format("YYYY-MM-DD")
+          : dayjs().format("YYYY-MM-DD");
+
+        const transactions = formSets.map(set => {
+          return {
+            type: values[`type-${set.id}`],
+            accountHeadId: values[`accountHeadId-${set.id}`],
+            amount: values[`amount-${set.id}`],
+            paymentChannel: values[`paymentChannel-${set.id}`],
+            remarks: values[`remarks-${set.id}`]
+          };
+        });
+
+        const requestData = {
+          date: date,
+          transactions: transactions
+        };
+
         await axios
-          .post(
-            "/api/daily-expenditure/bulk-create",
-            requestData, // Sending them as separate JSON strings separated by a newline or another delimiter
-            {
-              headers: {
-                "Content-Type": "application/json"
-              }
+          .post("/api/daily-expenditure/bulk-create", requestData, {
+            headers: {
+              "Content-Type": "application/json"
             }
-          )
+          })
           .then(res => {
-            console.log("data", res);
             const { data } = res;
 
             if (data.status != 200) {
@@ -277,7 +246,6 @@ const CreateBulkForm = () => {
             }
           })
           .catch(err => {
-            console.log(err.response.data.message);
             MySwal.fire({
               title: "Error",
               text: err.response.data.message || "Something went wrong",
@@ -286,15 +254,100 @@ const CreateBulkForm = () => {
             setShowError(true);
             setErrorMessages(err.response.data.message);
           });
-      } catch (err: any) {
-        // // console.log(err)
+      } catch (error: any) {
+        console.log("Failed:", error);
         setShowError(true);
-        setErrorMessages(err.message);
+        setErrorMessages(error.message);
       } finally {
         setLoading(false);
       }
     }, 2000);
   };
+
+  // const onSubmit = async (data: FormData) => {
+  //   setLoading(true);
+  //   setTimeout(async () => {
+  //     const { type, amount, remarks } = data;
+
+  //     const date = selectedDate
+  //       ? dayjs(selectedDate).format("YYYY-MM-DD")
+  //       : dayjs().format("YYYY-MM-DD");
+
+  //     const bodyData = [
+  //       {
+  //         // date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
+  //         type: type,
+  //         accountHeadId: selectedAccountHeadId,
+  //         amount: amount,
+  //         paymentChannel: selectPaymentChannel,
+  //         remarks: remarks
+  //       }
+  //     ];
+
+  //     // const formData = new FormData();
+  //     // if (date) {
+  //     //   formData.append("date", JSON.stringify(date));
+  //     // }
+  //     // formData.append("transactions", JSON.stringify(bodyData));
+  //     // Create the JSON strings for individual parameters
+  //     const requestData = {
+  //       date: date,
+  //       transactions: bodyData
+  //     };
+  //     try {
+  //       await axios
+  //         .post(
+  //           "/api/daily-expenditure/bulk-create",
+  //           requestData, // Sending them as separate JSON strings separated by a newline or another delimiter
+  //           {
+  //             headers: {
+  //               "Content-Type": "application/json"
+  //             }
+  //           }
+  //         )
+  //         .then(res => {
+  //           console.log("data", res);
+  //           const { data } = res;
+
+  //           if (data.status != 200) {
+  //             setShowError(true);
+  //             setErrorMessages(data.message);
+  //             MySwal.fire({
+  //               title: "Error",
+  //               text: data.message || "Something went wrong",
+  //               icon: "error"
+  //             });
+  //           }
+
+  //           if (data.status == 200) {
+  //             MySwal.fire({
+  //               title: "Success",
+  //               text: data.message || "Added successfully",
+  //               icon: "success"
+  //             }).then(() => {
+  //               router.replace("/admin/accounting/daily-income-expense");
+  //             });
+  //           }
+  //         })
+  //         .catch(err => {
+  //           console.log(err.response.data.message);
+  //           MySwal.fire({
+  //             title: "Error",
+  //             text: err.response.data.message || "Something went wrong",
+  //             icon: "error"
+  //           });
+  //           setShowError(true);
+  //           setErrorMessages(err.response.data.message);
+  //         });
+  //     } catch (err: any) {
+  //       // // console.log(err)
+  //       setShowError(true);
+  //       setErrorMessages(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }, 2000);
+  // };
 
   return (
     <>
@@ -326,43 +379,50 @@ const CreateBulkForm = () => {
             gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             justify="space-between"
           >
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "start",
+                width: "100%",
+                padding: "1rem",
+                boxSizing: "border-box"
+              }}
             >
-              <Form.Item
-                label="Date"
-                style={{
-                  marginBottom: 0,
-                  fontWeight: "bold"
-                }}
-                name="date"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "Please input your Date!"
-                //   }
-                // ]}
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={8}
+                xxl={8}
+                className="gutter-row"
               >
-                <DatePicker
-                  className={`form-control`}
+                <Form.Item
+                  label="Date"
                   style={{
-                    padding: "6px",
-                    width: "100%"
+                    marginBottom: 0,
+                    fontWeight: "bold"
                   }}
-                  format={dateFormat}
-                  onChange={handleDateChange}
-                  value={selectedDate}
-                  defaultValue={dayjs()}
-                />
-              </Form.Item>
-            </Col>
-            <Col
+                  name="date"
+                >
+                  <DatePicker
+                    className={`form-control`}
+                    style={{
+                      padding: "6px",
+                      width: "100%"
+                    }}
+                    format={dateFormat}
+                    onChange={handleDateChange}
+                    value={selectedDate}
+                    defaultValue={dayjs()}
+                  />
+                </Form.Item>
+              </Col>
+            </div>
+
+            {/* <Col
               xs={24}
               sm={12}
               md={8}
@@ -371,7 +431,6 @@ const CreateBulkForm = () => {
               xxl={8}
               className="gutter-row"
             >
-              {/* type */}
               <Form.Item
                 label="Type"
                 name="type"
@@ -456,7 +515,6 @@ const CreateBulkForm = () => {
               xxl={8}
               className="gutter-row"
             >
-              {/* remarks */}
               <Form.Item
                 label="Amount"
                 style={{
@@ -467,7 +525,6 @@ const CreateBulkForm = () => {
               >
                 <Input
                   placeholder="amount"
-                  // maxLength={6}
                   type="number"
                   className={`form - control`}
                   name="amount"
@@ -484,7 +541,6 @@ const CreateBulkForm = () => {
               xxl={8}
               className="gutter-row"
             >
-              {/* type */}
               <Form.Item
                 label="Payment Channel"
                 name="paymentChannel"
@@ -514,7 +570,6 @@ const CreateBulkForm = () => {
               xxl={8}
               className="gutter-row"
             >
-              {/* remarks */}
               <Form.Item
                 label="Remarks"
                 style={{
@@ -532,44 +587,259 @@ const CreateBulkForm = () => {
                   style={{ padding: "6px" }}
                 />
               </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={12}
-              md={8}
-              lg={8}
-              xl={8}
-              xxl={8}
-              className="gutter-row"
-            ></Col>
-          </Row>
-
-          {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
-            <Col>
-              <Form.Item
-                label="Attachment"
+            </Col> */}
+            {formSets.map((set: any) => (
+              <div
+                key={set.id}
                 style={{
-                  marginBottom: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
                   width: "100%",
-                  textAlign: "center",
+                  padding: "1rem",
+                  boxSizing: "border-box"
+                }}
+              >
+                <Row
+                  gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                  justify="space-between"
+                >
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      label="Type"
+                      name={`type-${set.id}`}
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select type!"
+                        }
+                      ]}
+                      // initialValue={set.type} // Set initial value for "Type"
+                      initialValue={selectType}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select Type"
+                          options={types}
+                          onChange={handleChange}
+                          value={selectType}
+                          filterOption={(input, option) => {
+                            if (typeof option?.label === "string") {
+                              return (
+                                option.label
+                                  .toLowerCase()
+                                  .indexOf(input.toLowerCase()) >= 0
+                              );
+                            }
+                            return false;
+                          }}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      label="Account Head"
+                      name={`accountHeadId-${set.id}`}
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select Account Head!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select"
+                          onChange={handleAccountHeadIDChange}
+                          options={accountHeadIds}
+                          value={selectedAccountHeadId}
+                          showSearch
+                          filterOption={(input, option) => {
+                            if (typeof option?.label === "string") {
+                              return (
+                                option.label
+                                  .toLowerCase()
+                                  .indexOf(input.toLowerCase()) >= 0
+                              );
+                            }
+                            return false;
+                          }}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      label="Amount (BDT)"
+                      name={`amount-${set.id}`}
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select Amount!"
+                        }
+                      ]}
+                    >
+                      <Input
+                        placeholder="amount"
+                        type="number"
+                        className={`form - control`}
+                        // value={set.amount}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      label="Payment Channel"
+                      name={`paymentChannel-${set.id}`}
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select Account Head!"
+                        }
+                      ]}
+                    >
+                      <Space style={{ width: "100%" }} direction="vertical">
+                        <Select
+                          allowClear
+                          style={{ width: "100%", textAlign: "start" }}
+                          placeholder="Please select Payment"
+                          onChange={handlePaymentChannelChange}
+                          options={channelList}
+                          value={selectPaymentChannel}
+                          showSearch
+                          filterOption={(input, option) => {
+                            if (typeof option?.label === "string") {
+                              return (
+                                option.label
+                                  .toLowerCase()
+                                  .indexOf(input.toLowerCase()) >= 0
+                              );
+                            }
+                            return false;
+                          }}
+                        />
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Form.Item
+                      label="Remarks"
+                      name={`remarks-${set.id}`}
+                      style={{
+                        marginBottom: 0,
+                        fontWeight: "bold"
+                      }}
+                    >
+                      <Input.TextArea
+                        placeholder="remarks"
+                        rows={4}
+                        className={`form - control`}
+                        style={{ padding: "6px" }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col
+                    xs={24}
+                    sm={12}
+                    md={8}
+                    lg={8}
+                    xl={8}
+                    xxl={8}
+                    className="gutter-row"
+                  >
+                    <Button
+                      onClick={() => deleteFormSet(set.id)}
+                      type="dashed"
+                      danger
+                      shape="round"
+                    >
+                      Delete
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+            ))}
+          </Row>
+          <Row justify="center">
+            <Col>
+              <Button
+                onClick={addNewFormSet}
+                shape="round"
+                type="dashed"
+                style={{
+                  backgroundColor: "#0000FF",
+                  color: "#FFFFFF",
                   fontWeight: "bold"
                 }}
               >
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <Upload
-                    customRequest={dummyAction}
-                    onChange={handleFileChange}
-                    maxCount={1}
-                    listType="picture"
-                    fileList={fileList}
-                  >
-                    {fileList.length >= 1 ? null : uploadButton}
-                  </Upload>
-                </Space>
-              </Form.Item>
+                Add New Field
+              </Button>
             </Col>
-          </Row> */}
-
+          </Row>
           <Row justify="center">
             <Col>
               <Form.Item>

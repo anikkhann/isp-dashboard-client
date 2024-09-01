@@ -96,7 +96,7 @@ const IncomeExpenseReportList: React.FC = () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     const { data } = await axios.get(
-      `/api/daily-expenditure/report?type=${selectTypeParam}&startDate=${selectedStartDateParam}&endDate=${selectedEndDateParam}`,
+      `/api/daily-expenditure/report?type=${selectTypeParam}&accountHeadId=${selectedAccountHeadIdParam}&startDate=${selectedStartDateParam}&endDate=${selectedEndDateParam}`,
 
       {
         headers: {
@@ -291,7 +291,7 @@ const IncomeExpenseReportList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Action By",
+      title: "Entry By",
       dataIndex: "action_by",
       sorter: false,
       render: (action_by: any) => {
@@ -303,7 +303,7 @@ const IncomeExpenseReportList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Income Amount",
+      title: "Income Amount (BDT)",
       dataIndex: "income_amount",
       sorter: false,
       render: (income_amount: any) => {
@@ -315,7 +315,7 @@ const IncomeExpenseReportList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Expense Amount",
+      title: "Expense Amount (BDT)",
       dataIndex: "expense_amount",
       sorter: false,
       render: (expense_amount: any) => {
@@ -340,7 +340,7 @@ const IncomeExpenseReportList: React.FC = () => {
     },
 
     {
-      title: "Trx Date",
+      title: "Event Date",
       dataIndex: "trx_date",
       sorter: false,
       render: (trx_date: any) => {
@@ -353,7 +353,6 @@ const IncomeExpenseReportList: React.FC = () => {
       align: "center" as AlignType
     }
   ];
-
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
@@ -365,8 +364,6 @@ const IncomeExpenseReportList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<IncomeExpenseReportData>).order) {
-      // // console.log((sorter as SorterResult<ZoneTagData>).order)
-
       SetOrder(
         (sorter as SorterResult<IncomeExpenseReportData>).order === "ascend"
           ? "asc"
@@ -374,20 +371,45 @@ const IncomeExpenseReportList: React.FC = () => {
       );
     }
     if (sorter && (sorter as SorterResult<IncomeExpenseReportData>).field) {
-      // // console.log((sorter as SorterResult<ZoneTagData>).field)
-
       SetSort(
         (sorter as SorterResult<IncomeExpenseReportData>).field as string
       );
     }
   };
+  // const handleTableChange = (
+  //   pagination: TablePaginationConfig,
+  //   filters: Record<string, FilterValue | null>,
+  //   sorter:
+  //     | SorterResult<IncomeExpenseReportData>
+  //     | SorterResult<IncomeExpenseReportData>[]
+  // ) => {
+  //   SetPage(pagination.current as number);
+  //   SetLimit(pagination.pageSize as number);
+
+  //   if (sorter && (sorter as SorterResult<IncomeExpenseReportData>).order) {
+  //     // // console.log((sorter as SorterResult<ZoneTagData>).order)
+
+  //     SetOrder(
+  //       (sorter as SorterResult<IncomeExpenseReportData>).order === "ascend"
+  //         ? "asc"
+  //         : "desc"
+  //     );
+  //   }
+  //   if (sorter && (sorter as SorterResult<IncomeExpenseReportData>).field) {
+  //     // // console.log((sorter as SorterResult<ZoneTagData>).field)
+
+  //     SetSort(
+  //       (sorter as SorterResult<IncomeExpenseReportData>).field as string
+  //     );
+  //   }
+  // };
   const handleDownload = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     try {
       const res = await axios.get(
-        `/api/daily-expenditure/report?type=${selectType}&startDate=${selectedStartDate}&endDate=${selectedEndDate}`,
+        `/api/daily-expenditure/report?type=${selectType}&accountHeadId=${selectedAccountHeadId}&startDate=${selectedStartDate}&endDate=${selectedEndDate}`,
         {
           headers: {
             "Content-Type": "application/json"
@@ -417,11 +439,11 @@ const IncomeExpenseReportList: React.FC = () => {
 
         return {
           "Account Head": item.account_head,
-          "Action By": item.action_by,
-          "Income Amount": item.income_amount,
-          "Expense Amount": item.expense_amount,
+          "Entry By": item.action_by,
+          "Income Amount (BDT)": item.income_amount,
+          "Expense Amount (BDT)": item.expense_amount,
           Remarks: item.remarks,
-          "Trx Date": format(trxDate, "yyyy-MM-dd pp")
+          "Event Date": format(trxDate, "yyyy-MM-dd pp")
         };
       });
 

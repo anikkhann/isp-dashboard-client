@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Card, Col, Row, Space } from "antd";
+import { Button, Card, Col, Collapse, Row, Select, Space } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
 import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
@@ -26,12 +26,41 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
+const types = [
+  {
+    label: "Income",
+    value: "income"
+  },
+  {
+    label: "Expense",
+    value: "expense"
+  }
+];
+const channelList = [
+  {
+    label: "Cash",
+    value: "cash"
+  },
+  {
+    label: "Cheque",
+    value: "cheque"
+  },
+  {
+    label: "Online",
+    value: "online"
+  }
+];
 const DailyIncomeExpenseList: React.FC = () => {
   const [data, setData] = useState<DailyIncomeExpenseListData[]>([]);
+  const { Panel } = Collapse;
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("createdOn");
+  const [selectType, setSelectType] = useState<any>("income");
+  const [accountHeadIds, setAccountHeadIds] = useState<any>([]);
+  const [selectedAccountHeadId, setSelectedAccountHeadId] = useState<any>(null);
+  const [selectPaymentChannel, setSelectPaymentChannel] = useState(null);
   const router = useRouter();
   const MySwal = withReactContent(Swal);
 
@@ -47,7 +76,10 @@ const DailyIncomeExpenseList: React.FC = () => {
     page: number,
     limit: number,
     order: string,
-    sort: string
+    sort: string,
+    selectTypeParam?: string,
+    selectedAccountHeadIdParam?: string | null,
+    selectPaymentChannelParam?: string | null
   ) => {
     const token = Cookies.get("token");
     // // console.log('token', token)
@@ -63,6 +95,11 @@ const DailyIncomeExpenseList: React.FC = () => {
             field: sort
           }
         ]
+      },
+      body: {
+        type: selectTypeParam, // Dropdown (income, expense)
+        accountHeadId: selectedAccountHeadIdParam, //account head list with filter => selected type
+        paymentChannel: selectPaymentChannelParam //dropdown (cash, cheque, online)
       }
     };
 
@@ -77,10 +114,27 @@ const DailyIncomeExpenseList: React.FC = () => {
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     // order, sort
-    queryKey: ["daily-income-expense-list", page, limit, order, sort],
+    queryKey: [
+      "daily-income-expense-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectType,
+      selectedAccountHeadId,
+      selectPaymentChannel
+    ],
     queryFn: async () => {
       // , order, sort
-      const response = await fetchData(page, limit, order, sort);
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectType,
+        selectedAccountHeadId,
+        selectPaymentChannel
+      );
       return response;
     },
     onSuccess(data: any) {
@@ -172,32 +226,32 @@ const DailyIncomeExpenseList: React.FC = () => {
       align: "center" as AlignType
     },
 
-    {
-      title: "Client",
-      dataIndex: "client",
-      sorter: false,
-      render: (client: any) => {
-        if (!client) return "-";
+    // {
+    //   title: "Client",
+    //   dataIndex: "client",
+    //   sorter: false,
+    //   render: (client: any) => {
+    //     if (!client) return "-";
 
-        return <>{client?.username}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
-    {
-      title: "Partner",
-      dataIndex: "partner",
-      sorter: false,
-      render: (partner: any) => {
-        if (!partner) return "-";
+    //     return <>{client?.username}</>;
+    //   },
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // },
+    // {
+    //   title: "Partner",
+    //   dataIndex: "partner",
+    //   sorter: false,
+    //   render: (partner: any) => {
+    //     if (!partner) return "-";
 
-        return <>{partner?.username}</>;
-      },
-      ellipsis: true,
-      width: "auto",
-      align: "center" as AlignType
-    },
+    //     return <>{partner?.username}</>;
+    //   },
+    //   ellipsis: true,
+    //   width: "auto",
+    //   align: "center" as AlignType
+    // },
     {
       title: "Type",
       dataIndex: "type",
@@ -212,7 +266,7 @@ const DailyIncomeExpenseList: React.FC = () => {
       align: "center" as AlignType
     },
     {
-      title: "Amount",
+      title: "Amount (BDT)",
       dataIndex: "amount",
       sorter: false,
       render: (amount: any) => {
@@ -251,7 +305,7 @@ const DailyIncomeExpenseList: React.FC = () => {
     // },
     // createdOn
     {
-      title: "Created At",
+      title: "Entry At",
       dataIndex: "createdOn",
       sorter: false,
       render: (createdOn: any) => {
@@ -261,6 +315,18 @@ const DailyIncomeExpenseList: React.FC = () => {
       },
       ellipsis: true,
       width: "auto",
+      align: "center" as AlignType
+    },
+    // insertedBy
+    {
+      title: "Entry By",
+      dataIndex: "insertedBy",
+      sorter: false,
+      render: (insertedBy: any) => {
+        if (!insertedBy) return "-";
+        return <>{insertedBy?.username}</>;
+      },
+      width: "20%",
       align: "center" as AlignType
     },
     // editedBy
@@ -278,7 +344,7 @@ const DailyIncomeExpenseList: React.FC = () => {
     // },
     // updatedOn
     {
-      title: "Date",
+      title: "Event Date",
       dataIndex: "date",
       sorter: false,
       render: (date: any) => {
@@ -337,6 +403,68 @@ const DailyIncomeExpenseList: React.FC = () => {
     }
   ];
 
+  const getAccountHeadList = (selectType: string) => {
+    const body = {
+      meta: {
+        sort: [
+          {
+            order: "asc",
+            field: "id"
+          }
+        ]
+      },
+      body: {
+        // isActive: true
+        type: selectType, // Assuming the API can filter based on type
+        isActive: true
+      }
+    };
+    axios.post("/api/account-head/get-list", body).then(res => {
+      const { data } = res;
+
+      if (data.status != 200) {
+        MySwal.fire({
+          title: "Error",
+          text: data.message || "Something went wrong",
+          icon: "error"
+        });
+      }
+
+      if (!data.body) return;
+
+      const accountHeadIds = data.body.map((item: any) => {
+        return {
+          label: item.title,
+          value: item.id
+        };
+      });
+      setAccountHeadIds(accountHeadIds);
+    });
+  };
+
+  const handleChange = (value: any) => {
+    // console.log("checked = ", value);
+    setSelectType(value as any);
+  };
+  const handleAccountHeadIDChange = (value: any) => {
+    setSelectedAccountHeadId(value as any);
+  };
+  const handlePaymentChannelChange = (value: any) => {
+    // console.log("checked = ", value);
+
+    setSelectPaymentChannel(value as any);
+  };
+  const handleClear = () => {
+    setSelectType(null);
+    setSelectedAccountHeadId(null);
+    setSelectPaymentChannel(null);
+  };
+
+  useEffect(() => {
+    if (selectType) {
+      getAccountHeadList(selectType);
+    }
+  }, [selectType]);
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
@@ -431,27 +559,189 @@ const DailyIncomeExpenseList: React.FC = () => {
                   </Row>
                 </Link>
               )}
+              <Space direction="vertical" style={{ width: "100%" }}>
+                <Space style={{ marginBottom: 16 }}>
+                  <div style={{ padding: "20px", backgroundColor: "white" }}>
+                    <Collapse
+                      accordion
+                      style={{
+                        backgroundColor: "#FFC857",
+                        color: "white",
+                        borderRadius: 4,
+                        // marginBottom: 24,
+                        // border: 0,
+                        overflow: "hidden",
+                        fontWeight: "bold",
+                        font: "1rem"
+                      }}
+                    >
+                      <Panel header="Filters" key="1">
+                        <Row
+                          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                          justify="space-between"
+                        >
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            {/* type */}
 
-              {/* <Space
-                style={{ marginBottom: 16 }}
-                className="w-full flex justify-end mb-4"
-              >
-                <Button>Bulk Create</Button>
-              </Space> */}
-              <Table
-                style={{
-                  width: "100%",
-                  overflowX: "auto"
-                }}
-                scroll={{ x: true }}
-                className={"table-striped-rows"}
-                columns={columns}
-                rowKey={record => record.id}
-                dataSource={data}
-                pagination={tableParams.pagination}
-                loading={isLoading || isFetching}
-                onChange={handleTableChange}
-              />
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Type</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select Type"
+                                onChange={handleChange}
+                                options={types}
+                                value={selectType}
+                              />
+                            </Space>
+                          </Col>
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Account Head</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{
+                                  width: "100%",
+                                  textAlign: "start"
+                                }}
+                                placeholder="Please select"
+                                onChange={handleAccountHeadIDChange}
+                                options={accountHeadIds}
+                                value={selectedAccountHeadId}
+                                showSearch
+                                filterOption={(input, option) => {
+                                  if (typeof option?.label === "string") {
+                                    return (
+                                      option.label
+                                        .toLowerCase()
+                                        .indexOf(input.toLowerCase()) >= 0
+                                    );
+                                  }
+                                  return false;
+                                }}
+                              />
+                            </Space>
+                          </Col>
+
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            {/* type */}
+
+                            <Space
+                              style={{ width: "100%" }}
+                              direction="vertical"
+                            >
+                              <span>
+                                <b>Payment Channel</b>
+                              </span>
+                              <Select
+                                allowClear
+                                style={{ width: "100%", textAlign: "start" }}
+                                placeholder="Please select Payment"
+                                onChange={handlePaymentChannelChange}
+                                options={channelList}
+                                value={selectPaymentChannel}
+                              />
+                            </Space>
+                          </Col>
+
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          >
+                            <Button
+                              style={{
+                                width: "100%",
+                                textAlign: "center",
+                                marginTop: "25px",
+                                backgroundColor: "#F15F22",
+                                color: "#ffffff"
+                              }}
+                              onClick={() => {
+                                handleClear();
+                              }}
+                              className="ant-btn  ant-btn-lg"
+                            >
+                              Clear filters
+                            </Button>
+                          </Col>
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          ></Col>
+                          <Col
+                            xs={24}
+                            sm={12}
+                            md={8}
+                            lg={8}
+                            xl={8}
+                            xxl={8}
+                            className="gutter-row"
+                          ></Col>
+                        </Row>
+                      </Panel>
+                    </Collapse>
+                  </div>
+                </Space>
+
+                <Table
+                  style={{
+                    width: "100%",
+                    overflowX: "auto"
+                  }}
+                  scroll={{ x: true }}
+                  className={"table-striped-rows"}
+                  columns={columns}
+                  rowKey={record => record.id}
+                  dataSource={data}
+                  pagination={tableParams.pagination}
+                  loading={isLoading || isFetching}
+                  onChange={handleTableChange}
+                />
+              </Space>
             </Space>
           </TableCard>
         </Col>

@@ -1,4 +1,4 @@
-import SubZoneWiseCardData from "@/components/dashboard/Zone/SubZoneWiseCardData";
+// import SubZoneWiseCardData from "@/components/dashboard/Zone/SubZoneWiseCardData";
 import AppAnimate from "@/lib/AppAnimate";
 import AppRowContainer from "@/lib/AppRowContainer";
 import { Col } from "antd";
@@ -17,9 +17,9 @@ const RetailerDashboard = () => {
           <Col span={24}>
             <RetailerWiseActiveCustomerData />
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <SubZoneWiseCardData />
-          </Col>
+          </Col> */}
         </AppRowContainer>
       </AppAnimate>
     </>

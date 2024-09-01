@@ -11,7 +11,7 @@ import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -36,7 +36,7 @@ const SubZoneTableData = () => {
 
   const [order, SetOrder] = useState("asc");
   const [sort, SetSort] = useState("id");
-  const authUser = useAppSelector(state => state.auth.user);
+  // const authUser = useAppSelector(state => state.auth.user);
   const [subzoneManagers, setSubZoneManagers] = useState<any[]>([]);
   const [selectedSubZoneManager, setSelectedSubZoneManager] =
     useState<any>(null);
@@ -231,10 +231,13 @@ const SubZoneTableData = () => {
         ]
       },
       body: {
-        partnerType: "reseller",
-        client: {
-          id: authUser?.partnerId
-        }
+        partnerType: "reseller"
+        // zoneManager: {
+        //   id: authUser?.partnerId
+        // },
+        // client: {
+        //   id: authUser?.partnerId
+        // }
         // isActive: true
       }
     };

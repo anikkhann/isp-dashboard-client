@@ -320,7 +320,7 @@ const CreateDailyIncomeExpenseForm = () => {
               className="gutter-row"
             >
               <Form.Item
-                label="Date"
+                label="Event Date"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"
@@ -441,7 +441,7 @@ const CreateDailyIncomeExpenseForm = () => {
             >
               {/* remarks */}
               <Form.Item
-                label="Amount"
+                label="Amount (BDT)"
                 style={{
                   marginBottom: 0,
                   fontWeight: "bold"

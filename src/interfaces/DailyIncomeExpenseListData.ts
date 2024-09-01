@@ -13,6 +13,7 @@ export interface DailyIncomeExpenseListData {
   clientId: number;
   client: Client;
   updatedOn?: number;
+  insertedBy: string;
 }
 
 export interface Partner {

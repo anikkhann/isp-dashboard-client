@@ -140,7 +140,7 @@ const CreateCustomerForm = () => {
 
   const [selectedIpMode, setSelectedIpMode] = useState("nas");
 
-  const [addPrefix, setAddPrefix] = useState<boolean>(true);
+  const [addPrefix, setAddPrefix] = useState<boolean>(false);
 
   const router = useRouter();
   const MySwal = withReactContent(Swal);
@@ -1391,12 +1391,12 @@ const CreateCustomerForm = () => {
                           style={{
                             marginBottom: 0,
                             fontWeight: "bold"
-                            // margin: "2.8rem 0"
                           }}
                         >
-                          <Checkbox onChange={handlePrefix} checked={addPrefix}>
-                            {/* Prefix? */}
-                          </Checkbox>
+                          <Checkbox
+                            onChange={handlePrefix}
+                            checked={addPrefix}
+                          ></Checkbox>
                         </Form.Item>
                         <Form.Item
                           name="username"
