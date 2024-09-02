@@ -14,6 +14,7 @@ export interface DailyIncomeExpenseListData {
   client: Client;
   updatedOn?: number;
   insertedBy: string;
+  accountHead: AccountHead;
 }
 
 export interface Partner {
@@ -21,7 +22,9 @@ export interface Partner {
   name: string;
   username: string;
 }
-
+export interface AccountHead {
+  title: string;
+}
 export interface Client {
   id: number;
   name: string;

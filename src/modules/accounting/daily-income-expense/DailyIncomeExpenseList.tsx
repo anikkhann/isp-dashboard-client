@@ -272,6 +272,19 @@ const DailyIncomeExpenseList: React.FC = () => {
       align: "center" as AlignType
     },
     {
+      title: "Account Head",
+      dataIndex: "accountHead",
+      sorter: false,
+      render: (accountHead: any) => {
+        if (!accountHead) return "-";
+
+        return <>{accountHead?.title}</>;
+      },
+      ellipsis: true,
+      width: "auto",
+      align: "center" as AlignType
+    },
+    {
       title: "Amount (BDT)",
       dataIndex: "amount",
       sorter: false,
