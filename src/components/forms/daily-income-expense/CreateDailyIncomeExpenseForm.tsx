@@ -29,7 +29,7 @@ import weekYear from "dayjs/plugin/weekYear";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
-
+// UploadFileStatus
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
 dayjs.extend(weekday);
@@ -178,6 +178,19 @@ const CreateDailyIncomeExpenseForm = () => {
 
     setFileList(filteredList);
   };
+  // const handleFileChange: UploadProps["onChange"] = ({
+  //   fileList: newFileList
+  // }) => {
+  //   // Filter the file list to remove files that are not uploaded
+  //   const filteredList = newFileList.filter(
+  //     file =>
+  //       file.status !== "removed" &&
+  //       file.status !== "error" &&
+  //       file.status !== "uploading"
+  //   ) as UploadFile[];
+
+  //   setFileList(filteredList);
+  // };
 
   const dummyAction = (options: any) => {
     const { file } = options;
@@ -190,7 +203,20 @@ const CreateDailyIncomeExpenseForm = () => {
     });
     setFile(file);
   };
+  // const dummyAction = (options: any) => {
+  //   const { file } = options;
+  //   console.log("Dummy action triggered. File:", file);
 
+  //   setFileList(prevList => [
+  //     ...prevList,
+  //     {
+  //       uid: file.uid,
+  //       name: file.name,
+  //       status: "done" as UploadFile["status"],
+  //       url: URL.createObjectURL(file) // Create a URL for previewing the file
+  //     }
+  //   ]);
+  // };
   const uploadButton = (
     <Button icon={<UploadOutlined />}>Click to Upload</Button>
   );
@@ -204,6 +230,84 @@ const CreateDailyIncomeExpenseForm = () => {
       getAccountHeadList(selectType);
     }
   }, [selectType]);
+  // const onSubmit = async (data: DailyIncomeExpenseFormData) => {
+  //   setLoading(true);
+
+  //   try {
+  //     const { type, amount, remarks } = data;
+  //     const bodyData = {
+  //       date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
+  //       type,
+  //       accountHeadId: selectedAccountHeadId,
+  //       amount,
+  //       paymentChannel: selectPaymentChannel,
+  //       remarks
+  //     };
+
+  //     const formData = new FormData();
+  //     formData.append("body", JSON.stringify(bodyData));
+
+  //     // Use the first file in fileList (if any) for uploading
+  //     // if (fileList.length > 0) {
+  //     //   formData.append("attachment", fileList[0].originFileObj as Blob);
+  //     // }
+  //     // Check if there is at least one file in the fileList
+  //     if (fileList.length > 0) {
+  //       // Append the file to the formData
+  //       const file = fileList[0].originFileObj;
+  //       if (file) {
+  //         formData.append("attachment", file); // Attach the file
+  //       } else {
+  //         console.error("File is undefined:", file);
+  //       }
+  //     } else {
+  //       console.error("No files found in the fileList.");
+  //     }
+
+  //     const response = await axios.post(
+  //       "/api/daily-expenditure/create",
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data"
+  //         }
+  //       }
+  //     );
+
+  //     const { data: responseData } = response;
+
+  //     if (responseData.status !== 200) {
+  //       setShowError(true);
+  //       setErrorMessages(responseData.message);
+  //       MySwal.fire({
+  //         title: "Error",
+  //         text: responseData.message || "Something went wrong",
+  //         icon: "error"
+  //       });
+  //     } else {
+  //       MySwal.fire({
+  //         title: "Success",
+  //         text: responseData.message || "Added successfully",
+  //         icon: "success"
+  //       }).then(() => {
+  //         router.replace("/admin/accounting/daily-income-expense");
+  //       });
+  //     }
+  //   } catch (err: any) {
+  //     console.error("Error during submission:", err);
+  //     setShowError(true);
+  //     setErrorMessages(
+  //       err.response?.data?.message || err.message || "Something went wrong"
+  //     );
+  //     MySwal.fire({
+  //       title: "Error",
+  //       text: err.response?.data?.message || "Something went wrong",
+  //       icon: "error"
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const onSubmit = async (data: DailyIncomeExpenseFormData) => {
     setLoading(true);
@@ -224,14 +328,6 @@ const CreateDailyIncomeExpenseForm = () => {
         formData.append("attachment", file);
       }
       formData.append("body", JSON.stringify(bodyData));
-
-      // const formData = {
-      //   // date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null,
-      //   // type: type,
-      //   // accountHeadId: selectedAccountHeadId,
-      //   // paymentChannel: selectPaymentChannel,
-      //   // remarks: remarks
-      // };
 
       try {
         await axios
@@ -526,6 +622,31 @@ const CreateDailyIncomeExpenseForm = () => {
             ></Col>
           </Row>
 
+          {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
+            <Col>
+              <Form.Item
+                label="Attachment"
+                style={{
+                  marginBottom: 0,
+                  width: "100%",
+                  textAlign: "center",
+                  fontWeight: "bold"
+                }}
+              >
+                <Space style={{ width: "100%" }} direction="vertical">
+                  <Upload
+                    customRequest={dummyAction}
+                    onChange={handleFileChange}
+                    maxCount={1}
+                    listType="picture"
+                    fileList={fileList}
+                  >
+                    {fileList.length >= 1 ? null : uploadButton}
+                  </Upload>
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row> */}
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
             <Col>
               <Form.Item
@@ -544,6 +665,7 @@ const CreateDailyIncomeExpenseForm = () => {
                     maxCount={1}
                     listType="picture"
                     fileList={fileList}
+                    accept=".pdf,.jpg,.jpeg,.png,.csv"
                   >
                     {fileList.length >= 1 ? null : uploadButton}
                   </Upload>

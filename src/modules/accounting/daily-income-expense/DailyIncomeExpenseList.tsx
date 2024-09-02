@@ -141,6 +141,12 @@ const DailyIncomeExpenseList: React.FC = () => {
       if (data) {
         if (data.body) {
           setData(data.body);
+          // setTableParams({
+          //   pagination: {
+          //     total: data.body.length,
+          //     pageSizeOptions: ["10", "20", "30", "40", "50"]
+          //   }
+          // });
           setTableParams({
             pagination: {
               total: data.meta.totalRecords,

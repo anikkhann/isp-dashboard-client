@@ -21,8 +21,10 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import { FileImageOutlined, UploadOutlined } from "@ant-design/icons";
+// FileImageOutlined,
 import type { UploadProps } from "antd/es/upload";
 import type { UploadFile, UploadFileStatus } from "antd/es/upload/interface";
+// UploadFileStatus
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -91,7 +93,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
   const MySwal = withReactContent(Swal);
 
   const [previewOpen, setPreviewOpen] = useState(false);
-  const handleCancel = () => setPreviewOpen(false);
+  // const handleCancel = () => setPreviewOpen(false);
 
   const [file, setFile] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -106,7 +108,6 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   const url = process.env.NEXT_PUBLIC_BACKEND_URL;
-
   const getAccountHeadList = (selectType: string) => {
     const body = {
       meta: {
@@ -150,6 +151,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
     fileList: newFileList
   }) => {
     // only remove the files that are not uploaded
+
     const filteredList = newFileList.filter(
       file =>
         file.status !== "removed" &&
@@ -224,6 +226,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
       getAccountHeadList(selectType);
     }
   }, [selectType]);
+
   const onSubmit = async (data: DailyIncomeExpenseFormData) => {
     setLoading(true);
     setTimeout(async () => {
@@ -243,13 +246,6 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
         formData.append("attachment", file);
       }
       formData.append("body", JSON.stringify(bodyData));
-      // const formData = {
-      //   id: item.id,
-      //   type: type,
-      //   accountHeadId: selectedAccountHeadId,
-      //   paymentChannel: selectPaymentChannel,
-      //   remarks: remarks
-      // };
 
       try {
         await axios
@@ -297,7 +293,85 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
       }
     }, 2000);
   };
+  //get file as image or pdf or csv
+  const getFilePreview = (url: string) => {
+    const fileExtension = item.attachment.split(".").pop()?.toLowerCase();
 
+    if (["jpg", "jpeg", "png"].includes(fileExtension || "")) {
+      return (
+        <img
+          alt={item.attachment}
+          style={{ width: "100%" }}
+          // src={`${url}/public/downloadFile/${item.attachment}/daily-expenditure`}
+          src={url}
+        />
+      );
+    } else if (fileExtension === "pdf") {
+      const downloadPdf = async () => {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error("Network response was not ok");
+
+          const blob = await response.blob();
+          const fileName = item.attachment;
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = fileName;
+          link.click();
+          window.URL.revokeObjectURL(link.href); // Clean up the object URL
+        } catch (error) {
+          console.error("Download error:", error);
+        }
+      };
+
+      return (
+        <div>
+          <button onClick={downloadPdf}>Download {item.attachment}</button>
+        </div>
+      );
+    } else if (fileExtension === "csv") {
+      const downloadCsv = async () => {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error("Network response was not ok");
+
+          const blob = await response.blob();
+          const fileName = item.attachment;
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = fileName;
+          link.click();
+          window.URL.revokeObjectURL(link.href); // Clean up the object URL
+        } catch (error) {
+          console.error("Download error:", error);
+        }
+      };
+      return (
+        <div>
+          <button onClick={downloadCsv}>Download {item.attachment}</button>
+        </div>
+      );
+      // return (
+      //   <iframe
+      //     title="CSV Preview"
+      //     src={`${url}/public/downloadFile/${item.attachment}/daily-expenditure`}
+      //     style={{ width: "100%", height: "600px" }}
+      //   />
+      // );
+    } else {
+      return <div>Cannot preview this file type.</div>;
+    }
+  };
+  const handlePreviewClick = () => setPreviewOpen(true);
+  // const handlePdfClick = (url: any) => {
+  //   const fileName = url.split("/").pop();
+  //   const aTag = document.createElement("a");
+  //   aTag.href = url;
+  //   aTag.setAttribute("download", fileName);
+  //   document.body.appendChild(aTag);
+  //   aTag.click();
+  //   aTag.remove();
+  // };
   return (
     <>
       {/* {loading && <AppImageLoader />} */}
@@ -531,27 +605,37 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
 
           <div>
             <h1 className="font-bold text-sm">View Existing Attachment :</h1>
-            {/* {item.attachment && (  */}
-            <Button onClick={() => setPreviewOpen(true)}>
+
+            {/* <Button onClick={() => setPreviewOpen(true)}>
               <FileImageOutlined /> {item.attachment}
+            </Button> */}
+            <Button onClick={handlePreviewClick}>
+              <FileImageOutlined />
+              {item.attachment}
             </Button>
-            {/* )} */}
 
             <Modal
               open={previewOpen}
-              title={item.attachment}
               footer={null}
-              onCancel={handleCancel}
+              onCancel={() => setPreviewOpen(false)}
+              title="File Preview"
             >
-              <img
-                alt={item.attachment}
-                style={{ width: "100%" }}
-                src={`${url}/public/downloadFile/${item.attachment}/daily-expenditure`}
-              />
+              {getFilePreview(
+                `${url}/public/downloadFile/${item.attachment}/daily-expenditure`
+              )}
             </Modal>
-
-            {/* <p className="text-justify">{item.complainDetails}</p> */}
           </div>
+
+          {/* <Button
+            onClick={() => {
+              handlePdfClick(
+                `${url}/public/downloadFile/${item.attachment}/daily-expenditure`
+              );
+            }}
+          >
+            <FileImageOutlined />
+            Download Pdf
+          </Button> */}
 
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="center">
             <Col>
@@ -571,6 +655,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
                     maxCount={1}
                     listType="picture"
                     fileList={fileList}
+                    accept=".pdf,.jpg,.jpeg,.png,.csv"
                   >
                     {fileList.length >= 1 ? null : uploadButton}
                   </Upload>
@@ -582,9 +667,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
           <Row justify="center">
             <Col>
               <Form.Item>
-                {/* wrapperCol={{ ...layout.wrapperCol, offset: 4 }} */}
                 <Button
-                  // type="primary"
                   htmlType="submit"
                   shape="round"
                   style={{
@@ -602,7 +685,6 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
           </Row>
         </Form>
       </div>
-      {/* )} */}
     </>
   );
 };
