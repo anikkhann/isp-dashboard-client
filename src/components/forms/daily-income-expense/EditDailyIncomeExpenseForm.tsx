@@ -294,7 +294,10 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
     }, 2000);
   };
   //get file as image or pdf or csv
-  const getFilePreview = (url: string) => {
+  const getFilePreview = (item: { attachment: string }, url: string) => {
+    if (!item || !item.attachment) {
+      return <div>Invalid file data.</div>;
+    }
     const fileExtension = item.attachment.split(".").pop()?.toLowerCase();
 
     if (["jpg", "jpeg", "png"].includes(fileExtension || "")) {
@@ -621,6 +624,7 @@ const EditDailyIncomeExpenseForm = ({ item }: PropData) => {
               title="File Preview"
             >
               {getFilePreview(
+                item,
                 `${url}/public/downloadFile/${item.attachment}/daily-expenditure`
               )}
             </Modal>

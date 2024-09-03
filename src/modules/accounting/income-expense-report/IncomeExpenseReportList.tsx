@@ -346,7 +346,7 @@ const IncomeExpenseReportList: React.FC = () => {
       render: (trx_date: any) => {
         if (!trx_date) return "-";
         const date = new Date(trx_date);
-        return <>{format(date, "yyyy-MM-dd pp")}</>;
+        return <>{format(date, "yyyy-MM-dd")}</>;
       },
       ellipsis: true,
       width: "auto",
@@ -443,7 +443,7 @@ const IncomeExpenseReportList: React.FC = () => {
           "Income Amount (BDT)": item.income_amount,
           "Expense Amount (BDT)": item.expense_amount,
           Remarks: item.remarks,
-          "Event Date": format(trxDate, "yyyy-MM-dd pp")
+          "Event Date": format(trxDate, "yyyy-MM-dd")
         };
       });
 

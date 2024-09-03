@@ -55,8 +55,8 @@ const DailyIncomeExpenseList: React.FC = () => {
   const { Panel } = Collapse;
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-  const [order, SetOrder] = useState("asc");
-  const [sort, SetSort] = useState("createdOn");
+  const [order, SetOrder] = useState("desc");
+  const [sort, SetSort] = useState("date");
   const [selectType, setSelectType] = useState<any>("income");
   const [accountHeadIds, setAccountHeadIds] = useState<any>([]);
   const [selectedAccountHeadId, setSelectedAccountHeadId] = useState<any>(null);
@@ -141,12 +141,12 @@ const DailyIncomeExpenseList: React.FC = () => {
       if (data) {
         if (data.body) {
           setData(data.body);
-          // setTableParams({
-          //   pagination: {
-          //     total: data.body.length,
-          //     pageSizeOptions: ["10", "20", "30", "40", "50"]
-          //   }
-          // });
+          setTableParams({
+            pagination: {
+              total: data.body.length,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
           setTableParams({
             pagination: {
               total: data.meta.totalRecords,
@@ -369,7 +369,7 @@ const DailyIncomeExpenseList: React.FC = () => {
       render: (date: any) => {
         if (!date) return "-";
         const datee = new Date(date);
-        return <>{format(datee, "yyyy-MM-dd pp")}</>;
+        return <>{format(datee, "yyyy-MM-dd")}</>;
       },
       width: "20%",
       align: "center" as AlignType
@@ -495,8 +495,6 @@ const DailyIncomeExpenseList: React.FC = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<DailyIncomeExpenseListData>).order) {
-      // // console.log((sorter as SorterResult<BwNttnProviderData>).order)
-
       SetOrder(
         (sorter as SorterResult<DailyIncomeExpenseListData>).order === "ascend"
           ? "asc"
@@ -504,8 +502,6 @@ const DailyIncomeExpenseList: React.FC = () => {
       );
     }
     if (sorter && (sorter as SorterResult<DailyIncomeExpenseListData>).field) {
-      // // console.log((sorter as SorterResult<BwNttnProviderData>).field)
-
       SetSort(
         (sorter as SorterResult<DailyIncomeExpenseListData>).field as string
       );
