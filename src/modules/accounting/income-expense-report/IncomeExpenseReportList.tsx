@@ -439,6 +439,7 @@ const IncomeExpenseReportList: React.FC = () => {
 
         return {
           "Account Head": item.account_head,
+          "Account Head Type": item.account_head_type ?? "-",
           "Entry By": item.action_by,
           "Income Amount (BDT)": item.income_amount,
           "Expense Amount (BDT)": item.expense_amount,

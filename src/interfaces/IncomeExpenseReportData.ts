@@ -6,4 +6,5 @@ export interface IncomeExpenseReportData {
   income_amount: number;
   expense_amount: number;
   remarks: string;
+  account_head_type: string;
 }
