@@ -363,18 +363,20 @@ const SearchPackageList = () => {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<any> | SorterResult<any>[]
+    sorter: SorterResult<ActivityLogData> | SorterResult<ActivityLogData>[]
   ) => {
     SetPage(pagination.current as number);
     SetLimit(pagination.pageSize as number);
 
-    if (sorter && (sorter as SorterResult<any>).order) {
+    if (sorter && (sorter as SorterResult<ActivityLogData>).order) {
       SetOrder(
-        (sorter as SorterResult<any>).order === "ascend" ? "asc" : "desc"
+        (sorter as SorterResult<ActivityLogData>).order === "ascend"
+          ? "asc"
+          : "desc"
       );
     }
-    if (sorter && (sorter as SorterResult<any>).field) {
-      SetSort((sorter as SorterResult<any>).field as string);
+    if (sorter && (sorter as SorterResult<ActivityLogData>).field) {
+      SetSort((sorter as SorterResult<ActivityLogData>).field as string);
     }
   };
 
