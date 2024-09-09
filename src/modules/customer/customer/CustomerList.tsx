@@ -1359,43 +1359,6 @@ const CustomerList: React.FC = () => {
                         >
                           <Space style={{ width: "100%" }} direction="vertical">
                             <span>
-                              <b>Customer Id</b>
-                            </span>
-                            <Select
-                              allowClear
-                              style={{
-                                width: "100%",
-                                textAlign: "start"
-                              }}
-                              placeholder="Please select"
-                              onChange={handleCustomerIDChange}
-                              options={customerIds}
-                              value={selectedCustomerId}
-                              showSearch
-                              filterOption={(input, option) => {
-                                if (typeof option?.label === "string") {
-                                  return (
-                                    option.label
-                                      .toLowerCase()
-                                      .indexOf(input.toLowerCase()) >= 0
-                                  );
-                                }
-                                return false;
-                              }}
-                            />
-                          </Space>
-                        </Col>
-                        <Col
-                          xs={24}
-                          sm={12}
-                          md={8}
-                          lg={8}
-                          xl={8}
-                          xxl={8}
-                          className="gutter-row"
-                        >
-                          <Space style={{ width: "100%" }} direction="vertical">
-                            <span>
                               <b>Username</b>
                             </span>
                             <Select
@@ -1747,6 +1710,43 @@ const CustomerList: React.FC = () => {
                               onChange={handleStatusChange}
                               options={statusList}
                               value={selectedStatus}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                          xl={8}
+                          xxl={8}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Customer Id</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleCustomerIDChange}
+                              options={customerIds}
+                              value={selectedCustomerId}
                               showSearch
                               filterOption={(input, option) => {
                                 if (typeof option?.label === "string") {

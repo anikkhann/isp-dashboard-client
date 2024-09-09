@@ -1,26 +1,17 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { ActivityLogData } from "@/interfaces/ActivityLogData";
+import { Button, Card, Col, List, Select, Space, DatePicker } from "antd";
 import AppRowContainer from "@/lib/AppRowContainer";
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  DatePicker,
-  List,
-  Select,
-  Space,
-  Table,
-  Collapse
-} from "antd";
-import axios from "axios";
-import Cookies from "js-cookie";
-import Link from "next/link";
+import TableCard from "@/lib/TableCard";
 import React, { useEffect, useState } from "react";
+import { Table, Collapse, Row } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
+import { useQuery } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 import { AlignType } from "rc-table/lib/interface";
+import axios from "axios";
+import { ActivityLogData } from "@/interfaces/ActivityLogData";
+
 import { format } from "date-fns";
 
 import Swal from "sweetalert2";
@@ -33,9 +24,6 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
-import { Can } from "@/services/guard/Can";
-import { PlusSquareOutlined } from "@ant-design/icons";
-import { Row, Col } from "antd";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -45,7 +33,6 @@ dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
 
 const dateFormat = "YYYY-MM-DD";
-
 interface TableParams {
   pagination?: TablePaginationConfig;
   sortField?: string;
@@ -53,16 +40,23 @@ interface TableParams {
   filters?: Record<string, FilterValue | null>;
 }
 
-const SearchMacList = () => {
-  const [data, setData] = useState<ActivityLogData[]>([]);
+const SearchMacList: React.FC = () => {
   const { Panel } = Collapse;
-  const { RangePicker } = DatePicker;
 
   const MySwal = withReactContent(Swal);
 
+  const [data, setData] = useState<ActivityLogData[]>([]);
+  const { RangePicker } = DatePicker;
+  const [showData, setShowData] = useState(false);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+
+  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+
   const [page, SetPage] = useState(0);
   const [limit, SetLimit] = useState(10);
-
   const [order, SetOrder] = useState("desc");
   const [sort, SetSort] = useState("createdOn");
 
@@ -74,14 +68,108 @@ const SearchMacList = () => {
     }
   });
 
-  const [customers, setCustomers] = useState<any[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const fetchData = async (
+    page: number,
+    limit: number,
+    order: string,
+    sort: string,
+    customerParam?: string,
+    startDateParam?: string,
+    endDateParam?: string
+  ) => {
+    const token = Cookies.get("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
+    const body = {
+      meta: {
+        limit: limit,
+        page: page === 0 ? 0 : page - 1,
+        sort: [
+          {
+            order: order,
+            field: sort
+          }
+        ]
+      },
+      body: {
+        customer: {
+          id: customerParam
+        },
+        subject: "Expiration Date Update",
+        dateRangeFilter: {
+          field: "createdOn",
+          startDate: startDateParam,
+          endDate: endDateParam
+        }
+      }
+    };
 
-  const [selectedStartDate, setSelectedStartDate] = useState<any>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<any>(null);
+    const { data } = await axios.post("/api/activity-log/get-list", body, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    return data;
+  };
 
+  const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
+    queryKey: [
+      "expire-date-list",
+      page,
+      limit,
+      order,
+      sort,
+      selectedCustomer,
+      selectedStartDate,
+      selectedEndDate
+    ],
+    queryFn: async () => {
+      const response = await fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedCustomer,
+        selectedStartDate,
+        selectedEndDate
+      );
+      return response;
+    },
+    onSuccess(data: any) {
+      if (data) {
+        if (data.body) {
+          setData(data.body);
+          setTableParams({
+            pagination: {
+              total: data.meta.totalRecords,
+              pageSize: data.meta.limit,
+              current: (data.meta.page as number) + 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
+        } else {
+          setData([]);
+          setTableParams({
+            pagination: {
+              total: 0,
+              pageSize: 10,
+              current: 1,
+              pageSizeOptions: ["10", "20", "30", "40", "50"]
+            }
+          });
+        }
+      }
+    },
+    onError(error: any) {
+      console.log("error", error);
+    }
+  });
+
+  useEffect(() => {
+    if (data) {
+      setData(data);
+    }
+  }, [data]);
   const getCustomers = async () => {
     const token = Cookies.get("token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -122,96 +210,15 @@ const SearchMacList = () => {
     setCustomers(list);
   };
 
-  const handleUsernameChange = (value: any) => {
-    setSelectedCustomer(value);
-  };
-
   useEffect(() => {
     getCustomers();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClear = () => {
-    setSelectedCustomer(null);
-    setData([]);
-    setSelectedDateRange(null);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
+  const handleCustomerChange = (value: any) => {
+    setSelectedCustomer(value);
   };
-
-  const handleSubmit = async (
-    page: number,
-    limit: number,
-    order: string,
-    sort: string,
-    customerIdParam?: string,
-    startDateParam?: string,
-    endDateParam?: string
-  ) => {
-    const token = Cookies.get("token");
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-    const body = {
-      meta: {
-        limit: limit,
-        page: page === 0 ? 0 : page - 1,
-        sort: [
-          {
-            order: order,
-            field: sort
-          }
-        ]
-      },
-      body: {
-        customer: {
-          id: customerIdParam
-        },
-        subject: "MAC Binding Update",
-        dateRangeFilter: {
-          field: "createdOn",
-          startDate: startDateParam,
-          endDate: endDateParam
-        }
-      }
-    };
-
-    const { data } = await axios.post("/api/activity-log/get-list", body, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-
-    if (data) {
-      // console.log("data.data", data);
-
-      if (data.body) {
-        setData(data.body);
-        setTableParams({
-          pagination: {
-            pageSize: data.meta.limit,
-            current: (data.meta.page as number) + 1,
-            pageSizeOptions: ["10", "20", "30", "40", "50"]
-          }
-        });
-      } else {
-        setData([]);
-        setTableParams({
-          pagination: {
-            total: 0,
-            pageSize: 10,
-            current: 1,
-            pageSizeOptions: ["10", "20", "30", "40", "50"]
-          }
-        });
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (data) {
-      setData(data);
-    }
-  }, [data]);
-
   const handleDateChange = (value: any) => {
     // console.log(value);
 
@@ -231,6 +238,13 @@ const SearchMacList = () => {
       setSelectedEndDate(null);
     }
   };
+  const handleClear = () => {
+    setShowData(false);
+    setSelectedCustomer(null);
+    setSelectedDateRange(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+  };
 
   // console.log(error, isLoading, isError)
 
@@ -246,6 +260,7 @@ const SearchMacList = () => {
       width: "auto",
       align: "center" as AlignType
     },
+
     {
       title: "Customer",
       dataIndex: "customer",
@@ -369,6 +384,8 @@ const SearchMacList = () => {
     SetLimit(pagination.pageSize as number);
 
     if (sorter && (sorter as SorterResult<ActivityLogData>).order) {
+      // // console.log((sorter as SorterResult<CustomerData>).order)
+
       SetOrder(
         (sorter as SorterResult<ActivityLogData>).order === "ascend"
           ? "asc"
@@ -376,252 +393,284 @@ const SearchMacList = () => {
       );
     }
     if (sorter && (sorter as SorterResult<ActivityLogData>).field) {
+      // // console.log((sorter as SorterResult<CustomerData>).field)
+
       SetSort((sorter as SorterResult<ActivityLogData>).field as string);
+    }
+  };
+
+  const handleSubmit = () => {
+    // Check if selectedStartDate and selectedEndDate are valid
+    if (selectedCustomer || selectedStartDate || selectedEndDate) {
+      // Set new table parameters
+      setTableParams(prev => ({
+        ...prev,
+        pagination: {
+          ...prev.pagination,
+          current: 1 // Reset to the first page
+        }
+      }));
+
+      // Manually trigger refetch with new parameters
+      fetchData(
+        page,
+        limit,
+        order,
+        sort,
+        selectedCustomer,
+        selectedStartDate,
+        selectedEndDate
+      )
+        .then(response => {
+          if (response) {
+            if (response.body) {
+              setData(response.body);
+              setTableParams({
+                pagination: {
+                  total: response.meta.totalRecords,
+                  pageSize: response.meta.limit,
+                  current: (response.meta.page as number) + 1,
+                  pageSizeOptions: ["10", "20", "30", "40", "50"]
+                }
+              });
+              setShowData(true); // Show data after successful fetch
+            } else {
+              setData([]);
+              setTableParams({
+                pagination: {
+                  total: 0,
+                  pageSize: 10,
+                  current: 1,
+                  pageSizeOptions: ["10", "20", "30", "40", "50"]
+                }
+              });
+              setShowData(true); // Show empty data state
+            }
+          }
+        })
+        .catch(err => {
+          MySwal.fire({
+            title: "Error",
+            text: err.message || "Something went wrong",
+            icon: "error"
+          });
+        });
+    } else {
+      MySwal.fire({
+        title: "Validation Error",
+        text: "Please select a valid date range.",
+        icon: "warning"
+      });
     }
   };
 
   return (
     <>
       <AppRowContainer>
-        <Breadcrumb
-          style={{
-            margin: "10px 30px",
-            textAlign: "left"
-          }}
-          items={[
-            {
-              title: <Link href="/admin">Home</Link>
-            },
-            {
-              title: (
-                <Link href="/admin/customer-care">Customer Care Dashboard</Link>
-              )
-            },
-            {
-              title: "MAC Update"
-            }
-          ]}
-        />
-        <div
-          style={{
-            width: "90%",
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            margin: "0 auto",
-
-            textAlign: "center"
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "1.5rem",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-              color: "#F15F22"
-            }}
-          >
-            MAC Update
-          </h1>
-        </div>
-
-        <Card
-          hoverable
-          style={{
-            width: "90%",
-            backgroundColor: "#ffffff",
-            // overflow: "scroll",
-            borderRadius: "10px",
-            margin: "0 auto",
-            // textAlign: "center",
-            marginTop: "2rem",
-            marginBottom: "1rem",
-            border: "1px solid #F15F22"
-          }}
-          extra={
+        <Col span={24} key="data-f">
+          {isError && (
             <>
-              <Can I="customerCare.list">
-                <Link href="/admin/customer-mac-bind-or-remove/create">
-                  <Button
-                    type="primary"
-                    icon={<PlusSquareOutlined />}
-                    size={"middle"}
-                    style={{ marginLeft: "1rem" }}
-                  >
-                    Update MAC
-                  </Button>
-                </Link>
-              </Can>
-            </>
-          }
-        >
-          <>
-            <Space style={{ marginBottom: 16 }}>
-              <div style={{ padding: "20px", backgroundColor: "white" }}>
-                <Collapse
-                  accordion
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: " 10px 5px",
+                  backgroundColor: "#ffffff",
+                  width: "100%"
+                }}
+              >
+                <Card
+                  title="Error"
                   style={{
-                    backgroundColor: "#FFC857",
-                    color: "white",
-                    borderRadius: 4,
-                    // marginBottom: 24,
-                    // border: 0,
-                    overflow: "hidden",
-                    fontWeight: "bold",
-                    font: "1rem"
+                    width: 300,
+                    color: "#FF5630",
+                    backgroundColor: "#ffffff"
                   }}
                 >
-                  <Panel header="Filters" key="1">
-                    <Row
-                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                      justify="space-between"
-                    >
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <span>
-                            <b>
-                              Username
-                              {/* <span style={{ color: "red" }}>*</span> */}
-                            </b>
-                          </span>
-                          <Select
-                            showSearch
-                            allowClear
-                            style={{ width: "100%", textAlign: "start" }}
-                            placeholder="Please select"
-                            onChange={handleUsernameChange}
-                            options={customers}
-                            value={selectedCustomer}
-                            filterOption={(input, option) =>
-                              option?.label
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
-                            }
-                          />
-                        </Space>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        <Space style={{ width: "100%" }} direction="vertical">
-                          <span>
-                            <b>Date Range</b>
-                          </span>
-                          <RangePicker
-                            style={{ width: "100%" }}
-                            onChange={handleDateChange}
-                            value={selectedDateRange}
-                            placeholder={["Start Date", "End Date"]}
-                          />
-                        </Space>
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-                      justify="space-between"
-                    >
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        <Button
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                            marginTop: "25px",
-                            backgroundColor: "#0e8fdc",
-                            color: "#ffffff"
-                          }}
-                          onClick={() => {
-                            // if (!selectedCustomer) {
-                            //   MySwal.fire({
-                            //     title: "Error",
-                            //     text: "Select Username",
-                            //     icon: "error"
-                            //   });
-                            //   return;
-                            // }
-                            handleSubmit(
-                              page,
-                              limit,
-                              order,
-                              sort,
-                              selectedCustomer,
-                              selectedStartDate,
-                              selectedEndDate
-                            );
-                          }}
-                          className="ant-btn  ant-btn-lg"
-                        >
-                          Submit
-                        </Button>
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={12}
-                        xl={12}
-                        xxl={12}
-                        className="gutter-row"
-                      >
-                        <Button
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                            marginTop: "25px",
-                            backgroundColor: "#F15F22",
-                            color: "#ffffff"
-                          }}
-                          onClick={() => {
-                            handleClear();
-                          }}
-                          className="ant-btn  ant-btn-lg"
-                        >
-                          Clear filters
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Panel>
-                </Collapse>
+                  <p>
+                    {error &&
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.message
+                      ? error.response.data.message
+                      : error.message
+                        ? error.message
+                        : "Something went wrong"}
+                  </p>
+                </Card>
               </div>
-            </Space>
-          </>
+            </>
+          )}
 
-          {data && data.length > 0 ? (
-            <Table
-              style={{
-                width: "100%",
-                overflowX: "auto"
-              }}
-              scroll={{ x: true }}
-              className={"table-striped-rows"}
-              columns={columns}
-              rowKey={record => record.id}
-              dataSource={data}
-              pagination={tableParams.pagination}
-              onChange={handleTableChange}
-            />
-          ) : null}
-        </Card>
+          <TableCard
+            title="MAC Bind/Remove List"
+            hasLink={true}
+            addLink="/admin/customer-mac-bind-or-remove/create"
+            permission="customerCare.list"
+            style={{
+              // backgroundColor: "#FFFFFF",
+              borderRadius: "10px",
+              padding: "10px",
+              width: "100%",
+              overflowX: "auto",
+              backgroundColor: "#d5dfe6"
+            }}
+          >
+            <Space direction="vertical" style={{ width: "100%" }}>
+              <Space style={{ marginBottom: 16 }}>
+                <div style={{ padding: "20px", backgroundColor: "white" }}>
+                  <Collapse
+                    accordion
+                    style={{
+                      backgroundColor: "#FFC857",
+                      color: "white",
+                      borderRadius: 4,
+                      // marginBottom: 24,
+                      // border: 0,
+                      overflow: "hidden",
+                      fontWeight: "bold",
+                      font: "1rem"
+                    }}
+                  >
+                    <Panel header="Filters" key="1">
+                      <Row
+                        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+                        justify="space-between"
+                      >
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Username</b>
+                            </span>
+                            <Select
+                              allowClear
+                              style={{
+                                width: "100%",
+                                textAlign: "start"
+                              }}
+                              placeholder="Please select"
+                              onChange={handleCustomerChange}
+                              options={customers}
+                              value={selectedCustomer}
+                              showSearch
+                              filterOption={(input, option) => {
+                                if (typeof option?.label === "string") {
+                                  return (
+                                    option.label
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
+                                  );
+                                }
+                                return false;
+                              }}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Space style={{ width: "100%" }} direction="vertical">
+                            <span>
+                              <b>Date Range</b>
+                            </span>
+                            <RangePicker
+                              style={{ width: "100%" }}
+                              onChange={handleDateChange}
+                              value={selectedDateRange}
+                              placeholder={["Start Date", "End Date"]}
+                            />
+                          </Space>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#0e8fdc",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleSubmit();
+                            }}
+                            className="ant-btn  ant-btn-lg "
+                          >
+                            Submit
+                          </Button>
+                        </Col>
+                        <Col
+                          xs={24}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                          xxl={12}
+                          className="gutter-row"
+                        >
+                          <Button
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              marginTop: "25px",
+                              backgroundColor: "#F15F22",
+                              color: "#ffffff"
+                            }}
+                            onClick={() => {
+                              handleClear();
+                            }}
+                            className="ant-btn  ant-btn-lg"
+                          >
+                            Clear filters
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </div>
+              </Space>
+
+              {showData && (
+                <Table
+                  style={{
+                    width: "100%",
+                    overflowX: "auto"
+                  }}
+                  scroll={{ x: true }}
+                  className={"table-striped-rows"}
+                  columns={columns}
+                  rowKey={record => record.id}
+                  dataSource={data}
+                  pagination={tableParams.pagination}
+                  loading={isLoading || isFetching}
+                  onChange={handleTableChange}
+                />
+              )}
+            </Space>
+          </TableCard>
+        </Col>
       </AppRowContainer>
     </>
   );

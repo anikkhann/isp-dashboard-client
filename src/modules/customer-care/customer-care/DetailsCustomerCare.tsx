@@ -316,7 +316,7 @@ const DetailsCustomerCare = ({ id }: any) => {
                   )}
                 </div>
               </div>
-              {ability.can("customerCare.downloadSafForm", "") ? (
+              {ability.can("customerCare.liveBandwidth", "") ? (
                 <Button
                   style={{
                     marginLeft: "auto",
